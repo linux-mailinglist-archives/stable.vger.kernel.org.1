@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08165B36415
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2DAB36775
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEA788E16B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8E81C2301C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F52E22AE5D;
-	Tue, 26 Aug 2025 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F92E350840;
+	Tue, 26 Aug 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enBTwOP0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIEZyXVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF81ADFFE;
-	Tue, 26 Aug 2025 13:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB17341ABD;
+	Tue, 26 Aug 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214817; cv=none; b=ocXvwagMpuLVQOw3GiPgCnhsEGtgqxNWajY/7jUyY173HVOa+DxMaXvS08YwhMb5wkjqlxia4sAKFTEX2g7yuOr473JzSt8rr6Xgkx7Fb7euQb474c/MWMytHl7LE8JkHIsu0xC1DLnewE0vg0U9ltAQkfK5X5UzeGWPUEmGq20=
+	t=1756216601; cv=none; b=lllVYTMYeaAGVSrr9csOqCK8/bde2A7nS5stkB6Pb4PqVVyA/c3qhdoAlkkLkbWdsybHC6Dclc8RZQd0LyMo9Va1lOUFQcfLgVSPWYAGVRpX9i2VWECLPNOzspSPdXRSAD0Lnwh5o7B7Prir37jCJSycWLRqNX/iAMWZny/RQLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214817; c=relaxed/simple;
-	bh=RllgTZIXbPPoBTtDOfwDthP3XrhHtj3c1OlKniJe+ik=;
+	s=arc-20240116; t=1756216601; c=relaxed/simple;
+	bh=zUWVstwPpLdGYzWgcytuyTpbVjyrQaYahBwficoCETU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNA38wjyLWrwwSmKc7wKuj+LTmMpDR8o8pCvfnPL06L4HcBtpCkCJ4Hb5d9Xvraatab3gG2eXpuBT8xczuMCtSfZGpiD3+Iq2oSWUVWeGD8x20vOzK1KeE7xGMelqfEp62yAhrhqRDOw4twx6M1PxaHJkULi8WVzPiGFj2+hTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enBTwOP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAC2C4CEF1;
-	Tue, 26 Aug 2025 13:26:56 +0000 (UTC)
+	 MIME-Version; b=VYFen4NRn9VbeaDiVnFGZQdzr9jeedmmSI4Qiljj4YcBE2lbikiWK+z0JCS2gVFCqvOfLZSRW5+k942lFFPpbDS19OOF1Ux1sCDzG0XYWvxU0Zk1LMU2GgQD0YqMMfTIFd7U0My3Wuim+2AwG58WCzhmloh9XAtGVDQcN8xETEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIEZyXVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D0BC4CEF1;
+	Tue, 26 Aug 2025 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214816;
-	bh=RllgTZIXbPPoBTtDOfwDthP3XrhHtj3c1OlKniJe+ik=;
+	s=korg; t=1756216600;
+	bh=zUWVstwPpLdGYzWgcytuyTpbVjyrQaYahBwficoCETU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enBTwOP0Mk5cDnNV/CHeJV6BG2Lt2umKGEtUrRxjP4khAeJ7c2BfFhJln+fpNVmW8
-	 voJ+cEEfVwXAgeSMBEfthL4ZQt7qCgABv3EOTLMNTCznONpvnZjGDZBC5FtvTAocxx
-	 nm5HvjCcSNqZWUNodGy0vqSxf2TKVdp8XLUjCGxg=
+	b=MIEZyXVlirYfmdsuze2Tzoh5/gIppWSRLB4u41lqdOh01RczPvGI9OSDyjmmYpFZR
+	 jUJJ/lsJMBnhkW0SEOLRa6maC/6nTab+Q+C3EhtfBnUL5UhEV7x4Z4WhFjkDjt03mo
+	 PQfVHU6Kpqq+QyHC0VQg/Lomt1VEqOwvBuzi8dtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 279/482] ksmbd: extend the connection limiting mechanism to support IPv6
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 441/644] usb: core: config: Prevent OOB read in SS endpoint companion parsing
 Date: Tue, 26 Aug 2025 13:08:52 +0200
-Message-ID: <20250826110937.674671975@linuxfoundation.org>
+Message-ID: <20250826110957.394823414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Xinyu Liu <katieeliu@tencent.com>
 
-commit c0d41112f1a5828c194b59cca953114bc3776ef2 upstream.
+commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
 
-Update the connection tracking logic to handle both IPv4 and IPv6
-address families.
+usb_parse_ss_endpoint_companion() checks descriptor type before length,
+enabling a potentially odd read outside of the buffer size.
 
-Cc: stable@vger.kernel.org
-Fixes: e6bb91939740 ("ksmbd: limit repeated connections from clients with the same IP")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this up by checking the size first before looking at any of the
+fields in the descriptor.
+
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.h    |    7 ++++++-
- fs/smb/server/transport_tcp.c |   26 +++++++++++++++++++++++---
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/usb/core/config.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -45,7 +45,12 @@ struct ksmbd_conn {
- 	struct mutex			srv_mutex;
- 	int				status;
- 	unsigned int			cli_cap;
--	__be32				inet_addr;
-+	union {
-+		__be32			inet_addr;
-+#if IS_ENABLED(CONFIG_IPV6)
-+		u8			inet6_addr[16];
-+#endif
-+	};
- 	char				*request_buf;
- 	struct ksmbd_transport		*transport;
- 	struct nls_table		*local_nls;
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -87,7 +87,14 @@ static struct tcp_transport *alloc_trans
- 		return NULL;
- 	}
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -81,8 +81,14 @@ static void usb_parse_ss_endpoint_compan
+ 	 */
+ 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
  
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (client_sk->sk->sk_family == AF_INET6)
-+		memcpy(&conn->inet6_addr, &client_sk->sk->sk_v6_daddr, 16);
-+	else
-+		conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
-+#else
- 	conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
-+#endif
- 	conn->transport = KSMBD_TRANS(t);
- 	KSMBD_TRANS(t)->conn = conn;
- 	KSMBD_TRANS(t)->ops = &ksmbd_tcp_transport_ops;
-@@ -227,7 +234,6 @@ static int ksmbd_kthread_fn(void *p)
- {
- 	struct socket *client_sk = NULL;
- 	struct interface *iface = (struct interface *)p;
--	struct inet_sock *csk_inet;
- 	struct ksmbd_conn *conn;
- 	int ret;
- 
-@@ -250,13 +256,27 @@ static int ksmbd_kthread_fn(void *p)
- 		/*
- 		 * Limits repeated connections from clients with the same IP.
- 		 */
--		csk_inet = inet_sk(client_sk->sk);
- 		down_read(&conn_list_lock);
- 		list_for_each_entry(conn, &conn_list, conns_list)
--			if (csk_inet->inet_daddr == conn->inet_addr) {
-+#if IS_ENABLED(CONFIG_IPV6)
-+			if (client_sk->sk->sk_family == AF_INET6) {
-+				if (memcmp(&client_sk->sk->sk_v6_daddr,
-+					   &conn->inet6_addr, 16) == 0) {
-+					ret = -EAGAIN;
-+					break;
-+				}
-+			} else if (inet_sk(client_sk->sk)->inet_daddr ==
-+				 conn->inet_addr) {
- 				ret = -EAGAIN;
- 				break;
- 			}
-+#else
-+			if (inet_sk(client_sk->sk)->inet_daddr ==
-+			    conn->inet_addr) {
-+				ret = -EAGAIN;
-+				break;
-+			}
-+#endif
- 		up_read(&conn_list_lock);
- 		if (ret == -EAGAIN)
- 			continue;
+-	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
+-			size < USB_DT_SS_EP_COMP_SIZE) {
++	if (size < USB_DT_SS_EP_COMP_SIZE) {
++		dev_notice(ddev,
++			   "invalid SuperSpeed endpoint companion descriptor "
++			   "of length %d, skipping\n", size);
++		return;
++	}
++
++	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
+ 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
+ 				" interface %d altsetting %d ep %d: "
+ 				"using minimum values\n",
 
 
 
