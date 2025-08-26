@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-173763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38700B35F90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0249AB365CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C81F1BA4A34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E87174678E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54328139D0A;
-	Tue, 26 Aug 2025 12:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B1023A9A0;
+	Tue, 26 Aug 2025 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6V365ZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogPpUJSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA6938DD8;
-	Tue, 26 Aug 2025 12:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654EC2139C9;
+	Tue, 26 Aug 2025 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212607; cv=none; b=LoAj634ciIa9ums2GgjPwnNu40JQPfd7QHtn9DdCIyDlKV3/QieNAvkym2/Ix9q9Wg4gOgbIw9Rr/ZPEf4qncH6PQC5ogN2KqYkYrrtpaF9Lb9fQs8bo5rOFcyZulN99mT1WwHiD6N52dKzo/bSdX+b2iaqanYzbsheGFrqqcx0=
+	t=1756215642; cv=none; b=I5rOme8KqwbR/B8oxL9Nue50++u6krl6hMdH1feJNBOJH1vleNqDSZJpuBawAXYLXDGJWF5IHidmvrlhmlSzjd8e9GwLxYTlABwV6XhgVZabGY2ZBxH8kD2OGkE+qdO5FD9Pzh5tWkeKJX/jx29NdsGhSBj9GrfYG+k/MT9PvTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212607; c=relaxed/simple;
-	bh=fSC//JZcfqNjjxceabuhKYZKg0/ytUODfn8kAxuiE5I=;
+	s=arc-20240116; t=1756215642; c=relaxed/simple;
+	bh=juSx8KWPza4HfDD0Lm4du/3dlTpM6e36SGJxaK1NzVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y25XqXRDJHQjKwhUhSCuvJvDXwP+QpFmZgTS++vFU4bfIb30d5qw7dE0NZcoYsDAaGjls4/ig4Omw0o0VHFWTVIrj8Ud6eHNm4Ce3pQgp0ZTAke1gZXfn4JtpQvQrywKpyCWbsiu1LZ1xIMW56DMDOmqhRNN+jXqVbVBnMDrOvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6V365ZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90248C4CEF1;
-	Tue, 26 Aug 2025 12:50:06 +0000 (UTC)
+	 MIME-Version; b=im+fyJ05pInzr404K1KQc3893wZqHProvUPTjrrNDMwxsWV5n+d4CcBtjXMqYQOmplWsgq/7fy5QuiuMV8ct6yAl8KR5tCQH5t6e7BZeknhdsOO3vaY0UvfdHFkUSTdjlqrjtqiulISJOdTpEOpNkWMOtVRc5HKjuPxqv7+dL2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogPpUJSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F7AC4CEF1;
+	Tue, 26 Aug 2025 13:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212606;
-	bh=fSC//JZcfqNjjxceabuhKYZKg0/ytUODfn8kAxuiE5I=;
+	s=korg; t=1756215642;
+	bh=juSx8KWPza4HfDD0Lm4du/3dlTpM6e36SGJxaK1NzVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6V365ZOfiiIdQUhZJJYP+6dkWgpI+OI/10VaoZGiP6EOftykT7UBa9cXUNJdzue0
-	 5N+KAYrqH3rmG/Vs8MHk7AkdeuMyfbQn/WkgrpFsI9qCLnZwXE9g8/7RmASAAAtjSH
-	 51lOFLzhDz2FbsS/qE3JccIAUmEaczXH/sxkh1yY=
+	b=ogPpUJSKuZ9UY06YfZmKLN2NT5IGURgcqXZwcMkBQ/iCjTpmkqY+9uorTgn3WrInf
+	 jCY84LV9picrw3Dc+WDSKGt48+hLX5NoQzEix8EJD/sNenMVmkU6oGjX38wLSkGxyA
+	 RKwbXuyNV/RuesfuzpCauHK6QJI4hDg3+Z0KrWp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 034/587] smb: client: dont wait for info->send_pending == 0 on error
-Date: Tue, 26 Aug 2025 13:03:03 +0200
-Message-ID: <20250826110953.819783468@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 093/644] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+Date: Tue, 26 Aug 2025 13:03:04 +0200
+Message-ID: <20250826110948.807982887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
+commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc upstream.
 
-We already called ib_drain_qp() before and that makes sure
-send_done() was called with IB_WC_WR_FLUSH_ERR, but
-didn't called atomic_dec_and_test(&sc->send_io.pending.count)
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_eth_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-So we may never reach the info->send_pending == 0 condition.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1338,10 +1338,6 @@ void smbd_destroy(struct TCP_Server_Info
- 	log_rdma_event(INFO, "cancelling idle timer\n");
- 	cancel_delayed_work_sync(&info->idle_timer_work);
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4228,12 +4228,19 @@ static int dpaa2_eth_connect_mac(struct
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
--	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
--	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
--
- 	/* It's not possible for upper layer to get to reassembly */
- 	log_rdma_event(INFO, "drain the reassembly queue\n");
- 	do {
-@@ -2053,7 +2049,11 @@ int smbd_send(struct TCP_Server_Info *se
- 	 */
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
  
- 	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
-+		atomic_read(&info->send_pending) == 0 ||
-+		sc->status != SMBDIRECT_SOCKET_CONNECTED);
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
 +
-+	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
-+		rc = -EAGAIN;
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
  
- 	return rc;
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4260,6 +4267,8 @@ err_close_mac:
+ 	priv->mac = NULL;
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
  }
+ 
 
 
 
