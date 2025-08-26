@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8E8B363FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7194CB367F4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C3E37B8AC4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394E85652DC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B167A34A324;
-	Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB5D345758;
+	Tue, 26 Aug 2025 14:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXqLdZJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpImaPwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E3279788;
-	Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF2C1DE8BE;
+	Tue, 26 Aug 2025 14:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215199; cv=none; b=gOyw3Bzxst1wqagdD3cFV9nPZReXyGgCw3YSvd1u3QcoI/SLz1Eo73lPVO/e4n6CND9utqN13dvZsDvTLAh64OZDbOxQ8LAmjcinVMXQQPk87z50yn5TgIYG+euyT0iKktlvaUReoz6cwpklTB+VLclCCCs+tFlOKYsGSFMshII=
+	t=1756216883; cv=none; b=L4WiciEpEb2sPLfxuQpRpTct4M8LHmcSKypI3TRnvPS4bufMhfS81RaWuswS+7QmMjDV0OX7rHJu0OBuh1Qo/uu35xqSRD6njsvmoUzUq3ESxONT0VuwflN9ajSKOiZodVzq/np4JNPnW/x0f5An60Lx50CBVBZW8iAUcYT66Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215199; c=relaxed/simple;
-	bh=sgKzZScs3iLZfnccpiL32pmXVCerxPJrX3MZy4sfG8c=;
+	s=arc-20240116; t=1756216883; c=relaxed/simple;
+	bh=+OI5njkpkehpVoD/6y8kKKEUCpMiZRMzFSNzA7IscJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQtoM/sMecaZfMdzs4+oj7JzTHFEEn2rS1F9e6JzqoHs6OJbiyKXm1CU8JUwKqY2KybTH6+8JShndCGC1v+opg/a2E5UwIO2yzzchtk5+fgIVCebqhdRlCyzweEM3Kfukwo3VYEejcE7+czQFzHxf5uTTtCrlc6MJ49eekqeNOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXqLdZJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0136AC4CEF1;
-	Tue, 26 Aug 2025 13:33:18 +0000 (UTC)
+	 MIME-Version; b=NNnh01oGBxo1UHVxMuky+gC3wL0RMTKwXcevcfDJMfUjUo4n6LF1hfmG+mQFTG4oKREdC1bSImAz7jqWL96hmrnX9th7Kb0rPviEW6uAI0Vunmdgvoq9CGJNu99eD9vW8DJ1P8PujSSG+LiQGYlfase15rph1U10r9+6F5zOkEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpImaPwL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852C9C4CEF1;
+	Tue, 26 Aug 2025 14:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215199;
-	bh=sgKzZScs3iLZfnccpiL32pmXVCerxPJrX3MZy4sfG8c=;
+	s=korg; t=1756216882;
+	bh=+OI5njkpkehpVoD/6y8kKKEUCpMiZRMzFSNzA7IscJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXqLdZJ3hAlsxAjnnBq1zC5IjTF4jHvwRyQqTYEauDDHTOIiVxFv88iwxTvMrwYij
-	 OFRh8GpXAS6CwNEYNjO3LfNAhDcYEkuicn//9ZLfEJioo+qsrdJV/7H3KbrHvBG4m4
-	 pPnpx9eTYLAA9SwmYespNp4OOD4lDr+Cg7bx0AZw=
+	b=hpImaPwL//kl4IJwqnY8C0AH4rIL0R4DffZaAVmy+K2Iu8lhFZHBeMsVJaCXK7Ar9
+	 frlKp56w86HWSdbGOC3olPOj628PsTUjdnncPD7anvV4o30WAAal12bcp0z5Fz4FfQ
+	 7D9orDr9d8T3osUSB99bjmxaXlg67kY9iCwC6K7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 417/482] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 579/644] iio: proximity: isl29501: fix buffered read on big-endian systems
 Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826110941.129330951@linuxfoundation.org>
+Message-ID: <20250826111000.880030955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
+commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
 
-The USB core will unmap urb->transfer_dma after SETUP stage completes.
-Then the USB controller will access unmapped memory when it received
-device descriptor. If iommu is equipped, the entire test can't be
-completed due to the memory accessing is blocked.
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-Fix it by calling map_urb_for_dma() again for IN stage. To reduce
-redundant map for urb->transfer_buffer, this will also set
-URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
-dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
-flag before second map_urb_for_dma().
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hcd.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/iio/proximity/isl29501.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -2177,7 +2177,7 @@ static struct urb *request_single_step_s
- 	urb->complete = usb_ehset_completion;
- 	urb->status = -EINPROGRESS;
- 	urb->actual_length = 0;
--	urb->transfer_flags = URB_DIR_IN;
-+	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
- 	usb_get_urb(urb);
- 	atomic_inc(&urb->use_count);
- 	atomic_inc(&urb->dev->urbnum);
-@@ -2241,9 +2241,15 @@ int ehset_single_step_set_feature(struct
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
- 	/* Complete remaining DATA and STATUS stages using the same URB */
- 	urb->status = -EINPROGRESS;
-+	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
- 	usb_get_urb(urb);
- 	atomic_inc(&urb->use_count);
- 	atomic_inc(&urb->dev->urbnum);
-+	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
-+		usb_put_urb(urb);
-+		goto out1;
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
 +	}
-+
- 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
- 	if (!retval && !wait_for_completion_timeout(&done,
- 						msecs_to_jiffies(2000))) {
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
