@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8349FB36760
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E87B36B7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3BB5651C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262D0585178
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE279350D44;
-	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BAD35AACA;
+	Tue, 26 Aug 2025 14:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYpBIRtd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhMLERAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3C82BEC45;
-	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B3135E4DF;
+	Tue, 26 Aug 2025 14:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216530; cv=none; b=C0U0WZ/BJa0aKKeAmBtghrkPguBi9Gq/OHzpwMT7y2iV2avxWwQVl2BIyb0HzjdF/u1OH84eGjCAwE8sluaaj9frKsokV7OutmGDuz4W7xbtYPt0/UxNw9wYcrSD95XBft9HZcPyETo463usmsqtao9bOwVXGfv25laNAbnQpFs=
+	t=1756218998; cv=none; b=a8MQHedhY6BCQBJxOKdCez7Z0I7whkiQT+fB09iWY2v2SCTmHxEaNeomZS0MgnUMuPCElbkrbKrLIdVwxomAjGdlFjz2QysyZClvO4b6iq+bFjfUM6FCLpSxIYQBOfwpKXKY99KIxRJf31Pu+umNcWiA2lbbcuKne9wsN+ebcoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216530; c=relaxed/simple;
-	bh=rS+fr9WjJ2KCfaTPzdRPLAoqkqNafROlW6FU0E/o+4Q=;
+	s=arc-20240116; t=1756218998; c=relaxed/simple;
+	bh=iQr7XKlmi0fhQL2WlHh/e1/B34U70D5K1HH1T4GP5Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJN5MiMORXnfsM4krgRu/3ZozOQphJ+znHSXvcS49wvHCY56CwEBMTuK2Zd4yAnnqZN3eZwpYzoD21/FWoUpbG0yF4XBOa0cQs/uTu/37Qg8z9vkUKBc4pG5KslxRyxvYPybfG89JdTqz2k/DBk3qnPZ/ssQKCfr8+k3UJDyOEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYpBIRtd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7CAC4CEF1;
-	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
+	 MIME-Version; b=YGGRxljxPA4khHGwM3r/SKjRsOT6BiAqw66HyCX3lPuKD9H2aOy8IzTXxgZIAmMkTQtElRPwod5WJPN+k1HswhT7ESws2DdESvBTCA+oDaL6Rb00Gn/0hHG3cApgT502/1jcmaWrO0IlGbr3jGRCKIm3LI50R13W856XSovzEsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhMLERAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4ABC4CEF1;
+	Tue, 26 Aug 2025 14:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216530;
-	bh=rS+fr9WjJ2KCfaTPzdRPLAoqkqNafROlW6FU0E/o+4Q=;
+	s=korg; t=1756218998;
+	bh=iQr7XKlmi0fhQL2WlHh/e1/B34U70D5K1HH1T4GP5Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYpBIRtdMe4KVIH29KgKOYQhPGAx9nClWLPV3uukueWFAff2SUfZHYGFOrvPAESEf
-	 duikjS6TfE4lgGMzZGLjiVDaBd22eOkFBj9feA7b6fRQndoO2ZwOwcRD6vsFsgjms9
-	 FU6dFcjnMDSXd94d4FKvCQc1hvlcJEBgG4qU5b6c=
+	b=RhMLERALyxT0kEBNxqSRxVkrhAnKHm5vXYIT3UmRY/EY2o6Mx7/GsWnET2aAvjOfR
+	 sqdERTLGs63QemOOxu6UqZlj3p/6ePD9mLOcA9vmqe4g8FOcy0AbaMRBCIajd3UgP5
+	 IGq8y2hd1ZP3PQ6p+RMregeY86mQNHA968OUukQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 446/644] cdc-acm: fix race between initial clearing halt and open
-Date: Tue, 26 Aug 2025 13:08:57 +0200
-Message-ID: <20250826110957.519811441@linuxfoundation.org>
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 212/403] rcu: Protect ->defer_qs_iw_pending from data race
+Date: Tue, 26 Aug 2025 13:08:58 +0200
+Message-ID: <20250826110912.697124453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
+[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
 
-On the devices that need their endpoints to get an
-initial clear_halt, this needs to be done before
-the devices can be opened. That means it needs to be
-before the devices are registered.
+On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
+invoked within an interrupts-disabled region of code [1], it will invoke
+rcu_read_unlock_special(), which uses an irq-work handler to force the
+system to notice when the RCU read-side critical section actually ends.
+That end won't happen until interrupts are enabled at the soonest.
 
-Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In some kernels, such as those booted with rcutree.use_softirq=y, the
+irq-work handler is used unconditionally.
+
+The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
+updated by the irq-work handler and is both read and updated by
+rcu_read_unlock_special().  This resulted in the following KCSAN splat:
+
+------------------------------------------------------------------------
+
+BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
+
+read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
+ rcu_read_unlock_special+0x175/0x260
+ __rcu_read_unlock+0x92/0xa0
+ rt_spin_unlock+0x9b/0xc0
+ __local_bh_enable+0x10d/0x170
+ __local_bh_enable_ip+0xfb/0x150
+ rcu_do_batch+0x595/0xc40
+ rcu_cpu_kthread+0x4e9/0x830
+ smpboot_thread_fn+0x24d/0x3b0
+ kthread+0x3bd/0x410
+ ret_from_fork+0x35/0x40
+ ret_from_fork_asm+0x1a/0x30
+
+write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
+ rcu_preempt_deferred_qs_handler+0x1e/0x30
+ irq_work_single+0xaf/0x160
+ run_irq_workd+0x91/0xc0
+ smpboot_thread_fn+0x24d/0x3b0
+ kthread+0x3bd/0x410
+ ret_from_fork+0x35/0x40
+ ret_from_fork_asm+0x1a/0x30
+
+no locks held by irq_work/8/88.
+irq event stamp: 200272
+hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
+hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
+softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+
+------------------------------------------------------------------------
+
+The problem is that irq-work handlers run with interrupts enabled, which
+means that rcu_preempt_deferred_qs_handler() could be interrupted,
+and that interrupt handler might contain an RCU read-side critical
+section, which might invoke rcu_read_unlock_special().  In the strict
+KCSAN mode of operation used by RCU, this constitutes a data race on
+the ->defer_qs_iw_pending field.
+
+This commit therefore disables interrupts across the portion of the
+rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
+field.  This suffices because this handler is not a fast path.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ kernel/rcu/tree_plugin.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1500,6 +1500,12 @@ skip_countries:
- 			goto err_remove_files;
- 	}
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 1d9f2831b54e..197fefa82d18 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -582,10 +582,13 @@ static void rcu_preempt_deferred_qs(struct task_struct *t)
+  */
+ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
+ {
++	unsigned long flags;
+ 	struct rcu_data *rdp;
  
-+	if (quirks & CLEAR_HALT_CONDITIONS) {
-+		/* errors intentionally ignored */
-+		usb_clear_halt(usb_dev, acm->in);
-+		usb_clear_halt(usb_dev, acm->out);
-+	}
-+
- 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
- 			&control_interface->dev);
- 	if (IS_ERR(tty_dev)) {
-@@ -1507,11 +1513,6 @@ skip_countries:
- 		goto err_release_data_interface;
- 	}
+ 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
++	local_irq_save(flags);
+ 	rdp->defer_qs_iw_pending = false;
++	local_irq_restore(flags);
+ }
  
--	if (quirks & CLEAR_HALT_CONDITIONS) {
--		usb_clear_halt(usb_dev, acm->in);
--		usb_clear_halt(usb_dev, acm->out);
--	}
--
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
- 
- 	return 0;
+ /*
+-- 
+2.39.5
+
 
 
 
