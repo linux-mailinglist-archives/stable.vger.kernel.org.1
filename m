@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B800B36BEA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9CAB35BDB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C115A8E7667
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCD5A2A4808
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D844435AAAE;
-	Tue, 26 Aug 2025 14:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E716632143D;
+	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p04czoVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3MZsCSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AC3260586;
-	Tue, 26 Aug 2025 14:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B51296BDF;
+	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218749; cv=none; b=uMuWlLPrGJ+7eTuENwlLnk56KllZYrBAy8fpRDiCuh5mxGb5LUCjnsnnvJM6JryoxJtmwUlx4OJ53oAcMbbQBKH4XpEV80stq99Vq1LxATOMuGVwNoZbtusGE9nMlZQG/fRJsDgpc50DoEEjoedwhBqEZMIXbRAeXHw03dGhcoM=
+	t=1756207300; cv=none; b=N8KMNqDeILri+73GeD5a9cuI2UKCA46FD0Zf7CZRiTb/LDnWvFcsIX4/Uwva5RaJQ6ZfuTabp7lgLQoUnWLJq4UTyT4S3VK/6+ZD9fx5IirUYiCs4/gIbu/wSsz9NAswR4Lq7p5aDd3LVt/uvFqUflu/C1zE7HOKG3VWGdLD0nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218749; c=relaxed/simple;
-	bh=halvWDnrzRlOMTJ5F0EFvtQSuZ7WIN7+oMMRvExpb6o=;
+	s=arc-20240116; t=1756207300; c=relaxed/simple;
+	bh=wodCGhcAHWiO+ezrSGy79wl79g3qj37bdlmrn6quA+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U92DphkzGuRiHf7Szcb33Kqrg5fodmPp0TactgodmXRF73ExFhcz/tMj5rqDpRcgDv0mfTrpDPHZiEfRioJqTQ69miy46REOMqZKzyrlRlJ0bjr3DtmONZO8r9btm8Z+cCAFwuMTIqKVKy7kN6Za7RN+dcxHzoT688iZzaWlVhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p04czoVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A51C113CF;
-	Tue, 26 Aug 2025 14:32:28 +0000 (UTC)
+	 MIME-Version; b=T/r0208vlpYfVMqHvHp8rJBAJ66d7hqHjw/UZxqfJksRZ3jUKLrKL+4T7YCiwRSTUsD2QPZGc+6DAKPVcYA2nceHs9nIECMoVGj76+UVGAeCvlZjV10fOPTrK2XL7fAZJQYJfZeNw94XtPM3DEmIzDQwd96hEw6QyxAKQ53hun0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3MZsCSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F736C4CEF1;
+	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218749;
-	bh=halvWDnrzRlOMTJ5F0EFvtQSuZ7WIN7+oMMRvExpb6o=;
+	s=korg; t=1756207300;
+	bh=wodCGhcAHWiO+ezrSGy79wl79g3qj37bdlmrn6quA+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p04czoVKWm9OdtosKZ99jPcYoQX0Ffui0f0Blpdl1BradpTqiEF11EW2Vimr22lum
-	 mUmU/i0uFpR3Jo5w34z7KLxqg1X4Mt5Gh9jNGhASawewaxJvoHrNO+iFTKOhJWbQIe
-	 U1XHcseS691Kgyg7R+HdObiaZ0hhN5mxquvWertg=
+	b=L3MZsCSl1buEzDaXBo8pDBPJ+R6jpBWOiZ//qj+rRMaVSCMVdYRpVOdoo43gLN959
+	 4OKtm0Pwn4FmLpIo5b3pZGOzxpo16TNpDB7S+Kc7S/aed56Er9Q2Ri9rXlgMzEIH6c
+	 vAi79z77RMSMeqRRJU/JoGQd3FuBpEkWa+5UmIlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/403] wifi: rtl818x: Kill URBs before clearing tx status queue
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.16 129/457] parisc: Update comments in make_insert_tlb
 Date: Tue, 26 Aug 2025 13:06:53 +0200
-Message-ID: <20250826110909.066789232@linuxfoundation.org>
+Message-ID: <20250826110940.561515533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+commit cb22f247f371bd206a88cf0e0c05d80b8b62fb26 upstream.
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+The following testcase exposed a problem with our read access checks
+in get_user() and raw_copy_from_user():
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
+#include <stdint.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/mman.h>
+#include <sys/types.h>
 
-Tested on RTL8187BvE device.
+int main(int argc, char **argv)
+{
+  unsigned long page_size = sysconf(_SC_PAGESIZE);
+  char *p = malloc(3 * page_size);
+  char *p_aligned;
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  /* initialize memory region. If not initialized, write syscall below will correctly return EFAULT. */
+  if (1)
+	memset(p, 'X', 3 * page_size);
 
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  p_aligned = (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_size - 1));
+  /* Drop PROT_READ protection. Kernel and userspace should fault when accessing that memory region */
+  mprotect(p_aligned, page_size, PROT_NONE);
+
+  /* the following write() should return EFAULT, since PROT_READ was dropped by previous mprotect() */
+  int ret = write(2, p_aligned, 1);
+  if (!ret || errno != EFAULT)
+	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
+
+  return 0;
+}
+
+Because of the way _PAGE_READ is handled, kernel code never generates
+a read access fault when it access a page as the kernel privilege level
+is always less than PL1 in the PTE.
+
+This patch reworks the comments in the make_insert_tlb macro to try
+to make this clearer.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/entry.S |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index eb68b2d3caa1..c9df185dc3f4 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
- 
-+	usb_kill_anchored_urbs(&priv->anchored);
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -499,6 +499,12 @@
+ 	 * this happens is quite subtle, read below */
+ 	.macro		make_insert_tlb	spc,pte,prot,tmp
+ 	space_to_prot   \spc \prot        /* create prot id from space */
 +
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
++#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
++	/* need to drop DMB bit, as it's used as SPECIAL flag */
++	depi		0,_PAGE_SPECIAL_BIT,1,\pte
++#endif
++
+ 	/* The following is the real subtlety.  This is depositing
+ 	 * T <-> _PAGE_REFTRAP
+ 	 * D <-> _PAGE_DIRTY
+@@ -511,17 +517,18 @@
+ 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
+ 	 * trigger an access rights trap in user space if the user
+ 	 * tries to read an unreadable page */
+-#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
+-	/* need to drop DMB bit, as it's used as SPECIAL flag */
+-	depi		0,_PAGE_SPECIAL_BIT,1,\pte
+-#endif
+ 	depd            \pte,8,7,\prot
  
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
- 
- 	if (!priv->is_rtl8187b)
--- 
-2.39.5
-
+ 	/* PAGE_USER indicates the page can be read with user privileges,
+ 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
+-	 * contains _PAGE_READ) */
++	 * contains _PAGE_READ). While the kernel can't directly write
++	 * user pages which have _PAGE_WRITE zero, it can read pages
++	 * which have _PAGE_READ zero (PL <= PL1). Thus, the kernel
++	 * exception fault handler doesn't trigger when reading pages
++	 * that aren't user read accessible */
+ 	extrd,u,*=      \pte,_PAGE_USER_BIT+32,1,%r0
+ 	depdi		7,11,3,\prot
++
+ 	/* If we're a gateway page, drop PL2 back to zero for promotion
+ 	 * to kernel privilege (so we can execute the page as kernel).
+ 	 * Any privilege promotion page always denys read and write */
 
 
 
