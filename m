@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-173323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDEFB35D4B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882F6B36CB6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFF5361F6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED735A2D3D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ACA29D26A;
-	Tue, 26 Aug 2025 11:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D117235CED4;
+	Tue, 26 Aug 2025 14:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qea9gtOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPLX9/4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F1517332C;
-	Tue, 26 Aug 2025 11:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7F535AAA3;
+	Tue, 26 Aug 2025 14:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207948; cv=none; b=myIWmbeaGyTK4QjsWdXG1NG8Sc5P5L6J1otqrPHvrY+1QAg+7gvZRjGLT10W/sUeRkiEw5DNuX91zcGbDiQZW3RxfPG6KbBIKFzMZj8FXrlfYL/7b/LO/PnohyvqCK0882mWougZf2paMyqXNPfOajz/msZgYMLnchOH6wKhf6s=
+	t=1756219323; cv=none; b=TNzNYv9QFTd+R8HdyQb8V4J1GwpaRXAF7oDuI/odIAYbFcohtLvgAuOuIutFNX/RqrO4z73M5YRtfwP6VReRk5jWJZWYHoLBv3TFZT5mhYlGOiJiLD5Y+KEJzxc01uHS2GW0noiDrI8xEKBD35C64YhQOMps/VGD7Q6YGf/YLwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207948; c=relaxed/simple;
-	bh=1uaPbzoU54UgtSif61sqB5fWJ6WKhYpPJogx6hPDYN8=;
+	s=arc-20240116; t=1756219323; c=relaxed/simple;
+	bh=DeEOE73FH5WpgzGjmbZ5yfGauThmv+40xDNYO6WkagM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQW8LnLYmTO3kO5ISTl39+i2NDyEXUHtl4R9Jqn8zkZ8v+ELiTiLeBdBKTH+bm3/eACLavL8yUSVXsd1E2s3Ea0aQIztxLRdUAwk1Y2ypnH/EJoDvD3AkKeDa3eKm0vNRBclakxhUSdLPFVHItLAtPJhvbwZN+OTFzBDsYmE7E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qea9gtOy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3A4C4CEF1;
-	Tue, 26 Aug 2025 11:32:28 +0000 (UTC)
+	 MIME-Version; b=PbHQIF1JzXx8NS7S5ygv2hb2+xOqLSOMmltdWhcIGLJfCSkh/68rkRi5e02eDwg2pflbZtY/zh9OzwC5KtfHuYGqAiAHli2JLRl/4Rnz/ZAVYnUswJy3Dk1ir129kKhlfczdscAzR2k8PBTDFBqiMmpSKzQIAGiPnfkbg469r8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPLX9/4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9C4C113CF;
+	Tue, 26 Aug 2025 14:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207948;
-	bh=1uaPbzoU54UgtSif61sqB5fWJ6WKhYpPJogx6hPDYN8=;
+	s=korg; t=1756219323;
+	bh=DeEOE73FH5WpgzGjmbZ5yfGauThmv+40xDNYO6WkagM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qea9gtOymcAtkP1554LF+ZLK3e5vYEVGRtYz70m+zvtnsGr0cCyNCIohjkFwkKoUl
-	 XxLkDrZonnbTXmyVqISqufCOm4KeOB3f3Ym+SexY3h0ai8yNT7wgAW+zX8dXqjSiqF
-	 JIR5dJ2zoytfHwWiIFHz0sooribqfe8C0O/8YfXw=
+	b=nPLX9/4sM1aRYfr/NugtSnTOr3CyULyvcFMOtcBfc/klS4JLhHy4OZ6V2eyaJ5FeL
+	 kO2kHtARjqSDeAnMtverPkyrXA+NtK6OA4EpGeabPPvervnhP7L3NrjnW29Sf60J0l
+	 h4hd15MJCVKG0j2wXqdqJ5KLobGdF5O/gsNLRJu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 378/457] Bluetooth: hci_event: fix MTU for BN == 0 in CIS Established
-Date: Tue, 26 Aug 2025 13:11:02 +0200
-Message-ID: <20250826110946.637786714@linuxfoundation.org>
+Subject: [PATCH 5.4 337/403] mm/zsmalloc.c: convert to use kmem_cache_zalloc in cache_alloc_zspage()
+Date: Tue, 26 Aug 2025 13:11:03 +0200
+Message-ID: <20250826110916.159224885@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit 0b3725dbf61b51e7c663834811b3691157ae17d6 ]
+[ Upstream commit f0231305acd53375c6cf736971bf5711105dd6bb ]
 
-BN == 0x00 in CIS Established means no isochronous data for the
-corresponding direction (Core v6.1 pp. 2394). In this case SDU MTU
-should be 0.
+We always memset the zspage allocated via cache_alloc_zspage.  So it's
+more convenient to use kmem_cache_zalloc in cache_alloc_zspage than caller
+do it manually.
 
-However, the specification does not say the Max_PDU_C_To_P or P_To_C are
-then zero.  Intel AX210 in Framed CIS mode sets nonzero Max_PDU for
-direction with zero BN.  This causes failure later when we try to LE
-Setup ISO Data Path for disabled direction, which is disallowed (Core
-v6.1 pp. 2750).
-
-Fix by setting SDU MTU to 0 if BN == 0.
-
-Fixes: 2be22f1941d5f ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lkml.kernel.org/r/20210114120032.25885-1-linmiaohe@huawei.com
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 694d6b99923e ("mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/zsmalloc.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index b83995898da0..f93509007e92 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6744,8 +6744,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		qos->ucast.out.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
- 					  1000);
--		qos->ucast.in.sdu = le16_to_cpu(ev->c_mtu);
--		qos->ucast.out.sdu = le16_to_cpu(ev->p_mtu);
-+		qos->ucast.in.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
-+		qos->ucast.out.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
- 		qos->ucast.in.phy = ev->c_phy;
- 		qos->ucast.out.phy = ev->p_phy;
- 		break;
-@@ -6759,8 +6759,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		qos->ucast.in.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
- 					  1000);
--		qos->ucast.out.sdu = le16_to_cpu(ev->c_mtu);
--		qos->ucast.in.sdu = le16_to_cpu(ev->p_mtu);
-+		qos->ucast.out.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
-+		qos->ucast.in.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
- 		qos->ucast.out.phy = ev->c_phy;
- 		qos->ucast.in.phy = ev->p_phy;
- 		break;
--- 
-2.50.1
-
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -357,7 +357,7 @@ static void cache_free_handle(struct zs_
+ 
+ static struct zspage *cache_alloc_zspage(struct zs_pool *pool, gfp_t flags)
+ {
+-	return kmem_cache_alloc(pool->zspage_cachep,
++	return kmem_cache_zalloc(pool->zspage_cachep,
+ 			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
+ }
+ 
+@@ -1067,7 +1067,6 @@ static struct zspage *alloc_zspage(struc
+ 	if (!zspage)
+ 		return NULL;
+ 
+-	memset(zspage, 0, sizeof(struct zspage));
+ 	zspage->magic = ZSPAGE_MAGIC;
+ 	migrate_lock_init(zspage);
+ 
 
 
 
