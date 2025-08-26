@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2205AB35BE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38EBB36B3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013741880791
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA3A189575D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108A62BE653;
-	Tue, 26 Aug 2025 11:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A151535AAC1;
+	Tue, 26 Aug 2025 14:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWxmhqHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otUvamJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCC2239573;
-	Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A45B352084;
+	Tue, 26 Aug 2025 14:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207481; cv=none; b=uUqeOQBqT74J9Q7ZImDdckFp6h+L1FmUFOZOwPpXDcVtA1N1H/WxK9Qai8QR3SVdQIqbHQmLUeltAn1lA1yd2cwtFMU4sz1i7cQSBa/h54Hclfd4ztp3uku5YqXNnbEKLA54r8BMUStcC+HW4c/GsJMz09Q3yjlrFy456RwSoQY=
+	t=1756218804; cv=none; b=OzuAD/0ALus1BRrsyQkJEGZKzug08kwq/DKi987AYWtG3Kly4BhTfc0CHWBxlYowuqo2pi9JZrUTEY0zXDc4vBL4azPodhq5UmL7bIDjnoV6/bosNSM9DhsYu/fPlUz5h8JV7/+W2WK82bEV14nNRKISTSSao6XOWeeHyX3EtJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207481; c=relaxed/simple;
-	bh=6l0MODiAOElRR1q4aiiL1XmQZNI/khEBCKT6Bt2p7G0=;
+	s=arc-20240116; t=1756218804; c=relaxed/simple;
+	bh=5qiGtdL5WAAjVSQYgINuxvWyPst+iKKoIYM09kwFnF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EN6BclC4I+4vpKTUZafnzsPdOHAXZL/BbjfH2mPtMFjTUNm1uTvxhj1N3BtpuQy97/uhHaO09/lZxS1y5mrwS1827QdYOWWbnjgtBuZ3ON+eXB1LVEK3DIMhMizHFkRBMMLHh0hG1Qz94M+/sv4O5TRH68C5p1v8yx8jxlSTvAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWxmhqHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5D2C116D0;
-	Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
+	 MIME-Version; b=h7hZxmyT0bjSUg5W4OSTprlB9MuPPCHNNdXxfsX1BV7aDaEjhcbLZy7IIVZC1gMFvvMmIEgLEfRVKPSeInGM/H6W8pym3F+8hSvb7MZ5bWYETypD2zgqr+e7MzAqgBfJGsEh4e6fOpeVNlFKcWDQTawWyhyEG+30/u1BPH8/5rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otUvamJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2502C4CEF1;
+	Tue, 26 Aug 2025 14:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207481;
-	bh=6l0MODiAOElRR1q4aiiL1XmQZNI/khEBCKT6Bt2p7G0=;
+	s=korg; t=1756218804;
+	bh=5qiGtdL5WAAjVSQYgINuxvWyPst+iKKoIYM09kwFnF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWxmhqHEb1Izmvwnyj84PH9FBFCjIrLbAzj6MZhRH1TLIEoczNsX+N9JAPd8IMiMO
-	 uNYwtIt5Vfar4NX1+MTgmW/SHQ7e8n9Tqtg9negUtJ+44tVGFAcgfGW2UyvJxjz7cf
-	 4x+TLUKVBk0JqcMr2chYskCH7qiwbxxY2wzIDyCM=
+	b=otUvamJwbxoPFAaX103tsRVemo5Rf3c4a8tevkBQDd41Rq2ys4tBJDKVSg3M+bRRT
+	 jv+knshzJsDREhREL3VTyCcLWcj1eckRkh4j/qR5/GKkRJrCie8mTUQqPwGKTDFe8f
+	 iDZm36CA0vPKRR4h32qvYYGJyjFK+JLHdIZZJIRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 181/457] drm/amdgpu: update mmhub 3.0.1 client id mappings
+	Alastair DSilva <alastair@d-silva.org>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Frederic Barrat <fbarrat@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 139/403] pci/hotplug/pnv-php: Wrap warnings in macro
 Date: Tue, 26 Aug 2025 13:07:45 +0200
-Message-ID: <20250826110941.848450601@linuxfoundation.org>
+Message-ID: <20250826110910.592936622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +64,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
+[ Upstream commit 748ac391ab9acd8d7f3c93cbf3e63c773c0b2638 ]
 
-Update the client id mapping so the correct clients
-get printed when there is a mmhub page fault.
+An opencapi slot doesn't have an associated bridge device. It's not
+needed for operation, but any warning is displayed through pci_warn()
+which uses the pci_dev struct of the assocated bridge device. So wrap
+those warning so that a different trace mechanism can be used if it's
+an opencapi slot.
 
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191121134918.7155-11-fbarrat@linux.ibm.com
+Stable-dep-of: 466861909255 ("PCI: pnv_php: Clean up allocated IRQs on unplug")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ drivers/pci/hotplug/pnv_php.c | 51 +++++++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 23 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-@@ -36,40 +36,47 @@
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 8223fe0b751f..3687a99383c1 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -18,6 +18,9 @@
+ #define DRIVER_AUTHOR	"Gavin Shan, IBM Corporation"
+ #define DRIVER_DESC	"PowerPC PowerNV PCI Hotplug Driver"
  
- static const char *mmhub_client_ids_v3_0_1[][2] = {
- 	[0][0] = "VMC",
-+	[1][0] = "ISPXT",
-+	[2][0] = "ISPIXT",
- 	[4][0] = "DCEDMC",
- 	[5][0] = "DCEVGA",
- 	[6][0] = "MP0",
- 	[7][0] = "MP1",
--	[8][0] = "MPIO",
--	[16][0] = "HDP",
--	[17][0] = "LSDMA",
--	[18][0] = "JPEG",
--	[19][0] = "VCNU0",
--	[21][0] = "VSCH",
--	[22][0] = "VCNU1",
--	[23][0] = "VCN1",
--	[32+20][0] = "VCN0",
--	[2][1] = "DBGUNBIO",
-+	[8][0] = "MPM",
-+	[12][0] = "ISPTNR",
-+	[14][0] = "ISPCRD0",
-+	[15][0] = "ISPCRD1",
-+	[16][0] = "ISPCRD2",
-+	[22][0] = "HDP",
-+	[23][0] = "LSDMA",
-+	[24][0] = "JPEG",
-+	[27][0] = "VSCH",
-+	[28][0] = "VCNU",
-+	[29][0] = "VCN",
-+	[1][1] = "ISPXT",
-+	[2][1] = "ISPIXT",
- 	[3][1] = "DCEDWB",
- 	[4][1] = "DCEDMC",
- 	[5][1] = "DCEVGA",
- 	[6][1] = "MP0",
- 	[7][1] = "MP1",
--	[8][1] = "MPIO",
--	[10][1] = "DBGU0",
--	[11][1] = "DBGU1",
--	[12][1] = "DBGU2",
--	[13][1] = "DBGU3",
--	[14][1] = "XDP",
--	[15][1] = "OSSSYS",
--	[16][1] = "HDP",
--	[17][1] = "LSDMA",
--	[18][1] = "JPEG",
--	[19][1] = "VCNU0",
--	[20][1] = "VCN0",
--	[21][1] = "VSCH",
--	[22][1] = "VCNU1",
--	[23][1] = "VCN1",
-+	[8][1] = "MPM",
-+	[10][1] = "ISPMWR0",
-+	[11][1] = "ISPMWR1",
-+	[12][1] = "ISPTNR",
-+	[13][1] = "ISPSWR",
-+	[14][1] = "ISPCWR0",
-+	[15][1] = "ISPCWR1",
-+	[16][1] = "ISPCWR2",
-+	[17][1] = "ISPCWR3",
-+	[18][1] = "XDP",
-+	[21][1] = "OSSSYS",
-+	[22][1] = "HDP",
-+	[23][1] = "LSDMA",
-+	[24][1] = "JPEG",
-+	[27][1] = "VSCH",
-+	[28][1] = "VCNU",
-+	[29][1] = "VCN",
- };
++#define SLOT_WARN(sl, x...) \
++	((sl)->pdev ? pci_warn((sl)->pdev, x) : dev_warn(&(sl)->bus->dev, x))
++
+ struct pnv_php_event {
+ 	bool			added;
+ 	struct pnv_php_slot	*php_slot;
+@@ -270,7 +273,7 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
  
- static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
+ 	ret = pnv_pci_get_device_tree(php_slot->dn->phandle, fdt1, 0x10000);
+ 	if (ret) {
+-		pci_warn(php_slot->pdev, "Error %d getting FDT blob\n", ret);
++		SLOT_WARN(php_slot, "Error %d getting FDT blob\n", ret);
+ 		goto free_fdt1;
+ 	}
+ 
+@@ -284,7 +287,7 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
+ 	dt = of_fdt_unflatten_tree(fdt, php_slot->dn, NULL);
+ 	if (!dt) {
+ 		ret = -EINVAL;
+-		pci_warn(php_slot->pdev, "Cannot unflatten FDT\n");
++		SLOT_WARN(php_slot, "Cannot unflatten FDT\n");
+ 		goto free_fdt;
+ 	}
+ 
+@@ -294,15 +297,15 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
+ 	ret = pnv_php_populate_changeset(&php_slot->ocs, php_slot->dn);
+ 	if (ret) {
+ 		pnv_php_reverse_nodes(php_slot->dn);
+-		pci_warn(php_slot->pdev, "Error %d populating changeset\n",
+-			 ret);
++		SLOT_WARN(php_slot, "Error %d populating changeset\n",
++			  ret);
+ 		goto free_dt;
+ 	}
+ 
+ 	php_slot->dn->child = NULL;
+ 	ret = of_changeset_apply(&php_slot->ocs);
+ 	if (ret) {
+-		pci_warn(php_slot->pdev, "Error %d applying changeset\n", ret);
++		SLOT_WARN(php_slot, "Error %d applying changeset\n", ret);
+ 		goto destroy_changeset;
+ 	}
+ 
+@@ -342,10 +345,10 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
+ 	if (ret > 0) {
+ 		if (be64_to_cpu(msg.params[1]) != php_slot->dn->phandle	||
+ 		    be64_to_cpu(msg.params[2]) != state) {
+-			pci_warn(php_slot->pdev, "Wrong msg (%lld, %lld, %lld)\n",
+-				 be64_to_cpu(msg.params[1]),
+-				 be64_to_cpu(msg.params[2]),
+-				 be64_to_cpu(msg.params[3]));
++			SLOT_WARN(php_slot, "Wrong msg (%lld, %lld, %lld)\n",
++				  be64_to_cpu(msg.params[1]),
++				  be64_to_cpu(msg.params[2]),
++				  be64_to_cpu(msg.params[3]));
+ 			return -ENOMSG;
+ 		}
+ 		if (be64_to_cpu(msg.params[3]) != OPAL_SUCCESS) {
+@@ -364,8 +367,8 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
+ 	return ret;
+ 
+ error:
+-	pci_warn(php_slot->pdev, "Error %d powering %s\n",
+-		 ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
++	SLOT_WARN(php_slot, "Error %d powering %s\n",
++		  ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pnv_php_set_slot_power_state);
+@@ -383,8 +386,8 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_power_state(php_slot->id, &power_state);
+ 	if (ret) {
+-		pci_warn(php_slot->pdev, "Error %d getting power status\n",
+-			 ret);
++		SLOT_WARN(php_slot, "Error %d getting power status\n",
++			  ret);
+ 	} else {
+ 		*state = power_state;
+ 	}
+@@ -407,7 +410,7 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
+-		pci_warn(php_slot->pdev, "Error %d getting presence\n", ret);
++		SLOT_WARN(php_slot, "Error %d getting presence\n", ret);
+ 	}
+ 
+ 	return ret;
+@@ -680,7 +683,7 @@ static int pnv_php_register_slot(struct pnv_php_slot *php_slot)
+ 	ret = pci_hp_register(&php_slot->slot, php_slot->bus,
+ 			      php_slot->slot_no, php_slot->name);
+ 	if (ret) {
+-		pci_warn(php_slot->pdev, "Error %d registering slot\n", ret);
++		SLOT_WARN(php_slot, "Error %d registering slot\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -733,7 +736,7 @@ static int pnv_php_enable_msix(struct pnv_php_slot *php_slot)
+ 	/* Enable MSIx */
+ 	ret = pci_enable_msix_exact(pdev, &entry, 1);
+ 	if (ret) {
+-		pci_warn(pdev, "Error %d enabling MSIx\n", ret);
++		SLOT_WARN(php_slot, "Error %d enabling MSIx\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -783,8 +786,9 @@ static irqreturn_t pnv_php_interrupt(int irq, void *data)
+ 		   (sts & PCI_EXP_SLTSTA_PDC)) {
+ 		ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 		if (ret) {
+-			pci_warn(pdev, "PCI slot [%s] error %d getting presence (0x%04x), to retry the operation.\n",
+-				 php_slot->name, ret, sts);
++			SLOT_WARN(php_slot,
++				  "PCI slot [%s] error %d getting presence (0x%04x), to retry the operation.\n",
++				  php_slot->name, ret, sts);
+ 			return IRQ_HANDLED;
+ 		}
+ 
+@@ -814,8 +818,9 @@ static irqreturn_t pnv_php_interrupt(int irq, void *data)
+ 	 */
+ 	event = kzalloc(sizeof(*event), GFP_ATOMIC);
+ 	if (!event) {
+-		pci_warn(pdev, "PCI slot [%s] missed hotplug event 0x%04x\n",
+-			 php_slot->name, sts);
++		SLOT_WARN(php_slot,
++			  "PCI slot [%s] missed hotplug event 0x%04x\n",
++			  php_slot->name, sts);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -839,7 +844,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
+ 	/* Allocate workqueue */
+ 	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
+ 	if (!php_slot->wq) {
+-		pci_warn(pdev, "Cannot alloc workqueue\n");
++		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
+ 		pnv_php_disable_irq(php_slot, true);
+ 		return;
+ 	}
+@@ -863,7 +868,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
+ 			  php_slot->name, php_slot);
+ 	if (ret) {
+ 		pnv_php_disable_irq(php_slot, true);
+-		pci_warn(pdev, "Error %d enabling IRQ %d\n", ret, irq);
++		SLOT_WARN(php_slot, "Error %d enabling IRQ %d\n", ret, irq);
+ 		return;
+ 	}
+ 
+@@ -899,7 +904,7 @@ static void pnv_php_enable_irq(struct pnv_php_slot *php_slot)
+ 
+ 	ret = pci_enable_device(pdev);
+ 	if (ret) {
+-		pci_warn(pdev, "Error %d enabling device\n", ret);
++		SLOT_WARN(php_slot, "Error %d enabling device\n", ret);
+ 		return;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
