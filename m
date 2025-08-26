@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D9CB36538
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AC7B35F73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86A0C188CC8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27321BA3A4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69C32139C9;
-	Tue, 26 Aug 2025 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D437E14386D;
+	Tue, 26 Aug 2025 12:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/ndCUV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOwmLeBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171A156F4A;
-	Tue, 26 Aug 2025 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7BEFC1D;
+	Tue, 26 Aug 2025 12:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215535; cv=none; b=YDfcMGuLAowWtxExgF+dukDHLFyqSk88R9kXHAzrJ449tOzNc8WQp/cLzXaM0JqAINKpljG21qe+I5bBcFakFVXvowEg8qA6zU2wovl1poji3DWeUYvtiNVabliCQJQyl79wG70H7KDVGBbIJx67Zpik/mrdjEN4ZjMVk+A4HzA=
+	t=1756212552; cv=none; b=IpATP53pTmNZrCv7P8BwV/q5i2/pNiKiOsOxJ1Ddq13Or7Gi75COvDv8UMdKJzEmr4bB3Nvzoxi8Y2tBpVrFFNvLtc9mV+0/sWIyZVd6uJJxvECWA/QZEp1EDLliZHglZey2hrGtH//eQenP5tVLipLC42WfO3oeEfArjLM4A8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215535; c=relaxed/simple;
-	bh=k8GUnIiEOU2hBB00nKuxEexoKMlmqYpOq/3lkxsW1EI=;
+	s=arc-20240116; t=1756212552; c=relaxed/simple;
+	bh=GTI932pkuI8zlXBoUsG8bYxJot9zNc1LjcQuBHqMt6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aaeq0etOni+SKnXlSMCO6vdZC3jNHr/urfGYmBF+OafsasaXS7FNDsFg7D8ag9PjmnT4R9Wyc0o26be9UHzSit3KINkCKiZatTdvJ35Blq1n7S7c/2Cl+0rC2SKpLTcmII+3sLCaIhbR5PT3D1u2vSUDLKc/dprFH7FQPKDfqqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/ndCUV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB19C4CEF1;
-	Tue, 26 Aug 2025 13:38:54 +0000 (UTC)
+	 MIME-Version; b=AevhVwkPFfRaZevjcvFcvXb18zE4A7ignBGw9HZy9tUewxgNGCc22ZLk7KnL9PaQKn5qMLP9crrzYMqnyAqpVN4p7qPBCbr4R7fFR8ony9LVl+XPu/MP7xDZRwosCVOdMybJ5vM0PTmcYMvRZWU+8Ts0ZlIrBQoQeLXVLHzlIg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOwmLeBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92541C4CEF4;
+	Tue, 26 Aug 2025 12:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215535;
-	bh=k8GUnIiEOU2hBB00nKuxEexoKMlmqYpOq/3lkxsW1EI=;
+	s=korg; t=1756212550;
+	bh=GTI932pkuI8zlXBoUsG8bYxJot9zNc1LjcQuBHqMt6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/ndCUV3Db94PHuNrmDstgGXLza/ife24QX7hRZRR1v+KOoCIhE9KtTkjbayoPTlb
-	 yP1xwq9+UgnyWzfh8zdPJUUOHu8n/9Xe0ALZ3ag/le3LvNkfUhBCIua6oD9euvzvDh
-	 NMgCXJkMJN7ZrlrIbw2Dm0sFL+WAKrQnaA2ehuAI=
+	b=eOwmLeBPjqcmhU58MiX6BB8FRaAOmn1FHhXORFvJgScGC7aORA0s+GYDdqgDIpccM
+	 gxHA9ASABrnZLusEruBnylaFb5Y0CzmhIeoe0RvJx1Z+lyD96ElUKh7H6H+yXAI9r0
+	 9gIOp2QMDacbTiTZWiIkLXzpOPBXPEZTqHfTuFrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/644] bpf, sockmap: Fix panic when calling skb_linearize
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 013/587] netlink: avoid infinite retry looping in netlink_unicast()
 Date: Tue, 26 Aug 2025 13:02:42 +0200
-Message-ID: <20250826110948.256364349@linuxfoundation.org>
+Message-ID: <20250826110953.289186529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,213 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 5ca2e29f6834c64c0e5a9ccf1278c21fb49b827e upstream.
+commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
 
-The panic can be reproduced by executing the command:
-./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress --rx-strp 100000
+netlink_attachskb() checks for the socket's read memory allocation
+constraints. Firstly, it has:
 
-Then a kernel panic was captured:
-'''
-[  657.460555] kernel BUG at net/core/skbuff.c:2178!
-[  657.462680] Tainted: [W]=WARN
-[  657.463287] Workqueue: events sk_psock_backlog
-...
-[  657.469610]  <TASK>
-[  657.469738]  ? die+0x36/0x90
-[  657.469916]  ? do_trap+0x1d0/0x270
-[  657.470118]  ? pskb_expand_head+0x612/0xf40
-[  657.470376]  ? pskb_expand_head+0x612/0xf40
-[  657.470620]  ? do_error_trap+0xa3/0x170
-[  657.470846]  ? pskb_expand_head+0x612/0xf40
-[  657.471092]  ? handle_invalid_op+0x2c/0x40
-[  657.471335]  ? pskb_expand_head+0x612/0xf40
-[  657.471579]  ? exc_invalid_op+0x2d/0x40
-[  657.471805]  ? asm_exc_invalid_op+0x1a/0x20
-[  657.472052]  ? pskb_expand_head+0xd1/0xf40
-[  657.472292]  ? pskb_expand_head+0x612/0xf40
-[  657.472540]  ? lock_acquire+0x18f/0x4e0
-[  657.472766]  ? find_held_lock+0x2d/0x110
-[  657.472999]  ? __pfx_pskb_expand_head+0x10/0x10
-[  657.473263]  ? __kmalloc_cache_noprof+0x5b/0x470
-[  657.473537]  ? __pfx___lock_release.isra.0+0x10/0x10
-[  657.473826]  __pskb_pull_tail+0xfd/0x1d20
-[  657.474062]  ? __kasan_slab_alloc+0x4e/0x90
-[  657.474707]  sk_psock_skb_ingress_enqueue+0x3bf/0x510
-[  657.475392]  ? __kasan_kmalloc+0xaa/0xb0
-[  657.476010]  sk_psock_backlog+0x5cf/0xd70
-[  657.476637]  process_one_work+0x858/0x1a20
-'''
+  rmem < READ_ONCE(sk->sk_rcvbuf)
 
-The panic originates from the assertion BUG_ON(skb_shared(skb)) in
-skb_linearize(). A previous commit(see Fixes tag) introduced skb_get()
-to avoid race conditions between skb operations in the backlog and skb
-release in the recvmsg path. However, this caused the panic to always
-occur when skb_linearize is executed.
+to check if the just increased rmem value fits into the socket's receive
+buffer. If not, it proceeds and tries to wait for the memory under:
 
-The "--rx-strp 100000" parameter forces the RX path to use the strparser
-module which aggregates data until it reaches 100KB before calling sockmap
-logic. The 100KB payload exceeds MAX_MSG_FRAGS, triggering skb_linearize.
+  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
 
-To fix this issue, just move skb_get into sk_psock_skb_ingress_enqueue.
+The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
+equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
+these conditions, nor manages to reschedule the task - and is called in
+retry loop for indefinite time which is caught as:
 
-'''
-sk_psock_backlog:
-    sk_psock_handle_skb
-       skb_get(skb) <== we move it into 'sk_psock_skb_ingress_enqueue'
-       sk_psock_skb_ingress____________
-                                       ↓
-                                       |
-                                       | → sk_psock_skb_ingress_self
-                                       |      sk_psock_skb_ingress_enqueue
-sk_psock_verdict_apply_________________↑          skb_linearize
-'''
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
+  (t=26000 jiffies g=230833 q=259957)
+  NMI backtrace for cpu 0
+  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
+  Call Trace:
+  <IRQ>
+  dump_stack lib/dump_stack.c:120
+  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
+  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
+  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
+  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
+  update_process_times kernel/time/timer.c:1953
+  tick_sched_handle kernel/time/tick-sched.c:227
+  tick_sched_timer kernel/time/tick-sched.c:1399
+  __hrtimer_run_queues kernel/time/hrtimer.c:1652
+  hrtimer_interrupt kernel/time/hrtimer.c:1717
+  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
+  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
+  </IRQ>
 
-Note that for verdict_apply path, the skb_get operation is unnecessary so
-we add 'take_ref' param to control it's behavior.
+  netlink_attachskb net/netlink/af_netlink.c:1234
+  netlink_unicast net/netlink/af_netlink.c:1349
+  kauditd_send_queue kernel/audit.c:776
+  kauditd_thread kernel/audit.c:897
+  kthread kernel/kthread.c:328
+  ret_from_fork arch/x86/entry/entry_64.S:304
 
-Fixes: a454d84ee20b ("bpf, sockmap: Fix skb refcnt race after locking changes")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20250407142234.47591-4-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ adapted skb_linearize() fix to 5.15's sk_psock_skb_ingress_enqueue implementation without the s_data parameter ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Restore the original behavior of the check which commit in Fixes
+accidentally missed when restructuring the code.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c |   50 +++++++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+ net/netlink/af_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -525,26 +525,35 @@ static int sk_psock_skb_ingress_enqueue(
- 					u32 off, u32 len,
- 					struct sk_psock *psock,
- 					struct sock *sk,
--					struct sk_msg *msg)
-+					struct sk_msg *msg,
-+					bool take_ref)
- {
- 	int num_sge, copied;
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1229,7 +1229,7 @@ int netlink_attachskb(struct sock *sk, s
+ 	nlk = nlk_sk(sk);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
  
--	/* skb linearize may fail with ENOMEM, but lets simply try again
--	 * later if this happens. Under memory pressure we don't want to
--	 * drop the skb. We need to linearize the skb so that the mapping
--	 * in skb_to_sgvec can not error.
-+	/* skb_to_sgvec will fail when the total number of fragments in
-+	 * frag_list and frags exceeds MAX_MSG_FRAGS. For example, the
-+	 * caller may aggregate multiple skbs.
- 	 */
--	if (skb_linearize(skb))
--		return -EAGAIN;
- 	num_sge = skb_to_sgvec(skb, msg->sg.data, off, len);
--	if (unlikely(num_sge < 0))
--		return num_sge;
-+	if (num_sge < 0) {
-+		/* skb linearize may fail with ENOMEM, but lets simply try again
-+		 * later if this happens. Under memory pressure we don't want to
-+		 * drop the skb. We need to linearize the skb so that the mapping
-+		 * in skb_to_sgvec can not error.
-+		 * Note that skb_linearize requires the skb not to be shared.
-+		 */
-+		if (skb_linearize(skb))
-+			return -EAGAIN;
-+		num_sge = skb_to_sgvec(skb, msg->sg.data, off, len);
-+		if (unlikely(num_sge < 0))
-+			return num_sge;
-+	}
- 
- 	copied = len;
- 	msg->sg.start = 0;
- 	msg->sg.size = copied;
- 	msg->sg.end = num_sge;
--	msg->skb = skb;
-+	msg->skb = take_ref ? skb_get(skb) : skb;
- 
- 	sk_psock_queue_msg(psock, msg);
- 	sk_psock_data_ready(sk, psock);
-@@ -552,7 +561,7 @@ static int sk_psock_skb_ingress_enqueue(
- }
- 
- static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
--				     u32 off, u32 len);
-+				     u32 off, u32 len, bool take_ref);
- 
- static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
- 				u32 off, u32 len)
-@@ -566,7 +575,7 @@ static int sk_psock_skb_ingress(struct s
- 	 * correctly.
- 	 */
- 	if (unlikely(skb->sk == sk))
--		return sk_psock_skb_ingress_self(psock, skb, off, len);
-+		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
- 	msg = sk_psock_create_ingress_msg(sk, skb);
- 	if (!msg)
- 		return -EAGAIN;
-@@ -578,7 +587,7 @@ static int sk_psock_skb_ingress(struct s
- 	 * into user buffers.
- 	 */
- 	skb_set_owner_r(skb, sk);
--	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
-+	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, true);
- 	if (err < 0)
- 		kfree(msg);
- 	return err;
-@@ -589,7 +598,7 @@ static int sk_psock_skb_ingress(struct s
-  * because the skb is already accounted for here.
-  */
- static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
--				     u32 off, u32 len)
-+				     u32 off, u32 len, bool take_ref)
- {
- 	struct sk_msg *msg = kzalloc(sizeof(*msg), __GFP_NOWARN | GFP_ATOMIC);
- 	struct sock *sk = psock->sk;
-@@ -599,7 +608,7 @@ static int sk_psock_skb_ingress_self(str
- 		return -EAGAIN;
- 	sk_msg_init(msg);
- 	skb_set_owner_r(skb, sk);
--	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
-+	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
- 	if (err < 0)
- 		kfree(msg);
- 	return err;
-@@ -608,18 +617,13 @@ static int sk_psock_skb_ingress_self(str
- static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 			       u32 off, u32 len, bool ingress)
- {
--	int err = 0;
--
- 	if (!ingress) {
- 		if (!sock_writeable(psock->sk))
- 			return -EAGAIN;
- 		return skb_send_sock(psock->sk, skb, off, len);
- 	}
--	skb_get(skb);
--	err = sk_psock_skb_ingress(psock, skb, off, len);
--	if (err < 0)
--		kfree_skb(skb);
--	return err;
-+
-+	return sk_psock_skb_ingress(psock, skb, off, len);
- }
- 
- static void sk_psock_skb_state(struct sk_psock *psock,
-@@ -1016,7 +1020,7 @@ static int sk_psock_verdict_apply(struct
- 				off = stm->offset;
- 				len = stm->full_len;
- 			}
--			err = sk_psock_skb_ingress_self(psock, skb, off, len);
-+			err = sk_psock_skb_ingress_self(psock, skb, off, len, false);
- 		}
- 		if (err < 0) {
- 			spin_lock_bh(&psock->ingress_lock);
+-	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		return 0;
 
 
 
