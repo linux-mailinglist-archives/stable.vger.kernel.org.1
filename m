@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4209B3600C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C823EB365C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D293B15CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01E6056480C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAED1E411C;
-	Tue, 26 Aug 2025 12:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1404086A;
+	Tue, 26 Aug 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aztzSpqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO79JOx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11A7260F;
-	Tue, 26 Aug 2025 12:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B06F221290;
+	Tue, 26 Aug 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212842; cv=none; b=t7NbtkpZxW7w2i9TcqyBQuJcnRXKCBn70H0RfTkOokrINu7HF4whWXwADYVTRbeMAGkpGQMTUKygV8BsDoRB9DW9wZLqzGmzGPg6mXyhPpqxFJlA9Wbrjwq1iD90A+u7xfmkCDK33sqB45PL1wqg+cPJd3v5KD3LfDPlBccJch4=
+	t=1756215747; cv=none; b=F7LYS5NDxrhPYjE9LDtcwAX+jbeLk/Rn28CFjbDlwlP+/hIQqf611yqYu3zwyJ9JSXBrWQUh8tOf0OUKKWf6UamOAjz3u9VWIl5mOb74MYWLnj2Sr1fucZN3bKSACRJcaZgtzBSF9R3VTeU4r0vixqnDAsu2+ygVUrQDUxZCkIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212842; c=relaxed/simple;
-	bh=GK34UdY/iArNBjSSNrM0LyHbmT5dnDeucLrq8yGI+Ho=;
+	s=arc-20240116; t=1756215747; c=relaxed/simple;
+	bh=PDK6Eo5Kh+t3187ubBDmyW67tp/tpXz5mNuGE7HBp+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNMlCZTA0r2ApJ6jZtx3LAFBmH09ge0zjflf/jiRpbAPUSQ9Zzl7ePeOppLK+aBbNo0VmNVLO0A+0Gm23e7UJ+HXetaWxqF4EUchqTACQf+5uNQWT8zGBjYq4fZqwSMotph3QQXRREhT7mkZToRxOrhG7Ph4aR3rRTEXiEmZbAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aztzSpqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D98C4CEF1;
-	Tue, 26 Aug 2025 12:54:01 +0000 (UTC)
+	 MIME-Version; b=s7pE498tRVb8v9JeP73TS5XOmHsgHEh7kJriIcSzEDTiE/MBxiDP5ilr1KzczVfEEV34R7/Gsw/iv6omwkHGHyXasweZwKz1YAv8mf5Qj51hnwh8A5z6d5qnp5l11DI3NEhym9Rz1/zVu2Gquscv3oiUaguU9qt1oXLqiV/O9PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PO79JOx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B737BC113CF;
+	Tue, 26 Aug 2025 13:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212841;
-	bh=GK34UdY/iArNBjSSNrM0LyHbmT5dnDeucLrq8yGI+Ho=;
+	s=korg; t=1756215747;
+	bh=PDK6Eo5Kh+t3187ubBDmyW67tp/tpXz5mNuGE7HBp+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aztzSpqAFF5YOxollKx7ad2RdVLvpebZ9NHaX6zAmc8wp0rwtS9elaosDH2JatkBr
-	 s0FP4GDYr+xsYhq1AqgdMKaRL8qr8MO1XGIgPTdY88MtNu1EuehbJG7dnv8pRVDGdF
-	 pcGpjTYmHtyL3XsBUS5Wi1KcBBjnGfqlyUBgOxfw=
+	b=PO79JOx9bbmD2k7jEleKFF29at7GnKkqa2meE6aKU3xJnxrIQIUBHt4Id+xz1xpyS
+	 JIrSYsDv/S7PVSP2EQeNPuENEEGwvtYhB76Y5EEjEN/6NiFt0USfJWN4e0MCiJ3FBH
+	 AHBNSaiHPPsmYsFk6G7dM754Uvklb8PlYFJ9xUYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/587] soc: qcom: rpmh-rsc: Add RSC version 4 support
-Date: Tue, 26 Aug 2025 13:04:00 +0200
-Message-ID: <20250826110955.250590548@linuxfoundation.org>
+Subject: [PATCH 5.15 150/644] um: rtc: Avoid shadowing err in uml_rtc_start()
+Date: Tue, 26 Aug 2025 13:04:01 +0200
+Message-ID: <20250826110950.201176840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 84684c57c9cd47b86c883a7170dd68222d97ef13 ]
+[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
 
-Register offsets for v3 and v4 versions are backward compatible. Assign v3
-offsets for v4 and all higher versions to avoid end up using v2 offsets.
+Remove the declaration of 'err' inside the 'if (timetravel)' block,
+as it would otherwise be unavailable outside that block, potentially
+leading to uml_rtc_start() returning an uninitialized value.
 
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250623-rsc_v4-v1-1-275b27bc5e3c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: dde8b58d5127 ("um: add a pseudo RTC")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 2 +-
+ arch/um/drivers/rtc_user.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index dfc2d4e38fa9..163a58eb02e0 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1075,7 +1075,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
- 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
- 	drv->ver.minor >>= MINOR_VER_SHIFT;
+diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
+index 7c3cec4c68cf..006a5a164ea9 100644
+--- a/arch/um/drivers/rtc_user.c
++++ b/arch/um/drivers/rtc_user.c
+@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
+ 	int err;
  
--	if (drv->ver.major == 3)
-+	if (drv->ver.major >= 3)
- 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
- 	else
- 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
+ 	if (timetravel) {
+-		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
++		err = os_pipe(uml_rtc_irq_fds, 1, 1);
+ 		if (err)
+ 			goto fail;
+ 	} else {
 -- 
 2.39.5
 
