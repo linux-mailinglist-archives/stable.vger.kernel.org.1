@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-173914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6EBB3601C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D24B3654F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FF47A6AC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80DEC7BECCD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA761EEA49;
-	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A734534A315;
+	Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlYA2qDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrS3ebJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA397145B3E;
-	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC951E5B88;
+	Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212998; cv=none; b=IVumO2C12PIBLDZGeCxuy16FDvVfSmAWoq/vP5zeHN+ounoXgtmo41CZwKt41jdJXi+E8g5/ZVM78KXAw7K1/2Sn321JMZO+olT9HrsOjJNUmFqnI+vxiXFbaHFs6ZQ20exc7ed3QRybrQWMjJ+JU/3lFcgTajfIl7zAyLkYGcs=
+	t=1756215982; cv=none; b=c3UJSMYkF4YHyLgG7W57WEI5N0lXN6DACJfilt08jfQ44oFCKIpUZbkaI4Z5ey6LUBRSFdx43y5fqlWic61/ucaCiAHDvC6FZDUj08eRxIQD6xfYH+TawEIRwvCCQDiphvXyNrEv9AIaGjbA2vi0PoLtceXDPx93ct/XFntZ8cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212998; c=relaxed/simple;
-	bh=zAOY3dJhmY2x2aVSvrHUBTeg0wjDKX0bK3alxP7sbmE=;
+	s=arc-20240116; t=1756215982; c=relaxed/simple;
+	bh=R0HaYsFGO0GaGWzoOyhI7bQbdevKaB4Yg8zHxGpKWSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTaj6mIZHsD/0CHH2KIQN85frKi2CgULUBxNYitZi47ku1FVUP3ZmrMh3WwBKESei9qZsWYRTxi7lSCfUlbkZ0k4oaDjXY4hPx9GsrHQu2h1F5omURYPPqdxS33pmDtBiVKwQYW3Kec5Wii93V45WCbb7KUhmRMIMcoR8QqHXWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlYA2qDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B43EC4CEF1;
-	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
+	 MIME-Version; b=KXJMTM9CZ06k4IepWll3ODzwyPM3fjIoPgL6AVsLoiXroRmWZ1Q4IXiOn4Xkum6o/T3cdTcZfD8eUKFaX7PEGgInVsSHC1/pI7Gb9eMTLMH1mnUrvE6LRQ/M/gkbZxr98vYdC4pW9tO4N6a96T0rIWDRlFKDkF9k7iuixoU9qrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrS3ebJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C087CC4CEF1;
+	Tue, 26 Aug 2025 13:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212998;
-	bh=zAOY3dJhmY2x2aVSvrHUBTeg0wjDKX0bK3alxP7sbmE=;
+	s=korg; t=1756215982;
+	bh=R0HaYsFGO0GaGWzoOyhI7bQbdevKaB4Yg8zHxGpKWSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlYA2qDdxWeKqtDT5gEPBOU49kadhbR2ckxpRa4M16rjgKMr1PVTteDWBdKsqUI0J
-	 4P1Evjb29P7W6zYx2xOQ6irdv5dYz5+4A0G0cr2JhMU8iB9C8oxvotMZj8T5tTMRKh
-	 yeTkWqqUHk3dGehN+ovzIBnNzwEYJmD6G/3cM2no=
+	b=HrS3ebJuWv93DBLma1KRUISyD6j1wN8zuwz04Xom2ov6RCXPSdV7F/yXWXPDUB/7Q
+	 hnduBVHiL9mUMLIg+EBT10yYhz/ORc3sagZBQErVBcjqwMYfREddpd8C2f//4f6qVz
+	 qpwUQpsuEn+mOADKG/OIPPnESB38NSLpjcUnZAGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/587] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Subject: [PATCH 5.15 240/644] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
 Date: Tue, 26 Aug 2025 13:05:31 +0200
-Message-ID: <20250826110957.572494480@linuxfoundation.org>
+Message-ID: <20250826110952.349077836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +67,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
+[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
 
-Ensure descriptor is freed on error to avoid memory leak.
+In case of failures either ib_dma_map_single() might not be called yet
+or ib_dma_unmap_single() was already called.
 
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ksmbd/transport_rdma.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 0a1f302ad6d3..2deb259615d9 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2816,6 +2816,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	struct iwl_fw_dump_desc *desc;
- 	unsigned int delay = 0;
- 	bool monitor_only = false;
-+	int ret;
+diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
+index 2644117305c2..dd37cabe8cbc 100644
+--- a/fs/ksmbd/transport_rdma.c
++++ b/fs/ksmbd/transport_rdma.c
+@@ -263,8 +263,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
+ static void put_recvmsg(struct smb_direct_transport *t,
+ 			struct smb_direct_recvmsg *recvmsg)
+ {
+-	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
+-			    recvmsg->sge.length, DMA_FROM_DEVICE);
++	if (likely(recvmsg->sge.length != 0)) {
++		ib_dma_unmap_single(t->cm_id->device,
++				    recvmsg->sge.addr,
++				    recvmsg->sge.length,
++				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
++	}
  
- 	if (trigger) {
- 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
-@@ -2846,7 +2847,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	desc->trig_desc.type = cpu_to_le32(trig);
- 	memcpy(desc->trig_desc.data, str, len);
- 
--	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	if (ret)
-+		kfree(desc);
-+
-+	return ret;
- }
- IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
- 
+ 	spin_lock(&t->recvmsg_queue_lock);
+ 	list_add(&recvmsg->list, &t->recvmsg_queue);
+@@ -632,6 +637,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
+ 		ib_dma_unmap_single(t->cm_id->device,
+ 				    recvmsg->sge.addr, recvmsg->sge.length,
+ 				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
+ 		smb_direct_disconnect_rdma_connection(t);
+ 		return ret;
+ 	}
+@@ -1813,6 +1819,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
+ 		if (!recvmsg)
+ 			goto err;
+ 		recvmsg->transport = t;
++		recvmsg->sge.length = 0;
+ 		list_add(&recvmsg->list, &t->recvmsg_queue);
+ 	}
+ 	t->count_avail_recvmsg = t->recv_credit_max;
 -- 
 2.39.5
 
