@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A02B36206
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6041FB364A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136437BBAFB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2EB1C21EA7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFF24467E;
-	Tue, 26 Aug 2025 13:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32463431FD;
+	Tue, 26 Aug 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgN9EoFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8+hoHt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BE923A984;
-	Tue, 26 Aug 2025 13:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3521E502;
+	Tue, 26 Aug 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213981; cv=none; b=XwwGbqzP9tN7UY+HFdH7OYs2Go3ceKfTzIxMOQG5B/dBoVjqz9MKu7Ewy6yWu/r6n8LT7f4v/jG/q/yOC7j8yzrZVA9C0e0V4ELwBFbvxlkXB8AKAv4eiBQBrHF82kPZchnhOKv1dQLhMPxEtFw0xhum2/OxFYmtBgiIagjTTvg=
+	t=1756215154; cv=none; b=lSxJgWjm+4C7u4MAsxV6yDMF7abbaOBulrjkAUd5vX8BF+FnL7+1y2RaUAbD2NgJ1RoZRpQ83U6v3gmdPUtbdMDYuoOBeAZFQ7Gammn2+Eg3L+CWfu3Q6nGuG83Ye70Hngr/qwUCExttOazsg5ztSIdDwl5+5KYceVUfa3xMbcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213981; c=relaxed/simple;
-	bh=fCQhFBA0kYXAvIpZ2F0vrD3+n+fWDoXDkZ4bbnutf0k=;
+	s=arc-20240116; t=1756215154; c=relaxed/simple;
+	bh=HWAgf9sJv6RBXTNIpLGasAGNQk/NVGxY2CXkWeBPC4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYTF85D+4LPNaEjpye7hGBXPLNJeuiyljSuPzC3ej/ecJAVhNZ+4+zWdwddR1pBEv1Mm+BRZKpdEEICTVnbKSLAKCL9tspw5CbMj8I3d7eAy+Wn0IlL1Ow/Antn6M/aSzF359fa09HrWgu9tJUSHO+jzPR9Sd09ohcJV2I1ptns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgN9EoFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335E3C4CEF1;
-	Tue, 26 Aug 2025 13:13:00 +0000 (UTC)
+	 MIME-Version; b=Rbe9hbDxXprxoqr8L7XfIlRrSa10il0WteLD6xkQgy0Af+qJlHFY5vOyqDl0B4ot93MNC9AAB39oBq+c4LdCoDQLh7UhzQYvidID+sV0wN/fREKmin1GsBYv+dIeeiYSLn0qT91d7j85816esY9jtZYTZyXC07CxDDsrZteDhTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8+hoHt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214DDC4CEF1;
+	Tue, 26 Aug 2025 13:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213980;
-	bh=fCQhFBA0kYXAvIpZ2F0vrD3+n+fWDoXDkZ4bbnutf0k=;
+	s=korg; t=1756215154;
+	bh=HWAgf9sJv6RBXTNIpLGasAGNQk/NVGxY2CXkWeBPC4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgN9EoFiGoJI00CbSbzUjXyEOZ/o5/H6m0Xd7HeM3c1cBIn7qxLiOD5ROHlpNw9e6
-	 7xANIhhnXhO60AB3RG+nTwImQPKlTg6Ne5GMTmT1ts6ei2hBh604+qpOJ95UElldnW
-	 8YGV2OD66/F+wfSIvo5YNIr6d3319DurHd/mU5pk=
+	b=f8+hoHt6uuwv0UE3Q613/IaWlItn+aq+nKShk0DmlJxGqcx+DtV6bAE3yCgJxpcEu
+	 UROXPSeoMmN3M8ZqrfUjWyEMlfQxijsZsf+tfr8eLpwFTzf60hSQier+kmcI8kbzyb
+	 UjNcLtPZNeesXJKsIdY6NZkh7LWBWQwqEuoRY2cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 511/587] cpuidle: governors: menu: Avoid selecting states with too much latency
+Subject: [PATCH 6.1 407/482] use uniform permission checks for all mount propagation changes
 Date: Tue, 26 Aug 2025 13:11:00 +0200
-Message-ID: <20250826111005.994448541@linuxfoundation.org>
+Message-ID: <20250826110940.883833362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 ]
+[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
 
-Occasionally, the exit latency of the idle state selected by the menu
-governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
-scheduler tick has been stopped already and predicted_ns is greater than
-the tick period length, the governor may return an idle state whose exit
-latency exceeds latency_req because that decision is made before
-checking the current idle state's exit latency.
+do_change_type() and do_set_group() are operating on different
+aspects of the same thing - propagation graph.  The latter
+asks for mounts involved to be mounted in namespace(s) the caller
+has CAP_SYS_ADMIN for.  The former is a mess - originally it
+didn't even check that mount *is* mounted.  That got fixed,
+but the resulting check turns out to be too strict for userland -
+in effect, we check that mount is in our namespace, having already
+checked that we have CAP_SYS_ADMIN there.
 
-For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
-states 0 and 1, the exit latency is equal to the target residency and
-the values are 0 and 5 us, respectively.  State 2 is deeper and has the
-exit latency and target residency of 200 us and 2 ms (which is greater
-than the tick period length), respectively.
+What we really need (in both cases) is
+	* only touch mounts that are mounted.  That's a must-have
+constraint - data corruption happens if it get violated.
+	* don't allow to mess with a namespace unless you already
+have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
 
-Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
-limit is 20 us.  After the first two iterations of the main loop in
-menu_select(), idx becomes 1 and in the third iteration of it the target
-residency of the current state (state 2) is greater than predicted_ns.
-State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
-so the check on whether or not the tick has been stopped is done.  Say
-that the tick has been stopped already and there are no imminent timers
-(that is, delta_tick is greater than the target residency of state 2).
-In that case, idx becomes 2 and it is returned immediately, but the exit
-latency of state 2 exceeds the latency limit.
+That's an equivalent of what do_set_group() does; let's extract that
+into a helper (may_change_propagation()) and use it in both
+do_set_group() and do_change_type().
 
-Address this issue by modifying the code to compare the exit latency of
-the current idle state (idle state i) with the latency limit before
-comparing its target residency with predicted_ns, which allows one
-more exit_latency_ns check that becomes redundant to be dropped.
-
-However, after the above change, latency_req cannot take the predicted_ns
-value any more, which takes place after commit 38f83090f515 ("cpuidle:
-menu: Remove iowait influence"), because it may cause a polling state
-to be returned prematurely.
-
-In the context of the previous example say that predicted_ns is 3000 and
-the PM QoS latency limit is still 20 us.  Additionally, say that idle
-state 0 is a polling one.  Moving the exit_latency_ns check before the
-target_residency_ns one causes the loop to terminate in the second
-iteration, before the target_residency_ns check, so idle state 0 will be
-returned even though previously state 1 would be returned if there were
-no imminent timers.
-
-For this reason, remove the assignment of the predicted_ns value to
-latency_req from the code.
-
-Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
-Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
+Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ fs/namespace.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -324,20 +324,15 @@ static int menu_select(struct cpuidle_dr
- 		return 0;
- 	}
+diff --git a/fs/namespace.c b/fs/namespace.c
+index f0fa2a1a6b05..2a76269f2a4e 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2340,6 +2340,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
+ 	return attach_recursive_mnt(mnt, p, mp, false);
+ }
  
--	if (tick_nohz_tick_stopped()) {
--		/*
--		 * If the tick is already stopped, the cost of possible short
--		 * idle duration misprediction is much higher, because the CPU
--		 * may be stuck in a shallow idle state for a long time as a
--		 * result of it.  In that case say we might mispredict and use
--		 * the known time till the closest timer event for the idle
--		 * state selection.
--		 */
--		if (predicted_ns < TICK_NSEC)
--			predicted_ns = data->next_timer_ns;
--	} else if (latency_req > predicted_ns) {
--		latency_req = predicted_ns;
--	}
-+	/*
-+	 * If the tick is already stopped, the cost of possible short idle
-+	 * duration misprediction is much higher, because the CPU may be stuck
-+	 * in a shallow idle state for a long time as a result of it.  In that
-+	 * case, say we might mispredict and use the known time till the closest
-+	 * timer event for the idle state selection.
-+	 */
-+	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
-+		predicted_ns = data->next_timer_ns;
- 
- 	/*
- 	 * Find the idle state with the lowest power while satisfying
-@@ -353,13 +348,15 @@ static int menu_select(struct cpuidle_dr
- 		if (idx == -1)
- 			idx = i; /* first enabled state */
- 
-+		if (s->exit_latency_ns > latency_req)
-+			break;
++static int may_change_propagation(const struct mount *m)
++{
++        struct mnt_namespace *ns = m->mnt_ns;
 +
- 		if (s->target_residency_ns > predicted_ns) {
- 			/*
- 			 * Use a physical idle state, not busy polling, unless
- 			 * a timer is going to trigger soon enough.
- 			 */
- 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--			    s->exit_latency_ns <= latency_req &&
- 			    s->target_residency_ns <= data->next_timer_ns) {
- 				predicted_ns = s->target_residency_ns;
- 				idx = i;
-@@ -391,8 +388,6 @@ static int menu_select(struct cpuidle_dr
++	 // it must be mounted in some namespace
++	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
++		 return -EINVAL;
++	 // and the caller must be admin in userns of that namespace
++	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
++		 return -EPERM;
++	 return 0;
++}
++
+ /*
+  * Sanity check the flags to change_mnt_propagation.
+  */
+@@ -2376,10 +2389,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
- 			return idx;
- 		}
--		if (s->exit_latency_ns > latency_req)
--			break;
+ 	namespace_lock();
+-	if (!check_mnt(mnt)) {
+-		err = -EINVAL;
++	err = may_change_propagation(mnt);
++	if (err)
+ 		goto out_unlock;
+-	}
++
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+@@ -2774,18 +2787,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
  
- 		idx = i;
- 	}
+ 	namespace_lock();
+ 
+-	err = -EINVAL;
+-	/* To and From must be mounted */
+-	if (!is_mounted(&from->mnt))
+-		goto out;
+-	if (!is_mounted(&to->mnt))
+-		goto out;
+-
+-	err = -EPERM;
+-	/* We should be allowed to modify mount namespaces of both mounts */
+-	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+-	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(to);
++	if (err)
+ 		goto out;
+ 
+ 	err = -EINVAL;
+-- 
+2.50.1
+
 
 
 
