@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-173286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3539B35C66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E767B36248
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED9B57B889C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC548A4CCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DFE343D76;
-	Tue, 26 Aug 2025 11:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498B9334379;
+	Tue, 26 Aug 2025 13:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGsDDn20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZhJDzp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32449343D63;
-	Tue, 26 Aug 2025 11:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B82271475;
+	Tue, 26 Aug 2025 13:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207854; cv=none; b=IRPd7DPkG+wn5G7L3sVK/m6+eGPZFjbWG0Hiygu8a2Ir/I9XjAxmmhYQlA81uLkiWgMjD8wZHdMz9lkRXRN+6aZUBTHZuI6C4BSLG4PAQ0cQxym2YONnTZtltaEvC7IpHlRwvoV5IhzrjSlU/dpTbSNTyJOSoykT+A/18dkVYHM=
+	t=1756213891; cv=none; b=J2bEsooFIBIu1xe20MXJmz32JUaMJPjcgShGktONAhFbRSVg6Tj96eqeTSZ0vw3kzf3PBCneodR6r54qxy2wA5iH/iv2CQL9E6y2DxP7tVjSxBUUtRUfkdeKf160nmULqa4BvO4q3UIkzOBT87VRn5jA99/t1fmPzaB7Ftvz/Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207854; c=relaxed/simple;
-	bh=ZSUYJ8aENkf92YnKTO0Bcj/GuBUOsyuQiw1hZv7UCK8=;
+	s=arc-20240116; t=1756213891; c=relaxed/simple;
+	bh=TZxrheu/LczvGeV11FF9nraBP1owuLr9OdxArvGwprM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8uouQDNo/px9ZmqE8+aU1K7J5SOEMLDSVhpApalgQ7W/Qia4mjbPq+9VPDUpMhYQCby1hH0+rnFQ/VThQxW507/reB+m7rZYVb/NUJlT6kZRHyjoMzwEmsxcck3axRRtot2VQSEsNlT5w5mbhRLZw1HxgQR8gBop52LGyzRVUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGsDDn20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2E4C4CEF1;
-	Tue, 26 Aug 2025 11:30:53 +0000 (UTC)
+	 MIME-Version; b=RDJ0yAx0njv93wr2Uk3jzrJtCxC3x3DCjYkNdEPC4dqChTky53XGCVRUY3VhUTIz5wzbI0gw+nDYVklenmGtDPDWflRzGk52kVlT9Pm/tLaIYWDfIzox4BKR6GrrlJQ9Vh9SwxMuG52MRojn7J7B0FeLXYMUJBcO/zYgFUFdz+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZhJDzp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8255CC4CEF4;
+	Tue, 26 Aug 2025 13:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207854;
-	bh=ZSUYJ8aENkf92YnKTO0Bcj/GuBUOsyuQiw1hZv7UCK8=;
+	s=korg; t=1756213890;
+	bh=TZxrheu/LczvGeV11FF9nraBP1owuLr9OdxArvGwprM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGsDDn20qrzn+awb4kuzvskTtfJ+In1rzsfRO7luP9UpcY2NhSdmHtes9gF/tg/5q
-	 1vm+Yh5gSg1lL28pHDpRWExXZ6KW0T5NVmCgeTHu+ycfASdR2Xg+F9+sJaCJIaK+2b
-	 fClLunJzBR2kjtd4ATIK+j1a/l8yQYrVSmZ81z54=
+	b=PZhJDzp9tmoI8E0YjOjo5wq9RrrmR3dMZYC+Vjcm6QVuwWyn50OdteMHLTx+5zISI
+	 Aqrbb2aGUBX5snqBjK+buEEV3iPWU7L6ZvAi2sUWlVKb4QYT5kknPDKJWDCLHc7+0u
+	 blUcSmA91aeRQWulDwxHXVnnudaJMabNQOjindT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Pierre Gondois <pierre.gondois@arm.com>,
 	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 342/457] spi: spi-qpic-snand: use correct CW_PER_PAGE value for OOB write
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.6 477/587] topology: Set capacity_freq_ref in all cases
 Date: Tue, 26 Aug 2025 13:10:26 +0200
-Message-ID: <20250826110945.785036039@linuxfoundation.org>
+Message-ID: <20250826111005.103546555@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +66,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit 6bc829220b33da8522572cc50fdf5067c51d3bf3 ]
+commit 98323e9d70172f1b46d1cadb20d6c54abf62870d upstream.
 
-The qcom_spi_program_oob() function uses only the last codeword to write
-the OOB data into the flash, but it sets the CW_PER_PAGE field in the
-CFG0 register as it would use all codewords.
+If "capacity-dmips-mhz" is not set, raw_capacity is null and we skip the
+normalization step which includes setting per_cpu capacity_freq_ref.
+Always register the notifier but skip the capacity normalization if
+raw_capacity is null.
 
-It seems that this confuses the hardware somehow, and any access to the
-flash fails with a timeout error after the function is called. The problem
-can be easily reproduced with the following commands:
-
-    # dd if=/dev/zero bs=2176 count=1 > /tmp/test.bin
-    1+0 records in
-    1+0 records out
-    # flash_erase /dev/mtd4 0 0
-    Erasing 128 Kibyte @ 0 -- 100 % complete
-    # nandwrite -O /dev/mtd4 /tmp/test.bin
-    Writing data to block 0 at offset 0x0
-    # nanddump -o /dev/mtd4 >/dev/null
-    ECC failed: 0
-    ECC corrected: 0
-    Number of bad blocks: 0
-    Number of bbt blocks: 0
-    Block size 131072, page size 2048, OOB size 128
-    Dumping data starting at 0x00000000 and ending at 0x00020000...
-    [   33.197605] qcom_snand 79b0000.spi: failure to read oob
-    libmtd: error!: MEMREADOOB64 ioctl failed for mtd4, offset 0 (eraseblock 0)
-            error 110 (Operation timed out)
-    [   35.277582] qcom_snand 79b0000.spi: failure in submitting cmd descriptor
-    libmtd: error!: cannot read 2048 bytes from mtd4 (eraseblock 0, offset 2048)
-            error 110 (Operation timed out)
-    nanddump: error!: mtd_read
-
-Change the code to use the correct CW_PER_PAGE value to avoid this.
-
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20250801-qpic-snand-oob-cwpp-fix-v1-1-f5a41b86af2e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9942cb22ea45 ("sched/topology: Add a new arch_scale_freq_ref() method")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Pierre Gondois <pierre.gondois@arm.com>
+Tested-by: Mark Brown <broonie@kernel.org>
+Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lore.kernel.org/r/20240117190545.596057-1-vincent.guittot@linaro.org
+Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qpic-snand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/arch_topology.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index 3b757e3d00c0..722ab60d616f 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -1185,7 +1185,7 @@ static int qcom_spi_program_oob(struct qcom_nand_controller *snandc,
- 	u32 cfg0, cfg1, ecc_bch_cfg, ecc_buf_cfg;
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -417,9 +417,6 @@ init_cpu_capacity_callback(struct notifi
+ 	struct cpufreq_policy *policy = data;
+ 	int cpu;
  
- 	cfg0 = (ecc_cfg->cfg0 & ~CW_PER_PAGE_MASK) |
--	       FIELD_PREP(CW_PER_PAGE_MASK, num_cw - 1);
-+	       FIELD_PREP(CW_PER_PAGE_MASK, 0);
- 	cfg1 = ecc_cfg->cfg1;
- 	ecc_bch_cfg = ecc_cfg->ecc_bch_cfg;
- 	ecc_buf_cfg = ecc_cfg->ecc_buf_cfg;
--- 
-2.50.1
-
+-	if (!raw_capacity)
+-		return 0;
+-
+ 	if (val != CPUFREQ_CREATE_POLICY)
+ 		return 0;
+ 
+@@ -436,9 +433,11 @@ init_cpu_capacity_callback(struct notifi
+ 	}
+ 
+ 	if (cpumask_empty(cpus_to_visit)) {
+-		topology_normalize_cpu_scale();
+-		schedule_work(&update_topology_flags_work);
+-		free_raw_capacity();
++		if (raw_capacity) {
++			topology_normalize_cpu_scale();
++			schedule_work(&update_topology_flags_work);
++			free_raw_capacity();
++		}
+ 		pr_debug("cpu_capacity: parsing done\n");
+ 		schedule_work(&parsing_done_work);
+ 	}
+@@ -458,7 +457,7 @@ static int __init register_cpufreq_notif
+ 	 * On ACPI-based systems skip registering cpufreq notifier as cpufreq
+ 	 * information is not needed for cpu capacity initialization.
+ 	 */
+-	if (!acpi_disabled || !raw_capacity)
++	if (!acpi_disabled)
+ 		return -EINVAL;
+ 
+ 	if (!alloc_cpumask_var(&cpus_to_visit, GFP_KERNEL))
 
 
 
