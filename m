@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-173276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47FBB35C55
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B14B36A28
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F1127B7CCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72DD1C21177
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C467341655;
-	Tue, 26 Aug 2025 11:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C506A34DCCA;
+	Tue, 26 Aug 2025 14:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCG8jK8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDbQpy59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4D72FD7C8;
-	Tue, 26 Aug 2025 11:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A061DF75A;
+	Tue, 26 Aug 2025 14:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207828; cv=none; b=W9n2AS+PzLQXEgJGpQtTLzPlwv50Pa1mYkXA1Jl/kmzSslF+ptOcMOlt+x7mcqdXvkDDpxaxVm/TRJiMxjGnGWjfuC0I/A9RJx8pyKMYFFGKUgUIFqNliS4EYvhSHsG9m1bkgqTwNkNOJVxwCt4+jViSj4z1hlWCYgGd7rEn/GY=
+	t=1756218090; cv=none; b=MsUTZ6IwZnP82nFtTZwdXfCpz/EPojijHedJBnzYJa1uzkh84w7kJ2KfS5LgmKOdPhmnFiLAC4YWIHdnQyhEAForxSWwH2qkWXg4NNX+gLxj5sYkTx/XxthhGs5OuHWQ0nkQ21aOHsnr1STTnx/x69biihnJmG67bbhrDCR/le4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207828; c=relaxed/simple;
-	bh=Yv2b1FUc87f1hyOE0QeMRU/G71UizWsJa/JiMcBYAs0=;
+	s=arc-20240116; t=1756218090; c=relaxed/simple;
+	bh=0eIm8Dtk1s3d2UNQBeC69tx8V6x1ree1ZXUR4sf+el0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WxmJylo9CwZ+VZ2gzeOOm0DaYWOyIPY5K8OkBVCNP+n2hSwKHqr43dVf9XRSKvrccaghhAcm8nExx6t4J8Gh74qTwLuMWLWIXNStjwKNOsksaj/g4HvSGXs0okaoJYsB1AimOk1XlSnhKW/YLr3ZaVHf+qJR4PDUfd5D+TpZZYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCG8jK8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF89C4CEF1;
-	Tue, 26 Aug 2025 11:30:27 +0000 (UTC)
+	 MIME-Version; b=MHdfhfqimVrFvsKEoKoTmMBrd1Ss9SIonhjDcX+f3zJrGYliqTs2APn5f5I914FEJ9zRSXtaTMkMTjil8TtKkgi1BxJSFPUiQQWonPDY1PEQMNS7rQnFLaY6w5UKOBOAbkLCDdT7I8G4W3TB++m5CTH8j3CGDtZkaRcCXsOPq24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDbQpy59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156DCC113CF;
+	Tue, 26 Aug 2025 14:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207828;
-	bh=Yv2b1FUc87f1hyOE0QeMRU/G71UizWsJa/JiMcBYAs0=;
+	s=korg; t=1756218090;
+	bh=0eIm8Dtk1s3d2UNQBeC69tx8V6x1ree1ZXUR4sf+el0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCG8jK8AxQJl5a2sGGYgMx1XYPfHGDTo4s3bzoE71EVdw/Ms4u2WgUHs6zqdN81bL
-	 zrSvA7AfH0PoFSCZ1OpTVjU8mT68yZ/+d8/bk8lt/ZY2f+tJ3e9u8Gnw6xKFRlK3ef
-	 fTbr/6cDF9IFxHr3vw4ihQv0hKlRMio4jYaFH4I8=
+	b=DDbQpy59OhQ7zMg6bBSwl929+XdyPWqzjhSIY9r70nkXlxcmlvji+bPdBkXFM7amM
+	 6qz2DHrwoknJPVKsXi72uNfblFW0EnstcAeAbmKO69xPOnKgtZndsB3B95clf/bifP
+	 QnQbVh2GXbvtEISrYyM6EzmyXMqvI5ZXrQTkiM+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.16 315/457] usb: renesas-xhci: Fix External ROM access timeouts
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 389/523] sch_qfq: make qfq_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:59 +0200
-Message-ID: <20250826110945.143865084@linuxfoundation.org>
+Message-ID: <20250826110934.053377792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
+commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728 upstream.
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+qfq_qlen_notify() always deletes its class from its active list
+with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
+becomes empty.
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+To make it idempotent, just skip everything when it is not in the active
+list.
 
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
+Also change other list_del()'s to list_del_init() just to be extra safe.
 
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
-
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
-
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
-
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-5-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sched/sch_qfq.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -354,7 +354,7 @@ static void qfq_deactivate_class(struct
+ 	struct qfq_aggregate *agg = cl->agg;
  
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
  
- #define RENESAS_FW_NAME	"renesas_usb_fw.mem"
+-	list_del(&cl->alist); /* remove from RR queue of the aggregate */
++	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
+ 	if (list_empty(&agg->active)) /* agg is now inactive */
+ 		qfq_deactivate_agg(q, agg);
+ }
+@@ -486,6 +486,7 @@ static int qfq_change_class(struct Qdisc
  
-@@ -407,7 +408,7 @@ static void renesas_rom_erase(struct pci
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
+ 	cl->common.classid = classid;
+ 	cl->deficit = lmax;
++	INIT_LIST_HEAD(&cl->alist);
  
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
+ 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
+ 				      classid, NULL);
+@@ -1005,7 +1006,7 @@ static struct sk_buff *agg_dequeue(struc
+ 	cl->deficit -= (int) len;
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+@@ -1437,6 +1438,8 @@ static void qfq_qlen_notify(struct Qdisc
+ 	struct qfq_sched *q = qdisc_priv(sch);
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 
++	if (list_empty(&cl->alist))
++		return;
+ 	qfq_deactivate_class(q, cl);
+ }
+ 
 
 
 
