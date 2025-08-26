@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FAEB36C3D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217DAB35DC9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD318E4A67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2987036774B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E59D35334E;
-	Tue, 26 Aug 2025 14:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247C42BEC34;
+	Tue, 26 Aug 2025 11:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJFwPx30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1V/9ugba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B4A405F7;
-	Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79E217332C;
+	Tue, 26 Aug 2025 11:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218726; cv=none; b=kf1y0NHszes5FFP3NBHwhZjAxjoZTyO3zERK2mSH4woHjKjUupY1Qv70iLunjwQ7sByXOhGuOkEDlihuv3OR0LbtFuzDUBmZ8HqSWOYIxV7PgnUSvcqyftL+kG7DvLBsYDNZDrjLESReSjGB2gbbu2ZIAIuIpnSgnObTWtcT61M=
+	t=1756208200; cv=none; b=VtmwYvl9Ll+v+p/K+jipqNdUQ3euANKDrHbYVzdPEJlUb2T5HU6ht0MMtBsQCIZEFcCMexzKTzP6CIU3ENP6JNbO4SQA1THxDoravhNN9ndVH/mlYsesxiWgyG7cv3arFxiNKOKAtOjNlmtH5a2rX2HgtYCqCPkLAp0PuQUyQ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218726; c=relaxed/simple;
-	bh=fN+GpC/g211AkIg1D2eds4Rxgc+Ti/RgtQyIco7bdS8=;
+	s=arc-20240116; t=1756208200; c=relaxed/simple;
+	bh=LwlNlmV7Bflzyj2REHasSyiDRh5Ya6k+UPuQI0iw3Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7206wEeFysV1+8Cc9lefYrzAdKTkxIulABzxXbOZeQz1SMFpYbPsTmY/IAukLtnV/i7XFYS7CovffecsWR+U7W0AhefP1tn7lDpglqqy7gIoQzCXn5dGFg/icIFQJNnm5mtbEN03JAtJ3nd/J9Z5pRahANAA6XIfDfPcWR/fYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJFwPx30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C9CC113D0;
-	Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
+	 MIME-Version; b=Jdn09M6mmrMhpVudNQSeV1YJEZhxAyz5WvcyIQ3vnjFZdJl/lCHW4X1n6A9nAJzbbcnIXO3ptGMDfqv+D80WIvATBAGQXU5MmqT4d96UgTZCcScUdeL1rIFHhI4lLfrksYe7ZiF0XGbfYV5RRYhPR0bf12yjqokc9nYlP5x8/9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1V/9ugba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13835C4CEF1;
+	Tue, 26 Aug 2025 11:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218725;
-	bh=fN+GpC/g211AkIg1D2eds4Rxgc+Ti/RgtQyIco7bdS8=;
+	s=korg; t=1756208200;
+	bh=LwlNlmV7Bflzyj2REHasSyiDRh5Ya6k+UPuQI0iw3Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJFwPx30oIuk6kdyZ4J//O6QK8azpJ3f4MwqBibotHsXHUp9iSFoStCMcEan71FLR
-	 uaD/tZdQzUq1wFu/OmlzAu6tswkDv4HWGT5u3Yf6QZgUq4pqPU0pmc0r584ILj6YyP
-	 HOGgOwSbb/qFs0Qtas97/gKlrGkOxmZaKZqWxxMk=
+	b=1V/9ugbaiznJzfkarMRTld2X8bRGNitXQ1qszXgZn2dyHTo0dI9rg0EnZTCuFNAPX
+	 xJ4yOZBauZW3x62kbo7FIedWnAdulWIUvv4d0b+I9pNfWY2RJwkWMC/iCmxVgUNztl
+	 Lx2LKQcq711Yd9yyaVUqK150nA62hxy6ttv7P1qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/403] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+	John Ernberg <john.ernberg@actia.se>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	stable@kernel.org
+Subject: [PATCH 6.12 020/322] crypto: caam - Prevent crash on suspend with iMX8QM / iMX8ULP
 Date: Tue, 26 Aug 2025 13:07:15 +0200
-Message-ID: <20250826110909.696588660@linuxfoundation.org>
+Message-ID: <20250826110915.764127203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+commit 5ffc47feddcf8eb4d8ac7b42111a02c8e8146512 upstream.
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+Since the CAAM on these SoCs is managed by another ARM core, called the
+SECO (Security Controller) on iMX8QM and Secure Enclave on iMX8ULP, which
+also reserves access to register page 0 suspend operations cannot touch
+this page.
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
+This is similar to when running OPTEE, where OPTEE will reserve page 0.
 
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Track this situation using a new state variable no_page0, reflecting if
+page 0 is reserved elsewhere, either by other management cores in SoC or
+by OPTEE.
+
+Replace the optee_en check in suspend/resume with the new check.
+
+optee_en cannot go away as it's needed elsewhere to gate OPTEE specific
+situations.
+
+Fixes the following splat at suspend:
+
+    Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+    Hardware name: Freescale i.MX8QXP ACU6C (DT)
+    pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : readl+0x0/0x18
+    lr : rd_reg32+0x18/0x3c
+    sp : ffffffc08192ba20
+    x29: ffffffc08192ba20 x28: ffffff8025190000 x27: 0000000000000000
+    x26: ffffffc0808ae808 x25: ffffffc080922338 x24: ffffff8020e89090
+    x23: 0000000000000000 x22: ffffffc080922000 x21: ffffff8020e89010
+    x20: ffffffc080387ef8 x19: ffffff8020e89010 x18: 000000005d8000d5
+    x17: 0000000030f35963 x16: 000000008f785f3f x15: 000000003b8ef57c
+    x14: 00000000c418aef8 x13: 00000000f5fea526 x12: 0000000000000001
+    x11: 0000000000000002 x10: 0000000000000001 x9 : 0000000000000000
+    x8 : ffffff8025190870 x7 : ffffff8021726880 x6 : 0000000000000002
+    x5 : ffffff80217268f0 x4 : ffffff8021726880 x3 : ffffffc081200000
+    x2 : 0000000000000001 x1 : ffffff8020e89010 x0 : ffffffc081200004
+    Call trace:
+     readl+0x0/0x18
+     caam_ctrl_suspend+0x30/0xdc
+     dpm_run_callback.constprop.0+0x24/0x5c
+     device_suspend+0x170/0x2e8
+     dpm_suspend+0xa0/0x104
+     dpm_suspend_start+0x48/0x50
+     suspend_devices_and_enter+0x7c/0x45c
+     pm_suspend+0x148/0x160
+     state_store+0xb4/0xf8
+     kobj_attr_store+0x14/0x24
+     sysfs_kf_write+0x38/0x48
+     kernfs_fop_write_iter+0xb4/0x178
+     vfs_write+0x118/0x178
+     ksys_write+0x6c/0xd0
+     __arm64_sys_write+0x14/0x1c
+     invoke_syscall.constprop.0+0x64/0xb0
+     do_el0_svc+0x90/0xb0
+     el0_svc+0x18/0x44
+     el0t_64_sync_handler+0x88/0x124
+     el0t_64_sync+0x150/0x154
+    Code: 88dffc21 88dffc21 5ac00800 d65f03c0 (b9400000)
+
+Fixes: d2835701d93c ("crypto: caam - i.MX8ULP donot have CAAM page0 access")
+Cc: stable@kernel.org # v6.10+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/caam/ctrl.c   |    5 +++--
+ drivers/crypto/caam/intern.h |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index 8a59feac6468..90b97736ac2a 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -830,7 +830,7 @@ static int caam_ctrl_suspend(struct devi
  {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
- }
- #endif /* CONFIG_OF */
+ 	const struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
+-	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en)
++	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0)
+ 		caam_state_save(dev);
  
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
+ 	return 0;
+@@ -841,7 +841,7 @@ static int caam_ctrl_resume(struct devic
+ 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
+ 	int ret = 0;
  
- 	ret = max14577_charger_reg_init(chg);
--- 
-2.39.5
-
+-	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en) {
++	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0) {
+ 		caam_state_restore(dev);
+ 
+ 		/* HW and rng will be reset so deinstantiation can be removed */
+@@ -907,6 +907,7 @@ static int caam_probe(struct platform_de
+ 
+ 		imx_soc_data = imx_soc_match->data;
+ 		reg_access = reg_access && imx_soc_data->page0_access;
++		ctrlpriv->no_page0 = !reg_access;
+ 		/*
+ 		 * CAAM clocks cannot be controlled from kernel.
+ 		 */
+--- a/drivers/crypto/caam/intern.h
++++ b/drivers/crypto/caam/intern.h
+@@ -115,6 +115,7 @@ struct caam_drv_private {
+ 	u8 blob_present;	/* Nonzero if BLOB support present in device */
+ 	u8 mc_en;		/* Nonzero if MC f/w is active */
+ 	u8 optee_en;		/* Nonzero if OP-TEE f/w is active */
++	u8 no_page0;		/* Nonzero if register page 0 is not controlled by Linux */
+ 	bool pr_support;        /* RNG prediction resistance available */
+ 	int secvio_irq;		/* Security violation interrupt number */
+ 	int virt_en;		/* Virtualization enabled in CAAM */
 
 
 
