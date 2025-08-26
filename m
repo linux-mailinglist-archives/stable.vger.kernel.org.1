@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B1EB35CCF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A46B36BDF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D2657C54F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB34C468544
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD65F340D9D;
-	Tue, 26 Aug 2025 11:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DD534DCD2;
+	Tue, 26 Aug 2025 14:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEvlF9Jw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iU8QL85i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7925B33A02E;
-	Tue, 26 Aug 2025 11:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908B02135B8;
+	Tue, 26 Aug 2025 14:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208259; cv=none; b=jabPNfAQtPO7f+PGt/IMJc69dgGCmmBfj3+4jAhsOID/WEl9Yt6vG/lXI0mIZROPkkHbZH4IZnPh33CwDxNVMFrphxobUGYbviiTnI+uQLSpPuWFKVJ/ruJ8j8ye9zYt/uCqg+bK+iRgymmAfEadR05TERlFwDv5xIueyBGHdoQ=
+	t=1756218702; cv=none; b=Gh1tA+E4hcneER0CmILW2I8o7EIZ0JCoWTO0BAw8wU4JWx51gh+EQYsNwj8ZHP+I9Tjwjpz4IcdVU7glaGgoSpxLwQ7xlANxeDt6Qm4RS7/4w3AQnJGEKla0I7jYT/u80B0Kvp/+TNZsbLjv575/jMYLVFity/Kh44rE15SIkGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208259; c=relaxed/simple;
-	bh=6EGUv9E+gAqBq2steQkp+QZtCXfj3HcfOleiZC6ZhnU=;
+	s=arc-20240116; t=1756218702; c=relaxed/simple;
+	bh=LaZYdq5mvPVW+hpwd+iEFfX/bRrSeopbbWPZQj8KbbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCmuEd/czcuqZ/QrijoTEhcVcx9awG2ZwCscT4VQjJ8leqCgmAo1kpLjGyGLnkokGran/y9qhkykk8vBxF8SOVZEd08XhLAlqjIZyVhPKnXWBjoZdTUnDSkIK7B5NKC54l7L2ehG2QChuyuC3ALJ25x/FJV/dKRtSYnlxiBtalw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEvlF9Jw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1847C4CEF1;
-	Tue, 26 Aug 2025 11:37:38 +0000 (UTC)
+	 MIME-Version; b=VRjC1DewoOarsmFq/50uSuBDh/mKQXrc3any/Wu9vlOUfLh82yoInXC8t18OS0FEbVsZFjG0dI1b4up6taTrXF9/H2+oA1bJeedlkbMVS9KfMOppZPAQPjRZe7R4D8yxOTI1oSjxsH6KiQmemkF1NgPp0A99Rx4MJD6HSNqTnFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iU8QL85i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A02C4CEF1;
+	Tue, 26 Aug 2025 14:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208259;
-	bh=6EGUv9E+gAqBq2steQkp+QZtCXfj3HcfOleiZC6ZhnU=;
+	s=korg; t=1756218702;
+	bh=LaZYdq5mvPVW+hpwd+iEFfX/bRrSeopbbWPZQj8KbbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEvlF9JwO6MH9vY3h87ptvnqNly4vaVBWCfvFcTB27EOCKClwDImd2Ha35j+m8uXL
-	 aMQRZHlRQhCt5CH4H6TPvSdePUdFGBbTBsGt66YEQFx6tkxyARS9Qqwi1wNIXGGgU+
-	 ywaCFjGkQ7MUTBvo6/wVHxuWcoGr7+Z+N261R0s0=
+	b=iU8QL85i8/0ohVebqo2cWW0g9tkZXHj+JE17x+DtLUWqJ3RrCbZWqjzk1qHbS15+W
+	 Ms/qy9JlyTqnF6Lcnyd+xWSopWgY3L1PCyUnPNQkfPozZgOBHI2D4mIVv2kODWXHrP
+	 VUemAiYZ5NXNTDqGCLuDmHGuamuEWFPW+W8niwww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 011/322] usb: musb: omap2430: fix device leak at unbind
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 100/403] can: kvaser_pciefd: Store device channel index
 Date: Tue, 26 Aug 2025 13:07:06 +0200
-Message-ID: <20250826110915.510152212@linuxfoundation.org>
+Message-ID: <20250826110909.437338065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 1473e9e7679bd4f5a62d1abccae894fb86de280f upstream.
+[ Upstream commit d54b16b40ddadb7d0a77fff48af7b319a0cd6aae ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+Store device channel index in netdev.dev_port.
 
-Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250725123230.8-6-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/musb/omap2430.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/can/kvaser_pciefd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -400,7 +400,7 @@ static int omap2430_probe(struct platfor
- 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add resources\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index 560a0a5ba6f3..f269b5faa03a 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -953,6 +953,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		can->err_rep_cnt = 0;
+ 		can->bec.txerr = 0;
+ 		can->bec.rxerr = 0;
++		can->can.dev->dev_port = i;
  
- 	if (populate_irqs) {
-@@ -413,7 +413,7 @@ static int omap2430_probe(struct platfor
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 		if (!res) {
- 			ret = -EINVAL;
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
- 
- 		musb_res[i].start = res->start;
-@@ -441,14 +441,14 @@ static int omap2430_probe(struct platfor
- 		ret = platform_device_add_resources(musb, musb_res, i);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
- 	}
- 
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	pm_runtime_enable(glue->dev);
-@@ -463,7 +463,9 @@ static int omap2430_probe(struct platfor
- 
- err3:
- 	pm_runtime_disable(glue->dev);
--
-+err_put_control_otghs:
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- err2:
- 	platform_device_put(musb);
- 
-@@ -477,6 +479,8 @@ static void omap2430_remove(struct platf
- 
- 	platform_device_unregister(glue->musb);
- 	pm_runtime_disable(glue->dev);
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- }
- 
- #ifdef CONFIG_PM
+ 		init_completion(&can->start_comp);
+ 		init_completion(&can->flush_comp);
+-- 
+2.39.5
+
 
 
 
