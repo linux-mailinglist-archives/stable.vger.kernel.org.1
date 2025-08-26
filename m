@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814A6B35B7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F65B362A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B04B2170233
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D9E67A1C81
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2829BDBA;
-	Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A026B747;
+	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDDmEK6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKYzUcwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F02334392;
-	Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71521DAC95;
+	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207139; cv=none; b=aSvpTbeudZhUY+uhZ0qm61/57NS2oA4jaz9f+9XZlj37giY+I8ai1aCNYMOt3yiWUkmKa6wjZooZ4nnImtHzXjWhd330mpUo42vgDLb9E0DxSLUr+SVU/PIkGybsD3SZ13hH8QLNTClWFAkEOteDShrAJS1dFo7gur6+XIGcTsg=
+	t=1756214323; cv=none; b=ePWiPR0+Pi7chaE/nF3CGfCHJq+pIDsfNsnWO6nnr3ivhCJNlvX9p7TPo/SuIBmaqJ4+dmrh2XgKBhTOLm5bbG4hsnydncKH0w3qwN2oIZZRyfDAyYu3G9B7w1+DCkdYwzUR1Hnsi7/bEqPb6xEx+7amz7N2k11ZF0AI1yA1glw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207139; c=relaxed/simple;
-	bh=3eZ9OwRysDGjrAsBGyT7JU9QMj0ogduLdLexiXK4CiM=;
+	s=arc-20240116; t=1756214323; c=relaxed/simple;
+	bh=yIOsG67Lol29vaG7yZrRJREIuDeO5QHa/zlusKJFjvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJ/kDIY5buSWEt4lvU9jK+v907r991AXNMRPC5bWsbhw8e3pGRG6cCnXfwRO7/VtdZNpVjJv0ES/H1WAF0w60dq8oDBzSYvuY7u8mzUoEfoVX+9OvmZ5/EHh1NQSg4UYvuKlykXGTgTPxa1dyvgJBfBfYznIxQW2kYBkI1A7elk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDDmEK6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CDEC4CEF1;
-	Tue, 26 Aug 2025 11:18:58 +0000 (UTC)
+	 MIME-Version; b=K2t1KA/r+C44oUvK/5wJprmWB4tMzysHnPHpP2T72yXxhNw9B91CjXpPuM5fr+B0AycBUuzkiU2cIt28yok676ezM8vjerB3ye0YGDoz3d0j+/8LyoyWWdR+vPsRm/P6HsJ7+hgh+NtqXqu13sK3/PM7h8NweFdxRqQYk6Y6kzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKYzUcwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398FBC4CEF1;
+	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207139;
-	bh=3eZ9OwRysDGjrAsBGyT7JU9QMj0ogduLdLexiXK4CiM=;
+	s=korg; t=1756214323;
+	bh=yIOsG67Lol29vaG7yZrRJREIuDeO5QHa/zlusKJFjvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDDmEK6XKPDbvV9od2jOjv0aF010rQE7oFU1MzEWCi7W0GyVUF2dG+niFVG6HlSEy
-	 Db0f6eyPCyjTns5NGCe7qu4ruhmPdH/OEzFL/3qjQf0qwFVhKn5TueXooQ9r2Q+uTD
-	 vcVhllK8vqfCRxVdNWE7gBnLuZ951RBtAHVSkOv4=
+	b=nKYzUcwMbHhKTErnTqWavEepKEr5kPh9bTk9bX6pjEAto5il8cDXELrIgLmT7rocM
+	 2laVmvRbqc6zXEe/aZqiFbx9rDtt4mwk/rm+pL16dNoIcc5FiFFVyfF8PH043QeSo5
+	 mjMCNgZX7ijGJmUcKhPBaAEQ1w6jSbhcLF34h14Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.16 065/457] scsi: dt-bindings: mediatek,ufs: Add ufs-disable-mcq flag for UFS host
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ricky Wu <ricky_wu@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 096/482] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
 Date: Tue, 26 Aug 2025 13:05:49 +0200
-Message-ID: <20250826110938.967253492@linuxfoundation.org>
+Message-ID: <20250826110933.200543259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Macpaul Lin <macpaul.lin@mediatek.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 794ff7a0a6e76af93c5ec09a49b86fe73373ca59 upstream.
+[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
 
-Add the 'mediatek,ufs-disable-mcq' property to the UFS device-tree
-bindings. This flag corresponds to the UFS_MTK_CAP_DISABLE_MCQ host
-capability recently introduced in the UFS host driver, allowing it to
-disable the Multiple Circular Queue (MCQ) feature when present.  The
-binding schema has also been updated to resolve DTBS check errors.
+In the error path of sd_set_power_mode() we don't update host->power_mode,
+which could lead to an imbalance of the runtime PM usage count. Fix this by
+always updating host->power_mode.
 
-Cc: stable@vger.kernel.org
-Fixes: 46bd3e31d74b ("scsi: ufs: mediatek: Add UFS_MTK_CAP_DISABLE_MCQ")
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://lore.kernel.org/r/20250722085721.2062657-2-macpaul.lin@mediatek.com
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Ricky Wu <ricky_wu@realtek.com>
+Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-+++ b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-@@ -33,6 +33,10 @@ properties:
+diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+index 2c650cd58693..c5a6bbc06953 100644
+--- a/drivers/mmc/host/rtsx_usb_sdmmc.c
++++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
+ 		err = sd_power_on(host);
+ 	}
  
-   vcc-supply: true
+-	if (!err)
+-		host->power_mode = power_mode;
+-
++	host->power_mode = power_mode;
+ 	return err;
+ }
  
-+  mediatek,ufs-disable-mcq:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: The mask to disable MCQ (Multi-Circular Queue) for UFS host.
-+
- required:
-   - compatible
-   - clocks
+-- 
+2.39.5
+
 
 
 
