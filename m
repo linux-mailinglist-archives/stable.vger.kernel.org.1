@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A235CB363C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9BDB35DAA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62CB88A0F47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 263E916FCA7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6F428750C;
-	Tue, 26 Aug 2025 13:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7493D3090E8;
+	Tue, 26 Aug 2025 11:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uROjd0qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKwmvRCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B853AD4B;
-	Tue, 26 Aug 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FD02135B8;
+	Tue, 26 Aug 2025 11:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214578; cv=none; b=BAV1tBnxbXgRfj2OuWP9IU7RpLGKc5DvRUFgcAMIHVIaXGpGhhFs7YyOAzdlgj2u/YVfYtNJ6ZyYIXTbscrNZ99QOKUIZqk3FwOqIHiRbHZWND+Z6rixzTYHR4GJw8lnFWu4esfiwgBmmEpeLjHqC9uwONB1d4IO+okKfOzb/6E=
+	t=1756208226; cv=none; b=PI/Zk9ympeUSdNXTxLxuEJbChje2fsMlT6tL71Yd73hj9C4BfqdV8hSAnAAvBLPi4vvVE/mONJ7WbqQNtB8ni3/+z5H9WCnWo0owBVpDGGabwpP2/Q2w5w/5EksgW7dD9j4CHo5e7Aw6VYl7IPyNnfJ2PaiVfeyYcQT8TlLjrqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214578; c=relaxed/simple;
-	bh=ZsvwhIn0M9QiUeH/Ia1IRS/Z3o2vUpyisr2Ay9yJeY0=;
+	s=arc-20240116; t=1756208226; c=relaxed/simple;
+	bh=OT3spIFvaH9UrkxrY9x5taAQTKs5gWvVvdIPkatvuCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bLBh/2Az+M8DqaQO3tmS0n0JI+gpSi6e8avyNRrMloC5i5vWDLWKnfysy9qJIp2uCsDOSD5VB9FXfdDJNykPUD/4xALWRHPYfyJthpOrHXvd+QFriUoEM4EHhl9yGDGxZRkfUEkHP1WogA+1X7+T4bAnom8J3dA1QrIyxhFg5zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uROjd0qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3794FC4CEF1;
-	Tue, 26 Aug 2025 13:22:57 +0000 (UTC)
+	 MIME-Version; b=bsCju9xlYH/DJqyYCbNDAd9QWED+dqFVI6XVCCUyWyvyPoPb/Destrjki9Kl89RC7KhwznjvlZpHZdYwKarbm1gRZ09WKu4WvLqD0UX/bWaHUxR4nl/mnXl41k0N8xUBbcqra1UNjPF1oQuqfsaTHmzrEIDasODfRRdolhje/rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKwmvRCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B733AC4CEF1;
+	Tue, 26 Aug 2025 11:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214577;
-	bh=ZsvwhIn0M9QiUeH/Ia1IRS/Z3o2vUpyisr2Ay9yJeY0=;
+	s=korg; t=1756208226;
+	bh=OT3spIFvaH9UrkxrY9x5taAQTKs5gWvVvdIPkatvuCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uROjd0qfXewTQ5VgiazbG3IV9M7GlqqNxSx49FQ0ogKpGOQbpIfwUBVEm35OLun9k
-	 XIiYTsaWrdxeFE9yvPew40XPZA5DMUMVq+3IMGkeG2RebuksOEerttcXMLvH9e1DF4
-	 Cc9vPwfK/lPHNGXzZ1AnqFvFh0eyyBPOe3zwL8wU=
+	b=BKwmvRCXurWQAHxndjh/9DpRxghPVXBGBXFkwCExveJMTuf86GArISL8PaXgZ5tI7
+	 amOF81mp0o1mSjNr7d5TesCOt2k3QUPZGz3neAMRilmsYxXLSJNubD/Z5u7YuW9G4a
+	 JmZ+o680c9VBzSnELJ5tiB/2mXvOpsrbGAusaRkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/482] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 029/322] ext4: check fast symlink for ea_inode correctly
 Date: Tue, 26 Aug 2025 13:07:24 +0200
-Message-ID: <20250826110935.523039703@linuxfoundation.org>
+Message-ID: <20250826110916.042262871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Andreas Dilger <adilger@dilger.ca>
 
-[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
+commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
 
-When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
-two line warning is printed each time the pipeline is started. Reduce
-this excessive logging by only warning once for the missing control.
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
+
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
+
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
+Cc: stable@vger.kernel.org
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-index 40f56e044640..1c8d36684809 100644
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -475,10 +475,10 @@ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -151,7 +151,7 @@ static int ext4_meta_trans_blocks(struct
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
  
- 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
- 
--		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
--			__func__);
--		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
--			__func__);
-+		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
-+			     __func__);
-+		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
-+			     __func__);
- 	}
- 
- 	return freq > 0 ? freq : -EINVAL;
--- 
-2.39.5
-
 
 
 
