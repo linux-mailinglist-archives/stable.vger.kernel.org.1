@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850BEB364F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5F4B36A50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598D48A65CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9DDD586AB8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1041334164F;
-	Tue, 26 Aug 2025 13:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BD1352087;
+	Tue, 26 Aug 2025 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu0VCNHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIG0BaAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18502BDC2F;
-	Tue, 26 Aug 2025 13:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079DE350D7B;
+	Tue, 26 Aug 2025 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215265; cv=none; b=dOWAsLWkUvLYTWElmMvRfElg7By9y7q9i/nB3akIHdYcr91X4S1eeI3S2xGZFTJxJr4onQ7UWpmYp7CEPxhwI+o0VIksOV9GDRXDq9fDKbzUJUiU5SBqBer3B7nsurkxYHn4zlAMsLnYgsx9mZsYydZpUvxGN4w1kZk6jhTu/yY=
+	t=1756218357; cv=none; b=AKbj+ESlDixKpXrfuxTy+rTbsSNyD6rTHtTXlWlvLjb8P3Dr2GwFDvCqqMwPv6kwNDK/2nrxduuRuGI/xGoSjKrZpZ9dQmmVX+l1XS0epAaVA3aHBBkFCrqCKZ9tZ/TxHlSoGY9fiugOt+a7boWede/ZA4tIMYFdEsFXZ3utPnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215265; c=relaxed/simple;
-	bh=Tqk5XRRwfAO+Y/BsvSJFVIduzyHbn6KYHNXSv0pG2/s=;
+	s=arc-20240116; t=1756218357; c=relaxed/simple;
+	bh=f9vDggU0ejlGUmmnj/pDDLzIO3J+CdjgCKU6pnGbLow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiEzzIiGP7btVvq2IJ0uW8qV+kHZs05V/HrA7mgzAYJ/XUr/Z0qBoWksjNw5zxE/gE2EeG1OXcE5eK1z7WPbtr7byoGT67VOc69SXHvCxXYHtSDRw05LFfWAHQrNrXApz6RESz4vtdr0A5Pwt/0KivjgPpf6Li2Ll2zG+S9C0Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu0VCNHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5072CC4CEF1;
-	Tue, 26 Aug 2025 13:34:25 +0000 (UTC)
+	 MIME-Version; b=B5I8tEaD5n1WT5pyuhz+vE5qtskv4CEXH8D9muDC7xkSxcibsIMer/svz7g42EkW7BGPJ0Ws0GXxSwXgASCo/gLQ4yqVu44U9DVyzgi5CvrhHfBnLp0AzIU7jzzW8fdzUwByljCKSG/mGNtRIdDJaWiYaqu+aXR0GNY8jg50iso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIG0BaAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628A3C4CEF1;
+	Tue, 26 Aug 2025 14:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215265;
-	bh=Tqk5XRRwfAO+Y/BsvSJFVIduzyHbn6KYHNXSv0pG2/s=;
+	s=korg; t=1756218356;
+	bh=f9vDggU0ejlGUmmnj/pDDLzIO3J+CdjgCKU6pnGbLow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu0VCNHSfLD6gVQXNON58ujQtFmsJX+1PDKtqyQ1dOV0My1kWvWmiN2ypTwDvjEEp
-	 tT+jBi20Unyx5rGDsC4ZmDs/+c/vHInYRSGXn8uPwApzwYLJ4PigK+quBPIA4++5wZ
-	 RBsf+oInwsSW5TJrAnD6D0gR2fDpid5V+9Raycw4=
+	b=TIG0BaAk8fveJFzkjZ8XA0Z6uBJboNcZdkyYSHOi774ch33gDDAaSEvbodHAV/pJu
+	 UQkWHLSa70/9gafQfiLN2KeRlUsCNprE9VmCVzYS2u3s5iTfaiOGl10+nKYS9wR5mC
+	 wYxWaNtFBDG3xDrz0wDWGtfH3dTO/i/baTDH1uqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	stable@kernel.org,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 448/482] tracing: Limit access to parser->buffer when trace_get_user failed
+Subject: [PATCH 5.10 491/523] f2fs: fix to avoid out-of-boundary access in dnode page
 Date: Tue, 26 Aug 2025 13:11:41 +0200
-Message-ID: <20250826110941.897184108@linuxfoundation.org>
+Message-ID: <20250826110936.556447064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
+[ Upstream commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 ]
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+As Jiaming Zhang reported:
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x17e/0x800 mm/kasan/report.c:480
+ kasan_report+0x147/0x180 mm/kasan/report.c:593
+ data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
+ f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
+ f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
+ f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
+ prepare_write_begin fs/f2fs/data.c:3395 [inline]
+ f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
+ generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
+ f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
+ f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x546/0xa90 fs/read_write.c:686
+ ksys_write+0x149/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
+The root cause is in the corrupted image, there is a dnode has the same
+node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
+access block address in dnode at offset 934, however it parses the dnode
+as inode node, so that get_dnode_addr() returns 360, then it tries to
+access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
 
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
+To fix this issue, let's add sanity check for node id of all direct nodes
+during f2fs_get_dnode_of_data().
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@kernel.org
+Reported-by: Jiaming Zhang <r772577952@gmail.com>
+Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ replaced f2fs_err_ratelimited() with f2fs_err() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   18 ++++++++++++------
- kernel/trace/trace.h |    8 +++++++-
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ fs/f2fs/node.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1618,7 +1618,7 @@ int trace_get_user(struct trace_parser *
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -760,6 +760,16 @@ int f2fs_get_dnode_of_data(struct dnode_
+ 	for (i = 1; i <= level; i++) {
+ 		bool done = false;
  
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1632,7 +1632,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1650,12 +1650,14 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
++		if (nids[i] && nids[i] == dn->inode->i_ino) {
++			err = -EFSCORRUPTED;
++			f2fs_err(sbi,
++				"inode mapping table is corrupted, run fsck to fix it, "
++				"ino:%lu, nid:%u, level:%d, offset:%d",
++				dn->inode->i_ino, nids[i], level, offset[level]);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			goto release_pages;
 +		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1670,11 +1672,15 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1131,6 +1131,7 @@ bool ftrace_event_is_function(struct tra
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1138,7 +1139,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
- {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
- 
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1152,6 +1153,11 @@ static inline void trace_parser_clear(st
- 	parser->idx = 0;
- }
- 
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
 +
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		if (!nids[i] && mode == ALLOC_NODE) {
+ 			/* alloc new node */
+ 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
 
 
 
