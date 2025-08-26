@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A254B3614E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCC6B3673A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78671BA5CBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9330A1C24A5B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CF41FBE9B;
-	Tue, 26 Aug 2025 13:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3158F345726;
+	Tue, 26 Aug 2025 13:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmGsTOZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CACjJggE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E514612CDA5;
-	Tue, 26 Aug 2025 13:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CCE2FFDEB;
+	Tue, 26 Aug 2025 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213478; cv=none; b=OblJ+xvML2LypRBm/hY12CrQAhYweMCvk82AMskA9D9fHOETRAMWSyDoGZIBUVt2bFSnTihEkmaV1K/SMZkMo3c06rFkfQAe+ioi5jYQi7jczLxzrx19dc6wKyoaAtN6qaQFSue4wl5hhl+TIygs5Vppl/6Q+bujx0VpQvpj+dw=
+	t=1756216463; cv=none; b=CFD+YbIrw71nq42kvfEE/duN9AAXKEdLBlY+BjzjGP5fU+J4kJPRLYXQrj4x7NBSwvo+o48oTT60QsxFU6gnbE2ijG+vpcNed42f9X9Y7Ph9RV3NBNq8PlACEWSzWceE/hgc4FeNI91gdA8MYhqLUj4fyn102JkrooD1OTxArpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213478; c=relaxed/simple;
-	bh=eN/KaEspI7bIe9UCfam5BQOyULhQ5O3EfwSJeqPRpVM=;
+	s=arc-20240116; t=1756216463; c=relaxed/simple;
+	bh=ysuZ3CMpgH1n4qV8n3DIboKLWX8KyqugXmNknFtBHqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBpFsdEsJ11bGLIjRkaZQq/P3m2auhMDhcYq4NEmtL9DFMLr7ZFTMwJHepJAF0CkaanAtOfozvRWmpy+4/3WK2XKKzYOSdcNuMkfFVseWPSn2QtRuqgbli/5w51T3WZDuhGhHt6BMqaPCIrMFaYBPNfJDTAB9D+FAoAEH8xyewM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmGsTOZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F579C4CEF1;
-	Tue, 26 Aug 2025 13:04:36 +0000 (UTC)
+	 MIME-Version; b=Oyg6i6DJQ2EGXXRrV3/gqmyUUAx7ngpK2u+pTxNZqPnDwPWoozqtlX5DJ4Ahj332UYLbacuF6Wa7iC//uXyqkEE9WQP4To9cisaEEly5qZfqoP6SJpg+ZWJNfbEide0xTLZBfQwdIcrq81jJL/ArYdXKF2aqKKECy8/ayd2BDOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CACjJggE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C61C4CEF1;
+	Tue, 26 Aug 2025 13:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213477;
-	bh=eN/KaEspI7bIe9UCfam5BQOyULhQ5O3EfwSJeqPRpVM=;
+	s=korg; t=1756216462;
+	bh=ysuZ3CMpgH1n4qV8n3DIboKLWX8KyqugXmNknFtBHqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmGsTOZbbkKHArbkfxz4gTFeGZwlKg7nMkL6N1goS+ekW4XR1S7U4FdJXBXGEnWuh
-	 2plpmxZjkFMNWTHVr1WscNdIWVAsy8R2nEY0uoUB10g7YbHz2OF5x2utGCCX02sCZ/
-	 NdPJKwyt68CpUdHTE9eTvckvuMwv3WVPVkJgSLo8=
+	b=CACjJggEmfT151uoF9lNb9jbrL22u6L0VxXROUH8254Pw5vxgGMpktitf99iKiazM
+	 flRzPtG615kyDNdWde04DvhJLyIB709d9Ejrpl+WkA6ynE/TrqB5adxUw2ZyCOUX1R
+	 bjb1BJkp8aLYU8tBa/HFnRJ9rayfImQSs2PvZPvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Archana Patni <archana.patni@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 362/587] scsi: ufs: ufs-pci: Fix hibernate state transition for Intel MTL-like host controllers
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 420/644] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
 Date: Tue, 26 Aug 2025 13:08:31 +0200
-Message-ID: <20250826111002.120112693@linuxfoundation.org>
+Message-ID: <20250826110956.866062658@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Archana Patni <archana.patni@intel.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 4428ddea832cfdb63e476eb2e5c8feb5d36057fe upstream.
+[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
 
-UFSHCD core disables the UIC completion interrupt when issuing UIC
-hibernation commands, and re-enables it afterwards if it was enabled to
-start with, refer ufshcd_uic_pwr_ctrl(). For Intel MTL-like host
-controllers, accessing the register to re-enable the interrupt disrupts
-the state transition.
+sas_user_scan() did not fully process wildcard channel scans
+(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
+present. Only channel 0 would be scanned via user_scan(), while the
+remaining channels were skipped, potentially missing devices.
 
-Use hibern8_notify variant operation to disable the interrupt during the
-entire hibernation, thereby preventing the disruption.
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to
+shost->max_channel) via scsi_scan_host_selected().  This ensures complete
+wildcard scanning without affecting transport-specific scanning behavior.
 
-Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Archana Patni <archana.patni@intel.com>
-Link: https://lore.kernel.org/r/20250723165856.145750-2-adrian.hunter@intel.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/scsi/scsi_scan.c          |  2 +-
+ drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -213,6 +213,32 @@ out:
- 	return ret;
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index f00b4624e46b..e39648762896 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1762,7 +1762,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
+ 
+ 	return 0;
+ }
+-
++EXPORT_SYMBOL(scsi_scan_host_selected);
+ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
+ {
+ 	struct scsi_device *sdev;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 8649608faec2..87c5ed56e47b 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -41,6 +41,8 @@
+ #include <scsi/scsi_transport_sas.h>
+ 
+ #include "scsi_sas_internal.h"
++#include "scsi_priv.h"
++
+ struct sas_host_attrs {
+ 	struct list_head rphy_list;
+ 	struct mutex lock;
+@@ -1681,32 +1683,66 @@ int scsi_is_sas_rphy(const struct device *dev)
+ }
+ EXPORT_SYMBOL(scsi_is_sas_rphy);
+ 
+-
+-/*
+- * SCSI scan helper
+- */
+-
+-static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+-		uint id, u64 lun)
++static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
+ {
+ 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
+ 	struct sas_rphy *rphy;
+ 
+-	mutex_lock(&sas_host->lock);
+ 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
+ 		if (rphy->identify.device_type != SAS_END_DEVICE ||
+ 		    rphy->scsi_target_id == -1)
+ 			continue;
+ 
+-		if ((channel == SCAN_WILD_CARD || channel == 0) &&
+-		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
++		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
+ 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
+ 					 lun, SCSI_SCAN_MANUAL);
+ 		}
+ 	}
+-	mutex_unlock(&sas_host->lock);
++}
+ 
+-	return 0;
++/*
++ * SCSI scan helper
++ */
++
++static int sas_user_scan(struct Scsi_Host *shost, uint channel,
++		uint id, u64 lun)
++{
++	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
++	int res = 0;
++	int i;
++
++	switch (channel) {
++	case 0:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++		break;
++
++	case SCAN_WILD_CARD:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++
++		for (i = 1; i <= shost->max_channel; i++) {
++			res = scsi_scan_host_selected(shost, i, id, lun,
++						      SCSI_SCAN_MANUAL);
++			if (res)
++				goto exit_scan;
++		}
++		break;
++
++	default:
++		if (channel < shost->max_channel) {
++			res = scsi_scan_host_selected(shost, channel, id, lun,
++						      SCSI_SCAN_MANUAL);
++		} else {
++			res = -EINVAL;
++		}
++		break;
++	}
++
++exit_scan:
++	return res;
  }
  
-+static void ufs_intel_ctrl_uic_compl(struct ufs_hba *hba, bool enable)
-+{
-+	u32 set = ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
-+
-+	if (enable)
-+		set |= UIC_COMMAND_COMPL;
-+	else
-+		set &= ~UIC_COMMAND_COMPL;
-+	ufshcd_writel(hba, set, REG_INTERRUPT_ENABLE);
-+}
-+
-+static void ufs_intel_mtl_h8_notify(struct ufs_hba *hba,
-+				    enum uic_cmd_dme cmd,
-+				    enum ufs_notify_change_status status)
-+{
-+	/*
-+	 * Disable UIC COMPL INTR to prevent access to UFSHCI after
-+	 * checking HCS.UPMCRS
-+	 */
-+	if (status == PRE_CHANGE && cmd == UIC_CMD_DME_HIBER_ENTER)
-+		ufs_intel_ctrl_uic_compl(hba, false);
-+
-+	if (status == POST_CHANGE && cmd == UIC_CMD_DME_HIBER_EXIT)
-+		ufs_intel_ctrl_uic_compl(hba, true);
-+}
-+
- #define INTEL_ACTIVELTR		0x804
- #define INTEL_IDLELTR		0x808
  
-@@ -487,6 +513,7 @@ static struct ufs_hba_variant_ops ufs_in
- 	.init			= ufs_intel_mtl_init,
- 	.exit			= ufs_intel_common_exit,
- 	.hce_enable_notify	= ufs_intel_hce_enable_notify,
-+	.hibern8_notify		= ufs_intel_mtl_h8_notify,
- 	.link_startup_notify	= ufs_intel_link_startup_notify,
- 	.resume			= ufs_intel_resume,
- 	.device_reset		= ufs_intel_device_reset,
+-- 
+2.39.5
+
 
 
 
