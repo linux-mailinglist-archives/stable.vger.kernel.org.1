@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734F2B3624B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A80AB3650E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4EDC8A4D20
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7FC8E103B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F733471E;
-	Tue, 26 Aug 2025 13:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8101B2E6106;
+	Tue, 26 Aug 2025 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2pmQaHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLdwlX1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04EC1AB52D;
-	Tue, 26 Aug 2025 13:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9D02F7473;
+	Tue, 26 Aug 2025 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213894; cv=none; b=W6LC8W1/Ox44mP5Rdorn4jB/pvkSzol+yZwtJmyh+Tqx3jI0Evj0Hs5eSFEou3Jtnl+l9/NWbspQXUH/3m9uemV7iYwgeVwlIXTc6Xnp9jvp1Rzj8Px1WjCS8+sDAcgf/EZ2Ozd03kEhfRE1yZDcflsuU54rJ5vg6iEximQL5dE=
+	t=1756215157; cv=none; b=oYd28ZyTOsh1bblLlGfQv8PVGByiVz1mC1aueX8IEvDN6wxtYEX1H00ORt2QudRfYMeYZVQ3IZcnC1kjHSJRh7If9PhifWsjXR8AN20+EWtQUd+KJlUEMIaTn02ddB20ouE6MNFLLQpTbUQ0Pk00pYgEpzLLn110P+UbQy/NVlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213894; c=relaxed/simple;
-	bh=xO3YDGVPIf+yJYr01GvWC3IbfGAkqoqCBU5Y2clxGtM=;
+	s=arc-20240116; t=1756215157; c=relaxed/simple;
+	bh=TnqQmVkn7CcpmjuyFSWA9ybJFujwdUMXERQbb3v4do8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=seJJbRKn5Gm2BRZbeo1Am52HBG5HRw6NlhoWQ3upRN1s1CI5KsiwJQ4Fva90EKMNxQFUPJSihJGKujGsxPK2wTq0/R0CtKauC/bhsm2bl+HWmf3PYinGAcKhorYOtxuL82XtZus8M7+HI/yBWCb5/7EWhpeBGvNQaCUiKYtdMhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2pmQaHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E373C4CEF1;
-	Tue, 26 Aug 2025 13:11:33 +0000 (UTC)
+	 MIME-Version; b=LfIfIMBBVXJ//A7t/X9axbAa+dYSidycr+EkhMO7Eur7Vw+KQinKYozPzE8crrKyLy6RLwichqLPoEYqEUtsRBfZUymWliDtcdVkWRvLodFG1A5LjyZRgrs37UAX9J8pB+3+sxdAmxNeGYsW76VI7+tAUAtbbSQwULUmDUY8gtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLdwlX1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18BBC4CEF1;
+	Tue, 26 Aug 2025 13:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213893;
-	bh=xO3YDGVPIf+yJYr01GvWC3IbfGAkqoqCBU5Y2clxGtM=;
+	s=korg; t=1756215157;
+	bh=TnqQmVkn7CcpmjuyFSWA9ybJFujwdUMXERQbb3v4do8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2pmQaHPC/39ftDXiXKp8EzdxE4BRm7NJpHgBnQsj6iBa+LP6AfBfZJgzA1Mmgb6G
-	 RaKQUQyvtvf8xNqBPE+aMYpZTOAOyAxebr1umXQwKzqnvVUlqc3AGzMLm1qNdch1sF
-	 U5cw1m+zDHPSE06BV0i7tBDGcwgLNLzVbAzIwpT4=
+	b=OLdwlX1m7SvzdrY8fUgXdv4DAlehCW9vGV5pthO4ijoW8iaFRJeuGgS4CRfD46/dx
+	 CkGqIUZWGA9wDvw0MgylCc/zP7kIGFn8ObIfhVeoCfB6AZ+DUiN/Flyuy3YC5/n7FG
+	 gyFd2lqfC3OnSk3yG5UtYLff8Wp3PhBzvotQDaq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 512/587] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 6.1 408/482] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
 Date: Tue, 26 Aug 2025 13:11:01 +0200
-Message-ID: <20250826111006.020728602@linuxfoundation.org>
+Message-ID: <20250826110940.909051327@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
+commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
+get the number of mapped segments.
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
-
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
-
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
-
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
+Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
+Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/fpga/zynq-fpga.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
+ 		}
  	}
+ 
+-	priv->dma_nelms =
+-	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+-	if (priv->dma_nelms == 0) {
++	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
++	if (err) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+-		return -ENOMEM;
++		return err;
+ 	}
++	priv->dma_nelms = sgt->nents;
+ 
+ 	/* enable clock */
+ 	err = clk_enable(priv->clk);
 
 
 
