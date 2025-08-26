@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE70EB367A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C14AB36BD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D4191C23C6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BE51C41B00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B0942AA4;
-	Tue, 26 Aug 2025 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC542253F3;
+	Tue, 26 Aug 2025 14:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/MoRc0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHXBB2+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8DB34F485;
-	Tue, 26 Aug 2025 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C822FDC5C;
+	Tue, 26 Aug 2025 14:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216669; cv=none; b=WmIU43L73wEcxd5rZMwgRhh9R9Pyhev2+mPPcoC/Qmgx4/BA5/h3tXoGGVlY2SXQBZ/huYqVh5ylhu3UKO8sJlAUFoVIJm45npJBioYZXIy3YHsAL5NmVjlqtZRBlJUwem18wvLHbZgIYxAigZmdyeS/zie4JhTZ+7ZyNx6uxx8=
+	t=1756219123; cv=none; b=H77W544GxR7waB6u5ouwwqq05MCJROfA29GOvIvqNNxbNj85xFMVfYCKHCoKA9KInqnPvUOiZctcJWhdeAwyelM1MbxOggAW+xDP/6bXbFOH52tbLhIeMDb7AMJcxBxuThFxM3ZoMYfQgjfKo/29z/16hAXEDnOVupVQa19nhw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216669; c=relaxed/simple;
-	bh=wztK95UM4EsuTdSZz38aNEClMqs6aErU0DuiWlQ0Gq0=;
+	s=arc-20240116; t=1756219123; c=relaxed/simple;
+	bh=W+l6RGLyTdqkx9beWQBwrb/LbwulZ154XBR4h5gq9b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7Uwf87gc0EPWLe4CVWzkwHqjyGEihAr1ZDYeMjgdCb/4nZUF4JAugbLIJqj9Rk0NQY2OH6LxGJ1rltlEKhEpZl8kiAlq91z/jxEYVwMtWMzws7zP6XdmVfxeMTx+ESZqvK8000QQOkjIfhVjGvI2CIf0rqZ0qcFZCSdZbutYe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/MoRc0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57BFC4CEF1;
-	Tue, 26 Aug 2025 13:57:48 +0000 (UTC)
+	 MIME-Version; b=liYX8ViQ4p+ygWXL6M9poqhUlIAqnMvdWGDGKnTCMyUB3YJC+tN0b9g+3VKLdReovr9OGcZcUc0xSNr0nGRAoJCTgYKsxsJgYzxFk83flr2g/t7bGDCX/SZprbMp2AwcvElAh8wfcNu1rwNUcgDtWOd1os6Badr8UJaIKEbUCsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHXBB2+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF452C4CEF1;
+	Tue, 26 Aug 2025 14:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216669;
-	bh=wztK95UM4EsuTdSZz38aNEClMqs6aErU0DuiWlQ0Gq0=;
+	s=korg; t=1756219123;
+	bh=W+l6RGLyTdqkx9beWQBwrb/LbwulZ154XBR4h5gq9b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/MoRc0UJ/7+QSa+ipHfTDQhbcgWqN85OFC4YrbefFtTQAYqbyxttvM9DjwJMbN6t
-	 ppKHjZUlmI+GpWWzu0zlhElHv+GQWYY6gd2GxTU5E/pSg1gIsvGprL0wa9mLXnZ8LL
-	 Xf1boK2GCbHPTEq9nvchiNdh3cZ4iM33hlBiPILs=
+	b=YHXBB2+liay7AeyArOVq2oNIisdkes1MgwaGnsXVDtbcX5gIsj9b0s6+iqiwHS6y6
+	 TdfCP0algidMWEMv9b+niqm1Nc3iOyelPjAvhMjKg/BDalIlxB1TkTXMmlHP38TEDW
+	 uLYRRKb4QHFgorJ4q14RPyGWdNZI0kHRd7f6VwW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.15 497/644] drm/amd: Restore cached power limit during resume
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 262/403] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
 Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826110958.810757190@linuxfoundation.org>
+Message-ID: <20250826110914.052870300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-The power limit will be cached in smu->current_power_limit but
-if the ASIC goes into S3 this value won't be restored.
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-Restore the value during SMU resume.
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1573,6 +1573,12 @@ static int smu_resume(void *handle)
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 9b10f1248da1..bd1fdbd949cc 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -980,13 +980,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
- 	adev->pm.dpm_enabled = true;
- 
-+	if (smu->current_power_limit) {
-+		ret = smu_set_power_limit(smu, smu->current_power_limit);
-+		if (ret && ret != -EOPNOTSUPP)
-+			return ret;
-+	}
-+
- 	dev_info(adev->dev, "SMU is resumed successfully!\n");
- 
- 	return 0;
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
+ 	}
+ }
+-- 
+2.39.5
+
 
 
 
