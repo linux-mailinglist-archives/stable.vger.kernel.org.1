@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-175733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C14B368CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE36CB36CDC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 131207A870C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6598E53E9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6235356906;
-	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA84333439F;
+	Tue, 26 Aug 2025 14:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH4cqfmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAovhz1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CDA3568FC;
-	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFF9345726;
+	Tue, 26 Aug 2025 14:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217826; cv=none; b=aLsMbwDHCeGqhw33fUMAdg/q4nvruzvz0RnFTpsFDK5FSPPm6aFPzUWuXurX1yYiYJAuCECjHPQuT8Hhe+sfSQIbfUwqfvu21xqmWozPVTfqSaNEiO1rvd0NkVjdugnRvEfk/VXPCSqYNq+WLDeXnk1N8BSw8v7OCL8KETTAWJE=
+	t=1756218892; cv=none; b=HcwX24Kpucub/5t6cC2SU53iEwxyS98MJLC+d8OE1yAC8Yzv7ELvYB1/ehfryirfN7NA6lub+4wbLn5TfYBXWXpmDGFZwlsMi0LIQCDKwJVVolgrT0eTR2W7CK3ru6R9Kx4Kj6lX10KiZjBpVmbl1CePg+q1jKkOeB4a4Y9iuJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217826; c=relaxed/simple;
-	bh=wq1cRX44NgzPocAgnoOina4+eVQxu9vR8MeOflUl/Z4=;
+	s=arc-20240116; t=1756218892; c=relaxed/simple;
+	bh=AVmTynq+LMVD1v6Qcf67bosWA+/qbhcTZoBIoPhg6a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qxuFLdSL2kd7yfYETVMkgXqg8S8p0VAc4PdgHpPQeJo+ggI3yq2FIatrtAJ1ciwlc6jXn0qJUCof3sgGKqzkG4Xm6f+MYIG8FVKzs9jS/DHHJO4z8PVulDZZNfwPwiacQy1j5Nj8H0s1zA7si1/HGglWCjL6zKX9tHLGgfG1Iqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH4cqfmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27601C113CF;
-	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
+	 MIME-Version; b=MTqUWxX43tISy8brYGKU+wKPcMtkkcTvVXDUIQfOQ/KAlZv+2+H1tfRRg9Aa0K42lO2/RumnQvmTh0I7cHXyPAcwVOx2VQ83KwmduUvjK9YzL3BRgn0ZQJXkXSYPg2IlSIFnh8bdZafrCYAdk50Yl576MElw6WmobtaJjBaMRWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAovhz1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140F3C4CEF1;
+	Tue, 26 Aug 2025 14:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217826;
-	bh=wq1cRX44NgzPocAgnoOina4+eVQxu9vR8MeOflUl/Z4=;
+	s=korg; t=1756218892;
+	bh=AVmTynq+LMVD1v6Qcf67bosWA+/qbhcTZoBIoPhg6a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KH4cqfmGfwpf/6Rk61Clc58kwXDMeX1c/Tw0mT5nPv7ssiESMlTmaTKM/CBsCBeU8
-	 uKHAvEgtgvu5OINK8X8OwQJzZPVX+/5quXIoFDxMWMVvlIa7lkHZ9kZsfj+QFg/M98
-	 T/OS1hUdRGANHwsw1H7Ds4+kLcZMjS6D3SYSq/0Y=
+	b=RAovhz1JesKAj3t0ofSuNfxBoZqZGAA+Z/6a0AR23rA4QB1xKy6XS3ciVrgkEHRx2
+	 QeVh9+WbtBH7P45Zv4r0kIxj8svUvP0dLblnZdX+9d++Xtkdwmgh4enXLtIN4TGlP4
+	 bEhaG1bkbOfKpX48I767L0koQC1Kfm27toX35WiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wenzhi Wang <wenzhi.wang@uwaterloo.ca>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 289/523] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
+Subject: [PATCH 5.4 173/403] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
 Date: Tue, 26 Aug 2025 13:08:19 +0200
-Message-ID: <20250826110931.573558278@linuxfoundation.org>
+Message-ID: <20250826110911.670360307@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
+[ Upstream commit 94458781aee6045bd3d0ad4b80b02886b9e2219b ]
 
-BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
+The hfsplus_readdir() method is capable to crash by calling
+hfsplus_uni2asc():
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[  667.121659][ T9805] ==================================================================
+[  667.122651][ T9805] BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0x902/0xa10
+[  667.123627][ T9805] Read of size 2 at addr ffff88802592f40c by task repro/9805
+[  667.124578][ T9805]
+[  667.124876][ T9805] CPU: 3 UID: 0 PID: 9805 Comm: repro Not tainted 6.16.0-rc3 #1 PREEMPT(full)
+[  667.124886][ T9805] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  667.124890][ T9805] Call Trace:
+[  667.124893][ T9805]  <TASK>
+[  667.124896][ T9805]  dump_stack_lvl+0x10e/0x1f0
+[  667.124911][ T9805]  print_report+0xd0/0x660
+[  667.124920][ T9805]  ? __virt_addr_valid+0x81/0x610
+[  667.124928][ T9805]  ? __phys_addr+0xe8/0x180
+[  667.124934][ T9805]  ? hfsplus_uni2asc+0x902/0xa10
+[  667.124942][ T9805]  kasan_report+0xc6/0x100
+[  667.124950][ T9805]  ? hfsplus_uni2asc+0x902/0xa10
+[  667.124959][ T9805]  hfsplus_uni2asc+0x902/0xa10
+[  667.124966][ T9805]  ? hfsplus_bnode_read+0x14b/0x360
+[  667.124974][ T9805]  hfsplus_readdir+0x845/0xfc0
+[  667.124984][ T9805]  ? __pfx_hfsplus_readdir+0x10/0x10
+[  667.124994][ T9805]  ? stack_trace_save+0x8e/0xc0
+[  667.125008][ T9805]  ? iterate_dir+0x18b/0xb20
+[  667.125015][ T9805]  ? trace_lock_acquire+0x85/0xd0
+[  667.125022][ T9805]  ? lock_acquire+0x30/0x80
+[  667.125029][ T9805]  ? iterate_dir+0x18b/0xb20
+[  667.125037][ T9805]  ? down_read_killable+0x1ed/0x4c0
+[  667.125044][ T9805]  ? putname+0x154/0x1a0
+[  667.125051][ T9805]  ? __pfx_down_read_killable+0x10/0x10
+[  667.125058][ T9805]  ? apparmor_file_permission+0x239/0x3e0
+[  667.125069][ T9805]  iterate_dir+0x296/0xb20
+[  667.125076][ T9805]  __x64_sys_getdents64+0x13c/0x2c0
+[  667.125084][ T9805]  ? __pfx___x64_sys_getdents64+0x10/0x10
+[  667.125091][ T9805]  ? __x64_sys_openat+0x141/0x200
+[  667.125126][ T9805]  ? __pfx_filldir64+0x10/0x10
+[  667.125134][ T9805]  ? do_user_addr_fault+0x7fe/0x12f0
+[  667.125143][ T9805]  do_syscall_64+0xc9/0x480
+[  667.125151][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.125158][ T9805] RIP: 0033:0x7fa8753b2fc9
+[  667.125164][ T9805] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 48
+[  667.125172][ T9805] RSP: 002b:00007ffe96f8e0f8 EFLAGS: 00000217 ORIG_RAX: 00000000000000d9
+[  667.125181][ T9805] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fa8753b2fc9
+[  667.125185][ T9805] RDX: 0000000000000400 RSI: 00002000000063c0 RDI: 0000000000000004
+[  667.125190][ T9805] RBP: 00007ffe96f8e110 R08: 00007ffe96f8e110 R09: 00007ffe96f8e110
+[  667.125195][ T9805] R10: 0000000000000000 R11: 0000000000000217 R12: 0000556b1e3b4260
+[  667.125199][ T9805] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[  667.125207][ T9805]  </TASK>
+[  667.125210][ T9805]
+[  667.145632][ T9805] Allocated by task 9805:
+[  667.145991][ T9805]  kasan_save_stack+0x20/0x40
+[  667.146352][ T9805]  kasan_save_track+0x14/0x30
+[  667.146717][ T9805]  __kasan_kmalloc+0xaa/0xb0
+[  667.147065][ T9805]  __kmalloc_noprof+0x205/0x550
+[  667.147448][ T9805]  hfsplus_find_init+0x95/0x1f0
+[  667.147813][ T9805]  hfsplus_readdir+0x220/0xfc0
+[  667.148174][ T9805]  iterate_dir+0x296/0xb20
+[  667.148549][ T9805]  __x64_sys_getdents64+0x13c/0x2c0
+[  667.148937][ T9805]  do_syscall_64+0xc9/0x480
+[  667.149291][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.149809][ T9805]
+[  667.150030][ T9805] The buggy address belongs to the object at ffff88802592f000
+[  667.150030][ T9805]  which belongs to the cache kmalloc-2k of size 2048
+[  667.151282][ T9805] The buggy address is located 0 bytes to the right of
+[  667.151282][ T9805]  allocated 1036-byte region [ffff88802592f000, ffff88802592f40c)
+[  667.152580][ T9805]
+[  667.152798][ T9805] The buggy address belongs to the physical page:
+[  667.153373][ T9805] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x25928
+[  667.154157][ T9805] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  667.154916][ T9805] anon flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+[  667.155631][ T9805] page_type: f5(slab)
+[  667.155997][ T9805] raw: 00fff00000000040 ffff88801b442f00 0000000000000000 dead000000000001
+[  667.156770][ T9805] raw: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
+[  667.157536][ T9805] head: 00fff00000000040 ffff88801b442f00 0000000000000000 dead000000000001
+[  667.158317][ T9805] head: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
+[  667.159088][ T9805] head: 00fff00000000003 ffffea0000964a01 00000000ffffffff 00000000ffffffff
+[  667.159865][ T9805] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+[  667.160643][ T9805] page dumped because: kasan: bad access detected
+[  667.161216][ T9805] page_owner tracks the page as allocated
+[  667.161732][ T9805] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN9
+[  667.163566][ T9805]  post_alloc_hook+0x1c0/0x230
+[  667.164003][ T9805]  get_page_from_freelist+0xdeb/0x3b30
+[  667.164503][ T9805]  __alloc_frozen_pages_noprof+0x25c/0x2460
+[  667.165040][ T9805]  alloc_pages_mpol+0x1fb/0x550
+[  667.165489][ T9805]  new_slab+0x23b/0x340
+[  667.165872][ T9805]  ___slab_alloc+0xd81/0x1960
+[  667.166313][ T9805]  __slab_alloc.isra.0+0x56/0xb0
+[  667.166767][ T9805]  __kmalloc_cache_noprof+0x255/0x3e0
+[  667.167255][ T9805]  psi_cgroup_alloc+0x52/0x2d0
+[  667.167693][ T9805]  cgroup_mkdir+0x694/0x1210
+[  667.168118][ T9805]  kernfs_iop_mkdir+0x111/0x190
+[  667.168568][ T9805]  vfs_mkdir+0x59b/0x8d0
+[  667.168956][ T9805]  do_mkdirat+0x2ed/0x3d0
+[  667.169353][ T9805]  __x64_sys_mkdir+0xef/0x140
+[  667.169784][ T9805]  do_syscall_64+0xc9/0x480
+[  667.170195][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.170730][ T9805] page last free pid 1257 tgid 1257 stack trace:
+[  667.171304][ T9805]  __free_frozen_pages+0x80c/0x1250
+[  667.171770][ T9805]  vfree.part.0+0x12b/0xab0
+[  667.172182][ T9805]  delayed_vfree_work+0x93/0xd0
+[  667.172612][ T9805]  process_one_work+0x9b5/0x1b80
+[  667.173067][ T9805]  worker_thread+0x630/0xe60
+[  667.173486][ T9805]  kthread+0x3a8/0x770
+[  667.173857][ T9805]  ret_from_fork+0x517/0x6e0
+[  667.174278][ T9805]  ret_from_fork_asm+0x1a/0x30
+[  667.174703][ T9805]
+[  667.174917][ T9805] Memory state around the buggy address:
+[  667.175411][ T9805]  ffff88802592f300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[  667.176114][ T9805]  ffff88802592f380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[  667.176830][ T9805] >ffff88802592f400: 00 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.177547][ T9805]                       ^
+[  667.177933][ T9805]  ffff88802592f480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.178640][ T9805]  ffff88802592f500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.179350][ T9805] ==================================================================
+
+The hfsplus_uni2asc() method operates by struct hfsplus_unistr:
+
+struct hfsplus_unistr {
+	__be16 length;
+	hfsplus_unichr unicode[HFSPLUS_MAX_STRLEN];
+} __packed;
+
+where HFSPLUS_MAX_STRLEN is 255 bytes. The issue happens if length
+of the structure instance has value bigger than 255 (for example,
+65283). In such case, pointer on unicode buffer is going beyond of
+the allocated memory.
+
+The patch fixes the issue by checking the length value of
+hfsplus_unistr instance and using 255 value in the case if length
+value is bigger than HFSPLUS_MAX_STRLEN. Potential reason of such
+situation could be a corruption of Catalog File b-tree's node.
+
+Reported-by: Wenzhi Wang <wenzhi.wang@uwaterloo.ca>
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Reviewed-by: Yangtao Li <frank.li@vivo.com>
+Link: https://lore.kernel.org/r/20250710230830.110500-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ fs/hfsplus/unicode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index cb341a4d7540..361f9be65386 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -344,14 +344,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
- 		mgmt |= B53_MII_DUMB_FWDG_EN;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
--	}
+diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
+index 73342c925a4b..36b6cf2a3abb 100644
+--- a/fs/hfsplus/unicode.c
++++ b/fs/hfsplus/unicode.c
+@@ -132,7 +132,14 @@ int hfsplus_uni2asc(struct super_block *sb,
  
--	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
--	 * frames should be flooded or not.
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
-+		 * frames should be flooded or not.
-+		 */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	} else {
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_IP_MCAST_25;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	op = astr;
+ 	ip = ustr->unicode;
++
+ 	ustrlen = be16_to_cpu(ustr->length);
++	if (ustrlen > HFSPLUS_MAX_STRLEN) {
++		ustrlen = HFSPLUS_MAX_STRLEN;
++		pr_err("invalid length %u has been corrected to %d\n",
++			be16_to_cpu(ustr->length), ustrlen);
 +	}
- }
- 
- static void b53_enable_vlan(struct b53_device *dev, bool enable,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index e5776545a8a0..77fb7ae660b8 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -104,6 +104,7 @@
- 
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
-+#define  B53_IP_MCAST_25		BIT(0)
- #define  B53_IPMC_FWD_EN		BIT(1)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
++
+ 	len = *len_p;
+ 	ce1 = NULL;
+ 	compose = !test_bit(HFSPLUS_SB_NODECOMPOSE, &HFSPLUS_SB(sb)->flags);
 -- 
 2.39.5
 
