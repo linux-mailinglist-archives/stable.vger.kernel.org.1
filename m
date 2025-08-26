@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E85BB36021
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A2CB36853
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8816A3AEE9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C602A7E01
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBC121D3E8;
-	Tue, 26 Aug 2025 12:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6131F352FC1;
+	Tue, 26 Aug 2025 14:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAf87ilY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9jZMCz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E0D1F55FA;
-	Tue, 26 Aug 2025 12:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E157350D72;
+	Tue, 26 Aug 2025 14:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212859; cv=none; b=exBzGbmO70Bd0Pxpp2ptaaap6AYb16rUSIx1/Yxkv4/lGqN/1VAdSrxQQf3kIlpJ9I/h8F61bDR5kKXyzNayKCsB89FR1IBhN8q0XP+rFmWFEVLPJVOAYgDHynlDygX5uAz5XdXbqsQEX6OBY4PwxR9qEirLWqjaGSKW5LGZMps=
+	t=1756217128; cv=none; b=TuZ0a7CRYURG6zAcnDeke/2e+aYEzTtdgkxNpbuNvAvOfAAEWFy/0Oavh+dPPevN4pDgW7kSE0MxTC9+c/864pGhHk8EIXlBsXuwMjCDef1eOPR/B6/vx/wuOE2rRey5ScCCE4L34Xuto/JS1+NHvbsV2qzIre7ytDM9/zwYH0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212859; c=relaxed/simple;
-	bh=V6Mcp0G7TiMnJLvE7XxdFt+sI5bmoQQRBdtEcepHM04=;
+	s=arc-20240116; t=1756217128; c=relaxed/simple;
+	bh=Y53HQ5ggBKVthhqoijIynZR5p7dAM5h77bYvB2klQqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tb1GHYoV+iJY5upLfhDX/8mnKnpUnDA1lWg/TbXmAA3t16UyMaDhZ3wGozgiRKkDK2lVyv+id6ZpNbMrg4LjuiZRVlFA0fN+h4QnimzGWjxChhxvCT0bpslTOSsZyMMIWp4eX8II98GP46D6MN0UOydqReqLgDn4KOStvHVLeR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAf87ilY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB468C4CEF1;
-	Tue, 26 Aug 2025 12:54:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rqXz2DccYt5yH76EYXXXv2FJwpRc+Jvx7ETXm4gGJsQcYHdC0nPJjku+MwHjnvqFU94rJv9OEaPnIr3EY320k91h4uLqya19M6uFIqvcJSdMUJOGPzTUU4eM1CaP/jhI5rxQMTpW6kKIcfZ+PWT1ZGty/jiP7g9SRwaDUYYjy5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9jZMCz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA00AC4CEF1;
+	Tue, 26 Aug 2025 14:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212857;
-	bh=V6Mcp0G7TiMnJLvE7XxdFt+sI5bmoQQRBdtEcepHM04=;
+	s=korg; t=1756217128;
+	bh=Y53HQ5ggBKVthhqoijIynZR5p7dAM5h77bYvB2klQqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAf87ilYzuJcezbzpWgqz6XNRdjRMHQfhQw03MfA8l5bIe/iC15R6BXU35BhR32Mh
-	 3xzAT27/Xu7O/ld+UQ8nzEdfC1EBiQTm12yYnz31D8sXMxpXeJAmnuulG+fHDJAm8a
-	 Ru+De4YpGuFXxYY45tCytSpC9CK1d0yP5HJ382Lk=
+	b=L9jZMCz4gkfUBZj9rsq/sRBwfAajpXQubZOOvU9sv0mUUF3B5MNnmfnhQ49Dr6dW8
+	 SwFDKsxwUKqsCa34VcNSHBXmRuZ+naxXFaGAmrhiI6FUQzfOjgKYt54eWNOdKJDber
+	 ogtZs6dp5VfjdYnxs+xB58GHVwAybN+7EAyX7lyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Jameson Thies <jthies@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/587] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
+	Chen Ni <nichen@iscas.ac.cn>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 026/523] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
 Date: Tue, 26 Aug 2025 13:03:56 +0200
-Message-ID: <20250826110955.146055445@linuxfoundation.org>
+Message-ID: <20250826110925.239438976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benson Leung <bleung@chromium.org>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
+commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
 
-ucsi_psy_get_current_max would return 0mA as the maximum current if
-UCSI detected a BC or a Default USB Power sporce.
+Fix a race where a pending interrupt could be received and the handler
+called before the handler's data has been setup, by converting to
+irq_set_chained_handler_and_data().
 
-The comment in this function is true that we can't tell the difference
-between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
-of USB 1.1/2.0 power is available, which is 100mA, which is a better
-fallback value than 0, which causes some userspaces, including the ChromeOS
-power manager, to regard this as a power source that is not providing
-any power.
-
-In reality, 100mA is guaranteed from all sources in these classes.
-
-Signed-off-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
+Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/psy.c  | 2 +-
- drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/adc/stm32-adc-core.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index b35c6e07911e..9b0157063df0 100644
---- a/drivers/usb/typec/ucsi/psy.c
-+++ b/drivers/usb/typec/ucsi/psy.c
-@@ -163,7 +163,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
- 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
- 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
- 	default:
--		val->intval = 0;
-+		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
- 		break;
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -391,10 +391,9 @@ static int stm32_adc_irq_probe(struct pl
+ 		return -ENOMEM;
  	}
+ 
+-	for (i = 0; i < priv->cfg->num_irqs; i++) {
+-		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+-		irq_set_handler_data(priv->irq[i], priv);
+-	}
++	for (i = 0; i < priv->cfg->num_irqs; i++)
++		irq_set_chained_handler_and_data(priv->irq[i],
++						 stm32_adc_irq_handler, priv);
+ 
  	return 0;
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 7706f4e95125..51e745117dcb 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -340,9 +340,10 @@ struct ucsi {
- #define UCSI_MAX_SVID		5
- #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
- 
--#define UCSI_TYPEC_VSAFE5V	5000
--#define UCSI_TYPEC_1_5_CURRENT	1500
--#define UCSI_TYPEC_3_0_CURRENT	3000
-+#define UCSI_TYPEC_VSAFE5V		5000
-+#define UCSI_TYPEC_DEFAULT_CURRENT	 100
-+#define UCSI_TYPEC_1_5_CURRENT		1500
-+#define UCSI_TYPEC_3_0_CURRENT		3000
- 
- struct ucsi_connector {
- 	int num;
--- 
-2.39.5
-
+ }
 
 
 
