@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4DEB36839
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42E0B35FD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A275664FF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C390D3AE5C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEDE352FC7;
-	Tue, 26 Aug 2025 14:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396AB223DE5;
+	Tue, 26 Aug 2025 12:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBFR2ctO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLAZ4yUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC8F22DFA7;
-	Tue, 26 Aug 2025 14:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFFE1F5423;
+	Tue, 26 Aug 2025 12:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217150; cv=none; b=q4/vRTZ6i84IQhaeLr8LttELj35F1TVq3YxWAsy8GS+kpFVTlq0m+TAmM76naYJk+zh3O0U6T4i3VtpP3quLJjC0HasKxrNDu9fRJQDmtYnQatuv2V7Ms+A43K90tW6ee+w2pSrAGSS8jNrs4T7zhnl7hYR/UTRQoKNq97PZ8hk=
+	t=1756212703; cv=none; b=KgsrFW9QwQTc6AqKMe0kT2kOMzqx/ILpYL1fWp9sZyEHMDBdLDek/4I6CgXNvaeYcUrYxYG1rmemAdLIS80jLoEpS+R4ye9pU0tA+8H+9MNobA+t/tfjtiBm0rGbx5SBuiUpC14B+Z4q+cvGq/CP4apX2sS1Ccl89UGfOitTqqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217150; c=relaxed/simple;
-	bh=a87FbD+mwRrrnnctClYEhYfT6wxIHq4pDOa3hf52ZLA=;
+	s=arc-20240116; t=1756212703; c=relaxed/simple;
+	bh=WiSAgt0wn4tk2GoaCA8n9IGtqNVOYin1xlHemgotXDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1s0vCElZnYEr6ZmnRz1TymC94CglBSZbW+RR0koaG0OlWsSK8+DJNe//07HQtZyXbnyuUMzypwaedp3Vuw1JH7KDhhPybfy49ZVCnFvdN3BtQU/2qrIWlFqdTS8pZ7h2tbA0SZJ9/ckVlbaYDN1R0SPK+bkGrz8vbBJrXES4Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBFR2ctO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FAFC113D0;
-	Tue, 26 Aug 2025 14:05:49 +0000 (UTC)
+	 MIME-Version; b=mVLMsqBr2k0/lB3wWKSiMl1b47VJSRs1WeaqX+2eZxvQTveWAxEI/79jbkeRl7xlckpoTehaiCQeI/Wc0UXmWnLUIBlt9LNd4eBVCcbG7utcvmE3fXhE+bXjGQdQ+xaYLABtGnQTZqY+d2A62N4qkUkil0KRRFEnRR3qb+NJTKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLAZ4yUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22549C116B1;
+	Tue, 26 Aug 2025 12:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217150;
-	bh=a87FbD+mwRrrnnctClYEhYfT6wxIHq4pDOa3hf52ZLA=;
+	s=korg; t=1756212701;
+	bh=WiSAgt0wn4tk2GoaCA8n9IGtqNVOYin1xlHemgotXDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBFR2ctOjjNp4YsfL8PSA/Rj3oZGvNJo08dKmmKrgIm0pkGZd7F14bQPW1lLPOU22
-	 bRWouiEs2l1kT8jSwoa2J7YvfJ+mHJOXC76IVUK+JCBEYPoPizSqpV8scYXTZXP3VE
-	 FmEHYUwEpSl3IUlWv+AsonomCUMD9IiNAExsah5Q=
+	b=pLAZ4yUg4XtkDY3HF4bxDIw0Di4DFkINWDkU0WKYpcDPFKquUvJ/wfsusiRJNu6yv
+	 ht7aHUpmeyc+KLhVYkqMthKmTMQltWhQB9CHzyPA0s7azYgs5tqASKV3iYtAMtqa7f
+	 umiAp4JbKe23NL2zGy9xe1p+ex+QJC/GOpmcf8YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.10 009/523] pch_uart: Fix dma_sync_sg_for_device() nents value
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/587] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
 Date: Tue, 26 Aug 2025 13:03:39 +0200
-Message-ID: <20250826110924.808691838@linuxfoundation.org>
+Message-ID: <20250826110954.715053473@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Andrew Price <anprice@redhat.com>
 
-commit 6c0e9f05c9d7875995b0e92ace71be947f280bbd upstream.
+[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
 
-The dma_sync_sg_for_device() functions should be called with the same
-nents as the dma_map_sg(), not the value the map function returned
-according to the documentation in Documentation/core-api/dma-api.rst:450:
-	With the sync_sg API, all the parameters must be the same
-	as those passed into the sg mapping API.
+Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
+->writepage") that occurs in various xfstests, causing "something found
+in dmesg" failures.
 
-Fixes: da3564ee027e ("pch_uart: add multi-scatter processing")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250701113452.18590-2-fourier.thomas@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[  341.136573] gfs2_meta_aops does not implement migrate_folio
+[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
+
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/pch_uart.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/meta_io.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -1018,7 +1018,7 @@ static unsigned int dma_handle_tx(struct
- 			__func__);
- 		return 0;
- 	}
--	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, nent, DMA_TO_DEVICE);
-+	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, num, DMA_TO_DEVICE);
- 	priv->desc_tx = desc;
- 	desc->callback = pch_dma_tx_complete;
- 	desc->callback_param = priv;
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 1f42eae112fb..b1a368fc089f 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -93,6 +93,7 @@ const struct address_space_operations gfs2_meta_aops = {
+ 	.invalidate_folio = block_invalidate_folio,
+ 	.writepage = gfs2_aspace_writepage,
+ 	.release_folio = gfs2_release_folio,
++	.migrate_folio = buffer_migrate_folio_norefs,
+ };
+ 
+ const struct address_space_operations gfs2_rgrp_aops = {
+@@ -100,6 +101,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
+ 	.invalidate_folio = block_invalidate_folio,
+ 	.writepage = gfs2_aspace_writepage,
+ 	.release_folio = gfs2_release_folio,
++	.migrate_folio = buffer_migrate_folio_norefs,
+ };
+ 
+ /**
+-- 
+2.39.5
+
 
 
 
