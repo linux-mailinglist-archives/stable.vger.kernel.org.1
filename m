@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1A8B35C63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BE9B36AC7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777477C4A4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B01369885F8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7700133471E;
-	Tue, 26 Aug 2025 11:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99E534F463;
+	Tue, 26 Aug 2025 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LXnq9h6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epAVdvwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D102135B8;
-	Tue, 26 Aug 2025 11:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBD81DF75A;
+	Tue, 26 Aug 2025 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207862; cv=none; b=aRyTe1NYqgbDPsY58pp5H+lbcH2I3XZ2oNOzMVktnhkWy/5+Y/88OWt76ANLbDsUqYYCBMP0jc+A4LSCnf1mQCoNtv15s0I88Yiu9Khqg/Z0zRyjUdKrYznssUgqHn9Bml+juiFim2K2wcVYF33nk7CANo6qhVHAR05Zmyqt0gc=
+	t=1756218164; cv=none; b=R0S601yLx5pLczQ21l7yt7lntv1/W1gP1u7unKg9YLu0uYSmhAMSiDmvEeCsUfj8kBLlHfATqjrr4b50omy4RmfazYjgFno9q3doGHOGFWSVJm3RxIPULOfKxr67m1z9AD1zy2F+XaDbdFPyzNoolFCy8U/DhdLCmROUWVfOnwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207862; c=relaxed/simple;
-	bh=t5TFbTPYgklvHCOiuMNOH/izDsn3H1vxB4RzZL9gPJQ=;
+	s=arc-20240116; t=1756218164; c=relaxed/simple;
+	bh=L4JRMBmXirp8xTqTZTafH2njaHIh37v9CWD5mtUg16A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jn7m9+gSehBi/QP4IBSIb/cVI3vssSKj+RKw8dVJDecbY55JEAcF1uroLjEvIiSUSOw/aHx8nH4bR9xwJh1ghumJYgBuClREVYNIagZGLExYcJxmalqEPqXagYOVvxmjZ/pXUaFkUBbAe9inCQ0P1ciA3JWfRwXKuj5QE9+JwYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LXnq9h6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B874DC4CEF1;
-	Tue, 26 Aug 2025 11:31:01 +0000 (UTC)
+	 MIME-Version; b=u6LVJDNfAthZrkyYx0UwEjeFAuFKZoxGt6X6FYAN+qLA6oA4xv/JVC4ZTZjOzVDmWPENqM6UVxPepNNxXyQmhGUCoOw21Q0BgM8RvMvH+kfdeHEU1rN8iyxz5deQpt/zoY/W2mUX9QGY4egNfJnXLxrGUdsBO9A+vE6nGlgMmu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epAVdvwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7A3C4CEF1;
+	Tue, 26 Aug 2025 14:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207862;
-	bh=t5TFbTPYgklvHCOiuMNOH/izDsn3H1vxB4RzZL9gPJQ=;
+	s=korg; t=1756218164;
+	bh=L4JRMBmXirp8xTqTZTafH2njaHIh37v9CWD5mtUg16A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LXnq9h6cNLT3LFlXt8UqjA9mzW9an3NKRN9IK4WpGzs8Gvp5dS5Yhwckd4eBAXOM
-	 /AOnNamfI3X1Pl0YBk0H05keCmzvNWoVi4fcBX0i0y/B2RVfqqiqjvn4A52i5we1b3
-	 u0ITnJXve3GFQxwBdkasi4H9w1HqnC7rKXmuoC1E=
+	b=epAVdvwxqB32DLDjKuvlxaEmaoZwx4JMFIombPSsGDLa62eMqBPFshXfjcu+3DtDm
+	 cmJUQ/HJLAVpPbLDJigK8ZMg9OgGT+GUpJS6evJVGhRUKfUdJF9xsWjCrzCH/X+tZy
+	 qNBP4/eK5GqodMY7hqSYW4lE//qF/sHfQvAyIyl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 344/457] spi: spi-qpic-snand: fix calculating of ECC OOB regions properties
+Subject: [PATCH 5.10 418/523] x86/mce/amd: Add default names for MCA banks and blocks
 Date: Tue, 26 Aug 2025 13:10:28 +0200
-Message-ID: <20250826110945.830828023@linuxfoundation.org>
+Message-ID: <20250826110934.767282857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 13d0fe84a214658254a7412b2b46ec1507dc51f0 ]
+[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
 
-The OOB layout used by the driver has two distinct regions which contains
-hardware specific ECC data, yet the qcom_spi_ooblayout_ecc() function sets
-the same offset and length values for both regions which is clearly wrong.
+Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
+a bank has additional blocks available.
 
-Change the code to calculate the correct values for both regions.
+Most MCA banks have a single thresholding block, so the block takes the same
+name as the bank.
 
-For reference, the following table shows the computed offset and length
-values for various OOB size/ECC strength configurations:
+Unified Memory Controllers (UMCs) are a special case where there are two
+blocks and each has a unique name.
 
-                              +-----------------+-----------------+
-                              |before the change| after the change|
-  +-------+----------+--------+--------+--------+--------+--------+
-  |  OOB  |   ECC    | region | region | region | region | region |
-  |  size | strength | index  | offset | length | offset | length |
-  +-------+----------+--------+--------+--------+--------+--------+
-  |  128  |     8    |    0   |   113  |   15   |    0   |   49   |
-  |       |          |    1   |   113  |   15   |   65   |   63   |
-  +-------+----------+--------+--------+--------+--------+--------+
-  |  128  |     4    |    0   |   117  |   11   |    0   |   37   |
-  |       |          |    1   |   117  |   11   |   53   |   75   |
-  +-------+----------+--------+--------+--------+--------+--------+
-  |   64  |     4    |    0   |    53  |   11   |    0   |   37   |
-  |       |          |    1   |    53  |   11   |   53   |   11   |
-  +-------+----------+--------+--------+--------+--------+--------+
+However, the microarchitecture allows for five blocks. Any new MCA bank types
+with more than one block will be missing names for the extra blocks. The MCE
+sysfs will fail to initialize in this case.
 
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250805-qpic-snand-oob-ecc-fix-v2-1-e6f811c70d6f@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+[ adapted get_name() function signature ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qpic-snand.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index 722ab60d616f..e98e997680c7 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -216,13 +216,21 @@ static int qcom_spi_ooblayout_ecc(struct mtd_info *mtd, int section,
- 	struct qcom_nand_controller *snandc = nand_to_qcom_snand(nand);
- 	struct qpic_ecc *qecc = snandc->qspi->ecc;
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1215,13 +1215,20 @@ static const char *get_name(unsigned int
+ 	}
  
--	if (section > 1)
--		return -ERANGE;
--
--	oobregion->length = qecc->ecc_bytes_hw + qecc->spare_bytes;
--	oobregion->offset = mtd->oobsize - oobregion->length;
-+	switch (section) {
-+	case 0:
-+		oobregion->offset = 0;
-+		oobregion->length = qecc->bytes * (qecc->steps - 1) +
-+				    qecc->bbm_size;
-+		return 0;
-+	case 1:
-+		oobregion->offset = qecc->bytes * (qecc->steps - 1) +
-+				    qecc->bbm_size +
-+				    qecc->steps * 4;
-+		oobregion->length = mtd->oobsize - oobregion->offset;
-+		return 0;
+ 	bank_type = smca_get_bank_type(bank);
+-	if (bank_type >= N_SMCA_BANK_TYPES)
+-		return NULL;
+ 
+ 	if (b && bank_type == SMCA_UMC) {
+ 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
+ 			return smca_umc_block_names[b->block];
+-		return NULL;
 +	}
++
++	if (b && b->block) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
++		return buf_mcatype;
++	}
++
++	if (bank_type >= N_SMCA_BANK_TYPES) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
++		return buf_mcatype;
+ 	}
  
--	return 0;
-+	return -ERANGE;
- }
- 
- static int qcom_spi_ooblayout_free(struct mtd_info *mtd, int section,
--- 
-2.50.1
-
+ 	if (smca_banks[bank].hwid->count == 1)
 
 
 
