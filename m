@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F8BB36751
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2282B35BF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5EA4653A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348261884C1E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3652352087;
-	Tue, 26 Aug 2025 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADEE2248A5;
+	Tue, 26 Aug 2025 11:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYnHg3fM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmBzSKf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9CA350D7A;
-	Tue, 26 Aug 2025 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB8C27A917;
+	Tue, 26 Aug 2025 11:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216347; cv=none; b=NMK3aS1msQb0l0H7I3BHk0UqeYnh4861VeGuHOtSX/eBJp1mUqwi4bCo+GxSLFXRgd/WOgG6VYFjVQfjDcK6yzVAx/GbjONbjG0OBn1LYrSz1Qs613lB0whj5+nIFHjuQ0P8UD4jNwQehWthSEclAONiUCRdPM3GE/ZY5OX0cd4=
+	t=1756207523; cv=none; b=uHsNrY/L+PCwRhDotKx/GlCdAalqRcLuDYx/lHRcCNxy3q2x0mgZ9jWJVPKNm2OP3JzOIJoeB0DUK7YrccEn2SOkw31jxCRIBcBZKlmEKRkpPucSl8ImXX26Q0EsKubWQvSp4gY0wv85BMWCrn9McNQVcNmtp2XijdydC0T9KTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216347; c=relaxed/simple;
-	bh=DuHGLERMsLHXCcujhJ//Jqza6GuU8Y37c5ZOefcD+jQ=;
+	s=arc-20240116; t=1756207523; c=relaxed/simple;
+	bh=jT5f7Fj35mChPeSKA+E+ea2PUy2q8bGCE0biwjoDMVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l88kOrZwbiL5T96z45lJk6iWSosLCizXcIZiqzRnPesL55W2RLP0xqmBZMKiMJLmv5wqljMvk5Av4pYE323aJeHYywTkrhH9Qq4ylJmDDtNUfkGrDz9EbpwLx0TAHRAmdyGYy6ceMDx0AbS5xRxiCOlhFD1b47PyFtoe8htRJew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYnHg3fM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3984C113D0;
-	Tue, 26 Aug 2025 13:52:26 +0000 (UTC)
+	 MIME-Version; b=V6oLjW6ZWxDSMzjxi6q3ldHq5v/5hF/XqY47goB+gSDu4tvujFTSdbb/SgXYSXk3SW2Nue9W6Iec6hudYNsJFCBhQkrySMr7awKCAIawPlrTiCfFRAW9WL9jfEIA9CqFVdDfbiaSj2fMcoKOjgIJpNHN0S76MuYjw2pvwyazyXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmBzSKf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D02C4CEF1;
+	Tue, 26 Aug 2025 11:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216347;
-	bh=DuHGLERMsLHXCcujhJ//Jqza6GuU8Y37c5ZOefcD+jQ=;
+	s=korg; t=1756207522;
+	bh=jT5f7Fj35mChPeSKA+E+ea2PUy2q8bGCE0biwjoDMVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYnHg3fMD2wi2NBb7lGQ5wiDjUpQDk9N6RWLb3xkyfhej1DmhJuKSIakdrMTTFXQc
-	 qix4OwvS5vcQmJj36lAGKdUbpTDFkir6qK7hcxNunJIvZWVDlmoPsEF9J01dcD8DER
-	 Tjtu8rcjtfYThSktflWqrFWJmpxVc6obLJ3r/Lcc=
+	b=OmBzSKf862V+pnqUPZIAUNrRJV7bvHWb6avTbEdXeudHC4WiEJ3/rDziB2YW2w/Yc
+	 +tDXf/R5g4l1zqYWnYHsAWjOeZ88nlsiS2tY8/PaEEJBESolPRMbGktHINCHVXJoxw
+	 vXBmpg2qV4OLPMdYd2ajnn9jf4lCFbGWu9GK2Q0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 376/644] wifi: rtlwifi: fix possible skb memory leak in _rtl_pci_init_one_rxdesc()
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 183/457] drm/amdgpu: update mmhub 4.1.0 client id mappings
 Date: Tue, 26 Aug 2025 13:07:47 +0200
-Message-ID: <20250826110955.738581265@linuxfoundation.org>
+Message-ID: <20250826110941.895534794@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 76b3e5078d76f0eeadb7aacf9845399f8473da0d ]
+commit a0b34e4c8663b13e45c78267b4de3004b1a72490 upstream.
 
-When `dma_mapping_error()` is true, if a new `skb` has been allocated,
-then it must be de-allocated.
+Update the client id mapping so the correct clients
+get printed when there is a mmhub page fault.
 
-Compile tested only
-
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250613074014.69856-2-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c |   34 +++++++++++-------------------
+ 1 file changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index bccb959d8210..02821588673e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -573,8 +573,11 @@ static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
- 		dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
- 			       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
- 	bufferaddress = *((dma_addr_t *)skb->cb);
--	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress))
-+	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
-+		if (!new_skb)
-+			kfree_skb(skb);
- 		return 0;
-+	}
- 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
- 	if (rtlpriv->use_new_trx_flow) {
- 		/* skb->cb may be 64 bit address */
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
+@@ -37,39 +37,31 @@
+ static const char *mmhub_client_ids_v4_1_0[][2] = {
+ 	[0][0] = "VMC",
+ 	[4][0] = "DCEDMC",
+-	[5][0] = "DCEVGA",
+ 	[6][0] = "MP0",
+ 	[7][0] = "MP1",
+ 	[8][0] = "MPIO",
+-	[16][0] = "HDP",
+-	[17][0] = "LSDMA",
+-	[18][0] = "JPEG",
+-	[19][0] = "VCNU0",
+-	[21][0] = "VSCH",
+-	[22][0] = "VCNU1",
+-	[23][0] = "VCN1",
+-	[32+20][0] = "VCN0",
+-	[2][1] = "DBGUNBIO",
++	[16][0] = "LSDMA",
++	[17][0] = "JPEG",
++	[19][0] = "VCNU",
++	[22][0] = "VSCH",
++	[23][0] = "HDP",
++	[32+23][0] = "VCNRD",
+ 	[3][1] = "DCEDWB",
+ 	[4][1] = "DCEDMC",
+-	[5][1] = "DCEVGA",
+ 	[6][1] = "MP0",
+ 	[7][1] = "MP1",
+ 	[8][1] = "MPIO",
+ 	[10][1] = "DBGU0",
+ 	[11][1] = "DBGU1",
+-	[12][1] = "DBGU2",
+-	[13][1] = "DBGU3",
++	[12][1] = "DBGUNBIO",
+ 	[14][1] = "XDP",
+ 	[15][1] = "OSSSYS",
+-	[16][1] = "HDP",
+-	[17][1] = "LSDMA",
+-	[18][1] = "JPEG",
+-	[19][1] = "VCNU0",
+-	[20][1] = "VCN0",
+-	[21][1] = "VSCH",
+-	[22][1] = "VCNU1",
+-	[23][1] = "VCN1",
++	[16][1] = "LSDMA",
++	[17][1] = "JPEG",
++	[18][1] = "VCNWR",
++	[19][1] = "VCNU",
++	[22][1] = "VSCH",
++	[23][1] = "HDP",
+ };
+ 
+ static uint32_t mmhub_v4_1_0_get_invalidate_req(unsigned int vmid,
 
 
 
