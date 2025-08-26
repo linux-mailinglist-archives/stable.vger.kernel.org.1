@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979DFB369D7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6730AB36CAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46F45835EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EBAF5648D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796BE1F4C90;
-	Tue, 26 Aug 2025 14:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718D535E4D5;
+	Tue, 26 Aug 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYStwU4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZoA7egE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354AA352FC4;
-	Tue, 26 Aug 2025 14:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6FB35209C;
+	Tue, 26 Aug 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218149; cv=none; b=H9LsLQGl0xH3A/gNvdWXbrVe5UvefthJLVu2rDTIOzNknmlUQPpGyakU9gnm4A+SYkcIF80/A5tCOyI82fkNo4/lMk3tYAX0Z4hDXE1FpDZ3m+PdcVeO40dZdbVVa5lViRPTVaisobEcgjxgkOgtBVlp+a5jLZ91sNFfL6BE5gA=
+	t=1756219212; cv=none; b=TvUumz85j8WuOyfV+fOMlHFKop3gFczkZIdTxPMbVecS9oiXnxD5Ve23YENWncN3ZcEZEwbTaIkw/aCU5Oj1PQynC05j9T1gWejV7O92TEX8UzGScQzXH/RhZdOaGsGJgqpl5skjBmvA6vscdMJUJb2mtXvrklzL0lQ+eCRxHxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218149; c=relaxed/simple;
-	bh=BrS9rPw621ljwSzFw2W8s/8j7FtglD+4iro5tJ5ZcfE=;
+	s=arc-20240116; t=1756219212; c=relaxed/simple;
+	bh=8guIjQLgTDbZ9zamICsTy6+musu1n1tBDhQ9FOMGEO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbMlM+WrLFfESkylyej+Wlfp3Ev9uqc8PGAd36oi3DR+Qn0lbtZUulFiPIDKTCSNOYJxo2SXWzHzGZHtvAUMGWYiriV2tdWDsGZzm4t6tR0RGzBQ5RTcOPwhi3Ty+UgOMpnGuagFSv5aeuIGbq5Cs7tL8G7V2Z6FhTkCKKwxPpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYStwU4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0B0C4CEF1;
-	Tue, 26 Aug 2025 14:22:28 +0000 (UTC)
+	 MIME-Version; b=IzB/cWuzMHho8Oazzz8IGHSoggQo221p8tOgN38mzsFzgiF81KMx2OW/huprf1DkM7JjJ1cE2xwgKU9VjAwqM4Ez640QelnQxC1FnQvo6td4ePnwcYRzmdwPxF1g2KR6X9lO7r8IvvP99yHJQiqOaRJGg+rrzGrhCYkMg2AE0Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZoA7egE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBCEC2BC87;
+	Tue, 26 Aug 2025 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218149;
-	bh=BrS9rPw621ljwSzFw2W8s/8j7FtglD+4iro5tJ5ZcfE=;
+	s=korg; t=1756219212;
+	bh=8guIjQLgTDbZ9zamICsTy6+musu1n1tBDhQ9FOMGEO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYStwU4wodpMGvVMgKcehVxsk+JX4JHJq85VzTfTcg73ABccqIso5hl3d+KGZg1e2
-	 LYpntiFsJB/0qXfDb3vlrWMZUkqOvije/fvrQSoG9ETlmRLxsYjx1990ODJpxnsV0H
-	 uiQ2rFk1k3YtxuXMWzW4N5sU6CH2QaEkWIGsZsO8=
+	b=GZoA7egE57y1zJHDgItCaVxh6ph7rvq2EoB72yHtiM7nM1Gu9a010odBulBRnEvcz
+	 YjhsKC2UslizowXsR9KdGq3BuxoKxVuEtawNELZYnzYOKBpevfM0ciFQMHhBz93SlN
+	 I9yVbZ4FnqRsIQanVNMI5cSVwu+Kf2j/XkmU5KFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Subject: [PATCH 5.10 412/523] usb: storage: realtek_cr: Use correct byte order for bcs->Residue
+	Nathan Chancellor <nathan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 5.4 296/403] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
 Date: Tue, 26 Aug 2025 13:10:22 +0200
-Message-ID: <20250826110934.619767443@linuxfoundation.org>
+Message-ID: <20250826110914.984557794@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 98da66a70ad2396e5a508c4245367797ebc052ce upstream.
+commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
 
-Since 'bcs->Residue' has the data type '__le32', convert it to the
-correct byte order of the CPU using this driver when assigning it to
-the local variable 'residue'.
+A new warning in clang [1] complains that diq_start in
+wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+wlc_lcnphy_common_read_table():
 
-Cc: stable <stable@kernel.org>
-Fixes: 50a6cb932d5c ("USB: usb_storage: add ums-realtek driver")
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://lore.kernel.org/r/20250813145247.184717-3-thorsten.blum@linux.dev
+  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   2728 |                                                      &diq_start, 1, 16, 69);
+        |                                                       ^~~~~~~~~
+
+The table pointer passed to wlc_lcnphy_common_read_table() should not be
+considered constant, as wlc_phy_read_table() is ultimately going to
+update it. Remove the const qualifier from the tbl_ptr to clear up the
+warning.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
+Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/realtek_cr.c |    2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/realtek_cr.c
-+++ b/drivers/usb/storage/realtek_cr.c
-@@ -252,7 +252,7 @@ static int rts51x_bulk_transport(struct
- 		return USB_STOR_TRANSPORT_ERROR;
- 	}
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -974,7 +974,7 @@ void wlc_lcnphy_read_table(struct brcms_
  
--	residue = bcs->Residue;
-+	residue = le32_to_cpu(bcs->Residue);
- 	if (bcs->Tag != us->tag)
- 		return USB_STOR_TRANSPORT_ERROR;
- 
+ static void
+ wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
+-			     const u16 *tbl_ptr, u32 tbl_len,
++			     u16 *tbl_ptr, u32 tbl_len,
+ 			     u32 tbl_width, u32 tbl_offset)
+ {
+ 	struct phytbl_info tab;
 
 
 
