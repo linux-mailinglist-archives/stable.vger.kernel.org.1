@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E592FB35D74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678F9B36709
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7871BA53EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86B1C8E4615
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7A7338F41;
-	Tue, 26 Aug 2025 11:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C96D34DCED;
+	Tue, 26 Aug 2025 13:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7M4eYME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSKkfk7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F3D335BAA;
-	Tue, 26 Aug 2025 11:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE8922128B;
+	Tue, 26 Aug 2025 13:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208251; cv=none; b=aw4K2kcMgbKJZwmI4+nqOXlhysqSI03NBfM/NiJBpXUnFW7zvQMC720mL3Y63ZGjpIL0ikf0T6t8/1ogRReIHQXtI6IfCQ0JTKCgXizayCvhhuAdoPNMjatJLkyrGaIqH4fcSp5p/PSgtLBjpZnqXy26i89lF1XoLinq7422Tq4=
+	t=1756216231; cv=none; b=N6+YibQY8PxTU8zfTxgJYbbFstIJJSF2s/MD0BAoNcmhXN1qbCIppj85OC3nXOfVtSU8Ot030FEylKefLv856jycnHV5iEmvW0GzSPgX8uudUKzTxL8FQ2unoq1TOEJHumv58hUCKqlmk6Zq6L5m5zeRDZkwkqwAlAUhPb/gMSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208251; c=relaxed/simple;
-	bh=tJ0+Rg3mmGF/kIBGk/Ew8k3IkqO9/tloIHQDKx3b2YY=;
+	s=arc-20240116; t=1756216231; c=relaxed/simple;
+	bh=wxdMLo64txTmTLxdS1Favepo2SD83VRS3Rn2fdwX3OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eh5ic0fFt/vmiUJxRPY0sBiQLFv3EQNj8yxp/HeZITpchDlOMErwF67dvL1lEHsbDyFDQQd3RCeAm5+FKAKd5KEkqjWANqvsBoraEbsYbhDm+bv98LWe3JzAYZKhxIsV2AlYYnL/Wwn5V2KQ0TDuOpj9whUIqu10qitn/FDHfDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7M4eYME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F378C4CEF4;
-	Tue, 26 Aug 2025 11:37:30 +0000 (UTC)
+	 MIME-Version; b=SiipGCGx/DDud/8ccMTTG5rgzd2Ib/6UUHAzxBD1z6Pz4obrLc7ZwXFSmwf08x+zQGnUwhrnOz4Uey8uBZdVs5rU+mzZ/OIYrp5AvsHFhjeEQgvK+utEePoFgP2kdjDSAETbEBFhPv0ntSn3l1MPRqnxqt4xEm2X0afFBDKcFc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSKkfk7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C5EC4CEF1;
+	Tue, 26 Aug 2025 13:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208251;
-	bh=tJ0+Rg3mmGF/kIBGk/Ew8k3IkqO9/tloIHQDKx3b2YY=;
+	s=korg; t=1756216231;
+	bh=wxdMLo64txTmTLxdS1Favepo2SD83VRS3Rn2fdwX3OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7M4eYMEO5xtaVxfMTWk7j7QYVRDAr5qY0bWecG1cvLEpCetGW8xhRSqyCk259KxR
-	 PEwqjU5q3reirkm15IiU0exm825RrEEHttH7EIG18Y/AKMeMFLW/DwQJ6BrMMva3FP
-	 KXEDF65gTuQrdOItLV4MRVFURXW1PuoHIq/+k3cM=
+	b=pSKkfk7n5/TPLzcbh7ue6gJsW8RnvyCBkl6Y+Y1aLogBbyItYCGSOeeZ11oaEXCJg
+	 sUofAjisBg7BCBXpxt3zoeD1/Gs0BKh9m9tTFFz8t4DThwKuE1bTdT8hK6GrFw2zgH
+	 uFJGR4xOplQm+3We+oMAR+KtRzwNcIb6ZhI8W5jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Stan Johnson <userm57@yahoo.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 6.12 008/322] m68k: Fix lost column on framebuffer debug console
+	kernel test robot <lkp@intel.com>,
+	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 332/644] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
 Date: Tue, 26 Aug 2025 13:07:03 +0200
-Message-ID: <20250826110915.410863793@linuxfoundation.org>
+Message-ID: <20250826110954.614772077@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
 
-commit 210a1ce8ed4391b64a888b3fb4b5611a13f5ccc7 upstream.
+[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
 
-Move the cursor position rightward after rendering the character,
-not before. This avoids complications that arise when the recursive
-console_putc call has to wrap the line and/or scroll the display.
-This also fixes the linewrap bug that crops off the rightmost column.
+The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
+buffer if either string argument is too long. This triggers a compiler
+warning.
+Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
+overflow.
 
-When the cursor is at the bottom of the display, a linefeed will not
-move the cursor position further downward. Instead, the display scrolls
-upward. Avoid the repeated add/subtract sequence by way of a single
-subtraction at the initialization of console_struct_num_rows.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/9d4e8c68a456d5f2bc254ac6f87a472d066ebd5e.1743115195.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
+Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/head.S |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ sound/pci/hda/patch_ca0132.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3400,6 +3400,7 @@ L(console_clear_loop):
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index a922c5079880..57c51dc985d9 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -4402,7 +4402,7 @@ static int add_tuning_control(struct hda_codec *codec,
+ 	}
+ 	knew.private_value =
+ 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
+-	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
++	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
+ 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
+ }
  
- 	movel	%d4,%d1				/* screen height in pixels */
- 	divul	%a0@(FONT_DESC_HEIGHT),%d1	/* d1 = max num rows */
-+	subql	#1,%d1				/* row range is 0 to num - 1 */
- 
- 	movel	%d0,%a2@(Lconsole_struct_num_columns)
- 	movel	%d1,%a2@(Lconsole_struct_num_rows)
-@@ -3546,15 +3547,14 @@ func_start	console_putc,%a0/%a1/%d0-%d7
- 	cmpib	#10,%d7
- 	jne	L(console_not_lf)
- 	movel	%a0@(Lconsole_struct_cur_row),%d0
--	addil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	movel	%a0@(Lconsole_struct_num_rows),%d1
- 	cmpl	%d1,%d0
- 	jcs	1f
--	subil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	console_scroll
-+	jra	L(console_exit)
- 1:
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	jra	L(console_exit)
- 
- L(console_not_lf):
-@@ -3581,12 +3581,6 @@ L(console_not_cr):
-  */
- L(console_not_home):
- 	movel	%a0@(Lconsole_struct_cur_column),%d0
--	addql	#1,%a0@(Lconsole_struct_cur_column)
--	movel	%a0@(Lconsole_struct_num_columns),%d1
--	cmpl	%d1,%d0
--	jcs	1f
--	console_putc	#'\n'	/* recursion is OK! */
--1:
- 	movel	%a0@(Lconsole_struct_cur_row),%d1
- 
- 	/*
-@@ -3633,6 +3627,23 @@ L(console_do_font_scanline):
- 	addq	#1,%d1
- 	dbra	%d7,L(console_read_char_scanline)
- 
-+	/*
-+	 *	Register usage in the code below:
-+	 *	a0 = pointer to console globals
-+	 *	d0 = cursor column
-+	 *	d1 = cursor column limit
-+	 */
-+
-+	lea	%pc@(L(console_globals)),%a0
-+
-+	movel	%a0@(Lconsole_struct_cur_column),%d0
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_column)	/* Update cursor pos */
-+	movel	%a0@(Lconsole_struct_num_columns),%d1
-+	cmpl	%d1,%d0
-+	jcs	L(console_exit)
-+	console_putc	#'\n'		/* Line wrap using tail recursion */
-+
- L(console_exit):
- func_return	console_putc
- 
+-- 
+2.39.5
+
 
 
 
