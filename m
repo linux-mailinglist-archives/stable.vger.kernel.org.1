@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6293AB361F8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8ACB35DAE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56A6188D4B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86FA57A7C88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B769221704;
-	Tue, 26 Aug 2025 13:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE362BEFF0;
+	Tue, 26 Aug 2025 11:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLA8TOtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzt64rO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88462253F3;
-	Tue, 26 Aug 2025 13:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B838319858;
+	Tue, 26 Aug 2025 11:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213856; cv=none; b=InhhqXwhMKyTAxBbbNlqglPB3f2OkUzX0y6CAfXgb/CVO0oIXjVY4n8Q1AKR0GEp/N75dtiYU8wTbHSsel1dkcpx35Oen3+qlRrdbwHjG3bbSa8hcGYEqCIvGUv8SUEg7eBqSufXsWrvwu2oYMtn6Ybdr47O2xlESG8nQY81WJ0=
+	t=1756208791; cv=none; b=Ba5xOfzGsJns9MaidEdba+OCKOu6zGA44EfTJ5hmqWCNcBEXFRgWU/NRxgyGeBa57tubyNd64wiJ/kbUQ6OOBXm6ua5rz3396o+QzmzieNsXMRiz7LWjBmYXBcPOPQLqOj4ZiVqj+VU7kLgvOJ46h/IbcQFom8W6s/No5W9BxgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213856; c=relaxed/simple;
-	bh=sh1blfkJ80X4K2xgKoZZ/0cDJA7myiYXNV9Ym8u/fLM=;
+	s=arc-20240116; t=1756208791; c=relaxed/simple;
+	bh=EdlS1CpFaehbFnZLTMCV4zAqBXAZa8WPXE1xnsCeMZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmN1SYPvvoqtgfw/JWQfbcg8BBC9Xf34OVMQ9cp5EZabmjWZ9bamqT+Qr8FdK1vj1gQanTa2uJcELq5J41YBVVKDm+O6NOLMD4BjiEDWHrqOmQjSjILfAnmeHsMU6exVtuyJrHDw+Xx+KlSSaxSSMNGvpp5XYVVCPbIn6IxFCQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLA8TOtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA3FC4CEF1;
-	Tue, 26 Aug 2025 13:10:56 +0000 (UTC)
+	 MIME-Version; b=BL9ru3aO8sjES15nMq7zB56v4ea+eFPv5Z1x65JZ31b2j2Prz2GaaV4vWkmR1GObFC3TpyCJjYQdYT6MVgnv3Ja0jfADdhs7MBrIL/XqiieZFeQGF0wwcCrVUIB0ROsTqRly6c10pKjkmDoRrwso1AqTu+nhhLbXN5+OEuhjrK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzt64rO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9534DC4CEF1;
+	Tue, 26 Aug 2025 11:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213856;
-	bh=sh1blfkJ80X4K2xgKoZZ/0cDJA7myiYXNV9Ym8u/fLM=;
+	s=korg; t=1756208790;
+	bh=EdlS1CpFaehbFnZLTMCV4zAqBXAZa8WPXE1xnsCeMZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLA8TOtIn3HoMNrRGVfTgtqq/E0WnkbByWHO17xNnqNsyJBtSzq85jNwg4YcmepCL
-	 Q4PYd/ReF4EtIsbUi1cAgjuKVa+fKu/3P7tuRCT1Z2r+U+UzM0x07GS6H1UxdVnmQ8
-	 /CTIAgkTMGHSD9Is2ItALSukpCxMq+BkTz7hf9g8=
+	b=yzt64rO8zDxXSW5gL0+GKneSq+3k8RabN2/LJgjvg2XufHCyyK8JP3J/XW7YBbE++
+	 /ca9gDG3iO7EwhXxWtpEhQgT70Be+hfowj2KRB7S7vSSQGf6YcYxeQHdKy9MjLrcDL
+	 8tdjtDu7Wjv2UrvRwcfAcCjEcjvGZZOle5Pr975o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 505/587] mptcp: remove duplicate sk_reset_timer call
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 239/322] tracing: Remove unneeded goto out logic
 Date: Tue, 26 Aug 2025 13:10:54 +0200
-Message-ID: <20250826111005.832236504@linuxfoundation.org>
+Message-ID: <20250826110921.810973929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +65,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 5d13349472ac8abcbcb94407969aa0fdc2e1f1be upstream.
+[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
 
-sk_reset_timer() was called twice in mptcp_pm_alloc_anno_list.
+Several places in the trace.c file there's a goto out where the out is
+simply a return. There's no reason to jump to the out label if it's not
+doing any more logic but simply returning from the function.
 
-Simplify the code by using a 'goto' statement to eliminate the
-duplication.
+Replace the goto outs with a return and remove the out labels.
 
-Note that this is not a fix, but it will help backporting the following
-patch. The same "Fixes" tag has been added for this reason.
-
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-4-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Before commit e4c28e3d5c09 ("mptcp: pm: move generic PM helpers to
-  pm.c"), mptcp_pm_alloc_anno_list() was in pm_netlink.c. The same patch
-  can be applied there without conflicts. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c |   38 +++++++++++++++-----------------------
+ 1 file changed, 15 insertions(+), 23 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -373,9 +373,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1754,7 +1754,7 @@ int trace_get_user(struct trace_parser *
  
--		sk_reset_timer(sk, &add_entry->add_timer,
--			       jiffies + mptcp_get_add_addr_timeout(net));
--		return true;
-+		goto reset_timer;
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1768,7 +1768,7 @@ int trace_get_user(struct trace_parser *
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				goto out;
++				return ret;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1778,8 +1778,7 @@ int trace_get_user(struct trace_parser *
+ 		/* only spaces were written */
+ 		if (isspace(ch) || !ch) {
+ 			*ppos += read;
+-			ret = read;
+-			goto out;
++			return read;
+ 		}
  	}
  
- 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
-@@ -389,6 +387,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	add_entry->retrans_times = 0;
+@@ -1787,13 +1786,12 @@ int trace_get_user(struct trace_parser *
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else
++			return -EINVAL;
++
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1808,15 +1806,11 @@ int trace_get_user(struct trace_parser *
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
  
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
-+reset_timer:
- 	sk_reset_timer(sk, &add_entry->add_timer,
- 		       jiffies + mptcp_get_add_addr_timeout(net));
+ 	*ppos += read;
+-	ret = read;
+-
+-out:
+-	return ret;
++	return read;
+ }
+ 
+ /* TODO add a seq_buf_to_buffer() */
+@@ -2318,10 +2312,10 @@ int __init register_tracer(struct tracer
+ 	mutex_unlock(&trace_types_lock);
+ 
+ 	if (ret || !default_bootup_tracer)
+-		goto out_unlock;
++		return ret;
+ 
+ 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
+-		goto out_unlock;
++		return 0;
+ 
+ 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
+ 	/* Do we want this tracer to start on bootup? */
+@@ -2333,8 +2327,7 @@ int __init register_tracer(struct tracer
+ 	/* disable other selftests, since this will break it. */
+ 	disable_tracing_selftest("running a tracer");
+ 
+- out_unlock:
+-	return ret;
++	return 0;
+ }
+ 
+ static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
+@@ -8563,12 +8556,12 @@ ftrace_trace_snapshot_callback(struct tr
+  out_reg:
+ 	ret = tracing_arm_snapshot(tr);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = register_ftrace_function_probe(glob, tr, ops, count);
+ 	if (ret < 0)
+ 		tracing_disarm_snapshot(tr);
+- out:
++
+ 	return ret < 0 ? ret : 0;
+ }
+ 
+@@ -10469,7 +10462,7 @@ __init static int tracer_alloc_buffers(v
+ 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
+ 
+ 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
+-		goto out;
++		return -ENOMEM;
+ 
+ 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_buffer_mask;
+@@ -10582,7 +10575,6 @@ out_free_cpumask:
+ 	free_cpumask_var(global_trace.tracing_cpumask);
+ out_free_buffer_mask:
+ 	free_cpumask_var(tracing_buffer_mask);
+-out:
+ 	return ret;
+ }
  
 
 
