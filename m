@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE98B3662D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86400B36057
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3DFC8E2D83
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BBA05E10ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C5134DCDD;
-	Tue, 26 Aug 2025 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0314B207DF3;
+	Tue, 26 Aug 2025 12:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6Rnj6hN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+61s9Bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137A23376BE;
-	Tue, 26 Aug 2025 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B8B1EB9F2;
+	Tue, 26 Aug 2025 12:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215943; cv=none; b=kVrHVsQ6az+6ZpTxKn0+6ND/04E79ZvAeT88cQp7rvcloOUTl4Aht+bTnkfICKjpn+VcGjx8ebQMow3WaC4UXJpN3hXlmXVk7YZS9++mJ4/gd68u9mBwL8jpRWpCXBVHu6Kn5fIBHaY/tZddH+QhqjRfKDUPpSHYSxZpsKHde40=
+	t=1756212951; cv=none; b=i6W10Yo0fZdUYY47W5xDW+/1OdCDlT0FgUELJIMXCaf9RyP1Mheox/dpMWE6c0x2zaNuVp6NpxJIOfjsJ5S/20/A0Tco9oUh/CCT5jNFQbxyGBNPmgmXUJlIdWQSDSa7+ZrLOxhKlCGx6Mp7ncGHzoxwKZRTXJ+AuyRxpTSkeOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215943; c=relaxed/simple;
-	bh=fEvf4nNwyvJ37h4EvHOZ+fDGJGDR/nR2Lfg2oZshr5c=;
+	s=arc-20240116; t=1756212951; c=relaxed/simple;
+	bh=jF+a49v2550Ehh9eMfFtCnqXc4vpnnvcQqGfP8XlSLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS6vaJRn4QVgTPWnljcFV2XrhtEIllpQ2qayyyuOy1vUL4LQvV7WK8Tq0gkT+GjaIVaF3prdB3T2c+4/ROe5eJt+FZL3OUTwvI8ki6lCnGFK9oPR3eL/r82+Cxvj8xr+3/xTgP02DZIuW6D6KQVMZBPL3XRnlBVnqy8lo1TXED8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6Rnj6hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E3BC4CEF1;
-	Tue, 26 Aug 2025 13:45:42 +0000 (UTC)
+	 MIME-Version; b=QamX7mVWDs9T4IyWghDgY4SAXzLehL0Fwz8ddsUGmN2zrdss7B7KTgiE5PUzwLulSVZNiiK9lFjpY2BZqu2toAJRMB1XpfKzMjY0h2rLLAGAjPvOYm3Rah62xfsw7R+NCfKJbXcupddvxrV0lWnD/YNgNXzizQrBIGE6/EB0Vk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+61s9Bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E18C4CEF1;
+	Tue, 26 Aug 2025 12:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215942;
-	bh=fEvf4nNwyvJ37h4EvHOZ+fDGJGDR/nR2Lfg2oZshr5c=;
+	s=korg; t=1756212951;
+	bh=jF+a49v2550Ehh9eMfFtCnqXc4vpnnvcQqGfP8XlSLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6Rnj6hNFLH8tHNj7nbRTACD+Ukc/mVXf3VXYWicb8D4IKPP8nsI/nysEVKOmQ0Vg
-	 r+NT2lo/6LDWJlvgSAY8Se7U9kdYmXYfsM0RS8SribvTiogUBDPLJTgFroBmnfaNDs
-	 k9hTs/s8ILvBCMZgrMppKK7g8TKMgntTf56+aYVo=
+	b=g+61s9BtofAH8KYWpRBLbZeFCHTLQqkamGp+q6Q5BMgjcnS8uNNcnLt1580J+Tq/c
+	 mwbtjB6nw/865EXkZTNfwgkShzxjwMbpPOg8/X4eINoAvUCC2ZXdsl+4tI5NmaYlU7
+	 M3xmnyTbchfg/xq/aYThwNWyi7sMfpRmnN1w4px8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/644] powerpc/eeh: Rely on dev->link_active_reporting
+Subject: [PATCH 6.6 165/587] wifi: mac80211: dont complete management TX on SAE commit
 Date: Tue, 26 Aug 2025 13:05:14 +0200
-Message-ID: <20250826110951.948979535@linuxfoundation.org>
+Message-ID: <20250826110957.141778363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 1541a21305ceb10fcf3f7cbb23f3e1a00bbf1789 ]
+[ Upstream commit 6b04716cdcac37bdbacde34def08bc6fdb5fc4e2 ]
 
-Use dev->link_active_reporting to determine whether Data Link Layer Link
-Active Reporting is available rather than re-retrieving the capability.
+When SAE commit is sent and received in response, there's no
+ordering for the SAE confirm messages. As such, don't call
+drivers to stop listening on the channel when the confirm
+message is still expected.
 
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2305310124100.59226@angie.orcam.me.uk
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+This fixes an issue if the local confirm is transmitted later
+than the AP's confirm, for iwlwifi (and possibly mt76) the
+AP's confirm would then get lost since the device isn't on
+the channel at the time the AP transmit the confirm.
+
+For iwlwifi at least, this also improves the overall timing
+of the authentication handshake (by about 15ms according to
+the report), likely since the session protection won't be
+aborted and rescheduled.
+
+Note that even before this, mgd_complete_tx() wasn't always
+called for each call to mgd_prepare_tx() (e.g. in the case
+of WEP key shared authentication), and the current drivers
+that have the complete callback don't seem to mind. Document
+this as well though.
+
+Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
+Closes: https://lore.kernel.org/all/aB30Ea2kRG24LINR@archlinux/
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250609213232.12691580e140.I3f1d3127acabcd58348a110ab11044213cf147d3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_pe.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/net/mac80211.h | 2 ++
+ net/mac80211/mlme.c    | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index a856d9ba42d2..3f55e372f259 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -670,9 +670,8 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
- 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 835a58ce9ca5..adaa1b2323d2 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4111,6 +4111,8 @@ struct ieee80211_prep_tx_info {
+  * @mgd_complete_tx: Notify the driver that the response frame for a previously
+  *	transmitted frame announced with @mgd_prepare_tx was received, the data
+  *	is filled similarly to @mgd_prepare_tx though the duration is not used.
++ *	Note that this isn't always called for each mgd_prepare_tx() call, for
++ *	example for SAE the 'confirm' messages can be on the air in any order.
+  *
+  * @mgd_protect_tdls_discover: Protect a TDLS discovery session. After sending
+  *	a TDLS discovery-request, we expect a reply to arrive on the AP's
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2c7e139efd53..295c2fdbd3c7 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3662,6 +3662,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_prep_tx_info info = {
+ 		.subtype = IEEE80211_STYPE_AUTH,
+ 	};
++	bool sae_need_confirm = false;
  
- 	/* Check link */
--	eeh_ops->read_config(edev, cap + PCI_EXP_LNKCAP, 4, &val);
--	if (!(val & PCI_EXP_LNKCAP_DLLLARC)) {
--		eeh_edev_dbg(edev, "No link reporting capability (0x%08x) \n", val);
-+	if (!edev->pdev->link_active_reporting) {
-+		eeh_edev_dbg(edev, "No link reporting capability\n");
- 		msleep(1000);
- 		return;
- 	}
+ 	sdata_assert_lock(sdata);
+ 
+@@ -3705,6 +3706,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 				jiffies + IEEE80211_AUTH_WAIT_SAE_RETRY;
+ 			ifmgd->auth_data->timeout_started = true;
+ 			run_again(sdata, ifmgd->auth_data->timeout);
++			if (auth_transaction == 1)
++				sae_need_confirm = true;
+ 			goto notify_driver;
+ 		}
+ 
+@@ -3747,6 +3750,9 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	     ifmgd->auth_data->expected_transaction == 2)) {
+ 		if (!ieee80211_mark_sta_auth(sdata))
+ 			return; /* ignore frame -- wait for timeout */
++	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
++		   auth_transaction == 1) {
++		sae_need_confirm = true;
+ 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
+ 		   auth_transaction == 2) {
+ 		sdata_info(sdata, "SAE peer confirmed\n");
+@@ -3755,7 +3761,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 
+ 	cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
+ notify_driver:
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (!sae_need_confirm)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ }
+ 
+ #define case_WLAN(type) \
 -- 
 2.39.5
 
