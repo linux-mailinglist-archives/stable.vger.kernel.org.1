@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93487B3633F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29F2B36632
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 424682A7A7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2681C24397
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1E8341AAE;
-	Tue, 26 Aug 2025 13:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FD34DCCD;
+	Tue, 26 Aug 2025 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apAnhtuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toN3hCYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D451DAC95;
-	Tue, 26 Aug 2025 13:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297671E519;
+	Tue, 26 Aug 2025 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214329; cv=none; b=lUwdNJBARfR2QsIXxhG37yRVjgLXe8fHJ3KK5AdIiXe3rOIBWBX015Gn9a++0YD0eP81AHm1jS+LWZ11me6renSpBIqVHY3iTwtsWUe1fL6Aa6rcK/+0P2Rlpsev5Izo727hVBNgldGGUOXOUPteHEWx6Ef1a+ocSYIuqQ5yBZo=
+	t=1756216040; cv=none; b=YO8kgCMEia+PHIBdnJ7Inu1fLGpZb4+dD+yme612fpemh4yfbIPtDa+51D53/kD2h0SY2QyHVi4Wuuqtqqos7xXiiUEe2hlwhePvVDjiGwbHDrY3N4mc26qjQOfJyMjLI6p8k4EkdPPqZa+UerO3qHJSinNWQ3/OwSJkJ0prnD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214329; c=relaxed/simple;
-	bh=uGm09rpjmIhE1u9u91ZeBm3E7hg8PPU2FfYacjshkNs=;
+	s=arc-20240116; t=1756216040; c=relaxed/simple;
+	bh=Ujb6+gcj+1T7lufy0+UMH48g6cXDwuDWgK9mIDNE+9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDHMZ4oXAWZsha22Ch5Gj3dY0eE9gNDwk/eNa29DhJUGQ5xjgynaJxD1F4l90n3cskdc4JwQWrviJEHiWzDkLwiNOr6Cte2uFFiAaXlX3nKyn8mFvNIj60NE8kBBbfQlbaAXwlg2PbZyWqivionysUwGdfMuARi1ir9liopBcuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apAnhtuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822DEC4CEF1;
-	Tue, 26 Aug 2025 13:18:48 +0000 (UTC)
+	 MIME-Version; b=FFGZma/44WC4sHDxHDa1rnwJ/6CjQCwd1dJJV+avDDZQh/8cTbL6XT6lRktbAS5LP1927eAgF3J6+bDtmeoxgGSXNmq+erfSUxQx23UO0sEp5hKtfwXQoZqdZPuiIs4VJQ5fsicuvFSuIAjk9jx9NefG3XL0bB/hOfCAPaSNwkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toN3hCYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13BFC4CEF1;
+	Tue, 26 Aug 2025 13:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214328;
-	bh=uGm09rpjmIhE1u9u91ZeBm3E7hg8PPU2FfYacjshkNs=;
+	s=korg; t=1756216040;
+	bh=Ujb6+gcj+1T7lufy0+UMH48g6cXDwuDWgK9mIDNE+9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apAnhtuLH7CDK5usCrFX2oeqVThLAkFuuEl7PEui+ELs85wjLZpQjQV/eaAPr5wmb
-	 bazVHm744PUkCTwcOMo2S9XSoP/zzqhROd0mmfpyA20O+t/3GntLF4qTKwB+D/5+Kp
-	 WWuQd53nvQ+4txhHjx4N/kdqXi9o1mi3K24NZHe8=
+	b=toN3hCYfY7hgRgKq3McKIwt3GDHW0YTen6EUgL6DwfckbLkq5fGjWp9MBHRxRoAyd
+	 JKdjftXo4hb2ShOI8UoHnw7lFa4dlERp4hA53eZRZfJdAliPgWYB1ZOvRSV/fKaP+8
+	 /4cNohZjHX0ucdUWT2Wo+MXUhgLirTXgA+sfCBEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
 	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/482] ALSA: hda: Disable jack polling at shutdown
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 5.15 260/644] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
 Date: Tue, 26 Aug 2025 13:05:51 +0200
-Message-ID: <20250826110933.249190960@linuxfoundation.org>
+Message-ID: <20250826110952.820737101@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 1adcbdf54f76e1004bdf71df4eb1888c26e7ad06 ]
+commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
 
-Although the jack polling is canceled at shutdown in
-snd_hda_codec_shutdown(), it might be still re-triggered when the work
-is being processed at cancel_delayed_work_sync() call.  This may
-result in the unexpected hardware access that should have been already
-disabled.
+UAC3 class segment descriptors need to be verified whether their sizes
+match with the declared lengths and whether they fit with the
+allocated buffer sizes, too.  Otherwise malicious firmware may lead to
+the unexpected OOB accesses.
 
-For assuring to stop the jack polling, clear codec->jackpoll_interval
-at shutdown.
-
-Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Closes: https://lore.kernel.org/20250619020844.2974160-4-joakim.zhang@cixtech.com
-Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250623131437.10670-2-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_codec.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/stream.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
-index 94b3732e6cb2..aef60044cb8a 100644
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -3040,6 +3040,7 @@ void snd_hda_codec_shutdown(struct hda_codec *codec)
- 	if (!codec->core.registered)
- 		return;
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -341,20 +341,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
  
-+	codec->jackpoll_interval = 0; /* don't poll any longer */
- 	cancel_delayed_work_sync(&codec->jackpoll_work);
- 	list_for_each_entry(cpcm, &codec->pcm_list_head, list)
- 		snd_pcm_suspend_all(cpcm->pcm);
--- 
-2.39.5
-
+ 	len = le16_to_cpu(cluster->wLength);
+ 	c = 0;
+-	p += sizeof(struct uac3_cluster_header_descriptor);
++	p += sizeof(*cluster);
++	len -= sizeof(*cluster);
+ 
+-	while (((p - (void *)cluster) < len) && (c < channels)) {
++	while (len > 0 && (c < channels)) {
+ 		struct uac3_cluster_segment_descriptor *cs_desc = p;
+ 		u16 cs_len;
+ 		u8 cs_type;
+ 
++		if (len < sizeof(*p))
++			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
++		if (len < cs_len)
++			break;
+ 		cs_type = cs_desc->bSegmentType;
+ 
+ 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
+ 			struct uac3_cluster_information_segment_descriptor *is = p;
+ 			unsigned char map;
+ 
++			if (cs_len < sizeof(*is))
++				break;
++
+ 			/*
+ 			 * TODO: this conversion is not complete, update it
+ 			 * after adding UAC3 values to asound.h
+@@ -456,6 +464,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+ 			chmap->map[c++] = map;
+ 		}
+ 		p += cs_len;
++		len -= cs_len;
+ 	}
+ 
+ 	if (channels < c)
+@@ -876,7 +885,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	u64 badd_formats = 0;
+ 	unsigned int num_channels;
+ 	struct audioformat *fp;
+-	u16 cluster_id, wLength;
++	u16 cluster_id, wLength, cluster_wLength;
+ 	int clock = 0;
+ 	int err;
+ 
+@@ -1003,6 +1012,16 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 			iface_no, altno);
+ 		kfree(cluster);
+ 		return ERR_PTR(-EIO);
++	}
++
++	cluster_wLength = le16_to_cpu(cluster->wLength);
++	if (cluster_wLength < sizeof(*cluster) ||
++	    cluster_wLength > wLength) {
++		dev_err(&dev->dev,
++			"%u:%d : invalid Cluster Descriptor size\n",
++			iface_no, altno);
++		kfree(cluster);
++		return ERR_PTR(-EIO);
+ 	}
+ 
+ 	num_channels = cluster->bNrChannels;
 
 
 
