@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1182CB36981
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15A0B35CE4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0408F566606
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55F9E7C572D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4008E3570C0;
-	Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C62A3093BA;
+	Tue, 26 Aug 2025 11:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSGmAl6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQf+rFTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE089340DA7;
-	Tue, 26 Aug 2025 14:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476FA20330;
+	Tue, 26 Aug 2025 11:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217704; cv=none; b=HdfdtACHUTtLA2uL9J2A7M6XPquD069MPk1816diydnShvF/pvaRx6s8Kj3c7VULstaokSR29i2LhxcwjySfMzWVZFjnpS+QoxEI5whXd5gWwgmyfXCEQ4746ymcdbOj7T9/I+/7jlqSYMO9uCwJea/Nbva5kuDE5dtbV+SZTqI=
+	t=1756208320; cv=none; b=SXb0CCbxphEFMFDtYhBYx8W7dIcFAcXmQQWtKGaaV5dWl0zYWwGzO++brHFWZsU+Ptt2aUnRIU4W98pzjRiMSv4dHrvWxZw281YGxsDgfTl7/hQAtyaTGqGwOVccVl7YfSqOKvfWF4iap5sj0c/Dgemqx7ekS4zjukXGb6BzxdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217704; c=relaxed/simple;
-	bh=O9zIaMyLrEAMUBAQUA7k78jogbRA5tajuHjkaunrnnE=;
+	s=arc-20240116; t=1756208320; c=relaxed/simple;
+	bh=wuj/yY/VQQEPLNGznMR9CJSGrRifeYh9MJcuEVzsz0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdXv5pINtqLMUgfIfNXgLdYGOy6kfmH0QDAsSRP9L/7to3VHpQxJtxHa1LPyAw9RCWjlPaEL7fI9WhlGRQORKsyiv85zGvJNXv2UoqCjTZtNwL7FO4VoAhlb95muMKylyJPRHJdJlF6fmI5hgWy/0tHBRfY4aLonaPVYAbh7+oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSGmAl6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82215C4CEF1;
-	Tue, 26 Aug 2025 14:15:03 +0000 (UTC)
+	 MIME-Version; b=N3HGJPUXvVoo7f/PHMD8Wgn87KD+DIIvOHUvRGwSPtGhM04nfNzbbEXYdu5cJx8Q2iFiTdSPrfu+DnNFwsYRuhPoCDkj73gAHo+0w25FMsOtkZvwj8X/0Gy7OupQrZ5DWVEfCAMzEWAoSUlCXRf8ihKWCd/QJICSboEyy2H+QSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQf+rFTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23DAC4CEF1;
+	Tue, 26 Aug 2025 11:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217703;
-	bh=O9zIaMyLrEAMUBAQUA7k78jogbRA5tajuHjkaunrnnE=;
+	s=korg; t=1756208320;
+	bh=wuj/yY/VQQEPLNGznMR9CJSGrRifeYh9MJcuEVzsz0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSGmAl6pNS2eBpeAAI5RePIcvzQNJZIm8WBnOs36vfofPxeMOSxML5rWkH2kV0VJV
-	 2lp8xgZ64ork/vCDzu8MEsnLLGZ4etAWboUviFJPdr8MAV2PAo29UNeiRc1PV8WjMz
-	 Z9DEtMPGh55DEmoqfqnTwEB00PhARJXFx8wXJg38=
+	b=uQf+rFTPq69DTxm+uLHQiUIya4qXJFaaRCo9QPxyC2GLLHR9feEDjk4qtxT3cJjFp
+	 8ROwj4e4LWJ1mSlzLr4O3VTdqony7SGrDrj6mfkRfq+gpCzufIAO/x8CDaqWLBYL0d
+	 Ro3qvdBy45jCAN2SNFODapKHHutKQrWLjdn0+G6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/523] x86/bugs: Avoid warning when overriding return thunk
+	Judith Mendez <jm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.12 039/322] arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR support
 Date: Tue, 26 Aug 2025 13:07:34 +0200
-Message-ID: <20250826110930.456665016@linuxfoundation.org>
+Message-ID: <20250826110916.331866911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
+commit 265f70af805f33a0dfc90f50cc0f116f702c3811 upstream.
 
-The purpose of the warning is to prevent an unexpected change to the return
-thunk mitigation. However, there are legitimate cases where the return
-thunk is intentionally set more than once. For example, ITS and SRSO both
-can set the return thunk after retbleed has set it. In both the cases
-retbleed is still mitigated.
+For eMMC, High Speed DDR mode is not supported [0], so remove
+mmc-ddr-1_8v flag which adds the capability.
 
-Replace the warning with an info about the active return thunk.
+[0] https://www.ti.com/lit/gpn/am625
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250707191250.3953990-1-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 7c269dcb7cec..6ff9fd836d87 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -67,10 +67,9 @@ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
- 
- static void __init set_return_thunk(void *thunk)
- {
--	if (x86_return_thunk != __x86_return_thunk)
--		pr_warn("x86/bugs: return thunk changed\n");
--
- 	x86_return_thunk = thunk;
-+
-+	pr_info("active return thunk: %ps\n", thunk);
- }
- 
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -553,7 +553,6 @@
+ 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
+ 		clock-names = "clk_ahb", "clk_xin";
+ 		bus-width = <8>;
+-		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
+ 		ti,clkbuf-sel = <0x7>;
+ 		ti,otap-del-sel-legacy = <0x0>;
 
 
 
