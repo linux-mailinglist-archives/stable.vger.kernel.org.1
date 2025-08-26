@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BFDB36858
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51928B365A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D62F31C25327
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE1A67C7298
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B618834DCC0;
-	Tue, 26 Aug 2025 14:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6A32FD7D7;
+	Tue, 26 Aug 2025 13:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5uHWvZM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qh3dcHp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BA93431FD;
-	Tue, 26 Aug 2025 14:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F02E6106;
+	Tue, 26 Aug 2025 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217091; cv=none; b=Oqqd/VMhykLQGbWEq4hCC2LRKYHpWul/cNOaL7ciAX2CVv8zFCk9esXnTgrDn84HgBD1vqFePcA5nxfjblPyYprD6zXcikbpF4k10WWngUjL83Y8IdKMB4YzIsW7D68HyC9yiUji556tndMPtd6sYEotcSNAHELvnJdIPGnFGDA=
+	t=1756215779; cv=none; b=CZT48Y5Yg5vYJPNpUsy2e+Ak721Qlllx2FzelTwOguEs1ZCyd1g+z+bRyAPu08Hs+eXXvLLRzWyvbRMMfuz5C38kb5bgfHonqaHggMokKe3Zkd8WpcK6hajKsRwKxTGDCBoLy9VX+FaQuhqqu2UQZrOKnh9AfLbnDsoakdIdu5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217091; c=relaxed/simple;
-	bh=PRuMjARA5M6V5kvn6JuYn123QEdzb6J7bDS5ZHy2c78=;
+	s=arc-20240116; t=1756215779; c=relaxed/simple;
+	bh=q3aD0/ScnHhsmsbNy1z9F3CyV9HUD9C/v8b6txAfP3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTLBfdvboLPgPlocU3ff210gHYyuR/VPUvpG8W271lgnzpN9oY6+j1SVbQlzJoWy9IqulucgTNKMRZtu9dpHLMxaZM2O+4C8JRbGNb00EFp4p/wgLATgtCSgGaJPLytvM2zC3Ti1sz8pBjcYXYcdQNBKR5UH7gP+HjEoohxu7TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5uHWvZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0834FC4CEF1;
-	Tue, 26 Aug 2025 14:04:50 +0000 (UTC)
+	 MIME-Version; b=pYeCGWxSUcfPPihNcYi7ar/groeQ710e5UAILjS1iVWzrkx7oLXWon0fjCV5KYKB4kH6T55QLVr1ytom+0yuPnTdQNHDO+372x9dXj6JYaMb9wLJAyP76udU+R6+qWfQZiz3/3Bp7kC1bNVsxu0GylzWk5jmV2pIWl5iRcKQ6QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qh3dcHp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEC9C113CF;
+	Tue, 26 Aug 2025 13:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217091;
-	bh=PRuMjARA5M6V5kvn6JuYn123QEdzb6J7bDS5ZHy2c78=;
+	s=korg; t=1756215778;
+	bh=q3aD0/ScnHhsmsbNy1z9F3CyV9HUD9C/v8b6txAfP3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5uHWvZMb/jfH41iBJUOvOeuTZGFh0KEd0w4HkB4sQD8fesg1Vtqs0B5SyOuHfqrh
-	 KVnKuRniuu1sq0VF1ADJzRIGmimeKTmOjp4FW6ovL+F08v6G01gg74KGm6aQZDSIoH
-	 hLfVfGTcydNPRuUSf2uvMqm8NhAYgzCOJwwQzURw=
+	b=qh3dcHp61j7IEhODEnGNCTL5jZCgGJJi0JJxudty4hebOFJ0+K72g48eSaF0Qx7wF
+	 ZXlDK02xN+EmJ/YNwyndw0Xt8mYyQyjBxOQgCvGY9h+t1B+Mb7Hi/CBMfzmSr6rs69
+	 Ai0sTlfoYU61ymIydPjjB6JhW2WIq4aDOgwAKOII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 013/523] phonet/pep: Move call to pn_skb_get_dst_sockaddr() earlier in pep_sock_accept()
+	Brahmajit Das <listout@listout.xyz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 132/644] samples: mei: Fix building on musl libc
 Date: Tue, 26 Aug 2025 13:03:43 +0200
-Message-ID: <20250826110924.910715496@linuxfoundation.org>
+Message-ID: <20250826110949.778522672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Brahmajit Das <listout@listout.xyz>
 
-commit 17ba793f381eb813596d6de1cc6820bcbda5ed8b upstream.
+[ Upstream commit 239df3e4b4752524e7c0fb3417c218d8063654b4 ]
 
-A new warning in clang [1] points out a place in pep_sock_accept() where
-dst is uninitialized then passed as a const pointer to pep_find_pipe():
+The header bits/wordsize.h is glibc specific and on building on musl
+with allyesconfig results in
 
-  net/phonet/pep.c:829:37: error: variable 'dst' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    829 |         newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
-        |                                            ^~~:
+samples/mei/mei-amt-version.c:77:10: fatal error: bits/wordsize.h: No such file or directory
+   77 | #include <bits/wordsize.h>
+      |          ^~~~~~~~~~~~~~~~~
 
-Move the call to pn_skb_get_dst_sockaddr(), which initializes dst, to
-before the call to pep_find_pipe(), so that dst is consistently used
-initialized throughout the function.
+mei-amt-version.c build file without bits/wordsize.h on musl and glibc.
 
-Cc: stable@vger.kernel.org
-Fixes: f7ae8d59f661 ("Phonet: allocate sock from accept syscall rather than soft IRQ")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2101
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However on musl we get the follwing error without sys/time.h
+
+samples/mei/mei-amt-version.c: In function 'mei_recv_msg':
+samples/mei/mei-amt-version.c:159:24: error: storage size of 'tv' isn't known
+  159 |         struct timeval tv;
+      |                        ^~
+samples/mei/mei-amt-version.c:160:9: error: unknown type name 'fd_set'
+  160 |         fd_set set;
+      |         ^~~~~~
+samples/mei/mei-amt-version.c:168:9: error: implicit declaration of function 'FD_ZERO' [-Wimplicit-function-declaration]
+  168 |         FD_ZERO(&set);
+      |         ^~~~~~~
+samples/mei/mei-amt-version.c:169:9: error: implicit declaration of function 'FD_SET'; did you mean 'L_SET'? [-Wimplicit-function-declaration]
+  169 |         FD_SET(me->fd, &set);
+      |         ^~~~~~
+      |         L_SET
+samples/mei/mei-amt-version.c:170:14: error: implicit declaration of function 'select' [-Wimplicit-function-declaration]
+  170 |         rc = select(me->fd + 1, &set, NULL, NULL, &tv);
+      |              ^~~~~~
+samples/mei/mei-amt-version.c:171:23: error: implicit declaration of function 'FD_ISSET' [-Wimplicit-function-declaration]
+  171 |         if (rc > 0 && FD_ISSET(me->fd, &set)) {
+      |                       ^~~~~~~~
+samples/mei/mei-amt-version.c:159:24: warning: unused variable 'tv' [-Wunused-variable]
+  159 |         struct timeval tv;
+      |                        ^~
+
+Hence the the file has been included.
+
+Fixes: c52827cc4ddf ("staging/mei: add mei user space example")
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Link: https://lore.kernel.org/r/20250702135955.24955-1-listout@listout.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pep.c |    2 +-
+ samples/mei/mei-amt-version.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -825,6 +825,7 @@ static struct sock *pep_sock_accept(stru
- 	}
+diff --git a/samples/mei/mei-amt-version.c b/samples/mei/mei-amt-version.c
+index 867debd3b912..1d7254bcb44c 100644
+--- a/samples/mei/mei-amt-version.c
++++ b/samples/mei/mei-amt-version.c
+@@ -69,11 +69,11 @@
+ #include <string.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
++#include <sys/time.h>
+ #include <unistd.h>
+ #include <errno.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+-#include <bits/wordsize.h>
+ #include <linux/mei.h>
  
- 	/* Check for duplicate pipe handle */
-+	pn_skb_get_dst_sockaddr(skb, &dst);
- 	newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
- 	if (unlikely(newsk)) {
- 		__sock_put(newsk);
-@@ -849,7 +850,6 @@ static struct sock *pep_sock_accept(stru
- 	newsk->sk_destruct = pipe_destruct;
- 
- 	newpn = pep_sk(newsk);
--	pn_skb_get_dst_sockaddr(skb, &dst);
- 	pn_skb_get_src_sockaddr(skb, &src);
- 	newpn->pn_sk.sobject = pn_sockaddr_get_object(&dst);
- 	newpn->pn_sk.dobject = pn_sockaddr_get_object(&src);
+ /*****************************************************************************
+-- 
+2.39.5
+
 
 
 
