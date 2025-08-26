@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE776B35DB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D5DB36A87
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB90D7C4F5F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27012A00FE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73095334396;
-	Tue, 26 Aug 2025 11:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022D9352FEB;
+	Tue, 26 Aug 2025 14:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0WPaG+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWEiF8op"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306C12FD7C8;
-	Tue, 26 Aug 2025 11:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47F0352FDF;
+	Tue, 26 Aug 2025 14:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208747; cv=none; b=MRl4WQyeiyYUgJmbaaQYGohDQW7hU4bUo/AENAHY2iRMbMVHZTM5D2n0FqJVNiCz2oRJ4gON46NLtWleEnlZbNkCQN3288PEAEMQ2zDN/RKDBmnPMUpNRxwyUcdy6mVyAsBNlDZT5Z9byY5Jk4i71pf/0qu5qB5OfV5yAo5w72c=
+	t=1756218211; cv=none; b=KndyqiATtoShlY1F2yGO1YsSup4AczFjzpvsBZFWtCw70DOlXRmzxEhbXNr8JnmFOGXY9skEieMUorq7up53vQItKOlqKjwxQmBOw7tFC5SN3pPuUBNYdUN6qMBKQCnvCD+lU96NFZLEAUcm+75SmYAaHuRvb2RorZtZoyq23fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208747; c=relaxed/simple;
-	bh=ZJZSmiPPLQkxE4VokQepJO72vB0onaU1Y4uePQyd5kI=;
+	s=arc-20240116; t=1756218211; c=relaxed/simple;
+	bh=RsvSGIJRFGFU1Vo6h7eVsMkhlTVQTdxB3ZR+wt9Avyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJKIOl6SyCkHIQ+7tqzh7eY9o8hWpL3+aBv4hv+Nc64b+pnLsQWSRZGjcLaQV4Z/dqho+ajphxeLsBbieplUvKNUKQ/Sw9yCoZSyrquaoLdsqzizx66TxmUaUYj16YV8wi1NGloQHFBkrj6UWbcbgsYBcsY6GOMZdCKcJMrYMMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0WPaG+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0C5C4CEF1;
-	Tue, 26 Aug 2025 11:45:46 +0000 (UTC)
+	 MIME-Version; b=jaxx9m/+/BRFI8AdqcNuLgXO5TdEM8HOX2aYtb3b7kKwtmTgdUM/3RarhR82G4OrT435slsWWJtYLy+mDfxxXLg/DExbyDg57xGXt8WOyrN81P5ZPlok7jkJ62lb7xUOJT1/H2DUucFG3ImNn3h0gmz1yaDXbah/SUh0eY74RHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWEiF8op; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441BEC4CEF1;
+	Tue, 26 Aug 2025 14:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208746;
-	bh=ZJZSmiPPLQkxE4VokQepJO72vB0onaU1Y4uePQyd5kI=;
+	s=korg; t=1756218211;
+	bh=RsvSGIJRFGFU1Vo6h7eVsMkhlTVQTdxB3ZR+wt9Avyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0WPaG+1tpVjgilU/KiGcNf43QxwyILtrXwMYHx54AVkvnm2OQLCKc7X3q9TuWpAc
-	 ruqYPPvG0RazxdiFdm/peHto1QUHyuWUAbIU20HGHjz6iKH2JU9fsfI4VWf5rvS0hY
-	 /m5kXR+ePLhTFp3ahOOIhfKej4jakIPB1eHcK9Gg=
+	b=oWEiF8opbEL4ONAeWCMLN1wwmKRGCrJqJB2PVGhqPA6ailtGzoIKNRB7WePnL3eG3
+	 AQxhCbbI29CjUGRHoEDYXrgH6z1i0+vIht03iRimPZJVhNuIAnpRh9mJH1Sg3tNNU/
+	 Y76gOStkCvtI2RT52VOzNDDXP5lIW6EIAl8pcry4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.12 229/322] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 434/523] hv_netvsc: Fix panic during namespace deletion with VF
 Date: Tue, 26 Aug 2025 13:10:44 +0200
-Message-ID: <20250826110921.553478134@linuxfoundation.org>
+Message-ID: <20250826110935.161205865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit 33caa208dba6fa639e8a92fd0c8320b652e5550c ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
+changing the netdev list when default_device_exit_net() is using it.
 
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
+Cc: stable@vger.kernel.org
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/net/hyperv/hyperv_net.h |    3 +++
+ drivers/net/hyperv/netvsc_drv.c |   29 ++++++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1501,6 +1501,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -985,6 +985,7 @@ struct net_device_context {
+ 	struct net_device __rcu *vf_netdev;
+ 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
+ 	struct delayed_work vf_takeover;
++	struct delayed_work vfns_work;
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
+ 	/* 1: allocated, serial number is valid. 0: not allocated */
+ 	u32 vf_alloc;
+@@ -999,6 +1000,8 @@ struct net_device_context {
+ 	struct netvsc_device_info *saved_netvsc_dev_info;
+ };
+ 
++void netvsc_vfns_work(struct work_struct *w);
 +
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
+ /* Per channel data */
+ struct netvsc_channel {
+ 	struct vmbus_channel *channel;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2541,6 +2541,7 @@ static int netvsc_probe(struct hv_device
+ 	spin_lock_init(&net_device_ctx->lock);
+ 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
+ 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
++	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
+ 
+ 	net_device_ctx->vf_stats
+ 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
+@@ -2679,6 +2680,8 @@ static int netvsc_remove(struct hv_devic
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
 +
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev) {
+ 		cancel_work_sync(&nvdev->subchan_work);
+@@ -2721,6 +2724,7 @@ static int netvsc_suspend(struct hv_devi
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
+ 
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev == NULL) {
+@@ -2814,6 +2818,27 @@ static void netvsc_event_set_vf_ns(struc
+ 	}
+ }
+ 
++void netvsc_vfns_work(struct work_struct *w)
++{
++	struct net_device_context *ndev_ctx =
++		container_of(w, struct net_device_context, vfns_work.work);
++	struct net_device *ndev;
++
++	if (!rtnl_trylock()) {
++		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
++		return;
++	}
++
++	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
++	if (!ndev)
++		goto out;
++
++	netvsc_event_set_vf_ns(ndev);
++
++out:
++	rtnl_unlock();
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2824,10 +2849,12 @@ static int netvsc_netdev_event(struct no
+ 			       unsigned long event, void *ptr)
+ {
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	struct net_device_context *ndev_ctx;
+ 	int ret = 0;
+ 
+ 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
++		ndev_ctx = netdev_priv(event_dev);
++		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
+ 		return NOTIFY_DONE;
+ 	}
+ 
 
 
 
