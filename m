@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B7FB36650
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3464DB36296
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E517B563054
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75D0F188C58C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7062FD7D7;
-	Tue, 26 Aug 2025 13:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E958321D3CA;
+	Tue, 26 Aug 2025 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvPgtfnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUUtVrXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1849216E1B;
-	Tue, 26 Aug 2025 13:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B25343D98;
+	Tue, 26 Aug 2025 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215799; cv=none; b=uuvrBPS50wdVsBBGmXkdNWdZJ92vIrk+y2xhcVFfhzxc4opvwPLtrwKRbeJO0ve4akha/kxP1ieb+GEwLt7VTCpDLTDbeuN4kG0Bh3kwhe3NUAHG0166zDsV7DK1GK7gwLf5pau9ap6HmkPnkcFg8ASlUVPctqQ3dMEWXMOGEJA=
+	t=1756214115; cv=none; b=nWq55YBkStlWGBpdvMW5/qULzYDuJsAvI+QnPzzrpYo5emw2mC3Nwzq0KnFrCDe0JHrtNL+x803hyb5lPz5V/YvWUn8Qt9g18rl274Pc4QRvGgjQfvofa9cwp+GgRs0HXpm1DVQmbQBjaAR0jqt5AAvAQ4covMMtGKBZynko/Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215799; c=relaxed/simple;
-	bh=PFqgUBLEftF9miZpRs7xTWE+f3Y7MLB2CVUedC2QpLI=;
+	s=arc-20240116; t=1756214115; c=relaxed/simple;
+	bh=64wcry0BA0MvWdUx6Qhj/CcX1X6OjO6ygjYBdmHuOKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0c6m3czXf0GS/K/ujFizsfW4iiO9GTX5FXDrgrV8PgdkbODyfjBJrqKwpiXZ7Wbq1vdi+Is9GmtgcO8se800tV1oeUH7uFADVX9TF9WOFG2y4VkcH3z9/Ed7ffHhKTurDVhlHEWnxCXzXlac2bw1Tu/4do42y5/QmWtWXCuLho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvPgtfnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6D3C4CEF1;
-	Tue, 26 Aug 2025 13:43:19 +0000 (UTC)
+	 MIME-Version; b=jCHFOCPmwi4u39yxVlmavzbQglC3F54Arlkm/tWAg7hyiC32ECNnBCf+d7C0sAUbzIFLaEBPx/4/TuPfHWOBqI+WHvNbrTdobVxDKMIJta/wO1+d5yLJERphnoEot6/awMXAb7M2FOVSb1DMU2mrLfaMpQnh30yDabP+SIYjZNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUUtVrXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8D9C4CEF1;
+	Tue, 26 Aug 2025 13:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215799;
-	bh=PFqgUBLEftF9miZpRs7xTWE+f3Y7MLB2CVUedC2QpLI=;
+	s=korg; t=1756214115;
+	bh=64wcry0BA0MvWdUx6Qhj/CcX1X6OjO6ygjYBdmHuOKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvPgtfndvwPfFNYvW0KnMcdbriuIVtnmxUA23YNBqMbpkDyVOxPq4v1PpZkT02rJe
-	 gDSOImVKXWbMtNKWsaNVSIBHbJmHL/QOxC5OSqnv2aodgeNgzOlayWgtXbgTCWfDBB
-	 r/638ghsGkbq1UmwVqTA8wuyRcHf+ba+D8fne020=
+	b=HUUtVrXtUDxiYzPzKXlOl6jfUWLBl0aKqeK6vwqXWLQbYpCKKvr88paqxgTL6Yz9q
+	 2z0EQ0i+8KCP+gqMxUEGAIy0wT4FXPkg70W0HkHjzGNj0fR4M/5F9UNR8/ragVsQ2S
+	 SCBB+VEvvrCHs0sP3g840JiNuJqyY0STd77et8is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/644] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
+	David Thompson <davthompson@nvidia.com>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 009/482] gpio: mlxbf2: use platform_get_irq_optional()
 Date: Tue, 26 Aug 2025 13:04:22 +0200
-Message-ID: <20250826110950.712667053@linuxfoundation.org>
+Message-ID: <20250826110931.011722817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
+commit 63c7bc53a35e785accdc2ceab8f72d94501931ab upstream.
 
-In the cpcap_usb_detect() function, the power_supply_get_by_name()
-function may return `NULL` instead of an error pointer.
-To prevent potential null pointer dereferences, Added a null check.
+The gpio-mlxbf2 driver interfaces with four GPIO controllers,
+device instances 0-3. There are two IRQ resources shared between
+the four controllers, and they are found in the ACPI table for
+instances 0 and 3. The driver should not use platform_get_irq(),
+otherwise this error is logged when probing instances 1 and 2:
+  mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
 
-Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20250728144619.29894-1-davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/cpcap-charger.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-mlxbf2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
-index 60e0ce105a29..5c9e3784ed47 100644
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		struct power_supply *battery;
+--- a/drivers/gpio/gpio-mlxbf2.c
++++ b/drivers/gpio/gpio-mlxbf2.c
+@@ -374,7 +374,7 @@ mlxbf2_gpio_probe(struct platform_device
+ 	gc->ngpio = npins;
+ 	gc->owner = THIS_MODULE;
  
- 		battery = power_supply_get_by_name("battery");
--		if (IS_ERR_OR_NULL(battery)) {
--			dev_err(ddata->dev, "battery power_supply not available %li\n",
--					PTR_ERR(battery));
-+		if (!battery) {
-+			dev_err(ddata->dev, "battery power_supply not available\n");
- 			return;
- 		}
- 
--- 
-2.39.5
-
+-	irq = platform_get_irq(pdev, 0);
++	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq >= 0) {
+ 		gs->irq_chip.name = name;
+ 		gs->irq_chip.irq_set_type = mlxbf2_gpio_irq_set_type;
 
 
 
