@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C248B3670E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF4CB36933
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A3C563064
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFAF1C40D9C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2842350D44;
-	Tue, 26 Aug 2025 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3D5356918;
+	Tue, 26 Aug 2025 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txnm0KcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BlAitot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67626350820;
-	Tue, 26 Aug 2025 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C7D34F496;
+	Tue, 26 Aug 2025 14:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216394; cv=none; b=qhzSXWicKHWA5iN6QivarFBzGVhiBIYY9vDViqRZNrWbc6vqqhBNxfYIAHxlxn6U076snSV//i7IIGZjgVeVToOGUFPAZn/T6ypEpPQ60elTFpXB0DDkBfnKfO7mZF3XKYQj/UNG551cQdAr9+GAOCmuPqTNpFt7YSM+tOZkXRY=
+	t=1756217679; cv=none; b=f8eEyQBruBo6p/F5PMbHqSkYH+M6VAt+eS1MS22e6DiaDJs1SDsW1yjeXN2LEzVdVCc6YvtZ4Rx3dqaMggWPscxychKahYs1e5u9GSdABWpjHgRUKHHuCA8O0UVnWIbQCF656UtxxxAK4JsVxJfvGcnqpO6ZdD3LHK5aIyFDp2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216394; c=relaxed/simple;
-	bh=vYCvYM6KMa3Uw/kbhgHZ6ty6khDEjT7RN79eAzQmgFY=;
+	s=arc-20240116; t=1756217679; c=relaxed/simple;
+	bh=BMPQhpKj4utHRWpvOhV/KkYHgVz8Zc2aQ1WvVui/TYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxaYrEGXWMLbFzStg686aiPBWnP7Xng0LQzck+HW8aMWJszBWYz6ku9MKyxbTuGMQBHvIVrD6Cc8pYB9gCwgO7iQXuRFrj7GnUsmeDAUhvRZF7740iXWQUtAwFICtXnD3eHDqLLmDe/i8TAvGPd4/KPwCHz9qWVrmVt9Y+x3veU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txnm0KcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3F5C4CEF1;
-	Tue, 26 Aug 2025 13:53:13 +0000 (UTC)
+	 MIME-Version; b=L13Gx1suF/2rj1LNNUMuAIkHdB7sJl2fdh0bbvHBZGdHReGTw18Rjfx8qkwjinG/drjtCB3l6EpZLRydHF9h24FzPERQ51x90BbrLXqSH0MVNunoPrw/phWYH5ol3daBNvXhIdeREOK4ufAtdcCO7UaB/b8lQb7TP5dtPgQd/wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BlAitot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B36C4CEF1;
+	Tue, 26 Aug 2025 14:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216394;
-	bh=vYCvYM6KMa3Uw/kbhgHZ6ty6khDEjT7RN79eAzQmgFY=;
+	s=korg; t=1756217676;
+	bh=BMPQhpKj4utHRWpvOhV/KkYHgVz8Zc2aQ1WvVui/TYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Txnm0KcBUQMutUHfqdvIZuqrlMJ9R0ipG7JbghcDIHQ0kirzojjPTsVXTpkJj1qyX
-	 htEM4L7EBcqVKiZBokoR7Pgks/lMnzuWruoWKA31RLkWnuCLQfj8E0antLElC9XkZu
-	 86I638DBdjc98L7z+H3jPWu8CHJ0sL8h5M+yy5G8=
+	b=1BlAitotqyimprgBAEm280gclW3sCn11JFdBT8JafE+BuNIII3xSLrOyjx97EpB8n
+	 uuRulaxJY9I/k5yBwRJmHFRoSt5gy95f3sh2mSTHXa5cpjFwE/sY6QBJWnnMiLHBa1
+	 rjFfssqoQQ7uC74F7VEXE+2VxrySmX++ZshdrfKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 351/644] sched/deadline: Fix accounting after global limits change
+Subject: [PATCH 5.10 232/523] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
 Date: Tue, 26 Aug 2025 13:07:22 +0200
-Message-ID: <20250826110955.096261203@linuxfoundation.org>
+Message-ID: <20250826110930.176139618@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
+[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
 
-A global limits change (sched_rt_handler() logic) currently leaves stale
-and/or incorrect values in variables related to accounting (e.g.
-extra_bw).
+ASoC has 2 functions to set bias level.
+	(A) snd_soc_dapm_force_bias_level()
+	(B) snd_soc_dapm_set_bias_level()
 
-Properly clean up per runqueue variables before implementing the change
-and rebuild scheduling domains (so that accounting is also properly
-restored) after such a change is complete.
+snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
+successed.
 
-Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
-Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
+(A)	int snd_soc_dapm_force_bias_level(...)
+	{
+		...
+		if (ret == 0)
+(a)			dapm->bias_level = level;
+		...
+	}
+
+snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
+It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
+set dapm->bias_level by itself. One note is that (A) might not be called.
+
+(B)	static int snd_soc_dapm_set_bias_level(...)
+	{
+		...
+		ret = snd_soc_card_set_bias_level(...);
+		...
+		if (dapm != &card->dapm)
+(A)			ret = snd_soc_dapm_force_bias_level(...);
+		...
+		ret = snd_soc_card_set_bias_level_post(...);
+		...
+	}
+
+dapm->bias_level will be set if (A) was called, but might not be set
+if (B) was called, even though it calles set_bias_level() function.
+
+We should set dapm->bias_level if we calls
+snd_soc_dapm_set_bias_level() (B), too.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 4 +++-
- kernel/sched/rt.c       | 6 ++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ sound/soc/soc-dapm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 66eb68c59f0b..708c3960bd06 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2661,6 +2661,9 @@ void sched_dl_do_global(void)
- 	if (global_rt_runtime() != RUNTIME_INF)
- 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index acb46e1f9c0a..175c8c264b62 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -743,6 +743,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
+ out:
+ 	trace_snd_soc_bias_level_done(card, level);
  
-+	for_each_possible_cpu(cpu)
-+		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
-+
- 	for_each_possible_cpu(cpu) {
- 		rcu_read_lock_sched();
- 
-@@ -2676,7 +2679,6 @@ void sched_dl_do_global(void)
- 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
- 
- 		rcu_read_unlock_sched();
--		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
- 	}
- }
- 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 5fc99dce5145..9720b3c19ab9 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2861,6 +2861,12 @@ int sched_rt_handler(struct ctl_table *table, int write, void *buffer,
- 	}
- 	mutex_unlock(&mutex);
- 
-+	/*
-+	 * After changing maximum available bandwidth for DEADLINE, we need to
-+	 * recompute per root domain and per cpus variables accordingly.
-+	 */
-+	rebuild_sched_domains();
++	/* success */
++	if (ret == 0)
++		snd_soc_dapm_init_bias_level(dapm, level);
 +
  	return ret;
  }
