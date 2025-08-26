@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17187B36B31
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A1CB3638B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08807564AC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD6E466D71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489AB35AABA;
-	Tue, 26 Aug 2025 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA4E340DA1;
+	Tue, 26 Aug 2025 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezHCna2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIg7YNIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0512E350820;
-	Tue, 26 Aug 2025 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694641DAC95;
+	Tue, 26 Aug 2025 13:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218610; cv=none; b=Gvk4L94j3i9SNXbPEy6lTw6lkwUEFf65lpChHuzfx54+WIUDGxMS4OkEdIG3QBHWVmrjaas/1CYdxIFaR1qiNBRygH9gKqtGUytQVswFCeaTbzmFWKVhHrSVx088Pj2IZZDpSa9p/wT5GFOzLd2i+IFVGfp5ouyFBww7H4i7s3o=
+	t=1756214481; cv=none; b=mFZrO04xhJrFjh/gIgpIZ4E+fno9RI8mO10NQMGel/9mrYkRKRoxKTsO2R7SlkbZpFJs+txlG6GmuFtaL5dRSGHBZfNzAZ909NxNUW3jHC9Nlvk22ecLiAMBeW1RMMTIQOfPRDV/NSov/6vhzhD97Rfv3ajgBB68irIg2fqgxI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218610; c=relaxed/simple;
-	bh=tYEIdt20QfEiiGiAFhU/BLBT2FTDct3BccqREfKJUMY=;
+	s=arc-20240116; t=1756214481; c=relaxed/simple;
+	bh=pEw/rkBdOMA4jZzSfjbzOfnj78hiATcSZZ3VSJ7N88M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZtZ5Jrb9+YCWyGl+qDvoB3LevizJYrVTHDXnoOL3ZyqfV+nxPM3FpTGDS34H4zl5q+Z9jKXoRm9egyxoJ85jtFBOp2SZFyLU0zOLO4PUHA8536YkFF/fZjfL2cOMh1vQXIej+ccThzx1T+QECd5yIbMeQaw1aJNutqEZsqXKA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezHCna2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE96C4CEF1;
-	Tue, 26 Aug 2025 14:30:09 +0000 (UTC)
+	 MIME-Version; b=qP+frA4NFXskfEYslh8b62iIUG5EXYJcJBBSVS26MYpU1SOo+fnQabIye77ck6zCJmpL2x1jgYiCg40O/3HjGnuyLwkeN1pPQip17/MODtoyjvEdMXwfa5fW2Pof3v/OK5IidcQ8gFwP//s7sKl+Keh5LzUkEoRayJqOmgKa+6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIg7YNIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9CEC4CEF1;
+	Tue, 26 Aug 2025 13:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218609;
-	bh=tYEIdt20QfEiiGiAFhU/BLBT2FTDct3BccqREfKJUMY=;
+	s=korg; t=1756214479;
+	bh=pEw/rkBdOMA4jZzSfjbzOfnj78hiATcSZZ3VSJ7N88M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezHCna2QFW//tsh+/Vdbzx4ar3jfPMVHGwpu1tuZOeIM6AqKbSNoXGGkC1fdWKbnO
-	 QMmu+XPhXki47wTdbeuZB+uOox0ByjVsnWBv2HfJWNvO40UmQvQBCYN0jTmmqdYdVI
-	 Jdk29GvO3JxnMRvJgK4OQbu+T5Q+pDi8Cm12p640=
+	b=hIg7YNIOnLavHa6kDKfAg2jKA/dYts+7GVQGuQY5nLi53f7AHFuZ65NGWmdNhfgdt
+	 tDzTNv9D7RukEdPT+3aZSnk8OVlYvZQWrD7gIuIYiLtSSFT7444Lbn/5+7BnXXwzUK
+	 07ATTnqlOY7U/uzqow0iAG6yA/5TikPIiueOEECM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 048/403] net_sched: sch_sfq: annotate data-races around q->perturb_period
-Date: Tue, 26 Aug 2025 13:06:14 +0200
-Message-ID: <20250826110907.168969231@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/482] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
+Date: Tue, 26 Aug 2025 13:06:15 +0200
+Message-ID: <20250826110933.836770939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f ]
+[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
 
-sfq_perturbation() reads q->perturb_period locklessly.
-Add annotations to fix potential issues.
+qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
+as such needs proper annotation while accessing it.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240430180015.3111398-1-edumazet@google.com
+Without rtnl_dereference(), the following error is generated by sparse:
+
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
+  incorrect type in initializer (different address spaces)
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
+  struct Qdisc *qdisc
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
+  Qdisc [noderef] __rcu *qdisc_sleeping
+
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Harshit: Backport to 5.4.y, conflicts resolved due to missing commit:
-  d636fc5dd692 ("net: sched: add rcu annotations around
-  qdisc->qdisc_sleeping")in 5.4.y ]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -611,6 +611,7 @@ static void sfq_perturbation(struct time
- 	struct Qdisc *sch = q->sch;
- 	spinlock_t *root_lock = qdisc_lock(qdisc_root_sleeping(sch));
- 	siphash_key_t nkey;
-+	int period;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+index 1e887d640cff..c72ac4dbdb21 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+@@ -362,7 +362,7 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
+ void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
+ {
+ 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
+-	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
++	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
  
- 	get_random_bytes(&nkey, sizeof(nkey));
- 	spin_lock(root_lock);
-@@ -619,8 +620,12 @@ static void sfq_perturbation(struct time
- 		sfq_rehash(sch);
- 	spin_unlock(root_lock);
- 
--	if (q->perturb_period)
--		mod_timer(&q->perturb_timer, jiffies + q->perturb_period);
-+	/* q->perturb_period can change under us from
-+	 * sfq_change() and sfq_destroy().
-+	 */
-+	period = READ_ONCE(q->perturb_period);
-+	if (period)
-+		mod_timer(&q->perturb_timer, jiffies + period);
- }
- 
- static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
-@@ -662,7 +667,7 @@ static int sfq_change(struct Qdisc *sch,
- 		q->quantum = ctl->quantum;
- 		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
- 	}
--	q->perturb_period = ctl->perturb_period * HZ;
-+	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
- 	if (ctl->flows)
- 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
-@@ -724,7 +729,7 @@ static void sfq_destroy(struct Qdisc *sc
- 	struct sfq_sched_data *q = qdisc_priv(sch);
- 
- 	tcf_block_put(q->block);
--	q->perturb_period = 0;
-+	WRITE_ONCE(q->perturb_period, 0);
- 	del_timer_sync(&q->perturb_timer);
- 	sfq_free(q->ht);
- 	sfq_free(q->slots);
+ 	if (!qdisc)
+ 		return;
+-- 
+2.39.5
+
 
 
 
