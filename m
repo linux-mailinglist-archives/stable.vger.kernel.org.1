@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7680B366C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE6BB36B3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854525637E0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D321585B08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA187350842;
-	Tue, 26 Aug 2025 13:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F79352FCA;
+	Tue, 26 Aug 2025 14:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmhtHhQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP4npiEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F600226861;
-	Tue, 26 Aug 2025 13:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F89E260586;
+	Tue, 26 Aug 2025 14:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216082; cv=none; b=pPcX2JAiZxAHDwmmqv4n1hVfpqPLIe/6CoqTL1+33HpeVtV6WhkdqJeEGBByK/7neB/P/DC7wpsnMTLlt4UYhTKVniOay2s+u2hKru7gTq1exMVdPOqhKZEowXc3Kims48NOtd7iwLbYyMzLWadp0QykR3H13dPOwOw6a8ccKuk=
+	t=1756218554; cv=none; b=gp4QUL13oT5KmEY5TUORyUnFyE5sVjR0BRpFGCDGcVYdvBZHAWJdS/HICayE6gDDDa3uPIYdbc+lAK5SNbWNhT+bUbt9w/KD0+mbdc7KUEz+3CPAF7rms1zapCA4PWf8ibhwVff9ygsQi/d1y0731xjNuNkLhRB/tClUWIYrhjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216082; c=relaxed/simple;
-	bh=1v6fECEYfIRTRDFNsEcX2mlSq1MlT4zDlthuy3/UyZE=;
+	s=arc-20240116; t=1756218554; c=relaxed/simple;
+	bh=jjMXoI7LDzuCmy1GxBTe+4raM5wG4caeOIRFoXhukuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNUkPu7xhmQYJjJl1gnV6qvVfcldyWQ3Mo5/RRE70lImUEZOxCXs/rEfV032djiMIALmDih1lxzs7pK/kueu9NEZSIBUX0+7+h8cKi99UUBUBCdj3w/+8qb6XtIp6O7cgFFvCRdu/WcKucCS8TiTQTFzfDX09cAAaMEuyn831eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmhtHhQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054D9C116B1;
-	Tue, 26 Aug 2025 13:48:01 +0000 (UTC)
+	 MIME-Version; b=LLR5FAAwgo66c+ZnEaiCfHr1IjoInr0HBHUcTiJrSy1rZcCCvZI2lw6WHsNuLiwkrlf8p2ZCTBYm00HEeuckNAXpjHJZFL8R3iTo+3TpZwiDJk+6PT5H6QLZs96OKhi/XvZULVR3P8cLjiqxS6hXqrMKcckiYiB3oCl9untaL74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP4npiEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11098C113CF;
+	Tue, 26 Aug 2025 14:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216082;
-	bh=1v6fECEYfIRTRDFNsEcX2mlSq1MlT4zDlthuy3/UyZE=;
+	s=korg; t=1756218554;
+	bh=jjMXoI7LDzuCmy1GxBTe+4raM5wG4caeOIRFoXhukuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmhtHhQLkWJaf1gioVpNJ3NiVWMAQrXHxK2XSIur5QWyiAwdk7Ra5FnOeywgOs4ZQ
-	 c5ZhPuoBbkvTCBh7JRtmyWKLuFF3uzfs6rPWxDjNspAiuC8kqp0Kb8PRxTwWoWbXpQ
-	 L+x3nkriP5mdIFDZKR/ygfvALixPzR/eAUG/0CJg=
+	b=zP4npiEkja+ouX7375g9NtDUrdqbdtYWhDhU7QzPdFePY1LP9IjEN3Uarz5JAkxvL
+	 6eUDNthrU+B4Z9m9b/iCncKQU6s69a5aR2K4kk0/+LxZbIfYiDI/2MLEY4Y5IZ9AsR
+	 m8goo1FW6yMwuLKSdIBSypjptMUy6oH5O9Z9aDo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 278/644] cpuidle: governors: menu: Avoid using invalid recent intervals data
+Subject: [PATCH 5.4 043/403] virtio-net: ensure the received length does not exceed allocated size
 Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110953.264127149@linuxfoundation.org>
+Message-ID: <20250826110907.016284633@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
+commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
 
-Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-discarding useful information") caused the number of wakeup interrupts
-to increase on an idle system [1], which was not expected to happen
-after merely allowing shallower idle states to be selected by the
-governor in some cases.
+In xdp_linearize_page, when reading the following buffers from the ring,
+we forget to check the received length with the true allocate size. This
+can lead to an out-of-bound read. This commit adds that missing check.
 
-However, on the system in question, all of the idle states deeper than
-WFI are rejected by the driver due to a firmware issue [2].  This causes
-the governor to only consider the recent interval duriation data
-corresponding to attempts to enter WFI that are successful and the
-recent invervals table is filled with values lower than the scheduler
-tick period.  Consequently, the governor predicts an idle duration
-below the scheduler tick period length and avoids stopping the tick
-more often which leads to the observed symptom.
-
-Address it by modifying the governor to update the recent intervals
-table also when entering the previously selected idle state fails, so
-it knows that the short idle intervals might have been the minority
-had the selected idle states been actually entered every time.
-
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
+Cc: <stable@vger.kernel.org>
+Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index e1e2721beb75..246b4a1b664a 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -158,6 +158,14 @@ static inline int performance_multiplier(unsigned int nr_iowaiters)
- 
- static DEFINE_PER_CPU(struct menu_device, menu_devices);
- 
-+static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
-+{
-+	/* Update the repeating-pattern data. */
-+	data->intervals[data->interval_ptr++] = interval_us;
-+	if (data->interval_ptr >= INTERVALS)
-+		data->interval_ptr = 0;
-+}
-+
- static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
- 
- /*
-@@ -288,6 +296,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 	if (data->needs_update) {
- 		menu_update(drv, dev);
- 		data->needs_update = 0;
-+	} else if (!dev->last_residency_ns) {
-+		/*
-+		 * This happens when the driver rejects the previously selected
-+		 * idle state and returns an error, so update the recent
-+		 * intervals table to prevent invalid information from being
-+		 * used going forward.
-+		 */
-+		menu_update_intervals(data, UINT_MAX);
- 	}
- 
- 	/* determine the expected residency time, round up */
-@@ -542,10 +558,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
- 
- 	data->correction_factor[data->bucket] = new_factor;
- 
--	/* update the repeating-pattern data */
--	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
--	if (data->interval_ptr >= INTERVALS)
--		data->interval_ptr = 0;
-+	menu_update_intervals(data, ktime_to_us(measured_ns));
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_tru
+ 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
  }
  
- /**
--- 
-2.50.1
-
++static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
++			       unsigned int len)
++{
++	unsigned int headroom, tailroom, room, truesize;
++
++	truesize = mergeable_ctx_to_truesize(mrg_ctx);
++	headroom = mergeable_ctx_to_headroom(mrg_ctx);
++	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
++	room = SKB_DATA_ALIGN(headroom + tailroom);
++
++	if (len > truesize - room) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)(truesize - room));
++		dev->stats.rx_length_errors++;
++		return -1;
++	}
++
++	return 0;
++}
++
+ /* Called from bottom half context */
+ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 				   struct receive_queue *rq,
+@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom
+  * across multiple buffers (num_buf > 1), and we make sure buffers
+  * have enough headroom.
+  */
+-static struct page *xdp_linearize_page(struct receive_queue *rq,
++static struct page *xdp_linearize_page(struct net_device *dev,
++				       struct receive_queue *rq,
+ 				       u16 *num_buf,
+ 				       struct page *p,
+ 				       int offset,
+@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(s
+ 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
+ 	page_off += *len;
+ 
++	/* Only mergeable mode can go inside this while loop. In small mode,
++	 * *num_buf == 1, so it cannot go inside.
++	 */
+ 	while (--*num_buf) {
+ 		unsigned int buflen;
+ 		void *buf;
++		void *ctx;
+ 		int off;
+ 
+-		buf = virtqueue_get_buf(rq->vq, &buflen);
++		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
+ 		if (unlikely(!buf))
+ 			goto err_buf;
+ 
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
+ 
++		if (check_mergeable_len(dev, ctx, buflen)) {
++			put_page(p);
++			goto err_buf;
++		}
++
+ 		/* guard against a misconfigured or uncooperative backend that
+ 		 * is sending packet larger than the MTU.
+ 		 */
+@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(str
+ 			headroom = vi->hdr_len + header_offset;
+ 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+ 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-			xdp_page = xdp_linearize_page(rq, &num_buf, page,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
+ 						      offset, header_offset,
+ 						      &tlen);
+ 			if (!xdp_page)
+@@ -910,7 +940,7 @@ static struct sk_buff *receive_mergeable
+ 		if (unlikely(num_buf > 1 ||
+ 			     headroom < virtnet_get_headroom(vi))) {
+ 			/* linearize data for XDP */
+-			xdp_page = xdp_linearize_page(rq, &num_buf,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
+ 						      page, offset,
+ 						      VIRTIO_XDP_HEADROOM,
+ 						      &len);
 
 
 
