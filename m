@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A52B36BC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA2B36817
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9902C7BC360
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A392A6F90
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DC6362093;
-	Tue, 26 Aug 2025 14:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E2034AAFE;
+	Tue, 26 Aug 2025 14:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzEyd103"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTRTLkN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF2335E4CE;
-	Tue, 26 Aug 2025 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F133451A0;
+	Tue, 26 Aug 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219334; cv=none; b=d+H3U0UrlAEOn54eVAJcPt3px6xuS5ng9CmoozEuZ47A86v+UCjyLc1xFipJA4NOZcH4v5M7JbFJ7Xsxmd0kIxMC4neko8rU9Dn591BTybD//QIOjQ445f2CedutcVMzA4URuHQ6eKuVWZDlrLxtBp4yeBElp65sKOKjgnGJXyI=
+	t=1756216964; cv=none; b=snSnAClMpIxzGsbfYRqtU1NVbU01k1BehHyisYtDzyocqywK5DaoMVbDCCoohG7Wj3S7lOKe2PfG3VHOcc4N7FKXhzyrWIonnSlySSTgSinoWyuew8oWdWAwYTgJatN+OtG8D0sVTvfK96yp35TRGDkZsj9WUKf79CY4ymCbpfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219334; c=relaxed/simple;
-	bh=t/H+P/jlFO6/1yK+LmmXQYDB4K9ipTVvyV9XEt/0I0I=;
+	s=arc-20240116; t=1756216964; c=relaxed/simple;
+	bh=X/wjVYGPKqyTVgfxj43LxW0dmGK6dbXskaGHy9uBluU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bi9+Nb6XD754UXEmcq0Kz0MBUcwplFcFbRHvtn6Lq1jIApCWRZi3Qx4uMbTeN448xjcJMb8PiYPXSOQrLHN0KWkgYtG4ecH4EIBtxvxYof6KM3Pox/f48rp7hrtzIUT8ALBtoNA9/lLjdNHMaWL6uIzChLrnrty98uae2GG29JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzEyd103; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9D8C4CEF1;
-	Tue, 26 Aug 2025 14:42:13 +0000 (UTC)
+	 MIME-Version; b=lFlqnUaWKWhzh4s3cWaESQXAUNWwsafmsZSqSuZ7q1ScaCIsqzEO/KP0Jc25U9uXzxilIL+SmgL3LKbuINhNYMiMl6xmZqgOFjWoGSUmlfgeEEYawVlMUoHaEhtHcDRwyPZY32v/C6ANhGTopsBzpkqJuS5f+f47IqTKev/P64o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTRTLkN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A03C4CEF1;
+	Tue, 26 Aug 2025 14:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219333;
-	bh=t/H+P/jlFO6/1yK+LmmXQYDB4K9ipTVvyV9XEt/0I0I=;
+	s=korg; t=1756216963;
+	bh=X/wjVYGPKqyTVgfxj43LxW0dmGK6dbXskaGHy9uBluU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzEyd1030d59Do1pLlQ3ocwayLID66jLb9N+NeyeAZ7JsuoSfsLAS5z+TQUPo2Z3O
-	 11H9sShhOEjhnmgjn1JT6wcmCcL2B8rnyLuOLNXN6G+gOidUZebSeCmnBnIuESsbDr
-	 Fmvp4kUtWW90u4GMMvvPUcWhPZw+n4v4DgrPtMf4=
+	b=YTRTLkN5jina3YelMbFbCZ5/RhR3mgPHBLfeX6DgmjQwKkUGTMYOTmgS/IMMGI6pf
+	 4HV/C0fGwQls7kAZAbN7/lmsCbPcoj7v45tMYqBGsPmLshU5CBtZKO5hkRZ7nJFGhk
+	 WJE37urni7eq9vQBx4xhoUWbK0+pRCyqhQFlAgT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 341/403] x86/mce/amd: Add default names for MCA banks and blocks
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 5.15 576/644] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
 Date: Tue, 26 Aug 2025 13:11:07 +0200
-Message-ID: <20250826110916.278570524@linuxfoundation.org>
+Message-ID: <20250826111000.804849271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
+commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
 
-Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
-a bank has additional blocks available.
+dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
+get the number of mapped segments.
 
-Most MCA banks have a single thresholding block, so the block takes the same
-name as the bank.
-
-Unified Memory Controllers (UMCs) are a special case where there are two
-blocks and each has a unique name.
-
-However, the microarchitecture allows for five blocks. Any new MCA bank types
-with more than one block will be missing names for the extra blocks. The MCE
-sysfs will fail to initialize in this case.
-
-Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
+Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
+Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/fpga/zynq-fpga.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1180,13 +1180,20 @@ static const char *get_name(unsigned int
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
+ 		}
  	}
  
- 	bank_type = smca_get_bank_type(bank);
--	if (bank_type >= N_SMCA_BANK_TYPES)
--		return NULL;
- 
- 	if (b && bank_type == SMCA_UMC) {
- 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
- 			return smca_umc_block_names[b->block];
--		return NULL;
-+	}
-+
-+	if (b && b->block) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
-+		return buf_mcatype;
-+	}
-+
-+	if (bank_type >= N_SMCA_BANK_TYPES) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
-+		return buf_mcatype;
+-	priv->dma_nelms =
+-	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+-	if (priv->dma_nelms == 0) {
++	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
++	if (err) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+-		return -ENOMEM;
++		return err;
  	}
++	priv->dma_nelms = sgt->nents;
  
- 	if (smca_banks[bank].hwid->count == 1)
+ 	/* enable clock */
+ 	err = clk_enable(priv->clk);
 
 
 
