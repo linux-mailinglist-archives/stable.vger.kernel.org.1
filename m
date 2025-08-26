@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-176035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCDFB36B93
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E88B36975
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1164C9830E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FE808A693B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8831134A32D;
-	Tue, 26 Aug 2025 14:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A440F2B9A7;
+	Tue, 26 Aug 2025 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2waD9/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6B+uq66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453FF34F498;
-	Tue, 26 Aug 2025 14:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECCF3570C3;
+	Tue, 26 Aug 2025 14:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218615; cv=none; b=JKEQ2xXPFPmD1PtqrX5qfP47AVCYZwGImXtimAUhv73F3Z2QoW9GeUUe67BCSydgtZnJW6gqCIaani7YIYZYUAsSJ2qMZFVLxDMGliz8JOioULZLlXsgXsMN2lWe1NTQiyFEqEdYNCown4grvtETUjyl95QIq/7EXa0wlWb1ZIM=
+	t=1756217543; cv=none; b=eYapIUQuuHelGeFOB2xNaKAG0TV0e7UMoAaikpIZVDpX8XUk7ufWrf+FY9Cfj1zwMawx/vVnbvEIH0zjtXqybQ8uAsFlONFDXZnuuL5pfXXg5Q08Kg3zDWc7NpYhPo5vmDAAWhnUewLeHZ1UB3+qm2IN2KoYeOgTaM5+Gt2S4As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218615; c=relaxed/simple;
-	bh=QFssTEfa78om6eXwr5NLJYM/2EMR5iUgr50fgFv+D9o=;
+	s=arc-20240116; t=1756217543; c=relaxed/simple;
+	bh=Zz22X1dCoNMir2G1018J6kgmm72/SFJ4HWd9H0pMNDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Smi55R1kmnWWgcEEnFnNtOOqhCHWhRYgA/d/xZFDGS0yfmor3AqPFDhRCiAogHtK9HfzVd/Hf5RJk+PJQeVSlvjfI4CHjHBaYybpUeh/25MawO0enoimmNBJbuMZNI7s1NCjkT9eJ4YGdP+1WuWYzZ6aI52gXi386zYsHLsJOPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2waD9/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACDBC4CEF1;
-	Tue, 26 Aug 2025 14:30:14 +0000 (UTC)
+	 MIME-Version; b=bJjDV9QHFVCXVIBuX9amhWa5QR2wrM4hrGWrA0FvWNxKcpwCTlslFtg09v72MD3bhusXQEgbeOhJYg0ngQrg6OVVhDvJ6Cr/R+NmJsvA+8xNGA311Z3ncU+eDMOVF/lLHZN77Crx4EOEiovIkMgPA5PSkemHMl20ndFHkhL95j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6B+uq66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85350C4CEF1;
+	Tue, 26 Aug 2025 14:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218615;
-	bh=QFssTEfa78om6eXwr5NLJYM/2EMR5iUgr50fgFv+D9o=;
+	s=korg; t=1756217542;
+	bh=Zz22X1dCoNMir2G1018J6kgmm72/SFJ4HWd9H0pMNDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2waD9/Q/+uY2hoUvF2VvTvWhq3j+gX3vM4UtOPP9QPtDP1Wda+VwiE2V4a3If2sJ
-	 vj0yIPPEiFOiKfgiFs5dboba0N6ex57DtHMqdfiMV1PVad5I1AubYQU9okZPuNXonR
-	 ySJnfi4KxQR1dB8EhRxnQy/reCgW5HivM5oeEntw=
+	b=z6B+uq66Nupet0FuqO2Sy8P9+Wn7dS22wqCGnGb5Qcc2NSohKvpgMJoL2Zb0kAdg8
+	 kjnax2GqpiNqTD7GkA2eAvoneGyPJAcB5BzkvQovbdHj5aPjVjzKR0HmtvTbm9s59U
+	 QZEiLC+sACAZtfMDKsaug7KqU/s5pxzvYMAIBU8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/403] usb: chipidea: introduce CI_HDRC_CONTROLLER_VBUS_EVENT glue layer use
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 5.10 183/523] perf/core: Dont leak AUX buffer refcount on allocation failure
 Date: Tue, 26 Aug 2025 13:06:33 +0200
-Message-ID: <20250826110908.010073235@linuxfoundation.org>
+Message-ID: <20250826110928.968930080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@nxp.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit d755cdb1b9d7e1b645e176b97eb137194bbe8cf9 ]
+commit 5468c0fbccbb9d156522c50832244a8b722374fb upstream.
 
-Some vendors glue layer need to handle some events for vbus, eg,
-some i.mx platforms (imx7d, imx8mm, imx8mn, etc) needs vbus event
-to handle charger detection, its charger detection is finished at
-glue layer code, but not at USB PHY driver.
+Failure of the AUX buffer allocation leaks the reference count.
 
-Signed-off-by: Peter Chen <peter.chen@nxp.com>
-Stable-dep-of: b7a62611fab7 ("usb: chipidea: add USB PHY event")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set the reference count to 1 only when the allocation succeeds.
+
+Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/udc.c   | 7 ++++++-
- include/linux/usb/chipidea.h | 1 +
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ kernel/events/core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 9212c3842a1b..dfae454ca9ba 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -1569,6 +1569,7 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
- {
- 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
- 	unsigned long flags;
-+	int ret = 0;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6290,9 +6290,7 @@ static int perf_mmap(struct file *file,
+ 			goto unlock;
+ 		}
  
- 	spin_lock_irqsave(&ci->lock, flags);
- 	ci->vbus_active = is_active;
-@@ -1578,10 +1579,14 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
- 		usb_phy_set_charger_state(ci->usb_phy, is_active ?
- 			USB_CHARGER_PRESENT : USB_CHARGER_ABSENT);
+-		atomic_set(&rb->aux_mmap_count, 1);
+ 		user_extra = nr_pages;
+-
+ 		goto accounting;
+ 	}
  
-+	if (ci->platdata->notify_event)
-+		ret = ci->platdata->notify_event(ci,
-+				CI_HDRC_CONTROLLER_VBUS_EVENT);
-+
- 	if (ci->driver)
- 		ci_hdrc_gadget_connect(_gadget, is_active);
+@@ -6394,8 +6392,10 @@ accounting:
+ 	} else {
+ 		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
+ 				   event->attr.aux_watermark, flags);
+-		if (!ret)
++		if (!ret) {
++			atomic_set(&rb->aux_mmap_count, 1);
+ 			rb->aux_mmap_locked = extra;
++		}
+ 	}
  
--	return 0;
-+	return ret;
- }
+ unlock:
+@@ -6405,6 +6405,7 @@ unlock:
  
- static int ci_udc_wakeup(struct usb_gadget *_gadget)
-diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
-index edd89b7c8f18..54167a2d28ea 100644
---- a/include/linux/usb/chipidea.h
-+++ b/include/linux/usb/chipidea.h
-@@ -67,6 +67,7 @@ struct ci_hdrc_platform_data {
- #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
- #define CI_HDRC_IMX_HSIC_ACTIVE_EVENT		2
- #define CI_HDRC_IMX_HSIC_SUSPEND_EVENT		3
-+#define CI_HDRC_CONTROLLER_VBUS_EVENT		4
- 	int	(*notify_event) (struct ci_hdrc *ci, unsigned event);
- 	struct regulator	*reg_vbus;
- 	struct usb_otg_caps	ci_otg_caps;
--- 
-2.39.5
-
+ 		atomic_inc(&event->mmap_count);
+ 	} else if (rb) {
++		/* AUX allocation failed */
+ 		atomic_dec(&rb->mmap_count);
+ 	}
+ aux_unlock:
 
 
 
