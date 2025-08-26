@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00DEB3655A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A761AB35FBA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6A91BC7D66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F35E3BF4FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E011A221290;
-	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA6C13DDAA;
+	Tue, 26 Aug 2025 12:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRrngWjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ltSae9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C96E1F4CA9;
-	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE63EEAB;
+	Tue, 26 Aug 2025 12:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215639; cv=none; b=Qtyk3SJHIROnzyjJnJ3/3AOJmeFFxs9kfhh3BM4TXDNv5yTCYSr5vxs91o3G4b0qk8CMPRGTOZm7FO9jSX0YXh8q6LouxwEngt5EcxhJaqlKnRlmYP5/WU4oNDAst+5UXDqBpGndNumAe0tyQBkfUUbU/KD/EovdamSMF3FUZgY=
+	t=1756212659; cv=none; b=l7APp0GDG4l6YmYRHybHXwwQt9WRLUJ1WqSP7p2ntzG8NQCXnmzreV1K1j9GXt9atxDN9JIBVR1ZiY9mp+oKKu3eCSIq+oobLldGBR6gJtXvfnyIDARtZQJGPrFTBR4Ii2rUwSNQPq4pD//fohthvMx/Jcfkbyj3UrGbZpNsRxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215639; c=relaxed/simple;
-	bh=D2miHvlrqXhzPpExISCw0NSu/qOGzK/aOKmkEfr2maI=;
+	s=arc-20240116; t=1756212659; c=relaxed/simple;
+	bh=VBcPnIYaWnj+7fKW5SZst+oVFHoq0meYctKhu3Lx0eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnR+jsi4ynE1ZPrfFRu2ZJZ/DrtMYAjnrKbwzI4Ml+y9MBDJ3pFOxadUTKOyRvI6TapFiEU5kmVpZoqHL028fqKd0jvy1zkoQoRdMKwfdef0pHEFdOU7sW/ffuBSZXX/0Kss7UULPsWHUKXxXlUbTql4hB+RJwmP7dmP5B6rCmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRrngWjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E60AC4CEF1;
-	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
+	 MIME-Version; b=Nt+uzj2j3zSNTz60/+NSyxxXtqAhx3v21/Riu0PgkmUhqxlbJBBN5CUcCGIV271AwJgbbSGQkh0mKjgiMPxuxMaNhXD4E3geK3OAZWONmVgbujhJg1y8irtJm5uR9g2We3QoMPrXktS9sjc7OHi0JDYEZoHsYs/KNNXOuhE/Qw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ltSae9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A9FC4CEF1;
+	Tue, 26 Aug 2025 12:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215639;
-	bh=D2miHvlrqXhzPpExISCw0NSu/qOGzK/aOKmkEfr2maI=;
+	s=korg; t=1756212659;
+	bh=VBcPnIYaWnj+7fKW5SZst+oVFHoq0meYctKhu3Lx0eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRrngWjXffIIMCAQ3MvADpSP4X0MxmlA1oaIS3oqqJOXRs0fUONOZtcInDcYM2isj
-	 nGTDUBvfuwUTnYgGKOZKcDmaKKdh1flEr4LBTEFl7ceXemOhh8YkS4/WlH/Jwl588z
-	 3uQZmIcehv9AcEH7ZcY+Lg4soBH6SSA7qJ9Npw9E=
+	b=2ltSae9oukYfIN9L8gI/s74Swj+NYMrxzSJSbWV91vb6tuOHHZhF/KGxNliS/YgX0
+	 klA0rdeQSisgjgluByhEgxGEImIzV2M101uJB9snoxgwgta2fiXNDEyq7nDfIrWGoG
+	 B7GptOb5xwTGkr4J6kloNsP09rFFpJFDrmPrA2Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/644] ASoC: Intel: fix SND_SOC_SOF dependencies
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 052/587] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs
 Date: Tue, 26 Aug 2025 13:03:21 +0200
-Message-ID: <20250826110949.243642476@linuxfoundation.org>
+Message-ID: <20250826110954.266391486@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
+[ Upstream commit 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2 ]
 
-It is currently possible to configure a kernel with all Intel SoC
-configs as loadable modules, but the board config as built-in. This
-causes a link failure in the reference to the snd_soc_sof.ko module:
+Introduce vmx_guest_debugctl_{read,write}() to handle all accesses to
+vmcs.GUEST_IA32_DEBUGCTL. This will allow stuffing FREEZE_IN_SMM into
+GUEST_IA32_DEBUGCTL based on the host setting without bleeding the state
+into the guest, and without needing to copy+paste the FREEZE_IN_SMM
+logic into every patch that accesses GUEST_IA32_DEBUGCTL.
 
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
-sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
-sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
-sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
-sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
-sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
-sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
-sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
-sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
-sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
+No functional change intended.
 
-Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
-the SOF support is in a loadable module, none of the board code can be built-in.
-
-This may be be a little heavy-handed, but I also don't see a reason why one would
-want the boards to be built-in but not the SoC, so it shouldn't actually cause
-any usability problems.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+[sean: massage changelog, make inline, use in all prepare_vmcs02() cases]
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-8-seanjc@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c    | 10 +++++-----
+ arch/x86/kvm/vmx/pmu_intel.c |  8 ++++----
+ arch/x86/kvm/vmx/vmx.c       |  8 +++++---
+ arch/x86/kvm/vmx/vmx.h       | 10 ++++++++++
+ 4 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
-index 61b71d6c44cf..960a1bd79489 100644
---- a/sound/soc/intel/boards/Kconfig
-+++ b/sound/soc/intel/boards/Kconfig
-@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
- 	 kernel: saying N will just cause the configurator to skip all
- 	 the questions about Intel ASoC machine drivers.
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 10236ecdad95..2ce39ffbcefb 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -2564,11 +2564,11 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 	if (vmx->nested.nested_run_pending &&
+ 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
+ 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
+-						  vmx_get_supported_debugctl(vcpu, false));
++		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
++					       vmx_get_supported_debugctl(vcpu, false));
+ 	} else {
+ 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
++		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
+ 	}
+ 	if (kvm_mpx_supported() && (!vmx->nested.nested_run_pending ||
+ 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
+@@ -3433,7 +3433,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
  
--if SND_SOC_INTEL_MACH
-+if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
+ 	if (!vmx->nested.nested_run_pending ||
+ 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
+-		vmx->nested.pre_vmenter_debugctl = vmcs_read64(GUEST_IA32_DEBUGCTL);
++		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
+ 	if (kvm_mpx_supported() &&
+ 	    (!vmx->nested.nested_run_pending ||
+ 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
+@@ -4633,7 +4633,7 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 	__vmx_set_segment(vcpu, &seg, VCPU_SREG_LDTR);
  
- config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
- 	bool "Use more user friendly long card names"
+ 	kvm_set_dr(vcpu, 7, 0x400);
+-	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
++	vmx_guest_debugctl_write(vcpu, 0);
+ 
+ 	if (nested_vmx_load_msr(vcpu, vmcs12->vm_exit_msr_load_addr,
+ 				vmcs12->vm_exit_msr_load_count))
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 48a2f77f62ef..50364e00e4e9 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -633,11 +633,11 @@ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
+  */
+ static void intel_pmu_legacy_freezing_lbrs_on_pmi(struct kvm_vcpu *vcpu)
+ {
+-	u64 data = vmcs_read64(GUEST_IA32_DEBUGCTL);
++	u64 data = vmx_guest_debugctl_read();
+ 
+ 	if (data & DEBUGCTLMSR_FREEZE_LBRS_ON_PMI) {
+ 		data &= ~DEBUGCTLMSR_LBR;
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
++		vmx_guest_debugctl_write(vcpu, data);
+ 	}
+ }
+ 
+@@ -707,7 +707,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
+ 
+ 	if (!lbr_desc->event) {
+ 		vmx_disable_lbr_msrs_passthrough(vcpu);
+-		if (vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR)
++		if (vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR)
+ 			goto warn;
+ 		if (test_bit(INTEL_PMC_IDX_FIXED_VLBR, pmu->pmc_in_use))
+ 			goto warn;
+@@ -729,7 +729,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
+ 
+ static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
+ {
+-	if (!(vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR))
++	if (!(vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR))
+ 		intel_pmu_release_guest_lbr_event(vcpu);
+ }
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 32f1a38a1010..d0973bd7853c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2124,7 +2124,7 @@ static int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
+ 		break;
+ 	case MSR_IA32_DEBUGCTLMSR:
+-		msr_info->data = vmcs_read64(GUEST_IA32_DEBUGCTL);
++		msr_info->data = vmx_guest_debugctl_read();
+ 		break;
+ 	default:
+ 	find_uret_msr:
+@@ -2258,7 +2258,8 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 						VM_EXIT_SAVE_DEBUG_CONTROLS)
+ 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
+ 
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
++		vmx_guest_debugctl_write(vcpu, data);
++
+ 		if (intel_pmu_lbr_is_enabled(vcpu) && !to_vmx(vcpu)->lbr_desc.event &&
+ 		    (data & DEBUGCTLMSR_LBR))
+ 			intel_pmu_create_guest_lbr_event(vcpu);
+@@ -4826,7 +4827,8 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	vmcs_write32(GUEST_SYSENTER_CS, 0);
+ 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
+ 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
+-	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
++
++	vmx_guest_debugctl_write(&vmx->vcpu, 0);
+ 
+ 	if (cpu_has_vmx_tpr_shadow()) {
+ 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 5816fdd2dfa8..769e70fd142c 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -432,6 +432,16 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
+ u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
+ bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
+ 
++static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
++{
++	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
++}
++
++static inline u64 vmx_guest_debugctl_read(void)
++{
++	return vmcs_read64(GUEST_IA32_DEBUGCTL);
++}
++
+ /*
+  * Note, early Intel manuals have the write-low and read-high bitmap offsets
+  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
 -- 
-2.39.5
+2.50.1
 
 
 
