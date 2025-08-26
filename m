@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643CCB36CC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E652B369B5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45228A00A78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801425826EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B9235AAC0;
-	Tue, 26 Aug 2025 14:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803C035083A;
+	Tue, 26 Aug 2025 14:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uG93jUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U09Y5LOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8409B352077;
-	Tue, 26 Aug 2025 14:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3BF1F790F;
+	Tue, 26 Aug 2025 14:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218827; cv=none; b=jO7N0FmqVL8i+jSRUtxw/KdJVGwXXj170+rE3QW6AFLf32tIIpdB6mNF+AC2NfC+m0HQgIFYoPsgnZCinGfBIWqVLjbZrz+sSpR+vE4RTpQiOqYSxXwf4i4NpltVrgghooIJtwqaWt4lut2G1YwfpXZpcOwIjxhNA5uy7DfYNG4=
+	t=1756217761; cv=none; b=WpPtbS4NFpEaylZpsw/L1xREM4DbbnWUVokZHBnEiYSs08xFCCm9JFM+BmERrsbe3zor1b639dUpciNsjrY51F9BKkTqdEeJtN8Of8XSBW7Y9B83ojXOAsuZKnlJm9suQtJd3ct7TeSb1WVS203fvh2OV1KudzS+n0GBGdkXo78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218827; c=relaxed/simple;
-	bh=tuzWsBppfOqJ6t3f3yU5VMyJbZP6+A+XFhmZoHXaI0w=;
+	s=arc-20240116; t=1756217761; c=relaxed/simple;
+	bh=sku0xpQ2kLYHVQEzTnYNXfqFJxA/d9EIakUs/sInojc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JK/ooBIWvR+SELFDkhDmuebgrVUwLAtZdPfu8Y5eBQY7YZAKaGtx6ouNyzQ2OuVr3b+EFn8qiqsHyd8OFfI+n+fZMhlLpFAshG6xDcr22kQV3egm67bmpwMMEPqSovYXYzjXOs4ncHhPDKt9yJM8xjy2+0/YvMp+SzZ2SqJAA8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uG93jUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180FFC4CEF1;
-	Tue, 26 Aug 2025 14:33:46 +0000 (UTC)
+	 MIME-Version; b=YFchzf43H9+pm6xIiXVDJsUschRj1oNgTV+oEaNQy76hFgoaQEO9g5Qy8j1jV36RYnKTUGQkxYr8X7cklB5G/TLg8oepUSNVmbs960RSTOMy0axeUhggLpb1oCkDg97zxT/7+t06HpmY1B7Vu9A1CbBa8f+sJ64L258aQotHGoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U09Y5LOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E098C4CEF1;
+	Tue, 26 Aug 2025 14:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218827;
-	bh=tuzWsBppfOqJ6t3f3yU5VMyJbZP6+A+XFhmZoHXaI0w=;
+	s=korg; t=1756217761;
+	bh=sku0xpQ2kLYHVQEzTnYNXfqFJxA/d9EIakUs/sInojc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uG93jUN+F6zwRNoGGnjtuYyHKUN3E+a+nt3t/JcV1M+cW3vc2NuTYc3YMEiBBzzs
-	 /LUghOta3aq/Xj/XxBiI7C7hQ4G0kBHvn3k1vRttFxy2YvIEqn3apVYKJelPNwEHDa
-	 muDvXKb7aCiZnkTIliTdv+s0XSpL5CuyTfWc2S3U=
+	b=U09Y5LOhk7v9pR6dblfG+MW7vurcViCqzkpueumMgIPv4gF3pE+MMxP5XyoJ9CxpZ
+	 RHCqPiU3saczS7CvQTBd92XegPAlCxfPCUv3K26Rp+Ahq1LMocmonutmlLSgtpJO4q
+	 xpJOXH4IpnbwkSV6JfrGb+eoQuXkUBJBYzJtcEBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Mark Einon <mark.einon@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 147/403] pptp: fix pptp_xmit() error path
+Subject: [PATCH 5.10 263/523] et131x: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:07:53 +0200
-Message-ID: <20250826110910.843736482@linuxfoundation.org>
+Message-ID: <20250826110930.913414703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit ae633388cae349886f1a3cfb27aa092854b24c1b ]
+[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
 
-I accidentally added a bug in pptp_xmit() that syzbot caught for us.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Only call ip_rt_put() if a route has been allocated.
-
-BUG: unable to handle page fault for address: ffffffffffffffdb
-PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
-Oops: Oops: 0002 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
-RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
-RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
-RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
-RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
-Call Trace:
- <TASK>
- dst_release+0x24/0x1b0 net/core/dst.c:167
- ip_rt_put include/net/route.h:285 [inline]
- pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
- __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
- ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
- ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
- vfs_write+0x27b/0xb30 fs/read_write.c:684
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
-Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250807142146.2877060-1-edumazet@google.com
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Mark Einon <mark.einon@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/pptp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index 5e2f4702aa2b..83541444bc8c 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -141,13 +141,13 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	int len;
- 	unsigned char *data;
- 	__u32 seq_recv;
--	struct rtable *rt = NULL;
-+	struct rtable *rt;
- 	struct net_device *tdev;
- 	struct iphdr  *iph;
- 	int    max_headroom;
- 
- 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
--		goto tx_error;
-+		goto tx_drop;
- 
- 	rt = ip_route_output_ports(net, &fl4, NULL,
- 				   opt->dst_addr.sin_addr.s_addr,
-@@ -155,7 +155,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 				   0, 0, IPPROTO_GRE,
- 				   RT_TOS(0), 0);
- 	if (IS_ERR(rt))
--		goto tx_error;
-+		goto tx_drop;
- 
- 	tdev = rt->dst.dev;
- 
-@@ -251,6 +251,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 
- tx_error:
- 	ip_rt_put(rt);
-+tx_drop:
- 	kfree_skb(skb);
- 	return 1;
+diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
+index 41f8821f792d..fa04e37de089 100644
+--- a/drivers/net/ethernet/agere/et131x.c
++++ b/drivers/net/ethernet/agere/et131x.c
+@@ -2460,6 +2460,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb),
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2469,6 +2473,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2479,6 +2487,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb_headlen(skb) / 2,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					goto unmap_first_out;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2490,6 +2502,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 						    0,
+ 						    desc[frag].len_vlan,
+ 						    DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
++				goto unmap_out;
++
+ 			desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 			desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 			frag++;
+@@ -2579,6 +2594,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 		       &adapter->regs->global.watchdog_timer);
+ 	}
+ 	return 0;
++
++unmap_out:
++	// Unmap the body of the packet with map_page
++	while (--i) {
++		frag--;
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_page(&adapter->pdev->dev, dma_addr,
++			       desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++unmap_first_out:
++	// Unmap the header with map_single
++	while (frag--) {
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_single(&adapter->pdev->dev, dma_addr,
++				 desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
  }
+ 
+ static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
 -- 
 2.39.5
 
