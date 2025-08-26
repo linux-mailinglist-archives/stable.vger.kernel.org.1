@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-173220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C4CB35BEA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5933B35DC6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D2377B4E15
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9201BC12C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D708933A01A;
-	Tue, 26 Aug 2025 11:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B98E2BE62B;
+	Tue, 26 Aug 2025 11:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daxrgVM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RotqGFq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935A531DDBC;
-	Tue, 26 Aug 2025 11:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7A320C001;
+	Tue, 26 Aug 2025 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207680; cv=none; b=nc52NnpGRuVzc/jhgsqT/CymJDoaDk0+QpXgyS+yXQ1S4crhidms6IpCGJUdJ/n4oxrmY5aav5+s+uH002AjlDWivJ0ktRKpfdiBjfl3TIZ4uLqnHYqFgD0A8/VFwHGctAMTM6XTNnCalht8e4EhAqN/HV3h50a7gELIfZCohMM=
+	t=1756208453; cv=none; b=inAFVT6extAakIv9o6cSTElMvIT5mc6O3UUbTa2RuuivGZU9MreBCHxsknt702DfhxwEBEGP9RnTN/Rxl3sleNSFRNpXwM3z4Dy83RRpTa4OeXtUXfb+SrJPVzOb68aGFBqgUdG+7RLWSeiYrSPw41+ueu/xckXdCHya++oaLtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207680; c=relaxed/simple;
-	bh=LsrQ+mOvbU1yy7BprcpHUO8iQ5QhvdOfn9uAZIXMyWk=;
+	s=arc-20240116; t=1756208453; c=relaxed/simple;
+	bh=Lo6uBEcuJMU4TKbwP6qi2+QEFCYXuHc2Dj489bQysWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IE0GhuTxNd8/Q+NErNGqlqjNjWjJDVkmpQ8A0zglyW/QcdNhPfhmZ3ayu65ZIRZ4gQ4ocS72gfik3rM94wrkkWTHLkMCzCNN76M+ZNdOkJIK3elwKjXdnkz52EFNRk7VihKREk0VqOX5mTydsb1poItbtwxlB7YDfdkG4DU45s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daxrgVM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB087C4CEF1;
-	Tue, 26 Aug 2025 11:27:59 +0000 (UTC)
+	 MIME-Version; b=MdGWI8J2ofoqZay9gCZGQbtR7mihYJfk0tkdP40wEBp+z2u+DVgGNcz4lFcl+8vGxMrvnZ1N5Oz515KYq4BsVmcb+J9ag48eUv8aXrN0rncZhukVxC+GHb24KDtrKjqDR8n4Ap/wKKl0nvToRjwGU5VgceZbyNPMJc77APe41Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RotqGFq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED0C4CEF4;
+	Tue, 26 Aug 2025 11:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207680;
-	bh=LsrQ+mOvbU1yy7BprcpHUO8iQ5QhvdOfn9uAZIXMyWk=;
+	s=korg; t=1756208453;
+	bh=Lo6uBEcuJMU4TKbwP6qi2+QEFCYXuHc2Dj489bQysWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daxrgVM8GDX2rA4ZKBeRh6owxakPOMfczgnvGUNKIDN9st0NFbMXpcqo+VFH9deaN
-	 BT8qi00SgFXYcXMM7x9Vslfb9gpqwUn5qqzqqJzOinxdjC3hEpVtcUFXuqKvlpT39Y
-	 REskNgVFT8aLB9fvcsViKgxOe5xP7G4dxSGIT3uk=
+	b=RotqGFq1NO5KykF5ETkszxGaqwGJz6g0ySxXaB78Z+sKoR8FAzoMm4qnVcYjh/RFu
+	 zvZUVn0HqB1dPwamIm9frtPbfcSwz8iOaGLTHe7STMiP3lC4mwO3ifyddXYMXaGag5
+	 yYESjkNYZ0i7qC74uLrwIiAwD4R4vy4Zaz0Oybnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 249/457] mm/mremap: fix WARN with uffd that has remap events disabled
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 118/322] drm/amdgpu/discovery: fix fw based ip discovery
 Date: Tue, 26 Aug 2025 13:08:53 +0200
-Message-ID: <20250826110943.519621346@linuxfoundation.org>
+Message-ID: <20250826110918.711933165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,167 +61,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 772e5b4a5e8360743645b9a466842d16092c4f94 upstream.
+commit 514678da56da089b756b4d433efd964fa22b2079 upstream.
 
-Registering userfaultd on a VMA that spans at least one PMD and then
-mremap()'ing that VMA can trigger a WARN when recovering from a failed
-page table move due to a page table allocation error.
+We only need the fw based discovery table for sysfs.  No
+need to parse it.  Additionally parsing some of the board
+specific tables may result in incorrect data on some boards.
+just load the binary and don't parse it on those boards.
 
-The code ends up doing the right thing (recurse, avoiding moving actual
-page tables), but triggering that WARN is unpleasant:
-
-WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_normal_pmd mm/mremap.c:357 [inline]
-WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_pgt_entry mm/mremap.c:595 [inline]
-WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_page_tables+0x3832/0x44a0 mm/mremap.c:852
-Modules linked in:
-CPU: 2 UID: 0 PID: 6133 Comm: syz.0.19 Not tainted 6.17.0-rc1-syzkaller-00004-g53e760d89498 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:move_normal_pmd mm/mremap.c:357 [inline]
-RIP: 0010:move_pgt_entry mm/mremap.c:595 [inline]
-RIP: 0010:move_page_tables+0x3832/0x44a0 mm/mremap.c:852
-Code: ...
-RSP: 0018:ffffc900037a76d8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000032930007 RCX: ffffffff820c6645
-RDX: ffff88802e56a440 RSI: ffffffff820c7201 RDI: 0000000000000007
-RBP: ffff888037728fc0 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000032930007 R11: 0000000000000000 R12: 0000000000000000
-R13: ffffc900037a79a8 R14: 0000000000000001 R15: dffffc0000000000
-FS:  000055556316a500(0000) GS:ffff8880d68bc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b30863fff CR3: 0000000050171000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- copy_vma_and_data+0x468/0x790 mm/mremap.c:1215
- move_vma+0x548/0x1780 mm/mremap.c:1282
- mremap_to+0x1b7/0x450 mm/mremap.c:1406
- do_mremap+0xfad/0x1f80 mm/mremap.c:1921
- __do_sys_mremap+0x119/0x170 mm/mremap.c:1977
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f00d0b8ebe9
-Code: ...
-RSP: 002b:00007ffe5ea5ee98 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
-RAX: ffffffffffffffda RBX: 00007f00d0db5fa0 RCX: 00007f00d0b8ebe9
-RDX: 0000000000400000 RSI: 0000000000c00000 RDI: 0000200000000000
-RBP: 00007ffe5ea5eef0 R08: 0000200000c00000 R09: 0000000000000000
-R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000002
-R13: 00007f00d0db5fa0 R14: 00007f00d0db5fa0 R15: 0000000000000005
- </TASK>
-
-The underlying issue is that we recurse during the original page table
-move, but not during the recovery move.
-
-Fix it by checking for both VMAs and performing the check before the
-pmd_none() sanity check.
-
-Add a new helper where we perform+document that check for the PMD and PUD
-level.
-
-Thanks to Harry for bisecting.
-
-Link: https://lkml.kernel.org/r/20250818175358.1184757-1-david@redhat.com
-Fixes: 0cef0bb836e3 ("mm: clear uffd-wp PTE/PMD state on mremap()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/689bb893.050a0220.7f033.013a.GAE@google.com
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
+Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip discovery")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 62eedd150fa11aefc2d377fc746633fdb1baeb55)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mremap.c |   41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |    5 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |   72 ++++++++++++++------------
+ 2 files changed, 41 insertions(+), 36 deletions(-)
 
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -294,6 +294,25 @@ static inline bool arch_supports_page_ta
- }
- #endif
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2387,9 +2387,6 @@ static int amdgpu_device_parse_gpu_info_
  
-+static inline bool uffd_supports_page_table_move(struct pagetable_move_control *pmc)
-+{
-+	/*
-+	 * If we are moving a VMA that has uffd-wp registered but with
-+	 * remap events disabled (new VMA will not be registered with uffd), we
-+	 * need to ensure that the uffd-wp state is cleared from all pgtables.
-+	 * This means recursing into lower page tables in move_page_tables().
-+	 *
-+	 * We might get called with VMAs reversed when recovering from a
-+	 * failed page table move. In that case, the
-+	 * "old"-but-actually-"originally new" VMA during recovery will not have
-+	 * a uffd context. Recursing into lower page tables during the original
-+	 * move but not during the recovery move will cause trouble, because we
-+	 * run into already-existing page tables. So check both VMAs.
-+	 */
-+	return !vma_has_uffd_without_event_remap(pmc->old) &&
-+	       !vma_has_uffd_without_event_remap(pmc->new);
-+}
+ 	adev->firmware.gpu_info_fw = NULL;
+ 
+-	if (adev->mman.discovery_bin)
+-		return 0;
+-
+ 	switch (adev->asic_type) {
+ 	default:
+ 		return 0;
+@@ -2411,6 +2408,8 @@ static int amdgpu_device_parse_gpu_info_
+ 		chip_name = "arcturus";
+ 		break;
+ 	case CHIP_NAVI12:
++		if (adev->mman.discovery_bin)
++			return 0;
+ 		chip_name = "navi12";
+ 		break;
+ 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -2455,40 +2455,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 
+ 	switch (adev->asic_type) {
+ 	case CHIP_VEGA10:
+-	case CHIP_VEGA12:
+-	case CHIP_RAVEN:
+-	case CHIP_VEGA20:
+-	case CHIP_ARCTURUS:
+-	case CHIP_ALDEBARAN:
+-		/* this is not fatal.  We have a fallback below
+-		 * if the new firmwares are not present. some of
+-		 * this will be overridden below to keep things
+-		 * consistent with the current behavior.
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
+ 		 */
+-		r = amdgpu_discovery_reg_base_init(adev);
+-		if (!r) {
+-			amdgpu_discovery_harvest_ip(adev);
+-			amdgpu_discovery_get_gfx_info(adev);
+-			amdgpu_discovery_get_mall_info(adev);
+-			amdgpu_discovery_get_vcn_info(adev);
+-		}
+-		break;
+-	default:
+-		r = amdgpu_discovery_reg_base_init(adev);
+-		if (r) {
+-			drm_err(&adev->ddev, "discovery failed: %d\n", r);
+-			return r;
+-		}
+-
+-		amdgpu_discovery_harvest_ip(adev);
+-		amdgpu_discovery_get_gfx_info(adev);
+-		amdgpu_discovery_get_mall_info(adev);
+-		amdgpu_discovery_get_vcn_info(adev);
+-		break;
+-	}
+-
+-	switch (adev->asic_type) {
+-	case CHIP_VEGA10:
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 4;
+@@ -2511,6 +2482,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 0);
+ 		break;
+ 	case CHIP_VEGA12:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 4;
+@@ -2533,6 +2509,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 1);
+ 		break;
+ 	case CHIP_RAVEN:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 1;
+ 		adev->vcn.num_vcn_inst = 1;
+@@ -2572,6 +2553,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		}
+ 		break;
+ 	case CHIP_VEGA20:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega20_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 8;
+@@ -2595,6 +2581,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 1, 0);
+ 		break;
+ 	case CHIP_ARCTURUS:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		arct_reg_base_init(adev);
+ 		adev->sdma.num_instances = 8;
+ 		adev->vcn.num_vcn_inst = 2;
+@@ -2623,6 +2614,11 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		adev->ip_versions[UVD_HWIP][1] = IP_VERSION(2, 5, 0);
+ 		break;
+ 	case CHIP_ALDEBARAN:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		aldebaran_reg_base_init(adev);
+ 		adev->sdma.num_instances = 5;
+ 		adev->vcn.num_vcn_inst = 2;
+@@ -2649,6 +2645,16 @@ int amdgpu_discovery_set_ip_blocks(struc
+ 		adev->ip_versions[XGMI_HWIP][0] = IP_VERSION(6, 1, 0);
+ 		break;
+ 	default:
++		r = amdgpu_discovery_reg_base_init(adev);
++		if (r) {
++			drm_err(&adev->ddev, "discovery failed: %d\n", r);
++			return r;
++		}
 +
- #ifdef CONFIG_HAVE_MOVE_PMD
- static bool move_normal_pmd(struct pagetable_move_control *pmc,
- 			pmd_t *old_pmd, pmd_t *new_pmd)
-@@ -306,6 +325,8 @@ static bool move_normal_pmd(struct paget
++		amdgpu_discovery_harvest_ip(adev);
++		amdgpu_discovery_get_gfx_info(adev);
++		amdgpu_discovery_get_mall_info(adev);
++		amdgpu_discovery_get_vcn_info(adev);
+ 		break;
+ 	}
  
- 	if (!arch_supports_page_table_move())
- 		return false;
-+	if (!uffd_supports_page_table_move(pmc))
-+		return false;
- 	/*
- 	 * The destination pmd shouldn't be established, free_pgtables()
- 	 * should have released it.
-@@ -332,15 +353,6 @@ static bool move_normal_pmd(struct paget
- 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
- 		return false;
- 
--	/* If this pmd belongs to a uffd vma with remap events disabled, we need
--	 * to ensure that the uffd-wp state is cleared from all pgtables. This
--	 * means recursing into lower page tables in move_page_tables(), and we
--	 * can reuse the existing code if we simply treat the entry as "not
--	 * moved".
--	 */
--	if (vma_has_uffd_without_event_remap(vma))
--		return false;
--
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
-@@ -389,6 +401,8 @@ static bool move_normal_pud(struct paget
- 
- 	if (!arch_supports_page_table_move())
- 		return false;
-+	if (!uffd_supports_page_table_move(pmc))
-+		return false;
- 	/*
- 	 * The destination pud shouldn't be established, free_pgtables()
- 	 * should have released it.
-@@ -396,15 +410,6 @@ static bool move_normal_pud(struct paget
- 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
- 		return false;
- 
--	/* If this pud belongs to a uffd vma with remap events disabled, we need
--	 * to ensure that the uffd-wp state is cleared from all pgtables. This
--	 * means recursing into lower page tables in move_page_tables(), and we
--	 * can reuse the existing code if we simply treat the entry as "not
--	 * moved".
--	 */
--	if (vma_has_uffd_without_event_remap(vma))
--		return false;
--
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
 
 
 
