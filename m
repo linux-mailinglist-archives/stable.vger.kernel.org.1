@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8D9B35CAA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EB1B367D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA733B790D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9435B630EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8791AAE13;
-	Tue, 26 Aug 2025 11:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354A1356915;
+	Tue, 26 Aug 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrN8V2Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXe2oskb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2990F31DDBC;
-	Tue, 26 Aug 2025 11:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7269352078;
+	Tue, 26 Aug 2025 14:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208090; cv=none; b=L28oMwLmtUrFSeC/HGR6aug3LDmcPfGW77orc9ERRHUdkFv20qYgHif+6EzQPlktyLgxnTXfftliJAyZfqCDOGU9juT3s5ligL/wtSjt3LD7XQ2jgvdSNEvDdDXJXvrGLMcRek04H/Ej6LMAiX4Lt32LytxP0mXbN6frS3AeywU=
+	t=1756217048; cv=none; b=vGT1TQv5g3t47AqSH4r4fMd+UyHI8NFdv9W6orC9oaz92r7WOYghjkv3uL9dkq/H/Lep+Y8+autHAtTJw364kgftA/jPZ8y/uGPRhvt2iyOyD9K65Arx6daQq4RVApoWEyp/8E61gMw7oUtMHu9afd0B2xk+EC/WpdvUwzhanzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208090; c=relaxed/simple;
-	bh=hIE7D3tHYKORnISV02+ERWVePivWc5dGGjDm21vF63w=;
+	s=arc-20240116; t=1756217048; c=relaxed/simple;
+	bh=c5sdOUbVHlPxHDdVEf32z1H32ofwU55vTD2gHABFzDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ay8VpBVETO0oe/x2T/JZxBG9kz0SVCdhowJP4+dKLYVhH1wPJwBFk+fDVEuaytI90bmOo3oZB3c3kcTy4EygjWEwhmnKB+DNXRjBpCdfWkcr5dQ69fjoMMkx57AyuvME2t8DLZuzImT5YEGq0H2eCk9wDpTKGEutpZxNGtqdCwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrN8V2Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4D8C4CEF1;
-	Tue, 26 Aug 2025 11:34:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bvtLXINvXONolt3vvu6uc4ugKRMNSLpTEZqln8P3CTKHRKOfU0SFNF0S931CPb/u+sBDtIP8e6woi3tQUlicCIC/i9VsGhNF4eYwQ8duzhi0Zzz9w/k0ebLNpbSR5dQbcjfhtTmEbNvkm49IdOfw9ldNY37zOEz/RqHrNPO6iK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXe2oskb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212E0C4CEF1;
+	Tue, 26 Aug 2025 14:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208090;
-	bh=hIE7D3tHYKORnISV02+ERWVePivWc5dGGjDm21vF63w=;
+	s=korg; t=1756217047;
+	bh=c5sdOUbVHlPxHDdVEf32z1H32ofwU55vTD2gHABFzDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrN8V2ZaF5ufAxS9RtNZYnwhwTAM4HtoGR6dPFQR8rLeKpaCLkTZkqgx2SqhXJh0B
-	 tmzU8CHx5Tmlb80xYfj3Afojj6RjZcyAL3d9hS21mCwFw7Zai6fapzsLBQrcg0wegU
-	 DePDI8FiFbLNBFx7QdVzHlwd8fkDR+WFmLt53OQE=
+	b=lXe2oskbXly9iRGFqiI72jhCVA+zrwtlkKThydg7lS954TjwozsTT/iOyW+B4X3UC
+	 CBXUJ8Jjsych9WISK43sKwb3QuKUBRx8/cia+auadJWnHEu/6D+QDG/fHIpVR68efU
+	 0Vei4xN9nooidqF54VEihdnQDHiEchf+M9Y/8qdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Vlad Dogaru <vdogaru@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 416/457] net/mlx5: HWS, fix bad parameter in CQ creation
+Subject: [PATCH 5.15 609/644] pwm: mediatek: Handle hardware enable and clock enable separately
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826110947.574914967@linuxfoundation.org>
+Message-ID: <20250826111001.643777568@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 2462c1b9217246a889ec318b3894d84e4dd709c6 ]
+[ Upstream commit 704d918341c378c5f9505dfdf32d315e256d3846 ]
 
-'cqe_sz' valid value should be 0 for 64-byte CQE.
+Stop handling the clocks in pwm_mediatek_enable() and
+pwm_mediatek_disable(). This is a preparing change for the next commit
+that requires that clocks and the enable bit are handled separately.
 
-Fixes: 2ca62599aa0b ("net/mlx5: HWS, added send engine and context handling")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Vlad Dogaru <vdogaru@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250817202323.308604-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also move these two functions a bit further up in the source file to
+make them usable in pwm_mediatek_config(), which is needed in the next
+commit, too.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-index c4b22be19a9b..b0595c9b09e4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-@@ -964,7 +964,6 @@ static int hws_send_ring_open_cq(struct mlx5_core_dev *mdev,
- 		return -ENOMEM;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -114,6 +114,26 @@ static inline void pwm_mediatek_writel(s
+ 	writel(value, chip->regs + pwm_mediatek_reg_offset[num] + offset);
+ }
  
- 	MLX5_SET(cqc, cqc_data, uar_page, mdev->priv.uar->index);
--	MLX5_SET(cqc, cqc_data, cqe_sz, queue->num_entries);
- 	MLX5_SET(cqc, cqc_data, log_cq_size, ilog2(queue->num_entries));
++static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value |= BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
++static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value &= ~BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
+ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       int duty_ns, int period_ns)
+ {
+@@ -176,35 +196,6 @@ out:
+ 	return ret;
+ }
  
- 	err = hws_send_ring_alloc_cq(mdev, numa_node, queue, cqc_data, cq);
--- 
-2.50.1
-
+-static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-	int ret;
+-
+-	ret = pwm_mediatek_clk_enable(chip, pwm);
+-	if (ret < 0)
+-		return ret;
+-
+-	value = readl(pc->regs);
+-	value |= BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	return 0;
+-}
+-
+-static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-
+-	value = readl(pc->regs);
+-	value &= ~BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	pwm_mediatek_clk_disable(chip, pwm);
+-}
+-
+ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			      const struct pwm_state *state)
+ {
+@@ -214,8 +205,10 @@ static int pwm_mediatek_apply(struct pwm
+ 		return -EINVAL;
+ 
+ 	if (!state->enabled) {
+-		if (pwm->state.enabled)
++		if (pwm->state.enabled) {
+ 			pwm_mediatek_disable(chip, pwm);
++			pwm_mediatek_clk_disable(chip, pwm);
++		}
+ 
+ 		return 0;
+ 	}
+@@ -224,8 +217,11 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled)
+-		err = pwm_mediatek_enable(chip, pwm);
++	if (!pwm->state.enabled) {
++		err = pwm_mediatek_clk_enable(chip, pwm);
++		if (!err)
++			pwm_mediatek_enable(chip, pwm);
++	}
+ 
+ 	return err;
+ }
 
 
 
