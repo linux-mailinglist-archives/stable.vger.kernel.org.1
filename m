@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B339B363BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F448B369B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D661466A96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 704341C80539
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C8E23D28F;
-	Tue, 26 Aug 2025 13:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9AA350D7F;
+	Tue, 26 Aug 2025 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bq+u8vcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMYx8afY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1C222DFA7;
-	Tue, 26 Aug 2025 13:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697913469F4;
+	Tue, 26 Aug 2025 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214538; cv=none; b=IraEkIk1h6tvW/zTWpqliNl2Ax3RT64X2xN3oMZAOlo8OUxenk0aZuhP2yb/utAf1YKR7gw5TtS38GxOsp57V7dSvbmRSL46aokQcHKf/qdfJ/XqEnj7kUCb61tq+DCXgxZPkL53ihN5hS0cg7cbBH3Y6HxgjCjlAX8anRLkF8A=
+	t=1756217635; cv=none; b=f4itaBedaXpemvGljAdPY/O8IdlrgGCqzAcVKpGRnW1n1QPd3BZyFBvrLSxA7XEzof5t1w2UnICYqjCnRGsjlpHjjOQ8fivu7qDg+P2HUQ+RjE6r42l+/gMDtOnJxlk3Xt+XZP9GXo4IY9X3Rh/wYHU/steJrrWguD5N6/JoFRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214538; c=relaxed/simple;
-	bh=jUsjQ4RQERNKfyyWNDzLTKiLsRDFQYHcWcST9OQtZzA=;
+	s=arc-20240116; t=1756217635; c=relaxed/simple;
+	bh=Det0Xni6gpMAFbWqjamw92d6l2jAhdJTd7Nw3Yd9IiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1dVOT8Ti6t9xpk//4hoF5ndGQ04Hd1ZUXPaIpYmlBFOx9ptsBt3qrxX6Ptz1bBExMI4xSrbBxZmOHnStbBkXhgvy/3O/Gk2VKy1I1iJse7ByLpxqEVVz8R+emb6DgurD7v6yLad+QN3FvP0kFPxPTqRU5ss9/FXz5G3we/aU/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bq+u8vcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D15BC113D0;
-	Tue, 26 Aug 2025 13:22:17 +0000 (UTC)
+	 MIME-Version; b=F2o01+6l7aoiTbPD7/lhHH09YYr95cv73WRzvhYunkBs+5Wlu3G2rybFyfd5YQMbvXwgOMXh5y/jIKMFlPWRgkZMCHIoYgUDLaF/tWH0Zpce4p3SHNaASlPkAv/pIq3LvW9ImQYDuXW23ssWt/XL68skgHhqawH0DXzY31Lpjjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMYx8afY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2B2C113CF;
+	Tue, 26 Aug 2025 14:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214538;
-	bh=jUsjQ4RQERNKfyyWNDzLTKiLsRDFQYHcWcST9OQtZzA=;
+	s=korg; t=1756217635;
+	bh=Det0Xni6gpMAFbWqjamw92d6l2jAhdJTd7Nw3Yd9IiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bq+u8vcAkl/2g7AEsENEWhJIII1AF0mYm1ta41pzhzGcUN1Jsua3JUYwJ6tvHS0BZ
-	 dAgBxSYfBQHSAHVTLkjHO/ZFmhAp3WNdM+LQV1sTJXyU8toxmM5kjhQeYqSpMqe3WQ
-	 X0iu4502IyDA66g6OTxG2K7QNiPvYm3XxWZaWY0o=
+	b=TMYx8afYO8LARg/Z6IkLdPcVWwOV94Kb/Joq2ulSNeuNhmrJOE7WnPmGrF710XY2D
+	 jS+fgyaDx5ON/lyDPFa4PoeEF3vOSGxqJOHC8ooTopMxp4X0GQ+vj7w/OSdS0FxHYq
+	 2NgXMC+7TLfmb7cuidVZo55UKikwauYzpeFFKJ0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/482] cifs: Fix calling CIFSFindFirst() for root path without msearch
+Subject: [PATCH 5.10 218/523] better lockdep annotations for simple_recursive_removal()
 Date: Tue, 26 Aug 2025 13:07:08 +0200
-Message-ID: <20250826110935.132269024@linuxfoundation.org>
+Message-ID: <20250826110929.837644501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
+[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
 
-To query root path (without msearch wildcard) it is needed to
-send pattern '\' instead of '' (empty string).
+We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
+callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
+(so that a variant of that could be used with parent of the victim
+held locked by the caller).
 
-This allows to use CIFSFindFirst() to query information about root path
-which is being used in followup changes.
+In reality, simple_recursive_removal()
+	* never holds two locks at once
+	* holds the lock on parent of dentry passed to callback
+	* is used only on the trees with fixed topology, so the depths
+are not changing.
 
-This change fixes the stat() syscall called on the root path on the mount.
-It is because stat() syscall uses the cifs_query_path_info() function and
-it can fallback to the CIFSFindFirst() usage with msearch=false.
+So the locking order is actually fine.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
+grabbed by that thing.
+
+Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/libfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 0c6ade196894..49d772683004 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -3933,6 +3933,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = 0;
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			pSMB->FileName[2] = 0;
-+			pSMB->FileName[3] = 0;
-+			name_len = 4;
- 		}
- 	} else {
- 		name_len = copy_path_name(pSMB->FileName, searchName);
-@@ -3944,6 +3950,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = '*';
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			name_len = 2;
- 		}
- 	}
+diff --git a/fs/libfs.c b/fs/libfs.c
+index aa0fbd720409..c6ed6c58dee6 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -272,7 +272,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 		struct dentry *victim = NULL, *child;
+ 		struct inode *inode = this->d_inode;
  
+-		inode_lock(inode);
++		inode_lock_nested(inode, I_MUTEX_CHILD);
+ 		if (d_is_dir(this))
+ 			inode->i_flags |= S_DEAD;
+ 		while ((child = find_next_child(this, victim)) == NULL) {
+@@ -284,7 +284,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 			victim = this;
+ 			this = this->d_parent;
+ 			inode = this->d_inode;
+-			inode_lock(inode);
++			inode_lock_nested(inode, I_MUTEX_CHILD);
+ 			if (simple_positive(victim)) {
+ 				d_invalidate(victim);	// avoid lost mounts
+ 				if (d_is_dir(victim))
 -- 
 2.39.5
 
