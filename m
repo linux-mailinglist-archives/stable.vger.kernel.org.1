@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-175377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15162B367C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A701B36290
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42A21C26A59
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:03:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C23568358F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA7D350845;
-	Tue, 26 Aug 2025 14:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14B43469E6;
+	Tue, 26 Aug 2025 13:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYgMO65S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVYweZAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA363350831;
-	Tue, 26 Aug 2025 14:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB8B34A301;
+	Tue, 26 Aug 2025 13:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216877; cv=none; b=bjk5agyIQCF2pSsK4AR4ZRok95kKxybYmLVZxZVPQM4TePkGq988pwHvI/j+7cCvd35xRgJvIgcaIfl5mPHNzovu8ztlzvk1hhyCohZvpUHA4LvKUahUwDq9zRD7iLfmuiLADxrOjwbNZ3QS4QcyjiRRUIc72SFE6QXpLL9w5ao=
+	t=1756213975; cv=none; b=ZsOS+eFh62GXe13lsahH1Q/F6Ssi2e979WHlmxp/zMAB93Bozr6x25iGuf0U8tHBTFNYHDShUSCryw/KksuScyL84jsjaTxxntXDAJLEx9q1gvD1kkgrZ0Hdi8eILMEZ76JIiYYrzrhG5b0xRfpE6Kp3uKJxIopEtRrePvWkDSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216877; c=relaxed/simple;
-	bh=XM0uPhLcOIhEKOa1qfDgoV10hPTPEmV19dn/rfZPjbM=;
+	s=arc-20240116; t=1756213975; c=relaxed/simple;
+	bh=bnT4b4TyKLoKLCueXhdGmeQB6s9DzOTllPVyUM7TFpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbqehSbSbvHRWXoY6C47hk/q/HCCmhtSRWF4mGzCLjVL7x9gqs1QIm7bf2y6nhLH4QhkpBHpIosfjkKD3kQZU61L+D686gQRs9Fk1t6ogasHEWTwyeAFn68oRQ4RpyUAtP91UO0519Q8lT+Mo/BRpfBadTOIV1ilLQ/C3qR8HWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYgMO65S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC38C4CEF1;
-	Tue, 26 Aug 2025 14:01:17 +0000 (UTC)
+	 MIME-Version; b=qiDMY4iFdq/NKPXNg3o1TFyBNwDEiClRHHkyt/C7lys71GhEq1TvukDHeSd0zR1glRmjdKwdHEcD8AhJL4uYAR6Nk3ASvtjZWuxEVEZO2t9PvG1lRJbOt2sFTuYzOYDZAA3ZpGcsIFs04bYImABuJIdyJ3VfBoDPXhxqhoK8kWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVYweZAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD94C4CEF1;
+	Tue, 26 Aug 2025 13:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216877;
-	bh=XM0uPhLcOIhEKOa1qfDgoV10hPTPEmV19dn/rfZPjbM=;
+	s=korg; t=1756213975;
+	bh=bnT4b4TyKLoKLCueXhdGmeQB6s9DzOTllPVyUM7TFpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYgMO65SBhhpYBe2ErTNXXbCY1wx440pNb1SIT4uHhZEX3PW/vy0XSo0Za0RwHAt7
-	 xkwD8fk8e2Ygbit1XffDaPbh+HQM4jlZ5i54pXbLYcd1Ueb+UY5ClFPaLjMSGBQulC
-	 n6hy6OvsRqpVfb/sIlCLjGnzNV2Xz1vy6CUsaUsc=
+	b=dVYweZAqeLroo3iZoG2+TUViQci5H/uLdHhqE81IpM6vnop+o46tCUzzFJPmDHbML
+	 EPsrTE97pVmC3RnJDMxnWsi3B8Jp9URG2aClEOkbsL0+4QNpTHUpfWmwE/X7Yz3phW
+	 H1u9ut5B2axIQ8hg33yDLzmhBaABznna1G3na6J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 577/644] ftrace: Also allocate and copy hash for reading of filter files
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 519/587] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 26 Aug 2025 13:11:08 +0200
-Message-ID: <20250826111000.828752778@linuxfoundation.org>
+Message-ID: <20250826111006.199145450@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Miao Li <limiao@kylinos.cn>
 
-commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
+commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
 
-Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
-the pointer to the global tracer hash to its iterator. Unlike the writer
-that allocates a copy of the hash, the reader keeps the pointer to the
-filter hashes. This is problematic because this pointer is static across
-function calls that release the locks that can update the global tracer
-hashes. This can cause UAF and similar bugs.
+Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
+or it will randomly work incorrectly on Huawei hisi platforms
+when doing reboot test.
 
-Allocate and copy the hash for reading the filter files like it is done
-for the writers. This not only fixes UAF bugs, but also makes the code a
-bit simpler as it doesn't have to differentiate when to free the
-iterator's hash between writers and readers.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
-Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
-Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
-Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/usb/core/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3825,13 +3825,17 @@ ftrace_regex_open(struct ftrace_ops *ops
- 	        } else {
- 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
- 		}
-+	} else {
-+		if (hash)
-+			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
-+		else
-+			iter->hash = EMPTY_HASH;
-+	}
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -371,6 +371,7 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
--		if (!iter->hash) {
--			trace_parser_put(&iter->parser);
--			goto out_unlock;
--		}
--	} else
--		iter->hash = hash;
-+	if (!iter->hash) {
-+		trace_parser_put(&iter->parser);
-+		goto out_unlock;
-+	}
+ 	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
  
- 	ret = 0;
- 
-@@ -5700,9 +5704,6 @@ int ftrace_regex_release(struct inode *i
- 		ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
- 						      iter->hash, filter_hash);
- 		mutex_unlock(&ftrace_lock);
--	} else {
--		/* For read only, the hash is the ops hash */
--		iter->hash = NULL;
- 	}
- 
- 	mutex_unlock(&iter->ops->func_hash->regex_lock);
+ 	/* SanDisk Extreme 55AE */
 
 
 
