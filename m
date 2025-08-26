@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-176005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242DDB36AEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20382B36589
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABE51BC850F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1280A7BF1C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C045134AAFE;
-	Tue, 26 Aug 2025 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1C734DCFD;
+	Tue, 26 Aug 2025 13:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5cL3CPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t20tW9z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF5735334E;
-	Tue, 26 Aug 2025 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE050343218;
+	Tue, 26 Aug 2025 13:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218536; cv=none; b=qXBKIYVmHdejNS8cKIaFVWn4fhEX0cceo7HPiZNoPYsaFm/ANWERanJlrjfFM+uJ+Htgo79PvibWlK73aWUF6BUCF3RGqeoFgI4zenW6w14Y5l87p8DaNjOODqR7hYfGis9ZopRAx1INAWFx8zrAmCmIOrqrbIKShTgccMgs1dM=
+	t=1756216066; cv=none; b=uDC16ezXzbMSfXono6fnZF7de0cSM7M8H+tKZ92l2PdJsrfI/yDtsSbci7C1tc4sv9205xJ+anlKKAbLTqRdGyXaPvFu7EH7CZ/dQfqmxm6naAATa9lvbgW72za5X1FR9sKGtDEVaf7QkPxEsI+l5tkoq+V3mT84o/4tNy+bpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218536; c=relaxed/simple;
-	bh=Kbg+FpA2YNzlnucto3Eem1+b2gcC60BF64+RAtsOR8A=;
+	s=arc-20240116; t=1756216066; c=relaxed/simple;
+	bh=cMeG3YjRogxCwUwuC8Rs6jvq1cbva3v8szEOSiJuhGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZjMsEWTSROqx4NaEBYu7duhqZm6s9u9WlkCvGJLizod8ofh6ue+zanJvi/mB4UWDoO0h4kFW10GtnJcG6AdTBH8H0X3N6IGh6aTKPZCI8BS63pf3jlKPUT7fd+LuL6glR5B7hjbCya067UqNDKyrAtmmwqqH1dB2QmllLHtySw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5cL3CPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8228C4CEF1;
-	Tue, 26 Aug 2025 14:28:55 +0000 (UTC)
+	 MIME-Version; b=PZU+sxYpQZK8iKatqKOmXJcJe21Sidx0Eq5xga+tCRFqgjtTzPHH0F2TdoCnhlGc7ohcd6XiJY4klmK+UuMLzSa2Mqd0QekwWMLyRCdzZaF1p4ilIDdSnRmEqxatzb4L272Rn0cZpIcjyhqp+n6IFyopV2RvkvTLNZAiGmr74MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t20tW9z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43124C4CEF1;
+	Tue, 26 Aug 2025 13:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218536;
-	bh=Kbg+FpA2YNzlnucto3Eem1+b2gcC60BF64+RAtsOR8A=;
+	s=korg; t=1756216066;
+	bh=cMeG3YjRogxCwUwuC8Rs6jvq1cbva3v8szEOSiJuhGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5cL3CPj7yEacNxdfQyCglE9vutJzr7oPcOmcjEypkixoNZgfZBmP8a4O+HWcn4w8
-	 xdR/D49ePdUhIoQ8rsbZfpYtKBa7/9VOLeIszTTi8JjOuANGkJViOaoYqXpwOEBOvq
-	 jOJ01Nsj6zAG+cbvHdUBux6PTRhmEKFUjL7mtmOw=
+	b=t20tW9z2wkF0bw6vLgmzrSxqc4iF7aw4jrcFHUEcW13+SMOIWSTVfbJ/Niy5U7Caf
+	 7aHUEeuzUbLd3eXsS2djsgnWY5Pzx4+UCKY5Qf1Sw2cpQNyu98wGRkBfSqF4xSbDq7
+	 pUNsO/GUZ/5Sm6xnB5FH+98ENcsUBVm0h+Zet+ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/403] Bluetooth: L2CAP: Fix attempting to adjust outgoing MTU
+	Jiayi Li <lijiayi@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 272/644] ACPI: processor: perflib: Fix initial _PPC limit application
 Date: Tue, 26 Aug 2025 13:06:03 +0200
-Message-ID: <20250826110906.843770792@linuxfoundation.org>
+Message-ID: <20250826110953.110781008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit d24e4a7fedae121d33fb32ad785b87046527eedb ]
+commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
 
-Configuration request only configure the incoming direction of the peer
-initiating the request, so using the MTU is the other direction shall
-not be used, that said the spec allows the peer responding to adjust:
+If the BIOS sets a _PPC frequency limit upfront, it will fail to take
+effect due to a call ordering issue.  Namely, freq_qos_update_request()
+is called before freq_qos_add_request() for the given request causing
+the constraint update to be ignored.  The call sequence in question is
+as follows:
 
-Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
+cpufreq_policy_online()
+  acpi_cpufreq_cpu_init()
+    acpi_processor_register_performance()
+      acpi_processor_get_performance_info()
+        acpi_processor_get_platform_limit()
+         freq_qos_update_request(&perflib_req) <- inactive QoS request
+  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
+                               CPUFREQ_CREATE_POLICY)
+    acpi_processor_notifier()
+      acpi_processor_ppc_init()
+        freq_qos_add_request(&perflib_req) <- QoS request activation
 
- 'Each configuration parameter value (if any is present) in an
- L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
- configuration parameter value that has been sent (or, in case of
- default values, implied) in the corresponding
- L2CAP_CONFIGURATION_REQ packet.'
+Address this by adding an acpi_processor_get_platform_limit() call
+to acpi_processor_ppc_init(), after the perflib_req activation via
+freq_qos_add_request(), which causes the initial _PPC limit to be
+picked up as appropriate.  However, also ensure that the _PPC limit
+will not be picked up in the cases when the cpufreq driver does not
+call acpi_processor_register_performance() by adding a pr->performance
+check to the related_cpus loop in acpi_processor_ppc_init().
 
-That said adjusting the MTU in the response shall be limited to ERTM
-channels only as for older modes the remote stack may not be able to
-detect the adjustment causing it to silently drop packets.
-
-Link: https://github.com/bluez/bluez/issues/1422
-Link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/149
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4793
-Fixes: 042bb9603c44 ("Bluetooth: L2CAP: Fix L2CAP MTU negotiation")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
+[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
+[ rjw: Subject and changelog adjustments ]
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/acpi/processor_perflib.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 4939152f6adc4..1272ad73e4011 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3484,12 +3484,28 @@ static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data
- 		/* Configure output options and let the other side know
- 		 * which ones we don't like. */
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -173,11 +173,14 @@ void acpi_processor_ppc_init(struct cpuf
+ {
+ 	unsigned int cpu;
  
--		/* If MTU is not provided in configure request, use the most recently
--		 * explicitly or implicitly accepted value for the other direction,
--		 * or the default value.
-+		/* If MTU is not provided in configure request, try adjusting it
-+		 * to the current output MTU if it has been set
-+		 *
-+		 * Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
-+		 *
-+		 * Each configuration parameter value (if any is present) in an
-+		 * L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
-+		 * configuration parameter value that has been sent (or, in case
-+		 * of default values, implied) in the corresponding
-+		 * L2CAP_CONFIGURATION_REQ packet.
- 		 */
--		if (mtu == 0)
--			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
-+		if (!mtu) {
-+			/* Only adjust for ERTM channels as for older modes the
-+			 * remote stack may not be able to detect that the
-+			 * adjustment causing it to silently drop packets.
-+			 */
-+			if (chan->mode == L2CAP_MODE_ERTM &&
-+			    chan->omtu && chan->omtu != L2CAP_DEFAULT_MTU)
-+				mtu = chan->omtu;
-+			else
-+				mtu = L2CAP_DEFAULT_MTU;
-+		}
++	if (ignore_ppc == 1)
++		return;
++
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
- 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
- 			result = L2CAP_CONF_UNACCEPT;
--- 
-2.39.5
-
+-		if (!pr)
++		if (!pr || !pr->performance)
+ 			continue;
+ 
+ 		/*
+@@ -193,6 +196,11 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
++
++		ret = acpi_processor_get_platform_limit(pr);
++		if (ret)
++			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
+ 	}
+ }
+ 
 
 
 
