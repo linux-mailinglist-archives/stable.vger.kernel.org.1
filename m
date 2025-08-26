@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9CDB36297
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE76B365FE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A32E188B65C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A091E8E5C25
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588C228C9D;
-	Tue, 26 Aug 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FE02F49EA;
+	Tue, 26 Aug 2025 13:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O99RLpu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05t6tgqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22063343D9B;
-	Tue, 26 Aug 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E81E2D060B;
+	Tue, 26 Aug 2025 13:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214113; cv=none; b=E3itKMNWNAzrHX+wrXneJa7nCj1GaQD7EYj3yFR0fsTsCKr/pJLLu3Fd/u29BaqIzD9wLcGY8aWhlFY3FokJA4qznDgjmbsb6jmXu1hs87kSGudo2UX2o0Fbl8+y/gYCCsCOGENAREh5oVuEX7AQ3lqU0B6yKodnX6/iLkFmu20=
+	t=1756215797; cv=none; b=cE6bMHe8OvZqOcML2Q+sO0nL1zrZgWaCbYbYS7Ubl1yucE+8EjmY1GV9TJcESEUV4GqZUfWPpYGquZe+scOanfF6ZOUoR+bJZ6Bcr6PQEwnGbuKtFM+ymxjKLHCwjXjl/ymaCpAoPR1gbr77kyB9HPd/ZuWn65HpjWU26dC6Zik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214113; c=relaxed/simple;
-	bh=RCMceva2qw1U7mJsC32xO9HpYkNXKXG2uviIRyfbFZ8=;
+	s=arc-20240116; t=1756215797; c=relaxed/simple;
+	bh=ZUUsUk3gCWv+otGHx0gjq+jzDBf9zdZCJwb5cRz4EGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zy3Khsgn2J4ubZumpPvu1oRl2zMVa4FyzlbU/TzR0sIi30e8C5BZqL3wrQ9rTuIkk061FkIZbG7K7xGFfGP3lxb8zaZYL0NUPeP0X+YQFdvx0q+K7rG1NKfLMz8LtBnOh3MOpai7l0NLRvF+eSAtSTCNavrIv6S9WeWhwjyMeEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O99RLpu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7450C4CEF1;
-	Tue, 26 Aug 2025 13:15:12 +0000 (UTC)
+	 MIME-Version; b=GAQhh+XhzFhAPP/n4WE/7u/Un+5o5Z+IXq5Ylp7psobFyoUAzYvA6WNGgyffN+CGuGNa7uK75sCr9wxTTdjTD5PNrz4Hz3IvPFfmSuZR6UfKLhW8t3XhNa5vuvbJZ+Y7nQ5j9fxvgiMP8lyXF+ucruOnKxaez7Sn1Lqoc/JZqLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05t6tgqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0B6C4CEF1;
+	Tue, 26 Aug 2025 13:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214113;
-	bh=RCMceva2qw1U7mJsC32xO9HpYkNXKXG2uviIRyfbFZ8=;
+	s=korg; t=1756215797;
+	bh=ZUUsUk3gCWv+otGHx0gjq+jzDBf9zdZCJwb5cRz4EGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O99RLpu4jgvFYldjeYlvEes+IFoKcPzsmQ49zoVdUHEn/d8F3+bnQftK5F4elSlxB
-	 kyHA/fRm/UXhZNrz5xipuMkQKA0KwTW9F28rZN2oIVjEPlYs7pFBDyDwUew3zE+6wV
-	 NdZBxs598woA05mlTzgU2R9VoXrqPqbMkCqBdjn8=
+	b=05t6tgqwmVhHNh8DZDMpnqZvjU2nVO9RyDbHM3h9X2at1RG3ZyWQ56qVz4PkZjcyc
+	 KRqFStWoIiKlgfHTNveQv48/yJIAhXX+CFlBQNU0Gl1SxU5rYRWYVV3Qiv4B4BRbq+
+	 98ChAQAfKotApeZArgJAVYcu/Rg5ckFuIntt8McQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Mommer <harald.mommer@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1 008/482] gpio: virtio: Fix config space reading.
+	Rohit Visavalia <rohit.visavalia@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 170/644] clk: xilinx: vcu: unregister pll_post only if registered correctly
 Date: Tue, 26 Aug 2025 13:04:21 +0200
-Message-ID: <20250826110930.987444824@linuxfoundation.org>
+Message-ID: <20250826110950.689255815@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Mommer <harald.mommer@oss.qualcomm.com>
+From: Rohit Visavalia <rohit.visavalia@amd.com>
 
-commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
+[ Upstream commit 3b0abc443ac22f7d4f61ddbbbbc5dbb06c87139d ]
 
-Quote from the virtio specification chapter 4.2.2.2:
+If registration of pll_post is failed, it will be set to NULL or ERR,
+unregistering same will fail with following call trace:
 
-"For the device-specific configuration space, the driver MUST use 8 bit
-wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
-for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
-64 bit wide fields."
+Unable to handle kernel NULL pointer dereference at virtual address 008
+pc : clk_hw_unregister+0xc/0x20
+lr : clk_hw_unregister_fixed_factor+0x18/0x30
+sp : ffff800011923850
+...
+Call trace:
+ clk_hw_unregister+0xc/0x20
+ clk_hw_unregister_fixed_factor+0x18/0x30
+ xvcu_unregister_clock_provider+0xcc/0xf4 [xlnx_vcu]
+ xvcu_probe+0x2bc/0x53c [xlnx_vcu]
 
-Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4472e1849db7 ("soc: xilinx: vcu: make pll post divider explicit")
+Signed-off-by: Rohit Visavalia <rohit.visavalia@amd.com>
+Link: https://lore.kernel.org/r/20250210113614.4149050-2-rohit.visavalia@amd.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-virtio.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/clk/xilinx/xlnx_vcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpio-virtio.c
-+++ b/drivers/gpio/gpio-virtio.c
-@@ -539,7 +539,6 @@ static const char **virtio_gpio_get_name
+diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
+index d66b1315114e..292d50ba0112 100644
+--- a/drivers/clk/xilinx/xlnx_vcu.c
++++ b/drivers/clk/xilinx/xlnx_vcu.c
+@@ -587,8 +587,8 @@ static void xvcu_unregister_clock_provider(struct xvcu_device *xvcu)
+ 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_MCU]);
+ 	if (!IS_ERR_OR_NULL(hws[CLK_XVCU_ENC_CORE]))
+ 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_CORE]);
+-
+-	clk_hw_unregister_fixed_factor(xvcu->pll_post);
++	if (!IS_ERR_OR_NULL(xvcu->pll_post))
++		clk_hw_unregister_fixed_factor(xvcu->pll_post);
+ }
  
- static int virtio_gpio_probe(struct virtio_device *vdev)
- {
--	struct virtio_gpio_config config;
- 	struct device *dev = &vdev->dev;
- 	struct virtio_gpio *vgpio;
- 	u32 gpio_names_size;
-@@ -551,9 +550,11 @@ static int virtio_gpio_probe(struct virt
- 		return -ENOMEM;
- 
- 	/* Read configuration */
--	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
--	gpio_names_size = le32_to_cpu(config.gpio_names_size);
--	ngpio = le16_to_cpu(config.ngpio);
-+	gpio_names_size =
-+		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
-+					      gpio_names_size));
-+	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
-+					       ngpio));
- 	if (!ngpio) {
- 		dev_err(dev, "Number of GPIOs can't be zero\n");
- 		return -EINVAL;
+ /**
+-- 
+2.39.5
+
 
 
 
