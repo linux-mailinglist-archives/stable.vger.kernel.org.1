@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A75B36CBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E459CB35D9C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2045F6865CF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA0E7A270A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CB935AABA;
-	Tue, 26 Aug 2025 14:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AEB200112;
+	Tue, 26 Aug 2025 11:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuOM8Qde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wpNIXna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC263350D75;
-	Tue, 26 Aug 2025 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAABC284678;
+	Tue, 26 Aug 2025 11:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219320; cv=none; b=kvccIa4/t9y7wIHlOkYiq2+iGZCnHduZBuKx5rQ4l8e9pTzvKJ04OF9pkQrKNDd8YuayxZpct77IfLFiO09khXUAXJ8lw8gAu/pZVkdV79Bagb0hBoEH7awXulUbh/v6ZW2fipNqIV9zugUMMqLTAUBiY7Gb7OlHWXEpTdXMBG4=
+	t=1756208749; cv=none; b=u+NziZsgB+15hl/2LhWWw+eXcgKZDTyMpHrLR00lPP7EhBY5FSff/L7knLiZmEdoisQ0LC7zV2cZIsRxvutoIvm/pXbvxrld4d7a/Dfx8k0kk/5vyIfAg2UZtS2Lt4NyFrtTPsN7gI7U4A+wZWIZ/D12XRDE/9ajskv+66UJl1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219320; c=relaxed/simple;
-	bh=hpDYuBygdIJZjsNipRWlnFBXSvuCelLzJ1UsZreDKbs=;
+	s=arc-20240116; t=1756208749; c=relaxed/simple;
+	bh=Py/Os3PvbtoZJ8T4WbFD8/UbR0zgruv8YbYEreRt6R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FbBP+k+5iPqeqT6NmvTYWR4qDIdFbmyDMNzps1yn32hFxhVu/yRiwDZLVIRTyKoOGYPVjtX5kDbY/l01keCTEfQLfXeNpCqdddBVYVsYEYyLM6suujKFkaWDOdcloHQ6XD7VrQFS59PSC0pZ6AAgiZ5s4ZJDvCiySpvRCT4C7tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuOM8Qde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E84C4CEF1;
-	Tue, 26 Aug 2025 14:41:59 +0000 (UTC)
+	 MIME-Version; b=TJNtBOLs3QwTKom58cQ55aWthkAJYDtCd3uxyVAyMpg/jRSQ/SPr4bC/VDYk4p2r0Z8kqsUR1Ale4ZbVWN1VpewU819SkBm5p2cxDJlR+/v6rkP+gtFYlj0527LNotVcmhxwDNXJVp1gniZFG2ZPU59RBZ1Zctq1KLoSizQG/u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wpNIXna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083D3C4CEF1;
+	Tue, 26 Aug 2025 11:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219320;
-	bh=hpDYuBygdIJZjsNipRWlnFBXSvuCelLzJ1UsZreDKbs=;
+	s=korg; t=1756208749;
+	bh=Py/Os3PvbtoZJ8T4WbFD8/UbR0zgruv8YbYEreRt6R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuOM8QdeByOcH2ziSeLDrbZ0Yh6MoFSKNrtw53ONC3p16cHmiYij19iUW7zwzTz0M
-	 4j8giotwVOjIwTXs1/5HbLgq1o0WBK3She68qkH9W+/cEuJ/nGpfjI6PIau9jNFLjC
-	 bovxDgiT2tfQpltdgYYbpSpkZNaIBxpIlRzGNlsY=
+	b=0wpNIXnapS6Ia2kFVPhvO3vwoFfMRD4cqe+Lk6hiuvV2eE8AaBN+gbgF29e7gSf3R
+	 H9kmfsrqTSjqNOINbXmxhvlRBAuE+Pjl8uz0GDaZfMDjQ3nLt9RKbHvONaA/V9eywC
+	 tUbqn0K39nh+v7lxIuEuxA6GtmsO7cVhE/RtpZC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mael GUERIN <mael.guerin@murena.io>,
 	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 319/403] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.12 230/322] usb: typec: maxim_contaminant: disable low power mode when reading comparator values
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826110915.624294119@linuxfoundation.org>
+Message-ID: <20250826110921.580039661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mael GUERIN <mael.guerin@murena.io>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
+commit cabb6c5f4d9e7f49bdf8c0a13c74bd93ee35f45a upstream.
 
-Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
-to fix USB resets after sending SCSI vendor commands due to CBW and
-CSW tags difference, leading to undesired slowness while communicating
-with the device.
+Low power mode is enabled when reading CC resistance as part of
+`max_contaminant_read_resistance_kohm()` and left in that state.
+However, it's supposed to work with 1uA current source. To read CC
+comparator values current source is changed to 80uA. This causes a storm
+of CC interrupts as it (falsely) detects a potential contaminant. To
+prevent this, disable low power mode current sourcing before reading
+comparator values.
 
-Please find below the copy of /sys/kernel/debug/usb/devices with my
-device plugged in (listed as TechSys USB mass storage here, the
-underlying chipset being the Novatek NTK96550-based camera):
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0603 ProdID=8611 Rev= 0.01
-S:  Manufacturer=TechSys
-S:  Product=USB Mass Storage
-S:  SerialNumber=966110000000100
-C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
+Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
 Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/stable/20250814-fix-upstream-contaminant-v1-1-801ce8089031%40google.com
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-1-6c8d6c3adafb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |    5 +++++
+ drivers/usb/typec/tcpm/tcpci_maxim.h       |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_SANE_SENSE ),
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -188,6 +188,11 @@ static int max_contaminant_read_comparat
+ 	if (ret < 0)
+ 		return ret;
  
-+/* Added by Maël GUERIN <mael.guerin@murena.io> */
-+UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
-+		"Novatek",
-+		"NTK96550-based camera",
-+		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		US_FL_BULK_IGNORE_TAG ),
++	/* Disable low power mode */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL,
++				 FIELD_PREP(CCLPMODESEL,
++					    LOW_POWER_MODE_DISABLE));
 +
- /*
-  * Reported by Hanno Boeck <hanno@gmx.de>
-  * Taken from the Lycoris Kernel
+ 	/* Sleep to allow comparators settle */
+ 	usleep_range(5000, 6000);
+ 	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL, TCPC_TCPC_CTRL_ORIENTATION, PLUG_ORNT_CC1);
+--- a/drivers/usb/typec/tcpm/tcpci_maxim.h
++++ b/drivers/usb/typec/tcpm/tcpci_maxim.h
+@@ -21,6 +21,7 @@
+ #define CCOVPDIS                                BIT(6)
+ #define SBURPCTRL                               BIT(5)
+ #define CCLPMODESEL                             GENMASK(4, 3)
++#define LOW_POWER_MODE_DISABLE                  0
+ #define ULTRA_LOW_POWER_MODE                    1
+ #define CCRPCTRL                                GENMASK(2, 0)
+ #define UA_1_SRC                                1
 
 
 
