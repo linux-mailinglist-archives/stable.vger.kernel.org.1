@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172D5B35DF5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15492B36475
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9747817F074
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A353465738
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7B7267386;
-	Tue, 26 Aug 2025 11:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12F23D7DD;
+	Tue, 26 Aug 2025 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOISP/ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDad/m3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0983D21D3C0;
-	Tue, 26 Aug 2025 11:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21AE28FD;
+	Tue, 26 Aug 2025 13:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208480; cv=none; b=LqfP7EDtH23Iy7yKvaA6dqhap4lhJdZI/P8/6DuYlu0p3JRkmLIZnBggg0Sn+C7rDrFxh2dcDqvvgWNvuGFKXW4jkr7t49KcIeIleKfHBES+8gPBAzhQQb7ZEGg5v0WMK2UGAQm/rCg0hs6vBsCAszOyLNejB7kwqBK8cbgbcQU=
+	t=1756214922; cv=none; b=Jde7J6fQTC7oABVK9YBDkUBqvC2zJrS9x0u7P2f5zAqZ7cZXhb8OHKQzPMcvsZKvdZd1GaosQUbrZf3KrQsG1yPgtQP3Ba6/urYR9yZe004c4/o8UD5cpiU6Uuqaw+RVLFTciZ4O9H0lwBt/oyVMAEkZepd41OMQGcmmrOcOyvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208480; c=relaxed/simple;
-	bh=ZuitrLwuiAtAGorCU0nR5o5xHFXFvyDUL0Pu1+CwKAY=;
+	s=arc-20240116; t=1756214922; c=relaxed/simple;
+	bh=s2y/gJ6roCffcrfw2VGfBL0ephlGi2SbLAoT8urnZE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o6LdAxvWyodYbehtEw8Jn2spAwvLBFoiJl4eoVdbnj8CC9dxFq43hmWwXAk7sFEwXJazrcR/T8+Vk1RSOCpB9DHXLRTff5lHZsaW6qm+glQsgyNBxD+Z7elWUmW7T6AgZ1Mys69VdSLADnf+qpYwPS8dusvRpNPH3cC0e3idtcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOISP/ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943D2C4CEF1;
-	Tue, 26 Aug 2025 11:41:19 +0000 (UTC)
+	 MIME-Version; b=QvI9VL9NTz/JVcc0O/kdfNr0KMA3iWhxYKrKPo3XDGeNuaiJRTB9g9+zeaC5QJW5YygP7PvlhcFMtPb8cmG2XfDlrXe96367B/Sm17dZXYn3zPjZCnizVEB01qWGU1TdTC1frU+pvxbu1b6i8ZDL5plFZK/0lceeMpJdhF8VoKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDad/m3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80521C4CEF1;
+	Tue, 26 Aug 2025 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208479;
-	bh=ZuitrLwuiAtAGorCU0nR5o5xHFXFvyDUL0Pu1+CwKAY=;
+	s=korg; t=1756214921;
+	bh=s2y/gJ6roCffcrfw2VGfBL0ephlGi2SbLAoT8urnZE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOISP/ldGDhbhT2KOssW2/qlojbG+FKGb4yKUyp7NGHhp9lJ9ZpMvVdKUZX65rmdq
-	 ZpvFnEbFcTk5A6ctTYp3/TfbbNaaMf1wIqtxmGAGYm2bxkq85utEI9vyX2PfHds2xp
-	 zZqUzUroTlTknHmGlFMuv6QbDy+63TVzXRz9NjbE=
+	b=fDad/m3pSQmWGYXHfCH4kaLFfGtzivuGd0cD1bCVHER2Et9aSKK004MCB37Rh3Obc
+	 YWCZcGkMLpyCP66EU+SqPsQWHlCYA7nw/+hRtGLFjKrOL48LWvsZ+2zxJyPGhcDu5t
+	 4+STy+hTahMLTpObh1zX6CquywIUScCy932iUd3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@kde.org>,
-	=?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 127/322] drm/amd/display: Add primary plane to commits for correct VRR handling
+	Lorenz Brun <lorenz@brun.one>,
+	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 289/482] ata: libata-scsi: Fix ata_to_sense_error() status handling
 Date: Tue, 26 Aug 2025 13:09:02 +0200
-Message-ID: <20250826110918.934390003@linuxfoundation.org>
+Message-ID: <20250826110937.930194108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Dänzer <mdaenzer@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 3477c1b0972dc1c8a46f78e8fb1fa6966095b5ec upstream.
+commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
 
-amdgpu_dm_commit_planes calls update_freesync_state_on_stream only for
-the primary plane. If a commit affects a CRTC but not its primary plane,
-it would previously not trigger a refresh cycle or affect LFC, violating
-current UAPI semantics.
+Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
+the function ata_to_sense_error(). This entry ties a failed qc which has
+a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
+the additional sense code UNALIGNED WRITE COMMAND. This entry will be
+used to generate a failed qc sense key and sense code when the qc is
+missing sense data and there is no match for the qc error field in the
+sense_table array of ata_to_sense_error().
 
-Fixes e.g. atomic commits affecting only the cursor plane being limited
-to the minimum refresh rate.
+As a result, for a failed qc for which we failed to get sense data (e.g.
+read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
+command failed for the non-ncq case, the user very often end up seeing
+the completely misleading "unaligned write command" error, even if qc
+was not a write command. E.g.:
 
-Don't do this for the legacy cursor ioctls though, it would break the
-UAPI semantics for those.
+sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
+sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
+sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
 
-Suggested-by: Xaver Hugl <xaver.hugl@kde.org>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3034
-Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit cc7bfba95966251b254cb970c21627124da3b7f4)
+Fix this by removing the ATA_DRDY entry from the stat_table array so
+that we default to always returning ABORTED COMMAND without any
+additional sense code, since we do not know any better. The entry 0x08
+(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
+error is also misleading (as a parity error would likely be signaled
+through a bus error). So for this case, also default to returning
+ABORTED COMMAND without any additional sense code. With this, the
+previous example error case becomes:
+
+sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
+sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
+sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Together with these fixes, refactor stat_table to make it more readable
+by putting the entries comments in front of the entries and using the
+defined status bits macros instead of hardcoded values.
+
+Reported-by: Lorenz Brun <lorenz@brun.one>
+Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
+Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
 Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/ata/libata-scsi.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -664,6 +664,15 @@ static int amdgpu_dm_crtc_helper_atomic_
- 		return -EINVAL;
- 	}
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -798,18 +798,14 @@ static void ata_to_sense_error(unsigned
+ 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
+ 	};
+ 	static const unsigned char stat_table[][4] = {
+-		/* Must be first because BUSY means no other bits valid */
+-		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Busy, fake parity for now
+-		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
+-		// Device ready, unaligned write command
+-		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
+-		// Device fault, internal target failure
+-		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Timed out in xfer, fake parity for now
+-		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
+-		// Recovered ECC error	  Medium error, recovered
+-		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
++		/* Busy: must be first because BUSY means no other bits valid */
++		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
++		/* Device fault: INTERNAL TARGET FAILURE */
++		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
++		/* Corrected data error */
++		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
++
++		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
+ 	};
  
-+	if (!state->legacy_cursor_update && amdgpu_dm_crtc_vrr_active(dm_crtc_state)) {
-+		struct drm_plane_state *primary_state;
-+
-+		/* Pull in primary plane for correct VRR handling */
-+		primary_state = drm_atomic_get_plane_state(state, crtc->primary);
-+		if (IS_ERR(primary_state))
-+			return PTR_ERR(primary_state);
-+	}
-+
- 	/* In some use cases, like reset, no stream is attached */
- 	if (!dm_crtc_state->stream)
- 		return 0;
+ 	/*
 
 
 
