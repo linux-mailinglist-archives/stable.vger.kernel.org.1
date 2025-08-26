@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA60AB35FE5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AB7B368A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808C3463495
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DF851C4173D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6611A23BE;
-	Tue, 26 Aug 2025 12:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17531F4C90;
+	Tue, 26 Aug 2025 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBNWUUq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWBl7C07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A742A1B78F3;
-	Tue, 26 Aug 2025 12:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEF9350842;
+	Tue, 26 Aug 2025 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212738; cv=none; b=MQ7oa1EEAYeMGOb0EtPGN1DHxgQmeC702+y6egtVO24Ki0F1GxjYyE1M3niplExjCVoNi9pZK9H4xxybMNXs19jB7t089J6iky17rFm5Ppeqiw+RLpqvMcYRrqvbqYHygYq6RXCJbBQMwy/prGe3phUuRKjbEszCzWpFApCCSms=
+	t=1756217117; cv=none; b=EV4oE9j3Xji55AGi+WQYTJE+ufzhz+qck2W8H9njTrAg2j55AuVWMae/ETdU4al6kF66TWRoVzI8uO9G01fr+LWvzS9Uy5yXuE5f9qgPDDGQKaaUrfjQSyD0TiMV40iZFqdEVNe2HlO83wLx8jJiqQzYPOk5mNZ+GjWo7rPsjcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212738; c=relaxed/simple;
-	bh=GSzkq3xgRYvEIh7X65gkJOJccH1iduCsdbGZ0Pd6Lck=;
+	s=arc-20240116; t=1756217117; c=relaxed/simple;
+	bh=+0j7CsGvwFF67g0HR5/F/XnqP05+y35gwLouo7fTqLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clyUXBM6F8yR2VEZ9UzXfNx09JOg+4nM5BG5jo4WhsBvcKQbAGCMk0z0jmJXYpHqJ6jqYYSGR0ke6TJWRioA1ce8zOLMNDyx78CcTSgmFUXTqGTz0aNtbdFU1ua6E7e0U32GMUWo+6S498/LZo5LFcaFs6ijabrIPazVh5+e+F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBNWUUq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36081C4CEF1;
-	Tue, 26 Aug 2025 12:52:18 +0000 (UTC)
+	 MIME-Version; b=b+auGDjPb7a7PvKFfLGaSLRh1iCH8h+eK+0VjSG6TV736q3qN17GGsGJILpJ4/SV/JervzWl2zuxy6v3rsYggzWuaJXQg5JWldwDDQT6WX1f85tWS5rVbTXDOaX/bs3RrLeb41Svv9UhaFrN5FEUzeNzTcMqaTUaGC5mB0v5woQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWBl7C07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B04EC113CF;
+	Tue, 26 Aug 2025 14:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212738;
-	bh=GSzkq3xgRYvEIh7X65gkJOJccH1iduCsdbGZ0Pd6Lck=;
+	s=korg; t=1756217117;
+	bh=+0j7CsGvwFF67g0HR5/F/XnqP05+y35gwLouo7fTqLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBNWUUq+AY3V/ms4wOuiVLpyHMTFqaRh/7dynXSydSmKQJwtJvc3MdbDlsswfYx8R
-	 4rmTXzgBuRpKkSbTXul7HAC3m/2mwImuDwn81T7toSBu184hWEwqRmvHH5MTb5WRhA
-	 LksTpSN26lZRPJWeoNokUAHyd16lY2WR1OhPsjL8=
+	b=pWBl7C07V5x/gv7HrzQ1Mwdcq8SMYKSHeGcHbGao/kzfvJjJEQ257skl5gL8wy6bv
+	 slzY1YetB2ZVZ7WpDu/Q5iUQanp7u2LTvhbkHb53gNns+VT1HXcxqIF97xGNoB7qdT
+	 8LZq9U0UkXSOoG3n1suNYXNslayfq7n9EDVZX9/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/587] usb: xhci: print xhci->xhc_state when queue_command failed
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 5.10 022/523] soc: aspeed: lpc-snoop: Cleanup resources in stack-order
 Date: Tue, 26 Aug 2025 13:03:52 +0200
-Message-ID: <20250826110955.045530930@linuxfoundation.org>
+Message-ID: <20250826110925.138861398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+commit 8481d59be606d2338dbfe14b04cdbd1a3402c150 upstream.
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+Free the kfifo after unregistering the miscdev in
+aspeed_lpc_disable_snoop() as the kfifo is initialised before the
+miscdev in aspeed_lpc_enable_snoop().
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
-
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Cc: stable@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-1-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 44352df58c9e..c6d89b51c678 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4454,7 +4454,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
- 
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -265,8 +265,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
  	}
  
--- 
-2.39.5
-
+-	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ }
+ 
+ static int aspeed_lpc_snoop_probe(struct platform_device *pdev)
 
 
 
