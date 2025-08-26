@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13C6B36D0C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61EBB362D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04E7FA01105
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99DA82A2852
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B773B35E4EA;
-	Tue, 26 Aug 2025 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241F332143C;
+	Tue, 26 Aug 2025 13:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2c5NoQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k05KEAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758D235A29D;
-	Tue, 26 Aug 2025 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34A5284678;
+	Tue, 26 Aug 2025 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219466; cv=none; b=BgSy4Ob9AewrY7fdwcns8SfhaTaOCYaJAhVM+dH0LvS/QlJeFNFa556ZxjF1aSTlb0Y19knbmEaCS3H8jlrREiqmA/w8X2s6ZFiLta2usIKrisWcN4Q1YI51kZZKoAa4aCGQh6+/lNu2fVHgeQH4zoH+g8BFS0vMiYa6Gqv132M=
+	t=1756214007; cv=none; b=rcY6eMneh1+XXbHf7LRPtjCJH9FUgezmo3MIJJ+QhmaIGkjXQFqqOVVXoqZ7BXAE7dRlblnGhLdYt5yiSeKZGgWYbUWJa1U3NblzqPPFHbA8Kw1PfIvKf8ZdQeBYo1UUhbJE6IL/39bk6GJuvE8Hok2HrL6EeOyI61iGn+nFLLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219466; c=relaxed/simple;
-	bh=DGZdmFNC2BI6h7U0G6V3UmKZ7yLXIuyFYtVPr2+SnTY=;
+	s=arc-20240116; t=1756214007; c=relaxed/simple;
+	bh=lDHwiCOYCZzMV1wDVsY8CUf4uxdvQqtQVf5Uvm8VDJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUH3d/P/tWGP+QSZxrkcpbBlgexQYWz6CF0x4Dv47glZQowwXWg+BJKgG8FC+YLtIOxF3uarBj4uHJBJetkHpYvjpGzIhDjX+CCMnGss7PAN1B0YF4KhoGkT3IGtXmnmHtAUCjJXf1vTLRpWI4vDsnQlQKEXb3rJ8Ulbx593DJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2c5NoQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E4C113CF;
-	Tue, 26 Aug 2025 14:44:25 +0000 (UTC)
+	 MIME-Version; b=Wsn5tv+4BKs4CBIK/BGLLtbcD6NntsW6UjSrI1rqn7x6QzbR53R8+suWwbiwOw3eA0NKmhD6cGRXPbdvRaZyBqRBW/Lp+0CUJV8WyRkXBUFrny4/tfbkRJYqtKtar4+Ch83z+Nns31ozkegGwzm9cIHpHkD2mngXPO4zvaw83jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k05KEAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207FFC4CEF1;
+	Tue, 26 Aug 2025 13:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219466;
-	bh=DGZdmFNC2BI6h7U0G6V3UmKZ7yLXIuyFYtVPr2+SnTY=;
+	s=korg; t=1756214007;
+	bh=lDHwiCOYCZzMV1wDVsY8CUf4uxdvQqtQVf5Uvm8VDJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2c5NoQx0WxYxSnrKPZYlNB1mE6CSbc6tpmopri9LCvZX3J2CKxdOTEVzFRso3WuV
-	 mCTvqhJhanoBpzMUO06SMPGg/xKHffQj9YiupLdhzfG9IQV9p0LqeR6vGVzywht4Gw
-	 hoaLWGSmRy7OHo5BCQI42qz5c6VCypr1xgY7o45E=
+	b=1k05KEAvYJswxkrGVe77Mz5N/FOaXXMoX3XsYE90TNkdvxV+raipp1b4pyYXygrH9
+	 DavKKJK99EmLSzju2NKktUcbYK+m+occcK9DLNOtkS/HFimJVF9xUTEk5wA0KhYq53
+	 4B7/XP/DLaX/+CG45F6LKM7SHQcHj7bFxwwIS764=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@mellanox.com>,
-	Jiri Pirko <jiri@mellanox.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 385/403] net: sched: dont expose action qstats to skb_tc_reinsert()
-Date: Tue, 26 Aug 2025 13:11:51 +0200
-Message-ID: <20250826110917.656579846@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 563/587] ALSA: usb-audio: Fix size validation in convert_chmap_v3()
+Date: Tue, 26 Aug 2025 13:11:52 +0200
+Message-ID: <20250826111007.348135817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@mellanox.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ef816f3c49c1c404ababc50e10d4cbe5109da678 ]
+[ Upstream commit 89f0addeee3cb2dc49837599330ed9c4612f05b0 ]
 
-Previous commit introduced helper function for updating qstats and
-refactored set of actions to use the helpers, instead of modifying qstats
-directly. However, one of the affected action exposes its qstats to
-skb_tc_reinsert(), which then modifies it.
+The "p" pointer is void so sizeof(*p) is 1.  The intent was to check
+sizeof(*cs_desc), which is 3, instead.
 
-Refactor skb_tc_reinsert() to return integer error code and don't increment
-overlimit qstats in case of error, and use the returned error code in
-tcf_mirred_act() to manually increment the overlimit counter with new
-helper function.
-
-Signed-off-by: Vlad Buslov <vladbu@mellanox.com>
-Acked-by: Jiri Pirko <jiri@mellanox.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ skulkarni: Adjusted patch for file 'sch_generic.h' wrt the mainline commit ]
-Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aKL5kftC1qGt6lpv@stanley.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |   12 ++----------
- net/sched/act_mirred.c    |    4 ++--
- 2 files changed, 4 insertions(+), 12 deletions(-)
+ sound/usb/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1320,17 +1320,9 @@ void mini_qdisc_pair_swap(struct mini_Qd
- void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- 			  struct mini_Qdisc __rcu **p_miniq);
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index f5a6e990d07a..12a5e053ec54 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -349,7 +349,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
+ 		u16 cs_len;
+ 		u8 cs_type;
  
--static inline void skb_tc_reinsert(struct sk_buff *skb, struct tcf_result *res)
-+static inline int skb_tc_reinsert(struct sk_buff *skb, struct tcf_result *res)
- {
--	struct gnet_stats_queue *stats = res->qstats;
--	int ret;
--
--	if (res->ingress)
--		ret = netif_receive_skb(skb);
--	else
--		ret = dev_queue_xmit(skb);
--	if (ret && stats)
--		qstats_overlimit_inc(res->qstats);
-+	return res->ingress ? netif_receive_skb(skb) : dev_queue_xmit(skb);
- }
- 
- /* Make sure qdisc is no longer in SCHED state. */
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -295,8 +295,8 @@ static int tcf_mirred_act(struct sk_buff
- 		/* let's the caller reinsert the packet, if possible */
- 		if (use_reinsert) {
- 			res->ingress = want_ingress;
--			res->qstats = this_cpu_ptr(m->common.cpu_qstats);
--			skb_tc_reinsert(skb, res);
-+			if (skb_tc_reinsert(skb, res))
-+				tcf_action_inc_overlimit_qstats(&m->common);
- 			__this_cpu_dec(mirred_rec_level);
- 			return TC_ACT_CONSUMED;
- 		}
+-		if (len < sizeof(*p))
++		if (len < sizeof(*cs_desc))
+ 			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
+ 		if (len < cs_len)
+-- 
+2.50.1
+
 
 
 
