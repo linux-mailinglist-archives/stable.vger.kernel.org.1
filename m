@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06577B36C42
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47FBB35C55
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 398B78A467A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F1127B7CCD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38CA350D67;
-	Tue, 26 Aug 2025 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C467341655;
+	Tue, 26 Aug 2025 11:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBn7CeTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCG8jK8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79B350D4D;
-	Tue, 26 Aug 2025 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4D72FD7C8;
+	Tue, 26 Aug 2025 11:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219154; cv=none; b=b0RkO+GrQx87QU7TGsyEHWK4ujspHQyK9gUH7b/E0dHby05ZR7HHoGW38JuHBaT7ube8qxodyVN+PJwulEbpT9ibbxjW9RvGy3EZ9EDnTvt7T67TdRUkdE4yzcJHTHe+nikFYpVvQdfTg26TLzeDWNs6xoWagzs8PXtGRtM4jk4=
+	t=1756207828; cv=none; b=W9n2AS+PzLQXEgJGpQtTLzPlwv50Pa1mYkXA1Jl/kmzSslF+ptOcMOlt+x7mcqdXvkDDpxaxVm/TRJiMxjGnGWjfuC0I/A9RJx8pyKMYFFGKUgUIFqNliS4EYvhSHsG9m1bkgqTwNkNOJVxwCt4+jViSj4z1hlWCYgGd7rEn/GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219154; c=relaxed/simple;
-	bh=tYGdkpdPsOaEneMUYRbASqaZpnKrzJngt7IjhF+GfCE=;
+	s=arc-20240116; t=1756207828; c=relaxed/simple;
+	bh=Yv2b1FUc87f1hyOE0QeMRU/G71UizWsJa/JiMcBYAs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVw85jZMXBu7MxHfQdxBDGuLHCprOhQ1yLKJKXcRq2VSqln5mGDawFIaS2w2K7yDFWplwnXtVNlqnkOk5x++29DwdAz6O/N/YoeCwPgIxbV7eUm11C3offKEfiaS+m/H3Z67r3iEnH/N8JmJ1Mqax3/so4UfFykLntGjkZ8UgkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBn7CeTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28E6C113D0;
-	Tue, 26 Aug 2025 14:39:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WxmJylo9CwZ+VZ2gzeOOm0DaYWOyIPY5K8OkBVCNP+n2hSwKHqr43dVf9XRSKvrccaghhAcm8nExx6t4J8Gh74qTwLuMWLWIXNStjwKNOsksaj/g4HvSGXs0okaoJYsB1AimOk1XlSnhKW/YLr3ZaVHf+qJR4PDUfd5D+TpZZYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCG8jK8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF89C4CEF1;
+	Tue, 26 Aug 2025 11:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219154;
-	bh=tYGdkpdPsOaEneMUYRbASqaZpnKrzJngt7IjhF+GfCE=;
+	s=korg; t=1756207828;
+	bh=Yv2b1FUc87f1hyOE0QeMRU/G71UizWsJa/JiMcBYAs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBn7CeTRpL7kE9Mz6ta017URXx/hb9KjmzQgjhqRpjv5kjvQuZ24sDWNnEfyPvZTW
-	 0t6S5th8kc0bS1Nzk7tMLYJTn2EcbTLYfWRWsALPPFv1cC84+kkZQ7Cum60KR48oI4
-	 LiK497eOB/OPKvh2844gOuDbDmjXYL6lAt2kiPA8=
+	b=iCG8jK8AxQJl5a2sGGYgMx1XYPfHGDTo4s3bzoE71EVdw/Ms4u2WgUHs6zqdN81bL
+	 zrSvA7AfH0PoFSCZ1OpTVjU8mT68yZ/+d8/bk8lt/ZY2f+tJ3e9u8Gnw6xKFRlK3ef
+	 fTbr/6cDF9IFxHr3vw4ihQv0hKlRMio4jYaFH4I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 273/403] drm/amdgpu: fix incorrect vm flags to map bo
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.16 315/457] usb: renesas-xhci: Fix External ROM access timeouts
 Date: Tue, 26 Aug 2025 13:09:59 +0200
-Message-ID: <20250826110914.343656035@linuxfoundation.org>
+Message-ID: <20250826110945.143865084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
+commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
 
-It should use vm flags instead of pte flags
-to specify bo vm attributes.
+Increase the External ROM access timeouts to prevent failures during
+programming of External SPI EEPROM chips. The current timeouts are
+too short for some SPI EEPROMs used with uPD720201 controllers.
 
-Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+the current timeout for Sector Erase issued by the controller before
+Page Program in renesas_fw_download_image() is also 100 ms. Neither
+timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+
+MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
+PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
+= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
+that the maximum time required for Chip Erase opcode to complete is 2 s,
+and for Sector Erase it is 300 ms .
+
+MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
+PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
+(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
+"tCE" indicate that the maximum time required for Chip Erase opcode to
+complete is 3.2 s, and for Sector Erase it is 400 ms .
+
+Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
+and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
+to be sufficient for majority of SPI EEPROM chips.
+
+[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
+[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
+
+Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -94,8 +94,8 @@ int amdgpu_map_static_csa(struct amdgpu_
- 	}
+--- a/drivers/usb/host/xhci-pci-renesas.c
++++ b/drivers/usb/host/xhci-pci-renesas.c
+@@ -47,8 +47,9 @@
+ #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
+ #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
--			     AMDGPU_PTE_EXECUTABLE);
-+			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
-+			     AMDGPU_VM_PAGE_EXECUTABLE);
+-#define RENESAS_RETRY	10000
+-#define RENESAS_DELAY	10
++#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
++#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
++#define RENESAS_DELAY			10
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+ #define RENESAS_FW_NAME	"renesas_usb_fw.mem"
+ 
+@@ -407,7 +408,7 @@ static void renesas_rom_erase(struct pci
+ 	/* sleep a bit while ROM is erased */
+ 	msleep(20);
+ 
+-	for (i = 0; i < RENESAS_RETRY; i++) {
++	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
+ 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
+ 					      &status);
+ 		status &= RENESAS_ROM_STATUS_ERASE;
 
 
 
