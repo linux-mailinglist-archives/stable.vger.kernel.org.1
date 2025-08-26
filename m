@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C34BB36000
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3125CB3664C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A11464639D2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FADB563769
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90275225390;
-	Tue, 26 Aug 2025 12:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B285A2FDC44;
+	Tue, 26 Aug 2025 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNyCRhDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAwPtJ6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E08B1FF1C4;
-	Tue, 26 Aug 2025 12:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFCD24466D;
+	Tue, 26 Aug 2025 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212783; cv=none; b=ZaPzJxiDQ2bNvA4KagQUQJdepBIVx+lErbnSf94/4cvqwb/2K89Ni0/Riryt+BpiniYmeqnnBVtnnfkmngWfC3nJwJWK0mHyj/a8uc1evsmqTXN6GqWyFO7BvYhmbOfTI/DQzmLa9Yd7Xm1KtH5M6DFkd2gU0ngHKwzkfMN1AT8=
+	t=1756215789; cv=none; b=kHAo/ppPXUvDOYF2U/VoDSQPV25t37O4sZ7ybkIFtSOYGPOYoifCwgOPVOtVtT2/I4EgiCmp43hfPwWwP1f6L1NPPtuQC5Qhy8iUszuGr4unaB+QEFlPCnAPFcFSzBwymS799y1HMUrlzephU2qoKi1JYui7l8HbJECglVZsQ9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212783; c=relaxed/simple;
-	bh=jc24UHJUWxcZnnHCpAmjIR7gZgUwXg5xWJV8X7FiVsE=;
+	s=arc-20240116; t=1756215789; c=relaxed/simple;
+	bh=74oJR5zL0JTQyCd5cKVgBCKXpl03b7PkQmBKQTcZ0x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTZouhQMFz8OOMTIMqncswC1pi+IhvkeLkQgdHDcImL5blddR+A5jeaf+NKsB4bpze+qKGMRklv76pSTKNYJ/qLzJVT3jpQ5QDH+PeimDxVHp6TmyZvIIjQneDHtG0YspKkm8jfNjIPARFu1U/kNFei5Xo3kMYHmLEnFyhTtrzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNyCRhDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75864C113CF;
-	Tue, 26 Aug 2025 12:53:02 +0000 (UTC)
+	 MIME-Version; b=NItT58xhuMrI4Q54cu6pNkBY3HoWLuF/S2fTTpT9T2GF5QtRyMREnSx/gihxbTaRCZIzOVAUg6+fC1eZLyPE/ynG96hJ+A1SGjx5NwntFj4AC0iYq5mGZMBnVLJNEiUk0b/xDH8zoEOOReJ5cLve6D+FN/LQ6VUigAmystmAwdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAwPtJ6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D82DC4CEF1;
+	Tue, 26 Aug 2025 13:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212782;
-	bh=jc24UHJUWxcZnnHCpAmjIR7gZgUwXg5xWJV8X7FiVsE=;
+	s=korg; t=1756215789;
+	bh=74oJR5zL0JTQyCd5cKVgBCKXpl03b7PkQmBKQTcZ0x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNyCRhDAa334+cqezW9UO/7SDscUCAjgpgfZNPu4uI0P+PON3fNcD9jy2CC0Oa6W6
-	 kbjN/+2Qq97DFHZB2VbC4OOoN4+6dEH8M32Ppiloxu6DN4Q+fA/FGIydPsgXbqX9yy
-	 zwGrpObtBwP/CV9m/WCxhypDSTmPQAWdUza2Aasw=
+	b=zAwPtJ6DYrx1xqKePzVS71koyWZJh4hQgVlXihlu8pfWov4pfk42gzPOToU2Yj1rI
+	 Qa9Om/DAc8ZWaFOudhDr96zYid/c/+fEgnqQYPkveCASDp4GLEn1tfF5Vl9d57xCaO
+	 pdgqaCf0dvrPFWX6HJ8r3LuL2qfkgjTDO8JGSkfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>,
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/587] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Subject: [PATCH 5.15 159/644] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
 Date: Tue, 26 Aug 2025 13:04:10 +0200
-Message-ID: <20250826110955.511066167@linuxfoundation.org>
+Message-ID: <20250826110950.417024467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-Nolibc assumes that the kernel ABI is using a time values that are as
-large as a long integer. For most ABIs this holds true.
-But for x32 this is not correct, as it uses 32bit longs but 64bit times.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
-and time_t being the same type. While timespec::tv_sec comes from the
-kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
 
-Switch to the __kernel_old_time_t to always get the correct type.
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
-Acked-by: Willy Tarreau <w@1wt.eu>
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index 933bc0be7e1c..a9d8b5b51f37 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -20,6 +20,8 @@
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 1c95e8f75916..ebd2db226488 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1199,10 +1199,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
+ 	}
  
- #include "stdint.h"
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
  
-+#include <linux/types.h>
+ 	cfg->scan_request = request;
+@@ -1218,6 +1214,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
+ 
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
 +
- /* those are commonly provided by sys/types.h */
- typedef unsigned int          dev_t;
- typedef unsigned long         ino_t;
-@@ -31,6 +33,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef   signed long        time_t;
-+typedef __kernel_old_time_t  time_t;
- 
- #endif /* _NOLIBC_STD_H */
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
 2.39.5
 
