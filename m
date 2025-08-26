@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1B5B363B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD982B366F4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66185188EE8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917851C209AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBB5298CA7;
-	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F4621ABDC;
+	Tue, 26 Aug 2025 13:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkvWkheF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D09o8ifb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A32F196C7C;
-	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9DC302CA6;
+	Tue, 26 Aug 2025 13:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214748; cv=none; b=E+8/WFFYgyVMJbGD090LDZ41liWtyYt0SO/7aKOCF4xd8gsFzAkMS12eC1DPgndlpXn5XB4yv07RIXM2qQN7wQf3zd6/YcNqbyWzg2x9Bk+pJnzY47uVNE0WoX9iSzrQND9WCdLb4mQN4/kKOpUAIq5lSFBJZYwDz6Zxz7TwBMM=
+	t=1756216373; cv=none; b=H2Kf75YdIK3dR0WUdJ/0IJd4v0ZVVbxHzqu1ypAvEk4jSTgtQJXmhrVkmUz5gtyg4D8pHXSwPaU8WPGUqBgT3v8+PAx73HbsCOYcL4LW/fLWcelRVxgxFDRY5w4H0kCUZtBh3MvUyuxqdZuLuBrZyuTTasuntvgQLQlmQqklBBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214748; c=relaxed/simple;
-	bh=5LotdrimBg5Z1zDegCcwsUuMxxifAb9VWbfRWIMqqvA=;
+	s=arc-20240116; t=1756216373; c=relaxed/simple;
+	bh=bzcA0wYZmBuVxpDeb+I3WtRgKnbogL6Y4XVnUzpjf9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0XZWkjnCc/fbAtGo2nyNsuz5xoxoseN07KqcnxksLvqsTJcWVLOu7ExpFXKGgNaMC6fb0pxUJR5ibrm4XVlZ8fSQlag/cRs8b7dEfGUiK0oZ72VNZXEhJazdv3tgGbLcFBW7BV6c//F+WqZgyxXKkZ4EM9l0nWdSyC6vjV65vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkvWkheF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7E1C4CEF1;
-	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
+	 MIME-Version; b=gTvlAoyEM9ZQ3G01/CALvUZWHN29HnEDvscUU1sOyduucaNQ/KDxjcNlYOj6/L9AOOloY3VlCyarTgxGtFFZnjydyPO6RHZZJFAEi8598EMTbsc0iZVafWJ8p0eLHFXiwqTaqPjrI3R9adIc7pBY8g4BUcS7JScXAqsAsG4Cgd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D09o8ifb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B37C4CEF1;
+	Tue, 26 Aug 2025 13:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214748;
-	bh=5LotdrimBg5Z1zDegCcwsUuMxxifAb9VWbfRWIMqqvA=;
+	s=korg; t=1756216373;
+	bh=bzcA0wYZmBuVxpDeb+I3WtRgKnbogL6Y4XVnUzpjf9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkvWkheFnGa9K/qGna2tRWewhZq7hC3gRjxZ9ffopWtEFV5+Qpx+9wZAp1zy3Wxtl
-	 aRxBHLa972iV1LopH1l7xTZiDoA3gDSIm2D2xhOWvpxjFSaYwcKFg8I+9rIm/HJPON
-	 BO5HhbQK/Fhp1kJjtrt3cNA4iYVDby+dJdp/dbns=
+	b=D09o8ifbsQ/Fr2Y2hjCqJeePLRCEdWvZX8Kzw4lEgtRCY7rx2OkxZIrPrGYC0noXP
+	 hDgfRDinSDCsQLFJinTDffeOkQDBdljKX0ITd6D6A6+wZ4Bhqwul1rs1aTTd7BvOL5
+	 CyJkn7J9MzaDCCk6tG58HdDoNjLS07f90Jkd8bYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Zhiqi Song <songzhiqi1@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/482] scsi: aacraid: Stop using PCI_IRQ_AFFINITY
+Subject: [PATCH 5.15 385/644] crypto: hisilicon/hpre - fix dma unmap sequence
 Date: Tue, 26 Aug 2025 13:07:56 +0200
-Message-ID: <20250826110936.282921897@linuxfoundation.org>
+Message-ID: <20250826110955.982485848@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Zhiqi Song <songzhiqi1@huawei.com>
 
-[ Upstream commit dafeaf2c03e71255438ffe5a341d94d180e6c88e ]
+[ Upstream commit 982fd1a74de63c388c060e4fa6f7fbd088d6d02e ]
 
-When PCI_IRQ_AFFINITY is set for calling pci_alloc_irq_vectors(), it
-means interrupts are spread around the available CPUs. It also means that
-the interrupts become managed, which means that an interrupt is shutdown
-when all the CPUs in the interrupt affinity mask go offline.
+Perform DMA unmapping operations before processing data.
+Otherwise, there may be unsynchronized data accessed by
+the CPU when the SWIOTLB is enabled.
 
-Using managed interrupts in this way means that we should ensure that
-completions should not occur on HW queues where the associated interrupt
-is shutdown. This is typically achieved by ensuring only CPUs which are
-online can generate IO completion traffic to the HW queue which they are
-mapped to (so that they can also serve completion interrupts for that HW
-queue).
-
-The problem in the driver is that a CPU can generate completions to a HW
-queue whose interrupt may be shutdown, as the CPUs in the HW queue
-interrupt affinity mask may be offline. This can cause IOs to never
-complete and hang the system. The driver maintains its own CPU <-> HW
-queue mapping for submissions, see aac_fib_vector_assign(), but this does
-not reflect the CPU <-> HW queue interrupt affinity mapping.
-
-Commit 9dc704dcc09e ("scsi: aacraid: Reply queue mapping to CPUs based on
-IRQ affinity") tried to remedy this issue may mapping CPUs properly to HW
-queue interrupts. However this was later reverted in commit c5becf57dd56
-("Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ
-affinity") - it seems that there were other reports of hangs. I guess
-that this was due to some implementation issue in the original commit or
-maybe a HW issue.
-
-Fix the very original hang by just not using managed interrupts by not
-setting PCI_IRQ_AFFINITY.  In this way, all CPUs will be in each HW queue
-affinity mask, so should not create completion problems if any CPUs go
-offline.
-
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20250715111535.499853-1-john.g.garry@oracle.com
-Closes: https://lore.kernel.org/linux-scsi/20250618192427.3845724-1-jmeneghi@redhat.com/
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/aacraid/comminit.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index 0f64b0244303..31b95e6c96c5 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -481,8 +481,7 @@ void aac_define_int_mode(struct aac_dev *dev)
- 	    pci_find_capability(dev->pdev, PCI_CAP_ID_MSIX)) {
- 		min_msix = 2;
- 		i = pci_alloc_irq_vectors(dev->pdev,
--					  min_msix, msi_count,
--					  PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
-+					  min_msix, msi_count, PCI_IRQ_MSIX);
- 		if (i > 0) {
- 			dev->msi_enabled = 1;
- 			msi_count = i;
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+index 4062251fd1b6..14e2f2042a55 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+@@ -1458,11 +1458,13 @@ static void hpre_ecdh_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
+ 
++	/* Do unmap before data processing */
++	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	p = sg_virt(areq->dst);
+ 	memmove(p, p + ctx->key_sz - curve_sz, curve_sz);
+ 	memmove(p + curve_sz, p + areq->dst_len - curve_sz, curve_sz);
+ 
+-	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
+ 
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
+@@ -1766,9 +1768,11 @@ static void hpre_curve25519_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
+ 
++	/* Do unmap before data processing */
++	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	hpre_key_to_big_end(sg_virt(areq->dst), CURVE25519_KEY_SIZE);
+ 
+-	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
+ 
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
 -- 
 2.39.5
 
