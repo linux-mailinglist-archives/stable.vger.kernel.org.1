@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F260B36431
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3BDB369AE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93BD556219D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E22A173BCD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69413341ABD;
-	Tue, 26 Aug 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FB0352FC3;
+	Tue, 26 Aug 2025 14:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2TRPLPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrMPBGBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D543376A5;
-	Tue, 26 Aug 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5290F481CD;
+	Tue, 26 Aug 2025 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214670; cv=none; b=Od3bsOBxeg3wSn0fvE1cLwz6+GyT8DiKEotM/ryio5owX+uU4eWvOpGG96lfpLxSYF0chpvPmm5QZ3NOLxWjMW/cWmudFRqbBPusWs7aU0kSyQs29rpxAHFUQClbSGPpeNb1hkORZHB1SJTMJ5FmdJmgk1YKmck3j+FyLc3jPTg=
+	t=1756217845; cv=none; b=F9e+8MvDKT1/iFNJOEEI92ZBPUa8Nq0vNovAKG6IhP5H1SNLBkHPJTmBytGZ2eAJaWktLL1HLWAAnU4a+jPv8kQI3KYDlBgqTWglaHtn/SkoRFZa9WN5GmTSyueyOT+6KmDu75TUAxU20n4enki+qjbBvlVdprgIdegkanxhjOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214670; c=relaxed/simple;
-	bh=2N+Hklv+RBKb1YrmFpArKnBoVpHka8mW8KO+D2ryS4A=;
+	s=arc-20240116; t=1756217845; c=relaxed/simple;
+	bh=d6D6x9sfdviyqteBD/ZvdLt59dSq6TgMR87g8O5AsrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7VS//2mlf/m+QWc7zMRUHEzpqoFdjnON58j4/V1hxPlID2hEAna4KZW81DRgMEOiwj/cG5+hB+e1vZARe3gAP8jchjmIIo6x0tCB/o1E/TNKXmbb5w5EWkOH0+3IJlU+nnRw+Uis7DKAhFyjubmY+syLv/QHAD8466D+yTeXgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2TRPLPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A556DC4CEF1;
-	Tue, 26 Aug 2025 13:24:29 +0000 (UTC)
+	 MIME-Version; b=NpLZbfAxnypBiDs4dVD6VrDJNYhDcYQfs8C+jKAW2F/FOL8D+wtEf2R+NTgsZGWBqISK4iyOovNN8YBsKSHAXOXA6pQGMMkUmbWUo4BmfdxURPzMa1pU5f79RWO9CCf2X1QHAAStInwq9WOWrajJRz2nGSJ5OQROdfLVpR8zxA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrMPBGBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AFCC4CEF1;
+	Tue, 26 Aug 2025 14:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214670;
-	bh=2N+Hklv+RBKb1YrmFpArKnBoVpHka8mW8KO+D2ryS4A=;
+	s=korg; t=1756217844;
+	bh=d6D6x9sfdviyqteBD/ZvdLt59dSq6TgMR87g8O5AsrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2TRPLPDxA8a24Fr3ATw/aW1wwZhcEczGEk2WWP7poLtJalw+YGqeM2IZcGN3k641
-	 q7Xh5lfbWeyrpQU5X9tPQ+ugRML7fLBBOL95VT0+2gcXy3/a5ifIOs4mEwtIUhgMPR
-	 m7L9BIGpCDV8W/O6bHL0b4D3THawkpraXyP0hEc8=
+	b=NrMPBGBwEUrFGSg7UQzHXpGvEfsUpnZDPCjH7fsMdviciXtidlA12ykoOL3Tjl0pM
+	 6NMqQuYoFAMV8wiaZyaE4gjIHJobyC8W7ErjJA5GQ0qvFcYljhQMxePoS7R/uMip1U
+	 btxUA5C4IxwXgqqRxqpLkkCzxDyBCIOQ83FquPng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 226/482] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
+Subject: [PATCH 5.10 269/523] wifi: iwlwifi: mvm: fix scan request validation
 Date: Tue, 26 Aug 2025 13:07:59 +0200
-Message-ID: <20250826110936.358978447@linuxfoundation.org>
+Message-ID: <20250826110931.064204792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
+[ Upstream commit 7c2f3ec7707188d8d5269ae2dce97d7be3e9f261 ]
 
-The on_treeview2_cursor_changed() handler is connected to both the left
-and right tree views, but it hardcodes model2 (the GtkTreeModel of the
-right tree view). This is incorrect. Get the associated model from the
-view.
+The scan request validation function uses bitwise and instead
+of logical and. Fix it.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709230308.3fbc1f27871b.I7a8ee91f463c1a2d9d8561c8232e196885d02c43@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 5d1404178e48..87f8a4db5bc6 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -977,13 +977,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
- void
- on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index a52af491eed5..6e6325717c0a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -876,7 +876,7 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
+ 				     int n_channels)
  {
-+	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
- 	GtkTreeSelection *selection;
- 	GtkTreeIter iter;
- 	struct menu *menu;
- 
- 	selection = gtk_tree_view_get_selection(treeview);
--	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
--		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
-+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-+		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
- 		text_insert_help(menu);
- 	}
- }
+ 	return ((n_ssids <= PROBE_OPTION_MAX) &&
+-		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
++		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &&
+ 		(ies->common_ie_len +
+ 		 ies->len[NL80211_BAND_2GHZ] +
+ 		 ies->len[NL80211_BAND_5GHZ] <=
 -- 
 2.39.5
 
