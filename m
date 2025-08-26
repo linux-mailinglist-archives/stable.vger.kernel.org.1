@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C17CB35DB9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D113B36725
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4877D1886682
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E19562030
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C4929C339;
-	Tue, 26 Aug 2025 11:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0B434DCCA;
+	Tue, 26 Aug 2025 13:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlkUJN/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmJD3Bt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA422F9982;
-	Tue, 26 Aug 2025 11:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B311258A;
+	Tue, 26 Aug 2025 13:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208438; cv=none; b=kjG0R6NMDeXFioQyFrDLb+ntKRWGEG9Qx5cSsM2j9ABUuAbRieQrwgdHwXZDH0AMk9pNLSuXoSnLQoKGst/ixxysSRewm1SbbR5nbMYDZSnXyC+OS5ESIAmGbeUUxmd+yLxbyMkgVv6vqtEKNPqq8K0ORZMWyJ+U0u2i5OuH2HU=
+	t=1756216437; cv=none; b=MacQ9F2bbL2k94UcMhwpAFDdCdbyb9bovv2bRKtqYJTz56JtMqi1hTy017x4SnHGthviNAO++hrHSZj6CmsTNLbtqB1//7lPU9t/VwWw5wK05+0N/Prc/yy1WoqpkLi4oruWMQgQHKTB+JRLjTdEnmyFh/cLwfQirv9k3CNJGBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208438; c=relaxed/simple;
-	bh=M28o8MYz40RcCO0e/AIDN6piDlUezDurCPI18pJe5Ac=;
+	s=arc-20240116; t=1756216437; c=relaxed/simple;
+	bh=Y/9VjIpaAvV6bQmgdgmyYDdtffqIAizN+RPnj1kE4mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J841+HermFL7b7njMoxAfB9/SACs09AZJUhJhbmXHyk41d8kQYGMUgo1ymkxXUGd7Dwcs6mGRcy6IMzB/urMI7Tn3QyLxzteBhnHT6xX2lsYlgBgw6Zdp4sz5idiTxg+GjUBB8aTFyjZmuQHZBZPV+RrvFeMiYyyku3b2m3ueEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlkUJN/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA082C4CEF1;
-	Tue, 26 Aug 2025 11:40:37 +0000 (UTC)
+	 MIME-Version; b=Fd9wk2hdTFic/qxjMPquFNnjBYcUCQzjMPi3YnM7qt29cWVgrSOc4itHAe0MdsrvaEklBngqG/ZWs/zw9v97g3sWJPuQl1PYlAEelZnwvQcSmcUYWrUo0UJlZIeM2LqiE1Wop6AE3o7mlX+iWUxW2+P8keUqzJL9n8XVTgbsFg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmJD3Bt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2E1C4CEF1;
+	Tue, 26 Aug 2025 13:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208438;
-	bh=M28o8MYz40RcCO0e/AIDN6piDlUezDurCPI18pJe5Ac=;
+	s=korg; t=1756216437;
+	bh=Y/9VjIpaAvV6bQmgdgmyYDdtffqIAizN+RPnj1kE4mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlkUJN/K8i5tNeIqRPWrKfLiRiLB/iwc0ChEl/o8Qd9005bWQxwprFk6tr3Rcnc3v
-	 7jpNSbJfDGbkWhOWR1Wtzd3lrF722D5q4XXXOoXGa1EshygQ5OQEO32r2nzwTFZiQj
-	 BRfKWZov9CkCL68fWqoBchpl0gtqUfeA5rfDTBVM=
+	b=UmJD3Bt1qMcF5mEo2tD/h+67KN36xyFhYiDAPxTZWM1zmEvweqsD18LtMwSCbdgCA
+	 kbhlYCO19EKzMfsd+TYgNyhMMwXeIFZ66U5K9XO+V+sOTy6uQB18TPtT4OXmRUJFm0
+	 aPpfdrF+/rJJdriu8mVA/zUz6VJ/4e7i+aQQjxVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 070/322] mtd: spinand: propagate spinand_wait() errors from spinand_write_page()
+	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 394/644] jfs: Regular file corruption check
 Date: Tue, 26 Aug 2025 13:08:05 +0200
-Message-ID: <20250826110917.311231198@linuxfoundation.org>
+Message-ID: <20250826110956.212674820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 091d9e35b85b0f8f7e1c73535299f91364a5c73a upstream.
+[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
 
-Since commit 3d1f08b032dc ("mtd: spinand: Use the external ECC engine
-logic") the spinand_write_page() function ignores the errors returned
-by spinand_wait(). Change the code to propagate those up to the stack
-as it was done before the offending change.
+The reproducer builds a corrupted file on disk with a negative i_size value.
+Add a check when opening this file to avoid subsequent operation failures.
 
-Cc: stable@vger.kernel.org
-Fixes: 3d1f08b032dc ("mtd: spinand: Use the external ECC engine logic")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
+Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/jfs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -659,7 +659,10 @@ static int spinand_write_page(struct spi
- 			   SPINAND_WRITE_INITIAL_DELAY_US,
- 			   SPINAND_WRITE_POLL_DELAY_US,
- 			   &status);
--	if (!ret && (status & STATUS_PROG_FAILED))
-+	if (ret)
-+		return ret;
-+
-+	if (status & STATUS_PROG_FAILED)
- 		return -EIO;
+diff --git a/fs/jfs/file.c b/fs/jfs/file.c
+index 1d732fd223d4..5c28883eee4e 100644
+--- a/fs/jfs/file.c
++++ b/fs/jfs/file.c
+@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
+ {
+ 	int rc;
  
- 	return nand_ecc_finish_io_req(nand, (struct nand_page_io_req *)req);
++	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
++		return -EIO;
++
+ 	if ((rc = dquot_file_open(inode, file)))
+ 		return rc;
+ 
+-- 
+2.39.5
+
 
 
 
