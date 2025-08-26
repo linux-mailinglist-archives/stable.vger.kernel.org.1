@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2262B36BD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E489B3644F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E0CC1C456CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0914C8E2B6B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5A53570AB;
-	Tue, 26 Aug 2025 14:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED403090E1;
+	Tue, 26 Aug 2025 13:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSgjtS79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1FmYmzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6414F34A325;
-	Tue, 26 Aug 2025 14:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D91A265CCD;
+	Tue, 26 Aug 2025 13:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219128; cv=none; b=M7VCjE+WE8wgdnD+rZtxRnTA+JvYKmkR9TAq2BLS4EM/UCEhx7dHqGWkif2cKXQC60WB9U+my9TYZQuoJJZWkmxPNLZ2FRGHAmhT3MitmB2MHlTHQvoTEbyupehmFqGnckUrUDsLCVY7xxwmQNtFvTTw/Cw98Mfn7aUH01h5j04=
+	t=1756214967; cv=none; b=fA7Xwv7yHC69qgfg5aIov+c7Uz77UnM6ArvxYGGX4o3kC3GHslC2Zc6L4mEFNlrwGP/aiq+FHSwPHBrzP9XCsBhvptSBvMYcnKValsHg3I+9EUnS7GaVt9ut2wcJsY9xBemqM8DQpYjzWFmBprwE/ftUYFaYuwbzc127ODd6w/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219128; c=relaxed/simple;
-	bh=bdwgwyPfaEf2vVeQL02cPc191nKRPEnUTDLjw02ab8E=;
+	s=arc-20240116; t=1756214967; c=relaxed/simple;
+	bh=7iKOx892qs8eEBp0SLWSpGZnHV/XeIuTkatMrTrxMuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lX5VJjKP0Ne8x6EmhU13lhS0ODfl54TsrAiV7Uu7nZ8pO75uUKqRivws0rF6B+xlPI1ajKRf3kkthd/4d0vKSSywCCsjqasNr8WrlkK83eoKaPAbRHGg6yfGSyisetWMXnI0m0bw9zlzJqIkvlBqbdoIDEMb5fF+sz0dWZcPAAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSgjtS79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6ECC4CEF1;
-	Tue, 26 Aug 2025 14:38:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IYzuIWcAvQY6QO6xvpQdajxkwRimIW5xARjH5Px6fzCohqg2KO9guv/sOX+lZCBdcVEc0y7OQ45qbmYp89HsgDj36/J7SXEXQwfclvlDLiilMtAZDaeykUANzS5BmzYuA7aZHbIOhTofYoLRs+A06CV5J/qJIsuZQVlEmALkJrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1FmYmzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B61C4CEF1;
+	Tue, 26 Aug 2025 13:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219128;
-	bh=bdwgwyPfaEf2vVeQL02cPc191nKRPEnUTDLjw02ab8E=;
+	s=korg; t=1756214966;
+	bh=7iKOx892qs8eEBp0SLWSpGZnHV/XeIuTkatMrTrxMuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSgjtS79jmYFtluinrl9bxQMsDmgb2zHD5onNtEukXO8rbNC/YFHZooraP3EnCVdq
-	 W2CPTp//0Z3CKKdQLduvY+TJ4A6wA3F5GKpGf9WBJBjMhdshtmCdkygV2ahtAoJ+Ny
-	 3VYiWITOOkZFdxkhK/JnbraOdtSP7LY6bqCFV48E=
+	b=h1FmYmzxx9Vw8vijERgL/XnMEk2KznnsCjwb48P9Ai23BmFN2yW+0W/XqhTnFbgP5
+	 AiYan47MiYaZbitJAonJs8ElkMd9ybVA3kD7K+8BJXDxh7yGf0orbh8ZHwa4f0ExCP
+	 ehl1p4YDKwBZB8IedhJEE+7lcVoqXU1mqluyU4Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yann E. MORIN" <yann.morin.1998@free.fr>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Cherniaev Andrei <dungeonlords789@naver.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 264/403] kconfig: lxdialog: fix space to (de)select options
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Subject: [PATCH 6.1 337/482] drm/amd/display: Dont overwrite dce60_clk_mgr
 Date: Tue, 26 Aug 2025 13:09:50 +0200
-Message-ID: <20250826110914.105041098@linuxfoundation.org>
+Message-ID: <20250826110939.152295431@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yann E. MORIN <yann.morin.1998@free.fr>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
+commit 4db9cd554883e051df1840d4d58d636043101034 upstream.
 
-In case a menu has comment without letters/numbers (eg. characters
-matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
-hitting space will cycle through those comments, rather than
-selecting/deselecting the currently-highlighted option.
+dc_clk_mgr_create accidentally overwrites the dce60_clk_mgr
+with the dce_clk_mgr, causing incorrect behaviour on DCE6.
+Fix it by removing the extra dce_clk_mgr_construct.
 
-This is the behaviour of hitting any letter/digit: jump to the next
-option which prompt starts with that letter. The only letters that
-do not behave as such are 'y' 'm' and 'n'. Prompts that start with
-one of those three letters are instead matched on the first letter
-that is not 'y', 'm' or 'n'.
-
-Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
-not as shortcut to jump to  prompt.
-
-Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
-[masahiro: took from Buildroot, adjusted the commit subject]
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62eab49faae7 ("drm/amd/display: hide VGH asic specific structs")
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit bbddcbe36a686af03e91341b9bbfcca94bd45fb6)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/lxdialog/menubox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
-index 58c2f8afe59b..7e10e919fbdc 100644
---- a/scripts/kconfig/lxdialog/menubox.c
-+++ b/scripts/kconfig/lxdialog/menubox.c
-@@ -272,7 +272,7 @@ int dialog_menu(const char *title, const char *prompt,
- 		if (key < 256 && isalpha(key))
- 			key = tolower(key);
- 
--		if (strchr("ynmh", key))
-+		if (strchr("ynmh ", key))
- 			i = max_choice;
- 		else {
- 			for (i = choice + 1; i < max_choice; i++) {
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
+@@ -158,7 +158,6 @@ struct clk_mgr *dc_clk_mgr_create(struct
+ 			return NULL;
+ 		}
+ 		dce60_clk_mgr_construct(ctx, clk_mgr);
+-		dce_clk_mgr_construct(ctx, clk_mgr);
+ 		return &clk_mgr->base;
+ 	}
+ #endif
 
 
 
