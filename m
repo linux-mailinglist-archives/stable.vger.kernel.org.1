@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C1FB36A0D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B0DB35D04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C563798745E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F6C3AE172
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4EB223338;
-	Tue, 26 Aug 2025 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B674F21D3C0;
+	Tue, 26 Aug 2025 11:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3re41Fz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJcxN12I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA7D345747;
-	Tue, 26 Aug 2025 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C6D20C001;
+	Tue, 26 Aug 2025 11:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217839; cv=none; b=uaAC75UzzvVRJ7SjRR0Ux0Nj0sCYiNsF3EWCJcSZb+J4Tt0mvQzm2RTS/qDIN/NTFf8MMc7ylBxeyixkI0BHqj+b7cbAlMFTJ9ekq7ok3/YqN3WU5iuoC1vt0NjHwor1NzpooQWL+YFbZdk80G1OwwCHEqiMDD96XLmKwCThMQw=
+	t=1756208379; cv=none; b=qhxlUkoV3CN27+05iXZlw6LlSRMsoAPAY3EEsjamAdRlPIT8xjy82xhxdnzsCVKKe/DmYKeiEaO0LsOzY8DwolCPxoJ+0HlFVVEQX2MN/MGTtyfrm4ZW2jPS3sqWeOCBj3PEPThhqjGRY9QzPoIpTtPLGQ0f2rDdK2fbPqBmr48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217839; c=relaxed/simple;
-	bh=PoS2dp2qSrZWzq+XcTpNd//HghOCnfL23Y2PtdjDRtI=;
+	s=arc-20240116; t=1756208379; c=relaxed/simple;
+	bh=hXmK7BjMEGkdV5WjEA8QsyVT4LcgFz6clwBS6S3GYqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8k68pHKaD7PtxWySWeHQrJdBA2XYEG5FRdMvtybBK/vIeNZARC7P4b5T1/qkIWhyBNMhVGqKRnmY5z33lG5XSTJYKIgxT55R7h5nu9LMT7TUPNiZ/kZ7ZwN5fIf0R6Q0sPMEMB9saCLxKOTIEFq8OpLDu+pZ8pbICSWFVemd6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3re41Fz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C76DC4CEF1;
-	Tue, 26 Aug 2025 14:17:19 +0000 (UTC)
+	 MIME-Version; b=jOvgafWHHwTxs8/PdpKXrVNX7nuyMGr7XymEAWtEXd0tT+aH1W0gWpKcj+XLHXT/KQ1vK43AG393/0JA5kwuUbAqSroJOd9v9axoQa7bTgOAQni0OspSvdhknTweX/xpKFsSUHfsI5JXWcFqAAqQk97gWO9Y0XIEz4bR/GsEjuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJcxN12I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0D8C4CEF1;
+	Tue, 26 Aug 2025 11:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217839;
-	bh=PoS2dp2qSrZWzq+XcTpNd//HghOCnfL23Y2PtdjDRtI=;
+	s=korg; t=1756208379;
+	bh=hXmK7BjMEGkdV5WjEA8QsyVT4LcgFz6clwBS6S3GYqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3re41Fzc4rIQvjEG2JVh4ZGE/QtAeIGQ9HXd49O0XXZWX1DNi6wjClEim/HGaJ1v
-	 nRvFbfiev6JNifA5BbFCLinIVCkBaAg/r7YOeD/zQhQItOiDDmeDshuXbYl76yvGoH
-	 VyP78DUvDGKbe175aThlLyVWHEeSbkean0TJ30iU=
+	b=ZJcxN12IOvn72sr4j7ttjsiJQHprHoaspdGL7HxS0pO+fwSRkaTNTYpcC99QykcIS
+	 6FQrhH9udbHmHuPQeqrE04jHo9fKjVze1xFCmYYTRiypFCxSbxdQVXtpKG3iIX4GiT
+	 6kykgYhePE6r77boSpcl0YXKpfVxP7GE6SozmCQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 294/523] fs/orangefs: use snprintf() instead of sprintf()
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 089/322] parisc: Check region is readable by user in raw_copy_from_user()
 Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826110931.700384576@linuxfoundation.org>
+Message-ID: <20250826110917.858670201@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+Because of the way the _PAGE_READ is handled in the parisc PTE, an
+access interruption is not generated when the kernel reads from a
+region where the _PAGE_READ is zero. The current code was written
+assuming read access faults would also occur in the kernel.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
+This change adds user access checks to raw_copy_from_user().  The
+prober_user() define checks whether user code has read access to
+a virtual address. Note that page faults are not handled in the
+exception support for the probe instruction. For this reason, we
+precede the probe by a ldb access check.
 
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
+ arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
+ 2 files changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index b57140ebfad0..cd4bfd92ebd6 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+--- a/arch/parisc/include/asm/special_insns.h
++++ b/arch/parisc/include/asm/special_insns.h
+@@ -32,6 +32,34 @@
+ 	pa;						\
+ })
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
++/**
++ * prober_user() - Probe user read access
++ * @sr:		Space regster.
++ * @va:		Virtual address.
++ *
++ * Return: Non-zero if address is accessible.
++ *
++ * Due to the way _PAGE_READ is handled in TLB entries, we need
++ * a special check to determine whether a user address is accessible.
++ * The ldb instruction does the initial access check. If it is
++ * successful, the probe instruction checks user access rights.
++ */
++#define prober_user(sr, va)	({			\
++	unsigned long read_allowed;			\
++	__asm__ __volatile__(				\
++		"copy %%r0,%0\n"			\
++		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
++		"\tproberi (%%sr%1,%2),%3,%0\n"		\
++		"9:\n"					\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
++		: "=&r" (read_allowed)			\
++		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
++		: "memory"				\
++	);						\
++	read_allowed;					\
++})
++
+ #define CR_EIEM 15	/* External Interrupt Enable Mask */
+ #define CR_CR16 16	/* CR16 Interval Timer */
+ #define CR_EIRR 23	/* External Interrupt Request Register */
+--- a/arch/parisc/lib/memcpy.c
++++ b/arch/parisc/lib/memcpy.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/compiler.h>
+ #include <linux/uaccess.h>
++#include <linux/mm.h>
  
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
--- 
-2.39.5
-
+ #define get_user_space()	mfsp(SR_USER)
+ #define get_kernel_space()	SR_KERNEL
+@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
+ unsigned long raw_copy_from_user(void *dst, const void __user *src,
+ 			       unsigned long len)
+ {
++	unsigned long start = (unsigned long) src;
++	unsigned long end = start + len;
++	unsigned long newlen = len;
++
+ 	mtsp(get_user_space(), SR_TEMP1);
+ 	mtsp(get_kernel_space(), SR_TEMP2);
+-	return pa_memcpy(dst, (void __force *)src, len);
++
++	/* Check region is user accessible */
++	if (start)
++	while (start < end) {
++		if (!prober_user(SR_TEMP1, start)) {
++			newlen = (start - (unsigned long) src);
++			break;
++		}
++		start += PAGE_SIZE;
++		/* align to page boundry which may have different permission */
++		start = PAGE_ALIGN_DOWN(start);
++	}
++	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
+ }
+ EXPORT_SYMBOL(raw_copy_from_user);
+ 
 
 
 
