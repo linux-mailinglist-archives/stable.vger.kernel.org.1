@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFE5B36BD2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A3EB35CD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A939854EC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CEF6161FCD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C0B2C0F9C;
-	Tue, 26 Aug 2025 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14228635C;
+	Tue, 26 Aug 2025 11:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnaC9/uC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp84mVyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E190306D3F;
-	Tue, 26 Aug 2025 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7352BE03C;
+	Tue, 26 Aug 2025 11:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219115; cv=none; b=AUYdQLi7aJ4SW2/PvXem30XYtZxlcRKz0doUS3B+N+Xo4pMT1NqfjooLjMgYDy6LRLrtt2AvFVQBtSHI5MJf51Z+CGblBK4K/f9lioMmAl2AIwA5vnkPLfVnq2ueej3VGTW/Yfy+giVacxgLNMiEKpYTHBb2JOCzd1nK9WSujaQ=
+	t=1756207726; cv=none; b=XnLT+wlByogP0GJhmfaZE4pWymr7QTdBdJ7pnurZGt8HSy/8P6A9VuJTtdgakXkMhMizUus5WSCa02xNsNODVguAzWNtRUB5JO0O2l9huq5Yr4a3hIUXD3fp1yhor0aeQBbhc1IsqpdCc7CvX9sW4fPN/CmoslBVrO7j3UMVrZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219115; c=relaxed/simple;
-	bh=o91LiZDMEpclgAP1lNjkoNWgokebjK8Vb33V9ehpooY=;
+	s=arc-20240116; t=1756207726; c=relaxed/simple;
+	bh=fvNtfJf25K9AgTUrK4IXyDHy4/oxLgxj4DSg9zoe6mM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULbgk+fpbujFyK+hYPUgZo2jD/EsJuwjTVtQtThMMA4ltccymp7HAivERLerbWR/pJApxRFdnGOTsmN1+nm0X2Y7o5lMop5bDMstFMMNuN1nI/A8ol34HwscJekeehV5zg5CnAcdaBxfLSbJs7xOET6Dto66ULnnfyPTk/H60CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnaC9/uC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BFBC4CEF1;
-	Tue, 26 Aug 2025 14:38:34 +0000 (UTC)
+	 MIME-Version; b=n/uRc2fDVT6WDOBMhBErtk43Om1IxNhBcU881jwXl0F4V/p1XLY+fVP+ZkKsxHHKC1q+j2rIWjvAFOaNZ/2DNay/Gw3zGNrUhxmyWWWP55/ZOapD6ljY9204yQrrVLXZlUo0sEtnE55scrCpTljVeKgn526sVm1+0bnrgWRWAqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp84mVyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB59CC4CEF1;
+	Tue, 26 Aug 2025 11:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219115;
-	bh=o91LiZDMEpclgAP1lNjkoNWgokebjK8Vb33V9ehpooY=;
+	s=korg; t=1756207726;
+	bh=fvNtfJf25K9AgTUrK4IXyDHy4/oxLgxj4DSg9zoe6mM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnaC9/uCQjaxCqouNwBtbB6QYs05y/EZdVPv5b5BnQx56bNPGiRSZqsSQXakZ+O/J
-	 T2S3nm4wurzcqvojEV85AxbzVZwGHaaPn3eEIeEvNIyBKVjC8PJOMIWzBt6Qg1etcC
-	 6L05sMsfY3yFs8kH4PJ5PKuaFBhfShJgWju9vjQw=
+	b=xp84mVyiBLfJhZYXA9meUv0OWMQQbYDysmCHI+nGuLJZxAKX0t5WCw6D3wqZ1VXra
+	 tNyFrK1rWoLllLNUVW58SvHEhrausyxrvu5gsXgSXRYDFUmg7wAI6WDFCo6qN6IqE4
+	 q2ptITweZzvb/qjbkD+kXNdLJLJLkRrjcw7x1DQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 251/403] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
-Date: Tue, 26 Aug 2025 13:09:37 +0200
-Message-ID: <20250826110913.754912844@linuxfoundation.org>
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 6.16 294/457] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
+Date: Tue, 26 Aug 2025 13:09:38 +0200
+Message-ID: <20250826110944.648316785@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
+commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
 
-In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
-msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
-msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash. Similar issue occurs when access
-msg[1].buf[0] and msg[1].buf[1].
+dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
+get the number of mapped segments.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
+Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
+Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/fpga/zynq-fpga.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index fd08a851a452..d31ce5c7104d 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
- 	u16 word;
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
+ 		}
+ 	}
  
- 	if (num == 1) {		/* write */
-+		if (msg[0].len < 3)
-+			return -EOPNOTSUPP;
- 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
- 	} else {
-+		if (msg[1].len < 2)
-+			return -EOPNOTSUPP;
- 		word = dib7000p_read_word(state, apb_address);
- 		msg[1].buf[0] = (word >> 8) & 0xff;
- 		msg[1].buf[1] = (word) & 0xff;
--- 
-2.39.5
-
+-	priv->dma_nelms =
+-	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+-	if (priv->dma_nelms == 0) {
++	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
++	if (err) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+-		return -ENOMEM;
++		return err;
+ 	}
++	priv->dma_nelms = sgt->nents;
+ 
+ 	/* enable clock */
+ 	err = clk_enable(priv->clk);
 
 
 
