@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E803AB35FBC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E55B36624
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03ACE68631A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCB79563ABD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDFF1B0420;
-	Tue, 26 Aug 2025 12:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A9821A420;
+	Tue, 26 Aug 2025 13:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOaD2jVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZOiyIGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1624D18C008;
-	Tue, 26 Aug 2025 12:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C42F84F;
+	Tue, 26 Aug 2025 13:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212667; cv=none; b=brDZsfoqXeFeIa6lJGPkthrXDcEvsJq+s8rkk44DpLwev5jTOPBZnSnDccPlTH7WOR0QRhnd6NAk05Z9fKQ9JPVx67VP4SC46Ot/GuVeBbrSw5ZRT0w4JWlrVq4THQ2MfRE6gVyc21TKtxUKw37nw8eS5abKxBTaNmaUvFLFydg=
+	t=1756215575; cv=none; b=TjbDICWsD+AsadK8NxcrbLYKQNtvAUfIM+K6WNPIaGYgHdmW11tpJaGVNplu/Q3JT42WldpZ7zyYOA15hU7GOkcQBTGRn7Bc0jgWzncavgCUT85ywS0/SQ2PMsD2NRY5KK2lsNrt7ABxGUKBgG7ydpblLYJQJTNiMpmGZyglU74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212667; c=relaxed/simple;
-	bh=KhD2+/nhNci0skHVFJNoZLiCCLCiuIOH6BSWdVjT/t0=;
+	s=arc-20240116; t=1756215575; c=relaxed/simple;
+	bh=qOY0oSYiD8AbEdjz59iBqzdBdc2Qh4JNLH8+pFuel30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GoveBMzsBkuEzrBReljaOJkvlDV/ho/1d2TzJl5XRG6KwmJLbjFKa6DpzfL9d7PmF6SgGYaM7juE3YZ/WEkmLIFzJa1I1UzU5AvpQ1+M2S/f3j8DWeJUNkSwVgeX2pP7pA0lBG567RNH0O2H+dVffAIgZTJIVGYdGAvKdot6BUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOaD2jVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A617C4CEF1;
-	Tue, 26 Aug 2025 12:51:06 +0000 (UTC)
+	 MIME-Version; b=PLojOXc/3DS7N+VDRQ3qDy28HfXR/ijNTvueL1BJq8ru42EarK4fDUK9jmxctEdjwx1ecveB5disVwgYdGcPsWbLV8b3kaQaSGTA6L737pw+7uvXC0q/Or/KI0lA35Bo4Aam7LaGbuvJ9ZDzxYHBhmMKS8DVsJA02V+V03Kcsz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZOiyIGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20CC4CEF1;
+	Tue, 26 Aug 2025 13:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212667;
-	bh=KhD2+/nhNci0skHVFJNoZLiCCLCiuIOH6BSWdVjT/t0=;
+	s=korg; t=1756215574;
+	bh=qOY0oSYiD8AbEdjz59iBqzdBdc2Qh4JNLH8+pFuel30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOaD2jVtSev1mWA5lmwEswfl+1xH1NSZ4/V0z49PbMONo0X1ETLPOJftnjz8U6z6R
-	 F6D9+jjZZpAGRgLFilwiC33AmI5Qtabqw4bqYEaPDF4zZ6P6cp78Ch3C9NV4dmuv4/
-	 8Il2GEmC+nNKP9R95ymcMwEa7D3fmHRbXoRsllFA=
+	b=tZOiyIGrW3w8I9D+jDBr087IUhSg5uzPrnoRlO59LWf6JYC1afYjpfApcSc6SUya6
+	 kWKs4dCnWq50SzuUaygyG6tx0gGrziEW8Nenrue0w+NxQHwwKuqGND8tceYKyz0h12
+	 78mKnhFc7lp7Z/Z79dBzOZkakPSrateFDp1BWPsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Haoran Jiang <jianghaoran@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 026/587] LoongArch: BPF: Fix jump offset calculation in tailcall
-Date: Tue, 26 Aug 2025 13:02:55 +0200
-Message-ID: <20250826110953.617314070@linuxfoundation.org>
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 085/644] net: hns3: fix concurrent setting vlan filter issue
+Date: Tue, 26 Aug 2025 13:02:56 +0200
+Message-ID: <20250826110948.605511487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Jiang <jianghaoran@kylinos.cn>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit cd39d9e6b7e4c58fa77783e7aedf7ada51d02ea3 upstream.
+[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
 
-The extra pass of bpf_int_jit_compile() skips JIT context initialization
-which essentially skips offset calculation leaving out_offset = -1, so
-the jmp_offset in emit_bpf_tail_call is calculated by
+The vport->req_vlan_fltr_en may be changed concurrently by function
+hclge_sync_vlan_fltr_state() called in periodic work task and
+function hclge_enable_vport_vlan_filter() called by user configuration.
+It may cause the user configuration inoperative. Fixes it by protect
+the vport->req_vlan_fltr by vport_lock.
 
-"#define jmp_offset (out_offset - (cur_offset))"
-
-is a negative number, which is wrong. The final generated assembly are
-as follow.
-
-54:	bgeu        	$a2, $t1, -8	    # 0x0000004c
-58:	addi.d      	$a6, $s5, -1
-5c:	bltz        	$a6, -16	    # 0x0000004c
-60:	alsl.d      	$t2, $a2, $a1, 0x3
-64:	ld.d        	$t2, $t2, 264
-68:	beq         	$t2, $zero, -28	    # 0x0000004c
-
-Before apply this patch, the follow test case will reveal soft lock issues.
-
-cd tools/testing/selftests/bpf/
-./test_progs --allow=tailcalls/tailcall_bpf2bpf_1
-
-dmesg:
-watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [test_progs:25056]
-
-Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Reviewed-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |   21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -203,11 +203,9 @@ bool bpf_jit_supports_kfunc_call(void)
- 	return true;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index a0284a9d90e89..d228e37f8b3d9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -9709,33 +9709,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
+ 	return false;
  }
  
--/* initialized on the first pass of build_body() */
--static int out_offset = -1;
--static int emit_bpf_tail_call(struct jit_ctx *ctx)
-+static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
+-int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
++					    bool request_en)
  {
--	int off;
-+	int off, tc_ninsn = 0;
- 	u8 tcc = tail_call_reg(ctx);
- 	u8 a1 = LOONGARCH_GPR_A1;
- 	u8 a2 = LOONGARCH_GPR_A2;
-@@ -217,7 +215,7 @@ static int emit_bpf_tail_call(struct jit
- 	const int idx0 = ctx->idx;
+-	struct hclge_dev *hdev = vport->back;
+ 	bool need_en;
+ 	int ret;
  
- #define cur_offset (ctx->idx - idx0)
--#define jmp_offset (out_offset - (cur_offset))
-+#define jmp_offset (tc_ninsn - (cur_offset))
- 
- 	/*
- 	 * a0: &ctx
-@@ -227,6 +225,7 @@ static int emit_bpf_tail_call(struct jit
- 	 * if (index >= array->map.max_entries)
- 	 *	 goto out;
- 	 */
-+	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
- 	off = offsetof(struct bpf_array, map.max_entries);
- 	emit_insn(ctx, ldwu, t1, a1, off);
- 	/* bgeu $a2, $t1, jmp_offset */
-@@ -258,15 +257,6 @@ static int emit_bpf_tail_call(struct jit
- 	emit_insn(ctx, ldd, t3, t2, off);
- 	__build_epilogue(ctx, true);
- 
--	/* out: */
--	if (out_offset == -1)
--		out_offset = cur_offset;
--	if (cur_offset != out_offset) {
--		pr_err_once("tail_call out_offset = %d, expected %d!\n",
--			    cur_offset, out_offset);
--		return -1;
--	}
+-	mutex_lock(&hdev->vport_lock);
 -
- 	return 0;
+-	vport->req_vlan_fltr_en = request_en;
+-
+ 	need_en = hclge_need_enable_vport_vlan_filter(vport);
+-	if (need_en == vport->cur_vlan_fltr_en) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (need_en == vport->cur_vlan_fltr_en)
+ 		return 0;
+-	}
  
- toofar:
-@@ -853,7 +843,7 @@ static int build_insn(const struct bpf_i
- 	/* tail call */
- 	case BPF_JMP | BPF_TAIL_CALL:
- 		mark_tail_call(ctx);
--		if (emit_bpf_tail_call(ctx) < 0)
-+		if (emit_bpf_tail_call(ctx, i) < 0)
- 			return -EINVAL;
- 		break;
+ 	ret = hclge_set_vport_vlan_filter(vport, need_en);
+-	if (ret) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (ret)
+ 		return ret;
+-	}
  
-@@ -1251,7 +1241,6 @@ out:
- 	if (tmp_blinded)
- 		bpf_jit_prog_release_other(prog, prog == orig_prog ? tmp : orig_prog);
+ 	vport->cur_vlan_fltr_en = need_en;
  
--	out_offset = -1;
++	return 0;
++}
++
++int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++{
++	struct hclge_dev *hdev = vport->back;
++	int ret;
++
++	mutex_lock(&hdev->vport_lock);
++	vport->req_vlan_fltr_en = request_en;
++	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
+ 	mutex_unlock(&hdev->vport_lock);
  
- 	return prog;
+-	return 0;
++	return ret;
  }
+ 
+ static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
+@@ -10743,16 +10746,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
+ 					&vport->state))
+ 			continue;
+ 
+-		ret = hclge_enable_vport_vlan_filter(vport,
+-						     vport->req_vlan_fltr_en);
++		mutex_lock(&hdev->vport_lock);
++		ret = __hclge_enable_vport_vlan_filter(vport,
++						       vport->req_vlan_fltr_en);
+ 		if (ret) {
+ 			dev_err(&hdev->pdev->dev,
+ 				"failed to sync vlan filter state for vport%u, ret = %d\n",
+ 				vport->vport_id, ret);
+ 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
+ 				&vport->state);
++			mutex_unlock(&hdev->vport_lock);
+ 			return;
+ 		}
++		mutex_unlock(&hdev->vport_lock);
+ 	}
+ }
+ 
+-- 
+2.39.5
+
 
 
 
