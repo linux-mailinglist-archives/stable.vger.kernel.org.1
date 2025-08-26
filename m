@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-173717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F214CB35E90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBDBB35CB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68E98362F42
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7D57C5089
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F55D29D26A;
-	Tue, 26 Aug 2025 11:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEDC3093BA;
+	Tue, 26 Aug 2025 11:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0XJ9w5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ly5ytDr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFA920330;
-	Tue, 26 Aug 2025 11:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592CD33768D;
+	Tue, 26 Aug 2025 11:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208976; cv=none; b=CTRQyTA03SQYD5gSqsSNo6na2jNWkdS562tvpYfHLzm/aX6BYqZhrCGgxIQQHsOkVw6YLYYkv+CZaggnMuhmijbw12I60G0lLp8xf8YzTmGC9VnBM0MPDnHHGZyudYDttji/EL7i9YQjxu79daD+WKrjHcplXTE2r5L4rTeiJQY=
+	t=1756208152; cv=none; b=BUnOmjVH4GwBusyAA0gQevAwpbgSFMpY75+vxmbSm0kXB8Zi/j9S4VnhP5hpah3HBojUhlPvk/vQMWfHOrZT+VqECQt+sdKtupT5MFUY9k4mEfuEqgGkQr4br2PsMwG9EjGpod5eUEeBS9MkBlVbw5GxH4WkQhT/mtNG5wdZW0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208976; c=relaxed/simple;
-	bh=oTadlIxveQuClDCBTtZT1YoCJrZFycW0I1fIPcowUi4=;
+	s=arc-20240116; t=1756208152; c=relaxed/simple;
+	bh=GFeD4+KORpGa4iRSr6hbJ1IzqdyrgdU/a6tG3rYTCRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GielvSzZqAINsKkAUlhKvDV3wZyLAndeFQJSrF955ss+5bfVIir1tB6jGiLEd8VUqrJKWqB4Lzma7+QK9bYOqUrdziFa4ASrVrSg0F0Tz6bR33nEzUvn88b9pnRffiPLjyxFKBwcAtB0FLz/BA6L+gl+Rtaf9ibZYCsZ7OoE/Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0XJ9w5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE02C116D0;
-	Tue, 26 Aug 2025 11:49:33 +0000 (UTC)
+	 MIME-Version; b=qW0CzGZrRghUdc8M0VCWO+Oc5r6BESEhYSbTkBlJxAthjhpitX5Ndeo3p5zLEYfRC0Zx3MzaHUrfzuedo4cACb5nSDL9spqzom6kEU4I86mqX201dXWrQdWHx4j2x1da9Xv+YV9ZTVl8bZtDhw2rU82t6WXMH5nR9AA1Uisn/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ly5ytDr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C50C4CEF1;
+	Tue, 26 Aug 2025 11:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208974;
-	bh=oTadlIxveQuClDCBTtZT1YoCJrZFycW0I1fIPcowUi4=;
+	s=korg; t=1756208152;
+	bh=GFeD4+KORpGa4iRSr6hbJ1IzqdyrgdU/a6tG3rYTCRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0XJ9w5xONqP8NQaUO0MnwUmedalG6Sn/TwknoKHCe0ojN5TGKJNhpyUKEx1WPa+/
-	 wVV2d4De9p4MDmCTEzv6edi32D6JnlIIb0CMZ4RVrE2JJJDmQRnAABZXBRVgGq20DS
-	 xP1b4i67/CvJrvHhcwOZByrHwCgqQ8lBB+Z2bQpA=
+	b=Ly5ytDr1WNwBH1Gk2eJa4pTZgafA2LJqApWrUzqBhJroY4e0zTsSQSDCqVDcgNI4h
+	 zaANb47EszoWLEYDdKDB4GxzXayTEqsnNe+jsHLDUdxstKYjxBl1YmNdh2KSr8Hnpc
+	 /oXtIuGAcuysaO7m99wzWdnWW7RwARfxZ15PZN1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armen Ratner <armeng@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
+	Oren Sidi <osidi@nvidia.com>,
+	Alex Lazar <alazar@nvidia.com>,
 	Tariq Toukan <tariqt@nvidia.com>,
-	Alexei Lazar <alazar@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/322] net/mlx5e: Preserve shared buffer capacity during headroom updates
-Date: Tue, 26 Aug 2025 13:12:12 +0200
-Message-ID: <20250826110923.716767213@linuxfoundation.org>
+Subject: [PATCH 6.16 449/457] net/mlx5: Add IFC bits and enums for buf_ownership
+Date: Tue, 26 Aug 2025 13:12:13 +0200
+Message-ID: <20250826110948.384121274@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armen Ratner <armeng@nvidia.com>
+From: Oren Sidi <osidi@nvidia.com>
 
-[ Upstream commit 8b0587a885fdb34fd6090a3f8625cb7ac1444826 ]
+[ Upstream commit 6f09ee0b583cad4f2b6a82842c26235bee3d5c2e ]
 
-When port buffer headroom changes, port_update_shared_buffer()
-recalculates the shared buffer size and splits it in a 3:1 ratio
-(lossy:lossless) - Currently, the calculation is:
-lossless = shared / 4;
-lossy = (shared / 4) * 3;
+Extend structure layouts and defines buf_ownership.
+buf_ownership indicates whether the buffer is managed by SW or FW.
 
-Meaning, the calculation dropped the remainder of shared % 4 due to
-integer division, unintentionally reducing the total shared buffer
-by up to three cells on each update. Over time, this could shrink
-the buffer below usable size.
-
-Fix it by changing the calculation to:
-lossless = shared / 4;
-lossy = shared - lossless;
-
-This retains all buffer cells while still approximating the
-intended 3:1 split, preventing capacity loss over time.
-
-While at it, perform headroom calculations in units of cells rather than
-in bytes for more accurate calculations avoiding extra divisions.
-
-Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
-Signed-off-by: Armen Ratner <armeng@nvidia.com>
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20250820133209.389065-9-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Oren Sidi <osidi@nvidia.com>
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1752734895-257735-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 451d2849ea66 ("net/mlx5e: Query FW for buffer ownership")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.c        | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ include/linux/mlx5/mlx5_ifc.h | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 5ae787656a7c..3efa8bf1d14e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -272,8 +272,8 @@ static int port_update_shared_buffer(struct mlx5_core_dev *mdev,
- 	/* Total shared buffer size is split in a ratio of 3:1 between
- 	 * lossy and lossless pools respectively.
- 	 */
--	lossy_epool_size = (shared_buffer_size / 4) * 3;
- 	lossless_ipool_size = shared_buffer_size / 4;
-+	lossy_epool_size    = shared_buffer_size - lossless_ipool_size;
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 2c09df4ee574..83288df7bb45 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -10460,8 +10460,16 @@ struct mlx5_ifc_pifr_reg_bits {
+ 	u8         port_filter_update_en[8][0x20];
+ };
  
- 	mlx5e_port_set_sbpr(mdev, 0, MLX5_EGRESS_DIR, MLX5_LOSSY_POOL, 0,
- 			    lossy_epool_size);
-@@ -288,14 +288,12 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	u16 port_buff_cell_sz = priv->dcbx.port_buff_cell_sz;
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	int sz = MLX5_ST_SZ_BYTES(pbmc_reg);
--	u32 new_headroom_size = 0;
--	u32 current_headroom_size;
-+	u32 current_headroom_cells = 0;
-+	u32 new_headroom_cells = 0;
- 	void *in;
- 	int err;
- 	int i;
- 
--	current_headroom_size = port_buffer->headroom_size;
--
- 	in = kzalloc(sz, GFP_KERNEL);
- 	if (!in)
- 		return -ENOMEM;
-@@ -306,12 +304,14 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 
- 	for (i = 0; i < MLX5E_MAX_NETWORK_BUFFER; i++) {
- 		void *buffer = MLX5_ADDR_OF(pbmc_reg, in, buffer[i]);
-+		current_headroom_cells += MLX5_GET(bufferx_reg, buffer, size);
++enum {
++	MLX5_BUF_OWNERSHIP_UNKNOWN	= 0x0,
++	MLX5_BUF_OWNERSHIP_FW_OWNED	= 0x1,
++	MLX5_BUF_OWNERSHIP_SW_OWNED	= 0x2,
++};
 +
- 		u64 size = port_buffer->buffer[i].size;
- 		u64 xoff = port_buffer->buffer[i].xoff;
- 		u64 xon = port_buffer->buffer[i].xon;
- 
--		new_headroom_size += size;
- 		do_div(size, port_buff_cell_sz);
-+		new_headroom_cells += size;
- 		do_div(xoff, port_buff_cell_sz);
- 		do_div(xon, port_buff_cell_sz);
- 		MLX5_SET(bufferx_reg, buffer, size, size);
-@@ -320,10 +320,8 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 		MLX5_SET(bufferx_reg, buffer, xon_threshold, xon);
- 	}
- 
--	new_headroom_size /= port_buff_cell_sz;
--	current_headroom_size /= port_buff_cell_sz;
--	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
--					new_headroom_size);
-+	err = port_update_shared_buffer(priv->mdev, current_headroom_cells,
-+					new_headroom_cells);
- 	if (err)
- 		goto out;
- 
+ struct mlx5_ifc_pfcc_reg_bits {
+-	u8         reserved_at_0[0x8];
++	u8         reserved_at_0[0x4];
++	u8	   buf_ownership[0x2];
++	u8	   reserved_at_6[0x2];
+ 	u8         local_port[0x8];
+ 	u8         reserved_at_10[0xb];
+ 	u8         ppan_mask_n[0x1];
+@@ -10597,7 +10605,9 @@ struct mlx5_ifc_pcam_enhanced_features_bits {
+ 	u8         fec_200G_per_lane_in_pplm[0x1];
+ 	u8         reserved_at_1e[0x2a];
+ 	u8         fec_100G_per_lane_in_pplm[0x1];
+-	u8         reserved_at_49[0x1f];
++	u8         reserved_at_49[0xa];
++	u8	   buffer_ownership[0x1];
++	u8	   resereved_at_54[0x14];
+ 	u8         fec_50G_per_lane_in_pplm[0x1];
+ 	u8         reserved_at_69[0x4];
+ 	u8         rx_icrc_encapsulated_counter[0x1];
 -- 
 2.50.1
 
