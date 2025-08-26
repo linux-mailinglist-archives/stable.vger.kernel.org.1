@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925A3B360CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D42FB35DC5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30F5F1BC018C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EF5F172742
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2277621A420;
-	Tue, 26 Aug 2025 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8A129C339;
+	Tue, 26 Aug 2025 11:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THOWcqAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYFkpJrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C698D1F4CA9;
-	Tue, 26 Aug 2025 13:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4191B2BE03C;
+	Tue, 26 Aug 2025 11:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213227; cv=none; b=q/XAk+m+Ak5X39x/4kJ5w/tIf4aDknc0DD0VXCTWyqnfB1WAYEvCRhzP5pVekNsIqw4zscXNEKJ80zLg3AtaHSzTmU2KJcB+8K91of0nN9vGNheEnUGpo2J0NG0VsZo+Zp6jT3jIz17YKyAdCx/FHH2v9POVZcWn5gRl52rUm/o=
+	t=1756208176; cv=none; b=Bc1G+8uDITysNxcjAVzPHsdo3A3skr/x5L+i8RqmrF7fLcC9luWx9xFk93p+q/ZPAzWFsxd1H/mBXNW9pKMJ61HPk9rSty3uB0dJDp7jrrAwuvFnasIcojazPje3KZMKk4g7zMaULAeesF9UugyWHPC8U6EXsvk99+ShxXlRrGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213227; c=relaxed/simple;
-	bh=ruyeTUtDFKxq6Z5AYLIvLhNdepF6ZnyNuYujYBTEuLk=;
+	s=arc-20240116; t=1756208176; c=relaxed/simple;
+	bh=Nye/Irry7GL+Hjd5l4I5xTxVeRV4ya6BdAQ4uUmW5yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvPFn39nR3kAVIeRzd0PODsAIhvJouVHWvo0qRRkHtlDgwe5tH8KiKrFsishG4TIOEyO088XohgptJMJINrPHT06CZYrVh0nquqD/TyZ0f2CdJnOsE9jI2ilbZbc4pIP/6Otej5+HWcJmwZuM3JYlm4tgt+ptsC3CcM18++D7dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THOWcqAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E370C4CEF1;
-	Tue, 26 Aug 2025 13:00:26 +0000 (UTC)
+	 MIME-Version; b=QCLx+nKM8lHRN6N+qFq8PdUIWpUgbdeHfoFBIF7MfhFco7/nzw2i9CMviPOFLrKd8QG4yQQ15iMtWZmEvlfFibeWryDKNV3tnCie3MXO2/YuBaiDJa9B0rKO6EiDClXoJMCe+EYaUVm5wxg9JpQhtY2Z4xo53dHuVpWKR2vWMuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYFkpJrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD540C4CEF1;
+	Tue, 26 Aug 2025 11:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213227;
-	bh=ruyeTUtDFKxq6Z5AYLIvLhNdepF6ZnyNuYujYBTEuLk=;
+	s=korg; t=1756208176;
+	bh=Nye/Irry7GL+Hjd5l4I5xTxVeRV4ya6BdAQ4uUmW5yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THOWcqAZPh6aOzqHiF0BltLSXXPyvQh4Z7s2TXznlh7GnRHT/APmmEdPxfAc36wDd
-	 G/uvoNvXjGtQ6g3Q07DMhsfZ9K5YwibzVcShmIn4rd74j46BttTd36wCAijpS8WWxf
-	 JtjuNEVpCIkQD5zXbKEPHYb7sBG0cHVCRGerCTEU=
+	b=RYFkpJrW1PxS5OT7WxC2SmGjfdEvXZDq1flrB07t3jwpXXdfo/OQyg/PCi/kUwluX
+	 FAF+C2RDNCOlnI3lNN/zAtyWLi8kN8uJeH3MpJVe97J//3GMvQlSVV47S29qDjCfJE
+	 /2UCggOapcqwciz53U9Yel09h8Ahz+ln33NaArj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 269/587] dm-table: fix checking for rq stackable devices
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.12 003/322] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
 Date: Tue, 26 Aug 2025 13:06:58 +0200
-Message-ID: <20250826110959.771502160@linuxfoundation.org>
+Message-ID: <20250826110915.274282908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
+commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
 
-Due to the semantics of iterate_devices(), the current code allows a
-request-based dm table as long as it includes one request-stackable
-device. It is supposed to only allow tables where there are no
-non-request-stackable devices.
+The freq_tables[] array has num_possible_cpus() elements so, to avoid an
+out of bounds access, this loop should be capped at "< nb_cpus" instead
+of "<= nb_cpus".  The freq_tables[] array is allocated in
+armada_8k_cpufreq_init().
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index bf2ade89c8c2..ed0a5e91968d 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -862,17 +862,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
- 	return true;
- }
- 
--static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
--				  sector_t start, sector_t len, void *data)
-+static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
-+				      sector_t start, sector_t len, void *data)
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -103,7 +103,7 @@ static void armada_8k_cpufreq_free_table
  {
- 	struct block_device *bdev = dev->bdev;
- 	struct request_queue *q = bdev_get_queue(bdev);
+ 	int opps_index, nb_cpus = num_possible_cpus();
  
- 	/* request-based cannot stack on partitions! */
- 	if (bdev_is_partition(bdev))
--		return false;
-+		return true;
+-	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
++	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
+ 		int i;
  
--	return queue_is_mq(q);
-+	return !queue_is_mq(q);
- }
- 
- static int dm_table_determine_type(struct dm_table *t)
-@@ -968,7 +968,7 @@ static int dm_table_determine_type(struct dm_table *t)
- 
- 	/* Non-request-stackable devices can't be used for request-based dm */
- 	if (!ti->type->iterate_devices ||
--	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
-+	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
- 		DMERR("table load rejected: including non-request-stackable devices");
- 		return -EINVAL;
- 	}
--- 
-2.39.5
-
+ 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
