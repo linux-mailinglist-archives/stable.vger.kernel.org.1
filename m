@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA20EB363A0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD28B368BB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 473777BDA1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF56983757
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED0029BD83;
-	Tue, 26 Aug 2025 13:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE78352FEC;
+	Tue, 26 Aug 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQMT3RbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNmbQFPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D01E51E1;
-	Tue, 26 Aug 2025 13:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0546F352FDA;
+	Tue, 26 Aug 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215027; cv=none; b=FkZSGt/fJ633yGZUjBsnSKArfNIyHOPPpcZvVacM2gzrq4JkyJmb0P9v3VH/1W2U5SNXGEwsxWT5YFRA16WAfgFa8iV1QflXI7xgmeIT81Puzi8ElmS/QRyWobeaPzJAgYxRwlZxL+4EYRzLXF6aJlilmDCesLn/D0CY4ErNaRY=
+	t=1756216732; cv=none; b=YjF05Bk/4FBnHERgW3C8fHn3E5b38GL/5e/K4IlgeTTSNN6qSjN4RO7+QHNIJ/5Y4QgUT6bwN+jJOwhtjjSiV3z/YiDTfprNyRRmMqdEVZopWHJdWeQ4ypAIEvLOxl3uwA+UABvzlWLz448cBlnJ5BCn7ykHpc1VvXKeQxuTNZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215027; c=relaxed/simple;
-	bh=WqMHTivZSxWb+fL+jN+VBGSGBXQSZhmX/ELPBYXg49s=;
+	s=arc-20240116; t=1756216732; c=relaxed/simple;
+	bh=xj+DslBOyUXcb67xey68SjwVSzdIfAK/gye6UvFBfIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sp/Wzd6VqRRxUO16kCfPll2pSoHTME0bfBCMiz9OI3wzoM/kGzfb+24EaVek9nrPQB6/9h4O9ThqsfLIlU4fFc061URxUW8Rw2ifdLFtxIbhH6fF3u9iab1LTnccjDIMGCYSZCq2TMbojRw2fyARe2oiBGnvZTRasqXcHD02ggE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQMT3RbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B40C4CEF1;
-	Tue, 26 Aug 2025 13:30:26 +0000 (UTC)
+	 MIME-Version; b=lMp8dEHJUCoNBFxTJnTBYsQpD/u6OuSZPXPoO18puXJ/TFVXL4AF9fRUgi8rAkY0a3g6k/qv6SyAAiVF0jf9R9XUgQLlnIxn5fLrC3R5LLPDONSFNpH8e+zkoWU+p3CBAlGgSSy2P/UZYAu6ScUd6mucYTtKrIKitAyettz9N60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNmbQFPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4CEC4CEF1;
+	Tue, 26 Aug 2025 13:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215027;
-	bh=WqMHTivZSxWb+fL+jN+VBGSGBXQSZhmX/ELPBYXg49s=;
+	s=korg; t=1756216731;
+	bh=xj+DslBOyUXcb67xey68SjwVSzdIfAK/gye6UvFBfIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQMT3RbWjKnP9mA3R84CvJUGLiBe+3g6HcyY7VwL4ZoLdSUUkMyoXrebMXYx41hBe
-	 tKvXYyBKPozS1ezmWJ/HRtbVaUAFk6uwprQEf/50ilht6vpKaZsA1j6FRni8umiSE/
-	 Hf8Ns9NT4e2p+2z8uSoBoOEqkyVkAfrrpGddgAUs=
+	b=pNmbQFPKt7VJUmV+UXIx56bNE+/DxzFvb2Z5jzo62WlzHo7D10Fsd6OTTkpB3keWu
+	 d3g6cbFd9YNcyc3HWHhufYNVH3vM44gVp4qIqN5HgR5jI+wCgTy6ldvSIJfFA8D9E2
+	 0YpJSNP+nn9FPQ3w7xq1HvJNUy/6jjxHoNfmba3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 360/482] btrfs: qgroup: fix race between quota disable and quota rescan ioctl
+Subject: [PATCH 5.15 522/644] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
 Date: Tue, 26 Aug 2025 13:10:13 +0200
-Message-ID: <20250826110939.728910970@linuxfoundation.org>
+Message-ID: <20250826110959.444442166@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-[ Upstream commit e1249667750399a48cafcf5945761d39fa584edf ]
+[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
 
-There's a race between a task disabling quotas and another running the
-rescan ioctl that can result in a use-after-free of qgroup records from
-the fs_info->qgroup_tree rbtree.
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
 
-This happens as follows:
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
 
-1) Task A enters btrfs_ioctl_quota_rescan() -> btrfs_qgroup_rescan();
-
-2) Task B enters btrfs_quota_disable() and calls
-   btrfs_qgroup_wait_for_completion(), which does nothing because at that
-   point fs_info->qgroup_rescan_running is false (it wasn't set yet by
-   task A);
-
-3) Task B calls btrfs_free_qgroup_config() which starts freeing qgroups
-   from fs_info->qgroup_tree without taking the lock fs_info->qgroup_lock;
-
-4) Task A enters qgroup_rescan_zero_tracking() which starts iterating
-   the fs_info->qgroup_tree tree while holding fs_info->qgroup_lock,
-   but task B is freeing qgroup records from that tree without holding
-   the lock, resulting in a use-after-free.
-
-Fix this by taking fs_info->qgroup_lock at btrfs_free_qgroup_config().
-Also at btrfs_qgroup_rescan() don't start the rescan worker if quotas
-were already disabled.
-
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAFRLqsV+cMDETFuzqdKSHk_FDm6tneea45krsHqPD6B3FetLpQ@mail.gmail.com/
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Check for BTRFS_FS_QUOTA_ENABLED, instead of btrfs_qgroup_full_accounting() ]
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Applied patch to the older file name mixer_scarlett_gen2.c instead of mixer_scarlett2.c. ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |   31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -573,22 +573,30 @@ bool btrfs_check_quota_leak(struct btrfs
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -125,6 +125,7 @@
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+ #include <linux/moduleparam.h>
++#include <linux/delay.h>
  
- /*
-  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
-- * first two are in single-threaded paths.And for the third one, we have set
-- * quota_root to be null with qgroup_lock held before, so it is safe to clean
-- * up the in-memory structures without qgroup_lock held.
-+ * first two are in single-threaded paths.
-  */
- void btrfs_free_qgroup_config(struct btrfs_fs_info *fs_info)
- {
- 	struct rb_node *n;
- 	struct btrfs_qgroup *qgroup;
+ #include <sound/control.h>
+ #include <sound/tlv.h>
+@@ -1064,6 +1065,8 @@ static int scarlett2_usb(
+ 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
+ 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
+ 	struct scarlett2_usb_packet *req, *resp = NULL;
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err;
  
-+	/*
-+	 * btrfs_quota_disable() can be called concurrently with
-+	 * btrfs_qgroup_rescan() -> qgroup_rescan_zero_tracking(), so take the
-+	 * lock.
-+	 */
-+	spin_lock(&fs_info->qgroup_lock);
- 	while ((n = rb_first(&fs_info->qgroup_tree))) {
- 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
- 		rb_erase(n, &fs_info->qgroup_tree);
- 		__del_qgroup_rb(fs_info, qgroup);
-+		spin_unlock(&fs_info->qgroup_lock);
- 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
- 		kfree(qgroup);
-+		spin_lock(&fs_info->qgroup_lock);
- 	}
-+	spin_unlock(&fs_info->qgroup_lock);
-+
- 	/*
- 	 * We call btrfs_free_qgroup_config() when unmounting
- 	 * filesystem and disabling quota, so we set qgroup_ulist
-@@ -3597,12 +3605,21 @@ btrfs_qgroup_rescan(struct btrfs_fs_info
- 	qgroup_rescan_zero_tracking(fs_info);
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -1087,10 +1090,15 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
  
- 	mutex_lock(&fs_info->qgroup_rescan_lock);
--	fs_info->qgroup_rescan_running = true;
--	btrfs_queue_work(fs_info->qgroup_rescan_workers,
--			 &fs_info->qgroup_rescan_work);
-+	/*
-+	 * The rescan worker is only for full accounting qgroups, check if it's
-+	 * enabled as it is pointless to queue it otherwise. A concurrent quota
-+	 * disable may also have just cleared BTRFS_FS_QUOTA_ENABLED.
-+	 */
-+	if (test_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags)) {
-+		fs_info->qgroup_rescan_running = true;
-+		btrfs_queue_work(fs_info->qgroup_rescan_workers,
-+				 &fs_info->qgroup_rescan_work);
-+	} else {
-+		ret = -ENOTCONN;
-+	}
- 	mutex_unlock(&fs_info->qgroup_rescan_lock);
++retry:
+ 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
+ 			       req, req_buf_size);
  
--	return 0;
-+	return ret;
- }
- 
- int btrfs_qgroup_wait_for_completion(struct btrfs_fs_info *fs_info,
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"Scarlett Gen 2/3 USB request result cmd %x was %d\n",
 
 
 
