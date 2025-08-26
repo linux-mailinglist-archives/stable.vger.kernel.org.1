@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C7B35D08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF653B36C94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27BA8188545A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53B96871C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACD929D280;
-	Tue, 26 Aug 2025 11:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8C234DCC1;
+	Tue, 26 Aug 2025 14:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr3xpSzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z++FVuaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7961923D7FA;
-	Tue, 26 Aug 2025 11:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8A835206F;
+	Tue, 26 Aug 2025 14:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207977; cv=none; b=ewlqMj6N2Fq8fDb6HkHTsObDixc0nknGdCF0wb+dsJ1QASvrrAE3DSWtO4yRzUdUQtBcNm++/a6tWue2s5iTL3m3HjyemiaFRieEJB2dZSQn78CohJlOldPWXAoT97N7RYV++kVVxGFZY27mjSJnYe0uundFlGAg90+L3hJlAfw=
+	t=1756219357; cv=none; b=mYuuNbpD1knXz1fVkKysakV3zs7xlyAFOGcTcgcXIWyvI7W1zL+FPitIPb4zl0qgjLc6SWBs7YZRde15MfjQ6c+vDOVhnFUUS7sBTVpssLCcjAfYBVBOuBB8V290M8GVMuHkJV8OpkqOTxM/+VATPMYA7YeSlRpblvNCAxnRJeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207977; c=relaxed/simple;
-	bh=lpKXFFWp+C0Tu33nCx4E1UK2wxZ1JHyv5Cpxl2/RDb0=;
+	s=arc-20240116; t=1756219357; c=relaxed/simple;
+	bh=fvHOm1T5WuVoJ8QC02yqFzZlctIuTzFUi4E80qgHJTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVGdAuxcYGOm2+ERa4gKxZLXdjKH5aU8tnHapmJeQCdXjJnBP4VockFJ2xswyu3nprBIfQ5jt/C+fdBu3GBdvDO3ZZ4YvHR9bkWGdcgCWQ9LRqKL9SriiyyA22WIL+Vkf5FuQheMbC7NP1Vvfq0LnsWiTxqFJVouWYZh8PIbzfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr3xpSzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0770C4CEF1;
-	Tue, 26 Aug 2025 11:32:56 +0000 (UTC)
+	 MIME-Version; b=nR1vVCPYsieA4mNj+5oMiGhfqVau4iXC3x0odMOagIoKUhaf8bSuVk8/vdlQ+yT9vg0e6CR8V+lq5p/jcj9Kl4uZ/exxxXcGT1aVnD0PN5gZVJuxNadguz1SxsCD6hO2GsYyrKIXtcUU1Gt4CLYrU4Md8OLSzpJPz/WjfY5VAUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z++FVuaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8265FC4CEF1;
+	Tue, 26 Aug 2025 14:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207977;
-	bh=lpKXFFWp+C0Tu33nCx4E1UK2wxZ1JHyv5Cpxl2/RDb0=;
+	s=korg; t=1756219356;
+	bh=fvHOm1T5WuVoJ8QC02yqFzZlctIuTzFUi4E80qgHJTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pr3xpSzOaOELBH4Y1/VWABUlvrjx/eEGAgkBdpB23DiIrIgVKaBye0iVga3W5d5zY
-	 ehgeGLqvke9rT74RXk4e7Fd5vB/o4OXkTj3PzUPK0fRS1T8bNKoOcUM1H03NBDYCcZ
-	 aMw6jC7NXVbUY6e2+pvve5wQSO1FZHTqxmrry0Us=
+	b=z++FVuaUlca06o2TUQtZdBLPV37DIwucyuois3J1jnqCnI4k3ccSUxuaSpjw0dvvR
+	 n7bf2s7X0JigLpFSfWuQJpLJW96acSlI7BKbc7zx21Ntl6ELO1P91XNnDdGxiMvyvh
+	 EgjZdyeYMdgwBFsgPJSslzJC/wn3qJhFzNE1el/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 391/457] drm/hisilicon/hibmc: fix rare monitors cannot display problem
+Subject: [PATCH 5.4 349/403] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
 Date: Tue, 26 Aug 2025 13:11:15 +0200
-Message-ID: <20250826110946.958384548@linuxfoundation.org>
+Message-ID: <20250826110916.517725604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-[ Upstream commit 9f98b429ba67d430b873e06bcfb90afa22888978 ]
+[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
 
-In some case, the dp link training success at 8.1Gbps, but the sink's
-maximum supported rate is less than 8.1G. So change the default 8.1Gbps
-link rate to the rate that reads from devices' capabilities.
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
 
-Fixes: 54063d86e036 ("drm/hisilicon/hibmc: add dp link moduel in hibmc drivers")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-6-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
+
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Applied retry logic around snd_usb_ctl_msg() instead of scarlett2_usb_tx() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
-index 74f7832ea53e..0726cb5b736e 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
-@@ -325,6 +325,17 @@ static int hibmc_dp_link_downgrade_training_eq(struct hibmc_dp_dev *dp)
- 	return hibmc_dp_link_reduce_rate(dp);
- }
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -118,6 +118,8 @@
+ #define SCARLETT2_MIXER_MAX_VALUE \
+ 	((SCARLETT2_MIXER_MAX_DB - SCARLETT2_MIXER_MIN_DB) * 2)
  
-+static void hibmc_dp_update_caps(struct hibmc_dp_dev *dp)
-+{
-+	dp->link.cap.link_rate = dp->dpcd[DP_MAX_LINK_RATE];
-+	if (dp->link.cap.link_rate > DP_LINK_BW_8_1 || !dp->link.cap.link_rate)
-+		dp->link.cap.link_rate = DP_LINK_BW_8_1;
++#include <linux/delay.h>
 +
-+	dp->link.cap.lanes = dp->dpcd[DP_MAX_LANE_COUNT] & DP_MAX_LANE_COUNT_MASK;
-+	if (dp->link.cap.lanes > HIBMC_DP_LANE_NUM_MAX)
-+		dp->link.cap.lanes = HIBMC_DP_LANE_NUM_MAX;
-+}
-+
- int hibmc_dp_link_training(struct hibmc_dp_dev *dp)
- {
- 	struct hibmc_dp_link *link = &dp->link;
-@@ -334,8 +345,7 @@ int hibmc_dp_link_training(struct hibmc_dp_dev *dp)
- 	if (ret)
- 		drm_err(dp->dev, "dp aux read dpcd failed, ret: %d\n", ret);
+ /* map from (dB + 80) * 2 to mixer value
+  * for dB in 0 .. 172: int(8192 * pow(10, ((dB - 160) / 2 / 20)))
+  */
+@@ -591,6 +593,8 @@ static int scarlett2_usb(
+ 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
+ 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
+ 	struct scarlett2_usb_packet *req = NULL, *resp = NULL;
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err = 0;
  
--	dp->link.cap.link_rate = dp->dpcd[DP_MAX_LINK_RATE];
--	dp->link.cap.lanes = 0x2;
-+	hibmc_dp_update_caps(dp);
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -614,6 +618,7 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
  
- 	ret = hibmc_dp_get_serdes_rate_cfg(dp);
- 	if (ret < 0)
--- 
-2.50.1
-
++retry:
+ 	err = snd_usb_ctl_msg(mixer->chip->dev,
+ 			usb_sndctrlpipe(mixer->chip->dev, 0),
+ 			SCARLETT2_USB_VENDOR_SPECIFIC_CMD_REQ,
+@@ -624,6 +629,10 @@ static int scarlett2_usb(
+ 			req_buf_size);
+ 
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"Scarlett Gen 2 USB request result cmd %x was %d\n",
 
 
 
