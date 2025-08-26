@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A698CB36A6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB85B36333
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116D81C43045
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 492F37B2C67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B09352080;
-	Tue, 26 Aug 2025 14:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCD623D28F;
+	Tue, 26 Aug 2025 13:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxFISYdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbtdmoeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAB935207F;
-	Tue, 26 Aug 2025 14:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01171ADFFE;
+	Tue, 26 Aug 2025 13:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217907; cv=none; b=Qebmp+YoXl2zCEx1DrWzbkhGaUZYXdL7GkCq6oo+Lc2fNLND8Fse2ucDJ1FrcfyW7nOWa2t+5cBcONWJfmAdQbuBWYzNUghHY/QXOEZPIfRIr5wlUUXnjzUqosHYST0dPgfoZY0Bcuzy1NYXR3Ss/e3FMDpiMhFTrkB1KpXBvaY=
+	t=1756214809; cv=none; b=Ryk0A34kof+ZEWKFQCFlQ18rr7j+Xml9o89kdrrWdgU/CdLzoEkC/hIfaVMdVoexqRD3IAb6FZmw/3R2o+4DquSPZ3xEEllppTWwgAAz19yydA78UWJsM6TUIVERilfPuHUHmqImETZhheJ+caq3DGDK47GzXeGdmobzU7j2UtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217907; c=relaxed/simple;
-	bh=XeeUSvJpeMW13cyz6MrAaG6fD35TFEQSKJvkjw9vN/k=;
+	s=arc-20240116; t=1756214809; c=relaxed/simple;
+	bh=6PP6tAgHMla2dy3ihUpRoV6QZ7lTmHBtnk/VvqbTRu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYU+/AZ/92lTi+D8NGSxZ94xQ3rvY9oBajqYRJ1m8OK+SlJu8q5L1VePNq7uOYsrpzDDLWIlZQDZNPrdBGJsjf/g1GFz8y2FpDZKh5VI36xsMCtlq3s4b39ZfSbUelgMoZkzGcwvnoYmel7vj3KPnUnr2S54xRSjyhqlPv8BLCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxFISYdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BACC4CEF1;
-	Tue, 26 Aug 2025 14:18:27 +0000 (UTC)
+	 MIME-Version; b=XR9VEvCKNzclAJhXFbZ4L9OtBjeQVwMaQaJm5ld8zoffIHxv+c262hYrrgFQg0vYroZrlvzvqn2zHXKxeCkIJVkKY1pDrhadDJUEoKPtc+UgR94R1lApxs+WdO2VJ2lS/llP/OPm/PPZ/vr/YmSbp8UxEQOM1oy1VBsfleqEms0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbtdmoeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BCCC4CEF1;
+	Tue, 26 Aug 2025 13:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217907;
-	bh=XeeUSvJpeMW13cyz6MrAaG6fD35TFEQSKJvkjw9vN/k=;
+	s=korg; t=1756214808;
+	bh=6PP6tAgHMla2dy3ihUpRoV6QZ7lTmHBtnk/VvqbTRu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxFISYdlQC2zficTfatfOAlMrXXyKtN9wzuZiuI72OI8Dk7/RSbnevUI3i7/8Yxxt
-	 9iUqAVPbkYi/jYe8Ajd3YufzdVGNN5NaeE5FsnkhC3P/TyU1aHboQjUWGQMVV6dUR0
-	 bD6darOoeW6oaLv8QGKnHmAxwPp7nIQz0+T6kZPk=
+	b=DbtdmoeMynvJcyaIhD4BBXdE9dJNGMYYZNv7GUV1iHUGpl+FfO9WPJcF2HZWPvceX
+	 4FUiG+s80eBPB7WT5s5HHsyg3zyvPGn1mFUYY8WQ1tZkHmvNFoKreE38kl/drggPW4
+	 Tssb7EfdUswCKQX2r/bt312eXfZiLgLERwSBZVVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 320/523] i2c: Force DLL0945 touchpad i2c freq to 100khz
+	kernel test robot <lkp@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.1 277/482] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
 Date: Tue, 26 Aug 2025 13:08:50 +0200
-Message-ID: <20250826110932.357938233@linuxfoundation.org>
+Message-ID: <20250826110937.619408533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+The MIPS32r2 ChaCha code has never been buildable with the clang
+assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
+    error: unknown instruction, did you mean: rol, rotr?
 
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Second, clang requires that both operands of the 'wsbh' instruction be
+explicitly given:
+
+    error: too few operands for instruction
+
+To fix this, align the code with the real instruction set by (1) using
+the real instruction 'rotr' instead of the nonstandard pseudo-
+instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+
+To make removing the use of 'rotl' a bit easier, also remove the
+unnecessary special-casing for big endian CPUs at
+.Lchacha_mips_xor_bytes.  The tail handling is actually
+endian-independent since it processes one byte at a time.  On big endian
+CPUs the old code byte-swapped SAVED_X, then iterated through it in
+reverse order.  But the byteswap and reverse iteration canceled out.
+
+Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
+little endian and big endian mips32r2 kernels.
+
+Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
+Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/crypto/chacha-core.S |   20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index e7aed9442d56..197b89f0b3e0 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -314,6 +314,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
--- 
-2.39.5
-
+--- a/arch/mips/crypto/chacha-core.S
++++ b/arch/mips/crypto/chacha-core.S
+@@ -55,17 +55,13 @@
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ #define MSB 0
+ #define LSB 3
+-#define ROTx rotl
+-#define ROTR(n) rotr n, 24
+ #define	CPU_TO_LE32(n) \
+-	wsbh	n; \
++	wsbh	n, n; \
+ 	rotr	n, 16;
+ #else
+ #define MSB 3
+ #define LSB 0
+-#define ROTx rotr
+ #define CPU_TO_LE32(n)
+-#define ROTR(n)
+ #endif
+ 
+ #define FOR_EACH_WORD(x) \
+@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
+ 	xor	X(W), X(B); \
+ 	xor	X(Y), X(C); \
+ 	xor	X(Z), X(D); \
+-	rotl	X(V), S;    \
+-	rotl	X(W), S;    \
+-	rotl	X(Y), S;    \
+-	rotl	X(Z), S;
++	rotr	X(V), 32 - S; \
++	rotr	X(W), 32 - S; \
++	rotr	X(Y), 32 - S; \
++	rotr	X(Z), 32 - S;
+ 
+ .text
+ .set	reorder
+@@ -372,21 +368,19 @@ chacha_crypt_arch:
+ 	/* First byte */
+ 	lbu	T1, 0(IN)
+ 	addiu	$at, BYTES, 1
+-	CPU_TO_LE32(SAVED_X)
+-	ROTR(SAVED_X)
+ 	xor	T1, SAVED_X
+ 	sb	T1, 0(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Second byte */
+ 	lbu	T1, 1(IN)
+ 	addiu	$at, BYTES, 2
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 1(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Third byte */
+ 	lbu	T1, 2(IN)
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 2(OUT)
+ 	b	.Lchacha_mips_xor_done
 
 
 
