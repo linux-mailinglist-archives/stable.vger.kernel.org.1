@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60543B367F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4AC4B361FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E04B72A7B57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:03:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 806677BABDF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1393126D6;
-	Tue, 26 Aug 2025 14:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA042BE058;
+	Tue, 26 Aug 2025 13:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YykD5jcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="budjTElo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBB9374C4;
-	Tue, 26 Aug 2025 14:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6BE196C7C;
+	Tue, 26 Aug 2025 13:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216911; cv=none; b=YRNIgFmfO5PJqJYLWNkEGa+nmH2lYNh9LO9KbYg5WKfBBi0KiBVpAtB8naNX6bhfcJG+aXmTM2BRvUVVfAMC85UJzyXPneCiElQqtevOMscIq2lZmHn20ef2RBEv+rr1WgaNXuC+Y76JKHlPJrxSrfSxSAmTuTSpVY5xMbSyQ44=
+	t=1756213925; cv=none; b=rtf19ZCLtUkq3m/6/Mb+OCgb/Vgje8xjyYVEjbFhbwokEFeFwGE9T778O7NPP2yDbzzf5zjvzdZjot6AkphVTHEBSafMLcUyql4f68Va7wNQrKOhlDpHl4KXmuLn9Y/N/cUuwTs7MWtJw9QAYBheq4C2uFvGUfqF4KLHgm0dcnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216911; c=relaxed/simple;
-	bh=IMa/5r7EFU70GyIoiszRnyyBBYXG19iWqHsftLHD7g4=;
+	s=arc-20240116; t=1756213925; c=relaxed/simple;
+	bh=KCkaAEgHlAXruyMpoBn7wMgmWjFwS1oMNBUZ8weRgi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAPuVFxyi/KtwSqmIZj6RTTqbuckt/n0fn8hICiIOLuOvF0q3Ti2hC+oZra+eogYcceOF1NpZVhWjfxlr59Mcj3fyXZzRBSW/qnewORZkCKR98Q5pz77+yi/LiK2OSuFxfuaQfaZVSBxH7HpFQM+6wB/Ru+tFa1ELigP4aR8G6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YykD5jcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FD9C4CEF1;
-	Tue, 26 Aug 2025 14:01:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mIpJzbjc2KOEXxZwxpm/wpTnHWIv2chd8THNqqZeLYgsjR5jQvDNx7repm7+dKA8vEShDacUfGcJdMt1yBf3fMc92a78JHgB0MPPjM/QHX+ycvJvSmFfOquN/h73rToeWpgDh6HvZGL68GBGb+DKkfcXvkutS90XwzGW14QVq98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=budjTElo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1808C4CEF1;
+	Tue, 26 Aug 2025 13:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216911;
-	bh=IMa/5r7EFU70GyIoiszRnyyBBYXG19iWqHsftLHD7g4=;
+	s=korg; t=1756213925;
+	bh=KCkaAEgHlAXruyMpoBn7wMgmWjFwS1oMNBUZ8weRgi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YykD5jcudBB+HVWzxjSXuK9dCUP4CXbjkpTt9ke7yo2/uGmncrMj+xbFStoNMeafU
-	 YcH5BnhLHCRzL9wPooPIOuave7FKwIrDbaQ0mRcnjvgfBC5PydSIQ4wVMnfdluSqai
-	 NWx5TIV6L1N0qb1rt1mjIixvwvCtjcrauhzasbYc=
+	b=budjTEloK4RmxShn72t69sJQJBmw5q49p7e2O2JHyN85chNhNpzdEp5eIp1LJxn0B
+	 UbMnt7joL1aa8FSb7GZh7zyClj0NQd6KYU4rfna4kT8pA/9oucGwiPvGiro6LiTuE0
+	 RLJ0sKZnfMRJuB46YHqRbHINeABPQXeDmaXVJCKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 589/644] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	=?UTF-8?q?Timur=20Krist=F3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 531/587] drm/amd/display: Dont overclock DCE 6 by 15%
 Date: Tue, 26 Aug 2025 13:11:20 +0200
-Message-ID: <20250826111001.131192050@linuxfoundation.org>
+Message-ID: <20250826111006.511397269@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Cc: stable@vger.kernel.org
+[ `MIN` => `min` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1490,6 +1490,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -112,11 +112,9 @@ static void dce60_update_clocks(struct c
+ {
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
 
