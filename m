@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9831FB35C99
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8545AB36CAA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 053647B91FF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99802585013
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00E8343218;
-	Tue, 26 Aug 2025 11:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D99350D54;
+	Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+qua+1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CjMK4TE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F00343205;
-	Tue, 26 Aug 2025 11:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7F5350843;
+	Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208048; cv=none; b=AMqSOONnPnmGxGJV/IJ9WlulHTCE/LZaGVTkB+xmUGIKCs+5gkchVnopKIPnGwym66BasZMDRsGZK7OUtgaj8mBAhr0nfEkambiUn9UBNJBgvgaZIoCd+SRSLPR1N7JOnZS5WQhRwT8kcTkNuFlsoRxgfjgxfgFPHJrvFKoVulg=
+	t=1756219344; cv=none; b=rIlI9PbQlv7QuCOq+gbqj5X0wn6Dud2y7OIvCiXtWa3BKSBc0bAs09Ea4yS2IgkQvjh4zUHRG0VhOof0dXBBV1S0Hi0KBiYBQb9Eg6qoY0ccsbMdECOc6B/b6S/poEwcdYPeajeFz4qR+ttdAIYRENwg1rTwYylkB+7c5ddaCwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208048; c=relaxed/simple;
-	bh=1FRMdDfpDOHY0/8N+h2som1WipNzyn4RMBv/d6g9NF4=;
+	s=arc-20240116; t=1756219344; c=relaxed/simple;
+	bh=yntLBfZpsI2YZJ3VwexHWKx9ER9WiBVFCJyGfNxbtRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJwCg9da1DfL24rnV1Jx9M2MT/9Gmqzc0I7XnE/Pz3gzjo5tWDIYQJ4UJBan4TG7mBLkfZS6LyObM5QnJ8sfjbaRIeB6pCBTuLakUzwTaNxCReQmCtM+dC9bs3IOixlonqCEmmIJBV6jcnrSAYJZtTKslaFsSN0LLs+MUSh1j30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+qua+1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F32CC4CEF1;
-	Tue, 26 Aug 2025 11:34:07 +0000 (UTC)
+	 MIME-Version; b=UsB12GmJVQ7rZ1UayZAfIb0fQ4tT8owjZNCuiwJ1ZDYfSFbZFJXtAUTjMb8N+rEeD8liHdQJGbxtKJPxRMtXguq5eMHnqy+3E08GhJQ8CEyoATrbZ74ZwIyg57Br3O606p2A+c/P0G7aSKqXRlH27xGWGo2a7L/kzxLX0qqq2Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CjMK4TE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D78C4CEF1;
+	Tue, 26 Aug 2025 14:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208048;
-	bh=1FRMdDfpDOHY0/8N+h2som1WipNzyn4RMBv/d6g9NF4=;
+	s=korg; t=1756219344;
+	bh=yntLBfZpsI2YZJ3VwexHWKx9ER9WiBVFCJyGfNxbtRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+qua+1bJ8aM5EU6V+KvioEGPQag8Kf2+1opc1LOdHpwbkwti9m6KD5mtxi01vG9B
-	 nLd6vDLZZ6kYZFYr2O2xfOlEAY3ksL9W/2p8uZyb98beheDqCSxfmDdGsBIei7OTDj
-	 Pq8BBhbEuQjtLIpppzSTRspIeVjXNMBzLV+uBy+8=
+	b=0CjMK4TE91l+cjxyCtNrdXXJ3F+Xte62Wd2izg4Hnl4nl9OAVc76MplpdskncrpOK
+	 cVzymPqhw7s4Fw/BDhHRMcw3PJzHf7S2my/EGKoBmk+sbYZfdCbM+w2JEFn8n4wJln
+	 bhhfPVparDLSvjy8m1T6BOxXa/w+cO75lwnnimNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 386/457] md: fix sync_action incorrect display during resync
-Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826110946.839104859@linuxfoundation.org>
+Subject: [PATCH 5.4 345/403] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
+Date: Tue, 26 Aug 2025 13:11:11 +0200
+Message-ID: <20250826110916.392609668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-[ Upstream commit b7ee30f0efd12f42735ae233071015389407966c ]
+[ Upstream commit 500ba33284416255b9a5b50ace24470b6fe77ea5 ]
 
-During raid resync, if a disk becomes faulty, the operation is
-briefly interrupted. The MD_RECOVERY_RECOVER flag triggered by
-the disk failure causes sync_action to incorrectly show "recover"
-instead of "resync". The same issue affects reshape operations.
+pm_domain_cpu_gov is selecting a cluster idle state but does not consider
+latency tolerance of child CPUs. This results in deeper cluster idle state
+whose latency does not meet latency tolerance requirement.
 
-Reproduction steps:
-  mdadm -Cv /dev/md1 -l1 -n4 -e1.2 /dev/sd{a..d} // -> resync happened
-  mdadm -f /dev/md1 /dev/sda                     // -> resync interrupted
-  cat sync_action
-  -> recover
+Select deeper idle state only if global and device latency tolerance of all
+child CPUs meet.
 
-Add progress checks in md_sync_action() for resync/recover/reshape
-to ensure the interface correctly reports the actual operation type.
+Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
+domain idle state entry (2150) + exit (1983) usec latency mentioned in
+devicetree, demonstrate the issue.
 
-Fixes: 4b10a3bc67c1 ("md: ensure resync is prioritized over recovery")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250816002534.1754356-3-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
+
+Before: (Usage is incrementing)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             29817          537        8          270        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             30348          542        8          271        0
+
+After: (Usage is not incrementing due to latency tolerance)
+======
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
+	State          Time Spent(ms) Usage      Rejected   Above      Below
+	S0             39319          626        14         307        0
+
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ replaced cpu_latency_qos_limit() with pm_qos_request(PM_QOS_CPU_DMA_LATENCY) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ drivers/base/power/domain_governor.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 0348b5f3adc5..8746b22060a7 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4831,9 +4831,33 @@ static bool rdev_needs_recovery(struct md_rdev *rdev, sector_t sectors)
- 	       rdev->recovery_offset < sectors;
- }
+--- a/drivers/base/power/domain_governor.c
++++ b/drivers/base/power/domain_governor.c
+@@ -8,6 +8,7 @@
+ #include <linux/pm_domain.h>
+ #include <linux/pm_qos.h>
+ #include <linux/hrtimer.h>
++#include <linux/cpu.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+ #include <linux/ktime.h>
+@@ -254,6 +255,8 @@ static bool cpu_power_down_ok(struct dev
+ 	struct generic_pm_domain *genpd = pd_to_genpd(pd);
+ 	struct cpuidle_device *dev;
+ 	ktime_t domain_wakeup, next_hrtimer;
++	struct device *cpu_dev;
++	s64 cpu_constraint, global_constraint;
+ 	s64 idle_duration_ns;
+ 	int cpu, i;
  
-+static enum sync_action md_get_active_sync_action(struct mddev *mddev)
-+{
-+	struct md_rdev *rdev;
-+	bool is_recover = false;
-+
-+	if (mddev->resync_offset < MaxSector)
-+		return ACTION_RESYNC;
-+
-+	if (mddev->reshape_position != MaxSector)
-+		return ACTION_RESHAPE;
-+
-+	rcu_read_lock();
-+	rdev_for_each_rcu(rdev, mddev) {
-+		if (rdev_needs_recovery(rdev, MaxSector)) {
-+			is_recover = true;
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	return is_recover ? ACTION_RECOVER : ACTION_IDLE;
-+}
-+
- enum sync_action md_sync_action(struct mddev *mddev)
- {
- 	unsigned long recovery = mddev->recovery;
-+	enum sync_action active_action;
+@@ -264,6 +267,7 @@ static bool cpu_power_down_ok(struct dev
+ 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
+ 		return true;
  
++	global_constraint = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
  	/*
- 	 * frozen has the highest priority, means running sync_thread will be
-@@ -4857,8 +4881,17 @@ enum sync_action md_sync_action(struct mddev *mddev)
- 	    !test_bit(MD_RECOVERY_NEEDED, &recovery))
- 		return ACTION_IDLE;
- 
--	if (test_bit(MD_RECOVERY_RESHAPE, &recovery) ||
--	    mddev->reshape_position != MaxSector)
-+	/*
-+	 * Check if any sync operation (resync/recover/reshape) is
-+	 * currently active. This ensures that only one sync operation
-+	 * can run at a time. Returns the type of active operation, or
-+	 * ACTION_IDLE if none are active.
-+	 */
-+	active_action = md_get_active_sync_action(mddev);
-+	if (active_action != ACTION_IDLE)
-+		return active_action;
+ 	 * Find the next wakeup for any of the online CPUs within the PM domain
+ 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
+@@ -277,8 +281,16 @@ static bool cpu_power_down_ok(struct dev
+ 			if (ktime_before(next_hrtimer, domain_wakeup))
+ 				domain_wakeup = next_hrtimer;
+ 		}
 +
-+	if (test_bit(MD_RECOVERY_RESHAPE, &recovery))
- 		return ACTION_RESHAPE;
++		cpu_dev = get_cpu_device(cpu);
++		if (cpu_dev) {
++			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
++			if (cpu_constraint < global_constraint)
++				global_constraint = cpu_constraint;
++		}
+ 	}
  
- 	if (test_bit(MD_RECOVERY_RECOVER, &recovery))
--- 
-2.50.1
-
++	global_constraint *= NSEC_PER_USEC;
+ 	/* The minimum idle duration is from now - until the next wakeup. */
+ 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, ktime_get()));
+ 	if (idle_duration_ns <= 0)
+@@ -291,8 +303,10 @@ static bool cpu_power_down_ok(struct dev
+ 	 */
+ 	i = genpd->state_idx;
+ 	do {
+-		if (idle_duration_ns >= (genpd->states[i].residency_ns +
+-		    genpd->states[i].power_off_latency_ns)) {
++		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
++		    genpd->states[i].power_off_latency_ns)) &&
++		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
++		    genpd->states[i].power_off_latency_ns))) {
+ 			genpd->state_idx = i;
+ 			return true;
+ 		}
 
 
 
