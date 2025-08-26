@@ -1,125 +1,129 @@
-Return-Path: <stable+bounces-176429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B02B372EE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 21:18:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB95B37332
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 21:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A79C1BA3F80
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:18:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21704639EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294142F60A7;
-	Tue, 26 Aug 2025 19:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AF81A23AF;
+	Tue, 26 Aug 2025 19:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="TLptLfNd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XeQlejmd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDAD274FD0;
-	Tue, 26 Aug 2025 19:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D3530CDA0;
+	Tue, 26 Aug 2025 19:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756235903; cv=none; b=HfifTpgd2ezksTKUnSAXTu/nMXl/JOcTuaGq7b97TDICVjk9Kv8GTjesuvpPrV0sl8c3QpU6bzidB41LGBmvIXhzMiRkiQlITaNpwea8jPjBNb6U2ppMK/6u1oHNlQSmML3t7l4B2UYYcOx6EgGdzaiGaBMQPUjutkG4dLazuL4=
+	t=1756236855; cv=none; b=DL58nu+Yiy5KyPupBXOlHTjrwqswjXhu+gZ/vdz2FYK0wYp73gLxOFtqBcj23CIvvFBz0lR8xILhDp7yXaAIbuAVL2LL/tyYOMYbPP1yfvJ3hRgxyyL04hEPImvLBMeZdBuqoUE9dQSEjaJejSzBo17OLfhvnHQQuR2lAwMKyYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756235903; c=relaxed/simple;
-	bh=r4n9AlJI9GSrAECXKbJumCIgbljlrp0PpU/p5zYJvXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tVCJwE6v9Pzog/EGwa4I4p3ftDz2MA+ootMblUkkt7OjTAKxN09s5d+iJ5bqWSgC1ef8TXnER/nV5GTNittYrXq4su+74SIl/waCG9D4RvOy6esz7TPQdHjAItLsY9YRuTjwcSWlh6FLMZcHq9J4hE0j9i7GZVf33L25FN7q4sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=TLptLfNd; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b065d59so34810595e9.1;
-        Tue, 26 Aug 2025 12:18:22 -0700 (PDT)
+	s=arc-20240116; t=1756236855; c=relaxed/simple;
+	bh=B1JjpOE1ucuZyY8BzZRnNa5t4FVs2T8yEQ1ySGA0bgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bHkmoR5cDgjLjTKqXYQXgJUaFwtRhsPiuveSlArX6GEXvwxhTKrfsg9nWUa/R6bH7ewm4o16CKdzSQsKCCTJ6s267uRHBlXa8WYnoJV8DecprtljL75w9BN60cwPGbF27ayWVugwx3cHObjuFibXkCMHmsdRRenzasj7lduSUvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XeQlejmd; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3c6df24f128so2841535f8f.3;
+        Tue, 26 Aug 2025 12:34:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1756235901; x=1756840701; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UrQoPThZjJ7Y9Fz9FPppmTbdMlPby6bxNAJJKC56oKU=;
-        b=TLptLfNd57lms8TlZiOs9YoX1y9bjkKmOIO0ntZ+MEUM4+M4cfKLXdq7EmuJRVf8+W
-         IX86GUDzdo3fjGi8d+DYmSDLElT1UC8zejtzhGtp4EQig5RK/ZRdARWQtdjhRqYADSBB
-         c8lKzr8qmRHdndaOqWt8zAGfKc33N597T9HfphpZJB6pWegHrvLIUj6kmXdYkwspSf5B
-         YAvu9PLBwQ3iPGHGlLptYDzdhGPxz1GySfCkjHOEMb/TzbTCtCNfjX51N3/ubPKLZgx/
-         DDmh9qU3vY9WytUs+xl6IcfAM4VIrQ/qfhrmfZxDi4Pw9jpGSmbogXOOeB3zguwb7w9I
-         LEzQ==
+        d=gmail.com; s=20230601; t=1756236852; x=1756841652; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B1JjpOE1ucuZyY8BzZRnNa5t4FVs2T8yEQ1ySGA0bgg=;
+        b=XeQlejmd+P/U5N1hbgHWYRYUeQIES0D3/sFdWDlEZYYOHRfIenP3IunbLVKva6b95P
+         YpOG7HqfkOulrey5rG6Wi7TwJz/zhYXW6mS3uwp9v0Cv2HG/c+UdTec4W3bhXY1wSo93
+         1HlsXHNmexIc+Jlce0UfBHIGh4jOS2GWyQBi1yX2AJcU5LCttf4ItEIW/RvVf0ZsqlK+
+         SMd5rdnr5SCFyzM/O9sVFiFxOPBw8gEbECXwHFTpRkt2N5cVJoW2raEeEzQ+K0sOlDkj
+         hNOnsfvpbbKmVVEAcuE+2v37aToLmn6bd00sD9rQ2+TsJHd+RS9pQIAgxZQ4WR+umlY/
+         kTdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756235901; x=1756840701;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UrQoPThZjJ7Y9Fz9FPppmTbdMlPby6bxNAJJKC56oKU=;
-        b=NmEes4c6tpWr4DkIS4Gmkl27B/8M8hCs1dB6HigVOb6FwES2lQOlJtgMCAvA6Jdh2H
-         gGnREC5nVFYHGgtQ9TcS7JKyUftcZI7OwRwoMgY+q3nD67wLgtYEbSTUs8ASGSJmTUbZ
-         4td6krdfmkfULzD6WD1U/dDQlwkoIyz2mtf8fPyDu4h0em/AQoyPGDllcV3uiAZNUveA
-         QSLPppmrWU59G9CK2yppOZ5VrvtU7mcKzYtPsL2F8cN20H7t38KuzGdhVi3R7+5Aw8Ud
-         WySzKoFAJYGqHR8/7kFdT3gQfsX+DuXTWBPAXDzZlIVmmPP626oP6DrA2MJ/B9GKAe28
-         G4bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhjwRqki1+BjbSmVbnojHtv15Anj98E1p0+Rl3B/dAH6TZsYyf0ARcmMYJkJpR/ltyguhRvxX6U1hU+Fc=@vger.kernel.org, AJvYcCWcFabGm2V1oEfMCPDN7voxisKcqQvhlxdbbO89RLVtVmOJJ1YlDduEoCbxltzVdSqmsSGBm74u@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQitC+JcEw/S9Efvx1isZFo1w3vAKsgEhH4eQmo7U2xdeA+vUr
-	VsghRkjzFYV7hDZUztnTbZrB/RQb6r8NZ8tGaBnmZmQ6Lz/Y7p4vcjY3COqOwJU=
-X-Gm-Gg: ASbGnctgeEaamgt4xkNVJKMnu9KZd0i0+SEkt4bcaD9de/sHCCsEHhCt1R50Q0GHSMt
-	o5VmYHToDHCbGyYBcRf03MNMA2TC2JCQs5dS8W78b8YcUlPwd6gcnV4WFmHdIeFrGtIBgD9SbNI
-	y4i1g3MiPX0LXl7NzCURfRENaUPxQlXGdG0VFLION+y87BJoWpiBVZzBxsUc3/C0/es+5Pllda+
-	RJAzDNogItDUcx9oRNLQ4FxGvvS3B0W7j0DQKlEUu7Xv0BP8MmXpn+IEV/3IWMPTQxegUeYbApa
-	M8JRGg8E1nUjQM8leOyzYEqExwFKEje2o3HqdU4ZNjHR/qG8Jj/IqTRe2OQSvTfVWJ4ayBYpHnV
-	YR3pHo8RKKr0IfR2XMO/Iu5xWrNhFMS7E6f03xE35VGjy4Je75VxStFU50IFDt5AN8JJPkQ1WA1
-	Jop8mFkha7eXQtF+auaPg=
-X-Google-Smtp-Source: AGHT+IEzVl8BZCib+8G1pZUV+hzUECdFSzGakztyZIS9Nsbt7lyHyXZ1qO9z0MNcP8N/hRARQjADpQ==
-X-Received: by 2002:a05:600c:c48f:b0:459:dfa8:b854 with SMTP id 5b1f17b1804b1-45b5fbee605mr76053925e9.5.1756235900446;
-        Tue, 26 Aug 2025 12:18:20 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057219.dip0.t-ipconnect.de. [91.5.114.25])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6c53dff9sm4672385e9.18.2025.08.26.12.18.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 12:18:20 -0700 (PDT)
-Message-ID: <e06db79e-809d-408c-a862-a6f90c6a35e1@googlemail.com>
-Date: Tue, 26 Aug 2025 21:18:19 +0200
+        d=1e100.net; s=20230601; t=1756236852; x=1756841652;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B1JjpOE1ucuZyY8BzZRnNa5t4FVs2T8yEQ1ySGA0bgg=;
+        b=KcIqD5Obwq8DVWIu93rnorKir6O/ykxk10f+E0IRjawQwI9zCa/xRCVIvwWuuPRmmL
+         REpq+5ZRPJnHM5ctXf5+vi9PG/UX0wrNNebZDvGCwpcCvr/UDVZVmmzgfxB62OHqomr/
+         BEnk5yfMiuPgMrzc16KmNKjqI5YnupRoo6b+HokJXhFW5twyA5xrOxK4b39bOJfKEa7z
+         1/vZFnqDPj2qf2865M1Yy22LZPpEgWTA9b8W+4ub/qDqCMZ5VPlkV3V4j5Ew4x8RqW3x
+         p5jbQyK0P2fWUp8dJ4cBTbRV4EA0hCoMjX3kQS6EMiMyjqVjayaAvHtKIdkx5njgTGVM
+         hlnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVc6GvbRJ3ApnLuM04IV5oP+ZM1KT7c5Z5+lxb5sXCyqR17GSe2yWrq6YtRMMLOpUrDvJJuY81i5Ps6980=@vger.kernel.org, AJvYcCWE7hnNZZJUTyH0xSHQSxl0RtT4ZXD942WwcwkV0nI3h9rUMgr8bwym1NYoxI/3YvqMOOUIM7ot@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbAJ8VlcpjdWIvukKXAjFfLTFajUa186hkv5+1doIOdIyuy5Re
+	gCblM46FLQUPPe32Ggzy75SQFm9XWuiWctDfDJe2kApQllPUVgp9JKj5wq2bh6PJDq+7qCqWLoJ
+	dQOaBWSdoKS6sUy2cdVJ2ee8MZiFCBLc=
+X-Gm-Gg: ASbGncvaNgxik2wVxjLiFu6mfjkmTm0TKLykwgtcltQUc0CEREcWkbEFxY+zm4L8obC
+	QQ0r5xf1GIHlnUrE2RCguJiFcsXjdo3HerPODSKSahXK8GVxRp9oD5G2L5cYxuxqVH9PL4BFxyn
+	ojtABl3m++cdSh7SUbPdULPbVRb+pUmQLq3t4HmhXvXhtyzJLfk7wHH2TOejsBpIVi3e/JUdMUz
+	kTDkhYuUkeyhPbzt4I3JfRhwCuZpgatZ43aI8F63Q79wF/PyhGrNpuwe8VNXoZ9QdWFUI6xX2A1
+	w8EHqQ0/8Jw6rjaPlg==
+X-Google-Smtp-Source: AGHT+IF4jA3hebq+TxqejHpsJdzVgo6yJA8tVNVCWVSES5L3g/vKgbx6IXIv9F+15JrZjVk6OmPJBOUbma5xs8mYElo=
+X-Received: by 2002:a05:6000:40dc:b0:3c9:38ca:2c1e with SMTP id
+ ffacd0b85a97d-3c938ca3186mr8404870f8f.63.1756236851806; Tue, 26 Aug 2025
+ 12:34:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/587] 6.6.103-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250826110952.942403671@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250822041526.467434-1-CFSworks@gmail.com> <CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+ <CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
+ <aK2DV_joOnaU85Tx@J2N7QTR9R3> <CAMj1kXGWjC3_hNDUxiZWU6UVHoViU=iZuZ2VbCsaqDr-5tMK8w@mail.gmail.com>
+In-Reply-To: <CAMj1kXGWjC3_hNDUxiZWU6UVHoViU=iZuZ2VbCsaqDr-5tMK8w@mail.gmail.com>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Tue, 26 Aug 2025 12:33:59 -0700
+X-Gm-Features: Ac12FXzbn1skHkIUrxKo1DPsOGCXKj1s_SA-_l9aRPtsFagBnZChe9EDxhpfWqE
+Message-ID: <CAH5Ym4jK6dHOgO10WTPrHd6w6UK7gJH-95t1Da4NooF+ORB=oA@mail.gmail.com>
+Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Anshuman Khandual <anshuman.khandual@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Baruch Siach <baruch@tkos.co.il>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Joey Gouly <joey.gouly@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 26.08.2025 um 13:02 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.103 release.
-> There are 587 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 26, 2025 at 3:18=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+> Indeed. And actually, it should still be the ELF loader's job to
+> zero-initialize NOBITS sections, so ideally, we'd make these NOBITS
+> rather than PROGBITS, and the bloat issue should go away.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+I completely agree. NOBITS seems like the best approach:
+- It doesn't meaningfully increase the size of vmlinux
+- It has no runtime cost (and indeed shouldn't change the binary image at a=
+ll)
+- Yet it still memorializes in ELF our expectation that these tables
+are pre-zeroed (and addresses some of my other "what ifs" like "What
+if the user wants to use objcopy --gap-fill?")
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+> If the ELF loader in question relies on the executable's startup code
+> to clear NOBITS sections, it needs to be fixed in any case. Clearing
+> BSS like we do at startup time is really only appropriate for
+> bare-metal images such as arm64's Image, but a platform that elects to
+> use an ELF loader instead (even though that is not a supported
+> bootable format for arm64 Linux) should at least adhere to the ELF
+> spec.
 
+Here's hoping -- I'm afraid I can't substantially change anything
+about this bootloader, so I've been looking to replace it instead. But
+we are in agreement that if the ELF loader isn't following the spec
+and NOBITS doesn't solve my problem, then interim workarounds are
+solely my responsibility.
 
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Best,
+Sam
 
