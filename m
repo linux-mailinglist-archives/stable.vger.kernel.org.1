@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BEAB3605B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB0AB3692F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354727B5A12
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A1202A66F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921951F1534;
-	Tue, 26 Aug 2025 12:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00033570DA;
+	Tue, 26 Aug 2025 14:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvndfjFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9auE1g7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDF31DD9D3;
-	Tue, 26 Aug 2025 12:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62734AAE3;
+	Tue, 26 Aug 2025 14:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213169; cv=none; b=I6gDd8hgujQ/RvlOa2uj0M/+E5uDesH0J3B1Z5j6AhQpFWoZhr5aHCFKU254jxtERj2SU3jv+Y96Ilv945QPxTW32rSryxqyi70Qz+gDNUKuqx6cPWcHRgoxO2A/TW0du/ROJeatpVZz+UAEbNfy1oUo/DJIz0jc47YEeYAOdxU=
+	t=1756217548; cv=none; b=oe+UB3boa/ckBA7HrjxMMCuZuDH/WbQbKISLkBVKztoqX9L2NC4gqiqKz3nnENsKt3lMfv7DNjLY6uYIE6MJeG2w2XSquXvNu57O0hfUEYYvt2vfEA2Raa5Hsd8TeyDCqYmScRnw2ACYdt2SqLfF/Op9YUi2g+LrXXAxDOsb5ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213169; c=relaxed/simple;
-	bh=bS38em7zvpPwralGmmwG6T8aZmBnH+iZBSNTTCM6/KU=;
+	s=arc-20240116; t=1756217548; c=relaxed/simple;
+	bh=CwxPJd+DgroMQ+PKEDlTjbWUh0wg+zamjc8XZINDII8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7acr8enYrIye6DubCjl7AzOrcod8FBdF7y9IiBcGn1XiEivPzVx9sYofjz4fifowtxdos3HO/CHY7BTl6xXqjgaLizoYV2xSZJI6oubQ5JO5y+5ztYPh+j5qTUiURNdn1bYVwOaza0HB7GjzgCeYN7zn+mevLojLLnrtMCek1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvndfjFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691DFC4CEF1;
-	Tue, 26 Aug 2025 12:59:28 +0000 (UTC)
+	 MIME-Version; b=axV93QU/q8Wl3Uwhjnes1gSMs86xmgJAWT+K61r0eN0LgF+hqiCeNJo5AJrGgA8a9nKvNlZQQEUQF/XSZBSseFqkQh8DblKaWR3kgakMEPHoTG/Zxal2MNM/nuiuQcQZfGOfNLxMlTF7/ANT9PLha0RKn0xzLZ0t6DLHvkBpBJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9auE1g7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7422C4CEF1;
+	Tue, 26 Aug 2025 14:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213168;
-	bh=bS38em7zvpPwralGmmwG6T8aZmBnH+iZBSNTTCM6/KU=;
+	s=korg; t=1756217548;
+	bh=CwxPJd+DgroMQ+PKEDlTjbWUh0wg+zamjc8XZINDII8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvndfjFhPpgJC7nIHhfVwF8N16u0WSQZ4atqowWPpVgFvqdLUJ01BG9Y8eovxRBHw
-	 XkmblwCFAJAyNAlaIpjlF1ifUXAdpZSjsQ544zH51p44NWaTBCVQcSEvh4MLhW9RZT
-	 Wrbp3jvGChnv8wMy9ZqN/ZbqUZb+3vj/4GPNSdqA=
+	b=T9auE1g7fWkoTDFNL/Gq/af9wGU3xavCQKsJSRdf/nmB3PER8bF2Bjzt4k6uLGdBL
+	 upLaKO4h6Ps4mhTZA4Hsv1RrzfEkRN73tB9P8Hm/ZPKG0XUegKKqlxBQACyhURtV4Y
+	 eiuNcB0sSydy8nG9mmLh1Ah93ebHMuTucoBFpgIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/587] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.10 185/523] perf/core: Prevent VMA split of buffer mappings
 Date: Tue, 26 Aug 2025 13:06:35 +0200
-Message-ID: <20250826110959.188456385@linuxfoundation.org>
+Message-ID: <20250826110929.016964765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
+commit b024d7b56c77191cde544f838debb7f8451cd0d6 upstream.
 
-If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
-resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
-occur before sli4_hba.hdwqs are allocated.  This may result in a null
-pointer dereference when attempting to take the abts_io_buf_list_lock for
-the first hardware queue.  Fix by adding a null ptr check on
-phba->sli4_hba.hdwq and early return because this situation means there
-must have been an error during port initialization.
+The perf mmap code is careful about mmap()'ing the user page with the
+ringbuffer and additionally the auxiliary buffer, when the event supports
+it. Once the first mapping is established, subsequent mapping have to use
+the same offset and the same size in both cases. The reference counting for
+the ringbuffer and the auxiliary buffer depends on this being correct.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Though perf does not prevent that a related mapping is split via mmap(2),
+munmap(2) or mremap(2). A split of a VMA results in perf_mmap_open() calls,
+which take reference counts, but then the subsequent perf_mmap_close()
+calls are not longer fulfilling the offset and size checks. This leads to
+reference count leaks.
+
+As perf already has the requirement for subsequent mappings to match the
+initial mapping, the obvious consequence is that VMA splits, caused by
+resizing of a mapping or partial unmapping, have to be prevented.
+
+Implement the vm_operations_struct::may_split() callback and return
+unconditionally -EINVAL.
+
+That ensures that the mapping offsets and sizes cannot be changed after the
+fact. Remapping to a different fixed address with the same size is still
+possible as it takes the references for the new mapping and drops those of
+the old mapping.
+
+Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27504
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/events/core.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 070654cc9292..dcbb2432c978 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -390,6 +390,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
- 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
- 		return;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6194,11 +6194,21 @@ out_put:
+ 	ring_buffer_put(rb); /* could be last */
+ }
  
-+	/* may be called before queues established if hba_setup fails */
-+	if (!phba->sli4_hba.hdwq)
-+		return;
++static int perf_mmap_may_split(struct vm_area_struct *vma, unsigned long addr)
++{
++	/*
++	 * Forbid splitting perf mappings to prevent refcount leaks due to
++	 * the resulting non-matching offsets and sizes. See open()/close().
++	 */
++	return -EINVAL;
++}
 +
- 	spin_lock_irqsave(&phba->hbalock, iflag);
- 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
- 		qp = &phba->sli4_hba.hdwq[idx];
--- 
-2.39.5
-
+ static const struct vm_operations_struct perf_mmap_vmops = {
+ 	.open		= perf_mmap_open,
+ 	.close		= perf_mmap_close, /* non mergeable */
+ 	.fault		= perf_mmap_fault,
+ 	.page_mkwrite	= perf_mmap_fault,
++	.split		= perf_mmap_may_split,
+ };
+ 
+ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
 
 
 
