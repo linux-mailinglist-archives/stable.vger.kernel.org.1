@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CEBB35EB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 962F0B3627C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ABB6560CD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E071896A88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BA0288511;
-	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0FF298CA7;
+	Tue, 26 Aug 2025 13:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSbZcwdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYz6Rpbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94737749C;
-	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2861226158C;
+	Tue, 26 Aug 2025 13:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208887; cv=none; b=BDvYi4JHArO6wcFFy4jrdkxJx39rDuLUvwD0YPLH6YJsd+QQfrkG9gh9YBcuQA0IDe++QNLZzxlD3LOSRFiYb8oUeSvRQ3U5GYsTaAgPf7tFsB1/2KFKgXQLbuLc4OK3NavAUS6qZ1vDqTLEPfB+FecLcfNECYMB2X4aeD0uxQI=
+	t=1756214058; cv=none; b=lp2JlLgKmAdPihQ40T/Q/JD0IVIlxq8MT9Md8tOFTH5CAQFEHsrVf5JxzucK1mrZyvAN4g20q60n4Q0eD34T6uXK4ssMGgFvmrPQAt4FAC6Xzy6qHdxHlgIjZadP07UdnEXAbhQzxW7cueqsP7hwVAj1aU/fV9q6sey/peGoe+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208887; c=relaxed/simple;
-	bh=NN0hgH1g0sCLh+iEVlSC5A+G0wjBWBc/Ofvsw92a/7s=;
+	s=arc-20240116; t=1756214058; c=relaxed/simple;
+	bh=+MbRgZ/cdqe5KeOOhXjNdF28Bd5UP7m0eTNuDJ1QIDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sG8gZJytkG5O5MBlkumI6TjR4qqyd15s6qRA7l9zi3fcwItxU6yYhXxiGeEhjeGOt4G4JI7Fu5tvZ9eaXJ6R3ymJE9eINDKm1XMwAi8DzeNflRR2poG5Xx0eoE+DIEYbhPPkBGNT+e9kWXOfAtrsUdIYUeYP+jrowJP8HWOnv9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSbZcwdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F85C4CEF1;
-	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
+	 MIME-Version; b=unMA23BAXHA7ZFG8Zbrwf5IflJUkYrgtQktlh109ZiYg2k8OIr5EOc7JD+Grd9X87mCkzAd07h0BosKsmfCe5ggwD7E6aYduVGWQQYpNQ0ZlyAy7jFd1Te8nUoVE2HPT+R6XBUTo5tHVGVM+IYq+JYhjoJdUUdWBetvzM4ZGLZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYz6Rpbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1DBC4CEF1;
+	Tue, 26 Aug 2025 13:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208887;
-	bh=NN0hgH1g0sCLh+iEVlSC5A+G0wjBWBc/Ofvsw92a/7s=;
+	s=korg; t=1756214058;
+	bh=+MbRgZ/cdqe5KeOOhXjNdF28Bd5UP7m0eTNuDJ1QIDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSbZcwdoWqKiBPrYsPU1xHBrJI7iqGRhKiOcimTbrzdxl58VudIpy5tmsLzTuKKa5
-	 HsBubIgTkJZyN8XKQRSdigeaHZpF4L+cVA2BGbuUdn4x1dz3DgrT/iyslDNvuugHWW
-	 WLuDH8e2cwZU8qMsjUzf9ky+CxzF0VgwmGenKFs4=
+	b=VYz6Rpbbv8AyCu4UXTPnzFBiVgfdzYakorMKn6lhpAD1FNCsCmxe16Z0obqm32lkx
+	 Lk9fIdYVOoHiq7qC2sqTGIG1vj2qiwDwtBE0FPGt7tBYmeGFBFQdW3Al8wphu9Ti3g
+	 dFDPOo6KGS84ZIORRzG64NE1XNX2UIvqDFs2eLkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Tian Tao <tiantao6@hisilicon.com>,
+	Waiman Long <longman@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 284/322] drm/hisilicon/hibmc: refactored struct hibmc_drm_private
+Subject: [PATCH 6.6 550/587] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826110922.930551509@linuxfoundation.org>
+Message-ID: <20250826111007.010954585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,204 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 587013d72c1a217ced9f42a9a08c8013052cabfc ]
+[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
 
-Refactored struct hibmc_drm_private to separate VGA module from
-generic struct.
+The following lockdep splat was observed.
 
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Tian Tao <tiantao6@hisilicon.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250103093824.1963816-5-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: e5f48bfa2ae0 ("drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed")
+[  812.359086] ============================================
+[  812.359089] WARNING: possible recursive locking detected
+[  812.359097] --------------------------------------------
+[  812.359100] runtest.sh/30042 is trying to acquire lock:
+[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
+[  812.359131]
+[  812.359131] but task is already holding lock:
+[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
+     :
+[  812.359267] Call Trace:
+[  812.359272]  <TASK>
+[  812.359367]  cpus_read_lock+0x3c/0xe0
+[  812.359382]  static_key_enable+0xe/0x20
+[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
+[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
+[  812.359411]  cgroup_file_write+0x1c7/0x660
+[  812.359467]  kernfs_fop_write_iter+0x358/0x530
+[  812.359479]  vfs_write+0xabe/0x1250
+[  812.359529]  ksys_write+0xf9/0x1d0
+[  812.359558]  do_syscall_64+0x5f/0xe0
+
+Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
+and hotplug lock order"), the ordering of cpu hotplug lock
+and cpuset_mutex had been reversed. That patch correctly
+used the cpuslocked version of the static branch API to enable
+cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
+same for cpusets_insane_config_key.
+
+The cpusets_insane_config_key can be enabled in the
+check_insane_mems_config() which is called from update_nodemask()
+or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
+cpuset_mutex held. Deadlock can happen with a pending hotplug event that
+tries to acquire the cpu hotplug write lock which will block further
+cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
+switching to use static_branch_enable_cpuslocked().
+
+Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h   | 16 ++++----
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c   | 41 +++++++++----------
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c  | 20 ++++-----
- 3 files changed, 38 insertions(+), 39 deletions(-)
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-index 6b566f3aeecb..42f0ab8f9b5a 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-@@ -20,9 +20,10 @@
- 
- #include <drm/drm_framebuffer.h>
- 
--struct hibmc_connector {
--	struct drm_connector base;
--
-+struct hibmc_vdac {
-+	struct drm_device *dev;
-+	struct drm_encoder encoder;
-+	struct drm_connector connector;
- 	struct i2c_adapter adapter;
- 	struct i2c_algo_bit_data bit_data;
- };
-@@ -35,13 +36,12 @@ struct hibmc_drm_private {
- 	struct drm_device dev;
- 	struct drm_plane primary_plane;
- 	struct drm_crtc crtc;
--	struct drm_encoder encoder;
--	struct hibmc_connector connector;
-+	struct hibmc_vdac vdac;
- };
- 
--static inline struct hibmc_connector *to_hibmc_connector(struct drm_connector *connector)
-+static inline struct hibmc_vdac *to_hibmc_vdac(struct drm_connector *connector)
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index ad8b62202bdc..eadb028916c8 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -432,7 +432,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
  {
--	return container_of(connector, struct hibmc_connector, base);
-+	return container_of(connector, struct hibmc_vdac, connector);
- }
- 
- static inline struct hibmc_drm_private *to_hibmc_drm_private(struct drm_device *dev)
-@@ -57,6 +57,6 @@ void hibmc_set_current_gate(struct hibmc_drm_private *priv,
- int hibmc_de_init(struct hibmc_drm_private *priv);
- int hibmc_vdac_init(struct hibmc_drm_private *priv);
- 
--int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_connector *connector);
-+int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
- 
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-index e6e48651c15c..99b3b77b5445 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-@@ -25,8 +25,8 @@
- 
- static void hibmc_set_i2c_signal(void *data, u32 mask, int value)
- {
--	struct hibmc_connector *hibmc_connector = data;
--	struct hibmc_drm_private *priv = to_hibmc_drm_private(hibmc_connector->base.dev);
-+	struct hibmc_vdac *vdac = data;
-+	struct hibmc_drm_private *priv = to_hibmc_drm_private(vdac->connector.dev);
- 	u32 tmp_dir = readl(priv->mmio + GPIO_DATA_DIRECTION);
- 
- 	if (value) {
-@@ -45,8 +45,8 @@ static void hibmc_set_i2c_signal(void *data, u32 mask, int value)
- 
- static int hibmc_get_i2c_signal(void *data, u32 mask)
- {
--	struct hibmc_connector *hibmc_connector = data;
--	struct hibmc_drm_private *priv = to_hibmc_drm_private(hibmc_connector->base.dev);
-+	struct hibmc_vdac *vdac = data;
-+	struct hibmc_drm_private *priv = to_hibmc_drm_private(vdac->connector.dev);
- 	u32 tmp_dir = readl(priv->mmio + GPIO_DATA_DIRECTION);
- 
- 	if ((tmp_dir & mask) != mask) {
-@@ -77,22 +77,21 @@ static int hibmc_ddc_getscl(void *data)
- 	return hibmc_get_i2c_signal(data, I2C_SCL_MASK);
- }
- 
--int hibmc_ddc_create(struct drm_device *drm_dev,
--		     struct hibmc_connector *connector)
-+int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
- {
--	connector->adapter.owner = THIS_MODULE;
--	snprintf(connector->adapter.name, I2C_NAME_SIZE, "HIS i2c bit bus");
--	connector->adapter.dev.parent = drm_dev->dev;
--	i2c_set_adapdata(&connector->adapter, connector);
--	connector->adapter.algo_data = &connector->bit_data;
--
--	connector->bit_data.udelay = 20;
--	connector->bit_data.timeout = usecs_to_jiffies(2000);
--	connector->bit_data.data = connector;
--	connector->bit_data.setsda = hibmc_ddc_setsda;
--	connector->bit_data.setscl = hibmc_ddc_setscl;
--	connector->bit_data.getsda = hibmc_ddc_getsda;
--	connector->bit_data.getscl = hibmc_ddc_getscl;
--
--	return i2c_bit_add_bus(&connector->adapter);
-+	vdac->adapter.owner = THIS_MODULE;
-+	snprintf(vdac->adapter.name, I2C_NAME_SIZE, "HIS i2c bit bus");
-+	vdac->adapter.dev.parent = drm_dev->dev;
-+	i2c_set_adapdata(&vdac->adapter, vdac);
-+	vdac->adapter.algo_data = &vdac->bit_data;
-+
-+	vdac->bit_data.udelay = 20;
-+	vdac->bit_data.timeout = usecs_to_jiffies(2000);
-+	vdac->bit_data.data = vdac;
-+	vdac->bit_data.setsda = hibmc_ddc_setsda;
-+	vdac->bit_data.setscl = hibmc_ddc_setscl;
-+	vdac->bit_data.getsda = hibmc_ddc_getsda;
-+	vdac->bit_data.getscl = hibmc_ddc_getscl;
-+
-+	return i2c_bit_add_bus(&vdac->adapter);
- }
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-index 409c551c92af..05e19ea4c9f9 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-@@ -24,11 +24,11 @@
- 
- static int hibmc_connector_get_modes(struct drm_connector *connector)
- {
--	struct hibmc_connector *hibmc_connector = to_hibmc_connector(connector);
-+	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
- 	const struct drm_edid *drm_edid;
- 	int count;
- 
--	drm_edid = drm_edid_read_ddc(connector, &hibmc_connector->adapter);
-+	drm_edid = drm_edid_read_ddc(connector, &vdac->adapter);
- 
- 	drm_edid_connector_update(connector, drm_edid);
- 
-@@ -51,9 +51,9 @@ static int hibmc_connector_get_modes(struct drm_connector *connector)
- 
- static void hibmc_connector_destroy(struct drm_connector *connector)
- {
--	struct hibmc_connector *hibmc_connector = to_hibmc_connector(connector);
-+	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
- 
--	i2c_del_adapter(&hibmc_connector->adapter);
-+	i2c_del_adapter(&vdac->adapter);
- 	drm_connector_cleanup(connector);
- }
- 
-@@ -93,20 +93,20 @@ static const struct drm_encoder_helper_funcs hibmc_encoder_helper_funcs = {
- int hibmc_vdac_init(struct hibmc_drm_private *priv)
- {
- 	struct drm_device *dev = &priv->dev;
--	struct hibmc_connector *hibmc_connector = &priv->connector;
--	struct drm_encoder *encoder = &priv->encoder;
-+	struct hibmc_vdac *vdac = &priv->vdac;
-+	struct drm_encoder *encoder = &vdac->encoder;
- 	struct drm_crtc *crtc = &priv->crtc;
--	struct drm_connector *connector = &hibmc_connector->base;
-+	struct drm_connector *connector = &vdac->connector;
- 	int ret;
- 
--	ret = hibmc_ddc_create(dev, hibmc_connector);
-+	ret = hibmc_ddc_create(dev, vdac);
- 	if (ret) {
- 		drm_err(dev, "failed to create ddc: %d\n", ret);
- 		return ret;
- 	}
- 
- 	encoder->possible_crtcs = drm_crtc_mask(crtc);
--	ret = drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_DAC);
-+	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
- 	if (ret) {
- 		drm_err(dev, "failed to init encoder: %d\n", ret);
- 		return ret;
-@@ -117,7 +117,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 	ret = drm_connector_init_with_ddc(dev, connector,
- 					  &hibmc_connector_funcs,
- 					  DRM_MODE_CONNECTOR_VGA,
--					  &hibmc_connector->adapter);
-+					  &vdac->adapter);
- 	if (ret) {
- 		drm_err(dev, "failed to init connector: %d\n", ret);
- 		return ret;
+ 	if (!cpusets_insane_config() &&
+ 		movable_only_nodes(nodes)) {
+-		static_branch_enable(&cpusets_insane_config_key);
++		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
+ 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
+ 			"Cpuset allocations might fail even with a lot of memory available.\n",
+ 			nodemask_pr_args(nodes));
 -- 
 2.50.1
 
