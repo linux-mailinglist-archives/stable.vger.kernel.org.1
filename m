@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D754BB36150
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1B0B363EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 357D81BA6627
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13FC16C795
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E891ADFFE;
-	Tue, 26 Aug 2025 13:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF95252900;
+	Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ydif7BlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMOQlZmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F0512CDA5;
-	Tue, 26 Aug 2025 13:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD3F1917ED;
+	Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213482; cv=none; b=UgJSfct9H2YbsaCWUM3uF1I7MDohZupnngjlnlEpY3ke0IlAoMq4dOasVgvt7bCTN/PgqVThOUrPBO1O3HyGnw/LboIaYRbMrz+DCXO3QYGAqe54FOE5Gab97fUYsAZZ9Cj/wzkT/rD/mlwixg4h/Uy1o2ZPm3T6UTBZlVxilwM=
+	t=1756214690; cv=none; b=YgI9r7sv9fYwlCd1tgDwWa9i0TcMMcRZ5n3EIOfHKeO/QyfYRFVWfsmW4hZ2ze/g9Lho8wU7RpGjWCy9A2V8ItmXLebMr3Xs1v//zHNUpPhjd2Xbhq+mKH5ZoPXSodtL+DfevhpEkKQGiLXPdzjWOMebvu36wiGoXbgBy2dSfdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213482; c=relaxed/simple;
-	bh=5r8O9drpLpjlnMcHwqpQ/ZgVYWdI6Bv9XqyVYcA3jHU=;
+	s=arc-20240116; t=1756214690; c=relaxed/simple;
+	bh=Hx9VbZTPlUq6OoWEN1lWFhRM2B46JY2US+ZwjTx5waY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+FNnLvqxV3ZE+RTYzKSGjD8bwliA0819H91bttLqSifas7vBdGdAxdbppiccbfSHdxm5K+CAtKZ8SRTGAjMJ0agIgcZmhDNLTsLKuCkpETN8AvM4hF/sy4w+4h+SVglXqjuDGAUtuTYt2C60EPeyVo38MYaEB2Wl8qwKcGB+5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ydif7BlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B12FC4CEF1;
-	Tue, 26 Aug 2025 13:04:42 +0000 (UTC)
+	 MIME-Version; b=TOuNa7kZYmSEBQrq7j7vdewPRAQUEC+nypiq1BJsxP7mLkjSdRInMhRiVncjFqJsl6QEmOF2jGdC25UaTZEYKj9iWw3hCm1S0QaGvjb9/uVkDq3th997ca2C1FvWB3I4Yo5UBlf0VSe+pCYjP4DtpbwP0qPW1j/QzBhywROItGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMOQlZmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC84BC4CEF1;
+	Tue, 26 Aug 2025 13:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213482;
-	bh=5r8O9drpLpjlnMcHwqpQ/ZgVYWdI6Bv9XqyVYcA3jHU=;
+	s=korg; t=1756214690;
+	bh=Hx9VbZTPlUq6OoWEN1lWFhRM2B46JY2US+ZwjTx5waY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ydif7BlFvd3rt0ZzeBwgw9jNAm2nssLG/EacE4SKuammGkq27v+llnSfB8DqWmuR/
-	 TMLUwUrES2A4I4tOXzOzbW7Vs7JdPr8xrZOV/zTlH7RpN27tNemmewDk2rt+cyBJ5g
-	 DjwY6MSQc+C1SxGBYb+315yY+ECZHWyiTYq84Kco=
+	b=fMOQlZmTPLAsawnzfI2YPDQYqTqY5tGjfR0FrgvTXvZpkFf3Yvtsh/wjaUxjbuk5e
+	 FDk7k/2XxAwjN1TFqnk0nUyGQpbVU1ZJPUodpiX0P/9Dqz2/wCUAbqX12dfmGBYVMZ
+	 R7hfKLqadf4P7Pft7LmQxEMwyfpCXKO8QgHKv3o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.6 337/587] bus: mhi: host: Fix endianness of BHI vector table
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 233/482] pNFS: Fix stripe mapping in block/scsi layout
 Date: Tue, 26 Aug 2025 13:08:06 +0200
-Message-ID: <20250826111001.490962984@linuxfoundation.org>
+Message-ID: <20250826110936.528091416@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-On big endian platform like PowerPC, the MHI bus (which is little endian)
-does not start properly. The following example shows the error messages by
-using QCN9274 WLAN device with ath12k driver:
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
-    ath12k_pci 0001:01:00.0: MSI vectors: 1
-    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
-    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
-    ath12k_pci 0001:01:00.0: failed to start mhi: -110
-    ath12k_pci 0001:01:00.0: failed to power up :-110
-    ath12k_pci 0001:01:00.0: failed to create soc core: -110
-    ath12k_pci 0001:01:00.0: failed to init core: -110
-    ath12k_pci: probe of 0001:01:00.0 failed with error -110
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
 
-The issue seems to be with the incorrect DMA address/size used for
-transferring the firmware image over BHI. So fix it by converting the DMA
-address and size of the BHI vector table to little endian format before
-sending them to the device.
-
-Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
-Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-[mani: added stable tag and reworded commit message]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/boot.c     |    8 ++++----
- drivers/bus/mhi/host/internal.h |    4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/bus/mhi/host/boot.c
-+++ b/drivers/bus/mhi/host/boot.c
-@@ -31,8 +31,8 @@ int mhi_rddm_prepare(struct mhi_controll
- 	int ret;
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index ce2ea6239797..fc6413953600 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
  
- 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = mhi_buf->len;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(mhi_buf->len);
- 	}
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
  
- 	dev_dbg(dev, "BHIe programming for RDDM\n");
-@@ -375,8 +375,8 @@ static void mhi_firmware_copy(struct mhi
- 	while (remainder) {
- 		to_cpy = min(remainder, mhi_buf->len);
- 		memcpy(mhi_buf->buf, buf, to_cpy);
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = to_cpy;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(to_cpy);
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
  
- 		buf += to_cpy;
- 		remainder -= to_cpy;
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -31,8 +31,8 @@ struct mhi_ctxt {
- };
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
  
- struct bhi_vec_entry {
--	u64 dma_addr;
--	u64 size;
-+	__le64 dma_addr;
-+	__le64 size;
- };
- 
- enum mhi_ch_state_type {
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
+-- 
+2.39.5
+
 
 
 
