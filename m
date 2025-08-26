@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A09BB35CA3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA695B36423
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D17D1894FDD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C511BC585A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00DD335BAA;
-	Tue, 26 Aug 2025 11:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E23321457;
+	Tue, 26 Aug 2025 13:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmE3bUP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXrxOenG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0273375A6;
-	Tue, 26 Aug 2025 11:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61143196C7C;
+	Tue, 26 Aug 2025 13:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207706; cv=none; b=syOk+hqsqUuCduAvSawvC5gRxJmnKDlUmQR1zSRNSGMYcCPau9UDS6HQiWQO4qwdu4Zrtk0QMfNmSGefU3fgQameyVg22nzx1bvrYPDZeEzGSSgMPJiX5p70y5s2Nmu1l+CfQC7+2fqSimGq4H8sugMWdfNf0FCfFNPt8bRTEnU=
+	t=1756214914; cv=none; b=fgLTvtCyIca/RTJv7g3C2FSY0ffKwXSsg/h6FfnOccDH2pw6rFyTX5CA6beEGOssbtfDM563fB3hsRTXfE0AbVcX4AdvqGmF+MldVYIQY0IS+27Jw11DOM47sCLF3NiSjTmCANSJ/1MqX7uuTLFsMKDgYCdmQlT1mO5Fl5ftUiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207706; c=relaxed/simple;
-	bh=iZw2yY5sMCMY6XW3T4WtbFXYfgfhe/bu37RbaD8rG18=;
+	s=arc-20240116; t=1756214914; c=relaxed/simple;
+	bh=f5xG0cj0m/WRSr6ri8+5R6SJrKw5+WDMKNpK8y2UsBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fetDC18ggONXoIdFOu5M01XCk8YpPO55PyZpQTjChVQVXTJiMMEwoP5NO8ikRJwxIDa+gJyA61VA3Z7EwwQ1u9CmdcVkSmSRV5d7hZUqU7qMpwLPJ1RwY2h39fh562L0/ijM53HUkxsshKzH4UKfBuei2EvZNpRsDLhdiWBTB7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmE3bUP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E3C4CEF1;
-	Tue, 26 Aug 2025 11:28:25 +0000 (UTC)
+	 MIME-Version; b=sEjvqXmYpCEHrfLuycD+2R839aoFISbnhTuWwOkVWJ07ZI++D9MqoNgNQOY0mldzspSd/YmrnZIhQh7XlogOYNdE5DneptsEK+aCh/iWI+lNQcZsZqgdDzx5E3YA2hQBwcIjFCv1rbvMGVsswx6h0TPoSrDGZAuMJ82YRMTSdg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXrxOenG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9037DC4CEF1;
+	Tue, 26 Aug 2025 13:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207706;
-	bh=iZw2yY5sMCMY6XW3T4WtbFXYfgfhe/bu37RbaD8rG18=;
+	s=korg; t=1756214913;
+	bh=f5xG0cj0m/WRSr6ri8+5R6SJrKw5+WDMKNpK8y2UsBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmE3bUP9ZWmpD/WYi/Itd7kH+HbpW6HDXnYQssus3ZcbHS88PLqPHmrjh/8tkzsvf
-	 DnBDcH4LgKnn3wQ6hVfUT1pZQYJFHPcmG/Ewlo2CUeDfz4M6bDGWbM7gCyzu5lB4Xb
-	 TRWCHGqTHy647Ch+c2tVkXf0KqR2Oriw/ZS6u0lk=
+	b=nXrxOenGO2Q/qvk8nYTDBBJsE/iD5WXMuljBrIw8GeBZNpvrfa8++wL6E0bV/CD60
+	 b1ojNOvxVVrSx28rgFtg65uV1vrh5boDuUQvz19BkmyINws8VVCW2lUUTvBr9ekZdc
+	 fXtuDs8LQrwg22AqX2En/KuRbx+3ktix9saobVFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.16 255/457] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.1 286/482] dt-bindings: display: sprd,sharkl3-dpu: Fix missing clocks constraints
 Date: Tue, 26 Aug 2025 13:08:59 +0200
-Message-ID: <20250826110943.658471961@linuxfoundation.org>
+Message-ID: <20250826110937.855522013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 upstream.
+commit 934da599e694d476f493d3927a30414e98a81561 upstream.
 
-__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
-As long as "sym" doesn't contain any odd characters, no quoting is
-required for its use with .quad / .long. In fact the quotation gets in
-the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
-are half-way properly supported.
+'minItems' alone does not impose upper bound, unlike 'maxItems' which
+implies lower bound.  Add missing clock constraint so the list will have
+exact number of items (clocks).
 
-However, assembly being different from C anyway, drop
-__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
-.global directive will suffice to get the symbol "declared", i.e. into
-the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
-and STATIC_CALL_KEY().
-
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 8cae15c60cf0 ("dt-bindings: display: add Unisoc's dpu bindings")
 Cc: stable@vger.kernel.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250720123003.37662-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |    5 +++--
- include/linux/compiler.h             |    8 --------
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- #ifdef MODULE
- #define __ADDRESSABLE_xen_hypercall
- #else
--#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
-+#define __ADDRESSABLE_xen_hypercall \
-+	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
- #endif
+--- a/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
++++ b/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
+@@ -25,7 +25,7 @@ properties:
+     maxItems: 1
  
- #define __HYPERCALL					\
- 	__ADDRESSABLE_xen_hypercall			\
--	"call __SCT__xen_hypercall"
-+	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
+   clocks:
+-    minItems: 2
++    maxItems: 2
  
- #define __HYPERCALL_ENTRY(x)	"a" (x)
- 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -288,14 +288,6 @@ static inline void *offset_to_ptr(const
- #define __ADDRESSABLE(sym) \
- 	___ADDRESSABLE(sym, __section(".discard.addressable"))
- 
--#define __ADDRESSABLE_ASM(sym)						\
--	.pushsection .discard.addressable,"aw";				\
--	.align ARCH_SEL(8,4);						\
--	ARCH_SEL(.quad, .long) __stringify(sym);			\
--	.popsection;
--
--#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
--
- /*
-  * This returns a constant expression while determining if an argument is
-  * a constant expression, most importantly without evaluating the argument.
+   clock-names:
+     items:
 
 
 
