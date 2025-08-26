@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-174163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3065B361C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE44B3680B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250273BFC0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73AE7983011
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B9D2192EA;
-	Tue, 26 Aug 2025 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032442192F2;
+	Tue, 26 Aug 2025 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXn3X5za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0S+of93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D320F079;
-	Tue, 26 Aug 2025 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B246D34DCCE;
+	Tue, 26 Aug 2025 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213660; cv=none; b=CkU0KUpm99Q9M4YKn7IvyDU9ti1tHfb1hB9bC/5NW9IEbJgY0Cvuq57s8g6foUpqPzCPWZo1TjhSVYEeL9b1E2odkS5VOV1MpNkUfdPunApZvoivFei63Rc8gm9DcMYcf+DHnmaAA+rl1TK9QRsxEiIWATdNTBAYmNtfcXN8DNw=
+	t=1756216645; cv=none; b=ivTHn+jCtuvLONP72vXfi1R7gOhl7byT7apswNCSdreL/plwnFVexwZgM9XqG/MjUUc5TWlQojbyl6dH1T7dM5JL5fapVSFFIRCT6DdOBdWabXd3TTCxOYXmSd0x5kx93PUGnqM9F6BCth6orqEdkRS82uX3z+IBHndNUGqPYbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213660; c=relaxed/simple;
-	bh=NuQqvZOsP/+htdbC9G+z2to7U6lVypgBCrJo09WI2Ww=;
+	s=arc-20240116; t=1756216645; c=relaxed/simple;
+	bh=yKdF/Pkazn3fW9ociP4ZJ4R3KRh7hdPPm9xSSLqWNFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWVP8drvL2a+XCmu992QarYqIduyDqU3wdZSbIKy72D4ltfUGpCDKvUPSXurwGuFbs4d4QNnYony96JcINgjaIqbpTPMMWNVCMv1kQtR87UDCr+R4FEny8Cvxr+aW7+uXUp0YIvfoA2OI9WlIfjSnAZmjCwORHpJpmFDRTpQZwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXn3X5za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC07C4CEF4;
-	Tue, 26 Aug 2025 13:07:39 +0000 (UTC)
+	 MIME-Version; b=WAo2kFZp11sg5Qus4S0Mc/C86umYSFpdDVaWbRBS8jDfYBNfmo/W7skGLOr6xNgQz17cAjjBvdS8gwpqwOT1C738dDimI5AlEm3twc5n42xn/3pLAlr7on+jCGnxDcMPaBauuvSgQ8mIIQZHZpX7xw9WpWF7+POMeY+LgfdrbNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0S+of93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4513DC4CEF1;
+	Tue, 26 Aug 2025 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213660;
-	bh=NuQqvZOsP/+htdbC9G+z2to7U6lVypgBCrJo09WI2Ww=;
+	s=korg; t=1756216645;
+	bh=yKdF/Pkazn3fW9ociP4ZJ4R3KRh7hdPPm9xSSLqWNFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXn3X5zaJ81z2KhiY6GqtkAfSL+SaUNrWmiLHt4udAkLuPbMlxp45J+0So2eZgfHG
-	 qkh9t+PASO/p3kFiNSEC0uNZOXumHrT1apSbVzyf8uOLKtyrlJunrg24GLlAqkPkXU
-	 2uGg/gFmaQKQdXN4atov3XBK8LOEsOVeuN/8RcKM=
+	b=L0S+of93vxvkHMRC2lJgdfQd4zIJs0E6qCPCqKWjhXearLdt39tSwnev7GkL264tK
+	 tWFUj8j9bhrbLBpXS1ULXlPDFM+em0/TJV5m9IZA+fhl2mQEXmgflIyVWu2QyT9hOe
+	 S2BUaMri8Mobja1A3i9VNhh3s5u2Q3qk1ONzkmZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Julian Orth <ju.orth@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 6.6 431/587] selftests/memfd: add test for mapping write-sealed memfd read-only
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 5.15 489/644] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
 Date: Tue, 26 Aug 2025 13:09:40 +0200
-Message-ID: <20250826111003.908737773@linuxfoundation.org>
+Message-ID: <20250826110958.609324211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
 
-[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
+It's a common pattern in drivers to free the control handler's resources
+and then return the handler's error code on drivers' error handling paths.
+Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
+effectively indicating successful return to the caller.
 
-Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
-assert that we are able to do this in a test to ensure that we do not
-regress this again.
+There's no apparent need to touch the error field while releasing the
+control handler's resources and cleaning up stale pointers. Not touching
+the handler's error field is a more certain way to address this problem
+than changing all the users, in which case the pattern would be likely to
+re-emerge in new drivers.
 
-Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Julian Orth <ju.orth@gmail.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Do just that, don't touch the control handler's error field in
+v4l2_ctrl_handler_free().
+
+Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c |   43 +++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -285,6 +285,24 @@ static void *mfd_assert_mmap_shared(int
- 	return p;
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -992,7 +992,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
+ 	kvfree(hdl->buckets);
+ 	hdl->buckets = NULL;
+ 	hdl->cached = NULL;
+-	hdl->error = 0;
+ 	mutex_unlock(hdl->lock);
+ 	mutex_destroy(&hdl->_lock);
  }
- 
-+static void *mfd_assert_mmap_read_shared(int fd)
-+{
-+	void *p;
-+
-+	p = mmap(NULL,
-+		 mfd_def_size,
-+		 PROT_READ,
-+		 MAP_SHARED,
-+		 fd,
-+		 0);
-+	if (p == MAP_FAILED) {
-+		printf("mmap() failed: %m\n");
-+		abort();
-+	}
-+
-+	return p;
-+}
-+
- static void *mfd_assert_mmap_private(int fd)
- {
- 	void *p;
-@@ -986,6 +1004,30 @@ static void test_seal_future_write(void)
- 	close(fd);
- }
- 
-+static void test_seal_write_map_read_shared(void)
-+{
-+	int fd;
-+	void *p;
-+
-+	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
-+
-+	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
-+			    mfd_def_size,
-+			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
-+
-+	mfd_assert_add_seals(fd, F_SEAL_WRITE);
-+	mfd_assert_has_seals(fd, F_SEAL_WRITE);
-+
-+	p = mfd_assert_mmap_read_shared(fd);
-+
-+	mfd_assert_read(fd);
-+	mfd_assert_read_shared(fd);
-+	mfd_fail_write(fd);
-+
-+	munmap(p, mfd_def_size);
-+	close(fd);
-+}
-+
- /*
-  * Test SEAL_SHRINK
-  * Test whether SEAL_SHRINK actually prevents shrinking
-@@ -1603,6 +1645,7 @@ int main(int argc, char **argv)
- 
- 	test_seal_write();
- 	test_seal_future_write();
-+	test_seal_write_map_read_shared();
- 	test_seal_shrink();
- 	test_seal_grow();
- 	test_seal_resize();
 
 
 
