@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD9B360C4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A2DB369B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B102A106C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FFEB9869ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089B417C211;
-	Tue, 26 Aug 2025 13:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6C62F83BA;
+	Tue, 26 Aug 2025 14:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqTIIEfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj+CXz7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BF2195FE8;
-	Tue, 26 Aug 2025 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652AF306D3F;
+	Tue, 26 Aug 2025 14:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213240; cv=none; b=p6orAg20Jj6Qvlw5FctaP4dHqQrGdBvQcIVWnzaJTkudWdFYVQl4F/BSG8I/JO+YeY0w0PXwhw8jh0Au8Dmhf5VZciA6Dz0xUAmSX63I01pHrrMu2xpKoDsf6oK25C5eIubT8Q0k2bmm5tq3u3LQMbCVdzqyomaY79OMA8mdQV8=
+	t=1756217622; cv=none; b=QNYrnCp1dIV1mjWUcvEXAGtEb4IP1h9TRkyeRxCwk8T98YrHszZWvlRMmpAaWmku0HyIR8SGeb/UsQX46Z2E4FpRxQyR5BYedq/RhXiUE2TiUikyHv95/ClicbiBbiYZqv/TSuyR+0+6uxrQ4BmpaCNZ/pSp5VFFQkp/UQMUq/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213240; c=relaxed/simple;
-	bh=yAnHOfRxjxc939EedaK8Pixwn3yHDCH3HU4NsOm5s+E=;
+	s=arc-20240116; t=1756217622; c=relaxed/simple;
+	bh=F+ADXTJ9zuPOBPIsUPGSugK6cRwZlEks0ymWnphcUVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMTnZwF4fkhNEPDQQoPqOD1h/k3jO3R2zaYIZumsmIoRwHfZjIjUDNrPSij0jJ6BFVNgvdbGOfdN07zlyG5bWTXiP/HB5BhYDtXlihRCYywVcUD4eDvV7hGnGf5qVu4HIpIGERXvbiKK9OIMb7aGcot675JZWFol4JJLjMM3Lus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqTIIEfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F4BC4CEF4;
-	Tue, 26 Aug 2025 13:00:40 +0000 (UTC)
+	 MIME-Version; b=rSxbEyW6hHXey4SPno4D84qA9OrUqr8hKKJOx3zUZE1Ce38uFA2vKPIEUET6ljfrTTpYTqKPJwpvkMHeRmpfXvvMGiEyzI3mdXcHhNm8jYtqlOfSMs2Mo2JaNBDh58jYgsuk5D57b2vnOQrzzfX0OMuRTxc12TVBeaXTyDYB3M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj+CXz7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BDEC113CF;
+	Tue, 26 Aug 2025 14:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213240;
-	bh=yAnHOfRxjxc939EedaK8Pixwn3yHDCH3HU4NsOm5s+E=;
+	s=korg; t=1756217622;
+	bh=F+ADXTJ9zuPOBPIsUPGSugK6cRwZlEks0ymWnphcUVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqTIIEfrQlcQ9093vN6lh1O0VenQJZ46pHD22RkYKIDi/YO2S2jGcOz1vn9V3C7gr
-	 qLAw91yLJtU79TpIYnc3E+/FUO5edGuD9fyDXlAZbwTGVFWlZouhLTP4PWmc7I+bnN
-	 RPq/mlTvG7sJiy3ir/yuGhlGjO8E3o6gJc1nsAjc=
+	b=Tj+CXz7XO8h7Zj1yBgpqTgb7aeIx/ypnP5LkiR3r0b9g025AHODR5U1XPN5x86+AM
+	 kHVv3YWmArSvo0KbY1IgOiExryjZZE6Thtqvw9LK0l2hLEgwkqO1WT6azS29+pHqeE
+	 shNElHANNjcfuxRpzQDvUoM/l9fzI4hbCEOtXfL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/587] kconfig: lxdialog: replace strcpy() with strncpy() in inputbox.c
+Subject: [PATCH 5.10 213/523] hfsplus: dont use BUG_ON() in hfsplus_create_attributes_file()
 Date: Tue, 26 Aug 2025 13:07:03 +0200
-Message-ID: <20250826110959.897587065@linuxfoundation.org>
+Message-ID: <20250826110929.720044958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 5ac726653a1029a2eccba93bbe59e01fc9725828 ]
+[ Upstream commit c7c6363ca186747ebc2df10c8a1a51e66e0e32d9 ]
 
-strcpy() performs no bounds checking and can lead to buffer overflows if
-the input string exceeds the destination buffer size. This patch replaces
-it with strncpy(), and null terminates the input string.
+When the volume header contains erroneous values that do not reflect
+the actual state of the filesystem, hfsplus_fill_super() assumes that
+the attributes file is not yet created, which later results in hitting
+BUG_ON() when hfsplus_create_attributes_file() is called. Replace this
+BUG_ON() with -EIO error with a message to suggest running fsck tool.
 
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Reviewed-by: Nicolas Schier <nicolas.schier@linux.dev>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reported-by: syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=1107451c16b9eb9d29e6
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/7b587d24-c8a1-4413-9b9a-00a33fbd849f@I-love.SAKURA.ne.jp
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/lxdialog/inputbox.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/hfsplus/xattr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/lxdialog/inputbox.c b/scripts/kconfig/lxdialog/inputbox.c
-index 1dcfb288ee63..327b60cdb8da 100644
---- a/scripts/kconfig/lxdialog/inputbox.c
-+++ b/scripts/kconfig/lxdialog/inputbox.c
-@@ -39,8 +39,10 @@ int dialog_inputbox(const char *title, const char *prompt, int height, int width
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index d91f76ef18d9..2438cd759620 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -172,7 +172,11 @@ static int hfsplus_create_attributes_file(struct super_block *sb)
+ 		return PTR_ERR(attr_file);
+ 	}
  
- 	if (!init)
- 		instr[0] = '\0';
--	else
--		strcpy(instr, init);
-+	else {
-+		strncpy(instr, init, sizeof(dialog_input_result) - 1);
-+		instr[sizeof(dialog_input_result) - 1] = '\0';
+-	BUG_ON(i_size_read(attr_file) != 0);
++	if (i_size_read(attr_file) != 0) {
++		err = -EIO;
++		pr_err("detected inconsistent attributes file, running fsck.hfsplus is recommended.\n");
++		goto end_attr_file_creation;
 +	}
  
- do_resize:
- 	if (getmaxy(stdscr) <= (height - INPUTBOX_HEIGTH_MIN))
+ 	hip = HFSPLUS_I(attr_file);
+ 
 -- 
 2.39.5
 
