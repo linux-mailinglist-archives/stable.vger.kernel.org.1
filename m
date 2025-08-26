@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99986B3665E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F44FB36086
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C68218E7E6A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 883C83B8370
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD15134DCD8;
-	Tue, 26 Aug 2025 13:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C22218858;
+	Tue, 26 Aug 2025 12:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAD3b7S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJR9pG+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE57239E8B;
-	Tue, 26 Aug 2025 13:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E1A1B0420;
+	Tue, 26 Aug 2025 12:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216037; cv=none; b=IGiSi4jTXMh+DJZumefVJX1+1T2T9tSrlcAf8wpmNRbnPh5lUO5ExGmWt4KxJ/O1/Gt2XzYBC3TvVr4YYL+gfpZ4Ldcv7H1JIFnBNBtqgOlSg9Fmut+z0UvODz3eq6XWNnxCmRaRM8TJJNMiorK5gUV5vUygPgNe2J7I4rEEKok=
+	t=1756213049; cv=none; b=PtLFo/Tfv6TjpBPlUCOeElT9GQyY+FSp2R0bOiDcQKbF53fSAunNTBgDXkSlSYdikr9ESSJKh8SPBKlsfWPAr3HLTZsRTZ+ohsZC8s6OE1SrwibArRVzEKVDTuwgIF7OoUM7u7sroKewYI2eo+q8wiw7pPHjwoSS3mVlT4aWvZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216037; c=relaxed/simple;
-	bh=YijJo4Dhjr9uKhf9RidH5gehdTxnDIwTa7L2LjZsaSg=;
+	s=arc-20240116; t=1756213049; c=relaxed/simple;
+	bh=d37uhLAV0UTZFtwPqlxOuK7mUeutG3/CO/HJI6oR+vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxmwPt1Eos1lHBi3uSt+nFCoW8YJZ9bM/Cfpv5vGS1X1xTANVnZrrHHZvYVZqigxpnd+YtYJWp0aI8s9OnMiFWjZnMsSOJEWlEeRCyOnQUBG7Dcclsv40CId8wzqlysWTCO8VHb+yb/D6b3JkFPE/pHxhDZgVqyUFFqjyhf6lLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAD3b7S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBE3C4CEF1;
-	Tue, 26 Aug 2025 13:47:16 +0000 (UTC)
+	 MIME-Version; b=mNRqSHr2nZ7dcP0Fbjg7keYxyWqtbs7AATCOACwL+Z1JKLbJm9+S3IJojmpOlh+SL58nXYk9OCzFRYfHEYHlaSrAOO9Gnl0OoIyA9IhafJwPgidASD9+ys5XURJY1rhISkGmhca1GgBaJ8Mrw4XNz8V1qeklSE8EzyZ23kScTKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJR9pG+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092C4C113CF;
+	Tue, 26 Aug 2025 12:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216037;
-	bh=YijJo4Dhjr9uKhf9RidH5gehdTxnDIwTa7L2LjZsaSg=;
+	s=korg; t=1756213048;
+	bh=d37uhLAV0UTZFtwPqlxOuK7mUeutG3/CO/HJI6oR+vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAD3b7S1eEzZWuWgf5uzhTCs87LU4ujTBtLrG2AwoANpwnoRc23fK6neG0i2kVjVf
-	 x9RMHI31dI4cNwAegFWZ0UI/p418I4g3+5IxFceNDNbzLRGzDp2YwuM0IIV8ts4xMF
-	 +MERC7HYKTBW54fBSq27DGN+fqfWZwSo9nxMD5Ow=
+	b=kJR9pG+ZtG6V66vGA8hlQUE9z9C4qidjOLcX0ePb8k/wpSGromPOoyYZkdGvebvjT
+	 qsL19rfaLo+P6Yb5Smx6Xb88lzKnfR6LPuwRX31MZpydBnTDtW9tc8eI3E7lmuR8t6
+	 3xOpmYUUO1E8nPgNQeukLBBURNPDJD/LpKbZ62Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 5.15 259/644] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
-Date: Tue, 26 Aug 2025 13:05:50 +0200
-Message-ID: <20250826110952.796459752@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 202/587] ptp: Use ratelimite for freerun error message
+Date: Tue, 26 Aug 2025 13:05:51 +0200
+Message-ID: <20250826110958.078229174@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
+[ Upstream commit e9a7795e75b78b56997fb0070c18d6e1057b6462 ]
 
-UAC3 power domain descriptors need to be verified with its variable
-bLength for avoiding the unexpected OOB accesses by malicious
-firmware, too.
+Replace pr_err() with pr_err_ratelimited() in ptp_clock_settime() to
+prevent log flooding when the physical clock is free running, which
+happens on some of my hosts. This ensures error messages are
+rate-limited and improves kernel log readability.
 
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250613-ptp-v1-1-ee44260ce9e2@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/validate.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/ptp/ptp_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
- 	return d->bLength >= sizeof(*d) + 4 + 2;
- }
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index b7fc260ed43b..0682bb340221 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -79,7 +79,7 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
+ 	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
  
-+static bool validate_uac3_power_domain_unit(const void *p,
-+					    const struct usb_desc_validator *v)
-+{
-+	const struct uac3_power_domain_descriptor *d = p;
-+
-+	if (d->bLength < sizeof(*d))
-+		return false;
-+	/* baEntities[] + wPDomainDescrStr */
-+	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
-+}
-+
- static bool validate_midi_out_jack(const void *p,
- 				   const struct usb_desc_validator *v)
- {
-@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
- 	      struct uac3_clock_multiplier_descriptor),
- 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
- 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
-+	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
- 	{ } /* terminator */
- };
+ 	if (ptp_clock_freerun(ptp)) {
+-		pr_err("ptp: physical clock is free running\n");
++		pr_err_ratelimited("ptp: physical clock is free running\n");
+ 		return -EBUSY;
+ 	}
  
+-- 
+2.39.5
+
 
 
 
