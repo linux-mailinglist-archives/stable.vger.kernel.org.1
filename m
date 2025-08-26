@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96377B36CD1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B391B367F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFD355874BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DC02580A47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FBE3570D3;
-	Tue, 26 Aug 2025 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1448352081;
+	Tue, 26 Aug 2025 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+8xPdqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggoCWI7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1D7352FFF;
-	Tue, 26 Aug 2025 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B7235208F;
+	Tue, 26 Aug 2025 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219240; cv=none; b=m4vzV9zYqsylKg+sIHiTK6OIXSNoAkMFa0W1QkqATJpa4ClnkfYhfOZt/Ll5ldZwkZhyja2MyRkLmmtXxI7z64dtfHxz72UAYHq7djPfhW9LNd22HFxobHY6v1vFJjjhXIRKHg6S98O01w/LC1394wtMSkViQbuN3lvIhJqTJ4M=
+	t=1756216867; cv=none; b=UaV6yxgqXGVnU/YQCnWPHMr8l3ahIcbO4a6gTd0YeAGPWSUuYePe6OdNF2cupASI2wMtcwPDVa5goqMAu2fCLyM8yr/BtyjIzu70Gj6EU4ySdibr73ySGnCyFZRnqnJrLjinj0x9B4pYWSI3DW2sEVJatvk0GYr890Pkb9Ws5UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219240; c=relaxed/simple;
-	bh=vhc/YdDWSVs4JD8SQ6xu8ZI/GpVHgQZ+BDJ+W1XX89s=;
+	s=arc-20240116; t=1756216867; c=relaxed/simple;
+	bh=yLqbX1N3pqZ7XvEVo2QrEz3SjtT1htAnujGBP7yfqoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uAI4M4NcsGmTm6ecrxYFTL44Gr56mhZskOFA0qTzDEwHzHIGxKBa75azAq8TiHaEfC6Kw7qjIYCQZyEamfbrX84uAfuORrz0iTeT0arIKHM7shGZ8HRd11bdLY6UgdQh/qZu7zSbIhkPXYfpbULQ1VLt1QKWIWbALnykcS+Rbzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+8xPdqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A58C4CEF1;
-	Tue, 26 Aug 2025 14:40:39 +0000 (UTC)
+	 MIME-Version; b=cRFyarCw5FfRfDLPOHpRflwsot/zRbycL7uSCGx0zlP7shRKVHHgZcKIT5mbup8YH4Fe/vFpxFh0t/ik0V62D87Erqv3X3CxmvNLwi/Q+5me/QQVluaUTcqKy93JoqNZcXnRh7uxqwNJ0KCxNflrIcdLsDdNFfMAzuNyJHHS+NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggoCWI7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF88C4CEF1;
+	Tue, 26 Aug 2025 14:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219240;
-	bh=vhc/YdDWSVs4JD8SQ6xu8ZI/GpVHgQZ+BDJ+W1XX89s=;
+	s=korg; t=1756216867;
+	bh=yLqbX1N3pqZ7XvEVo2QrEz3SjtT1htAnujGBP7yfqoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+8xPdqK1HBXzwJPykXV7y0tiCWMuKFGQpXC9U39D9nyLi5yCcRDKDCRRAu/uXplb
-	 eXUDIwY+QnU49TEU1LDYN35B/4w2ZnH5syApETIAZvNzgqTkDbDMVP9abs18pDvtGZ
-	 O91aXMt4sUIf+KGv24j0YHbs6vVYt/4GFczi71W8=
+	b=ggoCWI7hdevSgN3+cCPkXA30zo5Yz0R3DXCxVg6Bj+sUu/BBP1najFnfGTCBP0Ucw
+	 IMBed9jjjgRTlSoUa98fBtEK33XmpltnmmIGkvZMPNxFnA+TlNj7qB+74lhrytP4eU
+	 0Watv/HkRkb9Q8KQIWbBSh6fT5Q4l0x6VgbQInsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 306/403] media: ov2659: Fix memory leaks in ov2659_probe()
+	Cong Wang <cong.wang@bytedance.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 541/644] net/sched: sch_ets: properly init all active DRR list handles
 Date: Tue, 26 Aug 2025 13:10:32 +0200
-Message-ID: <20250826110915.269951167@linuxfoundation.org>
+Message-ID: <20250826110959.925020285@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
+[ Upstream commit 454d3e1ae057a1e09a15905b06b860f60d6c14d0 ]
 
-ov2659_probe() doesn't properly free control handler resources in failure
-paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
-memory leaks and reorder the ctrl_handler assignment for better code flow.
+leaf classes of ETS qdiscs are served in strict priority or deficit round
+robin (DRR), depending on the value of 'nstrict'. Since this value can be
+changed while traffic is running, we need to be sure that the active list
+of DRR classes can be updated at any time, so:
 
-Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+1) call INIT_LIST_HEAD(&alist) on all leaf classes in .init(), before the
+   first packet hits any of them.
+2) ensure that 'alist' is not overwritten with zeros when a leaf class is
+   no more strict priority nor DRR (i.e. array elements beyond 'nbands').
+
+Link: https://lore.kernel.org/netdev/YS%2FoZ+f0Nr8eQkzH@dcaratti.users.ipa.redhat.com
+Suggested-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2659.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_ets.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/media/i2c/ov2659.c
-+++ b/drivers/media/i2c/ov2659.c
-@@ -1432,14 +1432,15 @@ static int ov2659_probe(struct i2c_clien
- 				     V4L2_CID_TEST_PATTERN,
- 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
- 				     0, 0, ov2659_test_pattern_menu);
--	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -666,7 +666,6 @@ static int ets_qdisc_change(struct Qdisc
  
- 	if (ov2659->ctrls.error) {
- 		dev_err(&client->dev, "%s: control initialization error %d\n",
- 			__func__, ov2659->ctrls.error);
-+		v4l2_ctrl_handler_free(&ov2659->ctrls);
- 		return  ov2659->ctrls.error;
+ 	q->nbands = nbands;
+ 	for (i = nstrict; i < q->nstrict; i++) {
+-		INIT_LIST_HEAD(&q->classes[i].alist);
+ 		if (q->classes[i].qdisc->q.qlen) {
+ 			list_add_tail(&q->classes[i].alist, &q->active);
+ 			q->classes[i].deficit = quanta[i];
+@@ -694,7 +693,11 @@ static int ets_qdisc_change(struct Qdisc
+ 	ets_offload_change(sch);
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		qdisc_put(q->classes[i].qdisc);
+-		memset(&q->classes[i], 0, sizeof(q->classes[i]));
++		q->classes[i].qdisc = NULL;
++		q->classes[i].quantum = 0;
++		q->classes[i].deficit = 0;
++		memset(&q->classes[i].bstats, 0, sizeof(q->classes[i].bstats));
++		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
  	}
+ 	return 0;
+ }
+@@ -703,7 +706,7 @@ static int ets_qdisc_init(struct Qdisc *
+ 			  struct netlink_ext_ack *extack)
+ {
+ 	struct ets_sched *q = qdisc_priv(sch);
+-	int err;
++	int err, i;
  
-+	ov2659->sd.ctrl_handler = &ov2659->ctrls;
- 	sd = &ov2659->sd;
- 	client->flags |= I2C_CLIENT_SCCB;
- #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 	if (!opt)
+ 		return -EINVAL;
+@@ -713,6 +716,9 @@ static int ets_qdisc_init(struct Qdisc *
+ 		return err;
+ 
+ 	INIT_LIST_HEAD(&q->active);
++	for (i = 0; i < TCQ_ETS_MAX_BANDS; i++)
++		INIT_LIST_HEAD(&q->classes[i].alist);
++
+ 	return ets_qdisc_change(sch, opt, extack);
+ }
+ 
 
 
 
