@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49113B35C21
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88824B36A6B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC131895F45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54621C433EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9412BE03C;
-	Tue, 26 Aug 2025 11:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD58352FEB;
+	Tue, 26 Aug 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cR0pkQ0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrCBSyJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6972BF3E2;
-	Tue, 26 Aug 2025 11:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496582E88B7;
+	Tue, 26 Aug 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207629; cv=none; b=AwCN15JRS251vTQP6zW8JNoyS3oYSeqiaoKdd1drCR7eOoenebIwSMq/sKAhPZbuMdc4AlUYFAxBP+ZsOJkcRnRrfH4cRbYjCNYJk3Pi+BjjnV7Aly40vBAQjjTUFu3ERJM4lfoI3j5x98KSf0Ip31Kg1J6nKhq2P8MimwMDZ1I=
+	t=1756217942; cv=none; b=LiICWrUMaFAnJ28Afxkw3dXsRZsVheB3l7mWMmi9RQiboH1cWTWD2tsphqMLfSX67FpOmIN+kqmeD0xF93TQW5awWghzxM1BZJV3XAZXYz14D1RPwyYxLLkTxXuNrZ3c9Z/Gy2Tek1Z9s9OZRogbPGrwcP3w30/CySuhG3S19X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207629; c=relaxed/simple;
-	bh=GClQlMFMRexvYzso33zMNzOxQijUfrrILnac3gEnCEo=;
+	s=arc-20240116; t=1756217942; c=relaxed/simple;
+	bh=r5zPU9gPuG78r8glDN7nCmsrE2tJIfJoNKFgEEqrjp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKzmJUmU263+Ubf2uo9sUyGlsqicobxGDn/k9h01AcL18C6DeeL0q2sKrJPvFc93zsFDyfWX7QhB9PoBpaoWEg7xD66M95ANDP+fJw0BbHVgK9mysHzPmxX82PJSXOFpeB6G+kU/VFiuFtBEQ2jYiNg3LYFLAU+peSyTUHsFG1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR0pkQ0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EC2C4CEF1;
-	Tue, 26 Aug 2025 11:27:08 +0000 (UTC)
+	 MIME-Version; b=bDiD1Sai7ZDfogysFB8hwMvZdpI/84sT7tghxQcE2efs6qJSzQlQKBtecv25cdtOhpVAX7/Be7KMvkUBhiCPfIJZkqGq8Ey1HixRnnXDOZRL3Wp/z5NBSzBBQb7u1zYIpB0mYY3JAIfzwkif+AsxTNZTek75znDGvJo4Vf/P2OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrCBSyJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E44C4CEF1;
+	Tue, 26 Aug 2025 14:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207629;
-	bh=GClQlMFMRexvYzso33zMNzOxQijUfrrILnac3gEnCEo=;
+	s=korg; t=1756217942;
+	bh=r5zPU9gPuG78r8glDN7nCmsrE2tJIfJoNKFgEEqrjp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cR0pkQ0g0jFhTdcQR03csN604YI+7qGQZ7r3YdpkpfIuQTH8lMRpmMJvxejFp2+k5
-	 w57h6cX9hMzKb6mGQkhzqbPVSdvFpnzSDAwCHb7AtXu09QUzyXI8/zF7IJAAPPc/U+
-	 b1AOpqSyAa1XpXHVS5EqfnZq4HVauqtWLAe/B9ws=
+	b=hrCBSyJyQnV45kyDWfwY5DMzJ2+x2+fKLDFNCuRoMStlcqxGKSv1SJHMIqh/pEB9n
+	 ewxMe7fI8HMV7V8K+nDlwvUDo0VHmdAYE/CbvVFY+LGkEDkXDUWUJgvEzCPbREC9hW
+	 Uj2PuVDfKHtMUVp7VW/NvLVfp64YAuFY1JZGJoW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 257/457] drm/amdgpu/swm14: Update power limit logic
-Date: Tue, 26 Aug 2025 13:09:01 +0200
-Message-ID: <20250826110943.707704849@linuxfoundation.org>
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 332/523] pNFS: Fix stripe mapping in block/scsi layout
+Date: Tue, 26 Aug 2025 13:09:02 +0200
+Message-ID: <20250826110932.665280631@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 79e25cd06e85105c75701ef1773c6c64bb304091 upstream.
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-Take into account the limits from the vbios.  Ported
-from the SMU13 code.
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4352
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 203cc7f1dd86f2c8de5c3c6182f19adac7c9c206)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
+
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c |   30 +++++++++++++++----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -1689,9 +1689,11 @@ static int smu_v14_0_2_get_power_limit(s
- 				       uint32_t *min_power_limit)
- {
- 	struct smu_table_context *table_context = &smu->smu_table;
-+	struct smu_14_0_2_powerplay_table *powerplay_table =
-+		table_context->power_play_table;
- 	PPTable_t *pptable = table_context->driver_pptable;
- 	CustomSkuTable_t *skutable = &pptable->CustomSkuTable;
--	uint32_t power_limit;
-+	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
- 	uint32_t msg_limit = pptable->SkuTable.MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index 16412d6636e8..4e176d7d704d 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
  
- 	if (smu_v14_0_get_current_power_limit(smu, &power_limit))
-@@ -1704,11 +1706,29 @@ static int smu_v14_0_2_get_power_limit(s
- 	if (default_power_limit)
- 		*default_power_limit = power_limit;
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
  
--	if (max_power_limit)
--		*max_power_limit = msg_limit;
-+	if (powerplay_table) {
-+		if (smu->od_enabled &&
-+		    smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT)) {
-+			od_percent_upper = pptable->SkuTable.OverDriveLimitsBasicMax.Ppt;
-+			od_percent_lower = pptable->SkuTable.OverDriveLimitsBasicMin.Ppt;
-+		} else if (smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT)) {
-+			od_percent_upper = 0;
-+			od_percent_lower = pptable->SkuTable.OverDriveLimitsBasicMin.Ppt;
-+		}
-+	}
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
  
--	if (min_power_limit)
--		*min_power_limit = 0;
-+	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
-+					od_percent_upper, od_percent_lower, power_limit);
-+
-+	if (max_power_limit) {
-+		*max_power_limit = msg_limit * (100 + od_percent_upper);
-+		*max_power_limit /= 100;
-+	}
-+
-+	if (min_power_limit) {
-+		*min_power_limit = power_limit * (100 + od_percent_lower);
-+		*min_power_limit /= 100;
-+	}
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
  
- 	return 0;
- }
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
+-- 
+2.39.5
+
 
 
 
