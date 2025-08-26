@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E923B36217
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45909B36A0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795E4173CA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30117580781
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F462F4A07;
-	Tue, 26 Aug 2025 13:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F4A352067;
+	Tue, 26 Aug 2025 14:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqQfJGVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmdv4ND9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C4D241673;
-	Tue, 26 Aug 2025 13:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21367343218;
+	Tue, 26 Aug 2025 14:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213770; cv=none; b=FagGv9bP9YlaycMRdcif81YeRNTIDnPPBGDRX/VEE851yxE6pLBh5uurUOxyVGzgI2wu41/RufiowIYnh4UE0ToVW554KpXce3l01WU3joaNnT0W4uf+wjUsO3/eQ4D3mdX21l3FPqkCblq9pOYfw8CRw6MoZhRgCPulf5ltGhY=
+	t=1756218227; cv=none; b=REK7lYoWqkgJG35Dy6J5H2ZCrhyfcr71qtwScFEdqo9mr97uL2xbXp7DVz0WTeNrQFaUq6B02npZ2Kmo+Ofj/b4j6TAbgqZLNBAgox4UygFEKo5X3e8+FMPoVNN+Nh+IiIN1L2ql35ekbuEXo8tiCtX/MXcLX4WuGlsJ0LIHmA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213770; c=relaxed/simple;
-	bh=oZE20AVi6dYo7cG8Uv8BnwY/50X+W2N7FIFF+yhGybk=;
+	s=arc-20240116; t=1756218227; c=relaxed/simple;
+	bh=oh7hoeAs02U8LtkXckPBLPzHKk3AI9/scoGEI/TOhuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGSAX6lIOt0s0Qv0qRHJBlnutDAXhjGd2unwJeyvx2L2LNh6yJmjMLqzqGwNDXI/SgG6N3sUm4SYBkhRLupkUQ5fXMbzmJtmdo5I2i8D/5kzK0O1xakWtibpvRpFlJOu8nIhgmOqBnk4fEK8J0QrF7CyURP/zrI7f3iXhISORU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqQfJGVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD61C116D0;
-	Tue, 26 Aug 2025 13:09:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kNT8cJNjjZK+XplazBGalk8Jss9VPGoJ+PVQ0vSdhY0sMTgqwkIYJHqVYJ5DHVdk+cTI4hG/pVt0htVOT7OLzknYnLZmdLjrF5XWzArj8D7siar6AHWFWOJ+Be3G8J1Q48FQvZEV1eAkNKVylxayw4JdpVJO0OAC+jUARX4gAWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmdv4ND9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A743FC4CEF1;
+	Tue, 26 Aug 2025 14:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213769;
-	bh=oZE20AVi6dYo7cG8Uv8BnwY/50X+W2N7FIFF+yhGybk=;
+	s=korg; t=1756218227;
+	bh=oh7hoeAs02U8LtkXckPBLPzHKk3AI9/scoGEI/TOhuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqQfJGVXmud7ACfY2J6+PI1jA8VwwEHJiZqdgLBwqWjosrFCTRJDuuKDM8qv+Vgp/
-	 B8DdUheczkF8qkJMfprfIBiXg9h8WhNRFI6g6AYrnCixebSVAEyx3X3V7GpaB0fWyP
-	 p58tpfMdirWaEt5Cpvu4R1euPeFBFN9eKhFfZMfo=
+	b=mmdv4ND9TgyHLRjYN92h7IOoZk59copH5TxuxZ749fvHY+k0pYsFNjxFPyJkk6H/p
+	 9vBjtNbAy6x3dFot9tCCcATE8aoJso2zUXrr5ll8FSFHKKql8yLazNdpmldjI9sKw9
+	 WDhilGqrKaFvo6AeSaf+2Im22ignG1QP8bGOYhJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 472/587] cpufreq: Use the fixed and coherent frequency for scaling capacity
+	Mael GUERIN <mael.guerin@murena.io>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 411/523] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
 Date: Tue, 26 Aug 2025 13:10:21 +0200
-Message-ID: <20250826111004.980065583@linuxfoundation.org>
+Message-ID: <20250826110934.595065000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Mael GUERIN <mael.guerin@murena.io>
 
-commit 599457ba15403037b489fe536266a3d5f9efaed7 upstream.
+commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
 
-cpuinfo.max_freq can change at runtime because of boost as an example. This
-implies that the value could be different from the frequency that has been
-used to compute the capacity of a CPU.
+Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
+to fix USB resets after sending SCSI vendor commands due to CBW and
+CSW tags difference, leading to undesired slowness while communicating
+with the device.
 
-The new arch_scale_freq_ref() returns a fixed and coherent frequency
-that can be used to compute the capacity for a given frequency.
+Please find below the copy of /sys/kernel/debug/usb/devices with my
+device plugged in (listed as TechSys USB mass storage here, the
+underlying chipset being the Novatek NTK96550-based camera):
 
-[ Also fix a arch_set_freq_scale()  newline style wart in <linux/cpufreq.h>. ]
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0603 ProdID=8611 Rev= 0.01
+S:  Manufacturer=TechSys
+S:  Product=USB Mass Storage
+S:  SerialNumber=966110000000100
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20231211104855.558096-3-vincent.guittot@linaro.org
-Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    4 ++--
- include/linux/cpufreq.h   |    1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -454,7 +454,7 @@ void cpufreq_freq_transition_end(struct
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_SANE_SENSE ),
  
- 	arch_set_freq_scale(policy->related_cpus,
- 			    policy->cur,
--			    policy->cpuinfo.max_freq);
-+			    arch_scale_freq_ref(policy->cpu));
- 
- 	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
-@@ -2205,7 +2205,7 @@ unsigned int cpufreq_driver_fast_switch(
- 
- 	policy->cur = freq;
- 	arch_set_freq_scale(policy->related_cpus, freq,
--			    policy->cpuinfo.max_freq);
-+			    arch_scale_freq_ref(policy->cpu));
- 	cpufreq_stats_record_transition(policy, freq);
- 
- 	if (trace_cpu_frequency_enabled()) {
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1245,6 +1245,7 @@ void arch_set_freq_scale(const struct cp
- {
- }
- #endif
++/* Added by Maël GUERIN <mael.guerin@murena.io> */
++UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
++		"Novatek",
++		"NTK96550-based camera",
++		USB_SC_SCSI, USB_PR_BULK, NULL,
++		US_FL_BULK_IGNORE_TAG ),
 +
- /* the following are really really optional */
- extern struct freq_attr cpufreq_freq_attr_scaling_available_freqs;
- extern struct freq_attr cpufreq_freq_attr_scaling_boost_freqs;
+ /*
+  * Reported by Hanno Boeck <hanno@gmx.de>
+  * Taken from the Lycoris Kernel
 
 
 
