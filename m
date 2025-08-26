@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61725B36A57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C0EB36472
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E415F2A7E73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A0F8E29EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4F23568F9;
-	Tue, 26 Aug 2025 14:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D3D22DFB8;
+	Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqYVKMUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjPWFxui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279713568E3;
-	Tue, 26 Aug 2025 14:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C2B14B950;
+	Tue, 26 Aug 2025 13:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218141; cv=none; b=OWB+81DkVw/RLTk8U98Uq16mllA0KaLHVHCrzOhFDGP7xD+zU1PXIvzvGQZ0M3q5X31tp8w+7vGJ1cDR+Nc5o7xkb7LCRQaK3/1uP16/6VvAv86Oobjsu5dhTtw5HaiU++3OEs2zbqbD1DYhNqLI5kRBjxND+nvNcRZbqGxvqII=
+	t=1756214958; cv=none; b=cwdYnh8zjlqQPM2tfOHNXIbXKAVZe/1tWNbPK7FKMWkkxgQBQH5ynLajUY2IDfzUfdklekJqESi1ZXWVcB69lUHNIIbuhpPGtobPkA7QacRc0NNepxMP3NPigGBUhUyPyzK5+546edEZi4vlg9yPEGLAiUWtb3uWZluAM+3lols=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218141; c=relaxed/simple;
-	bh=f2eKGk2T0cl0c/ghZ1sZMF//lLDgbaFn05ocZ2c2mfA=;
+	s=arc-20240116; t=1756214958; c=relaxed/simple;
+	bh=Vbh90YnOPRnMimTgaxBh8n/sLSDBL4o3B43b3NhjlIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9UXQsMNE9yazW5coJTnJHGMuJK0YnQfaUvaJuC9FEkJrr66fwQg2eat4ka0kzf3nwahGZOGKxaOdMZu2Pcg+wgBYr9QPsf2yAVGVY23T8R36fqLEhdTSgEfeo5a1Y/X6UnXi20ujMylPtRlJCIBccQggUdFPs8LsykpedDBw18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqYVKMUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD175C113D0;
-	Tue, 26 Aug 2025 14:22:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AYIcJX9iv5YgYpOIxSBF0fQuqsT6T66Q7gFIgqZTh1TEbagZMnMoCQduetxYgWE9Jeg7qHLsU70G/iTbmZq5EUaFKDzCQ6YOTg+eTlQJ9lt/xnS9PNVtGn2jHaHn0RCI7siggV+CnlzbyEdYBaiLVSdIYxzXTONI0ew/YkK+bjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjPWFxui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43651C4CEF1;
+	Tue, 26 Aug 2025 13:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218141;
-	bh=f2eKGk2T0cl0c/ghZ1sZMF//lLDgbaFn05ocZ2c2mfA=;
+	s=korg; t=1756214956;
+	bh=Vbh90YnOPRnMimTgaxBh8n/sLSDBL4o3B43b3NhjlIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqYVKMUHVk8RA4Tm8INA5SfjToiY0LDHXy+nCLQCo+G8iD6Mo9W8xfut1BfWh1eYs
-	 yOE2rCspEqG3sE7tKAUGbzx+zxatUOlHZYHY6dM3JPVqwuAF6Fd34mKTJS9fPKe7KO
-	 uS3ZmEPxSG7C1uuW5r3s5Kq4KGQTh5HpSUxlkJOU=
+	b=HjPWFxuijScdbPYiy8B8FYiO09bYvC1D7uU1G59cmDi0dwWjBYmcmbDPBSWV4ZgrW
+	 svIG+r/EZczM+0intM/uKlcAuqpb8KF212ZcaFK8Q08UggxSQewVZCyTPflpwU8W1p
+	 QBVSa3195lIiWrOUDnUd7aIW6sDNuG8TTI8BwN2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 377/523] media: gspca: Add bounds checking to firmware parser
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Gang Ba <Gang.Ba@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 334/482] drm/amdgpu: Avoid extra evict-restore process.
 Date: Tue, 26 Aug 2025 13:09:47 +0200
-Message-ID: <20250826110933.764192416@linuxfoundation.org>
+Message-ID: <20250826110939.074443601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gang Ba <Gang.Ba@amd.com>
 
-commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
+commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
 
-This sd_init() function reads the firmware.  The firmware data holds a
-series of records and the function reads each record and sends the data
-to the device.  The request_ihex_firmware() function
-calls ihex_validate_fw() which ensures that the total length of all the
-records won't read out of bounds of the fw->data[].
+If vm belongs to another process, this is fclose after fork,
+wait may enable signaling KFD eviction fence and cause parent process queue evicted.
 
-However, a potential issue is if there is a single very large
-record (larger than PAGE_SIZE) and that would result in memory
-corruption.  Generally we trust the firmware, but it's always better to
-double check.
+[677852.634569]  amdkfd_fence_enable_signaling+0x56/0x70 [amdgpu]
+[677852.634814]  __dma_fence_enable_signaling+0x3e/0xe0
+[677852.634820]  dma_fence_wait_timeout+0x3a/0x140
+[677852.634825]  amddma_resv_wait_timeout+0x7f/0xf0 [amdkcl]
+[677852.634831]  amdgpu_vm_wait_idle+0x2d/0x60 [amdgpu]
+[677852.635026]  amdgpu_flush+0x34/0x50 [amdgpu]
+[677852.635208]  filp_flush+0x38/0x90
+[677852.635213]  filp_close+0x14/0x30
+[677852.635216]  do_close_on_exec+0xdd/0x130
+[677852.635221]  begin_new_exec+0x1da/0x490
+[677852.635225]  load_elf_binary+0x307/0xea0
+[677852.635231]  ? srso_alias_return_thunk+0x5/0xfbef5
+[677852.635235]  ? ima_bprm_check+0xa2/0xd0
+[677852.635240]  search_binary_handler+0xda/0x260
+[677852.635245]  exec_binprm+0x58/0x1a0
+[677852.635249]  bprm_execve.part.0+0x16f/0x210
+[677852.635254]  bprm_execve+0x45/0x80
+[677852.635257]  do_execveat_common.isra.0+0x190/0x200
 
-Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Gang Ba <Gang.Ba@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/vicam.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/media/usb/gspca/vicam.c
-+++ b/drivers/media/usb/gspca/vicam.c
-@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
- 	const struct ihex_binrec *rec;
- 	const struct firmware *fw;
- 	u8 *firmware_buf;
-+	int len;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2024,13 +2024,11 @@ void amdgpu_vm_adjust_size(struct amdgpu
+  */
+ long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
+ {
+-	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
+-					DMA_RESV_USAGE_BOOKKEEP,
+-					true, timeout);
++	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
+ 	if (timeout <= 0)
+ 		return timeout;
  
- 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
- 				    &gspca_dev->dev->dev);
-@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
- 		goto exit;
- 	}
- 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
--		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
-+		len = be16_to_cpu(rec->len);
-+		if (len > PAGE_SIZE) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		memcpy(firmware_buf, rec->data, len);
- 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
--					be16_to_cpu(rec->len));
-+					len);
- 		if (ret < 0)
- 			break;
- 	}
+-	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
++	return drm_sched_entity_flush(&vm->delayed, timeout);
+ }
+ 
+ /**
 
 
 
