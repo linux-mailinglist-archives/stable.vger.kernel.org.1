@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE52B3616B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8349FB36760
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169B41BA7F46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3BB5651C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E68246BB2;
-	Tue, 26 Aug 2025 13:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE279350D44;
+	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CijGA5/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYpBIRtd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201E228000C;
-	Tue, 26 Aug 2025 13:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3C82BEC45;
+	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213544; cv=none; b=TIhOUNSkGEeytwCpz/0VK4UlyrRZs/1yY4eaG3vfTjLl9SZ/gKcX1E3wvtckKPyTzhd2zd9J2pc/DU6uY7v9/9uHh/n93TUOmesTEgbu0YR8Mown9MMh+oEGOustxGVjAxSLK5cV3EFfbA9CvMWGVI7TG1vnQy72FS/Tqddlz7g=
+	t=1756216530; cv=none; b=C0U0WZ/BJa0aKKeAmBtghrkPguBi9Gq/OHzpwMT7y2iV2avxWwQVl2BIyb0HzjdF/u1OH84eGjCAwE8sluaaj9frKsokV7OutmGDuz4W7xbtYPt0/UxNw9wYcrSD95XBft9HZcPyETo463usmsqtao9bOwVXGfv25laNAbnQpFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213544; c=relaxed/simple;
-	bh=ynzZZ1WveFX6Zdc9Pu3fkpgqS8OX/onsvj+UUny2NiA=;
+	s=arc-20240116; t=1756216530; c=relaxed/simple;
+	bh=rS+fr9WjJ2KCfaTPzdRPLAoqkqNafROlW6FU0E/o+4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEtvGstM0tzXtQFyoR9RePYMCLV6Achp6EgeOwxW0CiYSyVNqIbD2xpsvWSoDJq0wBYKzxsS9U6IUbo2ZCLqr9Hk3AZGZv8Maa4ft6CVDB8WsdzVczbdXFHZjJj9sgxgm6eaYksqbAkgrHAbmwMsV1/ftvUIn13ONFT5Apju78Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CijGA5/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB4CC4CEF4;
-	Tue, 26 Aug 2025 13:05:43 +0000 (UTC)
+	 MIME-Version; b=kJN5MiMORXnfsM4krgRu/3ZozOQphJ+znHSXvcS49wvHCY56CwEBMTuK2Zd4yAnnqZN3eZwpYzoD21/FWoUpbG0yF4XBOa0cQs/uTu/37Qg8z9vkUKBc4pG5KslxRyxvYPybfG89JdTqz2k/DBk3qnPZ/ssQKCfr8+k3UJDyOEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYpBIRtd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7CAC4CEF1;
+	Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213544;
-	bh=ynzZZ1WveFX6Zdc9Pu3fkpgqS8OX/onsvj+UUny2NiA=;
+	s=korg; t=1756216530;
+	bh=rS+fr9WjJ2KCfaTPzdRPLAoqkqNafROlW6FU0E/o+4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CijGA5/OFgWPFmKVJFAep1p3qmYH+Ked6pgRFLq8uxAquqv8Md4U0qDpTcMFMnbMF
-	 RQCmT0y1v9mQg2O0ki9C+YJhh6LxXKYUg6WFPCQ03xXR5MPB8Be7iImqjgUUokKMp5
-	 a3Naju1nGKKKgLlTEmMehP0RklB14W83dlat12T0=
+	b=QYpBIRtdMe4KVIH29KgKOYQhPGAx9nClWLPV3uukueWFAff2SUfZHYGFOrvPAESEf
+	 duikjS6TfE4lgGMzZGLjiVDaBd22eOkFBj9feA7b6fRQndoO2ZwOwcRD6vsFsgjms9
+	 FU6dFcjnMDSXd94d4FKvCQc1hvlcJEBgG4qU5b6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 388/587] phy: qcom: phy-qcom-m31: Update IPQ5332 M31 USB phy initialization sequence
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.15 446/644] cdc-acm: fix race between initial clearing halt and open
 Date: Tue, 26 Aug 2025 13:08:57 +0200
-Message-ID: <20250826111002.785927543@linuxfoundation.org>
+Message-ID: <20250826110957.519811441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 4a3556b81b99f0c8c0358f7cc6801a62b4538fe2 upstream.
+commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
 
-The current configuration used for the IPQ5332 M31 USB PHY fails the
-Near End High Speed Signal Quality compliance test. To resolve this,
-update the initialization sequence as specified in the Hardware Design
-Document.
+On the devices that need their endpoints to get an
+initial clear_halt, this needs to be done before
+the devices can be opened. That means it needs to be
+before the devices are registered.
 
-Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-Cc: stable@kernel.org
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250630-ipq5332_hsphy_complaince-v2-1-63621439ebdb@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/usb/class/cdc-acm.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-m31.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-@@ -58,14 +58,16 @@
-  #define USB2_0_TX_ENABLE		BIT(2)
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1500,6 +1500,12 @@ skip_countries:
+ 			goto err_remove_files;
+ 	}
  
- #define USB2PHY_USB_PHY_M31_XCFGI_4	0xc8
-- #define HSTX_SLEW_RATE_565PS		GENMASK(1, 0)
-+ #define HSTX_SLEW_RATE_400PS		GENMASK(2, 0)
-  #define PLL_CHARGING_PUMP_CURRENT_35UA	GENMASK(4, 3)
-  #define ODT_VALUE_38_02_OHM		GENMASK(7, 6)
- 
- #define USB2PHY_USB_PHY_M31_XCFGI_5	0xcc
-- #define ODT_VALUE_45_02_OHM		BIT(2)
-  #define HSTX_PRE_EMPHASIS_LEVEL_0_55MA	BIT(0)
- 
-+#define USB2PHY_USB_PHY_M31_XCFGI_9	0xdc
-+ #define HSTX_CURRENT_17_1MA_385MV	BIT(1)
++	if (quirks & CLEAR_HALT_CONDITIONS) {
++		/* errors intentionally ignored */
++		usb_clear_halt(usb_dev, acm->in);
++		usb_clear_halt(usb_dev, acm->out);
++	}
 +
- #define USB2PHY_USB_PHY_M31_XCFGI_11	0xe4
-  #define XCFG_COARSE_TUNE_NUM		BIT(1)
-  #define XCFG_FINE_TUNE_NUM		BIT(3)
-@@ -120,7 +122,7 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_4,
--		HSTX_SLEW_RATE_565PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
-+		HSTX_SLEW_RATE_400PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
- 		0
- 	},
- 	{
-@@ -130,10 +132,14 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_5,
--		ODT_VALUE_45_02_OHM | HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
-+		HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
- 		4
- 	},
- 	{
-+		USB2PHY_USB_PHY_M31_XCFGI_9,
-+		HSTX_CURRENT_17_1MA_385MV,
-+	},
-+	{
- 		USB_PHY_UTMI_CTRL5,
- 		0x0,
- 		0
+ 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
+ 			&control_interface->dev);
+ 	if (IS_ERR(tty_dev)) {
+@@ -1507,11 +1513,6 @@ skip_countries:
+ 		goto err_release_data_interface;
+ 	}
+ 
+-	if (quirks & CLEAR_HALT_CONDITIONS) {
+-		usb_clear_halt(usb_dev, acm->in);
+-		usb_clear_halt(usb_dev, acm->out);
+-	}
+-
+ 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+ 
+ 	return 0;
 
 
 
