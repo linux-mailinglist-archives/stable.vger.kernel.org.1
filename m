@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-176027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A4FB36BFA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D9FB366C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 562271C23FC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50647467C65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7024352FD7;
-	Tue, 26 Aug 2025 14:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1B134DCD2;
+	Tue, 26 Aug 2025 13:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bft0pmqv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVgoY5pU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B692F49EA;
-	Tue, 26 Aug 2025 14:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1960230146A;
+	Tue, 26 Aug 2025 13:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218593; cv=none; b=gsKZMtPraarubHNWLnAtG8GQxU1w67UdNS8z8YZzsn5ZU8L3jk1mzuPDYWJfkhJvMZo+/efW3zIfG7XLDTmo9PF8BG2mzBcwMkGO9LaWEQ6gkBRUbfRuFx2wpWiTgMZRjj2LTrTrbPcxXFqzYb0YCLr9zjSYQZ56gDlssApJ4FQ=
+	t=1756216132; cv=none; b=BjTm9soCZWSKqP0YD0W1ApUAvRzljsrJ7jBp4HSeFaP/vArYctLE4QJxFSV+on1rqXuvkjB45z+SLx0+w7hzvjxlDkhwTLt1ELsm1qe7XVwk2YJ2EfvaIXclNEBNh46H9p8dNDA6Cw2SALgD+P8fTwUjFsKy3J8BisnHv2BpquE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218593; c=relaxed/simple;
-	bh=uq+gB8W87yaOTY69Wx71wGW4N2E/7gTYTEbuiuu8jsY=;
+	s=arc-20240116; t=1756216132; c=relaxed/simple;
+	bh=V84DhD5UtnA61Mmd25QrLoT3rJtXWp6tA652P1nw8Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NagHgPGHL+wAohdIuuZZsCYXvd3myXkW0Y+q25zOX+oou/u+IWn2cmVPf78HVXoMLlRwvfURhbbNG0btqXI7/biLyhkt7+QvBGtfQKYZskeTGLgExISebo4Ongu83VmFBopjtpno1VxWYmet3T5GJ7mZyN95v6w0P1Wa32x79uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bft0pmqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAABC4CEF1;
-	Tue, 26 Aug 2025 14:29:52 +0000 (UTC)
+	 MIME-Version; b=BLbpkFd9ljIqsfzJ/62BjQ1SbAEyEyDXE0+CeqxmL+jUDxoRKIfSk3vbNWP03aoryWgVnUP9ntfeEioHCxN7Xpy8uHA3hrdcqjNpmyW4NzKc01dBLiFysJnEOjljkaV1XYE18Iw1q5FqusY0WjO/sfGhzJLRmwbo7c2PjfBGZRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVgoY5pU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EC3C4CEF1;
+	Tue, 26 Aug 2025 13:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218593;
-	bh=uq+gB8W87yaOTY69Wx71wGW4N2E/7gTYTEbuiuu8jsY=;
+	s=korg; t=1756216131;
+	bh=V84DhD5UtnA61Mmd25QrLoT3rJtXWp6tA652P1nw8Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bft0pmqvpSJVhz3/FH2Oj5vCzngNYzZFvMFHAKtOhFAexTd5n96xrWD1EjsKF2pQO
-	 v/d6PoET8hDYOCkZ9uL9FNCVVtoDvxebix6MA/PaqkhaDyxjBM6eTO7oiopEpEHLIz
-	 rEUYmc3ya6H3J6KXA47aEOBva91tOUkzKO4lK5I0=
+	b=bVgoY5pUyBKpfzJjnpGMc8h8ilMBZbuF87TPvVwnyScbOLGal79Zn7yI7Ph+E9/qJ
+	 NO1kJXDRDlERJNdt2cVzg46kXwI5a4yfGCii55Qn/EFQOBBNgukdf83rFsCZ+Rn4WB
+	 Xn+ZL9OKaQ+p6LiofLAbHZTHfj67XQz5duQx7UC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Su Hui <suhui@nfschina.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/403] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+Subject: [PATCH 5.15 295/644] usb: xhci: print xhci->xhc_state when queue_command failed
 Date: Tue, 26 Aug 2025 13:06:26 +0200
-Message-ID: <20250826110907.523682040@linuxfoundation.org>
+Message-ID: <20250826110953.694211617@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+When encounters some errors like these:
+xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
+usb usb5-port6: couldn't allocate usb_device
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
+It's hard to know whether xhc_state is dying or halted. So it's better
+to print xhc_state's value which can help locate the resaon of the bug.
 
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
-
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 2a4331a084949..be04fcfcc5852 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -534,9 +534,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index cd94b0a4e021..626f02605192 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -4486,7 +4486,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
  
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
- {
--	struct qfq_sched *q = qdisc_priv(sch);
--
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -554,10 +551,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg)
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
- }
- 
-@@ -1507,6 +1505,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
+ 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
+ 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
+-		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
++		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
++			 xhci->xhc_state);
+ 		return -ESHUTDOWN;
  	}
+ 
 -- 
 2.39.5
 
