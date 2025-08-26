@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61651B36781
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EB0B3645C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27070467C44
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEA9B8A6B4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7C8350D67;
-	Tue, 26 Aug 2025 13:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00271C860A;
+	Tue, 26 Aug 2025 13:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwh7aUGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpRTv6Yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6623034F486;
-	Tue, 26 Aug 2025 13:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAEE196C7C;
+	Tue, 26 Aug 2025 13:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216690; cv=none; b=AehGaeDRSALJjUYcbzwcgre2g70fVHDkwO3nU0KaT4bHzhsXDqekIcPkpvpf/9MOfiK+NdCa20GjkKgdZhcScwlqsbwfRDMfDtyTdARnwGlqO8cU/xcRHgIwI81FbMhvn4/XSPVVhvTER4U3sk41oIBr+H9wcdBbE+FcnVNof+Y=
+	t=1756214906; cv=none; b=TL6jioDuonwLzG1UOwhqz2TdqZaQaNiTTAFjVWnG+tJT7ifQEEZ6oS0j/54Zcy+tXJgpzBpaPQP81TWO6yJf6CnHAbynj5Ekc/ckOA6QLjjOGvryplmAimj4m9dU+WzmWERmlnhkEIUyTCyk+PNIJcFXxcBkEKCwDFN6EBuMSTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216690; c=relaxed/simple;
-	bh=WsZVPhqxQ00nForpI4Dt/CnR7O5Zmqh/CgJGA6rxGj0=;
+	s=arc-20240116; t=1756214906; c=relaxed/simple;
+	bh=SmTgT6AHVvRlLtZm1Lf7fBca+OuD0bu38cRw4q8iYQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6E1sQnaoJEtrLr3GRiidMQwaP1/L5/Jd4PyYsWgudZJcX8py5H7bBEYfACj/eBjM0+xP0cYwRC9lRcUq8fC5kMcRDETqb5I63luboBcybdr78rfHd5mcBDDyuR8fqIpacRFa7n+zPW/udY4JQsiz61YQkFeI0DXXGXiMUkcWJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwh7aUGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFC6C4CEF1;
-	Tue, 26 Aug 2025 13:58:09 +0000 (UTC)
+	 MIME-Version; b=Cmcn6TSwzG69SYvBWNKs6cEN6nLJrBz6wuJRukHBuVIRX/jxZ2ShgF4EBdpxyfdr4/PKxsPO4ckw6N6+YmRe4j4Oa1JVViVLtJNKLO6pbObXrwVJlEoQM1NPa311jRPzSiDg4wdQetZyV9HCs/fqjHOSmgcapoyW3KfPV/gOlaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpRTv6Yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE982C4CEF1;
+	Tue, 26 Aug 2025 13:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216690;
-	bh=WsZVPhqxQ00nForpI4Dt/CnR7O5Zmqh/CgJGA6rxGj0=;
+	s=korg; t=1756214906;
+	bh=SmTgT6AHVvRlLtZm1Lf7fBca+OuD0bu38cRw4q8iYQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwh7aUGQLsr9PMPSYCjI2kG54FfHsWpFe/JTmUp34sEb4jdtF29DG6E9E9AptzdFO
-	 RKnKyx1Q+sgBhUOXdI3tlK20EAoeeByrTfAjFeNmtGc4q2lQ2Jyd/QGTEXzcfhNez/
-	 ckcwtMmJpDuGj+DyPFyeOBjwamhYS4TagsC2mi2g=
+	b=CpRTv6Yu/LwkfMmyUCmxW2RD5Ml0+aK6wXOBJbjvtthq5ln88+JsbuIIVupKqMDyV
+	 rfC+X7hMyUFmOfptqJJ5H7/w5BSRvsUzpTpMgn9/oB4hcOHBVeDPy+LgHGPD5cWWCR
+	 bZguV5sPjCv0Be1cbGq1CS6Re1s0YUURvzAOnB3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 5.15 475/644] zynq_fpga: use sgtable-based scatterlist wrappers
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 313/482] parisc: Check region is readable by user in raw_copy_from_user()
 Date: Tue, 26 Aug 2025 13:09:26 +0200
-Message-ID: <20250826110958.254859985@linuxfoundation.org>
+Message-ID: <20250826110938.535723438@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
+commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of statterlists related calls. dma_unmap_sg() function
-has to be called with the number of elements originally passed to the
-dma_map_sg() function, not the one returned in sgtable's nents.
+Because of the way the _PAGE_READ is handled in the parisc PTE, an
+access interruption is not generated when the kernel reads from a
+region where the _PAGE_READ is zero. The current code was written
+assuming read access faults would also occur in the kernel.
 
-CC: stable@vger.kernel.org
-Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+This change adds user access checks to raw_copy_from_user().  The
+prober_user() define checks whether user code has read access to
+a virtual address. Note that page faults are not handled in the
+exception support for the probe instruction. For this reason, we
+precede the probe by a ldb access check.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/fpga/zynq-fpga.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
+ arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
+ 2 files changed, 46 insertions(+), 1 deletion(-)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
- 	}
+--- a/arch/parisc/include/asm/special_insns.h
++++ b/arch/parisc/include/asm/special_insns.h
+@@ -32,6 +32,34 @@
+ 	pa;						\
+ })
  
- 	priv->dma_nelms =
--	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	if (priv->dma_nelms == 0) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
- 		return -ENOMEM;
-@@ -478,7 +478,7 @@ out_clk:
- 	clk_disable(priv->clk);
++/**
++ * prober_user() - Probe user read access
++ * @sr:		Space regster.
++ * @va:		Virtual address.
++ *
++ * Return: Non-zero if address is accessible.
++ *
++ * Due to the way _PAGE_READ is handled in TLB entries, we need
++ * a special check to determine whether a user address is accessible.
++ * The ldb instruction does the initial access check. If it is
++ * successful, the probe instruction checks user access rights.
++ */
++#define prober_user(sr, va)	({			\
++	unsigned long read_allowed;			\
++	__asm__ __volatile__(				\
++		"copy %%r0,%0\n"			\
++		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
++		"\tproberi (%%sr%1,%2),%3,%0\n"		\
++		"9:\n"					\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
++		: "=&r" (read_allowed)			\
++		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
++		: "memory"				\
++	);						\
++	read_allowed;					\
++})
++
+ #define CR_EIEM 15	/* External Interrupt Enable Mask */
+ #define CR_CR16 16	/* CR16 Interval Timer */
+ #define CR_EIRR 23	/* External Interrupt Request Register */
+--- a/arch/parisc/lib/memcpy.c
++++ b/arch/parisc/lib/memcpy.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/compiler.h>
+ #include <linux/uaccess.h>
++#include <linux/mm.h>
  
- out_free:
--	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	return err;
+ #define get_user_space()	mfsp(SR_USER)
+ #define get_kernel_space()	SR_KERNEL
+@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
+ unsigned long raw_copy_from_user(void *dst, const void __user *src,
+ 			       unsigned long len)
+ {
++	unsigned long start = (unsigned long) src;
++	unsigned long end = start + len;
++	unsigned long newlen = len;
++
+ 	mtsp(get_user_space(), SR_TEMP1);
+ 	mtsp(get_kernel_space(), SR_TEMP2);
+-	return pa_memcpy(dst, (void __force *)src, len);
++
++	/* Check region is user accessible */
++	if (start)
++	while (start < end) {
++		if (!prober_user(SR_TEMP1, start)) {
++			newlen = (start - (unsigned long) src);
++			break;
++		}
++		start += PAGE_SIZE;
++		/* align to page boundry which may have different permission */
++		start = PAGE_ALIGN_DOWN(start);
++	}
++	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
  }
+ EXPORT_SYMBOL(raw_copy_from_user);
  
 
 
