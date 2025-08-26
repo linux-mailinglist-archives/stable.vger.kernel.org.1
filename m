@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A254B35C30
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9D5B36174
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D43016A7E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3AF2A1B7B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641422F619C;
-	Tue, 26 Aug 2025 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C589923BF83;
+	Tue, 26 Aug 2025 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO0KWIrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl5LlCwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225AC299959;
-	Tue, 26 Aug 2025 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78764DF49;
+	Tue, 26 Aug 2025 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207574; cv=none; b=rISospnF6Ewr9cUaDcjj7LNIev+/PACpqh5LBeA3ZqwikJ18vOI0amGVZ7FDJkAePNt90LlJHvO7ihACU1UO7DjGUpgY9GKqyfCUNZs5AWozlQItciLG+vPwWxCH1ULYMuiaYnf0kJRwc6eqq7fwcVh1n+GJyfaFqBTN/2Bpm7U=
+	t=1756213498; cv=none; b=iG1ufusgGgouACJbCsc2H3PhYLEfqPGx5HL7sKk0r7i00QRn8+ECypoMSrpOSWihmTiqxlgsG2vuP+3pophIy1qpaQLGvXUn2GY9uQGxSWrKgPzfCj8nt2Dio2Wep5MmuiLYnTtQka2J9i6pwF1oX6aHY1iq2YXjdlrlfZ2kBTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207574; c=relaxed/simple;
-	bh=dyNYS8MYFWZBVOdzGHS9e5i+020xCCWlXp45oq3Emgg=;
+	s=arc-20240116; t=1756213498; c=relaxed/simple;
+	bh=mC/aMeYbmgu6im4d29BRWP2L8Ruk4OXXuInZ+Av63D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rScG6717U3OZ9VJ6Lgcu1U5LnSa9TzXViLx9lRa7eXy7he8mnI8v9fp9SlQRo/PzPN4ovpKYx3t7nky8huDX1KOq35YkhoTuoj+hflWQKOZgufEh3uZJMAE+R3g3BJC2RDysvETVwHB+6S87Usfk1gk1EIQ/1b+JgOT5NZoQnt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO0KWIrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B6BC4CEF1;
-	Tue, 26 Aug 2025 11:26:13 +0000 (UTC)
+	 MIME-Version; b=rvGtEQyaH5uD/X2lSNs33fW7Z1SDdpwAtV6ZQEJIs3kQ2H7/TsAxx0x5DV4dfS2cDllwW7hltES6g0x5C46CmL7TH6RyuV73UCAgDu1WS6G3n90DsXN0iQ/5FhYXN/U3neQPB9WM3KifLK0fq8neLAhCX2hJw/OvVyff1YijqgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl5LlCwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D11BC4CEF1;
+	Tue, 26 Aug 2025 13:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207574;
-	bh=dyNYS8MYFWZBVOdzGHS9e5i+020xCCWlXp45oq3Emgg=;
+	s=korg; t=1756213498;
+	bh=mC/aMeYbmgu6im4d29BRWP2L8Ruk4OXXuInZ+Av63D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NO0KWIrEtfKmeTYLSKCTBQonSQzeZ82S2Y2Vm2HEBtDJ3cfvpn/MHvvj0zI2n+bFx
-	 CwK2covnKeNiMVyEwP+jQ0gIRSKroEe6yG+Huf3F7c3untqZB4tzIQQ1zfeQMEGMxP
-	 iGtw2sWDsK1s0wONoBTr4B+MYhB5hexOU8dtLyc0=
+	b=zl5LlCwMzaBrS8zf0vsqGC53hIPVfyHgC1UkhYfOWKTwdHVlq9fn6nr9eVjLWYltK
+	 jR+OzSlgjdBwtfJCfIyeefziT3R1pTEfcxWFIkqk+bIM1Odw++R52M3DhqzLWpl96Y
+	 WbRrr4fC3WrxbjJ4s9KT6I/EfUx6q8/1szIIqjsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 234/457] mm/damon/core: fix commit_ops_filters by using correct nth function
+	Nathan Chancellor <nathan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 6.6 369/587] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
 Date: Tue, 26 Aug 2025 13:08:38 +0200
-Message-ID: <20250826110943.157669522@linuxfoundation.org>
+Message-ID: <20250826111002.296306369@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 63f5dec16760f2cd7d3f9034d18fc1fa0d83652f upstream.
+commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
 
-damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
-iterates core_filters.  As a result, performing a commit unintentionally
-corrupts ops_filters.
+A new warning in clang [1] complains that diq_start in
+wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+wlc_lcnphy_common_read_table():
 
-Add damos_nth_ops_filter() which iterates ops_filters.  Use this function
-to fix issues caused by wrong iteration.
+  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   2728 |                                                      &diq_start, 1, 16, 69);
+        |                                                       ^~~~~~~~~
 
-Link: https://lkml.kernel.org/r/20250810124201.15743-1-ekffu200098@gmail.com
-Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The table pointer passed to wlc_lcnphy_common_read_table() should not be
+considered constant, as wlc_phy_read_table() is ultimately going to
+update it. Remove the const qualifier from the tbl_ptr to clear up the
+warning.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
+Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -843,6 +843,18 @@ static struct damos_filter *damos_nth_fi
- 	return NULL;
- }
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
  
-+static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
-+{
-+	struct damos_filter *filter;
-+	int i = 0;
-+
-+	damos_for_each_ops_filter(filter, s) {
-+		if (i++ == n)
-+			return filter;
-+	}
-+	return NULL;
-+}
-+
- static void damos_commit_filter_arg(
- 		struct damos_filter *dst, struct damos_filter *src)
+ static void
+ wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
+-			     const u16 *tbl_ptr, u32 tbl_len,
++			     u16 *tbl_ptr, u32 tbl_len,
+ 			     u32 tbl_width, u32 tbl_offset)
  {
-@@ -906,7 +918,7 @@ static int damos_commit_ops_filters(stru
- 	int i = 0, j = 0;
- 
- 	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
--		src_filter = damos_nth_filter(i++, src);
-+		src_filter = damos_nth_ops_filter(i++, src);
- 		if (src_filter)
- 			damos_commit_filter(dst_filter, src_filter);
- 		else
+ 	struct phytbl_info tab;
 
 
 
