@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF21B369C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE5DB361ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709951C43993
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86D92A5A29
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CD835334D;
-	Tue, 26 Aug 2025 14:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033722676E9;
+	Tue, 26 Aug 2025 13:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMpoZvrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Yt8rBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B8E350D5D;
-	Tue, 26 Aug 2025 14:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21A622AE5D;
+	Tue, 26 Aug 2025 13:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218007; cv=none; b=mtn6rhW2UhMGu1d7FzzA0eD98KGMEYPoZzwhtg7G8+0jb/kHykIZEbmifNhzqaCPqJQWk5qDzW3J8JKKpJYyuyTR9/wWNZ1qzVtWvGy1u5TM6w0CMvFO9rPljbg9D9KEDEW8RRjhw6HVHG5agvlbjVIdJtCoLWW3Ho1huedgNfs=
+	t=1756213707; cv=none; b=sOC+qX4u7sHWegb1nYWW0gTFc0Pzxqvq8PJOcta1sk1ouNM0c9cSIRe4jRWrftKfy+hHN8Y4jmnKps6NHbOXL5yx5QnuqQiQF7FuwAiD4uWnr9uMIoLorfuSbOvwqmhcat6T4wLg/hVxYHdwJSPg30+jCW4JbLFLn5HyCWMnEdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218007; c=relaxed/simple;
-	bh=nphWbvN0NLsMHuOVuikvhsCzk+sp0iCGGginj5u3j9M=;
+	s=arc-20240116; t=1756213707; c=relaxed/simple;
+	bh=hMDZ+wzAXkwoDnLpJfgR/XGA6jZbcLKyxqkdJlCe490=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVAOV04fuJHgX+F8gX61hqgms3BeKocoEFURFzS5eHtNeSJUBxt0mz6Ua4FCuw2irpgtmYIQXvvogqdHYLaI8tKVgo6mpPpoidCrHmrPThwV98pTIST0fHpslO2TvqNAsXKlZBS6a0/kpNluMqVt8QHm/nd+8ib/Z1zwyuRfUvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMpoZvrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128EAC4CEF1;
-	Tue, 26 Aug 2025 14:20:06 +0000 (UTC)
+	 MIME-Version; b=pa45fVUgqz0uEztb6aOKQz/lYCWxc29PVozwPKrvmnwyftTwiORp5IBlftuwxjiTO5VfJAqijPKd2rWWhsquuXJ/Uei3yg2kccouuGOCBvYcv4tfMyUjYwu8Wo3IFMMmjBi8tuVh5hULgNWmeCkknh0kKZwzRn+gw/xnk+jf2HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Yt8rBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37423C4CEF1;
+	Tue, 26 Aug 2025 13:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218007;
-	bh=nphWbvN0NLsMHuOVuikvhsCzk+sp0iCGGginj5u3j9M=;
+	s=korg; t=1756213707;
+	bh=hMDZ+wzAXkwoDnLpJfgR/XGA6jZbcLKyxqkdJlCe490=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMpoZvrYziGtai0VMDI5rRby2VebZ2NDzzpewry4qn8ss8yYn00Foijiq+XTIatab
-	 4EVBvjiWy8N13u3uh2lvfEsUpzxFQdWfe5vXjV9fGHK33fDEwk/MKaKnTlinzkcmDq
-	 aw67kvPe4+5b2K44iVZ2r9po+FsR/egeU31PbNQ4=
+	b=X6Yt8rBWzu1/C+5k/RJGd1lAKd/33vNNJc/JCKXD1QAGJ6TBRb71RZFfjW2f/SzCW
+	 9ezCX/XZCgKRdPYJ+b99cAa+r+A/2Pa1s6wsC5+mF6gsfJ2L4lo+kuCMRSaWKD/XdT
+	 /bUeVmH9MlYt/6P+7HIsW4IWTXlrhcRrwdKIFMQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 5.10 358/523] bus: mhi: host: Fix endianness of BHI vector table
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 419/587] drm/amdgpu: update mmhub 3.0.1 client id mappings
 Date: Tue, 26 Aug 2025 13:09:28 +0200
-Message-ID: <20250826110933.301029495@linuxfoundation.org>
+Message-ID: <20250826111003.598716703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
+commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
 
-On big endian platform like PowerPC, the MHI bus (which is little endian)
-does not start properly. The following example shows the error messages by
-using QCN9274 WLAN device with ath12k driver:
+Update the client id mapping so the correct clients
+get printed when there is a mmhub page fault.
 
-    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
-    ath12k_pci 0001:01:00.0: MSI vectors: 1
-    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
-    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
-    ath12k_pci 0001:01:00.0: failed to start mhi: -110
-    ath12k_pci 0001:01:00.0: failed to power up :-110
-    ath12k_pci 0001:01:00.0: failed to create soc core: -110
-    ath12k_pci 0001:01:00.0: failed to init core: -110
-    ath12k_pci: probe of 0001:01:00.0 failed with error -110
-
-The issue seems to be with the incorrect DMA address/size used for
-transferring the firmware image over BHI. So fix it by converting the DMA
-address and size of the BHI vector table to little endian format before
-sending them to the device.
-
-Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
-Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-[mani: added stable tag and reworded commit message]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/boot.c     |    8 ++++----
- drivers/bus/mhi/host/internal.h |    4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
---- a/drivers/bus/mhi/host/boot.c
-+++ b/drivers/bus/mhi/host/boot.c
-@@ -30,8 +30,8 @@ void mhi_rddm_prepare(struct mhi_control
- 	unsigned int i;
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
+@@ -36,40 +36,47 @@
  
- 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = mhi_buf->len;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(mhi_buf->len);
- 	}
- 
- 	dev_dbg(dev, "BHIe programming for RDDM\n");
-@@ -372,8 +372,8 @@ static void mhi_firmware_copy(struct mhi
- 	while (remainder) {
- 		to_cpy = min(remainder, mhi_buf->len);
- 		memcpy(mhi_buf->buf, buf, to_cpy);
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = to_cpy;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(to_cpy);
- 
- 		buf += to_cpy;
- 		remainder -= to_cpy;
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -263,8 +263,8 @@ struct mhi_tre {
+ static const char *mmhub_client_ids_v3_0_1[][2] = {
+ 	[0][0] = "VMC",
++	[1][0] = "ISPXT",
++	[2][0] = "ISPIXT",
+ 	[4][0] = "DCEDMC",
+ 	[5][0] = "DCEVGA",
+ 	[6][0] = "MP0",
+ 	[7][0] = "MP1",
+-	[8][0] = "MPIO",
+-	[16][0] = "HDP",
+-	[17][0] = "LSDMA",
+-	[18][0] = "JPEG",
+-	[19][0] = "VCNU0",
+-	[21][0] = "VSCH",
+-	[22][0] = "VCNU1",
+-	[23][0] = "VCN1",
+-	[32+20][0] = "VCN0",
+-	[2][1] = "DBGUNBIO",
++	[8][0] = "MPM",
++	[12][0] = "ISPTNR",
++	[14][0] = "ISPCRD0",
++	[15][0] = "ISPCRD1",
++	[16][0] = "ISPCRD2",
++	[22][0] = "HDP",
++	[23][0] = "LSDMA",
++	[24][0] = "JPEG",
++	[27][0] = "VSCH",
++	[28][0] = "VCNU",
++	[29][0] = "VCN",
++	[1][1] = "ISPXT",
++	[2][1] = "ISPIXT",
+ 	[3][1] = "DCEDWB",
+ 	[4][1] = "DCEDMC",
+ 	[5][1] = "DCEVGA",
+ 	[6][1] = "MP0",
+ 	[7][1] = "MP1",
+-	[8][1] = "MPIO",
+-	[10][1] = "DBGU0",
+-	[11][1] = "DBGU1",
+-	[12][1] = "DBGU2",
+-	[13][1] = "DBGU3",
+-	[14][1] = "XDP",
+-	[15][1] = "OSSSYS",
+-	[16][1] = "HDP",
+-	[17][1] = "LSDMA",
+-	[18][1] = "JPEG",
+-	[19][1] = "VCNU0",
+-	[20][1] = "VCN0",
+-	[21][1] = "VSCH",
+-	[22][1] = "VCNU1",
+-	[23][1] = "VCN1",
++	[8][1] = "MPM",
++	[10][1] = "ISPMWR0",
++	[11][1] = "ISPMWR1",
++	[12][1] = "ISPTNR",
++	[13][1] = "ISPSWR",
++	[14][1] = "ISPCWR0",
++	[15][1] = "ISPCWR1",
++	[16][1] = "ISPCWR2",
++	[17][1] = "ISPCWR3",
++	[18][1] = "XDP",
++	[21][1] = "OSSSYS",
++	[22][1] = "HDP",
++	[23][1] = "LSDMA",
++	[24][1] = "JPEG",
++	[27][1] = "VSCH",
++	[28][1] = "VCNU",
++	[29][1] = "VCN",
  };
  
- struct bhi_vec_entry {
--	u64 dma_addr;
--	u64 size;
-+	__le64 dma_addr;
-+	__le64 size;
- };
- 
- enum mhi_cmd_type {
+ static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
 
 
 
