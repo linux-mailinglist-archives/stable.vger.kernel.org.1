@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD71AB369DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8E7B364B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F021C44BC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51772362CF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FC2343D63;
-	Tue, 26 Aug 2025 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A272D191E;
+	Tue, 26 Aug 2025 13:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKKtWLbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiyxiNO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2F350825;
-	Tue, 26 Aug 2025 14:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4785E2FC870;
+	Tue, 26 Aug 2025 13:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218136; cv=none; b=DcNrRbIF2Bwl+Wae//JfaNZb+VUJi2sYVSV2kOIlSWWdlRpr41rxyRPeJVcMN3Xfd6E/pyBdihgPKhXVl9WZI73HsrAoVYkV8XF/UAjs9fRGio1vADrFeDLScQAP71a8SxFo3ma6tODvxoNizVrejZo15uGqBuG4qZLKMsVclBo=
+	t=1756214951; cv=none; b=r51I2JWUCQKZ5wdo03N/DmyGV8D5LlHRuPC6i4zaqrCQo+yQ6UxWfgORxpUEOAyGLQAx7rJRx2UfT5Iv8iBe746d7hMVTFSqYxAMTNibiVsF1U9c1QJvJtI+2ZmH9Dih0pV/aoVv8pT4YRToyHed9suorGQcYP1qqH/EWHVQalE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218136; c=relaxed/simple;
-	bh=iNB0LE7nFGX2UtI2XQ5yHaqcfPG1KDJoMKi1FkisQOY=;
+	s=arc-20240116; t=1756214951; c=relaxed/simple;
+	bh=OWCdj81Jys7XUpE7pDdBjwmEoD2tQ/SXFskSeiQXTOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVmfJuHzFXxjXDCAx5Bb4VKJN1c2imHCF2R16Zc3FQBbyfCrIPYPdCknFcQOaWX8wjLhUcEvv43N4RM+vEwgRVgkf3Bj5xV6WU/pZOwGpgg6HieXB9DDtHOOuz2fe+dgy4i05aKilnwClp/gvzAvIbZkttYnt0NfY6mCvOh9BNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKKtWLbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7518AC4CEF1;
-	Tue, 26 Aug 2025 14:22:15 +0000 (UTC)
+	 MIME-Version; b=dz16ojDTL+3MBuY3zOAJhiJz/p03UnLJwX8JpWUgyljvH8SkXMDB1lGsvLi0N7osr1jlx8Kukxb3mecNnhk0HiJ2uxEBYn63wR1rtTQwpgEqKqb7k+KRYzvczDEcTwgIQ1AZFUES8c0PBEo3oY2xSzlcXUKcwxBbNmBy02JRNkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiyxiNO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB1C4CEF1;
+	Tue, 26 Aug 2025 13:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218135;
-	bh=iNB0LE7nFGX2UtI2XQ5yHaqcfPG1KDJoMKi1FkisQOY=;
+	s=korg; t=1756214951;
+	bh=OWCdj81Jys7XUpE7pDdBjwmEoD2tQ/SXFskSeiQXTOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKKtWLbNyFVDn2MIz+uZhSiNgZxvmvEQJ6eJBD7xlhaoUAfOf8FSGGgP/q3VQjKUD
-	 BvrbQ7v1sYqQLPmLSJq6QHUM/gjUeBm1RjfZ8KmWfPpvHptN9QfnejPIt47b5DEeeQ
-	 uA+xIm4szcBmUFGTL3n5IvXLRTDbdcia/67QW0N8=
+	b=OiyxiNO95sAv9rGFRxOAuBahv0f7skiViNeJbh/HS1etz+FqUE6qvr4kWz8PXuAg5
+	 xGwQiYUG7+QRSnXGVOElFXO8O9lL7UEZw38tsiK8CwUDVeHyrkeNqIVxVLi/fTtHU2
+	 tWabd7Wh2UJkIcSBNV8+opiHtw3C9vLeSgl+QJe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 375/523] jbd2: prevent softlockup in jbd2_log_do_checkpoint()
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.1 332/482] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
 Date: Tue, 26 Aug 2025 13:09:45 +0200
-Message-ID: <20250826110933.715197041@linuxfoundation.org>
+Message-ID: <20250826110939.023848832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 9d98cf4632258720f18265a058e62fde120c0151 upstream.
+commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
 
-Both jbd2_log_do_checkpoint() and jbd2_journal_shrink_checkpoint_list()
-periodically release j_list_lock after processing a batch of buffers to
-avoid long hold times on the j_list_lock. However, since both functions
-contend for j_list_lock, the combined time spent waiting and processing
-can be significant.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-jbd2_journal_shrink_checkpoint_list() explicitly calls cond_resched() when
-need_resched() is true to avoid softlockups during prolonged operations.
-But jbd2_log_do_checkpoint() only exits its loop when need_resched() is
-true, relying on potentially sleeping functions like __flush_batch() or
-wait_on_buffer() to trigger rescheduling. If those functions do not sleep,
-the kernel may hit a softlockup.
+Clamp the param if the user provides a value that will result in an invalid
+fps.
 
-watchdog: BUG: soft lockup - CPU#3 stuck for 156s! [kworker/u129:2:373]
-CPU: 3 PID: 373 Comm: kworker/u129:2 Kdump: loaded Not tainted 6.6.0+ #10
-Hardware name: Huawei TaiShan 2280 /BC11SPCD, BIOS 1.27 06/13/2017
-Workqueue: writeback wb_workfn (flush-7:2)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : native_queued_spin_lock_slowpath+0x358/0x418
-lr : jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
-Call trace:
- native_queued_spin_lock_slowpath+0x358/0x418
- jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
- __jbd2_log_wait_for_space+0xfc/0x2f8 [jbd2]
- add_transaction_credits+0x3bc/0x418 [jbd2]
- start_this_handle+0xf8/0x560 [jbd2]
- jbd2__journal_start+0x118/0x228 [jbd2]
- __ext4_journal_start_sb+0x110/0x188 [ext4]
- ext4_do_writepages+0x3dc/0x740 [ext4]
- ext4_writepages+0xa4/0x190 [ext4]
- do_writepages+0x94/0x228
- __writeback_single_inode+0x48/0x318
- writeback_sb_inodes+0x204/0x590
- __writeback_inodes_wb+0x54/0xf8
- wb_writeback+0x2cc/0x3d8
- wb_do_writeback+0x2e0/0x2f8
- wb_workfn+0x80/0x2a8
- process_one_work+0x178/0x3e8
- worker_thread+0x234/0x3b8
- kthread+0xf0/0x108
- ret_from_fork+0x10/0x20
-
-So explicitly call cond_resched() in jbd2_log_do_checkpoint() to avoid
-softlockup.
-
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250812063752.912130-1-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/venus/venc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -321,6 +321,7 @@ restart:
- 		retry:
- 			if (batch_count)
- 				__flush_batch(journal, &batch_count);
-+			cond_resched();
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
- 	}
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -406,11 +406,10 @@ static int venc_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
+ 
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
 
