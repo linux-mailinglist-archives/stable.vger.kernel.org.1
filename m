@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1515DB369F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9164EB363E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C61398749C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F50A1BC4E5E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B64223335;
-	Tue, 26 Aug 2025 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EBC2F6564;
+	Tue, 26 Aug 2025 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEbhDoaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NITuTknr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6019C30AAD8;
-	Tue, 26 Aug 2025 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E883A288511;
+	Tue, 26 Aug 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217842; cv=none; b=hzp0X4XJkoO9Wkxz8ZY4NQ9DdlyHRLfE6b28ilf6mXBJhOZydgWow1V8x2C2CRKSE1m04+SlPXfrUxQFQdnUDZTq5qFh1vipHRBarzhf95XWUku603RjB2qtaDvAj2UuFOk/zfFQfdRKJPzCM9/xj3gZ9g0iCyu3kZfVSUqpF2I=
+	t=1756214825; cv=none; b=uNQ0aGYX/GVg++a6MzZJMt1bkvxzkfUe/SwVLDeQAy9ZYHiGPNMAn0MUqarUpWpOkjhEbdTVFUtTxvoqgZ8DILLcmSjkaYEYs9vIMvd/w/KYR/J6vvXnZD+kzB0rY14oghs+/K6ZQ5oEHEoSZE2Za9NcNTx0CI9Sa2WSMxy9PDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217842; c=relaxed/simple;
-	bh=avyLKn5hxhCWmPEzwW3OALl2ENPKCS3yR3sBM+gncmc=;
+	s=arc-20240116; t=1756214825; c=relaxed/simple;
+	bh=oKY6Uj2N3dSHAITCeqQaYscX4rbOp2etqdN2fU3h+JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IA/QeCJJIU/56FXVlbcskptGsKlGoj2VNM8dngPDCmmpxWmteWdpLGOPFiumupWxjvr9ESKSZBvOWozdHNazDPCizVZ24cgr+2D2OXFtAeqiSoeV5o1dimF9d74Tja4fQG7QjHQ25clVTkVobe2L+dCSvABQTGkEjzEcghCFEO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEbhDoaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BE8C4CEF1;
-	Tue, 26 Aug 2025 14:17:21 +0000 (UTC)
+	 MIME-Version; b=tTkMyqvmtL0zvsbhyr5cQ0uL+P4CDWXw4FNKxEqO2P7fmwuSzD2jGsZoGCMh1Wi1pOKPVwlece0+MFOfDGtivaWe/JvDFNt93W0aZ2bCE0cE+mAQgO86+s8kBRmdlP4fnmsrjRlrzIB+NtDF+uICnNDg43U50sy7zrVC6IJLmxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NITuTknr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7FFC113D0;
+	Tue, 26 Aug 2025 13:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217842;
-	bh=avyLKn5hxhCWmPEzwW3OALl2ENPKCS3yR3sBM+gncmc=;
+	s=korg; t=1756214824;
+	bh=oKY6Uj2N3dSHAITCeqQaYscX4rbOp2etqdN2fU3h+JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEbhDoazruF0tVwNglICNhznPm6rWLgxUL0QI7x2+9iQWbiWyjvhmK6QfVA9eFfcb
-	 m+Jrgnkc/Jz75P1C6ReMMEAJX/hxhLAh41r72OqvHj6GKGZNZIjtaohPFlwk6Hqbif
-	 XemEC5NwSyNlZ3Xuaai+DjCpZyaRi2WfWGEQvWCQ=
+	b=NITuTknref419Ix0ejYiQeDfk8uUh1ki3X6xpIbl8aBTSAu+6+vW1YibP6zChC+bf
+	 LhecgyCN2AQGhyB6HwQt48Qepk2c6ldACoxBZ+DtFesLW6eqhMWVIK1ig5Fjkx6nGn
+	 aw3/prckE87Vxx25d+iVou9OXk+OPYAilIY6eeVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 295/523] watchdog: dw_wdt: Fix default timeout
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 252/482] btrfs: zoned: use filesystem size not disk size for reclaim decision
 Date: Tue, 26 Aug 2025 13:08:25 +0200
-Message-ID: <20250826110931.726587422@linuxfoundation.org>
+Message-ID: <20250826110936.993780277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit ac3dbb91e0167d017f44701dd51c1efe30d0c256 ]
+commit 55f7c65b2f69c7e4cb7aa7c1654a228ccf734fd8 upstream.
 
-The Synopsys Watchdog driver sets the default timeout to 30 seconds,
-but on some devices this is not a valid timeout. E.g. on RK3588 the
-actual timeout being used is 44 seconds instead.
+When deciding if a zoned filesystem is reaching the threshold to reclaim
+data block groups, look at the size of the filesystem not to potentially
+total available size of all drives in the filesystem.
 
-Once the watchdog is started the value is updated accordingly, but
-it would be better to expose a sensible timeout to userspace without
-the need to first start the watchdog.
+Especially if a filesystem was created with mkfs' -b option, constraining
+it to only a portion of the block device, the numbers won't match and
+potentially garbage collection is kicking in too late.
 
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250717-dw-wdt-fix-initial-timeout-v1-1-86dc864d48dd@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3687fcb0752a ("btrfs: zoned: make auto-reclaim less aggressive")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/dw_wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/zoned.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-index 3cd118281980..d18530bafc4e 100644
---- a/drivers/watchdog/dw_wdt.c
-+++ b/drivers/watchdog/dw_wdt.c
-@@ -661,6 +661,8 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
- 	} else {
- 		wdd->timeout = DW_WDT_DEFAULT_SECONDS;
- 		watchdog_init_timeout(wdd, 0, dev);
-+		/* Limit timeout value to hardware constraints. */
-+		dw_wdt_set_timeout(wdd, wdd->timeout);
- 	}
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2229,8 +2229,8 @@ bool btrfs_zoned_should_reclaim(struct b
+ {
+ 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
+ 	struct btrfs_device *device;
++	u64 total = btrfs_super_total_bytes(fs_info->super_copy);
+ 	u64 used = 0;
+-	u64 total = 0;
+ 	u64 factor;
  
- 	platform_set_drvdata(pdev, dw_wdt);
--- 
-2.39.5
-
+ 	ASSERT(btrfs_is_zoned(fs_info));
+@@ -2243,7 +2243,6 @@ bool btrfs_zoned_should_reclaim(struct b
+ 		if (!device->bdev)
+ 			continue;
+ 
+-		total += device->disk_total_bytes;
+ 		used += device->bytes_used;
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
 
 
 
