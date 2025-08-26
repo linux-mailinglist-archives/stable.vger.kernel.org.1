@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEFBB35DA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9B8B363F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D66131626CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE0216B252
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1AB341651;
-	Tue, 26 Aug 2025 11:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E6D3093BA;
+	Tue, 26 Aug 2025 13:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8BDrAxe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koTKxuwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15BE340D95;
-	Tue, 26 Aug 2025 11:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5A338F50;
+	Tue, 26 Aug 2025 13:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208262; cv=none; b=hZLo+HEQTpUeMdKeyaVK8idn+fgRfEuQody/1BBuiEia9fBafvE7ZtVOOawYvnNhYuTuoXJR5DsgCGZexzQgiF07zLXudBcRtn0hOGTM5PdrpArlSTgJFyTHBL+qFWKyTS6VYO3BF7SbZBILhBfrl+QM4ByhDN8U68o5otzFtH4=
+	t=1756214506; cv=none; b=QQtBSNyDaRo6pcciHhwOXBP08klzBNkNxFbHAzomG1nxog9d+B8dACc+Ff0C56lu5LG3KArV5uuVNokHmGTMn3UEJM9dD3PgWaPDZVVZVYW4GDqztHdoTwyzBidVduv72gBBwF+hq0lu4JxULZKaBKwvcdiojkgr9gHZWrv7zuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208262; c=relaxed/simple;
-	bh=QWvadV+IuVNhx0ytgT+8se1S3yU37CkZrdLEjOXVNBc=;
+	s=arc-20240116; t=1756214506; c=relaxed/simple;
+	bh=OgQA3TrlVY2DVsAkAx2kVJkvOFmOfZ+yh8RVebNLXbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6awRy935NGyPeZvFhJL9wfdzkqffL4FIr+WUbDeO7jrgvaE7rQBnw3QT+48/43y/GXgWTf1CeCGS6Dq+t4Mre1mvpQXkZ9vM5zpOv2xF7YvIVM68UynqqSkMDZo2bafsktdWNnzpeMJdnFSVClLBgNfqUiCZQNTjKnkh6sYHKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8BDrAxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAB5C4CEF1;
-	Tue, 26 Aug 2025 11:37:41 +0000 (UTC)
+	 MIME-Version; b=c61qbiD1uH8Cc+7arxz9kD5L71j+S1YBlGA9EqzFXRknozlb7ry05Dff7AduW1bF+Ba6qxHxct3RoCb4d8u2Ey9X/BWaxW+p9bqfdHwnMZw9eNhoPJNayVsIo/PzxiABDS1Do0dwyn2KqfOby2url36l3YA8p9dOSDhBfLEO0Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koTKxuwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17406C4CEF1;
+	Tue, 26 Aug 2025 13:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208261;
-	bh=QWvadV+IuVNhx0ytgT+8se1S3yU37CkZrdLEjOXVNBc=;
+	s=korg; t=1756214506;
+	bh=OgQA3TrlVY2DVsAkAx2kVJkvOFmOfZ+yh8RVebNLXbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8BDrAxeTKn/ArZjD3PbriBVmbx/Vc+k01U+htAshIGuXdlcRoirQ1mFPv50FcpM8
-	 7n3O7dD1RpQxpJWUgDhV5c0aXZOjp9YSR9tBWoHy3bQN0YQ8uPuBXK+CzvHDjT9Aeu
-	 uZcC58oeTxDa653eO+qnNvcad3zfwvemXg0DmG6o=
+	b=koTKxuwrNMBBVwTACAZEhH7JJTN6aiBqXkBmkYNqeJqVaGaWZ1yUpCIMjwJvZHHjt
+	 DyEcw9XjhgSqcO7vQQXMoFE9B/ed6m24rFL+un1581+jzBwNAhTxkO6FTqG5He0+nz
+	 kfpaXhCscbzbe9LETCcZdk7IbsfhJ5AAYrWXXNes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 002/322] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 164/482] ionic: clean dbpage in de-init
 Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110915.246803626@linuxfoundation.org>
+Message-ID: <20250826110934.863696091@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit ed62a62a18bc144f73eadf866ae46842e8f6606e upstream.
+[ Upstream commit c9080abea1e69b8b1408ec7dec0acdfdc577a3e2 ]
 
-Improve the description of the possible default SATA link power
-management policies and add the missing description for policy 5.
-No functional changes.
+Since the kern_dbpage gets set up in ionic_lif_init() and that
+function's error path will clean it if needed, the kern_dbpage
+on teardown should be cleaned in ionic_lif_deinit(), not in
+ionic_lif_free().  As it is currently we get a double call
+to iounmap() on kern_dbpage if the PCI ionic fails setting up
+the lif.  One example of this is when firmware isn't responding
+to AdminQ requests and ionic's first AdminQ call fails to
+setup the NotifyQ.
 
-Fixes: a5ec5a7bfd1f ("ata: ahci: Support state with min power but Partial low power state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Joe Damato <joe@dama.to>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/Kconfig |   32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -117,23 +117,39 @@ config SATA_AHCI
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index b746944bcd2a..7ed77a8304e6 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3142,10 +3142,6 @@ void ionic_lif_free(struct ionic_lif *lif)
+ 	lif->info = NULL;
+ 	lif->info_pa = 0;
  
- config SATA_MOBILE_LPM_POLICY
- 	int "Default SATA Link Power Management policy"
--	range 0 4
-+	range 0 5
- 	default 3
- 	depends on SATA_AHCI
- 	help
- 	  Select the Default SATA Link Power Management (LPM) policy to use
- 	  for chipsets / "South Bridges" supporting low-power modes. Such
- 	  chipsets are ubiquitous across laptops, desktops and servers.
-+	  Each policy combines power saving states and features:
-+	   - Partial: The Phy logic is powered but is in a reduced power
-+                      state. The exit latency from this state is no longer than
-+                      10us).
-+	   - Slumber: The Phy logic is powered but is in an even lower power
-+                      state. The exit latency from this state is potentially
-+		      longer, but no longer than 10ms.
-+	   - DevSleep: The Phy logic may be powered down. The exit latency from
-+	               this state is no longer than 20 ms, unless otherwise
-+		       specified by DETO in the device Identify Device Data log.
-+	   - HIPM: Host Initiated Power Management (host automatically
-+		   transitions to partial and slumber).
-+	   - DIPM: Device Initiated Power Management (device automatically
-+		   transitions to partial and slumber).
+-	/* unmap doorbell page */
+-	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
+-	lif->kern_dbpage = NULL;
+-
+ 	mutex_destroy(&lif->config_lock);
+ 	mutex_destroy(&lif->queue_lock);
  
--	  The value set has the following meanings:
-+	  The possible values for the default SATA link power management
-+	  policies are:
- 		0 => Keep firmware settings
--		1 => Maximum performance
--		2 => Medium power
--		3 => Medium power with Device Initiated PM enabled
--		4 => Minimum power
-+		1 => No power savings (maximum performance)
-+		2 => HIPM (Partial)
-+		3 => HIPM (Partial) and DIPM (Partial and Slumber)
-+		4 => HIPM (Partial and DevSleep) and DIPM (Partial and Slumber)
-+		5 => HIPM (Slumber and DevSleep) and DIPM (Partial and Slumber)
+@@ -3171,6 +3167,9 @@ void ionic_lif_deinit(struct ionic_lif *lif)
+ 	ionic_lif_qcq_deinit(lif, lif->notifyqcq);
+ 	ionic_lif_qcq_deinit(lif, lif->adminqcq);
  
--	  Note "Minimum power" is known to cause issues, including disk
--	  corruption, with some disks and should not be used.
-+	  Excluding the value 0, higher values represent policies with higher
-+	  power savings.
++	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
++	lif->kern_dbpage = NULL;
++
+ 	ionic_lif_reset(lif);
+ }
  
- config SATA_AHCI_PLATFORM
- 	tristate "Platform AHCI SATA support"
+-- 
+2.39.5
+
 
 
 
