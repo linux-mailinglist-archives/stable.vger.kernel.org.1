@@ -1,82 +1,56 @@
-Return-Path: <stable+bounces-175646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2512BB369C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8E5B36BEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C7A09831F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 994D0A03B5C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B60352093;
-	Tue, 26 Aug 2025 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415B735690E;
+	Tue, 26 Aug 2025 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwtU4V9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiVvJnZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E4522DFA7;
-	Tue, 26 Aug 2025 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F336D35690D;
+	Tue, 26 Aug 2025 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217596; cv=none; b=qD6NZ629yfwy0M5Y7/KUhPrSaFv+UUK1Iaw/07D72uciDPQ6HGceaEk4wJX8ms2aRk4BBF73LgLGss5WVYM7ilMqo8gFVOaPMEkjzvoaiEdTp3eQeix9blAIjtVSHk9BgYbK+462/mak4fZT9HqZLsQO5bM5qo8VSUJrDYdARvA=
+	t=1756218583; cv=none; b=JaaRn+mK0adY7kzd9TUACTbYGt58iob5YFTig++ROmU3qMeR9M3b0QQOJuhUS/oBzpqxlxAh5nZ4DwR5s2HKYZtkLOatfweABpwuJ2P/2J6ZYR4VvxBxF+kCU6b8RVv3oJ/BnLJPMOJ91JiVILjlmybO9i5lbykrKmB2L+gTU5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217596; c=relaxed/simple;
-	bh=A0TA37oXBdZgOmzLSqclSDo6ox6CQ6OxEHXAsslK8Yo=;
+	s=arc-20240116; t=1756218583; c=relaxed/simple;
+	bh=vmYZNKVtSpBzizZZgpCjTqDksBn1HFliqqyU9Pm36aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBeQaNusSTVQ1JeKgNSRlkVqSmrmq02EcTQy4xE9vAz01K8ftQk4FrhHNCPJ/YgiFW60F4+VYyDW8ap158CnQfPKLp8aALeO6wnoi3stDU1lWAULQTOHNA14/eyuEDRBj43WbpqDBB2lryqj6LQLOSrrnN/FAasGvfJKOxlfXfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwtU4V9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944AFC4CEF1;
-	Tue, 26 Aug 2025 14:13:15 +0000 (UTC)
+	 MIME-Version; b=Y9+Ae3XDgQDR4N4EbJ9G0FXq8FCs8VVLZWj13SHzg/w4n1YgWypg8LuZa2d68IXtjpjEHpeHay2p/Xrw0IGxWg8IP3Jvd3kiP43/uyUGD6/jnLh8BC/Nf9JGiLIwknWkd1e7sjo/w/VBoGIA2JBWICMFisouaM6Yv2jpy6D4wqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiVvJnZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B155C113CF;
+	Tue, 26 Aug 2025 14:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217596;
-	bh=A0TA37oXBdZgOmzLSqclSDo6ox6CQ6OxEHXAsslK8Yo=;
+	s=korg; t=1756218582;
+	bh=vmYZNKVtSpBzizZZgpCjTqDksBn1HFliqqyU9Pm36aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwtU4V9kk1krWo0c43QpKiFl+pxjG6l5j3UStQVRABI10zsVWIxMH7YS2qMNmj393
-	 LbY23lSFWXPBB04iumqPn4yUh25SQNtPf11VMtQghj/iLdDVGPUs/E87SuSCSVEDFd
-	 tK+hTpqRDhq/G6Y/bEwElpC1hhnRQeLpQWIAep8w=
+	b=jiVvJnZY9xQHgC2gqETzxV2QBA1WYjUIYVsEuU0y3UshAwClcAAYGDppMuOeU18Pv
+	 u8zJcej/a20YajbqPejoedbX2LZ0VxFnJasCuYrvVa8dEMY41zCHCSTRuhxiVc/fey
+	 x62XPrYu5MGHUSRr8DZuK8vClPNK5UfIMMAm1yHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel.vetter@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Michel Lespinasse <walken@google.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Dave Chinner <david@fromorbit.com>,
-	Qian Cai <cai@lca.pw>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jason Gunthorpe <jgg@mellanox.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m=20 ?= <thomas_os@shipmail.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Alessandro Carminati <acarmina@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 171/523] mm: extract might_alloc() debug check
-Date: Tue, 26 Aug 2025 13:06:21 +0200
-Message-ID: <20250826110928.684509470@linuxfoundation.org>
+Subject: [PATCH 5.4 056/403] regulator: core: fix NULL dereference on unbind due to stale coupling data
+Date: Tue, 26 Aug 2025 13:06:22 +0200
+Message-ID: <20250826110907.416027491@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,147 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Alessandro Carminati <acarmina@redhat.com>
 
-[ Upstream commit 95d6c701f4ca7c44dc148d664f604541266a2333 ]
+[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
 
-Extracted from slab.h, which seems to have the most complete version
-including the correct might_sleep() check.  Roll it out to slob.c.
+Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
+lead to NULL pointer dereference when regulators are accessed post-unbind.
 
-Motivated by a discussion with Paul about possibly changing call_rcu
-behaviour to allocate memory, but only roughly every 500th call.
+This can happen during runtime PM or other regulator operations that rely
+on coupling metadata.
 
-There are a lot fewer places in the kernel that care about whether
-allocating memory is allowed or not (due to deadlocks with reclaim code)
-than places that care whether sleeping is allowed.  But debugging these
-also tends to be a lot harder, so nice descriptive checks could come in
-handy.  I might have some use eventually for annotations in drivers/gpu.
+For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
+a panic in regulator_lock_recursive() due to stale coupling state.
 
-Note that unlike fs_reclaim_acquire/release gfpflags_allow_blocking does
-not consult the PF_MEMALLOC flags.  But there is no flag equivalent for
-GFP_NOWAIT, hence this check can't go wrong due to
-memalloc_no*_save/restore contexts.  Willy is working on a patch series
-which might change this:
+Ensure n_coupled is set to 0 to prevent access to invalid pointers.
 
-https://lore.kernel.org/linux-mm/20200625113122.7540-7-willy@infradead.org/
-
-I think best would be if that updates gfpflags_allow_blocking(), since
-there's a ton of callers all over the place for that already.
-
-Link: https://lkml.kernel.org/r/20201125162532.1299794-3-daniel.vetter@ffwll.ch
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Michel Lespinasse <walken@google.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Qian Cai <cai@lca.pw>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Hellström (Intel) <thomas_os@shipmail.org>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 99765233ab42 ("NFS: Fixup allocation flags for nfsiod's __GFP_NORETRY")
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/mm.h | 16 ++++++++++++++++
- mm/slab.h                |  5 +----
- mm/slob.c                |  6 ++----
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index e3e5e149b00e..a856c4478d8c 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -189,6 +189,22 @@ static inline void fs_reclaim_acquire(gfp_t gfp_mask) { }
- static inline void fs_reclaim_release(gfp_t gfp_mask) { }
- #endif
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index a01a769b2f2d1..e5ce97dc32158 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5062,6 +5062,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
+ 				 err);
+ 	}
  
-+/**
-+ * might_alloc - Mark possible allocation sites
-+ * @gfp_mask: gfp_t flags that would be used to allocate
-+ *
-+ * Similar to might_sleep() and other annotations, this can be used in functions
-+ * that might allocate, but often don't. Compiles to nothing without
-+ * CONFIG_LOCKDEP. Includes a conditional might_sleep() if @gfp allows blocking.
-+ */
-+static inline void might_alloc(gfp_t gfp_mask)
-+{
-+	fs_reclaim_acquire(gfp_mask);
-+	fs_reclaim_release(gfp_mask);
-+
-+	might_sleep_if(gfpflags_allow_blocking(gfp_mask));
-+}
-+
- /**
-  * memalloc_noio_save - Marks implicit GFP_NOIO allocation scope.
-  *
-diff --git a/mm/slab.h b/mm/slab.h
-index 6952e10cf33b..4b70cf4493e6 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -507,10 +507,7 @@ static inline struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s,
- {
- 	flags &= gfp_allowed_mask;
- 
--	fs_reclaim_acquire(flags);
--	fs_reclaim_release(flags);
--
--	might_sleep_if(gfpflags_allow_blocking(flags));
-+	might_alloc(flags);
- 
- 	if (should_failslab(s, flags))
- 		return NULL;
-diff --git a/mm/slob.c b/mm/slob.c
-index 7cc9805c8091..8d4bfa46247f 100644
---- a/mm/slob.c
-+++ b/mm/slob.c
-@@ -474,8 +474,7 @@ __do_kmalloc_node(size_t size, gfp_t gfp, int node, unsigned long caller)
- 
- 	gfp &= gfp_allowed_mask;
- 
--	fs_reclaim_acquire(gfp);
--	fs_reclaim_release(gfp);
-+	might_alloc(gfp);
- 
- 	if (size < PAGE_SIZE - minalign) {
- 		int align = minalign;
-@@ -597,8 +596,7 @@ static void *slob_alloc_node(struct kmem_cache *c, gfp_t flags, int node)
- 
- 	flags &= gfp_allowed_mask;
- 
--	fs_reclaim_acquire(flags);
--	fs_reclaim_release(flags);
-+	might_alloc(flags);
- 
- 	if (c->size < PAGE_SIZE) {
- 		b = slob_alloc(c->size, flags, c->align, node, 0);
++	rdev->coupling_desc.n_coupled = 0;
+ 	kfree(rdev->coupling_desc.coupled_rdevs);
+ 	rdev->coupling_desc.coupled_rdevs = NULL;
+ }
 -- 
 2.39.5
 
