@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78C8B36C9A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D78B35C86
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E37C25815DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A993B442B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF4C3570A5;
-	Tue, 26 Aug 2025 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F71F321F30;
+	Tue, 26 Aug 2025 11:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rndpkoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAu5BvnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD74352FDB;
-	Tue, 26 Aug 2025 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F5D23D7FA;
+	Tue, 26 Aug 2025 11:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219380; cv=none; b=IgV2IPkmy8NAkh/CQ4hK3QhxaO+HAezYlLXtya3yUVkH8+RXVaTX/OcpEwDxRSgShcclG8/k/x2HJkBaDu6ynBeYyX7ZhAzz545SJT1/Up/oL/uH5c/wgSw70Z86Ws7/q7JjaDXh5pPKIVJ4jgbpdNZ+PIz54qQPf7pqxgvNFmE=
+	t=1756207985; cv=none; b=NryzSm/fHsMPc+LeUVc1/UCcvihxIldDlpOsKVgboz9MAGzStE38GzW1W+r47jmdQD6yLpwCecJUnvIuz/sVbjlA69FBCNwpBJ+dNT4U2K13eDrPuQ1KjvAWifDp1wyt9L3hH8FdAUsRuJFFx6H95WENYm9pNPcUtnLp0FrStC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219380; c=relaxed/simple;
-	bh=13qFPfiizwk9UdmEXZR9Vg1zhh8J3tnEbu2ngnKDNSk=;
+	s=arc-20240116; t=1756207985; c=relaxed/simple;
+	bh=vMGhdW61XTeLYLLaEPekexlxdrR3PLgSvV9RCCLxV5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBchz/KI4rUIO+Xe0Ap9MLt0FRrk0Yp5HGDQmX8VyyVVcMPweeayr1inNqHbzQNrwlOQyphTSwkSaL23OVR+mL0qHV5vO0RLUyA2Vs8NeteiHFxmgsBCsVSzO0Hfk94nrJ16q7CvaiA7upVbMZYxXX8YtbM9/64LBIuazEr/TJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rndpkoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D0FC4CEF1;
-	Tue, 26 Aug 2025 14:42:59 +0000 (UTC)
+	 MIME-Version; b=kMCtL5z7Hz30Gd4v0LT6o+dz9uowp5X/3oiFBwRTt01n/i+pO3455dBVa//VIq9SHb56TfrjKpFzpiwFwLrwZEFpSGIBwtjKAiNnCEuVUN6bdDJL8k9scKkWQGAwsvPeWq8z8XQkTp0vItPHxUPO0OzZUaalUKwIOzOd+TTOUIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAu5BvnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7276EC4CEF1;
+	Tue, 26 Aug 2025 11:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219380;
-	bh=13qFPfiizwk9UdmEXZR9Vg1zhh8J3tnEbu2ngnKDNSk=;
+	s=korg; t=1756207984;
+	bh=vMGhdW61XTeLYLLaEPekexlxdrR3PLgSvV9RCCLxV5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rndpkoBe1A+Ck3O1+uAL+siJBfA+uVQtehwJdVvY0aGWdoJV7YZollUlx1RJEER+
-	 eHdhvXY5moB6W9M7xp9ABp7LpS21tRy/CyEQqDJpXsufaeJHr9gw9WfVRkgyxnQXjq
-	 3belR6KTdpOI+b1D4gwc6jbkr1cNz8jLpjopP3Xw=
+	b=PAu5BvnE2GchHKlIBDRtpt0ywtI9fnBQc/1huECp4lXtY7GoTewQZJa6A6ySlrR0/
+	 bAkPu8/CFm/Vk+D1tJ1lpSl7ZUk/GoMMSPndo73grQWBrkV66ciCuc7wlFJhm34pp7
+	 NYXIEegT78q51jxt80Ajo/x8NiId/AELXkuZF6G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 352/403] USB: cdc-acm: do not log successful probe on later errors
+Subject: [PATCH 6.16 394/457] regulator: pca9450: Use devm_register_sys_off_handler
 Date: Tue, 26 Aug 2025 13:11:18 +0200
-Message-ID: <20250826110916.601147813@linuxfoundation.org>
+Message-ID: <20250826110947.032210009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 79579411826647fd573dbe301c4d933bc90e4be7 ]
+[ Upstream commit 447be50598c05499f7ccc2b1f6ddb3da30f8099a ]
 
-Do not log the successful-probe message until the tty device has been
-registered.
+With module test, there is error dump:
+------------[ cut here ]------------
+  notifier callback pca9450_i2c_restart_handler already registered
+  WARNING: kernel/notifier.c:23 at notifier_chain_register+0x5c/0x88,
+  CPU#0: kworker/u16:3/50
+  Call trace:
+  notifier_chain_register+0x5c/0x88 (P)
+  atomic_notifier_chain_register+0x30/0x58
+  register_restart_handler+0x1c/0x28
+  pca9450_i2c_probe+0x418/0x538
+  i2c_device_probe+0x220/0x3d0
+  really_probe+0x114/0x410
+  __driver_probe_device+0xa0/0x150
+  driver_probe_device+0x40/0x114
+  __device_attach_driver+0xd4/0x12c
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20210322155318.9837-9-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 64690a90cd7c ("cdc-acm: fix race between initial clearing halt and open")
+So use devm_register_sys_off_handler to let kernel handle the resource
+free to avoid kernel dump.
+
+Fixes: 6157e62b07d9 ("regulator: pca9450: Add restart handler")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20250815-pca9450-v1-1-7748e362dc97@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/pca9450-regulator.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1520,8 +1520,6 @@ skip_countries:
- 	acm->nb_index = 0;
- 	acm->nb_size = 0;
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 14d19a6d6655..49ff762eb33e 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -34,7 +34,6 @@ struct pca9450 {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+ 	struct gpio_desc *sd_vsel_gpio;
+-	struct notifier_block restart_nb;
+ 	enum pca9450_chip_type type;
+ 	unsigned int rcnt;
+ 	int irq;
+@@ -967,10 +966,9 @@ static irqreturn_t pca9450_irq_handler(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
  
--	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+-static int pca9450_i2c_restart_handler(struct notifier_block *nb,
+-				unsigned long action, void *data)
++static int pca9450_i2c_restart_handler(struct sys_off_data *data)
+ {
+-	struct pca9450 *pca9450 = container_of(nb, struct pca9450, restart_nb);
++	struct pca9450 *pca9450 = data->cb_data;
+ 	struct i2c_client *i2c = container_of(pca9450->dev, struct i2c_client, dev);
+ 
+ 	dev_dbg(&i2c->dev, "Restarting device..\n");
+@@ -1128,10 +1126,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	pca9450->sd_vsel_fixed_low =
+ 		of_property_read_bool(ldo5->dev.of_node, "nxp,sd-vsel-fixed-low");
+ 
+-	pca9450->restart_nb.notifier_call = pca9450_i2c_restart_handler;
+-	pca9450->restart_nb.priority = PCA9450_RESTART_HANDLER_PRIORITY;
 -
- 	acm->line.dwDTERate = cpu_to_le32(9600);
- 	acm->line.bDataBits = 8;
- 	acm_set_line(acm, &acm->line);
-@@ -1541,6 +1539,8 @@ skip_countries:
- 		usb_clear_halt(usb_dev, acm->out);
- 	}
+-	if (register_restart_handler(&pca9450->restart_nb))
++	if (devm_register_sys_off_handler(&i2c->dev, SYS_OFF_MODE_RESTART,
++					  PCA9450_RESTART_HANDLER_PRIORITY,
++					  pca9450_i2c_restart_handler, pca9450))
+ 		dev_warn(&i2c->dev, "Failed to register restart handler\n");
  
-+	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
-+
- 	return 0;
- alloc_fail6:
- 	if (!acm->combined_interfaces) {
+ 	dev_info(&i2c->dev, "%s probed.\n",
+-- 
+2.50.1
+
 
 
 
