@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-174206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154D3B361E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33423B364CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802BC1887357
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952118A53DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D772D0274;
-	Tue, 26 Aug 2025 13:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073E83090E1;
+	Tue, 26 Aug 2025 13:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/IOE/w4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fJCsiJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1C131DD93;
-	Tue, 26 Aug 2025 13:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A2C1FBCB5;
+	Tue, 26 Aug 2025 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213775; cv=none; b=IoC8a4INqlku6hHsbr0U6F9q3dG9z62jyawwM6pNJhUKksdgjyCavECocp4HAupeFduByFJsZc7d2MmaaVdjPqAOcugwG4oC9uteUwOehUdjOIHFiZZgKKgSfwlvGUjuvGioineomz7Z6qfDxIYajK8Lr4d1Orc+amztY3DzV5o=
+	t=1756215050; cv=none; b=rfCV95Kw7ns49LeFbZuQcWznGmfgmw9nIvpXPlsDSWdbaqfdgemoyxU7PZfC1QnJ/hDWYCeDSBSAVLC6Y89ozYH2HyCOWsMwb8EH2vIfKl7Oxq/jAbdjEXp5jU0wU0bAsWrPhwO0H9u4O62DLOja6enMsyV+GKLiu6cRACO54vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213775; c=relaxed/simple;
-	bh=eJ4/1RrMBMl4IjPpg6vpHlPEnR7OyM+R4UicRdVd1f4=;
+	s=arc-20240116; t=1756215050; c=relaxed/simple;
+	bh=8DmDjkmxwXi7Mc+ucl/71i7B/AFBC74HsRmWIBRu5e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXlR5yHUVxg6yt0AzIqw34MKVDVZdhhqYv0qlMKetW/4o53scIgqvZ0ZmUd5FZ4kqHK5T/TR+PqBb2elSWupDQ8iLPExCJ9+r+mpkLa+u9x5LcXsfwSjhuNt0OB3/+4uVrSKC+fvmr+n5tjYzrY76AqOXaboKGUe5bxulsycy5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/IOE/w4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CC2C4CEF1;
-	Tue, 26 Aug 2025 13:09:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cU5LtHCYloK8YO30dT0NcPUlSYyclq6qNjTh+UJxu4Ho5jGXFihKeqaa/rhiXsbOdJuVaGY/jjhVc2KZGumAAzcD5eUz3ESEqSMlIgEzysbb40p3y5QByFXEie3pv/as4K02Nff6PRW9D2ymXjK8d7nukjt8cUC8C0fmknGf+/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fJCsiJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A140C4CEF1;
+	Tue, 26 Aug 2025 13:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213775;
-	bh=eJ4/1RrMBMl4IjPpg6vpHlPEnR7OyM+R4UicRdVd1f4=;
+	s=korg; t=1756215050;
+	bh=8DmDjkmxwXi7Mc+ucl/71i7B/AFBC74HsRmWIBRu5e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/IOE/w4N4RYPslAiHgrJ5CTliGmldbD60pOUGO/MrtU/pGvHKz7zAG+smLcMbjdy
-	 Kh3UUA6MdlTfeaAFYYBEJR+ai/63nV5w+rFzHnz6nLSP9epsrsUPAs+JDxSg0ktcrA
-	 uzzdhXtgMoznjqUTPLZ/Bwy7vMsfvM9aWFyMJ3hA=
+	b=0fJCsiJMiKDvBcFkk0qxlLugfXMT9LtqXmMcaQrFHbV9yFUDTjwSBEjJzlNug/CF6
+	 on5h0vi1LANq2k2G9P8DTKyE5OUv0FMSfecgoWo2gQAyMR/Rh/YmrJH4Z/dT86gD/c
+	 GvGOMD5XzJUqzvUP4o+3j1bYA0PpPu+VfFjMGgKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 473/587] cpufreq/schedutil: Use a fixed reference frequency
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 369/482] usb: musb: omap2430: Convert to platform remove callback returning void
 Date: Tue, 26 Aug 2025 13:10:22 +0200
-Message-ID: <20250826111005.003320251@linuxfoundation.org>
+Message-ID: <20250826110939.950567802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit b3edde44e5d4504c23a176819865cd603fd16d6c upstream.
+[ Upstream commit cb020bf52253327fe382e10bcae02a4f1da33c04 ]
 
-cpuinfo.max_freq can change at runtime because of boost as an example. This
-implies that the value could be different than the one that has been
-used when computing the capacity of a CPU.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-The new arch_scale_freq_ref() returns a fixed and coherent reference
-frequency that can be used when computing a frequency based on utilization.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Use this arch_scale_freq_ref() when available and fallback to
-policy otherwise.
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20231211104855.558096-4-vincent.guittot@linaro.org
-Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230405141009.3400693-8-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1473e9e7679b ("usb: musb: omap2430: fix device leak at unbind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpufreq_schedutil.c |   26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/usb/musb/omap2430.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -138,6 +138,28 @@ static void sugov_deferred_update(struct
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -471,14 +471,12 @@ err0:
+ 	return ret;
  }
  
- /**
-+ * get_capacity_ref_freq - get the reference frequency that has been used to
-+ * correlate frequency and compute capacity for a given cpufreq policy. We use
-+ * the CPU managing it for the arch_scale_freq_ref() call in the function.
-+ * @policy: the cpufreq policy of the CPU in question.
-+ *
-+ * Return: the reference CPU frequency to compute a capacity.
-+ */
-+static __always_inline
-+unsigned long get_capacity_ref_freq(struct cpufreq_policy *policy)
-+{
-+	unsigned int freq = arch_scale_freq_ref(policy->cpu);
-+
-+	if (freq)
-+		return freq;
-+
-+	if (arch_scale_freq_invariant())
-+		return policy->cpuinfo.max_freq;
-+
-+	return policy->cur;
-+}
-+
-+/**
-  * get_next_freq - Compute a new frequency for a given cpufreq policy.
-  * @sg_policy: schedutil policy object to compute the new frequency for.
-  * @util: Current CPU utilization.
-@@ -163,9 +185,9 @@ static unsigned int get_next_freq(struct
- 				  unsigned long util, unsigned long max)
+-static int omap2430_remove(struct platform_device *pdev)
++static void omap2430_remove(struct platform_device *pdev)
  {
- 	struct cpufreq_policy *policy = sg_policy->policy;
--	unsigned int freq = arch_scale_freq_invariant() ?
--				policy->cpuinfo.max_freq : policy->cur;
-+	unsigned int freq;
+ 	struct omap2430_glue *glue = platform_get_drvdata(pdev);
  
-+	freq = get_capacity_ref_freq(policy);
- 	freq = map_util_freq(util, freq, max);
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
+-
+-	return 0;
+ }
  
- 	if (freq == sg_policy->cached_raw_freq && !sg_policy->need_freq_update)
+ #ifdef CONFIG_PM
+@@ -610,7 +608,7 @@ MODULE_DEVICE_TABLE(of, omap2430_id_tabl
+ 
+ static struct platform_driver omap2430_driver = {
+ 	.probe		= omap2430_probe,
+-	.remove		= omap2430_remove,
++	.remove_new	= omap2430_remove,
+ 	.driver		= {
+ 		.name	= "musb-omap2430",
+ 		.pm	= DEV_PM_OPS,
 
 
 
