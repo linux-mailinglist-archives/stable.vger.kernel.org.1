@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30A3B36526
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38F0B36260
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E185565CB8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC20E188A45F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAB51EF39E;
-	Tue, 26 Aug 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DF134A31C;
+	Tue, 26 Aug 2025 13:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/r2NlnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdsmQx7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8A71DE4CD;
-	Tue, 26 Aug 2025 13:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFAC196C7C;
+	Tue, 26 Aug 2025 13:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215349; cv=none; b=e9qCTGQKoIE3ewRNkEG7TI+f0whxcVfWeEN1rLwEQnv1jS2jSZKrVmqYXir3ZwqXjsqV11pvy/k2ZNhsp+E5gL81dB+V9cGhoVKnp1ZaEG3Fo8OP6Wh8+o2Ae3gM+13VcqniW8Ij5+6vJEkHGSEfXV0qvFK2jlSKmg8JKG1YLQ4=
+	t=1756213991; cv=none; b=ZygF/65PQTYhHjR+rRnoZnQ5+7i80kIJ7wEKHGd2jgWWZ4IgULi5Hck8NSOi2kG5kPwB1qamyMaFs5SeNT6WtMbXBXl24tm57aexMbbQ8V7aN7aItaIGHaL/3qgvnVQIBK5AtIcjK3ubhO7w7AAdtOZB9NR9xjp0NhirTof9Dzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215349; c=relaxed/simple;
-	bh=9adnISnqjJDlVb8ggPxg3x/G0UAyNTULsqgkWMT7WEQ=;
+	s=arc-20240116; t=1756213991; c=relaxed/simple;
+	bh=Iw7jweKngYcYGIkp7f4RDaX8d8dzch0HT6D2KF2/kvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcVpQoygKWcakwf3BnYpkaBVJI3KAt8k8Kg3z5KnCFJckMK/j6oC3mGj3Wo5FMnq3P73hhSJzxSHB3NFWy+0+XFuB2iC8hpl4K7pqvs3DSa2ba1XcjtN+ruMusApwQRfNQVE95zYZxUrS3TS4+COByJp4io+qQIMta69mmwsDok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/r2NlnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705D4C4CEF1;
-	Tue, 26 Aug 2025 13:35:48 +0000 (UTC)
+	 MIME-Version; b=CMNQyG30fqTDj80BiXqqqsFUzaCI4nWtfGm8duIAlC6G1gxH2qDzQsLk1tf2+KP/1DNAkhpDwT/5KYyRu/z80yLv4FTCgJDQ+NnqfDj27ZYj0X77tO+cjUE0H+NtOTQqwwS30gjokJuGRIfBpqSKHSBuPvwM8IJ5qVN8Vh8ycdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdsmQx7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6788C4CEF1;
+	Tue, 26 Aug 2025 13:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215348;
-	bh=9adnISnqjJDlVb8ggPxg3x/G0UAyNTULsqgkWMT7WEQ=;
+	s=korg; t=1756213991;
+	bh=Iw7jweKngYcYGIkp7f4RDaX8d8dzch0HT6D2KF2/kvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/r2NlnTrc9QHOnF4/Ve+hzU1myUpY4Robw+aEf3bLXYG0uJjFYljeiUCfanY/Fl1
-	 2+DZ7ZVfcKl7IStjNyiLxHYXWReuk9Kwh8sZ2Oe8sYak/5hTmdLqPWq8VbcCAyXmhL
-	 bTYTJAUFNFH+F68wqLO43dorjkOXcmpLsk6XUPDc=
+	b=mdsmQx7HuXB6lfXR4SipYjxhRR+w5a1ImXVdAV31n0fGnAhK0Tw27i495Ns8GPwRM
+	 2tJ3koTm0GU8saZCe8MYat8H8q8Hscywsxyj5IM1o8/AQyBAZqcfZrUPTX1Xo8Es8P
+	 p5tJ1tA90fkTnef+UAJSwlXLx4ncMWT5NnGTfMVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 453/482] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
+Subject: [PATCH 6.6 557/587] scsi: qla4xxx: Prevent a potential error pointer dereference
 Date: Tue, 26 Aug 2025 13:11:46 +0200
-Message-ID: <20250826110942.020015554@linuxfoundation.org>
+Message-ID: <20250826111007.194503274@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
+[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
 
-The following lockdep splat was observed.
+The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
+but qla4xxx_ep_connect() returns error pointers.  Propagating the error
+pointers will lead to an Oops in the caller, so change the error pointers
+to NULL.
 
-[  812.359086] ============================================
-[  812.359089] WARNING: possible recursive locking detected
-[  812.359097] --------------------------------------------
-[  812.359100] runtest.sh/30042 is trying to acquire lock:
-[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
-[  812.359131]
-[  812.359131] but task is already holding lock:
-[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
-     :
-[  812.359267] Call Trace:
-[  812.359272]  <TASK>
-[  812.359367]  cpus_read_lock+0x3c/0xe0
-[  812.359382]  static_key_enable+0xe/0x20
-[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
-[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
-[  812.359411]  cgroup_file_write+0x1c7/0x660
-[  812.359467]  kernfs_fop_write_iter+0x358/0x530
-[  812.359479]  vfs_write+0xabe/0x1250
-[  812.359529]  ksys_write+0xf9/0x1d0
-[  812.359558]  do_syscall_64+0x5f/0xe0
-
-Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
-and hotplug lock order"), the ordering of cpu hotplug lock
-and cpuset_mutex had been reversed. That patch correctly
-used the cpuslocked version of the static branch API to enable
-cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
-same for cpusets_insane_config_key.
-
-The cpusets_insane_config_key can be enabled in the
-check_insane_mems_config() which is called from update_nodemask()
-or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
-cpuset_mutex held. Deadlock can happen with a pending hotplug event that
-tries to acquire the cpu hotplug write lock which will block further
-cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
-switching to use static_branch_enable_cpuslocked().
-
-Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 370a6bce20a8..216bdebd9426 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -455,7 +455,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
- {
- 	if (!cpusets_insane_config() &&
- 		movable_only_nodes(nodes)) {
--		static_branch_enable(&cpusets_insane_config_key);
-+		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
- 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
- 			"Cpuset allocations might fail even with a lot of memory available.\n",
- 			nodemask_pr_args(nodes));
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 77c28d2ebf01..d91efd7c983c 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -6606,6 +6606,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
+ 
+ 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
+ 	vfree(dst_addr);
++	if (IS_ERR(ep))
++		return NULL;
+ 	return ep;
+ }
+ 
 -- 
 2.50.1
 
