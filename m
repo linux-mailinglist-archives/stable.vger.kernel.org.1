@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01AEB361D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA000B3645E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61EBA2A3E18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5568A357C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16011244667;
-	Tue, 26 Aug 2025 13:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8257E22AE5D;
+	Tue, 26 Aug 2025 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhtlFlOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY6yT5WY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D95C246BB2;
-	Tue, 26 Aug 2025 13:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411BA1F4CA9;
+	Tue, 26 Aug 2025 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213679; cv=none; b=Ejus556cDgr3EnlZB+RBT+DNfUkgp2YUOxBgAllW1tmUtJFecT1N+/iznuwhuRBLVSotQ0hqvBuy2O+RPrp21WzIixCH4tJw9QQvR4FFOEwdAKYDb8/UlEGcs3NZsDZ4VQsxRk9N6rSuiz7PH+DG24SMh/DvVkEwzM3ws/Fxbo4=
+	t=1756214959; cv=none; b=JIEe9YJz8a/7B4smfFvv9vHnqNREzg01JndeZfSobi+UebVTh7BmoQ5rAFQalxQv825zra58QB8FWfz65NwlIVCv5mIPQlZT6CXxLRgk4FBGyvu1MyXf2R5oLhWtEqwzigZTTGX2mWbo7PIRSK4mb1h4m447VhgjDPaxkwVZn0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213679; c=relaxed/simple;
-	bh=9iSaCgGje0+aO/C78WR6iFaOJXqpQD3eJ3xOQmUlxF0=;
+	s=arc-20240116; t=1756214959; c=relaxed/simple;
+	bh=Mi6MqbmuSPDUx2vkGGAFyZZXdadNbTnlLndlnv+pOlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKW9FFSHYhcdZTrRtG1BD8emGlU/lWqTG0ZQ72h3lKIDQLZkxZkhxc3FKBTSsTH5O6iZMkjXf4wcFkBAJfhAi/65n0lGrMjtnfY0WJ0lXdF5yaaFGS2UXAgKbS/pFU5NGQ5eDmEmIimDs23fnQcYlL/to1ixRkoth+qqDSF09Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhtlFlOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43375C4CEF4;
-	Tue, 26 Aug 2025 13:07:58 +0000 (UTC)
+	 MIME-Version; b=kUambBydtMryc1eRhrz3S0taeFryuMAhWbaeekUG6troh1O6/iXC9CIIrLYGqrlFRoYWoLi81HSw33E1nEp9ZTnOuMuwXsR/hfnuD94FweJASl3YUsCGipnvtSXDAoorknuWsD8ldXxnqh66Dam+Mey7+qI9vkRNcQGn03DSXxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY6yT5WY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C872AC4CEF1;
+	Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213678;
-	bh=9iSaCgGje0+aO/C78WR6iFaOJXqpQD3eJ3xOQmUlxF0=;
+	s=korg; t=1756214959;
+	bh=Mi6MqbmuSPDUx2vkGGAFyZZXdadNbTnlLndlnv+pOlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhtlFlOrfKarmwWXqHN7NQLs3htAcfRHgHSU+bVlzek8jQAt2Mbirq34P1hv7vRpE
-	 LISD0K0ppvV1wLdaMcGuiwXEKvtRclz8Ueo9S+raXoDRBvdPExwljVa6nCIi92DC+u
-	 m3sZ0tm2ryLbpiq8qAY5eKIQHmqRUHyS50LIGkXU=
+	b=AY6yT5WYfxw71g/DCpWsNuOcOiNxVEJ86XmVtM+LnIQtHQyUn7oQCvNmch+NUpsT/
+	 EYlXNQnCJDYaLtpqHrgR4FWsl/uQvkSLlOq9ieOGVIPJikyaMCORgOL6jijyQL8bi9
+	 Sy82HR/bjXg4wVgoaikBijMOkFn0+oQ2qYmZith0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 438/587] leds: flash: leds-qcom-flash: Fix registry access after re-bind
-Date: Tue, 26 Aug 2025 13:09:47 +0200
-Message-ID: <20250826111004.096307443@linuxfoundation.org>
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 335/482] drm/amdgpu: update mmhub 3.0.1 client id mappings
+Date: Tue, 26 Aug 2025 13:09:48 +0200
+Message-ID: <20250826110939.102756830@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit fab15f57360b1e6620a1d0d6b0fbee896e6c1f07 ]
+commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
 
-Driver in probe() updates each of 'reg_field' with 'reg_base':
+Update the client id mapping so the correct clients
+get printed when there is a mmhub page fault.
 
-	for (i = 0; i < REG_MAX_COUNT; i++)
-		regs[i].reg += reg_base;
-
-'reg_field' array (under variable 'regs' above) is statically allocated,
-thus each re-bind would add another 'reg_base' leading to bogus
-register addresses.  Constify the local 'reg_field' array and duplicate
-it in probe to solve this.
-
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250529063335.8785-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/flash/leds-qcom-flash.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -117,7 +117,7 @@ enum {
- 	REG_MAX_COUNT,
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
+@@ -36,40 +36,47 @@
+ 
+ static const char *mmhub_client_ids_v3_0_1[][2] = {
+ 	[0][0] = "VMC",
++	[1][0] = "ISPXT",
++	[2][0] = "ISPIXT",
+ 	[4][0] = "DCEDMC",
+ 	[5][0] = "DCEVGA",
+ 	[6][0] = "MP0",
+ 	[7][0] = "MP1",
+-	[8][0] = "MPIO",
+-	[16][0] = "HDP",
+-	[17][0] = "LSDMA",
+-	[18][0] = "JPEG",
+-	[19][0] = "VCNU0",
+-	[21][0] = "VSCH",
+-	[22][0] = "VCNU1",
+-	[23][0] = "VCN1",
+-	[32+20][0] = "VCN0",
+-	[2][1] = "DBGUNBIO",
++	[8][0] = "MPM",
++	[12][0] = "ISPTNR",
++	[14][0] = "ISPCRD0",
++	[15][0] = "ISPCRD1",
++	[16][0] = "ISPCRD2",
++	[22][0] = "HDP",
++	[23][0] = "LSDMA",
++	[24][0] = "JPEG",
++	[27][0] = "VSCH",
++	[28][0] = "VCNU",
++	[29][0] = "VCN",
++	[1][1] = "ISPXT",
++	[2][1] = "ISPIXT",
+ 	[3][1] = "DCEDWB",
+ 	[4][1] = "DCEDMC",
+ 	[5][1] = "DCEVGA",
+ 	[6][1] = "MP0",
+ 	[7][1] = "MP1",
+-	[8][1] = "MPIO",
+-	[10][1] = "DBGU0",
+-	[11][1] = "DBGU1",
+-	[12][1] = "DBGU2",
+-	[13][1] = "DBGU3",
+-	[14][1] = "XDP",
+-	[15][1] = "OSSSYS",
+-	[16][1] = "HDP",
+-	[17][1] = "LSDMA",
+-	[18][1] = "JPEG",
+-	[19][1] = "VCNU0",
+-	[20][1] = "VCN0",
+-	[21][1] = "VSCH",
+-	[22][1] = "VCNU1",
+-	[23][1] = "VCN1",
++	[8][1] = "MPM",
++	[10][1] = "ISPMWR0",
++	[11][1] = "ISPMWR1",
++	[12][1] = "ISPTNR",
++	[13][1] = "ISPSWR",
++	[14][1] = "ISPCWR0",
++	[15][1] = "ISPCWR1",
++	[16][1] = "ISPCWR2",
++	[17][1] = "ISPCWR3",
++	[18][1] = "XDP",
++	[21][1] = "OSSSYS",
++	[22][1] = "HDP",
++	[23][1] = "LSDMA",
++	[24][1] = "JPEG",
++	[27][1] = "VSCH",
++	[28][1] = "VCNU",
++	[29][1] = "VCN",
  };
  
--static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x08, 0, 7),			/* status1	*/
- 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
- 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
-@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs
- 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
- };
- 
--static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x06, 0, 7),			/* status1	*/
- 	REG_FIELD(0x07, 0, 6),			/* status2	*/
- 	REG_FIELD(0x09, 0, 7),			/* status3	*/
-@@ -855,11 +855,17 @@ static int qcom_flash_led_probe(struct p
- 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_3CH;
- 		flash_data->max_channels = 3;
--		regs = mvflash_3ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_4CH;
- 		flash_data->max_channels = 4;
--		regs = mvflash_4ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_4ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 
- 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
- 		if (rc < 0) {
-@@ -881,6 +887,7 @@ static int qcom_flash_led_probe(struct p
- 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
- 		return rc;
- 	}
-+	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
- 
- 	platform_set_drvdata(pdev, flash_data);
- 	mutex_init(&flash_data->lock);
+ static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
 
 
 
