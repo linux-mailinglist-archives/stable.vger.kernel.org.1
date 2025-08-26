@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CFBB363B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058BFB36767
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE9D1BC737D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176C016C00D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDB4393DCA;
-	Tue, 26 Aug 2025 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A41B3469E3;
+	Tue, 26 Aug 2025 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="125ahH/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpDpcKzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF00933471E;
-	Tue, 26 Aug 2025 13:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570B1338F51;
+	Tue, 26 Aug 2025 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214732; cv=none; b=OBpjVSycJdda5he88MktZoiXHx88zipI+tkyUzxd6l+LI/j+iakwEQrvheWszanR1jUDeNsDqVb9xMWnijApj1tTcMhB8aELnehcmABuBAXvmlfMlo71ePgbuZuneielpAuXrhNtjptsueva1zHWapwiJXt7Vmf9wiezLbSciWo=
+	t=1756216429; cv=none; b=jU+Oi4pAFPJf+CDlOPeoWdHoYMnstCJjds+GqH/TleuEJ1w22yOSW4FBk+2L5mPoJbfeoxXfkmauP2OCz6pz0hL7+KWc7Y42yu47liN7shAToAecGfRp7gRFlcJFJgY3Z5TonFNndQLGMzX/FJ/zVe4bw/pawwrQt9OIGf21m10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214732; c=relaxed/simple;
-	bh=h2GZmPlh/irqPaMXc7e8u4ZQ50GoxZwzQkWvuOMTKg4=;
+	s=arc-20240116; t=1756216429; c=relaxed/simple;
+	bh=tikVpCArvSY+jXqy9ObybvNuxbcImHmQA5/kwsToKMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYlTn/F6uunrM7YKAi4/yCvLr7ymQGHaTWL2JrO9rXeOze+du9/xn7wYCjDlTpngmFV6u3mvhQ0OMTCHDcACQEWInUH2xuhWOTdP2w8Pf/aa3O0hYXnYqAq8xUQtA4SsNS5+1mRnMWHyl0R9EJv18Tya4uSaUad3lO1zVaYpIIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=125ahH/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6232BC4CEF1;
-	Tue, 26 Aug 2025 13:25:32 +0000 (UTC)
+	 MIME-Version; b=lEpwk++it2J4uFpmHkLjoDzWFOif6TUi9iDmZtoLIsdBy0CS9TbzRVySNDl+5wbAbufz0GBFtYQkO2QHBXIF0mJQUAUDtA9IJ+mNtqSdP+iXvFzXCfaPjROZEp+TaYOz+pKu2hr2ppIv49vSanQxZz+RHDKC7s1fW6j2GURCL+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpDpcKzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8871C4CEF1;
+	Tue, 26 Aug 2025 13:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214732;
-	bh=h2GZmPlh/irqPaMXc7e8u4ZQ50GoxZwzQkWvuOMTKg4=;
+	s=korg; t=1756216429;
+	bh=tikVpCArvSY+jXqy9ObybvNuxbcImHmQA5/kwsToKMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=125ahH/DqglKGVmEabuqBOGXDBrWQ2EmMAL2x+b/RiMXkpEkxIcjq4EOjS5qXGOtE
-	 dTqMgKCSJDl46waS6tMU2wZgUx6dAJ/9g/VRZ0xv9zHVd+yeLlPhF/VXliWQ9yqJbQ
-	 DQPBWsxlyKb78Go3+mXxPSSqrk1xj2JSmdjvDOyY=
+	b=KpDpcKzWtwISzrs6Xfh8mW8Dq500SOdCR04OQkVOyjaJKTvhnKq3NQMqn4LJbk4yB
+	 o10WHPEl8cu6HQrorkOhPOEUmtWLGMZT415E1DkFv7DQHHuE6Ngw9oCF4pdp4tFVNv
+	 d+aTKJV6wSKt//HWatY2sXJy9kkoq2ZpQNcQfPO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 247/482] misc: rtsx: usb: Ensure mmc child device is active when card is present
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 409/644] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Tue, 26 Aug 2025 13:08:20 +0200
-Message-ID: <20250826110936.871404096@linuxfoundation.org>
+Message-ID: <20250826110956.589676042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky Wu <ricky_wu@realtek.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-When a card is present in the reader, the driver currently defers
-autosuspend by returning -EAGAIN during the suspend callback to
-trigger USB remote wakeup signaling. However, this does not guarantee
-that the mmc child device has been resumed, which may cause issues if
-it remains suspended while the card is accessible.
-This patch ensures that all child devices, including the mmc host
-controller, are explicitly resumed before returning -EAGAIN. This
-fixes a corner case introduced by earlier remote wakeup handling,
-improving reliability of runtime PM when a card is inserted.
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
- }
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2200,6 +2200,9 @@ static int w7090p_tuner_write_serpar(str
+ 	u16 i = 1000;
+ 	u16 serpar_num = msg[0].buf[0];
  
- #ifdef CONFIG_PM
-+static int rtsx_usb_resume_child(struct device *dev, void *data)
-+{
-+	pm_request_resume(dev);
-+	return 0;
-+}
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
 +
- static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
- {
- 	struct rtsx_ucr *ucr =
-@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
- 			mutex_unlock(&ucr->dev_mutex);
+ 	while (n_overflow == 1 && i) {
+ 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
+ 		i--;
+@@ -2220,6 +2223,9 @@ static int w7090p_tuner_read_serpar(stru
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
  
- 			/* Defer the autosuspend if card exists */
--			if (val & (SD_CD | MS_CD))
-+			if (val & (SD_CD | MS_CD)) {
-+				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
- 				return -EAGAIN;
-+			}
- 		} else {
- 			/* There is an ongoing operation*/
- 			return -EAGAIN;
-@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
- 	return 0;
- }
- 
--static int rtsx_usb_resume_child(struct device *dev, void *data)
--{
--	pm_request_resume(dev);
--	return 0;
--}
--
- static int rtsx_usb_resume(struct usb_interface *intf)
- {
- 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
++
+ 	while (n_overflow == 1 && i) {
+ 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
+ 		i--;
 
 
 
