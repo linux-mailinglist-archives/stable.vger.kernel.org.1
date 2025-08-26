@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFF8B3670D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C609B368DA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454E42A6E3E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806C658344B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E2634DCC0;
-	Tue, 26 Aug 2025 13:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F8D352FDC;
+	Tue, 26 Aug 2025 14:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN+r4JVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIWQkyVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C7F393DC0;
-	Tue, 26 Aug 2025 13:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4D350835;
+	Tue, 26 Aug 2025 14:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216119; cv=none; b=YdqdomlY0U1PZ2A7fCva1TFrZP+PDBIIkLxE+F3hPRyi+4Wkc7wGykpsRqkYxZ7uRO+FSqx1cYmFHbaY3MtxnrBGOP3RDdwQJnEMf7dXPSVzq/dr9ct/mCj8RJOB1F0GM6SMHVV6jcj9MIf/fBTds8AXQ1G8ZQfO0pCiur+aOOg=
+	t=1756217443; cv=none; b=fnffy3zSd55zCUJSx11Ek82H6Nq2LlndWXx6bmezNTsZtzx4PZGYAxjcr6sz/EGhIBZmxx7tTMEzrLyLjoE0IqV0iKHJAIlP4dCQt/eL5aAMEByXiVPsPppehdHvcEVur+Fu8IcVOWPiJ7j1M/eCRAodebT7a4Q9wpgyD3OXJVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216119; c=relaxed/simple;
-	bh=zf8GMJKU2K3etJCcTbBRYRPd3PQW6P8mzG161Lvn+DE=;
+	s=arc-20240116; t=1756217443; c=relaxed/simple;
+	bh=+oKXSN0UPAHggYW0B7cyww5V6ZBCscwdlt1gSi1sCII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d26LdSsq5mh+flrWOlZ24F164kr0WpziSqWFry816fYutmxiFLlmUmyOYdAwY4flzf/xCnaMms6GXSrCGaJk0O9x1/B7tZyJ3j7WF8CwIqyQx/KV8NomoNDpzEj5A9sGRwGFClSGDcoxuRWvn/fVXKavU87IeO3qx04Hi4TKJ1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN+r4JVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D01BC4CEF1;
-	Tue, 26 Aug 2025 13:48:38 +0000 (UTC)
+	 MIME-Version; b=ZcNd6szRDOnAQJFABpuy6M9ZreKVPrE5GiPb68Q5vBcwAGVbG5+ESmvNzdELMzUIeJYWyOdQCCXRN58tAi89ptjrvljZc8aecR86/RpIg7oyCVz0i0z37UpRelZy3rmRMm6ioisCU+ioMeSgClyJeE+c70Z7eGy72sc4r5TO/sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIWQkyVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BC6C113D0;
+	Tue, 26 Aug 2025 14:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216118;
-	bh=zf8GMJKU2K3etJCcTbBRYRPd3PQW6P8mzG161Lvn+DE=;
+	s=korg; t=1756217442;
+	bh=+oKXSN0UPAHggYW0B7cyww5V6ZBCscwdlt1gSi1sCII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jN+r4JVx51y+dpJ2MqGJpD2yYDMvM72OkYtzz09YpujA5qKem9qCxLKag3KgTuabp
-	 XG/qp8wYhBhHVoXfiL3RoKWQFDMwql7k7U1LIxyg3+CBlbxfZbjuIP+8cL8vHoP8E5
-	 rEOCzMb627iDxL3XjnNHEsip1if8V2TPUwVt483U=
+	b=LIWQkyVzxnVajcYl0o7YKUW3BKIDoZCnYhlFozfqZrLSxpRCYNhXWXBECfgBkJGN/
+	 VDf3+5uR3YilSQGAGSwOwU6W5m9fRqcaErfVqRecj9B+vm37vWI8jwSGpl9EaI2xQf
+	 g10S9fN3A5dBasJJlxsKiFcgAQkC7Dqu2Pdsw6ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 264/644] net: dpaa: fix device leak when querying time stamp info
+	Zixun LI <admin@hifiphile.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 145/523] mtd: rawnand: atmel: set pmecc data setup time
 Date: Tue, 26 Aug 2025 13:05:55 +0200
-Message-ID: <20250826110952.916771372@linuxfoundation.org>
+Message-ID: <20250826110928.067366811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 
-commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
+[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
 
-Make sure to drop the reference to the ptp device taken by
-of_find_device_by_node() when querying the time stamping capabilities.
+Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
+by the datasheet.
 
-Note that holding a reference to the ptp device does not prevent its
-driver data from going away.
-
-Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yangbo Lu <yangbo.lu@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Reported-by: Zixun LI <admin@hifiphile.com>
+Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
+Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -499,8 +499,10 @@ static int dpaa_get_ts_info(struct net_d
- 		of_node_put(ptp_node);
- 	}
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index d1ed5878b3b1..28ed65dd3d43 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
+ 	int nstrengths;
+ 	int el_offset;
+ 	bool correct_erased_chunks;
++	bool clk_ctrl;
+ };
  
--	if (ptp_dev)
-+	if (ptp_dev) {
- 		ptp = platform_get_drvdata(ptp_dev);
-+		put_device(&ptp_dev->dev);
-+	}
+ struct atmel_pmecc {
+@@ -846,6 +847,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
+ 	if (IS_ERR(pmecc->regs.errloc))
+ 		return ERR_CAST(pmecc->regs.errloc);
  
- 	if (ptp)
- 		info->phc_index = ptp->phc_index;
++	/* pmecc data setup time */
++	if (caps->clk_ctrl)
++		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
++
+ 	/* Disable all interrupts before registering the PMECC handler. */
+ 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
+ 	atmel_pmecc_reset(pmecc);
+@@ -899,6 +904,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
+ 	.strengths = atmel_pmecc_strengths,
+ 	.nstrengths = 5,
+ 	.el_offset = 0x8c,
++	.clk_ctrl = true,
+ };
+ 
+ static struct atmel_pmecc_caps sama5d4_caps = {
+-- 
+2.39.5
+
 
 
 
