@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71024B363B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D472BB36089
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5B92560B64
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9E217B960
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739C624A066;
-	Tue, 26 Aug 2025 13:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E789D1E5B62;
+	Tue, 26 Aug 2025 12:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcQlF8ES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS2rKMg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7A2242D6A;
-	Tue, 26 Aug 2025 13:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13F11A5BBC;
+	Tue, 26 Aug 2025 12:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214419; cv=none; b=JPXqM2CQ0LHRFlRpcKHRj/8eBfOW7RVi3h0gLXOrnbj7GMGhnQg68AyVmCOapM8ULARswkEZx+0WdnSod7fF2KZfuTNc0S1yTRcWYH4Ap4SesL+I2jjBuhTEelTuMiBmCAAqSbN2+QVTvIPQktTbm+90Jk7YclXLsQg/c7LTCYw=
+	t=1756213135; cv=none; b=UNqWCLTmHoYabzweS671gGPa9dv85i0osdNDzjCIOFZZb9WPb6p677RvlxEaEyVBPL3hXxLG9w3YZdsZCIvvVAz7KC5sypYuxzbKLO6/gAP60UtyAY5vgtrd9Fbd9wrh6ZvwG9sOQP8LtMvugEHKFU1qhfou77cAICZDoLcbfzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214419; c=relaxed/simple;
-	bh=Ss1edDAxKL8RL7MoeZDeeRWIOhDMmOKdOq3eXcL1C2k=;
+	s=arc-20240116; t=1756213135; c=relaxed/simple;
+	bh=c2zv+YD1gV8Y2i2b5hfqWBadwhwqmVcCpo11t3W9OyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEcVX1p8ELBvE8PlUtC+N6vM7FbwpOT+ZoM0Vxk+zo4a53ptfP1yKJL1gzMYwmB3LC/vvadMt/22XGMFiI00hKyqoHWXdxQBpz/vEVIkEX9AXyiiZAXca4ucJIQv7Yk0LUiyyaQOGqJK45Z4r3U3kv3xRkKSGiAU0sznr/6Jf34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcQlF8ES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF785C4CEF1;
-	Tue, 26 Aug 2025 13:20:18 +0000 (UTC)
+	 MIME-Version; b=qLfjX+inQ9b4sBg6f4046rmvuHo9DLmTt6n8FI8ekf21byM5C75Hh8X89f+EH5h2jjavOEXGMK7fMdvECYKjNBlahy5xwzo0JHuxmhQV/I7odw2TtegjRL6V2B/g5aw9agOV6Ba7vdQVyldx4WbbH17DL+jkdRTTKllOPvS3kCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS2rKMg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35D0C4CEF1;
+	Tue, 26 Aug 2025 12:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214419;
-	bh=Ss1edDAxKL8RL7MoeZDeeRWIOhDMmOKdOq3eXcL1C2k=;
+	s=korg; t=1756213135;
+	bh=c2zv+YD1gV8Y2i2b5hfqWBadwhwqmVcCpo11t3W9OyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcQlF8ES7LJ4gOdRbrxO8okFfhSg6UYDd6Ec1IvNrEZYOI6QYxgH5G52+2mod/F3N
-	 rmIXQd3oR4E5XyRbUXy5uezmw1A1PIgT9DwdU+C08uznNYDxr0w8cKC6RrSnnl467D
-	 lNuC9kBL9RfuOtxBh+g6O6X8CDdVNS8l2bIuAa34=
+	b=GS2rKMg8HJbOyRaeQLFeKEZ/mPw7UMcA8gpPvDgi9pEq1t0AceA2uuc2KsG5j2gY0
+	 tPWwQDlxYtbo1ZNgDo7Yc2kxYtnQqbj1hd6N0q9uupaMiH/Nei2rBsO+XYLIXunoO5
+	 DodnZbS45kYSOCVSY2OMrBvS1oDRIdbamMlJOg58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/482] s390/stp: Remove udelay from stp_sync_clock()
+Subject: [PATCH 6.6 235/587] jfs: truncate good inode pages when hard link is 0
 Date: Tue, 26 Aug 2025 13:06:24 +0200
-Message-ID: <20250826110934.054966401@linuxfoundation.org>
+Message-ID: <20250826110958.912213301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
+[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
 
-When an stp sync check is handled on a system with multiple
-cpus each cpu gets a machine check but only the first one
-actually handles the sync operation. All other CPUs spin
-waiting for the first one to finish with a short udelay().
-But udelay can't be used here as the first CPU modifies tod_clock_base
-before performing the sync op. During this timeframe
-get_tod_clock_monotonic() might return a non-monotonic time.
+The fileset value of the inode copy from the disk by the reproducer is
+AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
+inode pages are not truncated. This causes the bugon to be triggered when
+executing clear_inode() because nrpages is greater than 0.
 
-The time spent waiting should be very short and udelay is a busy loop
-anyways, therefore simply remove the udelay.
-
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/time.c | 2 +-
+ fs/jfs/inode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
-index 6b7b6d5e3632..add2862e835b 100644
---- a/arch/s390/kernel/time.c
-+++ b/arch/s390/kernel/time.c
-@@ -574,7 +574,7 @@ static int stp_sync_clock(void *data)
- 		atomic_dec(&sync->cpus);
- 		/* Wait for in_sync to be set. */
- 		while (READ_ONCE(sync->in_sync) == 0)
--			__udelay(1);
-+			;
- 	}
- 	if (sync->in_sync != 1)
- 		/* Didn't work. Clear per-cpu in sync bit again. */
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 920d58a1566b..66c38ef5e571 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
+ 	if (!inode->i_nlink && !is_bad_inode(inode)) {
+ 		dquot_initialize(inode);
+ 
++		truncate_inode_pages_final(&inode->i_data);
+ 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
+ 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
+-			truncate_inode_pages_final(&inode->i_data);
+ 
+ 			if (test_cflag(COMMIT_Freewmap, inode))
+ 				jfs_free_zero_link(inode);
 -- 
 2.39.5
 
