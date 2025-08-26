@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3A7B36AE9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A47DB3627B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FBC05658A2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33BAA188419F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE539352FEB;
-	Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C441F1ADFFE;
+	Tue, 26 Aug 2025 13:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DiKxQZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BU0fj9Q3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2F12E88B7;
-	Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8AFBF0;
+	Tue, 26 Aug 2025 13:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218346; cv=none; b=ipeFfJvuQ4wpWb0secKoDz1ZhBqwzuw2VnWmhK4BoRqRFTIrpwbh6f0+4RCAMdmdjhuLyluZZdrKKEpZ11ccDK1ztofWyi6OufTze6BajlpRdIHRG6tT0HUAWA1C+JhLrSBSUmBgPFaIqHsjYAwTLRVC6tPp2jQL1aTRvRk3Nl0=
+	t=1756214055; cv=none; b=rswPBlAq6HJuSdzEqbgAY8k9IeYVol4LtGD5R7o5BawzNtKgI9RhoSm6X6s6tcTvqw3Yr5qjtHfOgGeODnQVdAB9Bs/yXUH8TtzRB3rJ8tEjX6cUi7abeWD49TKSBIvZ1+2CzUxo45aj1FTEQakOczqEJrvWJC+n2RYcxT0wn8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218346; c=relaxed/simple;
-	bh=IyoCQXwMvhc4hdhjaJS3ebmhXqyfYTCQ3KkuUospKpU=;
+	s=arc-20240116; t=1756214055; c=relaxed/simple;
+	bh=GGXd1+av8+S2acf8qIznnCCquUWHxULXrWQEPs13dgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ouzEhfvj50rY5L2J1U+MiZ1dvfAf4mCm+sxdXb7UU1LxqSlQjYSQX8xmCq7weUaTi4xyKspTbdpnsqNNX+YjK68P9C5yrXgmLk3KqhuYWMXM+j6y8x9dBJ5A8RlHOONWthG2k3rI0vwN2Fs2Bs1ka2tBpTWWs5LO8FC32b9GizI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DiKxQZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3008C4CEF1;
-	Tue, 26 Aug 2025 14:25:45 +0000 (UTC)
+	 MIME-Version; b=D2UFNkaFICRsq6DfHH8v1LuhUSRaYm3BiU3qXhGuPFVqMK5imtcK4kD//Dm4dE6JMADSLPSIZZJzACpVOWv3FhppfBL/KX4QR1RUyQWpHu3nVzHq3JAjw05MGc7JrAliQTWjFWYMvfXysqA7Th+ttY8C8EnX0+JyY3Ias+8tNoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BU0fj9Q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C69C4CEF1;
+	Tue, 26 Aug 2025 13:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218346;
-	bh=IyoCQXwMvhc4hdhjaJS3ebmhXqyfYTCQ3KkuUospKpU=;
+	s=korg; t=1756214055;
+	bh=GGXd1+av8+S2acf8qIznnCCquUWHxULXrWQEPs13dgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0DiKxQZn06mBOB45Y0bYdm5Sm7/hnmcGl0q7MgRVT8hilgA0CbxV+nE0IqPA5pWhd
-	 wqciciShvc24gvnVhq7QuAW9QhWkZaDDucFhLnXzuLXjCCCDwJ7uOxBZH1dYg9LhvN
-	 TxqfKn5Q+UZ4589RbI8lagInllLkk0cd59WErdfs=
+	b=BU0fj9Q3i+64fula+85qvvdP4jxxNsdpDUWzghL+OS5+K/UnKqg7B0Bq7ONIyTv5/
+	 YBzTb1X0pmFGhre8nhZcQPE7iYpTv06XQvRJhTrCw+GLC3+JsZUZ3fAdL2Kb1mZ5Cy
+	 vn5O4tOY9axjPdFgJPUTYzMVYseSQvaSseau4K+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Fanhua Li <lifanhua5@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 488/523] drm/amd/display: Dont overclock DCE 6 by 15%
+Subject: [PATCH 6.6 549/587] drm/nouveau/nvif: Fix potential memory leak in nvif_vmm_ctor().
 Date: Tue, 26 Aug 2025 13:11:38 +0200
-Message-ID: <20250826110936.482958738@linuxfoundation.org>
+Message-ID: <20250826111006.985818396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Fanhua Li <lifanhua5@huawei.com>
 
-[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
+[ Upstream commit bb8aeaa3191b617c6faf8ae937252e059673b7ea ]
 
-The extra 15% clock was added as a workaround for a Polaris issue
-which uses DCE 11, and should not have been used on DCE 6 which
-is already hardcoded to the highest possible display clock.
-Unfortunately, the extra 15% was mistakenly copied and kept
-even on code paths which don't affect Polaris.
+When the nvif_vmm_type is invalid, we will return error directly
+without freeing the args in nvif_vmm_ctor(), which leading a memory
+leak. Fix it by setting the ret -EINVAL and goto done.
 
-This commit fixes that and also adds a check to make sure
-not to exceed the maximum DCE 6 display clock.
-
-Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
-Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
-Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
-Cc: stable@vger.kernel.org
-[ `MIN` => `min` ]
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202312040659.4pJpMafN-lkp@intel.com/
+Fixes: 6b252cf42281 ("drm/nouveau: nvkm/vmm: implement raw ops to manage uvmm")
+Signed-off-by: Fanhua Li <lifanhua5@huawei.com>
+Link: https://lore.kernel.org/r/20250728115027.50878-1-lifanhua5@huawei.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nvif/vmm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -112,11 +112,9 @@ static void dce60_update_clocks(struct c
- {
- 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dm_pp_power_level_change_request level_change_req;
--	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
--
--	/*TODO: W/A for dal3 linux, investigate why this works */
--	if (!clk_mgr_dce->dfs_bypass_active)
--		patched_disp_clk = patched_disp_clk * 115 / 100;
-+	const int max_disp_clk =
-+		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
+diff --git a/drivers/gpu/drm/nouveau/nvif/vmm.c b/drivers/gpu/drm/nouveau/nvif/vmm.c
+index 99296f03371a..07c1ebc2a941 100644
+--- a/drivers/gpu/drm/nouveau/nvif/vmm.c
++++ b/drivers/gpu/drm/nouveau/nvif/vmm.c
+@@ -219,7 +219,8 @@ nvif_vmm_ctor(struct nvif_mmu *mmu, const char *name, s32 oclass,
+ 	case RAW: args->type = NVIF_VMM_V0_TYPE_RAW; break;
+ 	default:
+ 		WARN_ON(1);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto done;
+ 	}
  
- 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
- 	/* get max clock state from PPLIB */
+ 	memcpy(args->data, argv, argc);
+-- 
+2.50.1
+
 
 
 
