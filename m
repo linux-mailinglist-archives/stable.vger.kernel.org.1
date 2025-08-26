@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD577B360A2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11A0B36960
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745991BA5F3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B99916FAF3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F151DD9D3;
-	Tue, 26 Aug 2025 12:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137D6345741;
+	Tue, 26 Aug 2025 14:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1uSJgiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axUP+D0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4E61F55FA;
-	Tue, 26 Aug 2025 12:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A5D3568F8;
+	Tue, 26 Aug 2025 14:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213140; cv=none; b=aVISsbivOnMxBS+sm47nuOGbgOOTmwm7nbMLCNZv1iVNY+G063NIlx6YRhKv+ENs/9IUZup1p8zbWNoOIJlCxKn1YIlA0uJ+pQVIzjFdR4S8QsTcn4EdAD2VcHm6KiNidf1pbssYLvWIG4RrjOlZ0MIHD2vVGw2/rB5Hj4R2YY4=
+	t=1756217524; cv=none; b=ai+71gxmizRH3bL2+xWZlAyePVgu/rVcnGFmW2owFbrp8aQ/dOcsgIfUtqaTYtWTA+CW4/DdtNMtTU0K8/8yft1azuZf2n6c7YxTEjNaC1v6+yeQ3f7rBIWCrjDal9dd0qQPnM4j+i0BK8ukVU5IosaIIqZvf6quk+QYxu63Tug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213140; c=relaxed/simple;
-	bh=r9uInVgCrSvbg5Ywdlv0e0wCV+DBsK3+GixbqTl/G8A=;
+	s=arc-20240116; t=1756217524; c=relaxed/simple;
+	bh=k9KDNcDVmyEUUe/3ZinkO6u9leQxos2+50D0nLP32FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rk+EeUQx2YcZZyBV/kxMSNeUSoeS7uVosY7U06HRy4JSeaxc7Y+3lYy+ppaIt3p6CQLRhT6a+kta/+AyHqQ+XHwgVekp9o6lne3tFS3k1aoOypMFbDV6sjNJvtOg+832KeC22LOvZYgdCrhl7heKMC4X+/I6lND4Xzn1masatdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1uSJgiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E33C4CEF1;
-	Tue, 26 Aug 2025 12:58:59 +0000 (UTC)
+	 MIME-Version; b=Tqy0ffFIsDfJFJX3ff7NZBDMHQv4w6SHvmbU0d2vbbgcKQUwCg8X3vP4QA6a4lvok7TfgynXXlho9Bp7mAreWwtGEGOFYJEGmVZZonoQ+HDr3CQkRUUi2OEZEKcpB9Lwva8uEU9PjeBlMHzIJ2W3zTgZmlDvIt6oIUVpSm9LPPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axUP+D0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50229C4CEF1;
+	Tue, 26 Aug 2025 14:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213140;
-	bh=r9uInVgCrSvbg5Ywdlv0e0wCV+DBsK3+GixbqTl/G8A=;
+	s=korg; t=1756217524;
+	bh=k9KDNcDVmyEUUe/3ZinkO6u9leQxos2+50D0nLP32FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1uSJgiSguRMam77vtuO13ZwaTxchLBx/rYg1mM5FOe2IaLM0jL4WX8I01wtRQ6GI
-	 4mBKLQgLadqUOLgKWllflTLdDpYmh/8oSODDeFdAKbnpKfKvnOOmLUlAzdOJPOSXkl
-	 kK6EndtGLRH2LeAZlNp9wSopQs4d6Hw+tSYtHdyo=
+	b=axUP+D0MQLTmhL+t3/2fmPtes9ie44ma31ajB3rs3yfsc7GLrY7MNhxiPQ9KHpIyL
+	 lSrVtNIKKnDC6YEBEvrIjgwV50sJ3oOd/bQdOmeOQicwsIpdIjFVO96NXuIsYvC5bN
+	 UwR7mqOxdRz72JzPn+Ltn6Rix62pTIqda9Mc8mNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/587] jfs: upper bound check of tree index in dbAllocAG
+Subject: [PATCH 5.10 176/523] pptp: ensure minimal skb length in pptp_xmit()
 Date: Tue, 26 Aug 2025 13:06:26 +0200
-Message-ID: <20250826110958.963427356@linuxfoundation.org>
+Message-ID: <20250826110928.800394014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
+[ Upstream commit de9c4861fb42f0cd72da844c3c34f692d5895b7b ]
 
-When computing the tree index in dbAllocAG, we never check if we are
-out of bounds realative to the size of the stree.
-This could happen in a scenario where the filesystem metadata are
-corrupted.
+Commit aabc6596ffb3 ("net: ppp: Add bound checking for skb data
+on ppp_sync_txmung") fixed ppp_sync_txmunge()
 
-Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
-Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+We need a similar fix in pptp_xmit(), otherwise we might
+read uninit data as reported by syzbot.
+
+BUG: KMSAN: uninit-value in pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2290 [inline]
+  ppp_input+0x1d6/0xe60 drivers/net/ppp/ppp_generic.c:2314
+  pppoe_rcv_core+0x1e8/0x760 drivers/net/ppp/pppoe.c:379
+  sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+  __release_sock+0x1d3/0x330 net/core/sock.c:3213
+  release_sock+0x6b/0x270 net/core/sock.c:3767
+  pppoe_sendmsg+0x15d/0xcb0 drivers/net/ppp/pppoe.c:904
+  sock_sendmsg_nosec net/socket.c:712 [inline]
+  __sock_sendmsg+0x330/0x3d0 net/socket.c:727
+  ____sys_sendmsg+0x893/0xd80 net/socket.c:2566
+  ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
+  __sys_sendmmsg+0x2d9/0x7c0 net/socket.c:2709
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68887d86.a00a0220.b12ec.00cd.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20250729080207.1863408-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ppp/pptp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5a877261c3fe..cdfa699cd7c8 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
- 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
- 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 05a75b5a8b68..1b306562f916 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -159,9 +159,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-
+-
+-	struct rtable *rt;
++	struct rtable *rt = NULL;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
+@@ -179,16 +177,20 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
  
-+	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
-+		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
-+		release_metapage(mp);
-+		return -EIO;
-+	}
+ 	if (skb_headroom(skb) < max_headroom || skb_cloned(skb) || skb_shared(skb)) {
+ 		struct sk_buff *new_skb = skb_realloc_headroom(skb, max_headroom);
+-		if (!new_skb) {
+-			ip_rt_put(rt);
 +
- 	/* dmap control page trees fan-out by 4 and a single allocation
- 	 * group may be described by 1 or 2 subtrees within the ag level
- 	 * dmap control page, depending upon the ag size. examine the ag's
++		if (!new_skb)
+ 			goto tx_error;
+-		}
++
+ 		if (skb->sk)
+ 			skb_set_owner_w(new_skb, skb->sk);
+ 		consume_skb(skb);
+ 		skb = new_skb;
+ 	}
+ 
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3))
++		goto tx_error;
++
+ 	data = skb->data;
+ 	islcp = ((data[0] << 8) + data[1]) == PPP_LCP && 1 <= data[2] && data[2] <= 7;
+ 
+@@ -262,6 +264,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	return 1;
+ 
+ tx_error:
++	ip_rt_put(rt);
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
 2.39.5
 
