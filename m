@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2F7B368F9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3072B3600E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC6D8E709F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C911BA7327
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51F352FF2;
-	Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC5B1946AA;
+	Tue, 26 Aug 2025 12:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nuxvi6b4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnFlUmG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE79B350D7F;
-	Tue, 26 Aug 2025 14:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C2B17A303;
+	Tue, 26 Aug 2025 12:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217180; cv=none; b=GuKgTf9j572gc6YP+LET3otmmxQb5d24pjBCwOOOS3AZM48wnXH6KRC6wSG4TgF+rGijYEdDyiJ5PEiX72rmeZdWiG76tZ4PjDNvQfFW/itiuVv1T26h+KSfedxZTaZU7sY3WHf69OtKMupdPr8ooxPBANgq2vkYNDD2KVSWk8g=
+	t=1756212801; cv=none; b=JBzjc2K9H5YmSgZz3IsTe9Ldx9DkguaD7/GhtNgqufd+UiXhWV7rF38fXzIZTY6qekiZ8NM6A4qGXuoyn4NsAF6GiZFckjs0zO53oKNJ2X7HNSmviwh7JxP2/mFmBzAwS32gbGckHOzABDkySkfX0Fygl8Ow9R97KpK+wPwKWQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217180; c=relaxed/simple;
-	bh=iifIuFtT9kMegx4BXHmbrPVuPdetsM5xxpFY0vroWHY=;
+	s=arc-20240116; t=1756212801; c=relaxed/simple;
+	bh=JYReefcxODb+cJdmL2hExkG0yM2zXbTnUI8B4Fv0xlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5YZthXhwZPbN336MrnjNyxxpJxp1w6jTUzYovM9T73wOvqlNs1XJtWSyIuOMYkVitGM26pWwnF97UyehdO8PKANakTKCEBQgILH4QrUo0W53wZjAtui71v+8Jt5Ho9VlusyLTRbC7QdUn9f88luaaIHgd4+uhphWotS02wcYG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nuxvi6b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DFFC113CF;
-	Tue, 26 Aug 2025 14:06:18 +0000 (UTC)
+	 MIME-Version; b=Qa7QqwxTuZuhOoFUsXWR6oL5vkTc0JEs7u6Vt+e+i7tqAz12rUvEsUiiiASALJ0n0lExJ5qKz5OrRcVhX/p8acb13uUI4klwx1To8CnJDO8USP6xa05845F3ZtIAAebEJgczb+gDjHQCUI0pmBIorzdeiukrPqq/4llonDSuQ3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnFlUmG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5A9C4CEF1;
+	Tue, 26 Aug 2025 12:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217179;
-	bh=iifIuFtT9kMegx4BXHmbrPVuPdetsM5xxpFY0vroWHY=;
+	s=korg; t=1756212801;
+	bh=JYReefcxODb+cJdmL2hExkG0yM2zXbTnUI8B4Fv0xlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nuxvi6b4DMW2jXrEDOx3FMiAFH6HSgRoi4MuSoa4do6/kgxgelIgl4UpDZ3FUJXfe
-	 JaYg8cJbZgpQQzuyeSERQAjnLXuVPUhWc5cE68VdJ4yLMJZ5CjjMXA0mV87iIF0DZl
-	 Vkh6ZA+DPPNT+RUjetHDGaNsmD93YEPF7+x00gp0=
+	b=SnFlUmG/zLzxA+3R0+75GGlo9/WsF5IOig0Vq1QkyRMA3y59UmG1IBDWmqPlvBb+y
+	 akDDiF1/neVjjCbII8tl62pWLjjuRbBPrrDQHZXLuNJFc68yLaC5jDDKyURcoNuY6m
+	 vfv1UP8w4WPJmpeegul07qvpDhEh1Z6TvWfi2g4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 046/523] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
+	Zhu Qiyu <qiyuzhu2@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 107/587] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
 Date: Tue, 26 Aug 2025 13:04:16 +0200
-Message-ID: <20250826110925.738390572@linuxfoundation.org>
+Message-ID: <20250826110955.662362553@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Zhu Qiyu <qiyuzhu2@amd.com>
 
-commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
+[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
 
-Delayed work to prevent USB3 hubs from runtime-suspending immediately
-after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
-of high tier USB3 devices behind suspended hubs").
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduced non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
+something wrong is going on while it is not the case.
 
-This delayed work needs be flushed if system suspends, or hub needs to
-be quiesced for other reasons right after resume. Not flushing it
-triggered issues on QC SC8280XP CRD board during suspend/resume testing.
+According to the PRM Spec Section 4.1.2 [1], both static data buffer
+address and ACPI parameter buffer address may be NULL if they are not
+needed, so there is no need to print out the "Failed to find VA ... "
+in those cases.
 
-Fix it by flushing the delayed resume work in hub_quiesce()
-
-The delayed work item that allow hub runtime suspend is also scheduled
-just before calling autopm get. Alan pointed out there is a small risk
-that work is run before autopm get, which would call autopm put before
-get, and mess up the runtime pm usage order.
-Swap the order of work sheduling and calling autopm get to solve this.
-
-Cc: stable <stable@kernel.org>
-Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
-Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
+[ rjw: Edits in new comments, subject and changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1316,11 +1316,12 @@ static void hub_activate(struct usb_hub
- 
- 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
- 		/* give usb3 downstream links training time after hub resume */
-+		usb_autopm_get_interface_no_resume(
-+			to_usb_interface(hub->intfdev));
-+
- 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
- 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
- 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
--		usb_autopm_get_interface_no_resume(
--			to_usb_interface(hub->intfdev));
- 		return;
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index a34f7d37877c..eb8f2a1ce138 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
  	}
  
-@@ -1374,6 +1375,7 @@ static void hub_quiesce(struct usb_hub *
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
+ }
  
- 	/* Stop hub_wq and related activity */
- 	del_timer_sync(&hub->irq_urb_retry);
-+	flush_delayed_work(&hub->init_work);
- 	usb_kill_urb(hub->urb);
- 	if (hub->has_indicators)
- 		cancel_delayed_work_sync(&hub->leds);
+@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Print a warning message if handler_addr is zero which is not expected to
++		 * ever happen.
++		 */
++		if (unlikely(!th->handler_addr))
++			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * According to the PRM specification, static_data_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
++			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->static_data_buffer_address);
+ 
+ 		th->acpi_param_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+ 
++		/*
++		 * According to the PRM specification, acpi_param_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
++			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->acpi_param_buffer_address);
++
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
