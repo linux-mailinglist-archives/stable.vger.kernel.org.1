@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE9CB3663D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0605EB35FDB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C70563DD2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCC27C6FBB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF0822AE5D;
-	Tue, 26 Aug 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9081F9F73;
+	Tue, 26 Aug 2025 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPfUNyyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHJC4IZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BBF225390;
-	Tue, 26 Aug 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CD61C860A;
+	Tue, 26 Aug 2025 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215653; cv=none; b=PvZx3aQsq7wJ7DzZKh0lI+Js1jh+RQE+ynr12GbZiJd7yX3ccsdl1ATtIEmM13sfYM4kzJjd2yWvzIPY7ACadt/fv5H3CHD9PWFkdXuBjWgyg77x2swPwbySoMRP75wfCRTBhecrWdF243u2TXFPNZ1Azp5WBdYAFXWTDYzX1qs=
+	t=1756212712; cv=none; b=EIDofYIPy33zWBA4jhmZHK1BtklP64RMQW/AlLUAPlbCQLvZml2OFhWcUjDeUL5x/DbznfYLu11iLviO84gb/kTkC4MxEHN3ELsiA/3bJrQWhnr6dKyeACExI7KVQICpMaffwwZ9mw6ovKABUxRU/VimmsjHVdt9AnxpjbqtE90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215653; c=relaxed/simple;
-	bh=/hG0C74Nlq9FgFEP4fcdTcFhTS/XTIdtlHmSNbSNFKo=;
+	s=arc-20240116; t=1756212712; c=relaxed/simple;
+	bh=Oe2dP++GyojWMjza0giB+rnpW/cXlRRyFGsp9yxpEaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FgFTlHfN8SIS/6FGZo/KJSCXc2IjEFeqNAYrfVOMdMMslAI6j0XRORJ/7wjdmoO/14uJj7Otw03LVtdTckqOVbIXFIPechLO/D1hFc3U5/DxRIqODkQGG9JfvmKxNcyUeD5WZ42mw0VD2ujKsn3FEdxBaT+EMBCqQcrfFXjlSCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPfUNyyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3C5C4CEF1;
-	Tue, 26 Aug 2025 13:40:52 +0000 (UTC)
+	 MIME-Version; b=p9pVPcMPsidX2BRSewpocrxQIzFcWHzKm5MRDuUOAk3DaMESy6xQ/wIOvPNxKbugYam6/HAQu8/tRL6vtaqQRvbOlcupFE1v4gizZf2BHrF6wpXq6t3QvZDNMTMyxC1Wa5Ixy17n6sJOaedr9XppIHA4jKAwtjunyqGUW3cyuR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHJC4IZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5327C4CEF1;
+	Tue, 26 Aug 2025 12:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215653;
-	bh=/hG0C74Nlq9FgFEP4fcdTcFhTS/XTIdtlHmSNbSNFKo=;
+	s=korg; t=1756212712;
+	bh=Oe2dP++GyojWMjza0giB+rnpW/cXlRRyFGsp9yxpEaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPfUNyynwLqIt5AacCh0JWkgHRDmGZ5cLsfDLMidfPYlnlFR4BOV1KKKDuzY4VnXc
-	 BmozRx9k79wAuWbb7GbZMTKGBV2CYgFLSltNmExAhoQrPZXuSiF4Hf5+l9eLrurQoV
-	 vOjc0po+lrPMqBNzJOwp264ReBdNpG14o3Yb6f00=
+	b=VHJC4IZZd13eNRWFCgzVm9Lk9WIihjhVgImdZMw5FZm6qef4sXIgv9K1WU1Ji9jYy
+	 ukveSCmduhe3IVjl3QAR8hScvg6SJzsV50z1giuWSmaX0ha8W+Q+ZjmJ8Qa+clVEiE
+	 Up1aJnlRfB/pvmMcNti13M/G5rzPoewXEyCROR2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/644] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
+Subject: [PATCH 6.6 056/587] net: ti: icss-iep: Fix incorrect type for return value in extts_enable()
 Date: Tue, 26 Aug 2025 13:03:25 +0200
-Message-ID: <20250826110949.352368609@linuxfoundation.org>
+Message-ID: <20250826110954.365529501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit 5f1d1d14db7dabce9c815e7d7cd351f8d58b8585 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+The variable ret in icss_iep_extts_enable() was incorrectly declared
+as u32, while the function returns int and may return negative error
+codes. This will cause sign extension issues and incorrect error
+propagation. Update ret to be int to fix error handling.
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+This change corrects the declaration to avoid potential type mismatch.
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
-
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
-
-Call xlate_tdm_slot_mask() only if slots was non zero.
-
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250805142323.1949406-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 05a9404544de..8165f5537043 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -269,13 +269,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 8ed72c8b210f..e7306ed52922 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -638,7 +638,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 
+ static int icss_iep_extts_enable(struct icss_iep *iep, u32 index, int on)
  {
- 	int ret = -ENOTSUPP;
+-	u32 val, cap, ret = 0;
++	u32 val, cap;
++	int ret = 0;
  
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
-+	}
+ 	mutex_lock(&iep->ptp_clk_mutex);
  
- 	dai->tx_mask = tx_mask;
- 	dai->rx_mask = rx_mask;
 -- 
-2.39.5
+2.50.1
 
 
 
