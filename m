@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A641B35EAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520EEB36527
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8436D3679AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89CEB565EF9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD2A283FDF;
-	Tue, 26 Aug 2025 11:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51662FC870;
+	Tue, 26 Aug 2025 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LEwIlpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQj1Iumj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BF3200112;
-	Tue, 26 Aug 2025 11:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDA324A066;
+	Tue, 26 Aug 2025 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208911; cv=none; b=hrR53AWj5gPieJMnyNplPhyU2Wvtvmi5FZtUYeZml7v7ok21WReIh+3u7vFavqWrgocJicCKm7mtv2Ucodrrmcm0zNrNYFu8N4ShXywijKqBatIxzQhly9KwXtWxZNP8+4ksAPiIQALQfPx6IoOWJc0/BzFEbqWqCsDQLFe4CU4=
+	t=1756215359; cv=none; b=BGSL5mw7uMa50rnILf8kJFBCcRe7MgdJg5QgV5R+dO3dKNLT+nX01XGAgIjPRuJisYvhS79HTb2ZUuuq8wGbBNyDF2+Nvl6TQ6ojLe7Vlcv7abn8ajJ12vAybS8nKAFYRzoZFNXA4iXLOskGWbVcLjLO0FgOQ4ndM8rkH14SRnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208911; c=relaxed/simple;
-	bh=k1vYu9v6e1GsV9KZ4HRM5O1kjT/IpN3u6iG6S+fxqbc=;
+	s=arc-20240116; t=1756215359; c=relaxed/simple;
+	bh=bfxtljiKPqAqnqW61nldhmEqOZqouoDtsBaExWL62o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOw2HlfuosUAyz5E2yKaGCl52urnynODZdsi8LaT3EJuUHYos1x8FU0XQ7SceBxaJeSf6AmWwQHVvVA7r+SIjLUIQWy0A1XQboPmRdDshwgYMOT0Fa1cJgOPUlKQv1UfIdhm5CBJlDrrMQSj5y4PZsM2AZBvX2zLM71C9fv1hVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LEwIlpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93532C4CEF1;
-	Tue, 26 Aug 2025 11:48:30 +0000 (UTC)
+	 MIME-Version; b=oOZKbtVLcn5bpgrIVA7exc3ASsylgAdgaeK1r006JPoAnSxzogoZrSGwOjT2ouVqiiiwc+eAyDBG1dgqOEsqijXMshqgM0pz9rnVyMuh8Qn+9k9YGpIAL+s6Gd0197Evb02/ogOoYKF6hLQEdTPiHJxAq9kKOJMDRjKlSWvfPSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQj1Iumj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5425C113CF;
+	Tue, 26 Aug 2025 13:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208910;
-	bh=k1vYu9v6e1GsV9KZ4HRM5O1kjT/IpN3u6iG6S+fxqbc=;
+	s=korg; t=1756215359;
+	bh=bfxtljiKPqAqnqW61nldhmEqOZqouoDtsBaExWL62o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LEwIlpwg1b9Cvl6xGIvCvO+trOZ1npvfCGNq79wmJLl/GbmwnhMOZ7opLWwUeQqJ
-	 zcURdJMRfdCc4Yf8a5V1Dn4fwDrioYLyncNxf89nPIe2VtGrO/YAgKooCSkl4YszAN
-	 4aVXpV0MXf+QNN0gM5RKGUheqOTVpcDiSOtmSMmU=
+	b=HQj1IumjF4LNJxyHUiFzlGRC7LpKi1vuivS9+1QJBHBiQvycAWzdGEr68SgAs437f
+	 VS+swEMlmrB94bM2DuqP1h7KZtiPqzFugqSaNGG/ii3JDOv4n3Whav+3jXpMvuFJse
+	 6h/x0Ol82veXd6qI2iyioRF56d6OOfRHI5h/gbG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/322] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
+Subject: [PATCH 6.1 454/482] iosys-map: Fix undefined behavior in iosys_map_clear()
 Date: Tue, 26 Aug 2025 13:11:47 +0200
-Message-ID: <20250826110923.116467234@linuxfoundation.org>
+Message-ID: <20250826110942.044149690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
+[ Upstream commit 5634c8cb298a7146b4e38873473e280b50e27a2c ]
 
-Ensure ndo_fill_forward_path() is called with RCU lock held.
+The current iosys_map_clear() implementation reads the potentially
+uninitialized 'is_iomem' boolean field to decide which union member
+to clear. This causes undefined behavior when called on uninitialized
+structures, as 'is_iomem' may contain garbage values like 0xFF.
 
-Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+UBSAN detects this as:
+    UBSAN: invalid-load in include/linux/iosys-map.h:267
+    load of value 255 is not a valid value for type '_Bool'
+
+Fix by unconditionally clearing the entire structure with memset(),
+eliminating the need to read uninitialized data and ensuring all
+fields are set to known good values.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14639
+Fixes: 01fd30da0474 ("dma-buf: Add struct dma-buf-map for storing struct dma_buf.vaddr_ptr")
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250718105051.2709487-1-nitin.r.gote@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/iosys-map.h | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index c855fb799ce1..e9bd32741983 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
- 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
- 		return -1;
+diff --git a/include/linux/iosys-map.h b/include/linux/iosys-map.h
+index cb71aa616bd3..631d58d0b838 100644
+--- a/include/linux/iosys-map.h
++++ b/include/linux/iosys-map.h
+@@ -264,12 +264,7 @@ static inline bool iosys_map_is_set(const struct iosys_map *map)
+  */
+ static inline void iosys_map_clear(struct iosys_map *map)
+ {
+-	if (map->is_iomem) {
+-		map->vaddr_iomem = NULL;
+-		map->is_iomem = false;
+-	} else {
+-		map->vaddr = NULL;
+-	}
++	memset(map, 0, sizeof(*map));
+ }
  
-+	rcu_read_lock();
- 	err = dev_fill_forward_path(dev, addr, &stack);
-+	rcu_read_unlock();
- 	if (err)
- 		return err;
- 
+ /**
 -- 
 2.50.1
 
