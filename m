@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99454B367C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13889B35C7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AE5D4652E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 477927B819F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E1E353368;
-	Tue, 26 Aug 2025 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C70134A332;
+	Tue, 26 Aug 2025 11:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl1p1fjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkS5FrM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D99352087;
-	Tue, 26 Aug 2025 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E082F34A31F;
+	Tue, 26 Aug 2025 11:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216832; cv=none; b=jedjud86YSMy7FV9P8ZBE2VDvzHXAyXd2p+SoqmfENRD+rDhlm9oGHklzTvZMDgbc0iGS52305wQqk606mxXrktZa3DHIrfRCN1B+R/CJBQBNu+wvQmf+QHaGqvgWxpEnf+gen+aH1fjHFOlh+4Z1aTNwPsiUcjVHVJlTw+1LTg=
+	t=1756207916; cv=none; b=eUjK168/MkgehXgMvxagkqMbaqdeUb53eqyy6ovVI7R+X8gZQJ22cbUd/6Nvi+0fl9mjaBXAUdfebu6CjTTqFNHr8V4lBqNbYQGeVMTbdLvENAVncnjPtgd/5wvmFCbul8CnKOfVB3hz//4SRIpx3U+svRsw/17g9i4ObpiX958=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216832; c=relaxed/simple;
-	bh=Cm3iy6wQDtFKPBfzj5LWbq5QUTSwxW2Sdar9UUF5QtE=;
+	s=arc-20240116; t=1756207916; c=relaxed/simple;
+	bh=ZwwLZV9HCCmqD8OhRnrNu2uZJDmp35eX1osRnoK+9RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO6R48tYheeKIeLpDGMFRPlmjg35JikuiFB/b/A9oAeHibgs/NAJtJ0m+W4vJE3vA1of9e7uwsnjAjE3zZx9LHQ0wCoHMUkK9y6Vtrv2GyNiarmsyaK8G/YoDo0NR0ju4mou4LzQAi9A6LV1UUvQLxXpSylv2e6EchOcl2Q+voA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tl1p1fjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB411C4CEF1;
-	Tue, 26 Aug 2025 14:00:31 +0000 (UTC)
+	 MIME-Version; b=lD4IUahbalErvbxiQxyUKniuwMq24N02MNVVFOKYTQFMMbc+NAOTrj38Je7A81NMrNT4XI0CCDviTkOJZCFfM8qv8W+YahFFUxutpgI1vxP0B8Wb49zHuiA0/j1nBTntr6ifSefODH1flqdRsmFLAkikWJ5sCiSMQwMLFDPBLbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkS5FrM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7122BC4CEF1;
+	Tue, 26 Aug 2025 11:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216832;
-	bh=Cm3iy6wQDtFKPBfzj5LWbq5QUTSwxW2Sdar9UUF5QtE=;
+	s=korg; t=1756207915;
+	bh=ZwwLZV9HCCmqD8OhRnrNu2uZJDmp35eX1osRnoK+9RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tl1p1fjl6ov3KM5ZDr+NUZIzLotPsm/VwVaeJd1J5Bji0S7LySVAj+gmau4k9MdDi
-	 9sN2M2CWDVFTWKUmKj4gxRPg1LjGtSn/P41HYr9EmiFCNvM94Z0swpk9D/6dCS6Fem
-	 i0szJlFgrvYjeJqMJip27Buy1AP5sprTJ1Hyey+c=
+	b=TkS5FrM4TaqXzl6vJ0sCRFYOLedQCSQYiDirmYZPn6brltp+/oCpfTxFvrnGAQY2m
+	 HVu8VbCIxfGBbEK3/vhuv8G2E5cdxnarQbB8vtNAFvUKlwUYoy9nndD1agoDfI4fET
+	 7Pr9LMEl3WAtSkC7ngp9eRp3LYQk/pqcj4PEBwtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 559/644] mptcp: drop unused sk in mptcp_push_release
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 366/457] RDMA/hns: Fix dip entries leak on devices newer than hip09
 Date: Tue, 26 Aug 2025 13:10:50 +0200
-Message-ID: <20250826111000.382657822@linuxfoundation.org>
+Message-ID: <20250826110946.350693992@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit b8e0def397d7753206b1290e32f73b299a59984c upstream.
+[ Upstream commit fa2e2d31ee3b7212079323b4b09201ef68af3a97 ]
 
-Since mptcp_set_timeout() had removed from mptcp_push_release() in
-commit 33d41c9cd74c5 ("mptcp: more accurate timeout"), the argument
-sk in mptcp_push_release() became useless. Let's drop it.
+DIP algorithm is also supported on devices newer than hip09, so free
+dip entries too.
 
-Fixes: 33d41c9cd74c5 ("mptcp: more accurate timeout")
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c886d70286bf ("mptcp: do not queue data on closed subflows")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f91696f2f053 ("RDMA/hns: Support congestion control type selection according to the FW")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250812122602.3524602-1-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1568,8 +1568,7 @@ static struct sock *mptcp_subflow_get_se
- 	return NULL;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 256757f0ff65..b544ca024484 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -3043,7 +3043,7 @@ static void hns_roce_v2_exit(struct hns_roce_dev *hr_dev)
+ 	if (!hr_dev->is_vf)
+ 		hns_roce_free_link_table(hr_dev);
+ 
+-	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP09)
++	if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
+ 		free_dip_entry(hr_dev);
  }
  
--static void mptcp_push_release(struct sock *sk, struct sock *ssk,
--			       struct mptcp_sendmsg_info *info)
-+static void mptcp_push_release(struct sock *ssk, struct mptcp_sendmsg_info *info)
- {
- 	tcp_push(ssk, 0, info->mss_now, tcp_sk(ssk)->nonagle, info->size_goal);
- 	release_sock(ssk);
-@@ -1626,7 +1625,7 @@ void __mptcp_push_pending(struct sock *s
- 			 * the last round, release prev_ssk
- 			 */
- 			if (ssk != prev_ssk && prev_ssk)
--				mptcp_push_release(sk, prev_ssk, &info);
-+				mptcp_push_release(prev_ssk, &info);
- 			if (!ssk)
- 				goto out;
- 
-@@ -1639,7 +1638,7 @@ void __mptcp_push_pending(struct sock *s
- 
- 			ret = mptcp_sendmsg_frag(sk, ssk, dfrag, &info);
- 			if (ret <= 0) {
--				mptcp_push_release(sk, ssk, &info);
-+				mptcp_push_release(ssk, &info);
- 				goto out;
- 			}
- 
-@@ -1654,7 +1653,7 @@ void __mptcp_push_pending(struct sock *s
- 
- 	/* at this point we held the socket lock for the last subflow we used */
- 	if (ssk)
--		mptcp_push_release(sk, ssk, &info);
-+		mptcp_push_release(ssk, &info);
- 
- out:
- 	/* ensure the rtx timer is running */
+-- 
+2.50.1
+
 
 
 
