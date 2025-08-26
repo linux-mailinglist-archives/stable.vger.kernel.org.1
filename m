@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AB4B362DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1DBB365EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCF48A381C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD88F8E64DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AF6341677;
-	Tue, 26 Aug 2025 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533D43431F5;
+	Tue, 26 Aug 2025 13:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDHlFYC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPl36mvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A230F34166A;
-	Tue, 26 Aug 2025 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104C428750C;
+	Tue, 26 Aug 2025 13:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214147; cv=none; b=ZUUiyCForJkE7fi9QjxBrjYaxK9txwndZeAZzKf6/LKqmJp53zyQ4PtODRhpsZ6VHr3SSzNjS9veTW/W8dzzT8L92QTfMVcqaCyYty2CVpnm5BLi2melnKgbRLxYM6gQGTnKE1TjcfRjW2sxak0D3EOUV+A3iNSANRPZVV0pd98=
+	t=1756215858; cv=none; b=iB+e8WgrMkMiH8pnD51zstpCC50eS6tkG6QtmHe4CA1Ur3DcnlDB/q6CTN2N3CriA6DRIWICPrERHxQG93/qBgIROXKT81A1u8s/cLVKIbBvnjLYVlt9L8Obt5na6z2IWQlWufmIiD5aoCMMUt/chX+K/IcV3SWweksA7JqQhKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214147; c=relaxed/simple;
-	bh=dL2aNfFTZHuNMh+vDrMdVbKs8WQJpz2ONyqxvLgMozs=;
+	s=arc-20240116; t=1756215858; c=relaxed/simple;
+	bh=gtwvHLRCl40tNK4yA4s5JLsbKxqCn0X92VARz/PUYek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdhMpc8CEYQzKjxhTXcXMyPK26/bifiPzKq7+PilVbb0pIzGMMiN/EWtTo/hfw8wursxIbnKkk+M8DbmdAzfrCZvwi6Aa3l5y7I8lenPH9djW++uHbRjE49lwDZ9NFylyNg8OMyULnwYOPwLfaHUKT4Dsuq7BAoIyNNLnpe876Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDHlFYC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A3EC4CEF1;
-	Tue, 26 Aug 2025 13:15:46 +0000 (UTC)
+	 MIME-Version; b=CfdZ7LH1+7YLhQ6JldldP1K/kuyXBA1LQauibn8wfV7wmdLmAMrBr8GK0NcOL7zC78lfDV0uleEbaQbNP5Cu2qi77HPHQ3C8P09lY8RrfZdGX+xi2u0UVfkgBKMSiqcp/BMB9rfYtOjJPpJ+ZkxLBFNaeCYeOB4rGKb3xsPgpPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPl36mvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FBFC113CF;
+	Tue, 26 Aug 2025 13:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214147;
-	bh=dL2aNfFTZHuNMh+vDrMdVbKs8WQJpz2ONyqxvLgMozs=;
+	s=korg; t=1756215857;
+	bh=gtwvHLRCl40tNK4yA4s5JLsbKxqCn0X92VARz/PUYek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDHlFYC3ZOdAfk6bdspLg9CMoNRo6zikz9RFJye3WCWLFOiPCfIN9uF+99HBrzvp+
-	 Y2jylkr/pO/OJ3Y55ZBjhQXdUzlY1r0k98EHg4ViwmNOJK4RLIjSaVT9MQ8rqXWPRH
-	 3GFlwHiEGHDWdqZKelqaXFgQQ/tKlEbipQDVprGU=
+	b=WPl36mvwQJVxVMGZXCg5tMyXQ4CrDe7uBKLp/WM7B5NfQBT33DUao7nWF0yLsdsL2
+	 IW2x7BPbSiOs5bJAmwPMBnlPnp84cNoeoigDswvaVXr/wnuo3TK3VxMwch42Y9yj4t
+	 G6WPX8JGCDfZMK+9aWLZT/sFlPF9BPgqqYmzXYHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/482] KVM: x86: Plumb in the vCPU to kvm_x86_ops.hwapic_isr_update()
+Subject: [PATCH 5.15 191/644] PCI: endpoint: pci-epf-vntb: Fix the incorrect usage of __iomem attribute
 Date: Tue, 26 Aug 2025 13:04:42 +0200
-Message-ID: <20250826110931.523484074@linuxfoundation.org>
+Message-ID: <20250826110951.189441286@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Manivannan Sadhasivam <mani@kernel.org>
 
-[ Upstream commit 76bce9f10162cd4b36ac0b7889649b22baf70ebd ]
+[ Upstream commit 61ae7f8694fb4b57a8c02a1a8d2b601806afc999 ]
 
-Pass the target vCPU to the hwapic_isr_update() vendor hook so that VMX
-can defer the update until after nested VM-Exit if an EOI for L1's vAPIC
-occurs while L2 is active.
+__iomem attribute is supposed to be used only with variables holding the
+MMIO pointer. But here, 'mw_addr' variable is just holding a 'void *'
+returned by pci_epf_alloc_space(). So annotating it with __iomem is clearly
+wrong. Hence, drop the attribute.
 
-Note, commit d39850f57d21 ("KVM: x86: Drop @vcpu parameter from
-kvm_x86_ops.hwapic_isr_update()") removed the parameter with the
-justification that doing so "allows for a decent amount of (future)
-cleanup in the APIC code", but it's not at all clear what cleanup was
-intended, or if it was ever realized.
+This also fixes the below sparse warning:
 
-No functional change intended.
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    expected void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    got void *
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    expected unsigned int [usertype] *epf_db
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    got void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38: warning: incorrect type in argument 2 (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    expected void *addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    got void [noderef] __iomem *mw_addr
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Tested-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20241128000010.4051275-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: account for lack of kvm_x86_call(), drop vmx/x86_ops.h change]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250709125022.22524-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h | 2 +-
- arch/x86/kvm/lapic.c            | 8 ++++----
- arch/x86/kvm/vmx/vmx.c          | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 17b4e61a52b9..6db42ee82032 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1552,7 +1552,7 @@ struct kvm_x86_ops {
- 	bool (*check_apicv_inhibit_reasons)(enum kvm_apicv_inhibit reason);
- 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
- 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
--	void (*hwapic_isr_update)(int isr);
-+	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
- 	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
- 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
- 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 42eec987ac3d..3d65d6a023c9 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -587,7 +587,7 @@ static inline void apic_set_isr(int vec, struct kvm_lapic *apic)
- 	 * just set SVI.
- 	 */
- 	if (unlikely(apic->apicv_active))
--		static_call_cond(kvm_x86_hwapic_isr_update)(vec);
-+		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, vec);
- 	else {
- 		++apic->isr_count;
- 		BUG_ON(apic->isr_count > MAX_APIC_VECTOR);
-@@ -632,7 +632,7 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
- 	 * and must be left alone.
- 	 */
- 	if (unlikely(apic->apicv_active))
--		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
-+		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, apic_find_highest_isr(apic));
- 	else {
- 		--apic->isr_count;
- 		BUG_ON(apic->isr_count < 0);
-@@ -2554,7 +2554,7 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	if (apic->apicv_active) {
- 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
- 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, -1);
--		static_call_cond(kvm_x86_hwapic_isr_update)(-1);
-+		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, -1);
- 	}
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 5cc0d2014ed8..45530bca50fb 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -520,7 +520,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
+ 	struct device *dev = &ntb->epf->dev;
+ 	int ret;
+ 	struct pci_epf_bar *epf_bar;
+-	void __iomem *mw_addr;
++	void *mw_addr;
+ 	enum pci_barno barno;
+ 	size_t size = 4 * ntb->db_count;
  
- 	vcpu->arch.apic_arb_prio = 0;
-@@ -2847,7 +2847,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
- 	if (apic->apicv_active) {
- 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
- 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, apic_find_highest_irr(apic));
--		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
-+		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
- 	}
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 	if (ioapic_in_kernel(vcpu->kvm))
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 9a5cb896229f..721ba6ddb121 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6708,7 +6708,7 @@ static void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
- 	put_page(page);
- }
- 
--static void vmx_hwapic_isr_update(int max_isr)
-+static void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
- {
- 	u16 status;
- 	u8 old;
 -- 
-2.50.1
+2.39.5
 
 
 
