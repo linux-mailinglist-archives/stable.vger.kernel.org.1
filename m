@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE26B35CC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6F6B3610B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14E87C544C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39FAE7C54CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0908521D3C0;
-	Tue, 26 Aug 2025 11:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682AA188000;
+	Tue, 26 Aug 2025 13:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ36FDYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNksoAyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B896C20C001;
-	Tue, 26 Aug 2025 11:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224A5FBF0;
+	Tue, 26 Aug 2025 13:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208243; cv=none; b=VjAyAIBoK0uzxxPcWQ2EyPpYllzEc0DTt0QDsXsEMATZD6nQ09VKnXC2mSyic90ofzFTwuanf3us4cnNuRB6u5e6eKXjvpPZsKPlH4ewf5XQN71fUMtlW6JbWc2MJ1c2PoLE9OlUrc6oLoADv2EGv+rVM5AX42CbSZHHANMu7Gc=
+	t=1756213312; cv=none; b=MwgQFtxJx0jDbXnB7d3gHFMBznnpxxuvN9Pcqy99fAi6Y1u7MCm+/rYjtL11d79RECrSwu7BRlxkQ8CS1fSBZugxRDjS5i0kEGShSoXrXsiQdbHrtYViP7y7Pn/pQDehKdrbbVTSAGNgB9p6b98rxPG7yIs9XCQqBPlbNWevHmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208243; c=relaxed/simple;
-	bh=tNfnOiIqCu6MSVplNwjGv3pACkYzj7RsdjJVwQLallw=;
+	s=arc-20240116; t=1756213312; c=relaxed/simple;
+	bh=2LmbMOscTbLWCMjl+XUdg7bJpMeD7Nh+1/0itVsRUkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSgoJtH035pFzu5BwiAyVEcyMnLl9iJqkTQV9ImCF44T4mLAXn2g+mozjkTdmPCX4QqgMARpEB6r/8W9KZ+fTDwqo8TEXIOTIFdD/bRxD0YrpSmHymXE9a1tXvURJpoJnL0OFMUxmSIhKFSnqr83NTmEHE/YrH7QF75L1b40C40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQ36FDYx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524B1C4CEF1;
-	Tue, 26 Aug 2025 11:37:23 +0000 (UTC)
+	 MIME-Version; b=ntukDY3oVj75rcxHpT+cQUFWxjgtfuYhrrSh2PXxaO8Gy7CJcx0neeL5CJmbN2TH/LAQENr6MhLDos9vsVDsVid16QXVWmncstLc4ebvzx3EZs2GqG9U/8cpHp5X1N5yq+OehEcQKbCuFVVFVAFukYI3JB3kJZmbM7YCGpjZRq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNksoAyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA917C4CEF1;
+	Tue, 26 Aug 2025 13:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208243;
-	bh=tNfnOiIqCu6MSVplNwjGv3pACkYzj7RsdjJVwQLallw=;
+	s=korg; t=1756213312;
+	bh=2LmbMOscTbLWCMjl+XUdg7bJpMeD7Nh+1/0itVsRUkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQ36FDYx78/xJBxvJlpWBwgbqqY3BwfBUc2dOUsXcB8JbxaD5cLSDgYNADsqKatw0
-	 hcDw/1Jw7RPDNLZNTogvqYnlLAqh3pFD4q3LiQmu4X/87p3OuFQzMXPtPHlRdDCI80
-	 n3p5EqqbXDWNnltBj3zeIhJU7jhYLBQ37npioRgo=
+	b=qNksoAyoCmYXmEgHT19kecoVZQs7/Sw5ksNu9mTW1dmBdCQgxRTB1oRvHxCIDIOmH
+	 8Iz427HiEbIbTdulLqoHHS79xP7tRPrgMiRynKCH6y6CgnKHajtn02bQgM1v6UnI0z
+	 tR1z6g3F6aZy5MMlSDD6jK+vAuxE4kJ0+/WAKz50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 035/322] btrfs: zoned: fix write time activation failure for metadata block group
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 301/587] ext4: fix zombie groups in average fragment size lists
 Date: Tue, 26 Aug 2025 13:07:30 +0200
-Message-ID: <20250826110916.214562453@linuxfoundation.org>
+Message-ID: <20250826111000.582052700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 5c4b93f4c8e5c53574c1a48d66a27a2c68b414af upstream.
+commit 1c320d8e92925bb7615f83a7b6e3f402a5c2ca63 upstream.
 
-Since commit 13bb483d32ab ("btrfs: zoned: activate metadata block group on
-write time"), we activate a metadata block group at the write time. If the
-zone capacity is small enough, we can allocate the entire region before the
-first write. Then, we hit the btrfs_zoned_bg_is_full() in
-btrfs_zone_activate() and the activation fails.
+Groups with no free blocks shouldn't be in any average fragment size list.
+However, when all blocks in a group are allocated(i.e., bb_fragments or
+bb_free is 0), we currently skip updating the average fragment size, which
+means the group isn't removed from its previous s_mb_avg_fragment_size[old]
+list.
 
-For a data block group, we activate it at the allocation time and we should
-check the fullness condition in the caller side. Add, a WARN to check the
-fullness condition.
+This created "zombie" groups that were always skipped during traversal as
+they couldn't satisfy any block allocation requests, negatively impacting
+traversal efficiency.
 
-For a metadata block group, we don't need the fullness check because we
-activate it at the write time. Instead, activating it once it is written
-should be invalid. Catch that with a WARN too.
+Therefore, when a group becomes completely full, bb_avg_fragment_size_order
+is now set to -1. If the old order was not -1, a removal operation is
+performed; if the new order is not -1, an insertion is performed.
 
-Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250714130327.1830534-11-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/ext4/mballoc.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2092,10 +2092,15 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		goto out_unlock;
- 	}
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,30 +841,30 @@ static void
+ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	int new_order;
++	int new, old;
  
--	/* No space left */
--	if (btrfs_zoned_bg_is_full(block_group)) {
--		ret = false;
--		goto out_unlock;
-+	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA) {
-+		/* The caller should check if the block group is full. */
-+		if (WARN_ON_ONCE(btrfs_zoned_bg_is_full(block_group))) {
-+			ret = false;
-+			goto out_unlock;
-+		}
-+	} else {
-+		/* Since it is already written, it should have been active. */
-+		WARN_ON_ONCE(block_group->meta_write_pointer != block_group->start);
- 	}
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
+ 		return;
  
- 	for (i = 0; i < map->num_stripes; i++) {
+-	new_order = mb_avg_fragment_size_order(sb,
+-					grp->bb_free / grp->bb_fragments);
+-	if (new_order == grp->bb_avg_fragment_size_order)
++	old = grp->bb_avg_fragment_size_order;
++	new = grp->bb_fragments == 0 ? -1 :
++	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
++	if (new == old)
+ 		return;
+ 
+-	if (grp->bb_avg_fragment_size_order != -1) {
+-		write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++	if (old >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
+ 		list_del(&grp->bb_avg_fragment_size_node);
+-		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
++	}
++
++	grp->bb_avg_fragment_size_order = new;
++	if (new >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
++		list_add_tail(&grp->bb_avg_fragment_size_node,
++				&sbi->s_mb_avg_fragment_size[new]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
+ 	}
+-	grp->bb_avg_fragment_size_order = new_order;
+-	write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	list_add_tail(&grp->bb_avg_fragment_size_node,
+-		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
+-	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+ }
+ 
+ /*
 
 
 
