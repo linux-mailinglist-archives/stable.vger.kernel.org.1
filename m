@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE10B3649F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04986B35E40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 392D48A3708
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BF31BC29B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780B52BE62B;
-	Tue, 26 Aug 2025 13:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840E92F619C;
+	Tue, 26 Aug 2025 11:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp+VxnFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLhZo+OC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BD326B747;
-	Tue, 26 Aug 2025 13:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8F42F9C23;
+	Tue, 26 Aug 2025 11:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214978; cv=none; b=IFYDFVarCIKWsy3fQ/EaTwUnWxMeghIXfpD9+yeWV7205AkEeMXNfjqbaWUGD3BUolFpMpZKryU/G9n3L9gsc5SXe+QBnPUCw2L3MtYrsIOsjZEDqAX/BV2nww/3g/v+FaI6nYf+9MUZlHWUpdsIngwSKwF32YdhqNfEiNw9TQY=
+	t=1756208694; cv=none; b=aCBC8JEIOHXOu9B5uVg4p65RqJdBR0uqZ3qrDWM7flvZ5VVsgxeOYSBj0V7wnLv0+O5aLuMichu0vKLjf3C+1DBbg8oAHwfKQGayms+TSSU52ApuCdB92M5YNIOfCeqOorhjILOLb1F93diSg1NNKB8YV1csnjhjJMSki3csdgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214978; c=relaxed/simple;
-	bh=lqFLry4zO7W1BwQVYfSivvptNDGRbYo5I5xoh4W/INM=;
+	s=arc-20240116; t=1756208694; c=relaxed/simple;
+	bh=WByepcIbCPruavbIkKL485Za4jYesReSp79qirv6rKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e85fzQVzd1Ocjmuful60yYr8kREL+a6N8JW3IlQGrV/MFD34HvoOBbFRV9V9fPhiWFNYXZa8/ZV6tQHy9AWCaRGG7HaKyE/c3UYpoXgF1TI8snrRHvYfyNYpqSOmvH4gRXs5EoH/NQmQ9AJLWDqiGR4gTljkFIZkWEEhdGEji2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp+VxnFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BFC4CEF1;
-	Tue, 26 Aug 2025 13:29:37 +0000 (UTC)
+	 MIME-Version; b=AtVzOwCjs/8C/jjYl5YSSDis3q1Y6bGzjGhNAmr/oVMnUG/qzg5Wr7vGcTM+9qGI/mqfwbGhzwG/WIPTg0H19IZb322U9ZcvsiKrk9nrMSptLjST43UsvSoI3RqvmVXp9T/dlPy90LUIF2wwPXfoPVxk1ZmNygNoG658N8za+FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLhZo+OC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C521BC4CEF1;
+	Tue, 26 Aug 2025 11:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214977;
-	bh=lqFLry4zO7W1BwQVYfSivvptNDGRbYo5I5xoh4W/INM=;
+	s=korg; t=1756208694;
+	bh=WByepcIbCPruavbIkKL485Za4jYesReSp79qirv6rKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xp+VxnFl9niphpeEMs8UPBQ4kaQc+5HWtFZ0IEVxcGzayGiJ9N5/7rXXsf90IQe28
-	 cx//+gwiUe3y3oZxxY7o4xQBnstz+O+0rrGIaZ6UjYBLHbfWPQQSS15LapNtgoFoYT
-	 JYjLeXCyyWDsvdprnMLTFz659rZ0QAt1dFzHsIBk=
+	b=WLhZo+OC41+bL6Cs6GaBUocGehHuScBwCuevT8VYp02zWWwuN6r6lOqKFUJBOw5R2
+	 nRe+VWcAzLdilUs764DukFz3jyXoVdBTBzCepVsRjiBO35NH9pgamjbLKoeKSzvHL7
+	 YdBM/JPb6M+32cavWgeEnput6C7UUkhiKQY1uryo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 341/482] mptcp: drop skb if MPTCP skb extension allocation fails
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Tomer Tayar <ttayar@habana.ai>
+Subject: [PATCH 6.12 179/322] accel/habanalabs/gaudi2: Use kvfree() for memory allocated with kvcalloc()
 Date: Tue, 26 Aug 2025 13:09:54 +0200
-Message-ID: <20250826110939.253428202@linuxfoundation.org>
+Message-ID: <20250826110920.282858201@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
+commit a44458dfd5bc0c79c6739c3f4c658361d3a5126b upstream.
 
-When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
-we used to return true, letting the segment proceed through the TCP
-receive path without a DSS mapping. Such segments can leave inconsistent
-mapping state and trigger a mid-stream fallback to TCP, which in testing
-collapsed (by artificially forcing failures in skb_ext_add) throughput
-to zero.
+Use kvfree() to fix the following Coccinelle/coccicheck warning reported
+by kfree_mismatch.cocci:
 
-Return false instead so the TCP input path drops the skb (see
-tcp_data_queue() and step-7 processing). This is the safer choice
-under memory pressure: it preserves MPTCP correctness and provides
-backpressure to the sender.
+  WARNING kvmalloc is used to allocate this memory at line 10398
 
-Control packets remain unaffected: ACK updates and DATA_FIN handling
-happen before attempting the extension allocation, and tcp_reset()
-continues to ignore the return value.
-
-With this change, MPTCP continues to work at high throughput if we
-artificially inject failures into skb_ext_add.
-
-Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f728c17fc97a ("accel/habanalabs/gaudi2: move HMMU page tables to device memory")
+Reported-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Closes: https://patch.msgid.link/20250808085530.233737-1-rongqianfeng@vivo.com
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+[lukas: acknowledge Qianfeng, adjust Thorsten's domain, add Fixes tag]
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Tomer Tayar <ttayar@habana.ai>
+Cc: stable@vger.kernel.org  # v6.9+
+Link: https://patch.msgid.link/20240820231028.136126-1-thorsten.blum@toblux.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/accel/habanalabs/gaudi2/gaudi2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1100,7 +1100,9 @@ static bool add_addr_hmac_valid(struct m
- 	return hmac == mp_opt->ahmac;
+diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2.c b/drivers/accel/habanalabs/gaudi2/gaudi2.c
+index a38b88baadf2..5722e4128d3c 100644
+--- a/drivers/accel/habanalabs/gaudi2/gaudi2.c
++++ b/drivers/accel/habanalabs/gaudi2/gaudi2.c
+@@ -10437,7 +10437,7 @@ static int gaudi2_memset_device_memory(struct hl_device *hdev, u64 addr, u64 siz
+ 				(u64 *)(lin_dma_pkts_arr), DEBUGFS_WRITE64);
+ 	WREG32(sob_addr, 0);
+ 
+-	kfree(lin_dma_pkts_arr);
++	kvfree(lin_dma_pkts_arr);
+ 
+ 	return rc;
  }
- 
--/* Return false if a subflow has been reset, else return true */
-+/* Return false in case of error (or subflow has been reset),
-+ * else return true.
-+ */
- bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
-@@ -1198,7 +1200,7 @@ bool mptcp_incoming_options(struct sock
- 
- 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
- 	if (!mpext)
--		return true;
-+		return false;
- 
- 	memset(mpext, 0, sizeof(*mpext));
- 
+-- 
+2.50.1
+
 
 
 
