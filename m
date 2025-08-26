@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-176246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B1FB36C88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6483B367C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E3D566FB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93675804EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5CB352099;
-	Tue, 26 Aug 2025 14:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843E0341ABD;
+	Tue, 26 Aug 2025 13:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugXc7C15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNPtnVgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9DB35206F;
-	Tue, 26 Aug 2025 14:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42013374C4;
+	Tue, 26 Aug 2025 13:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219157; cv=none; b=EKUGcu2jbrXycNhLklj3ohff9PTzj6vzYh84J6d+W8bxKaacuk5jqWHDc4JGcT79z4rQ47OqbawiwFGjs8D+zNUCZwlRvSNozJrkgdOAYi9wiviztDUPUpi6Y8MghXYIFbTualc7SZWt8Lx1YXifhnB9j8phv+iowqqqV2EgUDQ=
+	t=1756216776; cv=none; b=Gz0alZf7R4YEWAWoI4SOhOE36JUFrTgfqu9BZyzd2BExAUIq4UUYTdQNxVI1GzTOACe2p789Fy+bg1c4K+DLQz/P9Kdp8uX3WryKgktQ5NUvnrRI8tHcxTnSimpFcYXz1McWptihkJ99QMoq0DU+s5NJ4vTKWxlN6YdYIfjB8Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219157; c=relaxed/simple;
-	bh=rihpMrQutS5qf6Sz4ZchwcjAMo0FvSZ9tqBG4FMkl2w=;
+	s=arc-20240116; t=1756216776; c=relaxed/simple;
+	bh=jiKvGyENtt3ES68qtpryYq/23+VylirwhO44EjfRV64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceq2zrxsU3fFwhXTWOoqNnIzyUYFzELBp6lyaAG7Cx1vd0M7xvFvvocHdQp4ncL3CtPI9BIgwmJOYaCVU7IX/f+vuoEJOGKNXlv5cdW7cuMxLS9WKiL1c2BKUBmTVzDsFI9e62P5jNBlOCm5MNhVHvY43dl2gKyrqUHpOYA6WRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugXc7C15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F965C113CF;
-	Tue, 26 Aug 2025 14:39:16 +0000 (UTC)
+	 MIME-Version; b=U1TH7z67jz9pc+MKkX9RA8wJwlQaM5VLLVpX74rdAbU5vpFVCsAwamZ+pnm49xu9udrlumj3CnDQZgk53tFTUgTRtQIZe7N+Nld4GF7iQcWHdt5IiSRlWmnVs0EVTODb/n/EmJYZhx8J1/xl7mmibcnOW1XUWt6YOB7VrnXeeWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNPtnVgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D423C4CEF1;
+	Tue, 26 Aug 2025 13:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219156;
-	bh=rihpMrQutS5qf6Sz4ZchwcjAMo0FvSZ9tqBG4FMkl2w=;
+	s=korg; t=1756216776;
+	bh=jiKvGyENtt3ES68qtpryYq/23+VylirwhO44EjfRV64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugXc7C15mggog4Fl69vFj3ewyXXaa7XByYWu/fmq5RpCJQ3ezYdhVvkS8zk10caJR
-	 OtF488ZbvLM7nr9+cZn8iZhOvetsCIOL9Btm/3L6a49eEi+xUp7jSUdfv1zUVFQwg1
-	 Du6/DSn8lzkKFlArHp6RO3ez0zOHjlpFlDZsO71A=
+	b=pNPtnVgfks2NjD6qVfiG3xBXASa4MkO5cKYXClAIMJ4SNoUA+qr3feqemoY5I73fV
+	 hWSKL6rfNq+11Ro1js88At8vsdSNuTyYVZLWSKQdj/1i6OR0zTdYr1J39+DosXqlDd
+	 GWNTPUTUGlrH2OKp29fvtawT+MVVjLSV5TJJ3TIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 274/403] misc: rtsx: usb: Ensure mmc child device is active when card is present
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	Julian Orth <ju.orth@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 5.15 509/644] selftests/memfd: add test for mapping write-sealed memfd read-only
 Date: Tue, 26 Aug 2025 13:10:00 +0200
-Message-ID: <20250826110914.369407075@linuxfoundation.org>
+Message-ID: <20250826110959.115061224@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky Wu <ricky_wu@realtek.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
+[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
 
-When a card is present in the reader, the driver currently defers
-autosuspend by returning -EAGAIN during the suspend callback to
-trigger USB remote wakeup signaling. However, this does not guarantee
-that the mmc child device has been resumed, which may cause issues if
-it remains suspended while the card is accessible.
-This patch ensures that all child devices, including the mmc host
-controller, are explicitly resumed before returning -EAGAIN. This
-fixes a corner case introduced by earlier remote wakeup handling,
-improving reliability of runtime PM when a card is inserted.
+Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
+assert that we are able to do this in a test to ensure that we do not
+regress this again.
 
-Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
+Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Julian Orth <ju.orth@gmail.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ tools/testing/selftests/memfd/memfd_test.c |   43 +++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+--- a/tools/testing/selftests/memfd/memfd_test.c
++++ b/tools/testing/selftests/memfd/memfd_test.c
+@@ -186,6 +186,24 @@ static void *mfd_assert_mmap_shared(int
+ 	return p;
  }
  
- #ifdef CONFIG_PM
-+static int rtsx_usb_resume_child(struct device *dev, void *data)
++static void *mfd_assert_mmap_read_shared(int fd)
 +{
-+	pm_request_resume(dev);
-+	return 0;
++	void *p;
++
++	p = mmap(NULL,
++		 mfd_def_size,
++		 PROT_READ,
++		 MAP_SHARED,
++		 fd,
++		 0);
++	if (p == MAP_FAILED) {
++		printf("mmap() failed: %m\n");
++		abort();
++	}
++
++	return p;
 +}
 +
- static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ static void *mfd_assert_mmap_private(int fd)
  {
- 	struct rtsx_ucr *ucr =
-@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
- 			mutex_unlock(&ucr->dev_mutex);
- 
- 			/* Defer the autosuspend if card exists */
--			if (val & (SD_CD | MS_CD))
-+			if (val & (SD_CD | MS_CD)) {
-+				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
- 				return -EAGAIN;
-+			}
- 		} else {
- 			/* There is an ongoing operation*/
- 			return -EAGAIN;
-@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
- 	return 0;
+ 	void *p;
+@@ -802,6 +820,30 @@ static void test_seal_future_write(void)
+ 	close(fd);
  }
  
--static int rtsx_usb_resume_child(struct device *dev, void *data)
--{
--	pm_request_resume(dev);
--	return 0;
--}
--
- static int rtsx_usb_resume(struct usb_interface *intf)
- {
- 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
++static void test_seal_write_map_read_shared(void)
++{
++	int fd;
++	void *p;
++
++	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
++
++	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
++			    mfd_def_size,
++			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
++
++	mfd_assert_add_seals(fd, F_SEAL_WRITE);
++	mfd_assert_has_seals(fd, F_SEAL_WRITE);
++
++	p = mfd_assert_mmap_read_shared(fd);
++
++	mfd_assert_read(fd);
++	mfd_assert_read_shared(fd);
++	mfd_fail_write(fd);
++
++	munmap(p, mfd_def_size);
++	close(fd);
++}
++
+ /*
+  * Test SEAL_SHRINK
+  * Test whether SEAL_SHRINK actually prevents shrinking
+@@ -1056,6 +1098,7 @@ int main(int argc, char **argv)
+ 
+ 	test_seal_write();
+ 	test_seal_future_write();
++	test_seal_write_map_read_shared();
+ 	test_seal_shrink();
+ 	test_seal_grow();
+ 	test_seal_resize();
 
 
 
