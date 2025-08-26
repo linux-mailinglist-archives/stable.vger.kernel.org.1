@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB8EB35CEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD821B35E23
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EAD1720EE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5609A1BA2DB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A65340D81;
-	Tue, 26 Aug 2025 11:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21CD33470A;
+	Tue, 26 Aug 2025 11:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAXpb6nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvnLok8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CB32D0C61;
-	Tue, 26 Aug 2025 11:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539F6318146;
+	Tue, 26 Aug 2025 11:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207810; cv=none; b=Jk8aHMrmx52Xgol8PwqijVNu1RFa8/mxgiKma0g0L44vlexW+2V87FSZ3oOsVeDzegU2ZmWqOZTnHC7mvsaDcz86CuM5oMP4aCNZTiQZQagKRW1KLQ3Zi+MuyEDLGM5Y5G38DDgZONswqxF5jzqpYsdNFhrzNSq6r5N4ssQoUE8=
+	t=1756208658; cv=none; b=A1RGSSila/PnMF64JkUdDUYeJGBOTE1fHOEGixzI+shmBPPhoHWHLhk0+h4QbBa/iC4e91JTHULwp1Q9/2bwcECRFKYch2OwL7lVodNTjRVeDfkzlgUl+mTwqT3TK0XdqyZ/WXlHnFcNO4mXwXdM/c9Ji5hAoBy9DqdcxoAHolU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207810; c=relaxed/simple;
-	bh=jXzg6q4gy0YKGuDKmCGer9ey2ZYKrwyGCZzjxn1bmaE=;
+	s=arc-20240116; t=1756208658; c=relaxed/simple;
+	bh=jP7LzBOVYQiXpMe8SX9t6wPIhSa+QDdlr/Bszmqt/Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beDAP/5jaF1GyK6ZsENNtrwnyCB/8nErw3AQLRtE9xbpvnEf7INmApLzgOhG9q6pWJ9GOh5v1AotGvxXyoccm+BfetrMjSCXyRTF002XP0g7VoKGzN9VwLZRPsN1BtMGo/YBokADMg2p4Iu6ax47k2/de+x5qQDqSS62bFPhkDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAXpb6nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9359C4CEF1;
-	Tue, 26 Aug 2025 11:30:09 +0000 (UTC)
+	 MIME-Version; b=CWp+Js9uPUDI8OA5D8FSNbYFdBr9H3s4s2wIU5MsbbwB6KBK8GbE4Hmv3L68dOK5fJiLKXgk361oZRkjdkI9vS4WiHPm/1vYQIkWmSFt8L0Tx1vFvQx9kId4vLK8Mt4zdFVmh2KY3hgcTvfo+IB44Oe5ebFfey/0cmCvYEuOUHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvnLok8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACF0C4CEF1;
+	Tue, 26 Aug 2025 11:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207810;
-	bh=jXzg6q4gy0YKGuDKmCGer9ey2ZYKrwyGCZzjxn1bmaE=;
+	s=korg; t=1756208658;
+	bh=jP7LzBOVYQiXpMe8SX9t6wPIhSa+QDdlr/Bszmqt/Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAXpb6nx4j/pkrYUzxeHK7mO0JRyN2Nl5OREG27C3k8j7gp7h/fA1sBh7rZjCYMuR
-	 hqXs+dQYKUFMGEE6AnIwG39/dj4swnJyfN5M7ZiAoZaD8d4+4OtTkMOJXCHTz639Ae
-	 FIJDjcwPKezLNL5kweK1asMURvgaDFccX1xWZUHU=
+	b=TvnLok8ZNi0WmTIDacz65h/+4TIB3fSJkwYhkeGbVipSElMBTSOZauPEDL3NEhpF2
+	 KUVNqgyRgzP3ijBJ9R7l2+dVtu1qjCFmDFMy4EGyT6TUk25YhUbsREe4UBfj4OQX9z
+	 Fjatfqf6PeNxdMWA1KUdVMPtTJWnE5+tTxLS4K5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 326/457] tracing: Remove unneeded goto out logic
+Subject: [PATCH 6.12 195/322] PCI: rockchip: Use standard PCIe definitions
 Date: Tue, 26 Aug 2025 13:10:10 +0200
-Message-ID: <20250826110945.403130175@linuxfoundation.org>
+Message-ID: <20250826110920.681897804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +63,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
+[ Upstream commit cbbfe9f683f0f9b6a1da2eaa53b995a4b5961086 ]
 
-Several places in the trace.c file there's a goto out where the out is
-simply a return. There's no reason to jump to the out label if it's not
-doing any more logic but simply returning from the function.
+Current code uses custom-defined register offsets and bitfields for the
+standard PCIe registers. This creates duplication as the PCI header already
+defines them. So, switch to using the standard PCIe definitions and drop
+the custom ones.
 
-Replace the goto outs with a return and remove the out labels.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+[mani: commit message rewording]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: include bitfield.h]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/e81700ef4b49f584bc8834bfb07b6d8995fc1f42.1751322015.git.geraldogabriel@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   38 +++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+ drivers/pci/controller/pcie-rockchip-host.c |   45 ++++++++++++++--------------
+ drivers/pci/controller/pcie-rockchip.h      |   11 ------
+ 2 files changed, 24 insertions(+), 32 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1846,7 +1846,7 @@ int trace_get_user(struct trace_parser *
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -11,6 +11,7 @@
+  * ARM PCI Host generic driver.
+  */
  
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		goto out;
-+		return ret;
++#include <linux/bitfield.h>
+ #include <linux/bitrev.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -40,18 +41,18 @@ static void rockchip_pcie_enable_bw_int(
+ {
+ 	u32 status;
  
- 	read++;
- 	cnt--;
-@@ -1860,7 +1860,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				goto out;
-+				return ret;
- 			read++;
- 			cnt--;
- 		}
-@@ -1870,8 +1870,7 @@ int trace_get_user(struct trace_parser *
- 		/* only spaces were written */
- 		if (isspace(ch) || !ch) {
- 			*ppos += read;
--			ret = read;
--			goto out;
-+			return read;
- 		}
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 	status |= (PCI_EXP_LNKCTL_LBMIE | PCI_EXP_LNKCTL_LABIE);
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ }
+ 
+ static void rockchip_pcie_clr_bw_int(struct rockchip_pcie *rockchip)
+ {
+ 	u32 status;
+ 
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 	status |= (PCI_EXP_LNKSTA_LBMS | PCI_EXP_LNKSTA_LABS) << 16;
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ }
+ 
+ static void rockchip_pcie_update_txcredit_mui(struct rockchip_pcie *rockchip)
+@@ -269,7 +270,7 @@ static void rockchip_pcie_set_power_limi
+ 	scale = 3; /* 0.001x */
+ 	curr = curr / 1000; /* convert to mA */
+ 	power = (curr * 3300) / 1000; /* milliwatt */
+-	while (power > PCIE_RC_CONFIG_DCR_CSPL_LIMIT) {
++	while (power > FIELD_MAX(PCI_EXP_DEVCAP_PWR_VAL)) {
+ 		if (!scale) {
+ 			dev_warn(rockchip->dev, "invalid power supply\n");
+ 			return;
+@@ -278,10 +279,10 @@ static void rockchip_pcie_set_power_limi
+ 		power = power / 10;
  	}
  
-@@ -1879,13 +1878,12 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else
-+			return -EINVAL;
-+
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			goto out;
-+			return ret;
- 		read++;
- 		cnt--;
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCR);
+-	status |= (power << PCIE_RC_CONFIG_DCR_CSPL_SHIFT) |
+-		  (scale << PCIE_RC_CONFIG_DCR_CPLS_SHIFT);
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCR);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
++	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_VAL, power);
++	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_SCL, scale);
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
+ }
+ 
+ /**
+@@ -309,14 +310,14 @@ static int rockchip_pcie_host_init_port(
+ 	rockchip_pcie_set_power_limit(rockchip);
+ 
+ 	/* Set RC's clock architecture as common clock */
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 	status |= PCI_EXP_LNKSTA_SLC << 16;
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 
+ 	/* Set RC's RCB to 128 */
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 	status |= PCI_EXP_LNKCTL_RCB;
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 
+ 	/* Enable Gen1 training */
+ 	rockchip_pcie_write(rockchip, PCIE_CLIENT_LINK_TRAIN_ENABLE,
+@@ -341,9 +342,9 @@ static int rockchip_pcie_host_init_port(
+ 		 * Enable retrain for gen2. This should be configured only after
+ 		 * gen1 finished.
+ 		 */
+-		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
++		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 		status |= PCI_EXP_LNKCTL_RL;
+-		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
++		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 
+ 		err = readl_poll_timeout(rockchip->apb_base + PCIE_CORE_CTRL,
+ 					 status, PCIE_LINK_IS_GEN2(status), 20,
+@@ -380,15 +381,15 @@ static int rockchip_pcie_host_init_port(
+ 
+ 	/* Clear L0s from RC's link cap */
+ 	if (of_property_read_bool(dev->of_node, "aspm-no-l0s")) {
+-		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LINK_CAP);
+-		status &= ~PCIE_RC_CONFIG_LINK_CAP_L0S;
+-		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LINK_CAP);
++		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
++		status &= ~PCI_EXP_LNKCAP_ASPM_L0S;
++		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
  	}
-@@ -1900,15 +1898,11 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
  
- 	*ppos += read;
--	ret = read;
--
--out:
--	return ret;
-+	return read;
- }
+-	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCSR);
+-	status &= ~PCIE_RC_CONFIG_DCSR_MPS_MASK;
+-	status |= PCIE_RC_CONFIG_DCSR_MPS_256;
+-	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCSR);
++	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
++	status &= ~PCI_EXP_DEVCTL_PAYLOAD;
++	status |= PCI_EXP_DEVCTL_PAYLOAD_256B;
++	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
  
- /* TODO add a seq_buf_to_buffer() */
-@@ -2410,10 +2404,10 @@ int __init register_tracer(struct tracer
- 	mutex_unlock(&trace_types_lock);
- 
- 	if (ret || !default_bootup_tracer)
--		goto out_unlock;
-+		return ret;
- 
- 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
--		goto out_unlock;
-+		return 0;
- 
- 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
- 	/* Do we want this tracer to start on bootup? */
-@@ -2425,8 +2419,7 @@ int __init register_tracer(struct tracer
- 	/* disable other selftests, since this will break it. */
- 	disable_tracing_selftest("running a tracer");
- 
-- out_unlock:
--	return ret;
-+	return 0;
- }
- 
- static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
-@@ -8954,12 +8947,12 @@ ftrace_trace_snapshot_callback(struct tr
-  out_reg:
- 	ret = tracing_arm_snapshot(tr);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	ret = register_ftrace_function_probe(glob, tr, ops, count);
- 	if (ret < 0)
- 		tracing_disarm_snapshot(tr);
-- out:
-+
- 	return ret < 0 ? ret : 0;
- }
- 
-@@ -11057,7 +11050,7 @@ __init static int tracer_alloc_buffers(v
- 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
- 
- 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
--		goto out;
-+		return -ENOMEM;
- 
- 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
- 		goto out_free_buffer_mask;
-@@ -11175,7 +11168,6 @@ out_free_cpumask:
- 	free_cpumask_var(global_trace.tracing_cpumask);
- out_free_buffer_mask:
- 	free_cpumask_var(tracing_buffer_mask);
--out:
- 	return ret;
- }
- 
+ 	return 0;
+ err_power_off_phy:
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -144,16 +144,7 @@
+ #define PCIE_EP_CONFIG_BASE		0xa00000
+ #define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
+ #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
+-#define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
+-#define   PCIE_RC_CONFIG_DCR_CSPL_SHIFT		18
+-#define   PCIE_RC_CONFIG_DCR_CSPL_LIMIT		0xff
+-#define   PCIE_RC_CONFIG_DCR_CPLS_SHIFT		26
+-#define PCIE_RC_CONFIG_DCSR		(PCIE_RC_CONFIG_BASE + 0xc8)
+-#define   PCIE_RC_CONFIG_DCSR_MPS_MASK		GENMASK(7, 5)
+-#define   PCIE_RC_CONFIG_DCSR_MPS_256		(0x1 << 5)
+-#define PCIE_RC_CONFIG_LINK_CAP		(PCIE_RC_CONFIG_BASE + 0xcc)
+-#define   PCIE_RC_CONFIG_LINK_CAP_L0S		BIT(10)
+-#define PCIE_RC_CONFIG_LCS		(PCIE_RC_CONFIG_BASE + 0xd0)
++#define PCIE_RC_CONFIG_CR		(PCIE_RC_CONFIG_BASE + 0xc0)
+ #define PCIE_RC_CONFIG_L1_SUBSTATE_CTRL2 (PCIE_RC_CONFIG_BASE + 0x90c)
+ #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
+ #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
 
 
 
