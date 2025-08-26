@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F038B36941
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9549CB3637F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1AD1BC7502
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6E68E045A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE112192F2;
-	Tue, 26 Aug 2025 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D33D23817D;
+	Tue, 26 Aug 2025 13:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlfVgrPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBm1en+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAC42BEC45;
-	Tue, 26 Aug 2025 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39542230BDF;
+	Tue, 26 Aug 2025 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217696; cv=none; b=ZYM3Ik+j1ZWxzyY8WRzOxo9KbOiVfwDkfIZZgn7mPqBmjCXX+byKknQXs3VnCrxPIXoIg+hoQW/o1P+mWnsgGmZGiWT5cnF3tL1F81g6ZppuSVBGqY+kRaJyMW+6J9aE7ykYIrORpkntcjTzlIZTYsskv94GaK6HdtNVbv4Z+xY=
+	t=1756214488; cv=none; b=PchyCWCx8DPH85opAcMPLhmjED1UL4cjbORlZ19WYqMZ/ts13YLYhcd7Sgnzt/d1/0RN+8Z20jTnwm/X7U75PUk44vCrA0BaSs3APPqgFmtilvfk8zY1FxfP4polEtYN2Zga1CgxcHzH6iVhYoOod4fUwoqfDORyg3o2RkJgrSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217696; c=relaxed/simple;
-	bh=cvpdV7MvMEjtjg71HLkHKSqFOgzo1wp93HtFwTsPh/4=;
+	s=arc-20240116; t=1756214488; c=relaxed/simple;
+	bh=+ynJnMWlzU7zNDpl1ql88Ks5USQAkwqrhM1OgUNO9Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ngc/LTLT1FWV3cy43uqRVdD7tgFJ6p6TemWd47w1cv4+KjFyRPTHOsJokHW2Kw/E75aWPJGcZDemf6U+YxCJQC+WsIZ04RZm0OGHJU197dd6IATKtXzhCf9iVt/FU8qBG7DSQQx6nJeIfsxmusUmXVG4yT3CTScVfMfhjypnviM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlfVgrPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C896C4CEF1;
-	Tue, 26 Aug 2025 14:14:55 +0000 (UTC)
+	 MIME-Version; b=HNYkGbXrOJzwFaMV4l+3rCjrPvmcuLuO4P9TyBodbrlXl7aUkBSM/M5umvrk3mKyKsV9u/3ZnJs5Y09nN0taBwgzUI4BIM7VnSrEigFoEn1Mo8g8acvNf4ooqx2vCg0FgKDCGLjACn8r9GHEelvRL6LFBC8MV4QW3oLg3FbZSSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBm1en+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D41C4CEF1;
+	Tue, 26 Aug 2025 13:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217695;
-	bh=cvpdV7MvMEjtjg71HLkHKSqFOgzo1wp93HtFwTsPh/4=;
+	s=korg; t=1756214487;
+	bh=+ynJnMWlzU7zNDpl1ql88Ks5USQAkwqrhM1OgUNO9Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlfVgrPEDlxdufqdOuYCbmNarI8lwLYSg0DVr1dNeKWbVsyckUwXS1pmS5V73O11d
-	 1C1CbBdHNWT7/2XvjY7HZox/kUGVv0qWXRNmrBEgVPgsJbdiFIOYrfMU8kReFmL9px
-	 si8BLLN/0c+PdTdOAgDZfOPQ26YxNYXE8JHX5Qdc=
+	b=RBm1en+D2vYyN5Wks711tZBBFJcnx/zqrPOBqxGARtOfKql2gELyYwV3rHAob5ChE
+	 ZNOjchgSTKzVXM6tjq4+UMNWxntDojhJbQL2wpqG+grmL5rjrnwCDuBN7yltv55nxd
+	 KYgMYPEqXYX4AOXzWOvvhiU29riJvqYYxB2mmClA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 200/523] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 157/482] gve: Return error for unknown admin queue command
 Date: Tue, 26 Aug 2025 13:06:50 +0200
-Message-ID: <20250826110929.381602883@linuxfoundation.org>
+Message-ID: <20250826110934.692519342@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-Found by code review.
+These changes improve error handling.
 
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/sunvdc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -968,8 +968,10 @@ static bool vdc_port_mpgroup_check(struc
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index f7621ab672b9..32a9943432ac 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -409,6 +409,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
  
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
- 
- 	return false;
- }
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
