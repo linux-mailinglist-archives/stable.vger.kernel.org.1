@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-175386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E3FB3687D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01CFB3673F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D339E9841B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 699AB7B85DE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9430E34AB15;
-	Tue, 26 Aug 2025 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03D12AE7F;
+	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hqir6wmf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnw70PDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F5B34A325;
-	Tue, 26 Aug 2025 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE9D1494D9;
+	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216901; cv=none; b=T4/1oLCG2TFidQ2FBovPmSL3MLXB2ueDn+lFWSg9RlSUycDHFsIfthR8ly0wYo7skLzgVqrdXAjqiIl4sSsUbbsj4Su1A0xzv5kRc1RB7UiVG03ir0SBCz95/9c4r3adjdty02zEadQdBPIyg+CCt/bL25bIj2zIeLH5/Ctd9es=
+	t=1756216906; cv=none; b=lfBKtsTJuyo0UVGvgPX4KtWSUY9IbiibfvvsT7ZmV0W0q5oYKZQKhfUrLmv/RxeOg9wWekVD+B+Zp+G1GmVvk2uigRX31yfkHl+YUDIIjhqdyUh+dR7kKzkcFn4LtH1KznLCPhkKIFEOWasv/pUIYKuFXLdBETm/ZG+Wkw/gR0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216901; c=relaxed/simple;
-	bh=jvnWfiBMkryKUqgFiXjyZwrGZp4u07JAYS4Bro1gsmw=;
+	s=arc-20240116; t=1756216906; c=relaxed/simple;
+	bh=AiR0L08PH/X80YsBHr+WvpxcsFLXX7vbtZOmKrJbDY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TCsUTw/9CAP3sDAEo+0ThojN1ih1F3XdT0uo02J/5ItKIHyc8dyKaHb2wTc3lJYrJuhd+lNAf2aFU+dPWu7P8zHXUnSXzu+1UvoS9j4q3WDjM91XQKDxbSQPEveLDQVD281nRG9VJ82yITAOvYacP5s4ci65syrGoGw2OdBFAeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hqir6wmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5022C113CF;
-	Tue, 26 Aug 2025 14:01:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q5K85D0TXJb2hP5q6D0QpoGTbEzXIPSOlk3GEXMwWoGCPPXAZZJJWW7UZEJ5HZZzQnLTpdotmTM/oz4m+3BKh3PPizvZ8SjjI27Nc4BwRsOVPlSBf//H0USGkLF0DAYk5W8tW5ItmV9QH8MCwDb7cpjC1d8PXnbQ4/iCHjZI1y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnw70PDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7D0C4CEF1;
+	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216901;
-	bh=jvnWfiBMkryKUqgFiXjyZwrGZp4u07JAYS4Bro1gsmw=;
+	s=korg; t=1756216906;
+	bh=AiR0L08PH/X80YsBHr+WvpxcsFLXX7vbtZOmKrJbDY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hqir6wmfglO9FwpNye7b1CAlft/xKRnTi2BYdFdTl9alzQY4NwFYLS/+NZkdqT//T
-	 eUuU/7OWY8c3qm9yBojkgm+hUmj92wsIN2ss2b7e/zt9AKMsPTFcq/1Nw7x2/2Sc5j
-	 Mn9S6Uwfmyzl4DzCdIC+S/UG+AornXsmAO72Vpv4=
+	b=Dnw70PDkqnmtoN+S0sy0Didg0Xw8U0xJJ2NtZw4WyecWK1/6C5ASMri1YdHmw1SB5
+	 oR2UDAV6eFoUyhRS4gB78U5PtS7jvHKI9Y26bJ+oTht68nu76iRCw2ZFBp82I/8Hon
+	 +nLvtS48JDbgDJ9kA7lfSvWKriEO2rIK8A7yPe8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mael GUERIN <mael.guerin@murena.io>,
 	stable <stable@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 5.15 586/644] usb: renesas-xhci: Fix External ROM access timeouts
-Date: Tue, 26 Aug 2025 13:11:17 +0200
-Message-ID: <20250826111001.057656452@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 587/644] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
+Date: Tue, 26 Aug 2025 13:11:18 +0200
+Message-ID: <20250826111001.082341641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
 References: <20250826110946.507083938@linuxfoundation.org>
@@ -66,70 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Mael GUERIN <mael.guerin@murena.io>
 
-commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
+commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
+to fix USB resets after sending SCSI vendor commands due to CBW and
+CSW tags difference, leading to undesired slowness while communicating
+with the device.
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+Please find below the copy of /sys/kernel/debug/usb/devices with my
+device plugged in (listed as TechSys USB mass storage here, the
+underlying chipset being the Novatek NTK96550-based camera):
 
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0603 ProdID=8611 Rev= 0.01
+S:  Manufacturer=TechSys
+S:  Product=USB Mass Storage
+S:  SerialNumber=966110000000100
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
-
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
-
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
-
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_SANE_SENSE ),
  
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
- 
- static int renesas_fw_download_image(struct pci_dev *dev,
- 				     const u32 *fw, size_t step, bool rom)
-@@ -409,7 +410,7 @@ static void renesas_rom_erase(struct pci
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
- 
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
++/* Added by Maël GUERIN <mael.guerin@murena.io> */
++UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
++		"Novatek",
++		"NTK96550-based camera",
++		USB_SC_SCSI, USB_PR_BULK, NULL,
++		US_FL_BULK_IGNORE_TAG ),
++
+ /*
+  * Reported by Hanno Boeck <hanno@gmx.de>
+  * Taken from the Lycoris Kernel
 
 
 
