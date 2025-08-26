@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93F2B36A56
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD85B3610F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D0434E18DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3100F2A2BDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D859F35AACC;
-	Tue, 26 Aug 2025 14:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E981C18F2FC;
+	Tue, 26 Aug 2025 13:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmkW8a+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFicMUXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9242520DD51;
-	Tue, 26 Aug 2025 14:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A653418DB2A;
+	Tue, 26 Aug 2025 13:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218809; cv=none; b=njC5pQvQsIm//1pyTCEdz7zJ6nwbucNT+PTVhSichYp7rmQg2rQ25aQsDXroJdzPHfrddof8+/3hqMrCe2J84vtGMz+ZTQ40urGp+dt+26N9BL6wlp+M4oS5hG+9aZFk+Chrgss95Ugu/zO/hWtDBB3oKC4G62KURGhwHZMrv6g=
+	t=1756213363; cv=none; b=hL5sYYjnb28Mktc/cA5Y2c17SnH8hy4X6UKRu8lcFhVTi+AmnK5UNVTVE5e0zj+OUzn3e4j75CI+inCJzIIgPYC5oACcr8ky0rz7xJjX/41rVQAj3wTB/O4CDjcsS57X6VInufmIVHVAY1K0H29IviGNc+PCPHpaCYZHwsX3oSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218809; c=relaxed/simple;
-	bh=zKbpOFfVAaEraczKG0tcC9RxmgN8WLOxbA4jPbIlQyA=;
+	s=arc-20240116; t=1756213363; c=relaxed/simple;
+	bh=BLNZt56qHCDqpg8NNap5b25UOwXFnPOU8LTZnA1wlJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssjNo/9oDrs3GccLle5ghnVlBVEQD3o7mgFwfpPl+LgC2sHEbzefj538QRe5wBdhT1sNSS4iPcu8TYSSfA813ZyCvW4C67q5+iEDhFS21MPzzivLihdS1ABP31GCiliB+OTuTtL7kVSIKIfPh27Ug+/t4id1s7LjjxTNr3XNwsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmkW8a+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EE0C113D0;
-	Tue, 26 Aug 2025 14:33:28 +0000 (UTC)
+	 MIME-Version; b=IW0fnIAzwbgGX0ImaLouy0YYzRpFq3P38jziXfCL2Hphe/j5t//MhaKAzkH/BlnPJxCEaMR11bPB3X2KTiSsL+8J6V65QKmLxsA/QNNokIIQyukkrYv34HcYPkNRjM4QC9blvZExU2FkEBCYC8nGOltRxec/QxBt/TIbKfneX5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFicMUXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C56C4CEF1;
+	Tue, 26 Aug 2025 13:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218809;
-	bh=zKbpOFfVAaEraczKG0tcC9RxmgN8WLOxbA4jPbIlQyA=;
+	s=korg; t=1756213362;
+	bh=BLNZt56qHCDqpg8NNap5b25UOwXFnPOU8LTZnA1wlJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmkW8a+jCjbUiTivhi8vppQ9RYIgYDRCq4UZ7axnMm9y5dpZ8QpUTG+4L+XWnYwqR
-	 JdfuKbCL7iLgtbGNAig0f0AhPRm57LTEAJOOalQ8sx3VHwaSl+YB5XvngC+xQYPuJp
-	 PT3T2c2zKuMIMJhAWEyQLds02v/6O5MB0bNca2cY=
+	b=LFicMUXuQP1mBqiWjQ4danyr9hNclyuMrEaMX7IPWw1x4CLEYn8n7hZskVxPLJMXx
+	 9FP+/6LhV1abd9U/E8CPJsZ2JW7g32+ruGtNVwKra/nGANMh9p26O4ZPEs+iUHM6WQ
+	 /np4Xo5dDhayN9l1DtL/Pn5QCvR+YIdU/Z0wVK3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 141/403] netpoll: prevent hanging NAPI when netcons gets enabled
-Date: Tue, 26 Aug 2025 13:07:47 +0200
-Message-ID: <20250826110910.652263331@linuxfoundation.org>
+	Waiman Long <longman@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 319/587] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
+Date: Tue, 26 Aug 2025 13:07:48 +0200
+Message-ID: <20250826111001.031185623@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 2da4def0f487f24bbb0cece3bb2bcdcb918a0b72 ]
+commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
 
-Paolo spotted hangs in NIPA running driver tests against virtio.
-The tests hang in virtnet_close() -> virtnet_napi_tx_disable().
+A soft lockup warning was observed on a relative small system x86-64
+system with 16 GB of memory when running a debug kernel with kmemleak
+enabled.
 
-The problem is only reproducible if running multiple of our tests
-in sequence (I used TEST_PROGS="xdp.py ping.py netcons_basic.sh \
-netpoll_basic.py stats.py"). Initial suspicion was that this is
-a simple case of double-disable of NAPI, but instrumenting the
-code reveals:
+  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
 
- Deadlocked on NAPI ffff888007cd82c0 (virtnet_poll_tx):
-   state: 0x37, disabled: false, owner: 0, listed: false, weight: 64
+The test system was running a workload with hot unplug happening in
+parallel.  Then kemleak decided to disable itself due to its inability to
+allocate more kmemleak objects.  The debug kernel has its
+CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
 
-The NAPI was not in fact disabled, owner is 0 (rather than -1),
-so the NAPI "thinks" it's scheduled for CPU 0 but it's not listed
-(!list_empty(&n->poll_list) => false). It seems odd that normal NAPI
-processing would wedge itself like this.
+The soft lockup happened in kmemleak_do_cleanup() when the existing
+kmemleak objects were being removed and deleted one-by-one in a loop via a
+workqueue.  In this particular case, there are at least 40,000 objects
+that need to be processed and given the slowness of a debug kernel and the
+fact that a raw_spinlock has to be acquired and released in
+__delete_object(), it could take a while to properly handle all these
+objects.
 
-Better suspicion is that netpoll gets enabled while NAPI is polling,
-and also grabs the NAPI instance. This confuses napi_complete_done():
+As kmemleak has been disabled in this case, the object removal and
+deletion process can be further optimized as locking isn't really needed.
+However, it is probably not worth the effort to optimize for such an edge
+case that should rarely happen.  So the simple solution is to call
+cond_resched() at periodic interval in the iteration loop to avoid soft
+lockup.
 
-  [netpoll]                                   [normal NAPI]
-                                        napi_poll()
-                                          have = netpoll_poll_lock()
-                                            rcu_access_pointer(dev->npinfo)
-                                              return NULL # no netpoll
-                                          __napi_poll()
-					    ->poll(->weight)
-  poll_napi()
-    cmpxchg(->poll_owner, -1, cpu)
-      poll_one_napi()
-        set_bit(NAPI_STATE_NPSVC, ->state)
-                                              napi_complete_done()
-                                                if (NAPIF_STATE_NPSVC)
-                                                  return false
-                                           # exit without clearing SCHED
-
-This feels very unlikely, but perhaps virtio has some interactions
-with the hypervisor in the NAPI ->poll that makes the race window
-larger?
-
-Best I could to to prove the theory was to add and trigger this
-warning in napi_poll (just before netpoll_poll_unlock()):
-
-      WARN_ONCE(!have && rcu_access_pointer(n->dev->npinfo) &&
-                napi_is_scheduled(n) && list_empty(&n->poll_list),
-                "NAPI race with netpoll %px", n);
-
-If this warning hits the next virtio_close() will hang.
-
-This patch survived 30 test iterations without a hang (without it
-the longest clean run was around 10). Credit for triggering this
-goes to Breno's recent netconsole tests.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/c5a93ed1-9abe-4880-a3bb-8d1678018b1d@redhat.com
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20250726010846.1105875-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/kmemleak.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 940d371f5f3b..09ae2fc41fa9 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -807,6 +807,13 @@ int netpoll_setup(struct netpoll *np)
- 		goto put;
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -2006,6 +2006,7 @@ static const struct file_operations kmem
+ static void __kmemleak_do_cleanup(void)
+ {
+ 	struct kmemleak_object *object, *tmp;
++	unsigned int cnt = 0;
  
- 	rtnl_unlock();
+ 	/*
+ 	 * Kmemleak has already been disabled, no need for RCU list traversal
+@@ -2014,6 +2015,10 @@ static void __kmemleak_do_cleanup(void)
+ 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
+ 		__remove_object(object);
+ 		__delete_object(object);
 +
-+	/* Make sure all NAPI polls which started before dev->npinfo
-+	 * was visible have exited before we start calling NAPI poll.
-+	 * NAPI skips locking if dev->npinfo is NULL.
-+	 */
-+	synchronize_rcu();
-+
- 	return 0;
++		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
++		if (!(++cnt & 0x3f))
++			cond_resched();
+ 	}
+ }
  
- put:
--- 
-2.39.5
-
 
 
 
