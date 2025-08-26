@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-174791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF58B364DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A71B36833
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8866A1B67922
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB582A6D5D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110C621A420;
-	Tue, 26 Aug 2025 13:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72572192F2;
+	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGjHVv+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzEeBJAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C269F1F4CA9;
-	Tue, 26 Aug 2025 13:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44D72AE7F;
+	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215327; cv=none; b=ZF+YVnh0XgwmcjGup7MIFEl39K1TNPfLT+xILvZ7tkI2SK1HUuMx+vfcz9gpeIwtdI5uLIKYIEeLkA3KEDaInYzPmoBJW9zAr5fHqSn6phr54rAbwaEdm647e75CkfcgOm8OaXA15K8sPME7pjeql1Ue5Hq1EFQ+eyrpJYTIVj0=
+	t=1756217083; cv=none; b=Z6P0+Scz8dUrCMeCGL42sxIsmNcAI2VunMJ6kmNA80ydvI3x+Rqtf/2Yz+Krmke6z3hWl24T0/489a621aD1zE6wlCAyt8mdrOO7TkGxkizNcFkyTfc2zYYkXGsgRnwFKQu7iRQO+Fex5G06JF/kdvukU+0j8tFl1CAx1QQqZPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215327; c=relaxed/simple;
-	bh=9qGNhSfPEn0TVMnIzStYr20N+70c090j9y+KZD8RR9Q=;
+	s=arc-20240116; t=1756217083; c=relaxed/simple;
+	bh=4obc0n+8Ax21jeVcaicNxq0m7k6FzfFiaxqrjnhEESI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXPmyZBREinZ9vsIWCsXyYyQtkEw85ZAwOyd5oJzFSu0cgtPYTAwBLssh8iif8LaqxPsUOOUMWEnUtgZrT9gDpw6EiuMcyYPc6hVWT+V9Bae1UAI3ty0RQUu8eK1/dWzqSODLuJ8tfgWQU8aSJqDaHmDP+6uP7DkXs2G7lAFo8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGjHVv+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31223C4CEF1;
-	Tue, 26 Aug 2025 13:35:27 +0000 (UTC)
+	 MIME-Version; b=mRvsI+4CsoOdesGAAZsNbuv7Ewxk0DyAIL9veMNe0GZCHiAYHrZZ6CJXJFrrXuGJcJ+Gp9xtuiHjb8Geoe/zahenBb2OYg6XZRAoS6pD29fkdrLLgdlijO4yAH+tOAyBb1pcl3Uqvju27ex5n7+fWD7mZD2nz9VcTPKrVp85USU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzEeBJAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37377C4CEF1;
+	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215327;
-	bh=9qGNhSfPEn0TVMnIzStYr20N+70c090j9y+KZD8RR9Q=;
+	s=korg; t=1756217083;
+	bh=4obc0n+8Ax21jeVcaicNxq0m7k6FzfFiaxqrjnhEESI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGjHVv+E/5XrCkspDI+ma6LC7PAsGTmz6U1CdKiSb+x8gegFv4yHOn7mK7Xlp0edV
-	 1itjw5w5+0dhC5hcVVSEA7EoY50flzq4RL8610KdunuzR618dWyHCLaG6ufJ14Rq4k
-	 oBf8gW3VJLdQ/ObMOL3vZiYLTSsFa5HvorCcahgg=
+	b=xzEeBJAz8A4K7h6ROxyVIuHzU2CxJ9hOmkwE6Mw73Zs0ouOm3qjKlLOfYMZd12ur1
+	 Y6KcMiQdJh2fBlV9a4FnjWH9RfKQ5+fdpMWoEISuZwEHAsL2pV9qhAlQ/tfKYdHOav
+	 cPL5C7ekeCWZYnQxFEyRvv4UrjMgNdf3WUjy1zLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Priya Singh <priyax.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
+	Yuichiro Tsuji <yuichtsu@amazon.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 472/482] ixgbe: xsk: resolve the negative overflow of budget in ixgbe_xmit_zc
+Subject: [PATCH 5.15 634/644] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
 Date: Tue, 26 Aug 2025 13:12:05 +0200
-Message-ID: <20250826110942.480745167@linuxfoundation.org>
+Message-ID: <20250826111002.270467178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Yuichiro Tsuji <yuichtsu@amazon.com>
 
-[ Upstream commit 4d4d9ef9dfee877d494e5418f68a1016ef08cad6 ]
+[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
 
-Resolve the budget negative overflow which leads to returning true in
-ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
+Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
 
-Before this patch, when the budget is decreased to zero and finishes
-sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
-and enter into the while() statement to see if it should keep processing
-packets, but in the meantime it unexpectedly decreases the value again to
-'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
-true, showing 'we complete cleaning the budget'. That also means
-'clean_complete = true' in ixgbe_poll.
+The PHY address should be masked to 5 bits (0-31). Without this
+mask, invalid PHY addresses could be used, potentially causing issues
+with MDIO bus operations.
 
-The true theory behind this is if that budget number of descs are consumed,
-it implies that we might have more descs to be done. So we should return
-false in ixgbe_xmit_zc to tell napi poll to find another chance to start
-polling to handle the rest of descs. On the contrary, returning true here
-means job done and we know we finish all the possible descs this time and
-we don't intend to start a new napi poll.
+Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
+it stays within the valid range.
 
-It is apparently against our expectations. Please also see how
-ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
-to make sure the budget can be decreased to zero at most and the negative
-overflow never happens.
-
-The patch adds 'likely' because we rarely would not hit the loop condition
-since the standard budget is 256.
-
-Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Priya Singh <priyax.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-4-anthony.l.nguyen@intel.com
+Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
+Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
+Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-index 1703c640a434..7ef82c30e857 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-@@ -403,7 +403,7 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 	dma_addr_t dma;
- 	u32 cmd_type;
- 
--	while (budget-- > 0) {
-+	while (likely(budget)) {
- 		if (unlikely(!ixgbe_desc_unused(xdp_ring))) {
- 			work_done = false;
- 			break;
-@@ -438,6 +438,8 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 		xdp_ring->next_to_use++;
- 		if (xdp_ring->next_to_use == xdp_ring->count)
- 			xdp_ring->next_to_use = 0;
-+
-+		budget--;
- 	}
- 
- 	if (tx_desc) {
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 928516222959..97d2037e7fee 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -669,7 +669,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 -- 
 2.50.1
 
