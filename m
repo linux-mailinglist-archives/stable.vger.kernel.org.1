@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21066B3614D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D49B35DAD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C411BA659D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D4C1BC0ED7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D7257859;
-	Tue, 26 Aug 2025 13:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCD932143C;
+	Tue, 26 Aug 2025 11:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dzDp7ZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtjsH/t5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4281D90C8;
-	Tue, 26 Aug 2025 13:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845CA29D273;
+	Tue, 26 Aug 2025 11:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213472; cv=none; b=bRlRH3JbtsWWRrydWcxZ7G9ZuDKxB43B3OIoQ5KldrQiuRmoClFuLdCX4M+bHNpzOY281pt+exWnsA1TRm95xJKoVu4FrDxl9nc7mn2N8GflZZ0PxJA3Z/xa7ZMyvhb9Wq7DzFoYTmstSvCqsMvw2qUPFam1wE2/0I8kxEIrqeg=
+	t=1756208395; cv=none; b=dA3bQLYDp9svHYn/ykrKZ854+TpCBZxMLHXUZBJrEdP2ZveQtnOd6vKVKn0RzuT8mX5ncUxeQZPq+sHFLMslJ931bm5k341tXJBPPP8TvR1OlJXJQpzdnzA0AZ/m+lN5WOxZjHnNxDMKY7dkv89qWcDskVvJaAnMNIpflwAMnYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213472; c=relaxed/simple;
-	bh=QReEHvCOdP+fTzXyJdX8//vSLtkr2SSaNy5KOrj2yVg=;
+	s=arc-20240116; t=1756208395; c=relaxed/simple;
+	bh=VQZDR+ttHWc/zDcaCZ+6alghASQIPnlsxxP/rkv3qTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fAV9bLAN72X0/ypjWexfNi5T5u5DPbjJr8QNwhYNVSg9NkUliYnJ0ogqZSdin2rgrvxhrQZdlbzKtg2nj3+iVjMv8nyFo1S9arjcjMENapO9xsKBuYP4wQCD1KWAyab9xUH3/eAa2yP1e+f0uXflLXqYEb8fxr9ib3XGDR0EBWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dzDp7ZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2AFC4CEF1;
-	Tue, 26 Aug 2025 13:04:31 +0000 (UTC)
+	 MIME-Version; b=SFy8m2Yesr1dlupBOpnh0hxEa6N7P/1909NkDzWBXmroaFFlYF1X/nTy7IKLq0i2Y21XVmzolFPsrYOHAbLI3QmOsqcRz1dHlqv/SzOk/5dmWbzhSBxFrHD4xr64+KoZvW4OCdLQ+h2kejFtA8MhbJB5KVis1LY5dCjHLAppU68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtjsH/t5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CAFC4CEF1;
+	Tue, 26 Aug 2025 11:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213472;
-	bh=QReEHvCOdP+fTzXyJdX8//vSLtkr2SSaNy5KOrj2yVg=;
+	s=korg; t=1756208395;
+	bh=VQZDR+ttHWc/zDcaCZ+6alghASQIPnlsxxP/rkv3qTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dzDp7ZBUvp+SxxnYrjzpC91UOlB5a4aKE9SKB6hDz3HkNkZlw0HDxVqEqZkIkabL
-	 2uBdId+yFDgqslr6IkQhF6U07tcAh7PDGHsc7KURSEiWdCjxYmAB2zl9mJHU5jDx7d
-	 gpZqk6qcxADOX23uFlMiC7gwiSTBgpzVl9ISngLk=
+	b=DtjsH/t5/bblnrdwGtsfbHxF4fd5Bk3II+4/xthcOkbpVokp0xsn6Huftc3z0pTnF
+	 /3tZYrS/Kug/VVxgn7GzC+muOQeoZq450G46cNjoP4qcgjPmic9zQbn5yFTMEVxRRc
+	 r4X4J0CSPkL/guO33VxmMJ3a1Zz77jjpE8Xtfcxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 360/587] scsi: mpi3mr: Fix race between config read submit and interrupt completion
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 094/322] parisc: Revise __get_user() to probe user read access
 Date: Tue, 26 Aug 2025 13:08:29 +0200
-Message-ID: <20250826111002.069713589@linuxfoundation.org>
+Message-ID: <20250826110917.997549795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit e6327c4acf925bb6d6d387d76fc3bd94471e10d8 upstream.
+commit 89f686a0fb6e473a876a9a60a13aec67a62b9a7e upstream.
 
-The "is_waiting" flag was updated after calling complete(), which could
-lead to a race where the waiting thread wakes up before the flag is
-cleared. This may cause a missed wakeup or stale state check.
+Because of the way read access support is implemented, read access
+interruptions are only triggered at privilege levels 2 and 3. The
+kernel executes at privilege level 0, so __get_user() never triggers
+a read access interruption (code 26). Thus, it is currently possible
+for user code to access a read protected address via a system call.
 
-Reorder the operations to update "is_waiting" before signaling completion
-to ensure consistent state.
+Fix this by probing read access rights at privilege level 3 (PRIV_USER)
+and setting __gu_err to -EFAULT (-14) if access isn't allowed.
 
-Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
-Cc: stable@vger.kernel.org
-Co-developed-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-2-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Note the cmpiclr instruction does a 32-bit compare because COND macro
+doesn't work inside asm.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/uaccess.h |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -411,8 +411,8 @@ static void mpi3mr_process_admin_reply_d
- 				       MPI3MR_SENSE_BUF_SZ);
- 			}
- 			if (cmdptr->is_waiting) {
--				complete(&cmdptr->done);
- 				cmdptr->is_waiting = 0;
-+				complete(&cmdptr->done);
- 			} else if (cmdptr->callback)
- 				cmdptr->callback(mrioc, cmdptr);
- 		}
+--- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -42,9 +42,24 @@
+ 	__gu_err;					\
+ })
+ 
+-#define __get_user(val, ptr)				\
+-({							\
+-	__get_user_internal(SR_USER, val, ptr);	\
++#define __probe_user_internal(sr, error, ptr)			\
++({								\
++	__asm__("\tproberi (%%sr%1,%2),%3,%0\n"			\
++		"\tcmpiclr,= 1,%0,%0\n"				\
++		"\tldi %4,%0\n"					\
++		: "=r"(error)					\
++		: "i"(sr), "r"(ptr), "i"(PRIV_USER),		\
++		  "i"(-EFAULT));				\
++})
++
++#define __get_user(val, ptr)					\
++({								\
++	register long __gu_err;					\
++								\
++	__gu_err = __get_user_internal(SR_USER, val, ptr);	\
++	if (likely(!__gu_err))					\
++		__probe_user_internal(SR_USER, __gu_err, ptr);	\
++	__gu_err;						\
+ })
+ 
+ #define __get_user_asm(sr, val, ldx, ptr)		\
 
 
 
