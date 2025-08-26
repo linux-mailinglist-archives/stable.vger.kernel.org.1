@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B0B364CA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991D9B35D12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A988E40D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42C5188CC9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F42224B09;
-	Tue, 26 Aug 2025 13:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A80733A01A;
+	Tue, 26 Aug 2025 11:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJeZtfwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdI+9j9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC19F13FD86;
-	Tue, 26 Aug 2025 13:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2536733EAE1;
+	Tue, 26 Aug 2025 11:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215209; cv=none; b=nA1C7421hM0mAzkBbqmVeUozNu1y8ICrQu7oS42P5k3VKwDVGLgVJx0M34zda4ebzdRAyHIQ14l7WzMllAb2MEf5jWAY9tsDExRpD79QLZznugsHDUISJUnhYV4VxFK/FOWHZZHB8EHZW8XCxocNWkoa/dLh4LjW6iLC40h/mw0=
+	t=1756207998; cv=none; b=tvwgpENwJBb9pv4RD1N0QuoZW9aE9DYXxrddGbJucxLG7S7e9043nrsGEcZ54kT6yHWjJnH418iODNNw5PhtLD1wHlJogF97XWtishPKMHKaqxhcrGfIRoQ485m2pJ84PaJ1W0TYG78EPlhbk1T0e+aBYsAJxFgw2We1p+A78KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215209; c=relaxed/simple;
-	bh=86tfJjZhYC/fEzSane9odI+7AoSciyZAtFH8an11eTY=;
+	s=arc-20240116; t=1756207998; c=relaxed/simple;
+	bh=0BrNLOlDihK5ofrMcIrE9R7JKugd0XSNxkxprMwmKN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwoinHPuJ1b2xxWYk5+rDlIY89FMXMFqaGuNRSeJ9KOhJxMKjJie7Y8c5wqXY+g3uHPutW0AshwSNm59InLyODYb2Pbi5v0LeuN/0Dff6sVntvSXon14L0A9EehOLu+M5FpXtAeYMaCpDnn/Bxla+506ti3gTRDeGMuIqkEZLvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJeZtfwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4D3C4CEF1;
-	Tue, 26 Aug 2025 13:33:29 +0000 (UTC)
+	 MIME-Version; b=egeckB8S4Ht4ol29hIs6g8K23W2wn/bb2tDpn8Ggyw/qgo4Je7J4fsVKwitkgSwHM3vs5owvfG9diLwDfhd5P+wvBQgp+WV5gr/74YQp0gx6fTQjV2TL557QjlU0UWw0PYQV48Uo9C6W9I7jkii6R+Dw1BcDVuAAHRYjNs3Rflw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdI+9j9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614A7C4CEF1;
+	Tue, 26 Aug 2025 11:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215209;
-	bh=86tfJjZhYC/fEzSane9odI+7AoSciyZAtFH8an11eTY=;
+	s=korg; t=1756207997;
+	bh=0BrNLOlDihK5ofrMcIrE9R7JKugd0XSNxkxprMwmKN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJeZtfwWbZ60kcspp4KNaoApKz9aTrwB+mC3oB4u7pDQy7WQr/IO4k057RQXtUyK6
-	 z11Fc7tCjrFVy1vFdqBuPPopjXZfxfUn4FyppzipI2DHaAZ2DU+f74hJyniBVuOijX
-	 8/V4yBnWRg5VqBEDzmQESYPH0fN/dDVUj+K/EJPs=
+	b=WdI+9j9Oq5EfFN13mWM6I5Rh62If+QaFetObckultFDmypgq+6ywkuaqIqj6ubD7O
+	 3TCxCsaLmG9r7zb6pf5CxxmoWexS11X0bh/RkSd6WMGbpGv0Ci5qNxiFgPK4vUBP6V
+	 I5TllRi3LQuFr+iCL0HLHlHqs4pR9ujvlNgfoIaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 429/482] PCI: rockchip: Use standard PCIe definitions
-Date: Tue, 26 Aug 2025 13:11:22 +0200
-Message-ID: <20250826110941.428726859@linuxfoundation.org>
+Subject: [PATCH 6.16 399/457] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
+Date: Tue, 26 Aug 2025 13:11:23 +0200
+Message-ID: <20250826110947.156110405@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,164 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit cbbfe9f683f0f9b6a1da2eaa53b995a4b5961086 ]
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-Current code uses custom-defined register offsets and bitfields for the
-standard PCIe registers. This creates duplication as the PCI header already
-defines them. So, switch to using the standard PCIe definitions and drop
-the custom ones.
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-[mani: commit message rewording]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: include bitfield.h]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/e81700ef4b49f584bc8834bfb07b6d8995fc1f42.1751322015.git.geraldogabriel@gmail.com
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c |   45 ++++++++++++++--------------
- drivers/pci/controller/pcie-rockchip.h      |   11 ------
- 2 files changed, 24 insertions(+), 32 deletions(-)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -11,6 +11,7 @@
-  * ARM PCI Host generic driver.
-  */
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 5dae892bbc73..fd58426f222b 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -305,6 +305,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
-+#include <linux/bitfield.h>
- #include <linux/bitrev.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-@@ -43,18 +44,18 @@ static void rockchip_pcie_enable_bw_int(
- {
- 	u32 status;
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
++
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
  
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= (PCI_EXP_LNKCTL_LBMIE | PCI_EXP_LNKCTL_LABIE);
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- }
- 
- static void rockchip_pcie_clr_bw_int(struct rockchip_pcie *rockchip)
- {
- 	u32 status;
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= (PCI_EXP_LNKSTA_LBMS | PCI_EXP_LNKSTA_LABS) << 16;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- }
- 
- static void rockchip_pcie_update_txcredit_mui(struct rockchip_pcie *rockchip)
-@@ -272,7 +273,7 @@ static void rockchip_pcie_set_power_limi
- 	scale = 3; /* 0.001x */
- 	curr = curr / 1000; /* convert to mA */
- 	power = (curr * 3300) / 1000; /* milliwatt */
--	while (power > PCIE_RC_CONFIG_DCR_CSPL_LIMIT) {
-+	while (power > FIELD_MAX(PCI_EXP_DEVCAP_PWR_VAL)) {
- 		if (!scale) {
- 			dev_warn(rockchip->dev, "invalid power supply\n");
- 			return;
-@@ -281,10 +282,10 @@ static void rockchip_pcie_set_power_limi
- 		power = power / 10;
- 	}
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCR);
--	status |= (power << PCIE_RC_CONFIG_DCR_CSPL_SHIFT) |
--		  (scale << PCIE_RC_CONFIG_DCR_CPLS_SHIFT);
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCR);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
-+	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_VAL, power);
-+	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_SCL, scale);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
- }
- 
- /**
-@@ -312,14 +313,14 @@ static int rockchip_pcie_host_init_port(
- 	rockchip_pcie_set_power_limit(rockchip);
- 
- 	/* Set RC's clock architecture as common clock */
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= PCI_EXP_LNKSTA_SLC << 16;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 	/* Set RC's RCB to 128 */
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= PCI_EXP_LNKCTL_RCB;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 	/* Enable Gen1 training */
- 	rockchip_pcie_write(rockchip, PCIE_CLIENT_LINK_TRAIN_ENABLE,
-@@ -341,9 +342,9 @@ static int rockchip_pcie_host_init_port(
- 		 * Enable retrain for gen2. This should be configured only after
- 		 * gen1 finished.
- 		 */
--		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 		status |= PCI_EXP_LNKCTL_RL;
--		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 		err = readl_poll_timeout(rockchip->apb_base + PCIE_CORE_CTRL,
- 					 status, PCIE_LINK_IS_GEN2(status), 20,
-@@ -380,15 +381,15 @@ static int rockchip_pcie_host_init_port(
- 
- 	/* Clear L0s from RC's link cap */
- 	if (of_property_read_bool(dev->of_node, "aspm-no-l0s")) {
--		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LINK_CAP);
--		status &= ~PCIE_RC_CONFIG_LINK_CAP_L0S;
--		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LINK_CAP);
-+		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
-+		status &= ~PCI_EXP_LNKCAP_ASPM_L0S;
-+		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
- 	}
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCSR);
--	status &= ~PCIE_RC_CONFIG_DCSR_MPS_MASK;
--	status |= PCIE_RC_CONFIG_DCSR_MPS_256;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCSR);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
-+	status &= ~PCI_EXP_DEVCTL_PAYLOAD;
-+	status |= PCI_EXP_DEVCTL_PAYLOAD_256B;
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
- 
- 	return 0;
- err_power_off_phy:
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -144,16 +144,7 @@
- #define PCIE_EP_CONFIG_BASE		0xa00000
- #define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
- #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
--#define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
--#define   PCIE_RC_CONFIG_DCR_CSPL_SHIFT		18
--#define   PCIE_RC_CONFIG_DCR_CSPL_LIMIT		0xff
--#define   PCIE_RC_CONFIG_DCR_CPLS_SHIFT		26
--#define PCIE_RC_CONFIG_DCSR		(PCIE_RC_CONFIG_BASE + 0xc8)
--#define   PCIE_RC_CONFIG_DCSR_MPS_MASK		GENMASK(7, 5)
--#define   PCIE_RC_CONFIG_DCSR_MPS_256		(0x1 << 5)
--#define PCIE_RC_CONFIG_LINK_CAP		(PCIE_RC_CONFIG_BASE + 0xcc)
--#define   PCIE_RC_CONFIG_LINK_CAP_L0S		BIT(10)
--#define PCIE_RC_CONFIG_LCS		(PCIE_RC_CONFIG_BASE + 0xd0)
-+#define PCIE_RC_CONFIG_CR		(PCIE_RC_CONFIG_BASE + 0xc0)
- #define PCIE_RC_CONFIG_L1_SUBSTATE_CTRL2 (PCIE_RC_CONFIG_BASE + 0x90c)
- #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
- #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
+-- 
+2.50.1
+
 
 
 
