@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C962BB3661A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D43EB3689F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F69E46781C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F2B1C27DA4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A713090CE;
-	Tue, 26 Aug 2025 13:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F622350D45;
+	Tue, 26 Aug 2025 14:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI1Fh0ei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+JVNdKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853D229D291;
-	Tue, 26 Aug 2025 13:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1B0350D62;
+	Tue, 26 Aug 2025 14:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215876; cv=none; b=AJgHXELsCv+xNdDjMZBcBC2IR62mtYvEHST7xrNvLdA/3uYnMsOZ+FsuK5lA7n78vvwXD1/DiRV+cHj5/XQUhRuFFyTivxTKsnjW6mGwE6fmYZBcqttHrGrO7TzqYY3PJNL35GtB6sQFDsM5fkmqtCon2nGNwdMLYYCgDQtvLiI=
+	t=1756217245; cv=none; b=QmTQLikSZ4QHff1XHniQfXwCmSAnA9aBEx8uJo8R+gvvDZiyUFQCq58+WItcwWWhWHx8BpAd6p9sACfcH/a89mukz/yYJFjMHVch1IhbqCCxxq8dnHu5W2zPbiCRXKaTYEsVPRx/MxZAonNlC3wxDjO1FMjpbVt4WRum6n589Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215876; c=relaxed/simple;
-	bh=wIu1A+KeBCKM/12UgldH4b2nOOfACVINeUI/vYvmSj0=;
+	s=arc-20240116; t=1756217245; c=relaxed/simple;
+	bh=uckjhJ0yfScQdMp6KGP/Nbgjb3DnWtCJ/vLIhqMhFCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYi15ycjugLzqZOPGRScqE0K6ZPOBLceSLkbNEBzCrRint6Cns+ZMeiFVxOCfqXPr5fQKBdpFTBZ0Gy98ygCeLepBlj6rVTafWHg05Bpc094mJuwM3EkTZXu0+/HmA7AZNpmpBb+tEu/v0WUAKjIkTNvNcz5E5l7YCjruKSZegA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI1Fh0ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20F2C4CEF1;
-	Tue, 26 Aug 2025 13:44:35 +0000 (UTC)
+	 MIME-Version; b=PEb9ednssv0Q1MCIZf1sMWf1Td6WP5kISyRB14hDuNYd/1BlfNYN7ydeHDXBcJFzm7eOjWhQ5jCzuK1ajaHByTxVQ47Xq3lSEQuaenlxjdxNkwocpL0p04G+3OKZ/J8joAxH48i3isNq6kLFULgrJUezTOlheyDlv+qj5Ko1voA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+JVNdKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00A9C4CEF1;
+	Tue, 26 Aug 2025 14:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215876;
-	bh=wIu1A+KeBCKM/12UgldH4b2nOOfACVINeUI/vYvmSj0=;
+	s=korg; t=1756217245;
+	bh=uckjhJ0yfScQdMp6KGP/Nbgjb3DnWtCJ/vLIhqMhFCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI1Fh0eiS6agrsQBPjpQ4xZH4s7Ji7GzdHuKlKGibO+6Q46p4OVfvgTPi2v0YJUDc
-	 0IJzYS7+WxFMCcidWRo0enco9YYtiyD0FtO2D09cv2md0HgR4fwhU2uix+Ml2vVv6i
-	 hc+VnXDeGwi5vdoK30TEIzoiDim0RUG5Fa033b7o=
+	b=y+JVNdKgD4XpboWbM9azw9dhVNpTy3HSuBSwpXqnYDlekDZyORmB/PqnXvBEWkr53
+	 /HX7h8FAuvNSAbzOvGPt4h/KVsk5GlVgkAnBBNMCKxGyzoqWJZYIS4Uq/2kyyrrcj0
+	 MyPjYcqNBZgQHhx454k3JbfkpQQWGk2lw5iEygUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/644] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 5.10 039/523] Bluetooth: Fix null-ptr-deref in l2cap_sock_resume_cb()
 Date: Tue, 26 Aug 2025 13:04:09 +0200
-Message-ID: <20250826110950.391754632@linuxfoundation.org>
+Message-ID: <20250826110925.560640895@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
+[ Upstream commit a0075accbf0d76c2dad1ad3993d2e944505d99a0 ]
 
-This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
-skb's control block key in ieee80211_tx_dequeue()"").
+syzbot reported null-ptr-deref in l2cap_sock_resume_cb(). [0]
 
-This commit broke TX with 802.11 encapsulation HW offloading, now that
-this is fixed, reapply it.
+l2cap_sock_resume_cb() has a similar problem that was fixed by commit
+1bff51ea59a9 ("Bluetooth: fix use-after-free error in lock_sock_nested()").
 
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Since both l2cap_sock_kill() and l2cap_sock_resume_cb() are executed
+under l2cap_sock_resume_cb(), we can avoid the issue simply by checking
+if chan->data is NULL.
+
+Let's not access to the killed socket in l2cap_sock_resume_cb().
+
+[0]:
+BUG: KASAN: null-ptr-deref in instrument_atomic_write include/linux/instrumented.h:82 [inline]
+BUG: KASAN: null-ptr-deref in clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
+BUG: KASAN: null-ptr-deref in l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
+Write of size 8 at addr 0000000000000570 by task kworker/u9:0/52
+
+CPU: 1 UID: 0 PID: 52 Comm: kworker/u9:0 Not tainted 6.16.0-rc4-syzkaller-g7482bb149b9f #0 PREEMPT
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Workqueue: hci0 hci_rx_work
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:501 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+ print_report+0x58/0x84 mm/kasan/report.c:524
+ kasan_report+0xb0/0x110 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:189
+ __kasan_check_write+0x20/0x30 mm/kasan/shadow.c:37
+ instrument_atomic_write include/linux/instrumented.h:82 [inline]
+ clear_bit include/asm-generic/bitops/instrumented-atomic.h:41 [inline]
+ l2cap_sock_resume_cb+0xb4/0x17c net/bluetooth/l2cap_sock.c:1711
+ l2cap_security_cfm+0x524/0xea0 net/bluetooth/l2cap_core.c:7357
+ hci_auth_cfm include/net/bluetooth/hci_core.h:2092 [inline]
+ hci_auth_complete_evt+0x2e8/0xa4c net/bluetooth/hci_event.c:3514
+ hci_event_func net/bluetooth/hci_event.c:7511 [inline]
+ hci_event_packet+0x650/0xe9c net/bluetooth/hci_event.c:7565
+ hci_rx_work+0x320/0xb18 net/bluetooth/hci_core.c:4070
+ process_one_work+0x7e8/0x155c kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3321 [inline]
+ worker_thread+0x958/0xed8 kernel/workqueue.c:3402
+ kthread+0x5fc/0x75c kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:847
+
+Fixes: d97c899bde33 ("Bluetooth: Introduce L2CAP channel callback for resuming")
+Reported-by: syzbot+e4d73b165c3892852d22@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/686c12bd.a70a0220.29fe6c.0b13.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/l2cap_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 4ab891c8416d..a5be5fe5c6b4 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3711,6 +3711,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 49564c61ad4a1..7d7f4ba60a208 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1666,6 +1666,9 @@ static void l2cap_sock_resume_cb(struct l2cap_chan *chan)
+ {
+ 	struct sock *sk = chan->data;
+ 
++	if (!sk)
++		return;
++
+ 	if (test_and_clear_bit(FLAG_PENDING_SECURITY, &chan->flags)) {
+ 		sk->sk_state = BT_CONNECTED;
+ 		chan->state = BT_CONNECTED;
 -- 
 2.39.5
 
