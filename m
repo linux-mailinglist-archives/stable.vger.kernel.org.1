@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF00AB3688E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C019B36AF3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AC9D7BA878
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E460B5A0041
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AAC302CA6;
-	Tue, 26 Aug 2025 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64CF3568E1;
+	Tue, 26 Aug 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY0RQIQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCDXNeZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1384D306D3F;
-	Tue, 26 Aug 2025 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD6035334D;
+	Tue, 26 Aug 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217617; cv=none; b=i9EGYd/5GpXmiiWOUqZVtU5B8tF4YNf8fzWmz3s29/1KHpR/xaq+FTKTmux1NGfsu7gjEOlueEz+ZEehQYdsoP34TP6oJc1AJTX/F3Z6LxF+P/W0IjmffTh5Gpk/oKO2/E47hj7oPrcxfT52k9fHuMAh0I5Hl7JHLYGtWZkmooU=
+	t=1756218687; cv=none; b=GkgEfcQO4jqMiiCLnn6hH/balW1DlnFVkzYuIxHCPDUKfF3FxJBBV47K/AHqwfVgk3CwAelNac0RyiAmja2q0uyU7EpgDH9QhuZD1V2aDM+CAgJj+E9mv2i32/e/0N8bkOc614ia/fMwha3ZSuSXYI9prfIDWE07PoyiWzCoo10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217617; c=relaxed/simple;
-	bh=t4hYpI+es1KOmim5qudUT1hDJwYz5+6kF4wOdw+C3Vk=;
+	s=arc-20240116; t=1756218687; c=relaxed/simple;
+	bh=224FsCw0glkEKzAQpwEBqOlYc0jFdGOEmxZGQvpB+fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZRaNASiDj1K+RdNeRC1wt0XpqLNcp/uTy1aHutJKV4/HocVTBef3Jx4yOBTNLaX/DxFKaPHzSK9a2d1lO7rYarJqTS9xw2VbratEQJN6l/0nWiEbbQEgDWN4F/vIjv9zAmt55BWY5ul/gICmfSsfKqMw93BYpWBl57JdHDnLQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY0RQIQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FBFC4CEF1;
-	Tue, 26 Aug 2025 14:13:36 +0000 (UTC)
+	 MIME-Version; b=t9zqc92rv9/afrmNnQpui80sJwN/CTUMP8OMYyf/e/PZhs13pOq+c67YgUtzr3407zIlBSf6o64SU1Tn1A3PtOdVk4kaD8ra6f3SJJkkHBE/oUxAFxJZiN4w3+DiCluxBpSXzB7Tc8hFpb8jdYiAwimgfX9gNAbTHIBl3cDwW2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCDXNeZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2764C4CEF1;
+	Tue, 26 Aug 2025 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217617;
-	bh=t4hYpI+es1KOmim5qudUT1hDJwYz5+6kF4wOdw+C3Vk=;
+	s=korg; t=1756218687;
+	bh=224FsCw0glkEKzAQpwEBqOlYc0jFdGOEmxZGQvpB+fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lY0RQIQrTsG6CUrDsLNNSE6FeTM1FFDqExMwFe3v4bRFkZh5+NClY8l5WPn8aLDXv
-	 ia7UMrzAHRkFThfbmTm56HCFo3woaZgvzyzpOClm1sVAgLBrdd5X6WHuo2zwtMJ2GD
-	 aZow1BbjNO2y3K46ek2WcMqykqeHO40MGejaiOts=
+	b=LCDXNeZcjlf21UItijs2u7hfHE130OtAnmJpdaMWq9v9J4djBd6igfFNqR3mZX55A
+	 6Z4vnNVkXX35f9QYKnh1DjhGysCXMq/D5iNC+hNNElA4b/kNvQqH1heSEginVW5hX3
+	 s3+QPG/UismEfPfFcAQ3av0aijd++mNXDOlY/Kcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kun Hu <huk23@m.fudan.edu.cn>,
-	Jiaji Qin <jjtan24@m.fudan.edu.cn>,
-	Shuoran Bai <baishuoran@hrbeu.edu.cn>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 211/523] hfsplus: fix slab-out-of-bounds in hfsplus_bnode_read()
+Subject: [PATCH 5.4 095/403] net/sched: Restrict conditions for adding duplicating netems to qdisc tree
 Date: Tue, 26 Aug 2025 13:07:01 +0200
-Message-ID: <20250826110929.650965664@linuxfoundation.org>
+Message-ID: <20250826110909.295658748@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,298 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit c80aa2aaaa5e69d5219c6af8ef7e754114bd08d2 ]
+[ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
 
-The hfsplus_bnode_read() method can trigger the issue:
+netem_enqueue's duplication prevention logic breaks when a netem
+resides in a qdisc tree with other netems - this can lead to a
+soft lockup and OOM loop in netem_dequeue, as seen in [1].
+Ensure that a duplicating netem cannot exist in a tree with other
+netems.
 
-[  174.852007][ T9784] ==================================================================
-[  174.852709][ T9784] BUG: KASAN: slab-out-of-bounds in hfsplus_bnode_read+0x2f4/0x360
-[  174.853412][ T9784] Read of size 8 at addr ffff88810b5fc6c0 by task repro/9784
-[  174.854059][ T9784]
-[  174.854272][ T9784] CPU: 1 UID: 0 PID: 9784 Comm: repro Not tainted 6.16.0-rc3 #7 PREEMPT(full)
-[  174.854281][ T9784] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  174.854286][ T9784] Call Trace:
-[  174.854289][ T9784]  <TASK>
-[  174.854292][ T9784]  dump_stack_lvl+0x10e/0x1f0
-[  174.854305][ T9784]  print_report+0xd0/0x660
-[  174.854315][ T9784]  ? __virt_addr_valid+0x81/0x610
-[  174.854323][ T9784]  ? __phys_addr+0xe8/0x180
-[  174.854330][ T9784]  ? hfsplus_bnode_read+0x2f4/0x360
-[  174.854337][ T9784]  kasan_report+0xc6/0x100
-[  174.854346][ T9784]  ? hfsplus_bnode_read+0x2f4/0x360
-[  174.854354][ T9784]  hfsplus_bnode_read+0x2f4/0x360
-[  174.854362][ T9784]  hfsplus_bnode_dump+0x2ec/0x380
-[  174.854370][ T9784]  ? __pfx_hfsplus_bnode_dump+0x10/0x10
-[  174.854377][ T9784]  ? hfsplus_bnode_write_u16+0x83/0xb0
-[  174.854385][ T9784]  ? srcu_gp_start+0xd0/0x310
-[  174.854393][ T9784]  ? __mark_inode_dirty+0x29e/0xe40
-[  174.854402][ T9784]  hfsplus_brec_remove+0x3d2/0x4e0
-[  174.854411][ T9784]  __hfsplus_delete_attr+0x290/0x3a0
-[  174.854419][ T9784]  ? __pfx_hfs_find_1st_rec_by_cnid+0x10/0x10
-[  174.854427][ T9784]  ? __pfx___hfsplus_delete_attr+0x10/0x10
-[  174.854436][ T9784]  ? __asan_memset+0x23/0x50
-[  174.854450][ T9784]  hfsplus_delete_all_attrs+0x262/0x320
-[  174.854459][ T9784]  ? __pfx_hfsplus_delete_all_attrs+0x10/0x10
-[  174.854469][ T9784]  ? rcu_is_watching+0x12/0xc0
-[  174.854476][ T9784]  ? __mark_inode_dirty+0x29e/0xe40
-[  174.854483][ T9784]  hfsplus_delete_cat+0x845/0xde0
-[  174.854493][ T9784]  ? __pfx_hfsplus_delete_cat+0x10/0x10
-[  174.854507][ T9784]  hfsplus_unlink+0x1ca/0x7c0
-[  174.854516][ T9784]  ? __pfx_hfsplus_unlink+0x10/0x10
-[  174.854525][ T9784]  ? down_write+0x148/0x200
-[  174.854532][ T9784]  ? __pfx_down_write+0x10/0x10
-[  174.854540][ T9784]  vfs_unlink+0x2fe/0x9b0
-[  174.854549][ T9784]  do_unlinkat+0x490/0x670
-[  174.854557][ T9784]  ? __pfx_do_unlinkat+0x10/0x10
-[  174.854565][ T9784]  ? __might_fault+0xbc/0x130
-[  174.854576][ T9784]  ? getname_flags.part.0+0x1c5/0x550
-[  174.854584][ T9784]  __x64_sys_unlink+0xc5/0x110
-[  174.854592][ T9784]  do_syscall_64+0xc9/0x480
-[  174.854600][ T9784]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  174.854608][ T9784] RIP: 0033:0x7f6fdf4c3167
-[  174.854614][ T9784] Code: f0 ff ff 73 01 c3 48 8b 0d 26 0d 0e 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 08
-[  174.854622][ T9784] RSP: 002b:00007ffcb948bca8 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
-[  174.854630][ T9784] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f6fdf4c3167
-[  174.854636][ T9784] RDX: 00007ffcb948bcc0 RSI: 00007ffcb948bcc0 RDI: 00007ffcb948bd50
-[  174.854641][ T9784] RBP: 00007ffcb948cd90 R08: 0000000000000001 R09: 00007ffcb948bb40
-[  174.854645][ T9784] R10: 00007f6fdf564fc0 R11: 0000000000000206 R12: 0000561e1bc9c2d0
-[  174.854650][ T9784] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[  174.854658][ T9784]  </TASK>
-[  174.854661][ T9784]
-[  174.879281][ T9784] Allocated by task 9784:
-[  174.879664][ T9784]  kasan_save_stack+0x20/0x40
-[  174.880082][ T9784]  kasan_save_track+0x14/0x30
-[  174.880500][ T9784]  __kasan_kmalloc+0xaa/0xb0
-[  174.880908][ T9784]  __kmalloc_noprof+0x205/0x550
-[  174.881337][ T9784]  __hfs_bnode_create+0x107/0x890
-[  174.881779][ T9784]  hfsplus_bnode_find+0x2d0/0xd10
-[  174.882222][ T9784]  hfsplus_brec_find+0x2b0/0x520
-[  174.882659][ T9784]  hfsplus_delete_all_attrs+0x23b/0x320
-[  174.883144][ T9784]  hfsplus_delete_cat+0x845/0xde0
-[  174.883595][ T9784]  hfsplus_rmdir+0x106/0x1b0
-[  174.884004][ T9784]  vfs_rmdir+0x206/0x690
-[  174.884379][ T9784]  do_rmdir+0x2b7/0x390
-[  174.884751][ T9784]  __x64_sys_rmdir+0xc5/0x110
-[  174.885167][ T9784]  do_syscall_64+0xc9/0x480
-[  174.885568][ T9784]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  174.886083][ T9784]
-[  174.886293][ T9784] The buggy address belongs to the object at ffff88810b5fc600
-[  174.886293][ T9784]  which belongs to the cache kmalloc-192 of size 192
-[  174.887507][ T9784] The buggy address is located 40 bytes to the right of
-[  174.887507][ T9784]  allocated 152-byte region [ffff88810b5fc600, ffff88810b5fc698)
-[  174.888766][ T9784]
-[  174.888976][ T9784] The buggy address belongs to the physical page:
-[  174.889533][ T9784] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10b5fc
-[  174.890295][ T9784] flags: 0x57ff00000000000(node=1|zone=2|lastcpupid=0x7ff)
-[  174.890927][ T9784] page_type: f5(slab)
-[  174.891284][ T9784] raw: 057ff00000000000 ffff88801b4423c0 ffffea000426dc80 dead000000000002
-[  174.892032][ T9784] raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
-[  174.892774][ T9784] page dumped because: kasan: bad access detected
-[  174.893327][ T9784] page_owner tracks the page as allocated
-[  174.893825][ T9784] page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52c00(GFP_NOIO|__GFP_NOWARN|__GFP_NO1
-[  174.895373][ T9784]  post_alloc_hook+0x1c0/0x230
-[  174.895801][ T9784]  get_page_from_freelist+0xdeb/0x3b30
-[  174.896284][ T9784]  __alloc_frozen_pages_noprof+0x25c/0x2460
-[  174.896810][ T9784]  alloc_pages_mpol+0x1fb/0x550
-[  174.897242][ T9784]  new_slab+0x23b/0x340
-[  174.897614][ T9784]  ___slab_alloc+0xd81/0x1960
-[  174.898028][ T9784]  __slab_alloc.isra.0+0x56/0xb0
-[  174.898468][ T9784]  __kmalloc_noprof+0x2b0/0x550
-[  174.898896][ T9784]  usb_alloc_urb+0x73/0xa0
-[  174.899289][ T9784]  usb_control_msg+0x1cb/0x4a0
-[  174.899718][ T9784]  usb_get_string+0xab/0x1a0
-[  174.900133][ T9784]  usb_string_sub+0x107/0x3c0
-[  174.900549][ T9784]  usb_string+0x307/0x670
-[  174.900933][ T9784]  usb_cache_string+0x80/0x150
-[  174.901355][ T9784]  usb_new_device+0x1d0/0x19d0
-[  174.901786][ T9784]  register_root_hub+0x299/0x730
-[  174.902231][ T9784] page last free pid 10 tgid 10 stack trace:
-[  174.902757][ T9784]  __free_frozen_pages+0x80c/0x1250
-[  174.903217][ T9784]  vfree.part.0+0x12b/0xab0
-[  174.903645][ T9784]  delayed_vfree_work+0x93/0xd0
-[  174.904073][ T9784]  process_one_work+0x9b5/0x1b80
-[  174.904519][ T9784]  worker_thread+0x630/0xe60
-[  174.904927][ T9784]  kthread+0x3a8/0x770
-[  174.905291][ T9784]  ret_from_fork+0x517/0x6e0
-[  174.905709][ T9784]  ret_from_fork_asm+0x1a/0x30
-[  174.906128][ T9784]
-[  174.906338][ T9784] Memory state around the buggy address:
-[  174.906828][ T9784]  ffff88810b5fc580: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-[  174.907528][ T9784]  ffff88810b5fc600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  174.908222][ T9784] >ffff88810b5fc680: 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  174.908917][ T9784]                                            ^
-[  174.909481][ T9784]  ffff88810b5fc700: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  174.910432][ T9784]  ffff88810b5fc780: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-[  174.911401][ T9784] ==================================================================
+Previous approaches suggested in discussions in chronological order:
 
-The reason of the issue that code doesn't check the correctness
-of the requested offset and length. As a result, incorrect value
-of offset or/and length could result in access out of allocated
-memory.
+1) Track duplication status or ttl in the sk_buff struct. Considered
+too specific a use case to extend such a struct, though this would
+be a resilient fix and address other previous and potential future
+DOS bugs like the one described in loopy fun [2].
 
-This patch introduces is_bnode_offset_valid() method that checks
-the requested offset value. Also, it introduces
-check_and_correct_requested_length() method that checks and
-correct the requested length (if it is necessary). These methods
-are used in hfsplus_bnode_read(), hfsplus_bnode_write(),
-hfsplus_bnode_clear(), hfsplus_bnode_copy(), and hfsplus_bnode_move()
-with the goal to prevent the access out of allocated memory
-and triggering the crash.
+2) Restrict netem_enqueue recursion depth like in act_mirred with a
+per cpu variable. However, netem_dequeue can call enqueue on its
+child, and the depth restriction could be bypassed if the child is a
+netem.
 
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>
-Reported-by: Jiaji Qin <jjtan24@m.fudan.edu.cn>
-Reported-by: Shuoran Bai <baishuoran@hrbeu.edu.cn>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250703214804.244077-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+3) Use the same approach as in 2, but add metadata in netem_skb_cb
+to handle the netem_dequeue case and track a packet's involvement
+in duplication. This is an overly complex approach, and Jamal
+notes that the skb cb can be overwritten to circumvent this
+safeguard.
+
+4) Prevent the addition of a netem to a qdisc tree if its ancestral
+path contains a netem. However, filters and actions can cause a
+packet to change paths when re-enqueued to the root from netem
+duplication, leading us to the current solution: prevent a
+duplicating netem from inhabiting the same tree as other netems.
+
+[1] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+[2] https://lwn.net/Articles/719297/
+
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250708164141.875402-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ net/sched/sch_netem.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index cf6e5de7b9da..c9c38fddf505 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -18,12 +18,68 @@
- #include "hfsplus_fs.h"
- #include "hfsplus_raw.h"
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 27bd18c74e85..cdf2df194d24 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -962,6 +962,41 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
+ }
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
++static const struct Qdisc_class_ops netem_class_ops;
 +
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
++static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
++			       struct netlink_ext_ack *extack)
++{
++	struct Qdisc *root, *q;
++	unsigned int i;
++
++	root = qdisc_root_sleeping(sch);
++
++	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
++		if (duplicates ||
++		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
++			goto err;
 +	}
 +
-+	return is_valid;
-+}
-+
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
++	if (!qdisc_dev(root))
 +		return 0;
 +
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
++	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
++		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
++			if (duplicates ||
++			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
++				goto err;
++		}
 +	}
 +
-+	return len;
++	return 0;
++
++err:
++	NL_SET_ERR_MSG(extack,
++		       "netem: cannot mix duplicating netems with other netems in tree");
++	return -EINVAL;
 +}
 +
- /* Copy a specified range of bytes from the raw data of a node */
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page **pagep;
- 	int l;
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1023,6 +1058,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
++
++	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
++	if (ret)
++		goto unlock;
++
+ 	q->duplicate = qopt->duplicate;
  
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	off &= ~PAGE_MASK;
-@@ -83,6 +139,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
- 	struct page **pagep;
- 	int l;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	off &= ~PAGE_MASK;
-@@ -113,6 +183,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
- 	struct page **pagep;
- 	int l;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagep = node->page + (off >> PAGE_SHIFT);
- 	off &= ~PAGE_MASK;
-@@ -139,6 +223,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
- 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(src_node, src, len);
-+	len = check_and_correct_requested_length(dst_node, dst, len);
-+
- 	src += src_node->page_offset;
- 	dst += dst_node->page_offset;
- 	src_page = src_node->page + (src >> PAGE_SHIFT);
-@@ -196,6 +284,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
- 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(node, src, len);
-+	len = check_and_correct_requested_length(node, dst, len);
-+
- 	src += node->page_offset;
- 	dst += node->page_offset;
- 	if (dst > src) {
+ 	/* for compatibility with earlier versions.
 -- 
 2.39.5
 
