@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-172996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981B3B35B52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC32B36065
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72DB31897261
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13BBB188D77F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1A833436C;
-	Tue, 26 Aug 2025 11:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67DE1DD0D4;
+	Tue, 26 Aug 2025 12:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLwEyPxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF7e8553"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0684A29D26A;
-	Tue, 26 Aug 2025 11:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FE5145B3E;
+	Tue, 26 Aug 2025 12:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207104; cv=none; b=PDaha0zCDBU5LrJKUAj9bGX2HFUM/R3u4hKp+VA5L+lYCSS/TZk+pvDV1OBrrBp2Y5P4wbbVv0CthP/w7c+9HtYLVFW1+uV5HBhOSmwsxaMgQHbLD0WskkekiPI2DyOpNFRgBekcea4gnFRqWyAOCMAqrq9pWIrTV8H2jg7k4uE=
+	t=1756212993; cv=none; b=AGLgdYQjHZXI6YEBQcXmOWweGRj+DwuS9X7ikeLIAPGZH9VHk/OcL8U5bW4BbyhBsYeUvrUrhGKXX2huB2Jt1aOchs5tvFIY4k6E+VAwYxL72Nzk7cGcE5u5SVXbPz/nwjWSfNEATKCwMsgS1zJZj+FsLUx7aFuB8aKpbigHBjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207104; c=relaxed/simple;
-	bh=00H3mx5wvFjtSOkGLNHB0kOd464xUMIW54UbKgIsgVU=;
+	s=arc-20240116; t=1756212993; c=relaxed/simple;
+	bh=Q924h72a7tr14zjBZVSwxpmtFfoPKtP2vheM2+hsWeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeHijOk0mP9LxQnyx+rfQ97hycM3McJ7XK4utGf9BxFM0XvcIYK2Hee7sT725dUGtiWRvk8ASqUKiU48P8B5s9yfSYknVFpUxvYn98yE8B6EVdUoGkXgcTtjvMnEoJA0UL5T+wJaCG9mDPoDLluY5TFvEmCFcVvpZGNKv+3d0d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLwEyPxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A71DC4CEF4;
-	Tue, 26 Aug 2025 11:18:23 +0000 (UTC)
+	 MIME-Version; b=gYO4CmrLVRl061B7jxPMLfIhkPpSX6p5ua2nombbc2o4AxmuYy9r72RsiEaWIe2YVDxlpO+1A+BadCz9kI8MjW8rTgwC586uYdqorkojSAop1WBm3CgsBzb2hr+9qDkW3lJioWS+KY1qk9U+aVe1YlCNw7Yx1oomf8dlrTb/pnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF7e8553; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89AAC4CEF1;
+	Tue, 26 Aug 2025 12:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207103;
-	bh=00H3mx5wvFjtSOkGLNHB0kOd464xUMIW54UbKgIsgVU=;
+	s=korg; t=1756212993;
+	bh=Q924h72a7tr14zjBZVSwxpmtFfoPKtP2vheM2+hsWeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLwEyPxu5Fptxf8KC8x6LHKcK8vx3icrgpcaPwFedL8U7HzJmo+gHU4l+7T4s4yO9
-	 NX53QoO/4lFY86k2VknaL+WYBua1yUNztT+/nSMyhkj1OjMy7iYZUD1A1tW6SE36+H
-	 4GZ0wcE1firOhteTiHe0kIIuguzY5Qyi3Ov9kMcA=
+	b=MF7e8553VqrneB+lXMwFMb7C2YbKIg7x7tyTTQswNJwkJv/rUK7zwSmY6QQiUusN0
+	 C29lfvgBnPBolaXQcBltMX8rcCdRP/GQnJdIipws19js6XTnE+qoRw6LVXHzGiabAo
+	 XIubR2OaywuKe9kAmU+mHerILt8Xbf97Pkkz1DsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Kyoji Ogasawara <sawara04.o@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 045/457] btrfs: fix incorrect log message for nobarrier mount option
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 180/587] wifi: ath12k: Add memset and update default rate value in wmi tx completion
 Date: Tue, 26 Aug 2025 13:05:29 +0200
-Message-ID: <20250826110938.458913670@linuxfoundation.org>
+Message-ID: <20250826110957.520945626@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoji Ogasawara <sawara04.o@gmail.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-commit edf842abe4368ce3c423343cf4b23b210fcf1622 upstream.
+[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
 
-Fix a wrong log message that appears when the "nobarrier" mount option
-is unset.  When "nobarrier" is unset, barrier is actually enabled.
-However, the log incorrectly stated "turning off barriers".
+When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
+is invoked from two paths: the TX completion handler for data frames
+and the WMI TX completion handler for management frames.
+In the data path, the skb->cb is properly zeroed using memset, but in
+the WMI path, this step is missing.
 
-Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, mac80211 encountered uninitialized (junk) values in
+skb->cb when generating the radiotap header for monitor mode, leading
+to invalid radiotap lengths.
+
+Hence, explicitly zero the status field in the skb->cb using memset
+in WMI TX completion path to ensure consistent and correct behavior
+during WMI tx completion path.
+
+Additionally, set info->status.rates[0].idx = -1 to indicate that
+no valid rate information is available, avoiding misinterpretation of
+garbage values.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1453,7 +1453,7 @@ static void btrfs_emit_options(struct bt
- 	btrfs_info_if_unset(info, old, NODATACOW, "setting datacow");
- 	btrfs_info_if_unset(info, old, SSD, "not using ssd optimizations");
- 	btrfs_info_if_unset(info, old, SSD_SPREAD, "not using spread ssd allocation scheme");
--	btrfs_info_if_unset(info, old, NOBARRIER, "turning off barriers");
-+	btrfs_info_if_unset(info, old, NOBARRIER, "turning on barriers");
- 	btrfs_info_if_unset(info, old, NOTREELOG, "enabling tree log");
- 	btrfs_info_if_unset(info, old, SPACE_CACHE, "disabling disk space caching");
- 	btrfs_info_if_unset(info, old, FREE_SPACE_TREE, "disabling free space tree");
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index e918218ce2d6..7e400a0e0eb1 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -4965,6 +4965,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+ 
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
++
++	/* skip tx rate update from ieee80211_status*/
++	info->status.rates[0].idx = -1;
++
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
+ 
+-- 
+2.39.5
+
 
 
 
