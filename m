@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6DFB36308
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7D5B367C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16FCB4676A2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9A1BB63F9D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6B340DAE;
-	Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002F62FDC44;
+	Tue, 26 Aug 2025 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guUoI/QQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij6F2ABl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C15338F32;
-	Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8C1662E7;
+	Tue, 26 Aug 2025 14:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214150; cv=none; b=E3rf4zesjFoABHF+Q4q8nlNOH4SsS/AqAQYQg9oXV5TR10KcOZzihKksme1yJL5JCpeKRzflBq48CfriEZUeWIhfRC882ymtABh2I+9XPc97nX8g46TMKApEUcM5A5qRvmh8UaSIt10SjGq0C+dXcjrHjlPFwMEmtbUdBltKOJE=
+	t=1756217206; cv=none; b=Fcd+Y8CIjDajIx+plcD2y80OZexGF3xPuZNnn25ImILr2NaJjCgrnEee0FmnUkR1wnJxAN/UuNuuXaq91BXhbxDsDaVaAykQTyu7A+2QsW2ZWZJn3ThQp068SEg8fZw3NxX9shj6PssBoB/pQK0TtYJv+Pp2P0XiF7832tP2Vhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214150; c=relaxed/simple;
-	bh=S/cqH8oPXa/2kYAXTpiP05rQ7Uhdwqmr9WE0okhNU2g=;
+	s=arc-20240116; t=1756217206; c=relaxed/simple;
+	bh=7CSEAptk8iclMR/0E+CBTkRU+eeME8YZdBlgXlxVZgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zf+/dN+3exIAp5VBOmo5hAFbUQNZnh1OW4Rmqn8JueE6/JutPiYoxGTPst5sHBobHZl6RcTLWtZdjN7t5wlphcr567af9ATklyAJIAxqn5toZncpAeO5ppWcnX0NdfVOVovPYBcGVXUpVzA4DXWbuyw0K4BS/JttBJJiQb+BBDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guUoI/QQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF967C4CEF1;
-	Tue, 26 Aug 2025 13:15:49 +0000 (UTC)
+	 MIME-Version; b=EAbIZB+rwArCeocTOozuWn77i7p2AMEkgVuXqarDiXgH1jGjj8j30N9tb05zn/g++FCOTDcrr9fuwr5AnFu1auKSjx66KZBPio0Bv2AWzFYRpnTLjhKOlveDytyEL6ACowDmJdggufD/NnYlXxxwUhv426szv6i/GbKedUHYhjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij6F2ABl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C09C4CEF1;
+	Tue, 26 Aug 2025 14:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214150;
-	bh=S/cqH8oPXa/2kYAXTpiP05rQ7Uhdwqmr9WE0okhNU2g=;
+	s=korg; t=1756217205;
+	bh=7CSEAptk8iclMR/0E+CBTkRU+eeME8YZdBlgXlxVZgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guUoI/QQEJxilKKH1iMO03D/y5JAEzKnDaKCWiFVwtgR8w/7mXOIXfCuUsl0q1oVY
-	 N/AvYRtvDRPKCrVp6+Q5V/SQuI6Zs9Syu7Kbq/u1xL3epNEVoRbhRx7a8rMbfh8NDo
-	 QeL0cP7rv0JPjt8Z4hDGyd++0QIRRrwTYBQu3m5g=
+	b=Ij6F2ABlLUOCizi//rCmhVR4ad1tzRf6LUli4WuaCbyNfhoWxjtHShRlH8bmyVue9
+	 e9Xut401S6px9Ofu96GgVYj0ILdO1QFvND5y56KeEL8MhTIpQhLJb7ft5eBVrQkNM/
+	 cLu0Tq5uWIaE5HNi/knXbQ5kyQtIONXXQowCtq1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 012/482] net: gianfar: fix device leak when querying time stamp info
+	Alessandro Carminati <acarmina@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 055/523] regulator: core: fix NULL dereference on unbind due to stale coupling data
 Date: Tue, 26 Aug 2025 13:04:25 +0200
-Message-ID: <20250826110931.086706203@linuxfoundation.org>
+Message-ID: <20250826110925.949446829@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alessandro Carminati <acarmina@redhat.com>
 
-commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
+[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
 
-Make sure to drop the reference to the ptp device taken by
-of_find_device_by_node() when querying the time stamping capabilities.
+Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
+lead to NULL pointer dereference when regulators are accessed post-unbind.
 
-Note that holding a reference to the ptp device does not prevent its
-driver data from going away.
+This can happen during runtime PM or other regulator operations that rely
+on coupling metadata.
 
-Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
-Cc: stable@vger.kernel.org	# 4.18
-Cc: Yangbo Lu <yangbo.lu@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
+a panic in regulator_lock_recursive() due to stale coupling state.
+
+Ensure n_coupled is set to 0 to prevent access to invalid pointers.
+
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
-+++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-@@ -1466,8 +1466,10 @@ static int gfar_get_ts_info(struct net_d
- 	if (ptp_node) {
- 		ptp_dev = of_find_device_by_node(ptp_node);
- 		of_node_put(ptp_node);
--		if (ptp_dev)
-+		if (ptp_dev) {
- 			ptp = platform_get_drvdata(ptp_dev);
-+			put_device(&ptp_dev->dev);
-+		}
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index a0cc907a76c18..b2d866d606512 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5198,6 +5198,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
+ 				 ERR_PTR(err));
  	}
  
- 	if (ptp)
++	rdev->coupling_desc.n_coupled = 0;
+ 	kfree(rdev->coupling_desc.coupled_rdevs);
+ 	rdev->coupling_desc.coupled_rdevs = NULL;
+ }
+-- 
+2.39.5
+
 
 
 
