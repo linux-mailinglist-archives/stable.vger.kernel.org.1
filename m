@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BECB365DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF906B36039
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC4F1BC68D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6D5161E44
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FFB33A00A;
-	Tue, 26 Aug 2025 13:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3D01F4717;
+	Tue, 26 Aug 2025 12:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9bwJdnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsWPAku8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EB63451AA;
-	Tue, 26 Aug 2025 13:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196C117A303;
+	Tue, 26 Aug 2025 12:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215902; cv=none; b=F6/eS/RX6+fCySHCAQupp4bqJWMqW5UQynUPWoUq9Q9BhWdCT3JFv27dhQzIjP5JE1CwUnNCDX1YNOnFTcdOSF2lJ+R8ezUcVkvyDfxvEecq2V2k3MmYB7yLgfFD4EKWTZOEJExJHgnnTmhJ1WchWoPTCKC1zYQMqHoTbMLFud4=
+	t=1756212923; cv=none; b=I4oj4RCXHvkiMD9AhRnL7pTknC9iiTyt7aOnT1nz9HTxq3hz+wdvQDHUtz+V0o5fDK9mzceIYdznJfCfSeWqv97QxMh8fwXMnTiwGRE3SmXCIUNAnvbaWHLygYD3FXt0MG/5GJ5/Abox5+J9tL16SFL8kn6Uwk1qpyaKLp6e4Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215902; c=relaxed/simple;
-	bh=cOWwH2KSJauK+zlP3M5lW7xbbvhgkF7YNsFD+BlO9FM=;
+	s=arc-20240116; t=1756212923; c=relaxed/simple;
+	bh=ux/gCWa1dt4gruud99HseJaVtyeF99IJrIkJft61kyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yl0s4ZgtwETIyhLdQeQgzOW9F7BuJ7BvdU8QHStj3A69dAVk8FxtdXXMY4q254xNAR0GcEAZ2mtfq8q0jCS+UCeh+FQm1qwsRhByfzf3M1FFdk7+FoRKF4lpkQ93dCgID+TNIZWGqpT3NeRyTdyVWn8VPgPvls8AeXc9kMVrdKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9bwJdnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B5CC116B1;
-	Tue, 26 Aug 2025 13:45:01 +0000 (UTC)
+	 MIME-Version; b=LNoeRLEiqJbbdmHcxbHWmpWLq4M83rCBhq0nWgyLvr+IF6H9dyWmOd87HhA1vegwpq5vclQqhRIrIQB+kHJZOUApxpsJBF0aeY94151w/pPjijoVgXrzgPtID3mEsu3ghWeAluZ94OCNJdQQ8CFN6kZCdY8F+YtriVCWYeX2Qdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsWPAku8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D796C4CEF1;
+	Tue, 26 Aug 2025 12:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215902;
-	bh=cOWwH2KSJauK+zlP3M5lW7xbbvhgkF7YNsFD+BlO9FM=;
+	s=korg; t=1756212922;
+	bh=ux/gCWa1dt4gruud99HseJaVtyeF99IJrIkJft61kyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9bwJdntf9MOFamnPCctVoXhnjHj+WUV1D1dwRFLtNEtMR0kbiwg3RZuuREYiGA6R
-	 YWAZsIZjwMO3/ph5mR2Oox0eZASprY8jO+h8LPgtNW85/fyoFnru8Y+6O3e8HJZUau
-	 fV9VXRi6L0gVF4vMEMoGmCxHOU5hv6HMtJGothQU=
+	b=jsWPAku8MjaAIOaRlPAFwKH/Xe/YasPzQndxKaGhQ+xbstbploQNK56pCEojB6Jhx
+	 K6+QQ/eUCJ2/wbrLtwrZ5E0ER9/goOnoV49DCEgJfxA1R14UyYf2UbENNmgh0jdC0A
+	 rW0t8y+oB6EvUSWKMclQpUpHAGH2mgPusrBY9NTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/644] rtc: pcf8563: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.6 152/587] arm64: Mark kernel as tainted on SAE and SError panic
 Date: Tue, 26 Aug 2025 13:05:01 +0200
-Message-ID: <20250826110951.644181405@linuxfoundation.org>
+Message-ID: <20250826110956.815824180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
+[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
 
-When pcf8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+interrupts trigger a panic to flag potential hardware faults. This
+tainting mechanism aids in debugging and enables correlation of
+hardware-related crashes in large-scale deployments.
 
-Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This change aligns with similar patches[1] that mark machine check
+events when the system crashes due to hardware errors.
+
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/traps.c | 1 +
+ arch/arm64/mm/fault.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
-index c8bddfb94129..7d47d1f4802a 100644
---- a/drivers/rtc/rtc-pcf8563.c
-+++ b/drivers/rtc/rtc-pcf8563.c
-@@ -399,7 +399,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 8b70759cdbb9..610f8a1099f5 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -953,6 +953,7 @@ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigne
  
--	return 0;
-+	return clkout_rates[0];
- }
+ void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
+ {
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	console_verbose();
  
- static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 2e5d1e238af9..893b9485b840 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -753,6 +753,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
+ 	}
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
 -- 
 2.39.5
 
