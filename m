@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3E2B360B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2FEB36BF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F7E3BEADD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F72980700
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA255221290;
-	Tue, 26 Aug 2025 12:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F9239E8B;
+	Tue, 26 Aug 2025 14:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uYgRTPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diWrOevk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7781D21CC79;
-	Tue, 26 Aug 2025 12:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD025345752;
+	Tue, 26 Aug 2025 14:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213155; cv=none; b=smJu6mm4dBV5syscPGibI7XAVO+nlqcigXcSSB0L7GETZeKwK9WR3z7QPvMBkDqyfrbAlnKuzEerkRSrn/Fomq+XiDo9VTNOckYz6hpyusfE0ibJpijRRiJ7PI8mncSSALNb37CgrRIvFgWKSF1PfvCMIBNviwLT/zcl+9RrtEA=
+	t=1756218604; cv=none; b=Bt+AYSYJuiWRMxatWn0yN/cxWFcuYAO5pH8nbJeWYV9wGoAkSEvNrDl1TDa8CBeer0k7M+LaiUsHgvqQiTzoqgXd6m0oznhUhIC1MYrnXPQXEKD9kffqxq6DRoCFC7Of91kWWdyxkLUzhSSSvwK1mOnhr0jdU1pm35kUcaahMIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213155; c=relaxed/simple;
-	bh=xXlpf7/lw23afISbGa8YR9tRlQvq4Jzmjf46bgdNP94=;
+	s=arc-20240116; t=1756218604; c=relaxed/simple;
+	bh=IDUC2mDUnIZkcxyUlO/VGZEXCBQsdpRKYVfBojPxbyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSM1OSZ1k2a4u4rGrlBgk5JIxqB2HFHdHTtw7jzJtkWh7Dm4oofOAQ5qxcO/7aBqQfBx6VsPkX/CqJOS/FGRUtdu7WMQRCkXfjN5PA/v5+Od3Y2PP5oCBqQ0fsdGxXDVAx/WXoRI516ubcJXnivF5qVVrh1BkLl/LhI9Aw9boAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uYgRTPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050C0C4CEF4;
-	Tue, 26 Aug 2025 12:59:14 +0000 (UTC)
+	 MIME-Version; b=LDuLaiOO4jKLRi+rRsAkFqvaZ9EJK0NFMbiZEU4uOlCL5DUaWHda912m8NIsEAuwM4g7JaZV7JtY+6gBHD0ZLh3S+LKn0JImZi/fJiUKn6FX3I1VtQ/2ROjL5T9ePXxOg6NgAYt++JQ6rNK5YK1gVXtSIMXTZzE3l+br9GtX8zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diWrOevk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8DEC4CEF1;
+	Tue, 26 Aug 2025 14:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213155;
-	bh=xXlpf7/lw23afISbGa8YR9tRlQvq4Jzmjf46bgdNP94=;
+	s=korg; t=1756218604;
+	bh=IDUC2mDUnIZkcxyUlO/VGZEXCBQsdpRKYVfBojPxbyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uYgRTPxnluYA72ecFBBrJW5aXYNUOL+PES7zyxfj0p8l59yQHGg5YjfNs4t0zLsO
-	 UoVAGFKTI0Am+ZtXv7fHw8v89ltoVnj37DUI+gnuo+laSR+7t9Wh99US9eleuRHtIp
-	 KQd8P+fsTEHYMPIx8oDBEuXUei5yjiq+NdmTVPYI=
+	b=diWrOevkFd3O3ihyHzudQQjO7O6hT8z3CoXB22sI9o0Um2TwTqPS0l2opkb6DFMHn
+	 lQOZEajgUxrf5mbsVo/pUUcDBC+L5RifNRD/cWXREbyyrurD/lSYVADc6Reqvzjzyd
+	 eRimN35/TfyA0ylrTMQj/no1bFGjQ9clGRRl8nME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Daniel Dadap <ddadap@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/587] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
+Subject: [PATCH 5.4 064/403] ALSA: hda: Add missing NVIDIA HDA codec IDs
 Date: Tue, 26 Aug 2025 13:06:30 +0200
-Message-ID: <20250826110959.063687468@linuxfoundation.org>
+Message-ID: <20250826110907.844817547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Daniel Dadap <ddadap@nvidia.com>
 
-[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
+commit e0a911ac86857a73182edde9e50d9b4b949b7f01 upstream.
 
-When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
-two line warning is printed each time the pipeline is started. Reduce
-this excessive logging by only warning once for the missing control.
+Add codec IDs for several NVIDIA products with HDA controllers to the
+snd_hda_id_hdmi[] patch table.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Daniel Dadap <ddadap@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/aF24rqwMKFWoHu12@ddadap-lakeline.nvidia.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ change patch_tegra234_hdmi function calls to patch_tegra_hdmi ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_hdmi.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-index 3a4b15a98e02..b37507e09339 100644
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -487,10 +487,10 @@ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
- 
- 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
- 
--		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
--			__func__);
--		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
--			__func__);
-+		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
-+			     __func__);
-+		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
-+			     __func__);
- 	}
- 
- 	return freq > 0 ? freq : -EINVAL;
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4161,6 +4161,8 @@ HDA_CODEC_ENTRY(0x10de002d, "Tegra186 HD
+ HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HDMI/DP1", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
++HDA_CODEC_ENTRY(0x10de0033, "SoC 33 HDMI/DP",	patch_tegra_hdmi),
++HDA_CODEC_ENTRY(0x10de0035, "SoC 35 HDMI/DP",	patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
+@@ -4199,15 +4201,32 @@ HDA_CODEC_ENTRY(0x10de0097, "GPU 97 HDMI
+ HDA_CODEC_ENTRY(0x10de0098, "GPU 98 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0099, "GPU 99 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009a, "GPU 9a HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de009b, "GPU 9b HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de009c, "GPU 9c HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a1, "GPU a1 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a8, "GPU a8 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a9, "GPU a9 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00aa, "GPU aa HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ab, "GPU ab HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ad, "GPU ad HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ae, "GPU ae HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00af, "GPU af HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00b0, "GPU b0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00b1, "GPU b1 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c0, "GPU c0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c1, "GPU c1 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c3, "GPU c3 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c4, "GPU c4 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c5, "GPU c5 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x11069f80, "VX900 HDMI/DP",	patch_via_hdmi),
 
 
 
