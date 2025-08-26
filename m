@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC66B368E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B2FB36031
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A00F9815EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E20F1BA6BA6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79EC35209A;
-	Tue, 26 Aug 2025 14:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1811F09A8;
+	Tue, 26 Aug 2025 12:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7cYmAXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGYfMatp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946351DE8BE;
-	Tue, 26 Aug 2025 14:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F801EB5D6;
+	Tue, 26 Aug 2025 12:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217263; cv=none; b=YEsEPh0dpfXi2yxyFqXqb80PEB71gWCeu70/u6tkURRdg/OH3ePqysgbV3BG7EfqaRoDbJj7uyoDyullgMbykzMslYMiV8dM2TspW336it4xVOrhJ8wpRH2kN1assi8eqPKd4km7IaHLsEIlC5qtS76Q7D4x6P48mxsvb1XrWGY=
+	t=1756212886; cv=none; b=PjHpTtO/e8m/LPQBEQeOnssFUrHvPy0r0MS7ytfEH029tTXtBMCEnzz4OTWsAiOpZ/yhT84c/Q38+ErM3/d6mWBDgG2oqpEi00qW+vLF1ZZA+XeD0qIUy8Cs5is+kYaj/Y2nIyd4xQFWWxEHv5o2hMwwHpx6+O/ict8/bXEVTHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217263; c=relaxed/simple;
-	bh=sUSbm7EiiEPhqp5NxMXnUXhZOI69IEGzEwhoT9vnLH4=;
+	s=arc-20240116; t=1756212886; c=relaxed/simple;
+	bh=x0pm+AlQQoFfLzmdcmUOKFoauDlgyELzSODPp6EVCQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otVuHR+O5jNzXLeMS/JJCNWA6JDup8uVOv4U2zb1J/If5Pkef/3da1lXaobKEZ2q31HP9pouph9F3SI3XtpA082D7/OfYfo3QH7YqZkydqB3ZpcV8cU4ISnG4P5mms0tDmVNvJfrgtvGtHRbrWsNrER8FIRO3sCZuJsM9LJDTUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7cYmAXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242E8C4CEF1;
-	Tue, 26 Aug 2025 14:07:42 +0000 (UTC)
+	 MIME-Version; b=ZpkNv3XmbulXkDGYtTYtaHRMInTKU2wQ4cYikzxT42MnqkQzHiljiLziXRp3bYeL2r5MhR7nCWFcDhiBa3a01AamgaAZWVexpmtTiIrqtyPb0MQwh4BuU4h3yNa1D8KfrzgnTEnThSOfq2iPA5y8odZwMaf5f43yjTPrNiQFlXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGYfMatp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D832C4CEF1;
+	Tue, 26 Aug 2025 12:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217263;
-	bh=sUSbm7EiiEPhqp5NxMXnUXhZOI69IEGzEwhoT9vnLH4=;
+	s=korg; t=1756212885;
+	bh=x0pm+AlQQoFfLzmdcmUOKFoauDlgyELzSODPp6EVCQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7cYmAXycekDkETMhB1Qz1KMYsEKW8Jr/SZSGGZLUnsBLOiY7xgPLF1mjJLEQDsor
-	 BZqQD8zs56l1aEQ1g63y8gC3duzBDWvT9gMO6fuRMB9BTjQiHJJjcLDWSCpHLd/Lc8
-	 CsYYS9Opjd0ORdY38sJ5AexR1gLN6EW3PhHlrzLo=
+	b=CGYfMatpoH2XQorqZikfE0PP3fqOAVtTel6cLdUibgzzu2nncHKPG1DWxHkITotwv
+	 yYDh7mw4FuXFtwIJHnOa8CMMIjmktbsgQsUHLAnv5mWwoR9FXbt0xOw3pvfZn8PdLY
+	 YWPvoRMMsSr/Nz/Ysfz9+oLZ7bGfg0YefkR+PyTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/523] hfsplus: remove mutex_lock check in hfsplus_free_extents
-Date: Tue, 26 Aug 2025 13:04:48 +0200
-Message-ID: <20250826110926.491082695@linuxfoundation.org>
+Subject: [PATCH 6.6 140/587] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Date: Tue, 26 Aug 2025 13:04:49 +0200
+Message-ID: <20250826110956.513824881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
+[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
 
-Syzbot reported an issue in hfsplus filesystem:
+Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
+since:
+0         :  means cookie has not been assigned yet
+0xffffffff:  means cookie assignment failure
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
-	hfsplus_free_extents+0x700/0xad0
-Call Trace:
-<TASK>
-hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
-hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
-cont_expand_zero fs/buffer.c:2383 [inline]
-cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
-hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
-generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
-hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
-notify_change+0xe38/0x10f0 fs/attr.c:420
-do_truncate+0x1fb/0x2e0 fs/open.c:65
-do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Also fix generating cookie failure with usage shown below:
+hci_sock_gen_cookie(sk)   // generate cookie
+hci_sock_free_cookie(sk)  // free cookie
+hci_sock_gen_cookie(sk)   // Can't generate cookie any more
 
-To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
-on file truncation") unlock extree before hfsplus_free_extents(),
-and add check wheather extree is locked in hfsplus_free_extents().
-
-However, when operations such as hfsplus_file_release,
-hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
-concurrently in different files, it is very likely to trigger the
-WARN_ON, which will lead syzbot and xfstest to consider it as an
-abnormality.
-
-The comment above this warning also describes one of the easy
-triggering situations, which can easily trigger and cause
-xfstest&syzbot to report errors.
-
-[task A]			[task B]
-->hfsplus_file_release
-  ->hfsplus_file_truncate
-    ->hfs_find_init
-      ->mutex_lock
-    ->mutex_unlock
-				->hfsplus_write_begin
-				  ->hfsplus_get_block
-				    ->hfsplus_file_extend
-				      ->hfsplus_ext_read_extent
-				        ->hfs_find_init
-					  ->mutex_lock
-    ->hfsplus_free_extents
-      WARN_ON(mutex_is_locked) !!!
-
-Several threads could try to lock the shared extents tree.
-And warning can be triggered in one thread when another thread
-has locked the tree. This is the wrong behavior of the code and
-we need to remove the warning.
-
-Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
-Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/extents.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/bluetooth/hci_sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-index c95a2f0ed4a7..fad1c250f150 100644
---- a/fs/hfsplus/extents.c
-+++ b/fs/hfsplus/extents.c
-@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
- 	int i;
- 	int err = 0;
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 69c2ba1e843e..d2613bd3e6db 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
+ 	int id = hci_pi(sk)->cookie;
  
--	/* Mapping the allocation file may lock the extent tree */
--	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
--
- 	hfsplus_dump_extent(extent);
- 	for (i = 0; i < 8; extent++, i++) {
- 		count = be32_to_cpu(extent->block_count);
+ 	if (id) {
+-		hci_pi(sk)->cookie = 0xffffffff;
++		hci_pi(sk)->cookie = 0;
+ 		ida_free(&sock_cookie_ida, id);
+ 	}
+ }
 -- 
 2.39.5
 
