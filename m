@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B1CB360EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB564B363A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B07D02A1B9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE435561B3B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF82188000;
-	Tue, 26 Aug 2025 13:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDCE23817D;
+	Tue, 26 Aug 2025 13:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeaSI9Ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/VIdlZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF858462;
-	Tue, 26 Aug 2025 13:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581631B4F1F;
+	Tue, 26 Aug 2025 13:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213314; cv=none; b=ZWfOIwCVU5vSMKezNHvfelKQs246mCswTvy9hsgs/VP5gf/SkDaVyEdHKGg9m7WqAxmX/XcZqkoOSr/KG2lER0q96r5sakgTtYlzNi+79tF7qO71n1GmJ6Cw6j2itvg6rvlW/c9NA/RtvCEiuSxPbZ9DiG+9gj8dNbAdQLIeWw8=
+	t=1756214596; cv=none; b=ZWgxO6ZejupTqbDPgDSuLHCiBs1oaPohXYuHnbB37GFOM3Pk3YM4uLutz909AtzE9+5GQaCuXmYK6ltCWDADvWbjDebCHj9z6Y6rdFeJrB1BHcW3bWdO6XffUJ57OeWAVALLORYX0vUzfWFIML4QCZ04Q6lLnonVpLIIjL0Him8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213314; c=relaxed/simple;
-	bh=FLiRaPlRMMME2TVvN9RH+5RT51qyevcvCcjuqf3ZbLk=;
+	s=arc-20240116; t=1756214596; c=relaxed/simple;
+	bh=Ub1q7fXheVNBp5quYqKKd6vCu8L80mDOlkH15sRclKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9F6liq8XOIedq2FtBQqH0mNf8zb4RCsT6CFdO8BnOywZjafZHBjE7MXoDYh7dNtsRuTvjr8J+2nrDhfoSze6TxAdBiTZDprjkVT8zRswwhffi8s1GAcASbXzPxw4r18nHSA1y9j9TMPV/7peXWtVdD1zWBQk8aHcZj/lnY5sq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeaSI9Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50977C4CEF1;
-	Tue, 26 Aug 2025 13:01:54 +0000 (UTC)
+	 MIME-Version; b=kjMKStOvz9sccVt2jCrDhL0TvIkMzniTn1EzJNbiWqzO6ccrJ01ePadCRLOJE43yGlS9TzkSYqVV3ISNOs+cTrySnn+JKr2S3vVN+2VLv8KI+hw9FPugyeoPxgFRkVrMIbxl4k/paJ30Zt/0+8uHHirf0880bxD5ryXNhwNpq0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/VIdlZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D968AC19421;
+	Tue, 26 Aug 2025 13:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213314;
-	bh=FLiRaPlRMMME2TVvN9RH+5RT51qyevcvCcjuqf3ZbLk=;
+	s=korg; t=1756214596;
+	bh=Ub1q7fXheVNBp5quYqKKd6vCu8L80mDOlkH15sRclKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eeaSI9AiSK1Ul+jFsG9iw/rpASKhUWjWwvGzQ5VS0dxquGeqaxDhdqjVDkz/SSlcR
-	 cr0yp1dCBx6x8dkCfcz/xIlvdwr0b00d6265WsFvrXmcxIUzeGtpiDcCkRDiQRH0+3
-	 8mEzSOZgbVhdIcPr9lL6Kdjh6FeI5wVnbJEmN6YE=
+	b=H/VIdlZ0iitZI0S60mHeMfpkVcwmgasf5HeeuNsZGVsVfXCoTNKS97on6oPo/m/80
+	 JftEUifJHCi0aNquF0/J0b+oON8yqmbfHGyEGlH5WIQLD84FXCouwTHPvEgKUUqu9f
+	 kvfOT+nlfh5mIYpskUfW+Y+hkhMd0yZZj9j+8+aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 302/587] ext4: fix largest free orders lists corruption on mb_optimize_scan switch
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 198/482] scsi: mpi3mr: Correctly handle ATA device errors
 Date: Tue, 26 Aug 2025 13:07:31 +0200
-Message-ID: <20250826111000.606830623@linuxfoundation.org>
+Message-ID: <20250826110935.687702335@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 7d345aa1fac4c2ec9584fbd6f389f2c2368671d5 upstream.
+[ Upstream commit 04caad5a7ba86e830d04750417a15bad8ac2613c ]
 
-The grp->bb_largest_free_order is updated regardless of whether
-mb_optimize_scan is enabled. This can lead to inconsistencies between
-grp->bb_largest_free_order and the actual s_mb_largest_free_orders list
-index when mb_optimize_scan is repeatedly enabled and disabled via remount.
+With the ATA error model, an NCQ command failure always triggers an abort
+(termination) of all NCQ commands queued on the device. In such case, the
+SAT or the host must handle the failed command according to the command
+sense data and immediately retry all other NCQ commands that were aborted
+due to the failed NCQ command.
 
-For example, if mb_optimize_scan is initially enabled, largest free
-order is 3, and the group is in s_mb_largest_free_orders[3]. Then,
-mb_optimize_scan is disabled via remount, block allocations occur,
-updating largest free order to 2. Finally, mb_optimize_scan is re-enabled
-via remount, more block allocations update largest free order to 1.
+For SAS HBAs controlled by the mpi3mr driver, NCQ command aborts are not
+handled by the HBA SAT and sent back to the host, with an ioc log
+information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
+PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
+mpi3mr_process_op_reply_desc() always forces a retry of commands
+terminated with the status MPI3_IOCSTATUS_SCSI_IOC_TERMINATED using the
+SCSI result DID_SOFT_ERROR, regardless of the ioc_loginfo for the
+command. This correctly forces the retry of collateral NCQ abort
+commands, but with the retry counter for the command being incremented.
+If a command to an ATA device is subject to too many retries due to other
+NCQ commands failing (e.g. read commands trying to access unreadable
+sectors), the collateral NCQ abort commands may be terminated with an
+error as they run out of retries. This violates the SAT specification and
+causes hard-to-debug command errors.
 
-At this point, the group would be removed from s_mb_largest_free_orders[3]
-under the protection of s_mb_largest_free_orders_locks[2]. This lock
-mismatch can lead to list corruption.
+Solve this issue by modifying the handling of the
+MPI3_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
+ATA device and if the command ioc_loginfo indicates an NCQ collateral
+abort. If that is the case, force the command retry using the SCSI result
+DID_IMM_RETRY to avoid incrementing the command retry count.
 
-To fix this, whenever grp->bb_largest_free_order changes, we now always
-attempt to remove the group from its old order list. However, we only
-insert the group into the new order list if `mb_optimize_scan` is enabled.
-This approach helps prevent lock inconsistencies and ensures the data in
-the order lists remains reliable.
-
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250714130327.1830534-12-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250606052747.742998-2-dlemoal@kernel.org
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   33 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1150,33 +1150,28 @@ static void
- mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	int i;
-+	int new, old = grp->bb_largest_free_order;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 7bd24f71cc38..9dc14ed6567d 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -42,6 +42,13 @@ static void mpi3mr_send_event_ack(struct mpi3mr_ioc *mrioc, u8 event,
  
--	for (i = MB_NUM_ORDERS(sb) - 1; i >= 0; i--)
--		if (grp->bb_counters[i] > 0)
-+	for (new = MB_NUM_ORDERS(sb) - 1; new >= 0; new--)
-+		if (grp->bb_counters[new] > 0)
- 			break;
+ #define MPI3_EVENT_WAIT_FOR_DEVICES_TO_REFRESH	(0xFFFE)
+ 
++/*
++ * SAS Log info code for a NCQ collateral abort after an NCQ error:
++ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
++ * See: drivers/message/fusion/lsi/mpi_log_sas.h
++ */
++#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
 +
- 	/* No need to move between order lists? */
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) ||
--	    i == grp->bb_largest_free_order) {
--		grp->bb_largest_free_order = i;
-+	if (new == old)
- 		return;
--	}
- 
--	if (grp->bb_largest_free_order >= 0) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+	if (old >= 0 && !list_empty(&grp->bb_largest_free_order_node)) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
- 		list_del_init(&grp->bb_largest_free_order_node);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
- 	}
--	grp->bb_largest_free_order = i;
--	if (grp->bb_largest_free_order >= 0 && grp->bb_free) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+
-+	grp->bb_largest_free_order = new;
-+	if (test_opt2(sb, MB_OPTIMIZE_SCAN) && new >= 0 && grp->bb_free) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[new]);
- 		list_add_tail(&grp->bb_largest_free_order_node,
--		      &sbi->s_mb_largest_free_orders[grp->bb_largest_free_order]);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+			      &sbi->s_mb_largest_free_orders[new]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[new]);
- 	}
- }
- 
+ /**
+  * mpi3mr_host_tag_for_scmd - Get host tag for a scmd
+  * @mrioc: Adapter instance reference
+@@ -3211,7 +3218,18 @@ void mpi3mr_process_op_reply_desc(struct mpi3mr_ioc *mrioc,
+ 		scmd->result = DID_NO_CONNECT << 16;
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_IOC_TERMINATED:
+-		scmd->result = DID_SOFT_ERROR << 16;
++		if (ioc_loginfo == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++			/*
++			 * This is a ATA NCQ command aborted due to another NCQ
++			 * command failure. We must retry this command
++			 * immediately but without incrementing its retry
++			 * counter.
++			 */
++			WARN_ON_ONCE(xfer_count != 0);
++			scmd->result = DID_IMM_RETRY << 16;
++		} else {
++			scmd->result = DID_SOFT_ERROR << 16;
++		}
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_TASK_TERMINATED:
+ 	case MPI3_IOCSTATUS_SCSI_EXT_TERMINATED:
+-- 
+2.39.5
+
 
 
 
