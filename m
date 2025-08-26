@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3410FB362DA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EA5B368EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBCFC7B677F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555BD982115
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE76335BAA;
-	Tue, 26 Aug 2025 13:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA8D3568E0;
+	Tue, 26 Aug 2025 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB/IpiAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyeBox6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4B2BE643;
-	Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A65E352077;
+	Tue, 26 Aug 2025 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214453; cv=none; b=e7pygR8r7ZRedldNaPDQQfLajfhMoAYRbPwBIUu//wJXiR1IPSZbC7xRZ10itWfPu7tfOfeZwfVivqO+ESeBebw2hfeqMmhUBqXcbQ5oZJPKdlosJai+I5aZXZ20D7dFACycgBF+rLPfLLBBuUUE41qrXIYRGjg6K8wsnnIfe+I=
+	t=1756217482; cv=none; b=l1O95aU+W/oRSqAYgbXykOEFsGhA1CMSaMQjcsRKbT1S/CUa14nC2nBbLgGd9LkOLQ5yJVNLNbmtSMj67GRXZDDQeV7nkIAqVdtkca02X+/xPU/aJxoNPmhzYfciqRvwNoIbcHX+HPPlzb06MhhH7oRvcqj0KxnAdnynBvVXbIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214453; c=relaxed/simple;
-	bh=lWLj21lEnzFfo7t6GBlour637Hm7HCSmjpPvhj9TX5k=;
+	s=arc-20240116; t=1756217482; c=relaxed/simple;
+	bh=waeLpDnsrOUua/HIHeyr4nXFqgzAu2xZdM9LUGJoweI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKqtYJMjXquSg6nKW/6iOPh21h7sP4PFGmFI+D72RhPIKBu4WmWLJfG7FGugX0AjLtbmepK6rSryBh8qx0OBmMPo3WPs1LI6RiiO8XP0Tu+JPOq6oTMv/2/wn3uaYVdd1HfgX3fub4PzYYu2qykU+UzLS93gG7tOEyxUpbs/DMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB/IpiAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599FEC4CEF1;
-	Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
+	 MIME-Version; b=u4VEfaRiHnOngiiSzdbAEr8NDfPatXBJP/C9OYYkL8cjnaBQVGx+aV6fVHNHESy3BfMTtVq3Onw7rq6ZRycgpbgBxbWSZIJjnCfxz1gDP4Dlc1UpEuDp/l+Jh6i5g5RTssFSMAdICAYxaijMC7HWscpqFhzJC4CD9Rycr2igV68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyeBox6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90942C4CEF1;
+	Tue, 26 Aug 2025 14:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214453;
-	bh=lWLj21lEnzFfo7t6GBlour637Hm7HCSmjpPvhj9TX5k=;
+	s=korg; t=1756217481;
+	bh=waeLpDnsrOUua/HIHeyr4nXFqgzAu2xZdM9LUGJoweI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB/IpiACpyF3z9N4IJhrWRnkjedcMlDqSqxITB7/7bz9MiqYeYGWSvRuD9wtxH+Lq
-	 24jL+eCr7oxu8ExKKFq7XykgK/OJIHeAoSAFkv6f/BpRp+On5ombEPim9oTHhcT5a1
-	 LGvnKmGH0bET0DCP4H5iaANVMVWG3cVfJJUp3Igw=
+	b=HyeBox6HtxzDwwtYtwNHP810r0wOQtYG+JerTHOMGPHJ6V11Gm7JYew2GIgtZZM9S
+	 OLVlwo7BdHR0IRqES4zwhsc4st3WTraYihzhL/sA4tpbbcG0TA6Hq7EYRJDNrOBeqc
+	 H88EAUBYR/WbXcLgtWEEjDGrt/WQLledtPn2UoT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Seunghui Lee <sh043.lee@samsung.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/482] wifi: cfg80211: reject HTC bit for management frames
+Subject: [PATCH 5.10 159/523] scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume
 Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110933.690669628@linuxfoundation.org>
+Message-ID: <20250826110928.395891370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Seunghui Lee <sh043.lee@samsung.com>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit 35dabf4503b94a697bababe94678a8bc989c3223 ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+If the h8 exit fails during runtime resume process, the runtime thread
+enters runtime suspend immediately and the error handler operates at the
+same time.  It becomes stuck and cannot be recovered through the error
+handler.  To fix this, use link recovery instead of the error handler.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 4db7a2360597 ("scsi: ufs: Fix concurrency of error handler and other error recovery paths")
+Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+Link: https://lore.kernel.org/r/20250717081213.6811-1-sh043.lee@samsung.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Acked-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/ufs/ufshcd.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index e7fa0608341d..e0246ed9f66f 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -700,7 +700,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index a4c70fbc809f..a212e6ad11d5 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -3872,7 +3872,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	hba->uic_async_done = NULL;
+ 	if (reenable_intr)
+ 		ufshcd_enable_intr(hba, UIC_COMMAND_COMPL);
+-	if (ret) {
++	if (ret && !hba->pm_op_in_progress) {
+ 		ufshcd_set_link_broken(hba);
+ 		ufshcd_schedule_eh_work(hba);
+ 	}
+@@ -3880,6 +3880,14 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+ 	mutex_unlock(&hba->uic_cmd_mutex);
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
++	/*
++	 * If the h8 exit fails during the runtime resume process, it becomes
++	 * stuck and cannot be recovered through the error handler.  To fix
++	 * this, use link recovery instead of the error handler.
++	 */
++	if (ret && hba->pm_op_in_progress)
++		ret = ufshcd_link_recovery(hba);
++
+ 	return ret;
+ }
  
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
 -- 
 2.39.5
 
