@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A004B36B27
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A860FB35C71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15C2A7B7B10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DD677B878E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873DF3570C5;
-	Tue, 26 Aug 2025 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65E53451AA;
+	Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKAvZsl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwrHnlsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F49F2367D9;
-	Tue, 26 Aug 2025 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6407D3469EE;
+	Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219175; cv=none; b=E/tJTUnRVKln2EcdeNvF3gKohsBBmI+EPqBqW+5oR9yeaxllXyBHedXrUuSeXUXcKoHsQzO0XyF70ojNoGkspMdGM1yGdBrWWyTrXGRZEt2//FnP09dtS+yhiJxCmIYv3HFxxBjILLoHvE2IvoXGAN+CH8gcaXw4McWMD7rCzXk=
+	t=1756207880; cv=none; b=XYPqOL49hHujKEWcaw5EswT9ItIJH2leSP9GaAvRXKy+cBbtWDfUmcxHjCapKmYS6vIdK7torYZfDGdFWs9s7u2rynAFp95gT1veuILTophLPtHnIBoXtD1CG/WejQhDzPpX3KIA8xGAhaTBdiqNCK+AJCG2DFJlgN4DtUmg3Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219175; c=relaxed/simple;
-	bh=c6qfqw6q6ATNj7aUMW1VNF3kQm6gOgu6bKwbY6QqxsI=;
+	s=arc-20240116; t=1756207880; c=relaxed/simple;
+	bh=FktMn8yBIRbOzavJpqvZgdkB0C52lW2XgNVjkHSYk5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0oZglL3LU7ePwIEjhIPchL26U8eFP81u0dtCKaSAhQmSohj94K68Q1unURJ5hdopPlX91bhdPDLGvV5n8bID72ezZOldpPr/3pLUFfSvDX8UAg638c82m2D3utK/9l9+Tx9HrOYpVkx2tH/IWTlYdx409qg+GGJGhWyUd/NqjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKAvZsl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C696EC113CF;
-	Tue, 26 Aug 2025 14:39:34 +0000 (UTC)
+	 MIME-Version; b=t7YDZB/h7xiRsdkiK7QKG7mixoxltUZWojDYZDdfqLRFs0VI64QlDfPlBsqM/dhIKOD6UKUZeTvG/dZ6XLeMjVr7VJNaGJsVBPuGmuxyzk8CmbDckvgTQTto0RFHHfTSW+JLDFsXVDEhE6MAPukXzWwCSFc8Y68zXpJ7cDQM5kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwrHnlsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9137C4CEF1;
+	Tue, 26 Aug 2025 11:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219175;
-	bh=c6qfqw6q6ATNj7aUMW1VNF3kQm6gOgu6bKwbY6QqxsI=;
+	s=korg; t=1756207880;
+	bh=FktMn8yBIRbOzavJpqvZgdkB0C52lW2XgNVjkHSYk5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKAvZsl7qMECKFZDReh9BEscckI83k8smCLgj2E4i61c70Ei7rZjjkmEpQDKfDrJ0
-	 a7WEeN1uSy+6hRoDc5JViPsWQBeNmoSiozAvwhRESMljRsNR2LBetUFLmURqM3ICHv
-	 cXuBdspBNahvhGvjd7fkNcnk/lUahLu5RwbOGt1k=
+	b=rwrHnlsRzSk0wdGN9sJsRfwt6DuMNTE6ysXSV2wVEnC3876SFJqppjvt0gbM6vUrh
+	 S7j7IrWveLjmLOMRWzCduPABLpA8tP2/pNDETJ5+S6QqQN9MsRXhNAAd62u8a5rziG
+	 DwOgH8MYQ3IeNdl7SZ7LhDAMIRY7ezQq2B7dZknQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 280/403] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.16 322/457] usb: xhci: fix host not responding after suspend and resume
 Date: Tue, 26 Aug 2025 13:10:06 +0200
-Message-ID: <20250826110914.541597757@linuxfoundation.org>
+Message-ID: <20250826110945.310016167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
+commit ff9a09b3e09c7b794b56f2f5858f5ce42ba46cb3 upstream.
 
-The buffer length check before calling uvc_parse_format() only ensured
-that the buffer has at least 3 bytes (buflen > 2), buf the function
-accesses buffer[3], requiring at least 4 bytes.
+Partially revert commit e1db856bd288 ("usb: xhci: remove '0' write to
+write-1-to-clear register") because the patch cleared the Interrupt Pending
+bit during interrupt enabling and disabling. The Interrupt Pending bit
+should only be cleared when the driver has handled the interrupt.
 
-This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
+Ideally, all interrupts should be handled before disabling the interrupt;
+consequently, no interrupt should be pending when enabling the interrupt.
+For this reason, keep the debug message informing if an interrupt is still
+pending when an interrupt is disabled.
 
-Fix it by checking that the buffer has at least 4 bytes in
-uvc_parse_format().
+Because the Interrupt Pending bit is write-1-to-clear, writing '0' to it
+ensures that the state does not change.
 
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://lore.kernel.org/linux-usb/20250818231103.672ec7ed@foxbook
+Fixes: e1db856bd288 ("usb: xhci: remove '0' write to write-1-to-clear register")
+Closes: https://bbs.archlinux.org/viewtopic.php?id=307641
+cc: stable@vger.kernel.org # 6.16+
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250819125844.2042452-3-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -452,6 +452,9 @@ static int uvc_parse_format(struct uvc_d
- 	unsigned int i, n;
- 	u8 ftype;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 0e03691f03bf..742c23826e17 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -309,6 +309,7 @@ int xhci_enable_interrupter(struct xhci_interrupter *ir)
+ 		return -EINVAL;
  
-+	if (buflen < 4)
-+		return -EINVAL;
-+
- 	format->type = buffer[2];
- 	format->index = buffer[3];
+ 	iman = readl(&ir->ir_set->iman);
++	iman &= ~IMAN_IP;
+ 	iman |= IMAN_IE;
+ 	writel(iman, &ir->ir_set->iman);
  
+@@ -325,6 +326,7 @@ int xhci_disable_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
+ 		return -EINVAL;
+ 
+ 	iman = readl(&ir->ir_set->iman);
++	iman &= ~IMAN_IP;
+ 	iman &= ~IMAN_IE;
+ 	writel(iman, &ir->ir_set->iman);
+ 
+-- 
+2.50.1
+
 
 
 
