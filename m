@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D722B36B8B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAD0B3622F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F25677BB38F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E588A4A2D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4A9356902;
-	Tue, 26 Aug 2025 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF9E25DB0A;
+	Tue, 26 Aug 2025 13:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arQ6t9wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZY7/c53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E99286881;
-	Tue, 26 Aug 2025 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1111AB52D;
+	Tue, 26 Aug 2025 13:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219310; cv=none; b=MEfKIgk2+Rxrv/PWSQkubP8F9lSckqyFry58HOzWlhleXJgqvKCGsKCIyEF8jCYoXxE+1TBr9LSC4cFJ7UPZzZj/d6ptqV1me/Qo5tFf08aHkGsgsHeQvcYp0Dd3ZXCiWeS0lRe7TfkliwBCXeBs+ZGI0ozqF3mc/grGhonkuv0=
+	t=1756213872; cv=none; b=QudIo5HQrcepNiF/WShZURx7riQvt6JwhQwlRC2vNlALdW02/jY8oMjTLVg+n6jJDifzl/L1c7qxOS0C7/Vs91inZF5X3+v3DpJeXZFkRrk0KbVxorabdOOAkV0qrWUeBoscN8AtvKLrR0SmPnSPHXa1XJI0+4tKGwk6kZdqvn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219310; c=relaxed/simple;
-	bh=c4zwZny2r1215Y6En5G45KCz4/yjttqDMD66730egtA=;
+	s=arc-20240116; t=1756213872; c=relaxed/simple;
+	bh=tQp+T0SY0TFimh2iGI2GSuf/oqBUoHYbZsAZVlR9FEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlW355U7NvLW9yRacNZwkkLGAy+0xbAg140MZggLapfIHGkvKfBoIeQk53JPhVMbEBDG4Z0bk4iL14GzqdpAf9ayBNCdBcEMLOxt/VHs5PXJAZVhYOCuPxrnVrQl8gkHiMbp0hmDrQjVr01a6aU9Aj2AyW4PYO4OFgat6C4CRFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arQ6t9wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3B0C113CF;
-	Tue, 26 Aug 2025 14:41:49 +0000 (UTC)
+	 MIME-Version; b=J+mno6vLTpRN7uwCsVaMSJaMk+P5yJO82o+39zKywnQQ2baI4qtkMADV6a2XebgProbsp4wB14Wdx+azrr7uguKMlMP8+bnruN8QmGOgs+WhGVxKFrRLCCkUXtl3i8UWx9bm0pta0ETeSznLd1K0lS+/MzMxnnR6RP/VPEw4q5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZY7/c53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BD4C4CEF1;
+	Tue, 26 Aug 2025 13:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219310;
-	bh=c4zwZny2r1215Y6En5G45KCz4/yjttqDMD66730egtA=;
+	s=korg; t=1756213872;
+	bh=tQp+T0SY0TFimh2iGI2GSuf/oqBUoHYbZsAZVlR9FEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arQ6t9wgtIM1h5j2R+9BNJPSCvGq/T6V4Nbojuh7qBTMbPBFokyBBVM+Q5ty9bZsQ
-	 aWXW482vdQ5dbTsAxZpqI+bNwPyGIJwlW0qZ4jFTGAXSlChiG62oONm7SxzN+zvfmD
-	 B3OAi8uSdaDexjwD6nFb6hj1HI6+/m4CcZGhIsFM=
+	b=tZY7/c531HKlJdjoDkUvh3Wl/v+nEsFl2TFaHjZR/i3zkTT15Yda06l68zqG9jBU5
+	 8N2eLYfDm+nvtfbrN0xc/ERvtkPV1UzYsRzngnSKE5u7UpMw2GLodY1Biyjc859VTt
+	 pO1L4KOjGevycw3a42HV6KdBA7Sa7AyI6HFY3fDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 333/403] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Subject: [PATCH 6.6 510/587] cpuidle: menu: Remove iowait influence
 Date: Tue, 26 Aug 2025 13:10:59 +0200
-Message-ID: <20250826110916.042026797@linuxfoundation.org>
+Message-ID: <20250826111005.965704191@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Christian Loehle <christian.loehle@arm.com>
 
-commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
+[ Upstream commit 38f83090f515b4b5d59382dfada1e7457f19aa47 ]
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
+Remove CPU iowaiters influence on idle state selection.
 
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
+Remove the menu notion of performance multiplier which increased with
+the number of tasks that went to iowait sleep on this CPU and haven't
+woken up yet.
 
-Where the last Connected is then a stable link state.
+Relying on iowait for cpuidle is problematic for a few reasons:
 
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+ 1. There is no guarantee that an iowaiting task will wake up on the
+    same CPU.
 
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
+ 2. The task being in iowait says nothing about the idle duration, we
+    could be selecting shallower states for a long time.
 
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
+ 3. The task being in iowait doesn't always imply a performance hit
+    with increased latency.
 
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
+ 4. If there is such a performance hit, the number of iowaiting tasks
+    doesn't directly correlate.
 
-Get around the problem by delaying the carrier on to the scheduled work.
+ 5. The definition of iowait altogether is vague at best, it is
+    sprinkled across kernel code.
 
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adjust context in header ]
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/20240905092645.2885200-2-christian.loehle@arm.com
+[ rjw: Minor edits in the changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c   |   11 ++++++++---
- include/linux/usb/usbnet.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/cpuidle/governors/menu.c |   52 ++++++---------------------------------
+ 1 file changed, 9 insertions(+), 43 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1106,6 +1106,9 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -1978,10 +1981,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
- {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -21,7 +21,7 @@
  
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -83,6 +83,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- 	u32			rx_speed;	/* in bps - NOT Mbps */
- 	u32			tx_speed;	/* in bps - NOT Mbps */
+ #include "gov.h"
+ 
+-#define BUCKETS 12
++#define BUCKETS 6
+ #define INTERVAL_SHIFT 3
+ #define INTERVALS (1UL << INTERVAL_SHIFT)
+ #define RESOLUTION 1024
+@@ -31,12 +31,11 @@
+ /*
+  * Concepts and ideas behind the menu governor
+  *
+- * For the menu governor, there are 3 decision factors for picking a C
++ * For the menu governor, there are 2 decision factors for picking a C
+  * state:
+  * 1) Energy break even point
+- * 2) Performance impact
+- * 3) Latency tolerance (from pmqos infrastructure)
+- * These three factors are treated independently.
++ * 2) Latency tolerance (from pmqos infrastructure)
++ * These two factors are treated independently.
+  *
+  * Energy break even point
+  * -----------------------
+@@ -119,19 +118,10 @@ struct menu_device {
+ 	int		interval_ptr;
  };
+ 
+-static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
++static inline int which_bucket(u64 duration_ns)
+ {
+ 	int bucket = 0;
+ 
+-	/*
+-	 * We keep two groups of stats; one with no
+-	 * IO pending, one without.
+-	 * This allows us to calculate
+-	 * E(duration)|iowait
+-	 */
+-	if (nr_iowaiters)
+-		bucket = BUCKETS/2;
+-
+ 	if (duration_ns < 10ULL * NSEC_PER_USEC)
+ 		return bucket;
+ 	if (duration_ns < 100ULL * NSEC_PER_USEC)
+@@ -145,19 +135,6 @@ static inline int which_bucket(u64 durat
+ 	return bucket + 5;
+ }
+ 
+-/*
+- * Return a multiplier for the exit latency that is intended
+- * to take performance requirements into account.
+- * The more performance critical we estimate the system
+- * to be, the higher this multiplier, and thus the higher
+- * the barrier to go to an expensive C state.
+- */
+-static inline int performance_multiplier(unsigned int nr_iowaiters)
+-{
+-	/* for IO wait tasks (per cpu!) we add 10x each */
+-	return 1 + 10 * nr_iowaiters;
+-}
+-
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ 
+ static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
+@@ -284,8 +261,6 @@ static int menu_select(struct cpuidle_dr
+ 	struct menu_device *data = this_cpu_ptr(&menu_devices);
+ 	s64 latency_req = cpuidle_governor_latency_req(dev->cpu);
+ 	u64 predicted_ns;
+-	u64 interactivity_req;
+-	unsigned int nr_iowaiters;
+ 	ktime_t delta, delta_tick;
+ 	int i, idx;
+ 
+@@ -302,8 +277,6 @@ static int menu_select(struct cpuidle_dr
+ 		menu_update_intervals(data, UINT_MAX);
+ 	}
+ 
+-	nr_iowaiters = nr_iowait_cpu(dev->cpu);
+-
+ 	/* Find the shortest expected idle interval. */
+ 	predicted_ns = get_typical_interval(data) * NSEC_PER_USEC;
+ 	if (predicted_ns > RESIDENCY_THRESHOLD_NS) {
+@@ -317,7 +290,7 @@ static int menu_select(struct cpuidle_dr
+ 		}
+ 
+ 		data->next_timer_ns = delta;
+-		data->bucket = which_bucket(data->next_timer_ns, nr_iowaiters);
++		data->bucket = which_bucket(data->next_timer_ns);
+ 
+ 		/* Round up the result for half microseconds. */
+ 		timer_us = div_u64((RESOLUTION * DECAY * NSEC_PER_USEC) / 2 +
+@@ -335,7 +308,7 @@ static int menu_select(struct cpuidle_dr
+ 		 */
+ 		data->next_timer_ns = KTIME_MAX;
+ 		delta_tick = TICK_NSEC / 2;
+-		data->bucket = which_bucket(KTIME_MAX, nr_iowaiters);
++		data->bucket = which_bucket(KTIME_MAX);
+ 	}
+ 
+ 	if (unlikely(drv->state_count <= 1 || latency_req == 0) ||
+@@ -362,15 +335,8 @@ static int menu_select(struct cpuidle_dr
+ 		 */
+ 		if (predicted_ns < TICK_NSEC)
+ 			predicted_ns = data->next_timer_ns;
+-	} else {
+-		/*
+-		 * Use the performance multiplier and the user-configurable
+-		 * latency_req to determine the maximum exit latency.
+-		 */
+-		interactivity_req = div64_u64(predicted_ns,
+-					      performance_multiplier(nr_iowaiters));
+-		if (latency_req > interactivity_req)
+-			latency_req = interactivity_req;
++	} else if (latency_req > predicted_ns) {
++		latency_req = predicted_ns;
+ 	}
+ 
+ 	/*
 
 
 
