@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB22B36701
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B903CB36B39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E74118E580C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662335A0F79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04513568E5;
-	Tue, 26 Aug 2025 13:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8335AABF;
+	Tue, 26 Aug 2025 14:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5spZzL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK7j2zJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C539353364;
-	Tue, 26 Aug 2025 13:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B327356906;
+	Tue, 26 Aug 2025 14:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216350; cv=none; b=DQSVUQxPxpFvOTfZh5rAFstL074H3x5FZVIG/Ch3F6cDUEZKuLA/LrsHNoMD80GMRjMuP9mV6kzfedRBHYvVhfXX0qNd1GBMOUVK3y0b1ymgS3AWNe1kZvu0aL7L/OFas2SrQBjb1r1CQlQmht8ZvbvI2JmsQZZO/zrVzO/6ANw=
+	t=1756218812; cv=none; b=KG8TScMpywLxxqBOdUO2hFtWuhNh4JFF0F59xkkbOi/3B4onuBUEdEgj0Zl2G5/DmnxQvNLpr2gl6wMrHWdwWJ/6oE40eDEol15iNFnwlNhA1mECnyer+fGiFIeREf7kCZr/6hBcpsjU4WKy7aSdw7oAat8UGtyhahy+6L6SzPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216350; c=relaxed/simple;
-	bh=G22Msik/hG3vEj3O0E+zCiDWlFGXEAH6aqGnBVhghlg=;
+	s=arc-20240116; t=1756218812; c=relaxed/simple;
+	bh=mzIR4N/pvl8NuhoT8iAm6ZJRrDMrjeXz8bLqHivyba8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iK7oYvz2N+RGgbnGw+N1LMYLPO47WpnjvDRoIPQbH3Dqg5eyuAv3eRXltN/Ly9SF4Lfs65dS12Lla/+hTGjbrKGllXgNL/6V8Xy8Z/XQlDIF1+8SE/+iI22btarTP00UAQrIQGVxK3C+nV+q30KsIv9u9C3zExtcbs4J6f/Y0Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5spZzL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D913C19422;
-	Tue, 26 Aug 2025 13:52:29 +0000 (UTC)
+	 MIME-Version; b=kvcChyaURpb1wChFUCGJgS8DixkxfJ5WiZgoNtfGmD0ieeQTV6BoqZuyB+MzkZ3T5KeXivord+PkHcMQzZq4/lEkX5YLTeVew/5Hfsr06f+1eaQMEqhKLgZfnIRszN/qCHhU1j/+B+qzRwRGBDiNch2bqn78B7N07fD+xfMCl/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK7j2zJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9163C4CEF1;
+	Tue, 26 Aug 2025 14:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216349;
-	bh=G22Msik/hG3vEj3O0E+zCiDWlFGXEAH6aqGnBVhghlg=;
+	s=korg; t=1756218812;
+	bh=mzIR4N/pvl8NuhoT8iAm6ZJRrDMrjeXz8bLqHivyba8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5spZzL1JVnGS35dQW6fAXvQe3A5u2iCPX9JPcuCBJw+vVBkhwbAvE3Qq+iqFyb92
-	 unKzKHB268Pq0YmCfoc3EaeEknCqPibz/H2hu4/FbS8QmppAtRlAD6wq/u3YotU3p6
-	 3ZenWmsUMZq86PIQ0P9LRqZ0r5QtaEvKzDcwMoHo=
+	b=XK7j2zJdVkgmdwv27kI3YL31glwpCnLrqd0FCHSOQGRenX4Qnxj1zwpZCJGN4rqcc
+	 2qqOBBHlsPnQauXZ2kV6bSeZo7hjWleSzor4TZm6HELLULe/m+7Q4A7T0GSXpY2kLj
+	 efI4jWquw3Tp8oZm6lznDh9vyvPzZoYXhmNSdk2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
-	Paul Fertser <fercerpav@gmail.com>,
+	syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 377/644] net: ncsi: Fix buffer overflow in fetching version id
+Subject: [PATCH 5.4 142/403] pptp: ensure minimal skb length in pptp_xmit()
 Date: Tue, 26 Aug 2025 13:07:48 +0200
-Message-ID: <20250826110955.764813834@linuxfoundation.org>
+Message-ID: <20250826110910.683150903@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
+[ Upstream commit de9c4861fb42f0cd72da844c3c34f692d5895b7b ]
 
-In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
-need to be null terminated while its size occupies the full size
-of the field. Fix the buffer overflow issue by adding one
-additional byte for null terminator.
+Commit aabc6596ffb3 ("net: ppp: Add bound checking for skb data
+on ppp_sync_txmung") fixed ppp_sync_txmunge()
 
-Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
-Reviewed-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
+We need a similar fix in pptp_xmit(), otherwise we might
+read uninit data as reported by syzbot.
+
+BUG: KMSAN: uninit-value in pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2290 [inline]
+  ppp_input+0x1d6/0xe60 drivers/net/ppp/ppp_generic.c:2314
+  pppoe_rcv_core+0x1e8/0x760 drivers/net/ppp/pppoe.c:379
+  sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+  __release_sock+0x1d3/0x330 net/core/sock.c:3213
+  release_sock+0x6b/0x270 net/core/sock.c:3767
+  pppoe_sendmsg+0x15d/0xcb0 drivers/net/ppp/pppoe.c:904
+  sock_sendmsg_nosec net/socket.c:712 [inline]
+  __sock_sendmsg+0x330/0x3d0 net/socket.c:727
+  ____sys_sendmsg+0x893/0xd80 net/socket.c:2566
+  ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
+  __sys_sendmmsg+0x2d9/0x7c0 net/socket.c:2709
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68887d86.a00a0220.b12ec.00cd.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20250729080207.1863408-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/internal.h | 2 +-
- net/ncsi/ncsi-rsp.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ppp/pptp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 2c260f33b55c..ad1f671ffc37 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -110,7 +110,7 @@ struct ncsi_channel_version {
- 	u8   update;		/* NCSI version update */
- 	char alpha1;		/* NCSI version alpha1 */
- 	char alpha2;		/* NCSI version alpha2 */
--	u8  fw_name[12];	/* Firmware name string                */
-+	u8  fw_name[12 + 1];	/* Firmware name string                */
- 	u32 fw_version;		/* Firmware version                   */
- 	u16 pci_ids[4];		/* PCI identification                 */
- 	u32 mf_id;		/* Manufacture ID                     */
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 8668888c5a2f..d5ed80731e89 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -775,6 +775,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
- 	ncv->alpha1 = rsp->alpha1;
- 	ncv->alpha2 = rsp->alpha2;
- 	memcpy(ncv->fw_name, rsp->fw_name, 12);
-+	ncv->fw_name[12] = '\0';
- 	ncv->fw_version = ntohl(rsp->fw_version);
- 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
- 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index e1fabb3e3246..5e2f4702aa2b 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -141,9 +141,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-
+-
+-	struct rtable *rt;
++	struct rtable *rt = NULL;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
+@@ -165,16 +163,20 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 
+ 	if (skb_headroom(skb) < max_headroom || skb_cloned(skb) || skb_shared(skb)) {
+ 		struct sk_buff *new_skb = skb_realloc_headroom(skb, max_headroom);
+-		if (!new_skb) {
+-			ip_rt_put(rt);
++
++		if (!new_skb)
+ 			goto tx_error;
+-		}
++
+ 		if (skb->sk)
+ 			skb_set_owner_w(new_skb, skb->sk);
+ 		consume_skb(skb);
+ 		skb = new_skb;
+ 	}
+ 
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3))
++		goto tx_error;
++
+ 	data = skb->data;
+ 	islcp = ((data[0] << 8) + data[1]) == PPP_LCP && 1 <= data[2] && data[2] <= 7;
+ 
+@@ -248,6 +250,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	return 1;
+ 
+ tx_error:
++	ip_rt_put(rt);
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
 2.39.5
 
