@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F41B36378
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8C2B36906
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228D32A28D7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84EA8582FD7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1419234AAE0;
-	Tue, 26 Aug 2025 13:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0421E2C0F9C;
+	Tue, 26 Aug 2025 14:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0TpE5in"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpOoCtjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56F33431FE;
-	Tue, 26 Aug 2025 13:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5163374C4;
+	Tue, 26 Aug 2025 14:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214387; cv=none; b=PKJ/d6jgnZ7Zc+M8O3bqeGv7dFzHNewh8Q7l4ROhkzYT1+elFl+TW3EjWl7xm7Wo0hVJIgDUUz48KDZKPfPFtYa1JbCZZf3Rgj2QTyr19TPJSOhymO+BC/8gcYy6EaJZZXsH7wtwv+RBBRSz8DCbCrpEBhZPXBvFaiSCZe+9mUo=
+	t=1756217406; cv=none; b=MglxaRN1+J488lg2W3i2xgru9CfgcHNs3SP2u62XZ/lMxX7MPTdYHYZ8pmg1scIsVqm3oW169MKB+WIVqiqM86kWY2SFD7PLwE625RzyZD/bcCqUMZgGhSWH+405TXySjT8YIdoSCIWnj8Vvzcd95/QkQjXsH36sC04U+dfiuVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214387; c=relaxed/simple;
-	bh=2D6QSr4o0o3rKeU/M/mvqghnBrnEklTrYCoxEr0vC/I=;
+	s=arc-20240116; t=1756217406; c=relaxed/simple;
+	bh=9JpVAz3Fzqi/fOMqEKTs/a+fU4iz23zau1dE2PPJT50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyBhzZfl168WPOrzQ/C0lwbEfPA5+8dT2V5YodQ1eHNQUJG9qZdkcfFGqVQB5eWD+CAA881Cvj5ZNFuMPir3tco+BwPgl24MvG57d8KPmqDrY4oA+bivkiWmcIInmriz48nXApY/1Lfkqsht/70u9rNTCL9XZNPXo/8FzVkG208=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0TpE5in; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021C6C4CEF1;
-	Tue, 26 Aug 2025 13:19:46 +0000 (UTC)
+	 MIME-Version; b=K9kHFhcIL0UAnVJsD+xvVvoJH2GBWUWeML8sbDUxF37bYB9m3oWy037c/6Wbm1JneSaPhpg15G8QpcLI/AU8WgP5WrVxg2Bqn7x4gRJd7J3Aya16OAtZCYzHfwnxdCa0CkpyDwO/tA6EjA+kns5RbmPGgvq4XwcQmXgWSOVx5Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpOoCtjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2236CC4CEF1;
+	Tue, 26 Aug 2025 14:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214387;
-	bh=2D6QSr4o0o3rKeU/M/mvqghnBrnEklTrYCoxEr0vC/I=;
+	s=korg; t=1756217406;
+	bh=9JpVAz3Fzqi/fOMqEKTs/a+fU4iz23zau1dE2PPJT50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0TpE5inhwhvpKwYJeleEgKddIWw9QVl61biGTJ3V1zeE9amYhBwo2xZ4MKWavZni
-	 Zc18VzPiWCTSGL26LPSWlxGyVkQ/4UQ6qPLILXcK+3KrqhmV9Gy8as1Pl9tlMWoV8+
-	 ccA9m/oEODRWoedC/AzFJuyXvpZfRvKtwVQo8nDQ=
+	b=JpOoCtjPWYG5TAsXVnip9BGTFw0a20+AYv6uhdWCCKdwMR0yEKlFsQkTe0sOq8PHg
+	 u87SXdWEmzho0qbGA1lTMwjwsl9YcA1iX1CK+OI+MsOq04oY+Jz6e4G8NT9hwmuI48
+	 da+X9Jmljr8ZTrnuI+cTeT4q2BU5/lYMrkghAW9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/482] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
+Subject: [PATCH 5.10 130/523] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
 Date: Tue, 26 Aug 2025 13:05:40 +0200
-Message-ID: <20250826110932.979871608@linuxfoundation.org>
+Message-ID: <20250826110927.711852900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
+[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
 
-Clear power.needs_force_resume in pm_runtime_reinit() in case it has
-been set by pm_runtime_force_suspend() invoked from a driver remove
-callback.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
+Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 313ccb7e7764..61d8ebc2de59 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1753,6 +1753,11 @@ void pm_runtime_reinit(struct device *dev)
- 				pm_runtime_put(dev->parent);
- 		}
- 	}
-+	/*
-+	 * Clear power.needs_force_resume in case it has been set by
-+	 * pm_runtime_force_suspend() invoked from a driver remove callback.
-+	 */
-+	dev->power.needs_force_resume = false;
- }
+diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+index 8a0e28aec928..0ecad398ed3d 100644
+--- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
++++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
+ 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
  
- /**
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ 	return err;
+ }
+@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
+ 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
+ 
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ free_mem:
+ 	if (token && dma_map) {
 -- 
 2.39.5
 
