@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD5CB35D2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9482B3611E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CA7C7A5D71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB9774E446D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B5E21D3C0;
-	Tue, 26 Aug 2025 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D14F231A55;
+	Tue, 26 Aug 2025 13:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXJKqNuq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzSpR2Ng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DB7267386;
-	Tue, 26 Aug 2025 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD78A18F2FC;
+	Tue, 26 Aug 2025 13:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208517; cv=none; b=a8jOOHnqATYpfKRIrp8w6RMU0bqCGETc56xr6F3j4dtDErRzHdItUCCzHruJm9O5YRTK1N6judnSyhqtL2hYdQXccmj8q6AWTHnEKkRfAnl6hh2+maEmRP/GQ8qHL1kliyKGRbMzro8yGev2YO4QHEiIVqdTjdhon//G/UZV7j0=
+	t=1756213588; cv=none; b=nSdBBHN0AvlcP9Zy12PpCYS7upEkGlk1MmVFM88KcsVNHzDsGN++x8KexNTRSdTNuQbwOt5iayZNI4wNSxu3NL7oGpHenOZfsVRkkuZ0TaB9XH5ZZHIFr3KQz0NSlLO2Gcbbo0Xo+wjIgGkEi+Tdr1bnfb7KgudcArTe+q6zMD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208517; c=relaxed/simple;
-	bh=co7IBiseY2/AfHAZBuxegkui80qpxn2I5ukuOABSdW4=;
+	s=arc-20240116; t=1756213588; c=relaxed/simple;
+	bh=1h9EuLP6nj8sLwfkWxBeQ6vwXrfThpuL35+wGOiTArU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McivxDU3wK5fN+eQpEbxaRdrVUDpeBwGWd0l7831Hz0arn2pHWpnyMZOZKtw8avmxnRS4v5Xm2/WhV9HjllwYRPjof6pbLWCRayY/1Zo6Bdr5AE0+W0FT5KZzogE6Mxd5/PT8ddmYNFJQb2cLweZyQ/GGhrtsrZ3ryOv33G0Bps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXJKqNuq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96196C4CEF1;
-	Tue, 26 Aug 2025 11:41:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n8QQHXdaBj1M4LpHvozfHmTgSaDHn5iGX6tnx95XPvMS51tVCfYLY/VPvexz2Y4Q3/g7kpaplym9DBTSBXPMPHyV+2r0nYxbaTb80ANt5sGr4UoLD7mVYXin/h8aP3hvJN0/QU0GQ195Jhzb7UqakPAdtAngq+K/VQ7+gTirnS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzSpR2Ng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F97AC4CEF1;
+	Tue, 26 Aug 2025 13:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208516;
-	bh=co7IBiseY2/AfHAZBuxegkui80qpxn2I5ukuOABSdW4=;
+	s=korg; t=1756213588;
+	bh=1h9EuLP6nj8sLwfkWxBeQ6vwXrfThpuL35+wGOiTArU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXJKqNuq0CX39f7j7om8xTN4j5enxDwS/TS/3HP38sikB9OA+d1UAQNi+t4w7jNft
-	 CVvcjjPQsNh6CGHwbQtys5YuOuUdSi2knsTgaY2rpEPh1DhN1PSEBHHpHhKfKC4p+4
-	 ZUPkU0eJMlZELn30gH6HcbbsTk008zK7mkWefSqw=
+	b=pzSpR2NgkGYf9HkKCisAjh5tdguOENIOFjX8aqhj4MHgDBrcBY3QFr+nbcEeN3Yzf
+	 3jPJ7iqV10B3EW5ty9zZ6FEhrz4soxY80csfZGGhKNH4CFjSO3ytqBOObVkYajbJzv
+	 t8Q4L60s9UhIDQov+FJzQ3dc8GDqgxi5QrxlBixs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 111/322] media: qcom: camss: cleanup media device allocated resource on error path
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.6 377/587] pwm: mediatek: Handle hardware enable and clock enable separately
 Date: Tue, 26 Aug 2025 13:08:46 +0200
-Message-ID: <20250826110918.528560505@linuxfoundation.org>
+Message-ID: <20250826111002.496534880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 69080ec3d0daba8a894025476c98ab16b5a505a4 upstream.
+commit 704d918341c378c5f9505dfdf32d315e256d3846 upstream.
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+Stop handling the clocks in pwm_mediatek_enable() and
+pwm_mediatek_disable(). This is a preparing change for the next commit
+that requires that clocks and the enable bit are handled separately.
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
+Also move these two functions a bit further up in the source file to
+make them usable in pwm_mediatek_config(), which is needed in the next
+commit, too.
 
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 32 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2275,7 +2275,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_genpd_cleanup;
-+		goto err_media_device_cleanup;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -118,6 +118,26 @@ static inline void pwm_mediatek_writel(s
+ 	writel(value, chip->regs + chip->soc->reg_offset[num] + offset);
+ }
+ 
++static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value |= BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
++static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value &= ~BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
+ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       int duty_ns, int period_ns)
+ {
+@@ -180,35 +200,6 @@ out:
+ 	return ret;
+ }
+ 
+-static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-	int ret;
+-
+-	ret = pwm_mediatek_clk_enable(chip, pwm);
+-	if (ret < 0)
+-		return ret;
+-
+-	value = readl(pc->regs);
+-	value |= BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	return 0;
+-}
+-
+-static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-
+-	value = readl(pc->regs);
+-	value &= ~BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	pwm_mediatek_clk_disable(chip, pwm);
+-}
+-
+ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			      const struct pwm_state *state)
+ {
+@@ -218,8 +209,10 @@ static int pwm_mediatek_apply(struct pwm
+ 		return -EINVAL;
+ 
+ 	if (!state->enabled) {
+-		if (pwm->state.enabled)
++		if (pwm->state.enabled) {
+ 			pwm_mediatek_disable(chip, pwm);
++			pwm_mediatek_clk_disable(chip, pwm);
++		}
+ 
+ 		return 0;
  	}
+@@ -228,8 +221,11 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
  
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
-@@ -2330,6 +2330,8 @@ err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
- 	pm_runtime_disable(dev);
-+err_media_device_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
+-	if (!pwm->state.enabled)
+-		err = pwm_mediatek_enable(chip, pwm);
++	if (!pwm->state.enabled) {
++		err = pwm_mediatek_clk_enable(chip, pwm);
++		if (!err)
++			pwm_mediatek_enable(chip, pwm);
++	}
  
+ 	return err;
+ }
 
 
 
