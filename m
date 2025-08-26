@@ -1,76 +1,100 @@
-Return-Path: <stable+bounces-176419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E746B371D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:56:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E94B371E8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 20:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 309DE2A4523
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495E67C39EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 18:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF56E2F069A;
-	Tue, 26 Aug 2025 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6692F744D;
+	Tue, 26 Aug 2025 18:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="beBf5nn0"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7EC2EF66B;
-	Tue, 26 Aug 2025 17:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AF8285CA9
+	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 18:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756230961; cv=none; b=gZ/ipsIR8f6HSjZCg/7ehAht7nKctVkNhUNatRfLUULvcisLB8mFPFwREeETjVu9Z6oZjwh5jd4+cN+ST9hjIyYq9/BxL5noDZiwZWzM1jiGuKVGmBzJkk36thziHUUyFNZXkl7/IxQRAYs9SC3S4+B5fFqLFdYCYBEqPjFI4xc=
+	t=1756231438; cv=none; b=eUimTFlr3Cj9VKKxH8nddzDt5+kpiaW9j5vmNes2bzZHQBLUi6Aa1+yLsDG7UK3O6DfBLMN9q+WTyXFsG2xeFskgH1LB6V9RnXFXoIhYeE0Ps950bXOm9kqEXKqKJ90jWtHt1ephbXdD+lT1KqJ9aPQ9X6lfMExICpsrGXNDI6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756230961; c=relaxed/simple;
-	bh=sN73RuLs3/tMK2PgpQFbf7oCyh/zGteMMI3zlvbirpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfgxtDPSbBl7q/VD0G/pJFsPoFxZoLDx0BUWoZlKacWLKUXGoWwbUHLs+O1MYr0BBGV74dqQGbs4ztua1ofdm/w6f1sxx5LagZ32dNJ0DaeXxO5AGu0LOLjnLRbJuGBE4PvmXULojMQXodsWQU5mhcHpEWt3HMtB/LI+AeUzY5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: 6.12.44-rc1 review
-Date: Tue, 26 Aug 2025 17:55:37 +0000
-Message-ID: <20250826175536.30283-2-bacs@librecast.net>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+	s=arc-20240116; t=1756231438; c=relaxed/simple;
+	bh=bfzh2QX9aI79kIf9vMnLClOeFShsKjbWgXfp42ADjGw=;
+	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=BZkwNe+bdxQ/LXexWR1/UeozYUtoeabISqgdDbghL1+0yMWmSlNXFD8hasPzjr5HM9rmq1DKNhU0ZQ1+NBFr/VDL/ZbOpv5sAAPR8SA6hdDtdgVFH8C/Facsi0bYPBTge5vhUC2RAJBUXLFPY77wsS0iNvliMqpt/upYlYwo+QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=beBf5nn0; arc=none smtp.client-ip=89.58.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id 8C7529A294B
+	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 18:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
+	t=1756231425; h=date:message-id:subject:from:to;
+	bh=bfzh2QX9aI79kIf9vMnLClOeFShsKjbWgXfp42ADjGw=;
+	b=beBf5nn09Gq625Sub1q4RSBEqMejGmN0xpoUFxbXzOdFiIWgN9VedM4tJP/38mFtGFiX+v0I9zI
+	2aTW8ZoXIVY6m7g8ahDl3FtwWJX468SHXTSaz60rGquYDZRK/L619QuACZt9A/GphY9Hk+nM6sMCK
+	trxvuyz2mJpNsoVeapHPZJNdr+lXV12X9WvPqZdvfyVHcZYlEQ+xG3NC9MzjedaYYxdlllaz/CAEG
+	HkWQF3OhsWeSd1On1aaR9dNuoCAHtiPqr7jeDwaA7f4NHPu3VGSGNmehd9OS7EZ9Nt3LPIFGUXwtE
+	tiMKwHTarwoxL+SkaTo9nDfFyxQUBMfVEDHQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 Aug 2025 20:03:43 +0200
+Message-Id: <DCCK2XXZJSYN.30GFYJ0SQZ2QG@achill.org>
+Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+ <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+ <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+ <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
+ <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
+ <hargar@microsoft.com>, <broonie@kernel.org>
+Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
+From: "Achill Gilgenast" <achill@achill.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Greeting: Hi mom! Look, I'm in somebodys mail client!
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
 
-# Librecast Test Results
+On Tue Aug 26, 2025 at 1:04 PM CEST, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.4 release.
+> There are 457 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 28 Aug 2025 11:08:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.4-=
+rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
+ linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Thanks! Builded on all Alpine architectures (aarch64, armv7,
+loongarch64, ppc64le, riscv64, s390x, x86, x86_64) and boot-tested on
+x86_64.
 
-CPU/kernel: Linux auntie 6.12.44-rc1-gc7e1bbb35205 #54 SMP PREEMPT_DYNAMIC Tue Aug 26 17:42:44 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
-
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Tested-By: Achill Gilgenast <achill@achill.org>=
 
