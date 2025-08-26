@@ -1,125 +1,362 @@
-Return-Path: <stable+bounces-172931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1C4B3595B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C58EB359BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1644B188EBD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 09:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 951E87B41E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 09:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6E6308F03;
-	Tue, 26 Aug 2025 09:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9263376A9;
+	Tue, 26 Aug 2025 09:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="AfdVQYNM";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="AfdVQYNM"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28C305E32;
-	Tue, 26 Aug 2025 09:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528A1334368
+	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 09:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756201830; cv=none; b=qFOZf0gv/CgE0HBz3t3hySG9yzyZ8QJcRxnIS37BH7VifhenISKhVo/GdeUUfYrIvOx65G1jSTUN9Pu5ZZFqyU7MdfPEqiFe4//768D+jEcAlTPkACYJsROAOg5zeZ6o0JRhRBdyp3R5NEWONrN7QsuXdMLOnRD+AF5wA7YkD5Q=
+	t=1756202211; cv=none; b=iXcKRza295x/72yjxQnPR/is15mnPwKIVqmOBcHdCoJJ8hgoX8jmnnMJufC2WidVgBCu8D4XrYHq+Qfo2sO/Lfh4/MD3+u/Okf/Db+xT9/GKl8yn9SexVWBTlRyYtFklIgx2B+u1wHnf3jbPsAwgHGxckRByy6qZN8niPnFseGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756201830; c=relaxed/simple;
-	bh=r5qMbe4kTDDLldGYy/rC48/6xg03WM0XcsMR1LpgIaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DjMbKQAjkjh4+/JH4evv5Yy8wsVvpDKspctbr9hVPdj+BalEDjHq8gbGX/44Hy7m5qMZ2OZbCtU1n64vXhFrIV+Zo590sigT0IfJm6uKlyjwpJB2mUA9JArrHVBizMIvGjkU4+vpytkD4uAQDGSxccL2S33KSgrwraorks8Qvnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3231C1A00;
-	Tue, 26 Aug 2025 02:50:19 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AABA83F63F;
-	Tue, 26 Aug 2025 02:50:22 -0700 (PDT)
-Date: Tue, 26 Aug 2025 10:50:15 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Sam Edwards <cfsworks@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
-Message-ID: <aK2DV_joOnaU85Tx@J2N7QTR9R3>
-References: <20250822041526.467434-1-CFSworks@gmail.com>
- <CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
- <CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
+	s=arc-20240116; t=1756202211; c=relaxed/simple;
+	bh=02NqAMAaSutU9KVGBKRA2KGY49FqccMxwaA83EWHPqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PdStc33TnjMzWU6t4jV4qs6vSZQXQFi/b1HWfRHCKyaMuC5gHZ+ZK+YwtMzS4urB7893gG3SlSFvL9lZXQhoK1PH4Kj60XimDVjmjpiCuI87fKjE144RuEosaCFv21Mfwb/GcfBdHVRPbvb4T7vSPLrNzJI+rOSgULU/Vek8j/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=AfdVQYNM; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=AfdVQYNM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 91A7B1F787;
+	Tue, 26 Aug 2025 09:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1756202207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=6OjCwIwTkP+bbcKpTQAaqEsSVOsQYYhubmtwj8g2KrM=;
+	b=AfdVQYNM+Ctar9A9/JHLdU2CXEkBV2oHmy2Y2xQqbI4PSwkq8Ibm+boKVbZk85XQ7x1nzi
+	QcQVS31WccEoJCYNabPPgpcnSwK/4TMARkPbUMD//lq86lRuXA3Yldb3tttONlSAHFPJPd
+	OqZuqvML2EidlekxfgWgMs6xMg7rHBY=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1756202207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=6OjCwIwTkP+bbcKpTQAaqEsSVOsQYYhubmtwj8g2KrM=;
+	b=AfdVQYNM+Ctar9A9/JHLdU2CXEkBV2oHmy2Y2xQqbI4PSwkq8Ibm+boKVbZk85XQ7x1nzi
+	QcQVS31WccEoJCYNabPPgpcnSwK/4TMARkPbUMD//lq86lRuXA3Yldb3tttONlSAHFPJPd
+	OqZuqvML2EidlekxfgWgMs6xMg7rHBY=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9353F13479;
+	Tue, 26 Aug 2025 09:56:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QQaEFd6ErWhtagAAD6G6ig
+	(envelope-from <wqu@suse.com>); Tue, 26 Aug 2025 09:56:46 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v3] btrfs: do more strict compressed read merge check
+Date: Tue, 26 Aug 2025 19:26:28 +0930
+Message-ID: <635dc58dd4c7ae44264e488bb9b2ef7bd9dd5e21.1756201932.git.wqu@suse.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWO(0.00)[2];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	URIBL_BLOCKED(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -2.80
 
-On Sat, Aug 23, 2025 at 04:55:44PM -0700, Sam Edwards wrote:
-> On Sat, Aug 23, 2025 at 3:25 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > Hi Sam,
-> >
-> > On Fri, 22 Aug 2025 at 14:15, Sam Edwards <cfsworks@gmail.com> wrote:
-> > >
-> > > In early boot, Linux creates identity virtual->physical address mappings
-> > > so that it can enable the MMU before full memory management is ready.
-> > > To ensure some available physical memory to back these structures,
-> > > vmlinux.lds reserves some space (and defines marker symbols) in the
-> > > middle of the kernel image. However, because they are defined outside of
-> > > PROGBITS sections, they aren't pre-initialized -- at least as far as ELF
-> > > is concerned.
-> > >
-> > > In the typical case, this isn't actually a problem: the boot image is
-> > > prepared with objcopy, which zero-fills the gaps, so these structures
-> > > are incidentally zero-initialized (an all-zeroes entry is considered
-> > > absent, so zero-initialization is appropriate).
-> > >
-> > > However, that is just a happy accident: the `vmlinux` ELF output
-> > > authoritatively represents the state of memory at entry. If the ELF
-> > > says a region of memory isn't initialized, we must treat it as
-> > > uninitialized. Indeed, certain bootloaders (e.g. Broadcom CFE) ingest
-> > > the ELF directly -- sidestepping the objcopy-produced image entirely --
-> > > and therefore do not initialize the gaps. This results in the early boot
-> > > code crashing when it attempts to create identity mappings.
-> > >
-> > > Therefore, add boot-time zero-initialization for the following:
-> > > - __pi_init_idmap_pg_dir..__pi_init_idmap_pg_end
-> > > - idmap_pg_dir
-> > > - reserved_pg_dir
-> >
-> > I don't think this is the right approach.
-> >
-> > If the ELF representation is inaccurate, it should be fixed, and this
-> > should be achievable without impacting the binary image at all.
-> 
-> Hi Ard,
-> 
-> I don't believe I can declare the ELF output "inaccurate" per se,
-> since it's the linker's final determination about the state of memory
-> at kernel entry -- including which regions are not the loader's
-> responsibility to initialize (and should therefore be initialized at
-> runtime, e.g. .bss). But, I think I understand your meaning: you would
-> prefer consistent load-time zero-initialization over run-time. I'm
-> open to that approach if that's the consensus here, but it will make
-> `vmlinux` dozens of KBs larger (even though it keeps `Image` the same
-> size).
+[BUG]
+With 64K page size (aarch64 with 64K page size config) and 4K btrfs
+block size, the following workload can easily lead to a corrupted read:
 
-Our intent was that these are zeroed at build time in the Image. If the
-vmlinux isn't consistent with that, that's a problem with the way we
-generate the vmlinux, and hence "the ELF representation is inaccurate".
+        mkfs.btrfs -f -s 4k $dev > /dev/null
+        mount -o compress=zstd $dev $mnt
+        xfs_io -f -c "pwrite -S 0xff 0 64k" -c sync $mnt/base > /dev/null
+	echo "correct result:"
+        od -Ax -x $mnt/base
+        xfs_io -f -c "reflink $mnt/base 32k 0 32k" \
+		  -c "reflink $mnt/base 0 32k 32k" \
+		  -c "pwrite -S 0xff 60k 4k" $mnt/new > /dev/null
+	echo "incorrect result:"
+        od -Ax -x $mnt/new
+        umount $mnt
 
-I agree with Ard that it's better to bring the vmlinux into line with
-that (if we need to handlr this at all), even if that means making the
-vmlinux a few KB bigger.
+This shows the following result:
 
-Mark.
+  correct result:
+  000000 ffff ffff ffff ffff ffff ffff ffff ffff
+  *
+  010000
+  incorrect result:
+  000000 ffff ffff ffff ffff ffff ffff ffff ffff
+  *
+  008000 0000 0000 0000 0000 0000 0000 0000 0000
+  *
+  00f000 ffff ffff ffff ffff ffff ffff ffff ffff
+  *
+  010000
+
+Notice the zero in the range [0x8000, 0xf000), which is incorrect.
+
+[CAUSE]
+With extra trace printk, it shows the following events during od:
+(some unrelated info removed like CPU and context)
+
+ od-3457   btrfs_do_readpage: enter r/i=5/258 folio=0(65536) prev_em_start=0000000000000000
+
+The "r/i" is indicating the root and inode number. In our case the file
+"new" is using ino 258 from fs tree (root 5).
+
+Here notice the @prev_em_start pointer is NULL. This means the
+btrfs_do_readpage() is called from btrfs_read_folio(), not from
+btrfs_readahead().
+
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=0 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=4096 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=8192 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=12288 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=16384 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=20480 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=24576 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=28672 got em start=0 len=32768
+
+These above 32K blocks will be read from the the first half of the
+compressed data extent.
+
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=32768 got em start=32768 len=32768
+
+Note here there is no btrfs_submit_compressed_read() call. Which is
+incorrect now.
+As both extent maps at 0 and 32K are pointing to the same compressed
+data, their offset are different thus can not be merged into the same
+read.
+
+So this means the compressed data read merge check is doing something
+wrong.
+
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=36864 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=40960 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=45056 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=49152 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=53248 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=57344 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=61440 skip uptodate
+ od-3457   btrfs_submit_compressed_read: cb orig_bio: file off=0 len=61440
+
+The function btrfs_submit_compressed_read() is only called at the end of
+folio read. The compressed bio will only have a extent map of range [0,
+32K), but the original bio passed in are for the whole 64K folio.
+
+This will cause the decompression part to only fill the first 32K,
+leaving the rest untouched (aka, filled with zero).
+
+This incorrect compressed read merge leads to the above data corruption.
+
+There are similar problems happened in the past, commit 808f80b46790
+("Btrfs: update fix for read corruption of compressed and shared
+extents") is doing pretty much the same fix for readahead.
+
+But that's back to 2015, where btrfs still only supports bs (block size)
+== ps (page size) cases.
+This means btrfs_do_readpage() only needs to handle a folio which
+contains exactly one block.
+
+Only btrfs_readahead() can lead to a read covering multiple blocks.
+Thus only btrfs_readahead() passes a non-NULL @prev_em_start pointer.
+
+With the v5.15 btrfs introduced bs < ps support. This breaks the above
+assumption that a folio can only contain one block.
+
+Now btrfs_read_folio() can also read multiple blocks in one go.
+But btrfs_read_folio() doesn't pass a @prev_em_start pointer, thus the
+existing bio force submission check will never be triggered.
+
+In theory, this can also happen for btrfs with large folios, but since
+large folio is still experimental, we don't need to bother it, thus only
+bs < ps support is affected for now.
+
+[FIX]
+Instead of passing @prev_em_start to do the proper compressed extent
+check, introduce one new member, btrfs_bio_ctrl::last_em_start, so that
+the existing bio force submission logic will always be triggered.
+
+CC: stable@vger.kernel.org #5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+Changelog:
+v3:
+- Use a single btrfs_bio_ctrl::last_em_start
+  Since the existing prev_em_start is using U64_MAX as the initial value
+  to indicate no em hit yet, we can use the same logic, which saves
+  another 8 bytes from btrfs_bio_ctrl.
+
+- Update the reproducer
+  Previously I failed to reproduce using a minimal workload.
+  As regular read from od/md5sum always trigger readahead thus not
+  hitting the @prev_em_start == NULL path.
+
+  Will send out a fstest case for it using the minimal reproducer.
+  But it will still need a 16K/64K page sized system to reproduce.
+
+  Fix the problem by doing an block aligned write into the folio, so
+  that the folio will be partially dirty and not go through the
+  readahead path.
+
+- Update the analyze
+  This includes the trace events of the minimal reproducer, and
+  mentioning of previous similar fixes and why they do not work for
+  subpage cases.
+
+- Update the CC tag
+  Since it's only affecting bs < ps cases (for non-experimental builds),
+  only need to fix kernels with subpage btrfs supports.
+
+v2:
+- Only save extent_map::start/len to save memory for btrfs_bio_ctrl
+  It's using on-stack memory which is very limited inside the kernel.
+
+- Remove the commit message mentioning of clearing last saved em
+  Since we're using em::start/len, there is no need to clear them.
+  Either we hit the same em::start/len, meaning hitting the same extent
+  map, or we hit a different em, which will have a different start/len.
+---
+ fs/btrfs/extent_io.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0c12fd64a1f3..b219dbaaedc8 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -131,6 +131,24 @@ struct btrfs_bio_ctrl {
+ 	 */
+ 	unsigned long submit_bitmap;
+ 	struct readahead_control *ractl;
++
++	/*
++	 * The start file offset of the last hit extent map.
++	 *
++	 * This is for proper compressed read merge.
++	 * U64_MAX means no extent map hit yet.
++	 *
++	 * The current btrfs_bio_is_contig() only uses disk_bytenr as
++	 * the condition to check if the read can be merged with previous
++	 * bio, which is not correct. E.g. two file extents pointing to the
++	 * same extent but with different offset.
++	 *
++	 * So here we need to do extra check to only merge reads that are
++	 * covered by the same extent map.
++	 * Just extent_map::start will be enough, as they are unique
++	 * inside the same inode.
++	 */
++	u64 last_em_start;
+ };
+ 
+ /*
+@@ -965,7 +983,7 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
+  * return 0 on success, otherwise return error
+  */
+ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+-		      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
++			     struct btrfs_bio_ctrl *bio_ctrl)
+ {
+ 	struct inode *inode = folio->mapping->host;
+ 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
+@@ -1076,12 +1094,11 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+ 		 * non-optimal behavior (submitting 2 bios for the same extent).
+ 		 */
+ 		if (compress_type != BTRFS_COMPRESS_NONE &&
+-		    prev_em_start && *prev_em_start != (u64)-1 &&
+-		    *prev_em_start != em->start)
++		    bio_ctrl->last_em_start != U64_MAX &&
++		    bio_ctrl->last_em_start != em->start)
+ 			force_bio_submit = true;
+ 
+-		if (prev_em_start)
+-			*prev_em_start = em->start;
++		bio_ctrl->last_em_start = em->start;
+ 
+ 		em_gen = em->generation;
+ 		btrfs_free_extent_map(em);
+@@ -1296,12 +1313,15 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
+ 	const u64 start = folio_pos(folio);
+ 	const u64 end = start + folio_size(folio) - 1;
+ 	struct extent_state *cached_state = NULL;
+-	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
++	struct btrfs_bio_ctrl bio_ctrl = {
++		.opf = REQ_OP_READ,
++		.last_em_start = U64_MAX,
++	};
+ 	struct extent_map *em_cached = NULL;
+ 	int ret;
+ 
+ 	lock_extents_for_read(inode, start, end, &cached_state);
+-	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl, NULL);
++	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
+ 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
+ 
+ 	btrfs_free_extent_map(em_cached);
+@@ -2641,7 +2661,8 @@ void btrfs_readahead(struct readahead_control *rac)
+ {
+ 	struct btrfs_bio_ctrl bio_ctrl = {
+ 		.opf = REQ_OP_READ | REQ_RAHEAD,
+-		.ractl = rac
++		.ractl = rac,
++		.last_em_start = U64_MAX,
+ 	};
+ 	struct folio *folio;
+ 	struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
+@@ -2649,12 +2670,11 @@ void btrfs_readahead(struct readahead_control *rac)
+ 	const u64 end = start + readahead_length(rac) - 1;
+ 	struct extent_state *cached_state = NULL;
+ 	struct extent_map *em_cached = NULL;
+-	u64 prev_em_start = (u64)-1;
+ 
+ 	lock_extents_for_read(inode, start, end, &cached_state);
+ 
+ 	while ((folio = readahead_folio(rac)) != NULL)
+-		btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
++		btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
+ 
+ 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
+ 
+-- 
+2.50.1
+
 
