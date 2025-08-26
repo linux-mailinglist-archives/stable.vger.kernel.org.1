@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7895DB3693B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E105B360D4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D5DC986AF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64DC41BA579B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35044353373;
-	Tue, 26 Aug 2025 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835BB481B1;
+	Tue, 26 Aug 2025 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj7KNJo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wt11Zchv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EBB352067;
-	Tue, 26 Aug 2025 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B423597C;
+	Tue, 26 Aug 2025 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217638; cv=none; b=KW5xWirvFCXMAFOlCQVobSV74n9zgbh48pAhWa/EI+y2lb8wu2M31KmnOrwAA8GVQjfaXl4JOJymeiK07iOIK1UvT5hX7XVkMBY3aXmmFgmfiXVMcHvJ1yN/r4PW2CAN1oWN46CzhX8MJ5rTOJta/aOr+I6zRobWrp8f5IMgxow=
+	t=1756213259; cv=none; b=dVkDlJ807tSCyt73MTyv13CoR4HQ9ofkQWXq9LCL65egXLpMv3KC5WE9qSmFWucmXOhYy08MKq3b0Owbigh2Rn8szCJatMljX5K+omqSwmrZv8LF8IZm2yQeSzPITMqtCedgOe7bG7WLDJLxG52ipff5Xr/hTvqAWzyWkHMh9rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217638; c=relaxed/simple;
-	bh=64ODnQjZBbRtoG8DlDXUpFJsIvwVLkRH7eI1Aza1r/E=;
+	s=arc-20240116; t=1756213259; c=relaxed/simple;
+	bh=y0FtBEhQ/meJaHU2mjDHPDDuwPYwBCJT0zx5P9LOofU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4dU8Mqzl8ZROvVCw+vQ0hd3FDI/O80uNi/rdCgvW6C5aJAR5ItlWpMDLtrvmItxlQudV44Bq0kkL1nDrW6wLAPPPyey7xIBfNoMeReXrqk79owX+YYA3RhDHqVhrRQima+daz2eshWW2Unb0Jz98tDb5avuKgYwtNS6hyc58HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj7KNJo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A05C113CF;
-	Tue, 26 Aug 2025 14:13:57 +0000 (UTC)
+	 MIME-Version; b=Io8KRdJtd5WzDt1BzOAhtVzXw2Vooy4qOi9Wv5bLz78CJI0P6Wv6iL8xZ/3bUtWol2qZGjdsJl2MESs4zAk/lu9A33BEgRQt/dToJO1TQc5jsc4YfftEBnnGp43MIodVAtTIUKctYNfw1WebJrNhzkWhhXOVvW2ZKsO1kUyyOUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wt11Zchv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E6EC4CEF1;
+	Tue, 26 Aug 2025 13:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217637;
-	bh=64ODnQjZBbRtoG8DlDXUpFJsIvwVLkRH7eI1Aza1r/E=;
+	s=korg; t=1756213259;
+	bh=y0FtBEhQ/meJaHU2mjDHPDDuwPYwBCJT0zx5P9LOofU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kj7KNJo85eUH/Eug8UdDqIHJHcxsg5w9UaDzBJf/nu8/n4vROSgBKC6TUlZGLix2c
-	 VXsAQ0qNcujSm4bWbs40Dc5n3hRwJIjuq9knxb0kKU2KgDKP/yBAVjFJdb26qZluqE
-	 QGA7LfvCmAWZ2UhTLhCOePrdvOyA6RzqtH2K3VLU=
+	b=wt11Zchv2SZCnx7x2UJ0QWtIOj/GVumCF4bNx/thxiLJc3RzT2Yv0YPaD7TAjP5nA
+	 UtC/Qc4E0Z96Kdhnim4v6Udb/j9ufNGNyh04yUKNVGBnmFusyjamf7N4SiV1n/xVNk
+	 OuR0EKBPI86n+HNXvAHFoAKgl75PPbbLhbIZ8beY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Yishai Hadas <yishaih@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 219/523] ata: libata-sata: Disallow changing LPM state if not supported
+Subject: [PATCH 6.6 280/587] vfio/mlx5: fix possible overflow in tracking max message size
 Date: Tue, 26 Aug 2025 13:07:09 +0200
-Message-ID: <20250826110929.862581334@linuxfoundation.org>
+Message-ID: <20250826111000.056226348@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
+[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
 
-Modify ata_scsi_lpm_store() to return an error if a user attempts to set
-a link power management policy for a port that does not support LPM,
-that is, ports flagged with ATA_FLAG_NO_LPM.
+MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
+used as power of 2 for max_msg_size. This can lead to multiplication
+overflow between max_msg_size (u32) and integer constant, and afterwards
+incorrect value is being written to rq_size.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fix this issue by extending integer constant to u64 type.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-sata.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 45656067c547..d5c97dba2dd4 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -815,6 +815,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 2d996c913ecd..82558fa7712e 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1389,8 +1389,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
+ 	max_msg_size = (1ULL << log_max_msg_size);
+ 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
+-	if (rq_size < 4 * max_msg_size)
+-		rq_size = 4 * max_msg_size;
++	if (rq_size < 4ULL * max_msg_size)
++		rq_size = 4ULL * max_msg_size;
  
- 	spin_lock_irqsave(ap->lock, flags);
- 
-+	if (ap->flags & ATA_FLAG_NO_LPM) {
-+		count = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
- 	ata_for_each_link(link, ap, EDGE) {
- 		ata_for_each_dev(dev, &ap->link, ENABLED) {
- 			if (dev->horkage & ATA_HORKAGE_NOLPM) {
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
 -- 
 2.39.5
 
