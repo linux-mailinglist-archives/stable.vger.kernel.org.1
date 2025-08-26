@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836ABB36CBC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773A7B366ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86807C81C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADC2A1C22118
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E70F350847;
-	Tue, 26 Aug 2025 14:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618D435336D;
+	Tue, 26 Aug 2025 13:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+uLuZU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNjXMjZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B3035083D;
-	Tue, 26 Aug 2025 14:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E41C34DCD4;
+	Tue, 26 Aug 2025 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218778; cv=none; b=Wsb9ROcjb0aPVhV+U7FNovY6bX3PIAqbAuERv9bYFj0np0BcvNdDw1JEFxaRttmLyRQJcP9fYqPCHuWerpdNVzu9y7BkndgImksAHC0QqV1hWPPKFyPO7QK0FctY7sEOIbgAjErHeCCWRPBI8+AXC8pE+DwLa9llzl6YYQbEU0s=
+	t=1756216316; cv=none; b=r4jX291PCmmPV0i/wpP2mxY45RY+ds6cf65h301w1M1Ew8keThwVjPM0pyy/iWrKHFMPbdvDsSN179ohaCcOBag07Wwz/Tv1/Ee2cvhHyRzTRg1Kz57yHYtAwB1HDvoIAjMgwbb2HJisU/gpriGCd3JrhTmuABu6+ts7UKB5FYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218778; c=relaxed/simple;
-	bh=NJQsJvFP+HYCWiZBOV4V3Vk4EaD6hilBwK5IOzVi+pI=;
+	s=arc-20240116; t=1756216316; c=relaxed/simple;
+	bh=LZ6qn3vuk76ZdLBwel7cFDqfnEZWWP8BqwoxZcURafs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2WBH89TxJOBZrBxXIEQxSZGJJV73EHNrNLdMyDyh+6+8xcNeC0ZAlliJ5d9XHSEEWl2IB5iqbzctApz9nDTMNeHpNk1I/NRB6SoSWy6Rni/rXeG3uYN+uyMRp70kZ2ZeJ59CiMQY9NZmfNcCBvp6TD6LGy7SlLfirZEjlg1s+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+uLuZU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850E8C4CEF1;
-	Tue, 26 Aug 2025 14:32:57 +0000 (UTC)
+	 MIME-Version; b=EJOi0q3JLMxtc54MnA2j5x4S0YtdKj3dQBPrqKAX5tnsSFfQBy31ckElGsqGJ4vjjj16DzH2HOqerbhNOivpO8kiETwXGhdfR0GlCdX+9WRVqon6YqiEIXtWQ/nrE4YGWoZu+6GqWtw7+DajQzXaLrNzv7AFdRQGwXMzdsWp8CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNjXMjZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E9BC19421;
+	Tue, 26 Aug 2025 13:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218777;
-	bh=NJQsJvFP+HYCWiZBOV4V3Vk4EaD6hilBwK5IOzVi+pI=;
+	s=korg; t=1756216315;
+	bh=LZ6qn3vuk76ZdLBwel7cFDqfnEZWWP8BqwoxZcURafs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+uLuZU0+D8/Mp8uohS1JV7GSPSJoAr5F2+kkAeDhxRFXBHVfmprZpE7ES8UR52A+
-	 gzLqyts1gnkfU7aLmvp104vt40vs+npXBV8gxkrLcRbWz3vyUNnnVftQcvvHoBYmSe
-	 DJziA5+uB2S56SQ6ZpSWrOxTd2YQqEFQkz98G7E4=
+	b=tNjXMjZGWrYqYdmuSTq99z9yexEzrp/McBdNDknq10gZTlYJ8RYwxNkypJRKfsmaA
+	 UUEXs8PDlGNFC4mPKug9HHsBCfICbEjT4+kjq8ipHoYPgisNZ+R5qk30eZxG6iyq//
+	 3kRxNkx8RbmI4Bz0II8/sE68PFctSPxX2pVvSFoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/403] module: Restore the moduleparam prefix length check
+Subject: [PATCH 5.15 365/644] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
 Date: Tue, 26 Aug 2025 13:07:36 +0200
-Message-ID: <20250826110910.332607705@linuxfoundation.org>
+Message-ID: <20250826110955.459602694@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit bdc877ba6b7ff1b6d2ebeff11e63da4a50a54854 ]
+[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
 
-The moduleparam code allows modules to provide their own definition of
-MODULE_PARAM_PREFIX, instead of using the default KBUILD_MODNAME ".".
+The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
+`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
+is not saved in the rx ringbuffer and thus lost.
 
-Commit 730b69d22525 ("module: check kernel param length at compile time,
-not runtime") added a check to ensure the prefix doesn't exceed
-MODULE_NAME_LEN, as this is what param_sysfs_builtin() expects.
+Compile tested only
 
-Later, commit 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking
-for sysfs perms.") removed this check, but there is no indication this was
-intentional.
-
-Since the check is still useful for param_sysfs_builtin() to function
-properly, reintroduce it in __module_param_call(), but in a modernized form
-using static_assert().
-
-While here, clean up the __module_param_call() comments. In particular,
-remove the comment "Default value instead of permissions?", which comes
-from commit 9774a1f54f17 ("[PATCH] Compile-time check re world-writeable
-module params"). This comment was related to the test variable
-__param_perm_check_##name, which was removed in the previously mentioned
-commit 58f86cc89c33.
-
-Fixes: 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking for sysfs perms.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Link: https://lore.kernel.org/r/20250630143535.267745-4-petr.pavlu@suse.com
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/moduleparam.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 4d5a851cafe8..6e9062caa7df 100644
---- a/include/linux/moduleparam.h
-+++ b/include/linux/moduleparam.h
-@@ -214,10 +214,9 @@ struct kparam_array
- #define __moduleparam_const const
- #endif
- 
--/* This is the fundamental function for registering boot/module
--   parameters. */
-+/* This is the fundamental function for registering boot/module parameters. */
- #define __module_param_call(prefix, name, ops, arg, perm, level, flags)	\
--	/* Default value instead of permissions? */			\
-+	static_assert(sizeof(""prefix) - 1 <= MAX_PARAM_PREFIX_LEN);	\
- 	static const char __param_str_##name[] = prefix #name;		\
- 	static struct kernel_param __moduleparam_const __param_##name	\
- 	__used								\
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index f024533d34a9..bccb959d8210 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -803,13 +803,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
+ 		skb = new_skb;
+ no_new:
+ 		if (rtlpriv->use_new_trx_flow) {
+-			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
+-						 rxring_idx,
+-						 rtlpci->rx_ring[rxring_idx].idx);
++			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
++						      rxring_idx,
++						      rtlpci->rx_ring[rxring_idx].idx)) {
++				if (new_skb)
++					dev_kfree_skb_any(skb);
++			}
+ 		} else {
+-			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
+-						 rxring_idx,
+-						 rtlpci->rx_ring[rxring_idx].idx);
++			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
++						      rxring_idx,
++						      rtlpci->rx_ring[rxring_idx].idx)) {
++				if (new_skb)
++					dev_kfree_skb_any(skb);
++			}
+ 			if (rtlpci->rx_ring[rxring_idx].idx ==
+ 			    rtlpci->rxringcount - 1)
+ 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
 -- 
 2.39.5
 
