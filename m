@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DD4B368A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9D3B35B00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81DC562C35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768497C2CDF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787CF352FCC;
-	Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4221F2BE7A7;
+	Tue, 26 Aug 2025 11:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4f2cmni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sf4Lkmw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36600342CA7;
-	Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F032E29B8CF;
+	Tue, 26 Aug 2025 11:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217287; cv=none; b=GsLw4H20J8WcXZHP/t/Xaxfa8q705b55Jreg5zECB9wkRx9ScO6i672pfCJ8KAH41Grstu6VwshKEsBjvg7It9vrJ2wEOcYRHi1Z2Fxa0KkCsxK8EzNirl5iT+e+syVa1vF4nT2Qv9Y63Vdw3VqIVa9CGmZclBdJYS8TUjW781I=
+	t=1756207020; cv=none; b=puD72HIkxtPw2t0i7n9mWmytcwwqRu5S5iO5DY0ROO5zzRM9TDHOrz2NaSZHqKgaA/mkyhf44RoyfjLEMEPUcPKeRhJhTh+gd0brilLEjxYtvmagszpp47ZqXbbhGOlF68yAYOZqJ3D+xN8kqpUY/WgQNJhChHQCl9bwO4oBISA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217287; c=relaxed/simple;
-	bh=ckKSXb9uDHQGtor+t12RmAzhWFr42scmMcYyrSuOrto=;
+	s=arc-20240116; t=1756207020; c=relaxed/simple;
+	bh=sR8vx/h/02PTdfwHoSNb1iuWHMiXLQiVeRDBDZIHeKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRVxxeM30IMdkw1Jgw3ubyAIuEPNzHxhLfWrUYzny04DyDHns3D1m04fqwVafHBgv8kuSxmyWAsHwgjEDywmgaJ5T+tDBmaNzng0yDRJhQFpb0AzevqVFzozid8DknxxxGAw8FMIcokf8xGC0oPGYmYjUrf+eEmCLL38HbAO5P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4f2cmni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE99C116B1;
-	Tue, 26 Aug 2025 14:08:06 +0000 (UTC)
+	 MIME-Version; b=vDJee/pN4r5JVcbH2U6Ocy4PtQGRcNET2Zanof+TmZLphtypksKYAnZWggwbFlgQ49OPVMvisk5emvyXIe63uNsc/l0inqEglVYq2MN3yBSM61KH3d+Ht0u66ect8KD3yFtDkvn0oJTunNsMiBEUPc9IiDfgeLFe6D7i7VNugWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sf4Lkmw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293D0C4CEF1;
+	Tue, 26 Aug 2025 11:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217287;
-	bh=ckKSXb9uDHQGtor+t12RmAzhWFr42scmMcYyrSuOrto=;
+	s=korg; t=1756207019;
+	bh=sR8vx/h/02PTdfwHoSNb1iuWHMiXLQiVeRDBDZIHeKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4f2cmni6Qxx/qjHRqdoJ4vHyIs4vVqOmTYRiCxibREgO5CTqk6C5uCqYcbQDwBVM
-	 c2Y/3Id5RVqt+FMjra2sgRafvBJFISyIjhfnrJn3aWoSSr7O44JYIFZD/2+q8VC0I2
-	 Sr4z4MQKFc9JsBZUU4x4A/AsrCIzTEDwHVujTUsw=
+	b=sf4Lkmw33mosi5zm1GP5JvVJImTj+4la/zK3Y8q8jiPDAdz8ECyvfff/Juz/ebqM2
+	 9R3PT8IkTXsZKo5WbUAvawzHYidMpsDymRiCdpTGy+Qj9vGzgYxGdZaFzeMM3ob/59
+	 KcxaT0MA8lvgK12FqE04+iHF4gH6or5y/0qj/FAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/523] usb: early: xhci-dbc: Fix early_ioremap leak
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.16 012/457] usb: musb: omap2430: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:04:56 +0200
-Message-ID: <20250826110926.676553132@linuxfoundation.org>
+Message-ID: <20250826110937.620337882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2b7eec2ec3015f52fc74cf45d0408925e984ecd1 ]
+commit 1473e9e7679bd4f5a62d1abccae894fb86de280f upstream.
 
-Using the kernel param earlyprintk=xdbc,keep without proper hardware
-setup leads to this:
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-	[ ] xhci_dbc:early_xdbc_parse_parameter: dbgp_num: 0
-	...
-	[ ] xhci_dbc:early_xdbc_setup_hardware: failed to setup the connection to host
-	...
-	[ ] calling  kmemleak_late_init+0x0/0xa0 @ 1
-	[ ] kmemleak: Kernel memory leak detector initialized (mem pool available: 14919)
-	[ ] kmemleak: Automatic memory scanning thread started
-	[ ] initcall kmemleak_late_init+0x0/0xa0 returned 0 after 417 usecs
-	[ ] calling  check_early_ioremap_leak+0x0/0x70 @ 1
-	[ ] ------------[ cut here ]------------
-	[ ] Debug warning: early ioremap leak of 1 areas detected.
-	    please boot with early_ioremap_debug and report the dmesg.
-	[ ] WARNING: CPU: 11 PID: 1 at mm/early_ioremap.c:90 check_early_ioremap_leak+0x4e/0x70
-
-When early_xdbc_setup_hardware() fails, make sure to call
-early_iounmap() since xdbc_init() won't handle it.
-
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Fixes: aeb9dd1de98c ("usb/early: Add driver for xhci debug capability")
-Link: https://lore.kernel.org/r/20250627-xdbc-v1-1-43cc8c317b1b@intel.com
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/early/xhci-dbc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/musb/omap2430.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
-index 6c0434100e38..7f832c98699c 100644
---- a/drivers/usb/early/xhci-dbc.c
-+++ b/drivers/usb/early/xhci-dbc.c
-@@ -679,6 +679,10 @@ int __init early_xdbc_setup_hardware(void)
- 
- 		xdbc.table_base = NULL;
- 		xdbc.out_buf = NULL;
-+
-+		early_iounmap(xdbc.xhci_base, xdbc.xhci_length);
-+		xdbc.xhci_base = NULL;
-+		xdbc.xhci_length = 0;
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -400,7 +400,7 @@ static int omap2430_probe(struct platfor
+ 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err2;
++		goto err_put_control_otghs;
  	}
  
- 	return ret;
--- 
-2.39.5
-
+ 	if (populate_irqs) {
+@@ -413,7 +413,7 @@ static int omap2430_probe(struct platfor
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (!res) {
+ 			ret = -EINVAL;
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
+ 
+ 		musb_res[i].start = res->start;
+@@ -441,14 +441,14 @@ static int omap2430_probe(struct platfor
+ 		ret = platform_device_add_resources(musb, musb_res, i);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
+ 	}
+ 
+ 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	pm_runtime_enable(glue->dev);
+@@ -463,7 +463,9 @@ static int omap2430_probe(struct platfor
+ 
+ err3:
+ 	pm_runtime_disable(glue->dev);
+-
++err_put_control_otghs:
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ err2:
+ 	platform_device_put(musb);
+ 
+@@ -477,6 +479,8 @@ static void omap2430_remove(struct platf
+ 
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ }
+ 
+ #ifdef CONFIG_PM
 
 
 
