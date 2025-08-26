@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337CDB36497
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1B4B35DE6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B15D56452C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB401BA7175
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A963376A5;
-	Tue, 26 Aug 2025 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333F8239573;
+	Tue, 26 Aug 2025 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXNnFvqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8gIKcsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A881A76B1;
-	Tue, 26 Aug 2025 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5913202F7B;
+	Tue, 26 Aug 2025 11:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215009; cv=none; b=ca5mnCM8GK2E83nuklZTtdjBfo/DOKnQh1RH35BnYNlkJGNWbRyPILn+OG4ztGbIbBh4pt1KTUDnwS+waEjl+ptaEfjKjxvXyWjmdH71tgV7/H2N1sRIok1iafBpt+ZKp3sjvuMwVpCkspeEcE9YiG6zyyWcEhCH3IpIWnHetos=
+	t=1756208564; cv=none; b=eGpoTOWBmqupiz2ICNvI+7rFySetuc4gvxEmCCYelRGca+tCVM+3qyX4vJxFDe0wVqybyABnLT/+9ai7V9Vo5V0XflJS01/d+zrHd8kSgRJZozbFaQWC9HLDrjgxGPSt+xrTqUqKmSIl4AbT1y7oXc6/AIXfeif0UJTaAD7MyEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215009; c=relaxed/simple;
-	bh=XVAkfETrq00uCCcCdyPcebJSHn+wFPIhuH7S0HS5+to=;
+	s=arc-20240116; t=1756208564; c=relaxed/simple;
+	bh=OMPrHNTvZx1B9W1MPxv/m7RQdqxP3DJoP2e5nk2bUaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsgnYOkyKEQaaw6CIulWbOdXeUQ06CYLmYYSjTmi4SrLUJ9XWHJNfma/N+q5rTcDHTQqb7OMJBQCBl49JllInPk57lJVI3k+m9R8vQfxYCc8fV7m9etMOJ1AJbqchCNE9twSi/2yK2OelerMLSvcUeALFau0H4yN3Z/LTlizZd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXNnFvqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E7CC4CEF1;
-	Tue, 26 Aug 2025 13:30:08 +0000 (UTC)
+	 MIME-Version; b=i4dQZPZ+ZP1n4rk9EXHcfd+PkXulTUrLYb+I50ruCY0DS0ti0wN/to4pSnUnJ0cVUxxQfGGti8Gh/BwXdgUY0TpCAnuax2U0ahMyGStI5txKVQo2PNQt5vM3VvCbThQ6e1Q8U41BrYzuWGdeSQPgqqaqdhjJMwaxiz0MDC1EL+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8gIKcsK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5D8C4CEF4;
+	Tue, 26 Aug 2025 11:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215008;
-	bh=XVAkfETrq00uCCcCdyPcebJSHn+wFPIhuH7S0HS5+to=;
+	s=korg; t=1756208563;
+	bh=OMPrHNTvZx1B9W1MPxv/m7RQdqxP3DJoP2e5nk2bUaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXNnFvqtK8zgWiS9ztnPNMrCd+6C/+Kf/in8t2VRcO6QsjMxMZHlilpUlUkUGrVQe
-	 EaqtNNpe9kZGn1Xh2fTDYZTtq9QcF3lwEmn5P0NBT2qNsCcsbaTG9GWUrzwAU+Zt10
-	 SwxwlQXfakhDUyQwiHodYO/egy/V2CarUzO3e2lU=
+	b=u8gIKcsKTxDjolEtW6TupbiuSx5apjW3XoEBd0UYxPrVt7QieK81ZxYWNLSfIf5/F
+	 Fg/WWIH3FWw7Xw3C/SJlY13XqYdwxbGeLErf8bb6OcI06GkQv7xYL1+X8nHAB2ATuX
+	 BPWmcGQELLWxxeG2rRV5PJeOHGCqKTk9jOGL12IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 321/482] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+	pt x <superman.xpt@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 159/322] io_uring/net: commit partial buffers on retry
 Date: Tue, 26 Aug 2025 13:09:34 +0200
-Message-ID: <20250826110938.739805906@linuxfoundation.org>
+Message-ID: <20250826110919.746897136@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
+commit 41b70df5b38bc80967d2e0ed55cc3c3896bba781 upstream.
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+Ring provided buffers are potentially only valid within the single
+execution context in which they were acquired. io_uring deals with this
+and invalidates them on retry. But on the networking side, if
+MSG_WAITALL is set, or if the socket is of the streaming type and too
+little was processed, then it will hang on to the buffer rather than
+recycle or commit it. This is problematic for two reasons:
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
+1) If someone unregisters the provided buffer ring before a later retry,
+   then the req->buf_list will no longer be valid.
+
+2) If multiple sockers are using the same buffer group, then multiple
+   receives can consume the same memory. This can cause data corruption
+   in the application, as either receive could land in the same
+   userspace buffer.
+
+Fix this by disallowing partial retries from pinning a provided buffer
+across multiple executions, if ring provided buffers are used.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: pt x <superman.xpt@gmail.com>
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/net.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -914,7 +914,7 @@ imx_media_csc_scaler_device_init(struct
- 	return &priv->vdev;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -498,6 +498,15 @@ static int io_bundle_nbufs(struct io_asy
+ 	return nbufs;
+ }
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
++static int io_net_kbuf_recyle(struct io_kiocb *req,
++			      struct io_async_msghdr *kmsg, int len)
++{
++	req->flags |= REQ_F_BL_NO_RECYCLE;
++	if (req->flags & REQ_F_BUFFERS_COMMIT)
++		io_kbuf_commit(req, req->buf_list, len, io_bundle_nbufs(kmsg, len));
++	return -EAGAIN;
++}
++
+ static inline bool io_send_finish(struct io_kiocb *req, int *ret,
+ 				  struct io_async_msghdr *kmsg,
+ 				  unsigned issue_flags)
+@@ -566,8 +575,7 @@ int io_sendmsg(struct io_kiocb *req, uns
+ 			kmsg->msg.msg_controllen = 0;
+ 			kmsg->msg.msg_control = NULL;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -664,8 +672,7 @@ retry_bundle:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1068,8 +1075,7 @@ retry_multishot:
+ 		}
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1211,8 +1217,7 @@ retry_multishot:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1441,8 +1446,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 			zc->len -= ret;
+ 			zc->buf += ret;
+ 			zc->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1502,8 +1506,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
+ 
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
 
 
 
