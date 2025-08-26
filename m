@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7721AB360BB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E7CB36959
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84FCF3BFF23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5F87564D71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7167421D3EA;
-	Tue, 26 Aug 2025 12:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481D034DCCB;
+	Tue, 26 Aug 2025 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG7uVjW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJYgog2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF3F85260;
-	Tue, 26 Aug 2025 12:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042B634166B;
+	Tue, 26 Aug 2025 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213166; cv=none; b=fwElU2l+Qr9KKRCTSnFfLi7wFjGunwx84UxmNLt9cqcmUl1b9G8wIrpff3XTUrPsdWomiJaOvdvHruVQhR3f9EXisLxBvIZhQR5BMpHPZFK7gZU2QVcoA1HMxb0x4Kx7HRLUchYY4v0bhcC9VP+v34Os9+gyxsQ7jPpy9832fhU=
+	t=1756217546; cv=none; b=SqjbQF93xZSy7U6OBgQOjEq/W5zWBD87D+guBdzPRrTMz9ZV3w7un//ftvzkAOyT342xykcEVvS4xfCjpYYjhEx6kP1vnZn3Q/0yZJXPKbePhDrY1oju3k8Ea5CNurg/oPIKXMqSRzz9l44FpeHfiw2p7u6Yy+OVB6n9zlzzatQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213166; c=relaxed/simple;
-	bh=/LEUUyG9Aw+jaeEh8ALoeceBmPZ6h2xPmAGsSUVkACI=;
+	s=arc-20240116; t=1756217546; c=relaxed/simple;
+	bh=NGKXUmWAsqDN691CrXuUy3zmeOs5E7HG6/Q5llgm3M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUXWL2FXUy1BXnb3RoR9vt5+WMYgZPLlW24ATvjx+GGfULIayqiL6bLAdsduS+deyWu1WtiP7I6FJxODl3k9Pv5iJYS+xbjTG8uPLN5jxOz4t9yYARcbxlLrc4MDn/ueLSBngiXNIXDviOAx52hIO1ZfbZHaDlCVlvIngQPaBhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG7uVjW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE41EC4CEF1;
-	Tue, 26 Aug 2025 12:59:25 +0000 (UTC)
+	 MIME-Version; b=d1gYNLNAIsTUx/6bINYm3teEy70SiKisGdWZGkBRUFe+7FeulGGJ2MGnlIcNFVDBIlwr/M6HUWHGdEkUqrPuOW1K3mzxaKc3Brzo5UA72nSK8cbvlBNnVXsOGjZ+J4nJmLPskQch06ZiR64yYLuvXj2ZGDKTpDZTq9yDQEhvp8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJYgog2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F91AC113D0;
+	Tue, 26 Aug 2025 14:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213166;
-	bh=/LEUUyG9Aw+jaeEh8ALoeceBmPZ6h2xPmAGsSUVkACI=;
+	s=korg; t=1756217545;
+	bh=NGKXUmWAsqDN691CrXuUy3zmeOs5E7HG6/Q5llgm3M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZG7uVjW+pwSMsuNcrSZNOlV5zRH4uwg+QUUEdCetxPHHDqVi0+Nw9aiovmF/KRjt1
-	 n0JrBxB4IgOrV0b7QO7jsCsZKrCRl0vLa+i/YCArVBcnMzDp578qGL7xHOsDaQIcbQ
-	 VT328zzMzgNtbtncULnTat8HyaKftwkZRDbpK0Js=
+	b=fJYgog2F9igHClLRGMMxw26rVq7WP180pZuNvYNhHmNatakY1E5btx1Lft7Qt3isL
+	 pRUBs0neeCWPZY/KnZqDesTCc1pmI3uGFMk5F5vfDwVMYDlpQr7x/IhLnBYo59o5BV
+	 wRUU0xcDl5byNajraTu88JbiuHyijI+2m6qab3nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/587] RDMA/core: reduce stack using in nldev_stat_get_doit()
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 5.10 184/523] perf/core: Exit early on perf_mmap() fail
 Date: Tue, 26 Aug 2025 13:06:34 +0200
-Message-ID: <20250826110959.163683953@linuxfoundation.org>
+Message-ID: <20250826110928.992789415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+When perf_mmap() fails to allocate a buffer, it still invokes the
+event_mapped() callback of the related event. On X86 this might increase
+the perf_rdpmc_allowed reference counter. But nothing undoes this as
+perf_mmap_close() is never called in this case, which causes another
+reference count leak.
 
-The result is a function with an overly large stack frame and a warning:
+Return early on failure to prevent that.
 
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
-
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ kernel/events/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 6d1dbc978759..a94723a12bb4 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1412,10 +1412,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6413,6 +6413,9 @@ aux_unlock:
+ 		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
  
- };
- 
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
- {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -2153,10 +2154,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
- 
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
- {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -2246,8 +2247,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
- 
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
- 
- {
- 	static enum rdma_nl_counter_mode mode;
--- 
-2.39.5
-
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+ 	 * vma.
 
 
 
