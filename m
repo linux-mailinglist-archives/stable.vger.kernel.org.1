@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A802CB35E25
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E58B367AA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4678C1BC287E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC7811C23D05
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7912BF002;
-	Tue, 26 Aug 2025 11:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB5533439F;
+	Tue, 26 Aug 2025 13:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdzUhez6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exm7peat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1D1393DD1;
-	Tue, 26 Aug 2025 11:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B16034DCF5;
+	Tue, 26 Aug 2025 13:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208684; cv=none; b=VK5HQGtQ8D/Yg7n+oHkbS3OVzWgYlgiOEQwGSor1QiN4VtX9wIBd0RQpoM1bF0OiFCmTY6315gU7yhqPgKKLd8uw7Wxt5XUGp9FTJFOw76a9FeQvZ0YqUtHLvXM7xFwlD6j9Hn8b9LBHSN9sHQoVYRpeh3l2WTTfRQvG488g4Uk=
+	t=1756216674; cv=none; b=gm03iEB7l7822F5ShpfQMtx3kw62x3/FsY47Yg+L6BuugBuBKQVII0nyQt9irNWPrZisW0XL8mlrkzGiVmBXtNjUoVDhtTRpodTq1Clp1LJDJIhRPdfQWbfM1Cux5RYBrMlFsZ7PY9nCpQob0BIKtqAOZAy2fK/e/A5FALCEPNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208684; c=relaxed/simple;
-	bh=GHP+vy+1urwYi59M4ioM2jjdq4dSsc0c/HP8WG9YPhQ=;
+	s=arc-20240116; t=1756216674; c=relaxed/simple;
+	bh=oSgF4o/Tu8p6jmkoGRL8E2FcbHiBf6Gfj1iXq/QP25g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKqd2mvvSns84bLfv731NNZcfOfrmeBqwLtAnEX6U0ZXvs5oahLMg/p8vO8eu6QTr1sHjcfjK2CP4wWVANt4xzwW19KlyFiQn6ixmniPF6DnQTlF+NX4iFAyxZ71eWflVbptwjxztp2/XMHAL0nJt533RCG3R2POGcg0lAZKqjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdzUhez6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2DEC4CEF1;
-	Tue, 26 Aug 2025 11:44:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ERFVSW5M+q33o491KSVFAUYpLjXc2LrKlZKktI4Ps1twJfM1eqH4x7QgJVxkmsD6OmPGXk4rBvJ7XxvwyBWzt6pXC1yMijK/G0DAbQFFdFuouMUu3ljXkbyfT9C2WTn+3ahqQXWmhDyip6ujoGiOfMKjJWGpvYV7Rz+bxktiuS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exm7peat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B297C4CEF1;
+	Tue, 26 Aug 2025 13:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208683;
-	bh=GHP+vy+1urwYi59M4ioM2jjdq4dSsc0c/HP8WG9YPhQ=;
+	s=korg; t=1756216674;
+	bh=oSgF4o/Tu8p6jmkoGRL8E2FcbHiBf6Gfj1iXq/QP25g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdzUhez6Ac0m5Kn9GCbPfQIcvERIiu8RwTPgWwxJh+cgTtNHDJ43ibe/PhPHk7Qb5
-	 8G2j6hRuo82DIt+Xx8XvBy2wNE8/2q3hkW2XKuk1YILxL5qHTGw2Lqktz1Ij6P+tXu
-	 0mtRrGf4lEPfnuU4KLyt9fgIRdFZqr4R40eFluEc=
+	b=exm7peatI2QEt0KcWSOGI5wKJ+gfIkmcbufAAlV+iO3nn9d/iN1TcGIkXDkBvMHbK
+	 K9CjVPZK7QVmhqsWf18i2x8agyLjb/R8aL9rk4FMvFT9S7wBvKy2d6M4RMCMAxnBed
+	 KwUfWTJYS7dIkhzvfTKa2EjZaFfjbx65xTCAQSd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8425ccfb599521edb153@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.12 175/322] RDMA/rxe: Flush delayed SKBs while releasing RXE resources
+	stable@kernel.org,
+	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
+	Jakub Acs <acsjakub@amazon.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 499/644] net, hsr: reject HSR frame if skb cant hold tag
 Date: Tue, 26 Aug 2025 13:09:50 +0200
-Message-ID: <20250826110920.181663427@linuxfoundation.org>
+Message-ID: <20250826110958.861385773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +62,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Jakub Acs <acsjakub@amazon.de>
 
-commit 3c3e9a9f2972b364e8c2cfbfdeb23c6d6be4f87f upstream.
+commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
 
-When skb packets are sent out, these skb packets still depends on
-the rxe resources, for example, QP, sk, when these packets are
-destroyed.
+Receiving HSR frame with insufficient space to hold HSR tag in the skb
+can result in a crash (kernel BUG):
 
-If these rxe resources are released when the skb packets are destroyed,
-the call traces will appear.
+[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
+[   45.392559] ------------[ cut here ]------------
+[   45.392912] kernel BUG at net/core/skbuff.c:211!
+[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
+[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
 
-To avoid skb packets hang too long time in some network devices,
-a timestamp is added when these skb packets are created. If these
-skb packets hang too long time in network devices, these network
-devices can free these skb packets to release rxe resources.
+<snip registers, remove unreliable trace>
 
-Reported-by: syzbot+8425ccfb599521edb153@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8425ccfb599521edb153
-Tested-by: syzbot+8425ccfb599521edb153@syzkaller.appspotmail.com
-Fixes: 1a633bdc8fd9 ("RDMA/rxe: Let destroy qp succeed with stuck packet")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250726013104.463570-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[   45.402911] Call Trace:
+[   45.403105]  <IRQ>
+[   45.404470]  skb_push+0xcd/0xf0
+[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
+[   45.406513]  br_forward_finish+0x128/0x260
+[   45.408483]  __br_forward+0x42d/0x590
+[   45.409464]  maybe_deliver+0x2eb/0x420
+[   45.409763]  br_flood+0x174/0x4a0
+[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
+[   45.411618]  br_handle_frame+0xac3/0x1230
+[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
+[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
+[   45.424478]  __netif_receive_skb+0x22/0x170
+[   45.424806]  process_backlog+0x242/0x6d0
+[   45.425116]  __napi_poll+0xbb/0x630
+[   45.425394]  net_rx_action+0x4d1/0xcc0
+[   45.427613]  handle_softirqs+0x1a4/0x580
+[   45.427926]  do_softirq+0x74/0x90
+[   45.428196]  </IRQ>
+
+This issue was found by syzkaller.
+
+The panic happens in br_dev_queue_push_xmit() once it receives a
+corrupted skb with ETH header already pushed in linear data. When it
+attempts the skb_push() call, there's not enough headroom and
+skb_push() panics.
+
+The corrupted skb is put on the queue by HSR layer, which makes a
+sequence of unintended transformations when it receives a specific
+corrupted HSR frame (with incomplete TAG).
+
+Fix it by dropping and consuming frames that are not long enough to
+contain both ethernet and hsr headers.
+
+Alternative fix would be to check for enough headroom before skb_push()
+in br_dev_queue_push_xmit().
+
+In the reproducer, this is injected via AF_PACKET, but I don't easily
+see why it couldn't be sent over the wire from adjacent network.
+
+Further Details:
+
+In the reproducer, the following network interface chain is set up:
+
+┌────────────────┐   ┌────────────────┐
+│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
+└────────────────┘   └────────────────┘   │
+                                          │ ┌──────┐
+                                          ├─┤ hsr0 ├───┐
+                                          │ └──────┘   │
+┌────────────────┐   ┌────────────────┐   │            │┌────────┐
+│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
+└────────────────┘   └────────────────┘                ┌┼ bridge │
+                                                       ││        │
+                                                       │└────────┘
+                                                       │
+                                        ┌───────┐      │
+                                        │  ...  ├──────┘
+                                        └───────┘
+
+To trigger the events leading up to crash, reproducer sends a corrupted
+HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
+
+The first HSR-layer function to process this frame is
+hsr_handle_frame(). It and then checks if the
+protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
+skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
+the skb is long enough. For the crashing frame it is not, and hence the
+skb->network_header and skb->mac_len fields are set incorrectly,
+pointing after the end of the linear buffer.
+
+I will call this a BUG#1 and it is what is addressed by this patch. In
+the crashing scenario before the fix, the skb continues to go down the
+hsr path as follows.
+
+hsr_handle_frame() then calls this sequence
+hsr_forward_skb()
+  fill_frame_info()
+    hsr->proto_ops->fill_frame_info()
+      hsr_fill_frame_info()
+
+hsr_fill_frame_info() contains a check that intends to check whether the
+skb actually contains the HSR header. But the check relies on the
+skb->mac_len field which was erroneously setup due to BUG#1, so the
+check passes and the execution continues  back in the hsr_forward_skb():
+
+hsr_forward_skb()
+  hsr_forward_do()
+    hsr->proto_ops->get_untagged_frame()
+      hsr_get_untagged_frame()
+        create_stripped_skb_hsr()
+
+In create_stripped_skb_hsr(), a copy of the skb is created and is
+further corrupted by operation that attempts to strip the HSR tag in a
+call to __pskb_copy().
+
+The skb enters create_stripped_skb_hsr() with ethernet header pushed in
+linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
+ethernet header into the headroom, creating skb_in with a headroom of
+size 8. The subsequent __pskb_copy() then creates an skb with headroom
+of just 2 and skb->len of just 12, this is how it looks after the copy:
+
+gdb) p skb->len
+$10 = 12
+(gdb) p skb->data
+$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
+(gdb) p skb->head
+$12 = (unsigned char *) 0xffff888041e45380 ""
+
+It seems create_stripped_skb_hsr() assumes that ETH header is pulled
+in the headroom when it's entered, because it just pulls HSR header on
+top. But that is not the case in our code-path and we end up with the
+corrupted skb instead. I will call this BUG#2
+
+*I got confused here because it seems that under no conditions can
+create_stripped_skb_hsr() work well, the assumption it makes is not true
+during the processing of hsr frames - since the skb_push() in
+hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
+missed something here.*
+
+Next, the execution arrives in hsr_deliver_master(). It calls
+skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
+enough space for the pull (as it only has 12 bytes in total at this
+point).
+
+*The skb_pull() here further suggests that ethernet header is meant
+to be pushed through the whole hsr processing and
+create_stripped_skb_hsr() should pull it before doing the HSR header
+pull.*
+
+hsr_deliver_master() then puts the corrupted skb on the queue, it is
+then picked up from there by bridge frame handling layer and finally
+lands in br_dev_queue_push_xmit where it panics.
+
+Cc: stable@kernel.org
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_net.c | 29 ++++++++---------------------
- drivers/infiniband/sw/rxe/rxe_qp.c  |  2 +-
- 2 files changed, 9 insertions(+), 22 deletions(-)
+ net/hsr/hsr_slave.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
-index 132a87e52d5c..ac0183a2ff7a 100644
---- a/drivers/infiniband/sw/rxe/rxe_net.c
-+++ b/drivers/infiniband/sw/rxe/rxe_net.c
-@@ -345,33 +345,15 @@ int rxe_prepare(struct rxe_av *av, struct rxe_pkt_info *pkt,
- 
- static void rxe_skb_tx_dtor(struct sk_buff *skb)
- {
--	struct net_device *ndev = skb->dev;
--	struct rxe_dev *rxe;
--	unsigned int qp_index;
--	struct rxe_qp *qp;
-+	struct rxe_qp *qp = skb->sk->sk_user_data;
- 	int skb_out;
- 
--	rxe = rxe_get_dev_from_net(ndev);
--	if (!rxe && is_vlan_dev(ndev))
--		rxe = rxe_get_dev_from_net(vlan_dev_real_dev(ndev));
--	if (WARN_ON(!rxe))
--		return;
--
--	qp_index = (int)(uintptr_t)skb->sk->sk_user_data;
--	if (!qp_index)
--		return;
--
--	qp = rxe_pool_get_index(&rxe->qp_pool, qp_index);
--	if (!qp)
--		goto put_dev;
--
- 	skb_out = atomic_dec_return(&qp->skb_out);
--	if (qp->need_req_skb && skb_out < RXE_INFLIGHT_SKBS_PER_QP_LOW)
-+	if (unlikely(qp->need_req_skb &&
-+		skb_out < RXE_INFLIGHT_SKBS_PER_QP_LOW))
- 		rxe_sched_task(&qp->send_task);
- 
- 	rxe_put(qp);
--put_dev:
--	ib_device_put(&rxe->ib_dev);
- 	sock_put(skb->sk);
- }
- 
-@@ -383,6 +365,7 @@ static int rxe_send(struct sk_buff *skb, struct rxe_pkt_info *pkt)
- 	sock_hold(sk);
- 	skb->sk = sk;
- 	skb->destructor = rxe_skb_tx_dtor;
-+	rxe_get(pkt->qp);
- 	atomic_inc(&pkt->qp->skb_out);
- 
- 	if (skb->protocol == htons(ETH_P_IP))
-@@ -405,6 +388,7 @@ static int rxe_loopback(struct sk_buff *skb, struct rxe_pkt_info *pkt)
- 	sock_hold(sk);
- 	skb->sk = sk;
- 	skb->destructor = rxe_skb_tx_dtor;
-+	rxe_get(pkt->qp);
- 	atomic_inc(&pkt->qp->skb_out);
- 
- 	if (skb->protocol == htons(ETH_P_IP))
-@@ -497,6 +481,9 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
- 		goto out;
- 	}
- 
-+	/* Add time stamp to skb. */
-+	skb->tstamp = ktime_get();
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -62,8 +62,14 @@ static rx_handler_result_t hsr_handle_fr
+ 	skb_push(skb, ETH_HLEN);
+ 	skb_reset_mac_header(skb);
+ 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
+-	    protocol == htons(ETH_P_HSR))
++	    protocol == htons(ETH_P_HSR)) {
++		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
++			kfree_skb(skb);
++			goto finish_consume;
++		}
 +
- 	skb_reserve(skb, hdr_len + LL_RESERVED_SPACE(ndev));
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
++	}
+ 	skb_reset_mac_len(skb);
  
- 	/* FIXME: hold reference to this netdev until life of this skb. */
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index f2af3e0aef35..95f1c1c2949d 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -244,7 +244,7 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
- 	err = sock_create_kern(&init_net, AF_INET, SOCK_DGRAM, 0, &qp->sk);
- 	if (err < 0)
- 		return err;
--	qp->sk->sk->sk_user_data = (void *)(uintptr_t)qp->elem.index;
-+	qp->sk->sk->sk_user_data = qp;
- 
- 	/* pick a source UDP port number for this QP based on
- 	 * the source QPN. this spreads traffic for different QPs
--- 
-2.50.1
-
+ 	hsr_forward_skb(skb, port);
 
 
 
