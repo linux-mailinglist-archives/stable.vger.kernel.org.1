@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1089B362AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3E0B36AD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91E82A79AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013F31C46479
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8573469FD;
-	Tue, 26 Aug 2025 13:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D57352FCB;
+	Tue, 26 Aug 2025 14:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USeyVYGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlPzlloF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB7A3469EC;
-	Tue, 26 Aug 2025 13:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7F334A325;
+	Tue, 26 Aug 2025 14:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213973; cv=none; b=cE17ywxlrG0GUsp3wgwgzD3Fs9+yToa8l36/PVOIV2ZQDWJgm2sm8C3blng8NlMg3w1v37ZJTvk+MziRbwxUN42ygDaLtc78ReHWphnaOZZh6JV72OBBm3Fj96IDU3pMAGoJiCw9nCntL3Zca/cfI8t0/m+htdWZeq23WKMCEKg=
+	t=1756218268; cv=none; b=jDQTTLUpow0l2Fn7ehs3dbvwGeMxbV8+UUywDwcKob33eccGf4WBO8fZSB1sLijzN8QlrYWzjO59zUal8Jj9n+3S+ep+VgXMSUUYy8Wzc6769xhEjuna+mmekEA3RMsbnhF/1Z0z06eHEoT1VA96A1pHlJ7qbKInGJmkqaTsCgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213973; c=relaxed/simple;
-	bh=5aYy8jbJv5fJSCTvfdVT3kfT2ezTzWspFJAwSXxhhx4=;
+	s=arc-20240116; t=1756218268; c=relaxed/simple;
+	bh=RuCyxreiVNR45pVurQgwPkssSpGKoCRrCKswga1hrXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7FqSGJ99WK1VdBGKmEC96y1pWDf9mFIyds+KTVc1o0OHBLYrOy62NE7+C24Nkc5DK+jKs6qyM41d+EDKmEoAI+9WmVBdICaWj2XgbxQT/kf8JwC51xJERa+lBAnDUCrKly0iWQsPRjKQzRqTwq353Xdg1jqd/qcFXgOplF/Mds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USeyVYGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5D3C113CF;
-	Tue, 26 Aug 2025 13:12:52 +0000 (UTC)
+	 MIME-Version; b=sjIYiwDI6FJ5te0TIi46/BUCZXvhVD3Hw74s+s7uzfXJFrDDX1SAxh1dDXcsREUZVpHzbGFIQ2qUmrEib7c/Hul4xMajbqBje67guYb7BSKO7ZLdx3G10jPqOPfx+adwvvzEDPE0FXlSAxssapFUfY/tiFKPqQudw9ecErrhAPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlPzlloF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0219CC4CEF1;
+	Tue, 26 Aug 2025 14:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213972;
-	bh=5aYy8jbJv5fJSCTvfdVT3kfT2ezTzWspFJAwSXxhhx4=;
+	s=korg; t=1756218268;
+	bh=RuCyxreiVNR45pVurQgwPkssSpGKoCRrCKswga1hrXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USeyVYGJHTPo50QJIJu1pHq0fkAj6Al2oru0/XFBC9EXCheZNSc+RD4TSNIJ9le4g
-	 fz6nL03PCM3UrC+wtgU0QR9585nUgQkITOpOur+bc9LOtTdWS0pBbwh77xuWSzks/x
-	 AUpn4MjtoHe8ujjAi35sUxCIOQFgM35sMEGiKm+0=
+	b=UlPzlloF6xv1Ct2XxXLWmuHaiJuyVlibr90Uunxep6A/C1I1eZRlSW0pj/ae8wbDm
+	 C6ZClJebA9f/YJroZCCmkdLfFqqz6OE9JoOz2TrgPdIbWlz6V8Rub4TsM5HwrE7vdf
+	 aDE4x8yLGU5gATLt2qptCsIyQQGOtpaWiP1EjJ1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Subject: [PATCH 6.6 518/587] cdx: Fix off-by-one error in cdx_rpmsg_probe()
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 457/523] NFS: Create an nfs4_server_set_init_caps() function
 Date: Tue, 26 Aug 2025 13:11:07 +0200
-Message-ID: <20250826111006.173402439@linuxfoundation.org>
+Message-ID: <20250826110935.719454645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-commit 300a0cfe9f375b2843bcb331bcfa7503475ef5dd upstream.
+[ Upstream commit 01dde76e471229e3437a2686c572f4980b2c483e ]
 
-In cdx_rpmsg_probe(), strscpy() is incorrectly called with the length of
-the source string (excluding the NUL terminator) rather than the size of
-the destination buffer. This results in one character less being copied
-from 'cdx_rpmsg_id_table[0].name' to 'chinfo.name'.
+And call it before doing an FSINFO probe to reset to the baseline
+capabilities before probing.
 
-Use the destination buffer size instead to ensure the name is copied
-correctly.
-
-Cc: stable <stable@kernel.org>
-Fixes: 2a226927d9b8 ("cdx: add rpmsg communication channel for CDX")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://lore.kernel.org/r/20250806090512.121260-2-thorsten.blum@linux.dev
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cdx/controller/cdx_rpmsg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfs/internal.h   |    1 +
+ fs/nfs/nfs4client.c |   33 +++++++++++++++++++--------------
+ fs/nfs/nfs4proc.c   |    2 ++
+ 3 files changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/cdx/controller/cdx_rpmsg.c b/drivers/cdx/controller/cdx_rpmsg.c
-index 04b578a0be17..61f1a290ff08 100644
---- a/drivers/cdx/controller/cdx_rpmsg.c
-+++ b/drivers/cdx/controller/cdx_rpmsg.c
-@@ -129,8 +129,7 @@ static int cdx_rpmsg_probe(struct rpmsg_device *rpdev)
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -222,6 +222,7 @@ extern struct nfs_client *
+ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct fs_context *);
++extern void nfs4_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(struct fs_context *);
+ extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
+ extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1025,6 +1025,24 @@ static void nfs4_session_limit_xasize(st
+ #endif
+ }
  
- 	chinfo.src = RPMSG_ADDR_ANY;
- 	chinfo.dst = rpdev->dst;
--	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name,
--		strlen(cdx_rpmsg_id_table[0].name));
-+	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name, sizeof(chinfo.name));
++void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++	/* Set the basic capabilities */
++	server->caps |= server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++			server->caps &= ~NFS_CAP_READDIRPLUS;
++	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
++		server->caps &= ~NFS_CAP_READ_PLUS;
++
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++}
++
+ static int nfs4_server_common_setup(struct nfs_server *server,
+ 		struct nfs_fh *mntfh, bool auth_probe)
+ {
+@@ -1044,20 +1062,7 @@ static int nfs4_server_common_setup(stru
+ 	if (error < 0)
+ 		goto out;
  
- 	cdx_mcdi->ept = rpmsg_create_ept(rpdev, cdx_rpmsg_cb, NULL, chinfo);
- 	if (!cdx_mcdi->ept) {
--- 
-2.50.1
-
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
+-		server->caps &= ~NFS_CAP_READ_PLUS;
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-
++	nfs4_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3934,6 +3934,8 @@ int nfs4_server_capabilities(struct nfs_
+ 		.interruptible = true,
+ 	};
+ 	int err;
++
++	nfs4_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 
 
 
