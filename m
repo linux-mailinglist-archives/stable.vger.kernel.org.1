@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D028B36902
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263A1B36083
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E662A766E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77583B6324
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF973469F4;
-	Tue, 26 Aug 2025 14:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BE414A4DB;
+	Tue, 26 Aug 2025 12:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqDc/XUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiUwZGVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9011DE8BE;
-	Tue, 26 Aug 2025 14:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850441B424F;
+	Tue, 26 Aug 2025 12:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217508; cv=none; b=fRDAVeWkQrQI76A4qwOW0rgnfjuu+hIpUTwRj9syK+6g+LNbCxcsPI4kynpVXMlJetvRpwq/jnq8z1lNxd73jeEg+yuIX8Vq92HGUDBXy3ZFszd1IciNW0cxg+FTxUxdxgzld2mOOQoSawe8zL0RX0A0VmH2Be07dY0tuDIbhAM=
+	t=1756213040; cv=none; b=Uom3JsXLAPy1GoSvd/gSVlhGH94bTYCLPM/nQdZpQjM8stXmYkJR48QG8N0hYfI278ri+TbrohC+i6CwOBeUxrGH5yIGFZ8yzHgKMz6p5yOr0fjHljQJ5jjoGCR4t5RKclNa53a3kRPOvmHp3QWttlJbXJVDOkYXUDP5utYsr1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217508; c=relaxed/simple;
-	bh=B9yC/2yEBlZCctgrHX+P8l+FBliUvTEn1B1u62Z/omg=;
+	s=arc-20240116; t=1756213040; c=relaxed/simple;
+	bh=gDCJ9UUXkbf7C0/25wf/MgHdfgDiwLi/B6UOzfH5Onk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lq2Ch5NID9aqB0Ulia/u/ceWBXoSqILlBIcnogXJqenE/F5tgJK1cg8vFUuVoOTzbVy348tXnXr0rDY/7vcCserSWq+DY9Nf2YAdEe/4uBYVz3xHI9raRZzeIB4Arkp8xkJFFIUOYxGvhSm12cwtQdfLeUogfGMsLRblLZ5iWug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqDc/XUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD98DC113CF;
-	Tue, 26 Aug 2025 14:11:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=STyTMQ7ZA/fiMgHCXJYdlKFaxFdM2M9CH98zjAMu2oXzNUYMRe4brQZ8Sie+d1xMFwdqHmvhs2yUJSwf1vtyHKPQSH0KIP4uqcCkTgILWdRAjyAI+1rwV9bN1k4Tm3LGsR37xjRMN7zfCp8xfH9zcJQTblcI37JpyxNhTvcmSwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiUwZGVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D47C4CEF1;
+	Tue, 26 Aug 2025 12:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217508;
-	bh=B9yC/2yEBlZCctgrHX+P8l+FBliUvTEn1B1u62Z/omg=;
+	s=korg; t=1756213040;
+	bh=gDCJ9UUXkbf7C0/25wf/MgHdfgDiwLi/B6UOzfH5Onk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqDc/XUnRezGdd1IlnUOe/P7v5UQxehq13mKMZiyOB/1f3mTSBaVDUq3vhY+zuLGB
-	 f4GUE7K5ksbx7J6xSdMk+1a/F0aspDgOmFDAx+1X801Fe9NeE/qqsYJCyRHT/NPmCE
-	 0/icy68+GiPLXQgHMF0VIzUE3CjPkk2jH4q9Lw9Q=
+	b=OiUwZGVO3Dpub76HDL1IQKv0YkK8ZLF/CuNoY54CbLlelKSO0NoWA50V+FbRcR+JJ
+	 4RUeFvg7P4f5E9mo4Y4vM6En2Mnxeb3XcOTlV0q+Fm15qwqYZhsqZpr8pVSQFQl7CV
+	 Aqn/sr/OHKhNyYSVcd8uU/+X1Es9obu36FMl47uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/523] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
+Subject: [PATCH 6.6 199/587] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
 Date: Tue, 26 Aug 2025 13:05:48 +0200
-Message-ID: <20250826110927.906094974@linuxfoundation.org>
+Message-ID: <20250826110958.003963254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
+[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
 
-The DMA map functions can fail and should be tested for errors.
+BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
+or writing it.
 
-In case of error, unmap the already mapped regions.
-
-Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index 65a7db8bb71b..94a12f3267c1 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	 */
- 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
-+		return ERR_PTR(-ENOMEM);
-+
- 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
-+		ret = -ENOMEM;
-+		goto err_unmap_src;
-+	}
-+
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 9e4d66b8ad39..5daefb60885e 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -561,6 +561,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
+ {
+ 	u16 reg;
  
- 	/* allocate coherent memory for hardware descriptors
- 	 * note: writecombine gives slightly better performance, but
-@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	mv_chan->dma_desc_pool_virt =
- 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
- 		       GFP_KERNEL);
--	if (!mv_chan->dma_desc_pool_virt)
--		return ERR_PTR(-ENOMEM);
-+	if (!mv_chan->dma_desc_pool_virt) {
-+		ret = -ENOMEM;
-+		goto err_unmap_dst;
-+	}
- 
- 	/* discover transaction capabilites from the platform data */
- 	dma_dev->cap_mask = cap_mask;
-@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_dma:
- 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
-+err_unmap_dst:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+err_unmap_src:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++	if (is5325(dev))
++		return;
 +
- 	return ERR_PTR(ret);
- }
+ 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
+ 	if (learning)
+ 		reg &= ~BIT(port);
+@@ -2062,7 +2065,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
+ 		     struct switchdev_brport_flags flags,
+ 		     struct netlink_ext_ack *extack)
+ {
+-	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
++	struct b53_device *dev = ds->priv;
++	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
++
++	if (!is5325(dev))
++		mask |= BR_LEARNING;
++
++	if (flags.mask & ~mask)
+ 		return -EINVAL;
  
+ 	return 0;
 -- 
 2.39.5
 
