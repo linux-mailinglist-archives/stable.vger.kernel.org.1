@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2EEB3626C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8395DB3673E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36FF18A0FC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9D007BE0FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66332144B;
-	Tue, 26 Aug 2025 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F079E352FF2;
+	Tue, 26 Aug 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSKK6CkK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3P3B16Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16202252900;
-	Tue, 26 Aug 2025 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE85D352FE7;
+	Tue, 26 Aug 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213933; cv=none; b=LusHjvxcr7zh8MOiwUZk4v0tH3+sCryaW034+N8J4ECHOq7bvrbZrBxU3xF2Em9kR1OxxaxqJQWSPlFZZCOazoLsb1pkV/B7VYOlfEvuc/voO3i2QPgCMZovQNZHNnT2ogQHtUAbTyQkjQfD9xzUBQg4hA8XFtAecpnqj/lrEq0=
+	t=1756216919; cv=none; b=dLNrXRk1tH4fVO+uxqZ/JCcd+U+Wj2esESEbEh2Syg+CnrcMpyIqBpUbookePO0ZuycmmI0dGDOy9/BIbBIP1GsI7/9Vb3AXXTjd+YzCYxG/en9cy9wVL9YUSO0UWQdfHvgmDd0zDvaBsd6yEZ7q4DL6v3FjuG/IVN8r0TlQv/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213933; c=relaxed/simple;
-	bh=0rGm+7WsAfPKyuPIXAZQC/khyJELsrtNGCg6O4tRLF0=;
+	s=arc-20240116; t=1756216919; c=relaxed/simple;
+	bh=Nd9Oz6gH3/Mj56TNyjvgAaWSOs1ir2dUmySTkb0CtTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mitl/2jEB8WfyB663DmHv9yyANMaD92FFpIcjuFz629yLI+LnL30haynel2LiIfRF2iNiK+oTVjANriUw7zslKOK0w/kUe+PKMC5PniF0nnZNJr0s7pQEh8Zkcfw/XIqUOFIwjWD6pU+pMONlQvwTDlnyLQ2q/Mkshm3xo8Zf6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSKK6CkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B4CC4CEF4;
-	Tue, 26 Aug 2025 13:12:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=drVpW17Tjv8jMT4vNpt5Re0jFuDGcrwt/6+SfPoG6/1wBahHQ5jleXUU4sEyMJ5z7SQdH7VLWKdYupwewF4gxyGKoIrKEmR7KgdOVoPXxqxTkKkM7UxLagYMET8RhhpTkUWyyisuE5dX2Q4nbTefb1vinimM5o2uEarZmbgjZ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3P3B16Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF69C113CF;
+	Tue, 26 Aug 2025 14:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213933;
-	bh=0rGm+7WsAfPKyuPIXAZQC/khyJELsrtNGCg6O4tRLF0=;
+	s=korg; t=1756216919;
+	bh=Nd9Oz6gH3/Mj56TNyjvgAaWSOs1ir2dUmySTkb0CtTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSKK6CkKZn8zHdynjfXLNSjxbzrYFOglnrmsUxyL0TViSGZdj65w4Xcn78XGqRrJn
-	 pJ88PE2bGZ1soLf/Zs9QhUaNP763EFYPbaAch9SKYve3aR96tuVukJvYgi9a/2WfwJ
-	 O6kT7adlsRy/0j8LvYhwzHdCkgdd0n/Px0OwOMVI=
+	b=o3P3B16QK79G1/ELsX6NP2T9KqwhYbukzkayL2sH0y7wXAYsIlgmHz4LGDgpsWo6j
+	 Ylgfvt5qPzY8qNhHP4qTn/DEeseX3kV8eQ1waWVR9m6ACynCuErWS4NRoASPrFErCQ
+	 HkFkZEOW6feSU+4cfWSPRNFD6yKAdzbpKmhKsIm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.6 534/587] powerpc/boot: Fix build with gcc 15
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 592/644] drm/amd/display: Dont overclock DCE 6 by 15%
 Date: Tue, 26 Aug 2025 13:11:23 +0200
-Message-ID: <20250826111006.592029116@linuxfoundation.org>
+Message-ID: <20250826111001.208125081@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 5a821e2d69e26b51b7f3740b6b0c3462b8cacaff upstream.
+[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
 
-Similar to x86 the ppc boot code does not build with GCC 15.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-Copy the fix from
-commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250331105722.19709-1-msuchanek@suse.de
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Cc: stable@vger.kernel.org
+[ `MIN` => `min` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -72,6 +72,7 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE
- BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -112,11 +112,9 @@ static void dce60_update_clocks(struct c
+ {
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
- BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
-+		   -std=gnu11 \
- 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		   -fno-strict-aliasing -O2 \
- 		   -msoft-float -mno-altivec -mno-vsx \
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
 
