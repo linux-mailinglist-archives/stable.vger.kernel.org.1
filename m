@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-174116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7367B3615F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62329B35BF4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056FD1BA7228
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B377C4429
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A98393DC5;
-	Tue, 26 Aug 2025 13:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207883093BA;
+	Tue, 26 Aug 2025 11:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fi/Di8Q/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGKGUAax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202DD1A256B;
-	Tue, 26 Aug 2025 13:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE8341653;
+	Tue, 26 Aug 2025 11:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213536; cv=none; b=XJMC1iZ8elHoWBooaxxpKiDjY2ICM/G4ZbR3af7S47dtIJvyzkQ5Q39VBlsVNlpOUGeoljJ/lMDqd9XspiZ0wAjPTQ5yPUgAOkrUvRjtjmep681uSXLFXjws8xVBi3UXsLZSld25Q1DXVf7WlFWrDJSOT2MDBS8JbktlKKsyUIc=
+	t=1756207693; cv=none; b=FCepdZfzRmexd0BkLRm71wTQ8gCVB4pCBAEPneGvGQGqRh89F9SpYCBO2C4MkglNZhpWckNUITmXevYYP5O82zMOb8HAmoEuG/DYHR36Ch9vGSd0jOyJDibA/5UQgqahVF8g2Aj79wth5fRLoZBi1P33yFaKfjESv4D/CbS+qxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213536; c=relaxed/simple;
-	bh=nQgg/JdPBvFf3Eu97PJ8JbQoCgE66rQz+emjok7hcls=;
+	s=arc-20240116; t=1756207693; c=relaxed/simple;
+	bh=HsKSYa2IszX4xu0PJmmvjvX+Xd28MMFwiJivlu65VPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T83zQ7I1WK3xAp/7XJGp0Z6Xp5KRwKT/IAH5rYBrIzdJqP2bvCOs53laDf+GhZsdN7MJQ28Jtf4YuAUuo0Zzl1dBF8It11CJIC8QYKK1SRdOd+w1BcjewJOS6hqBU9JrfoUssJDynfqRniEKMXlCa74gqE4qahnXm0vaYzg5qHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fi/Di8Q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9E7C116B1;
-	Tue, 26 Aug 2025 13:05:35 +0000 (UTC)
+	 MIME-Version; b=S84DI9sXHyvV3TGF2kh6R7gX7WgvJNouseNlT26qTVJxuFCidx1lsA7n+dhnJSmAXjCpwJ1nRH5ETjqBs4SP0Y0GwchHXiOPsbe505jykQLJjfRx/Ymd7cd5cZ00dDdh+ZTgpWY5xGbTcZvlJz2y+0eiIy4Hydr3NCt1ApwvywE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGKGUAax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED112C19422;
+	Tue, 26 Aug 2025 11:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213536;
-	bh=nQgg/JdPBvFf3Eu97PJ8JbQoCgE66rQz+emjok7hcls=;
+	s=korg; t=1756207693;
+	bh=HsKSYa2IszX4xu0PJmmvjvX+Xd28MMFwiJivlu65VPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fi/Di8Q/rZUwn0yQ5af48NYg4eI56IcKuLTAa7h/If3SC2XvSxk0UWXEuzS5rJwy6
-	 AST90uWRfYVT0xwNG34BBERSdbQEHM6ksoGdbVWFX4Ad5EPQEhYpYYzIAFCPSBJBeK
-	 dGRs9oqx8GKu3VUQOMsrrVFw8HedHpAyZg0UvCkc=
+	b=tGKGUAax6NGyj4udUigmPO6kj+7TuQcKUOLDbZ+1B5/vVa4wi+dL3YTXC6jRl890Y
+	 /KhGHULCaEaS5m8xhOxR3MKoxyXSnFAp10JQIOEnEds9S6i9PR4MGAWFrKGL8tSgtm
+	 HnsXiqCcMgTxIwcgvrS+XhvLYwMqzFUKBSHqQS1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.6 385/587] PCI: endpoint: Fix configfs group removal on driver teardown
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.16 250/457] ALSA: hda: tas2781: Fix wrong reference of tasdevice_priv
 Date: Tue, 26 Aug 2025 13:08:54 +0200
-Message-ID: <20250826111002.705957896@linuxfoundation.org>
+Message-ID: <20250826110943.542692322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
+commit 3f4422e7c9436abf81a00270be7e4d6d3760ec0e upstream.
 
-An endpoint driver configfs attributes group is added to the
-epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
-added group is not removed from this list when the attribute group is
-unregistered with pci_ep_cfs_remove_epf_group().
+During the conversion to unify the calibration data management, the
+reference to tasdevice_priv was wrongly set to h->hda_priv instead of
+h->priv.  This resulted in memory corruption and crashes eventually.
+Unfortunately it's a void pointer, hence the compiler couldn't know
+that it's wrong.
 
-Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
-to correctly remove the attribute group from the driver list.
-
-With this change, once the loop over all attribute groups in
-pci_epf_remove_cfs() completes, the driver epf_group list should be
-empty. Add a WARN_ON() to make sure of that.
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
+Fixes: 4fe238513407 ("ALSA: hda/tas2781: Move and unified the calibrated-data getting function for SPI and I2C into the tas2781_hda lib")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1248270
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250820051902.4523-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
- drivers/pci/endpoint/pci-epf-core.c |    1 +
- 2 files changed, 2 insertions(+)
+ sound/pci/hda/tas2781_hda_i2c.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -683,6 +683,7 @@ void pci_ep_cfs_remove_epf_group(struct
- 	if (IS_ERR_OR_NULL(group))
- 		return;
- 
-+	list_del(&group->group_entry);
- 	configfs_unregister_default_group(group);
- }
- EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -311,6 +311,7 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
-+	WARN_ON(!list_empty(&driver->epf_group));
- 	mutex_unlock(&pci_epf_mutex);
- }
- 
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -287,7 +287,7 @@ static int tas2563_save_calibration(stru
+ 	efi_char16_t efi_name[TAS2563_CAL_VAR_NAME_MAX];
+ 	unsigned long max_size = TAS2563_CAL_DATA_SIZE;
+ 	unsigned char var8[TAS2563_CAL_VAR_NAME_MAX];
+-	struct tasdevice_priv *p = h->hda_priv;
++	struct tasdevice_priv *p = h->priv;
+ 	struct calidata *cd = &p->cali_data;
+ 	struct cali_reg *r = &cd->cali_reg_array;
+ 	unsigned int offset = 0;
 
 
 
