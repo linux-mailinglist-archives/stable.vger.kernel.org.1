@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965C4B36B47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED56B366B1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D583585F39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2D68E5C3C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AE835CEB0;
-	Tue, 26 Aug 2025 14:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC698352078;
+	Tue, 26 Aug 2025 13:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5FqE/Zi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxV5Lkz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75F535CEA8;
-	Tue, 26 Aug 2025 14:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792EF352075;
+	Tue, 26 Aug 2025 13:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218656; cv=none; b=Fo6TmrZn7x40QZAz00NNobXlfV/Ces5lvlNbl3JYyQoID4kzz4T2TYuzMWWnyP087Lb8jCDgu15FSweqo8Vih+jGCkHsQDbVda9YiZsYtAKZklpFiOaS6zqzzkwNsa8tzCCvh6eaQNO22RvgwCjgIfAYmqMVrP+PhAxvSnbSqz4=
+	t=1756216108; cv=none; b=A7UqW6rmyT4yjoiRBe7pQ4PGGJhHrxYWAgAOsuqt4wdjkhdUup5atCLfu+yN7wAl78zY84X7RMUjtozP2Ag36V2rbdkAW4vqT/iiRB0cYYd1I+/o/CKDsRSNZSgXlfhtwF+I7Xa7yts7SCrxmNAgfEtPG56HjyhA2InyyV22YzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218656; c=relaxed/simple;
-	bh=j4BYwKZ9GCmka8qa2s2kHfBDnSfHtvf2cC4A97S5Y6s=;
+	s=arc-20240116; t=1756216108; c=relaxed/simple;
+	bh=XKivV2bdw/e+5BQ+J47gdELirbXaM1VgWpME9T+4RCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+0MuAoDXchr2D3cgRP4LuRfIn8EQHPhi+sO33QC+JlOiLn9gR57wezhwAxQq2BSxY5QyS7ykq7rqhWT0q4E5rU/JUYmJoJRbyjIbhzqfxFSEoQYDc60ZLv3uyIzelhyoGse1AXpCJC7Ch35w7AWUMf/DsmoNP4oU5RyFCzwTGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5FqE/Zi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD47C116D0;
-	Tue, 26 Aug 2025 14:30:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jADfdNUGt01X+/Mckqn4BCBqO5Jy3ZhXEWSnPn2+8KlfMY+H7vjQNuNzxUBHM5zfmlkXRNF6Z6t6S1Lh0lQVyF42jcdpe5PnwfyMNgKZxTx/or1dF701P45mVrrumz+6wn2NuirXZw1lbB5Z4KRwN7h6SOvEEx2j3b8+vVoPdng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxV5Lkz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DE6C116D0;
+	Tue, 26 Aug 2025 13:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218656;
-	bh=j4BYwKZ9GCmka8qa2s2kHfBDnSfHtvf2cC4A97S5Y6s=;
+	s=korg; t=1756216108;
+	bh=XKivV2bdw/e+5BQ+J47gdELirbXaM1VgWpME9T+4RCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5FqE/ZiMKYaAf+R5/bSEm1DMeDUBNJZXKQoK6Ks+OLl8zv4nWLfYZnFT+3HVSomf
-	 JDkmXlFunVczYcUAU6dpitfYtdwNchfd9M12zjEFYATwezdaSsOkTJrMC+J+Pce8z1
-	 E5SC/SAjk5RwGwPl/eqhBzUgBQWp3f5W51MIbKvg=
+	b=HxV5Lkz22WNl/6RyxO3IPZwBrUF6T2oBvos4ceHjK91FrkIoEh5aIgVh8A/F8lmCi
+	 NzKM0HStm5YJL3uOEcA2l1K9ycHUSDgY/W3Dx8NX8zTfKlBVrwi8kaST9dIt9/dmVa
+	 jVrXC9I079StU/IRROtcHMlDZBZaMaSUKtYFd0+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 052/403] net_sched: sch_sfq: move the limit validation
+	Sarah Newman <srn@prgmr.com>,
+	Lars Ellenberg <lars@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 287/644] drbd: add missing kref_get in handle_write_conflicts
 Date: Tue, 26 Aug 2025 13:06:18 +0200
-Message-ID: <20250826110907.298325078@linuxfoundation.org>
+Message-ID: <20250826110953.494470354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Sarah Newman <srn@prgmr.com>
 
-[ Upstream commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 ]
+[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
 
-It is not sufficient to directly validate the limit on the data that
-the user passes as it can be updated based on how the other parameters
-are changed.
+With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
+and handle write conflicts, so that even if you write to the same sector
+simultaneously on both nodes, they end up with the identical data once
+the writes are completed.
 
-Move the check at the end of the configuration update process to also
-catch scenarios where the limit is indirectly updated, for example
-with the following configurations:
+In handling "superseeded" writes, we forgot a kref_get,
+resulting in a premature drbd_destroy_device and use after free,
+and further to kernel crashes with symptoms.
 
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
+Relevance: No one should use DRBD as a random data generator, and apparently
+all users of "two-primaries" handle concurrent writes correctly on layer up.
+That is cluster file systems use some distributed lock manager,
+and live migration in virtualization environments stops writes on one node
+before starting writes on the other node.
 
-This fixes the following syzkaller reported crash:
+Which means that other than for "test cases",
+this code path is never taken in real life.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
-index 65535 is out of range for type 'struct sfq_head[128]'
-CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
- sfq_link net/sched/sch_sfq.c:203 [inline]
- sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
- sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
- sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
- netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
- dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
+FYI, in DRBD 9, things are handled differently nowadays.  We still detect
+"write conflicts", but no longer try to be smart about them.
+We decided to disconnect hard instead: upper layers must not submit concurrent
+writes. If they do, that's their fault.
 
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sarah Newman <srn@prgmr.com>
+Signed-off-by: Lars Ellenberg <lars@linbit.com>
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/block/drbd/drbd_receiver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch,
- 		if (!p)
- 			return -ENOMEM;
- 	}
--	if (ctl->limit == 1) {
--		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
--		return -EINVAL;
--	}
+diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+index 0104e101b0d7..ea38dd43c6b0 100644
+--- a/drivers/block/drbd/drbd_receiver.c
++++ b/drivers/block/drbd/drbd_receiver.c
+@@ -2532,7 +2532,11 @@ static int handle_write_conflicts(struct drbd_device *device,
+ 			peer_req->w.cb = superseded ? e_send_superseded :
+ 						   e_send_retry_write;
+ 			list_add_tail(&peer_req->w.list, &device->done_ee);
+-			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
++			/* put is in drbd_send_acks_wf() */
++			kref_get(&device->kref);
++			if (!queue_work(connection->ack_sender,
++					&peer_req->peer_device->send_acks_work))
++				kref_put(&device->kref, drbd_destroy_device);
  
- 	sch_tree_lock(sch);
- 
-@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch,
- 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
- 		maxflows = min_t(u32, maxflows, limit);
- 	}
-+	if (limit == 1) {
-+		sch_tree_unlock(sch);
-+		kfree(p);
-+		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
-+		return -EINVAL;
-+	}
- 
- 	/* commit configuration */
- 	q->limit = limit;
+ 			err = -ENOENT;
+ 			goto out;
+-- 
+2.39.5
+
 
 
 
