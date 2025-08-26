@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C350B3669B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE21FB35DAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EEC1BC647F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17AED16D3C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D270A34DCE5;
-	Tue, 26 Aug 2025 13:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7BA321433;
+	Tue, 26 Aug 2025 11:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UCkz/Jm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR/xl40K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9012E30146A;
-	Tue, 26 Aug 2025 13:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC23628689B;
+	Tue, 26 Aug 2025 11:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216223; cv=none; b=QMO9e/aSc73L5NsV8f+NOkksfCTeFpxwKCE9441XXEZH9yp5qgS3WZC7BGubHBDqfewsdvPfMywl1K2lDCHk201DUGjKEnj9fM+tYSIFxUd3zDLw4qxJkj4VqU3gfI0gUrGV+mWjvs3sak8Nr5lSTk+mCevVw3Lh24cu6pSd+U0=
+	t=1756208233; cv=none; b=kdmkchG2rYmoxw6XESc7Lpbek57ZsYh/TQtK2xxU1b87X6exChH8v1lxw9iIMed53PmNb0sZiT4jdwm/LzqkDCXPwrQuEmaToLQ6rmjaiOhDd0yRzKZbHVsBr+WoGFmx1mxkDB5ZBRzwD6nMe6/1ROa4o6U2yGYOAzOukRoEmVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216223; c=relaxed/simple;
-	bh=YUlF677zbDRk7Ye0C4XNk30QvBbjc1CpYXkitdWsAhQ=;
+	s=arc-20240116; t=1756208233; c=relaxed/simple;
+	bh=LHWGnajclvMhRRu/pqx/B9rblBh4O8RJ5ytQpYAITSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mg/LddR6gpH6Q7ShfFoCvO5HLpdpAFkESYZgRh6zwIKafBE0bCHOf+R3JyFYUbCl2nGpicRh57UVupqPjYonexZLf6ALjXdvmP8At30JNNBNKnFnBmIT/bPHljNc+hg90lRZg6qpMc3UBU9wayC51XcLwHfXPpGrxlmMiqE4Da8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UCkz/Jm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B614C4CEF1;
-	Tue, 26 Aug 2025 13:50:22 +0000 (UTC)
+	 MIME-Version; b=Hnb9NFQWCtq5mDODHpsoLTxCxX+oL9VM8IUvQkSkbXzO+HuPAU7Qs/O8Y5cwYAiDsbBzFDA3DSiEhLT0850hWmDJr8VuAhMew5SPyiPb0svn0tiNYBLqRJ12KGvxYjHpauuKK3lc6J1Yh/xddGOHTZl9t/mHTCWRmFzub33XfVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR/xl40K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7E6C4CEF1;
+	Tue, 26 Aug 2025 11:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216223;
-	bh=YUlF677zbDRk7Ye0C4XNk30QvBbjc1CpYXkitdWsAhQ=;
+	s=korg; t=1756208233;
+	bh=LHWGnajclvMhRRu/pqx/B9rblBh4O8RJ5ytQpYAITSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UCkz/JmVCXwUJG3U0IWYhRJXNqkq3fKAdlashiQaEI6xdIpEjW4xPI+BZBxMdIqd
-	 Q9mvWdtnPLyBp7AVXi9B85xESG7sRfLLo5BGFrgQAQvY8octzOu1iD0tv9liL8K8YY
-	 MbuZ6I2UPaCc2O4ndiVhhhOwwMMv3Z2Imsms3MUo=
+	b=oR/xl40KZcGKBgFr4TDPmWGx6+9i2vMp7lDQUOpXUKacCIvM/mrY4qLSpME4hZvbv
+	 3QKsDzmI3/XkB5xj7j4oPV/lQBeo6QMGeXWcS5FXAy3KLl8W+Z6rQJtSmHZRePZ8SM
+	 OLMnR4Zfr2ac21IBGKCByifkGr7SXXohPcnzxHw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 329/644] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.12 005/322] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
 Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110954.539404498@linuxfoundation.org>
+Message-ID: <20250826110915.328485319@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
+commit 51888393cc64dd0462d0b96c13ab94873abbc030 upstream.
 
-In the function mperf_start(), mperf_monitor snapshots the time, tsc
-and finally the aperf,mperf MSRs. However, this order of snapshotting
-in is reversed in mperf_stop(). As a result, the C0 residency (which
-is computed as delta_mperf * 100 / delta_tsc) is under-reported on
-CPUs that is 100% busy.
+For all practical purposes, there is no difference between the situation
+in which a given device is not ignoring children and its active child
+count is nonzero and the situation in which its runtime PM usage counter
+is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
+device's usage counter and return 1 in the latter case.
 
-Fix this by snapshotting time, tsc and then aperf,mperf in
-mperf_stop() in the same order as in mperf_start().
+For consistency, make it do so in the former case either by adjusting
+pm_runtime_get_conditional() and update the related kerneldoc comments
+accordingly.
 
-Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
+Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/power/runtime.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index 08a399b0be28..6ab9139f16af 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -240,9 +240,9 @@ static int mperf_stop(void)
- 	int cpu;
- 
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
--		mperf_measure_stats(cpu);
--		mperf_get_tsc(&tsc_at_measure_end[cpu]);
- 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		mperf_measure_stats(cpu);
- 	}
- 
- 	return 0;
--- 
-2.39.5
-
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1183,10 +1183,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
+  *
+  * Return -EINVAL if runtime PM is disabled for @dev.
+  *
+- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
+- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
+- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
+- * without changing the usage counter.
++ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
++ * is set, or (2) @dev is not ignoring children and its active child count is
++ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
++ * the usage counter of @dev and return 1.
++ *
++ * Otherwise, return 0 without changing the usage counter.
+  *
+  * If @ign_usage_count is %true, this function can be used to prevent suspending
+  * the device when its runtime PM status is %RPM_ACTIVE.
+@@ -1208,7 +1210,8 @@ static int pm_runtime_get_conditional(st
+ 		retval = -EINVAL;
+ 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
+ 		retval = 0;
+-	} else if (ign_usage_count) {
++	} else if (ign_usage_count || (!dev->power.ignore_children &&
++		   atomic_read(&dev->power.child_count) > 0)) {
+ 		retval = 1;
+ 		atomic_inc(&dev->power.usage_count);
+ 	} else {
+@@ -1241,10 +1244,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_acti
+  * @dev: Target device.
+  *
+  * Increment the runtime PM usage counter of @dev if its runtime PM status is
+- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
+- * it returns 1. If the device is in a different state or its usage_count is 0,
+- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
+- * in which case also the usage_count will remain unmodified.
++ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
++ * ignoring children and its active child count is nonzero.  1 is returned in
++ * this case.
++ *
++ * If @dev is in a different state or it is not in use (that is, its usage
++ * counter is 0, or it is ignoring children, or its active child count is 0),
++ * 0 is returned.
++ *
++ * -EINVAL is returned if runtime PM is disabled for the device, in which case
++ * also the usage counter of @dev is not updated.
+  */
+ int pm_runtime_get_if_in_use(struct device *dev)
+ {
 
 
 
