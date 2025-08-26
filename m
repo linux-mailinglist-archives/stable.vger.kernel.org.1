@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675C2B367BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C17B363F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A322A8E5933
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9AF35E46E8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149C135082E;
-	Tue, 26 Aug 2025 13:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CF072605;
+	Tue, 26 Aug 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8rZ4HC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AV4gT56t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A76302CA6;
-	Tue, 26 Aug 2025 13:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE2424A066;
+	Tue, 26 Aug 2025 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216370; cv=none; b=m5pY6BHMlmOENgGJusy6axAwbnyHQJ9FiHsk3kHyPcb90VY8XU//+gCjzCbj3r4BLqyuHCC+YoH5HKa42Kqi1CB9Og25WAbBqUK8PPikpyL60Dv2t18IkrIC1p08+iIt4zS5vnRlMBm6eV5y68Ls1vCII6GlFMWrSW58yBKm0nA=
+	t=1756214651; cv=none; b=u5U962L4ungTz3iu3qmmn5X07SgEmb6u/d/ULNla3opqNJ/uKTmi397VfAG7YJ84rJSFxYojr3ZH6VZ7PoOxdQiHT2IpgSTrmZKjUclxcSFgARtrn0fJRMzFjR7hI00wj6pyuIkRkKCT4iZnzbvKoH9lwinvgiaCguQkuLfEz6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216370; c=relaxed/simple;
-	bh=K4/5XUaLDeDFaFWSoQr+FX5AlLE9S0c5EOFvvTFMFs8=;
+	s=arc-20240116; t=1756214651; c=relaxed/simple;
+	bh=J9nzJCqI6+pPpZniKhjHUswECYoU9SDpNosCkAAfrto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TFsviTKGojPXO6go4YYgRwIvDu3B3OKGnQM0b6KacR6Qw7QwjDiiZ+yz2O1+Xyenm8rZ16ZVu+NGGjpRp1AIKjvrZ21LylZGct/vED10h6C/1tYF94sxofp33WBbw/cVof18/xoiotOW6itT5UWMCjYnnt1yYghniCWdXqrvTk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8rZ4HC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E0DC4CEF1;
-	Tue, 26 Aug 2025 13:52:50 +0000 (UTC)
+	 MIME-Version; b=CGE2t+bI7RaF7G4NvrHZFV1jKWq2bBHfmkeU1VDLmOp4FH+BHEpUqaV4yVkQfyw9otYF0mzCiznDbchw6zXIhDP/UWaGwNRjJte/9ta0amW1JlVzSvO9394knc5iZqm4pzjL8Nw9tApR7tt6NkR15sZKmKMG1kmJSdpn83OOTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AV4gT56t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF3C4CEF1;
+	Tue, 26 Aug 2025 13:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216370;
-	bh=K4/5XUaLDeDFaFWSoQr+FX5AlLE9S0c5EOFvvTFMFs8=;
+	s=korg; t=1756214651;
+	bh=J9nzJCqI6+pPpZniKhjHUswECYoU9SDpNosCkAAfrto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8rZ4HC6wbgjUWsdvGOweeUkq9++HzZfj/B5gOhrPaSvmZ9X5CQOwyzNaN7nP3tom
-	 sN5Vk0rOTWCc15mV29oMRNd7Mv+tcKkXi8N/kTD5RGPGbl83UM8X7DqV+QEmMsvDJp
-	 iZTawp5KQ+a/8V4t4mhzPOyVnrV/CDeF73GKYfeY=
+	b=AV4gT56tA106oRPgi91/+u1FmqL2SW6fCIJ6iHTOueD43P6S2QYWi+C1rk/58kqA6
+	 zfoPZuwjQXHn/gKqKAGAr5vB5PKJpCx+07amTQ7dp9pZIBR77/C0HhuNtn7Q18VToi
+	 5lp/tI/765+rsL6BfATwEq4u9arW8iJkVuoDQDEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 349/644] net: ipv4: fix incorrect MTU in broadcast routes
+Subject: [PATCH 6.1 187/482] jfs: Regular file corruption check
 Date: Tue, 26 Aug 2025 13:07:20 +0200
-Message-ID: <20250826110955.046009110@linuxfoundation.org>
+Message-ID: <20250826110935.424730020@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 9e30ecf23b1b8f091f7d08b27968dea83aae7908 ]
+[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
 
-Currently, __mkroute_output overrules the MTU value configured for
-broadcast routes.
+The reproducer builds a corrupted file on disk with a negative i_size value.
+Add a check when opening this file to avoid subsequent operation failures.
 
-This buggy behaviour can be reproduced with:
-
-ip link set dev eth1 mtu 9000
-ip route del broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2
-ip route add broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2 mtu 1500
-
-The maximum packet size should be 1500, but it is actually 8000:
-
-ping -b 192.168.0.255 -s 8000
-
-Fix __mkroute_output to allow MTU values to be configured for
-for broadcast routes (to support a mixed-MTU local-area-network).
-
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Link: https://patch.msgid.link/20250710142714.12986-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
+Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/jfs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index cbc584c386e9..df4cbf9ba288 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2565,7 +2565,6 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 	do_cache = true;
- 	if (type == RTN_BROADCAST) {
- 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
--		fi = NULL;
- 	} else if (type == RTN_MULTICAST) {
- 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
- 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
+diff --git a/fs/jfs/file.c b/fs/jfs/file.c
+index 332dc9ac47a9..ae8df3d11663 100644
+--- a/fs/jfs/file.c
++++ b/fs/jfs/file.c
+@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
+ {
+ 	int rc;
+ 
++	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
++		return -EIO;
++
+ 	if ((rc = dquot_file_open(inode, file)))
+ 		return rc;
+ 
 -- 
 2.39.5
 
