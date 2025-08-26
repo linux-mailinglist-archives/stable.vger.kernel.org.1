@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F48B35E48
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E72A7B35D46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04F091BA6755
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188E818973D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6DF29BDAC;
-	Tue, 26 Aug 2025 11:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCC01FECAB;
+	Tue, 26 Aug 2025 11:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyXlGh9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RutMwOQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC81283FDF;
-	Tue, 26 Aug 2025 11:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2662E267D;
+	Tue, 26 Aug 2025 11:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208900; cv=none; b=kf8270B5AoorLRZeW6A3c5USli6qVxmYh/Pe/kBOWVEz4VrfQP+7q5PlqjFSRJkSkYDMi3KZDqdD4LNI4Fxtdrx2zGwyPQFrNeY/DMoYFJWuPWu9i7yYMBra1eezpfSJmWvlBzxD7gqxfexi9VNgolKK8KTLrk8t8MUwB1MTuGY=
+	t=1756208136; cv=none; b=ZmrE+rRdminA6F6QQ4bNNfYLGz2J1Tco9f+J6yYTqu0HPpM7lK+N5pIEj/MfjV+Kb4zr2KIGHbcipmTIJEFJHstA1VwBiemdAsS7x1IjsbKtk4FNlSeFtauJKzrLdApr+VMKfb8G3V0Z8ww6vUT0aBNK01XxAFURN8BFV1pxX/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208900; c=relaxed/simple;
-	bh=TQvJCDL3wkB0WvEwyr/3cFoUzcQcOUpdlwX0PANc3Fk=;
+	s=arc-20240116; t=1756208136; c=relaxed/simple;
+	bh=0gpWJfKG4V8DCOhfTbIYXyp/MG3C9nc0S4lotQ2lrbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IpPbHfSUL5kZIZYkEhBhkK3hE5rCtlx/4oV/RCzUaokWSTCg674360c7fTVta8bl27hgSoU+QGvSuEOP8FVSbXinqextY3vg4XPkeaQxkZgdHWyL/oJYCV8eyn5M+etKDXNy6kkz/3hQvlExSuhlr4mRKBYth211aQ4CUcFkvh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyXlGh9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D87FC4CEF1;
-	Tue, 26 Aug 2025 11:48:20 +0000 (UTC)
+	 MIME-Version; b=nJl9tC27PL0++H6bGt5bSf1E+THDoR0LTAiFywsiCYupKxCwwS2BSbKQYf60hKywms8JnZMkyvZNsc5WshKzvZXuZmOo7gnBl+UH8ndDjzx2pe/ed2uYH82HdZ7LsRUF6XNLgeRaec4XQYF9MFSRgkje6rYFhBG8Fd9IW6uoGZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RutMwOQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3C9C4CEF1;
+	Tue, 26 Aug 2025 11:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208900;
-	bh=TQvJCDL3wkB0WvEwyr/3cFoUzcQcOUpdlwX0PANc3Fk=;
+	s=korg; t=1756208136;
+	bh=0gpWJfKG4V8DCOhfTbIYXyp/MG3C9nc0S4lotQ2lrbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyXlGh9RXjqzYxRNH860v1VG2kwyC0DvWuZzMijcHSaMWxavFpLuCDftv7IzdRdFB
-	 nVHaZnafycdCohMjkjx67jE19AvQnuNwEPjYiKJ5lxK1KMlm+GgmxEhJ/Jf8lqnie8
-	 Fgll+GdwxJXO60XjCC+n3Utuvb/SPxQmTZRBOZrY=
+	b=RutMwOQB+ampU4lS33lxEPNKcDZksBp2vdzJzXUTmjMbZhnV4wZvqscCdcsmsy9jQ
+	 CfsU8GgKFO3j+/7OTOyjEe4duEku0AZY5WWjUx7Rv8DLY0/5pAkpXBq38N/e/w040E
+	 X0Z2h4LNMT0qWrlTPO23bMbOifRrR+RjOC07fWqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/322] drm/amd/display: Dont print errors for nonexistent connectors
-Date: Tue, 26 Aug 2025 13:11:44 +0200
-Message-ID: <20250826110923.047045711@linuxfoundation.org>
+Subject: [PATCH 6.16 421/457] microchip: lan865x: fix missing Timer Increment config for Rev.B0/B1
+Date: Tue, 26 Aug 2025 13:11:45 +0200
+Message-ID: <20250826110947.697811153@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 
-[ Upstream commit f14ee2e7a86c5e57295b48b8e198cae7189b3b93 ]
+[ Upstream commit 2cd58fec912acec273cb155911ab8f06ddbb131a ]
 
-When getting the number of connectors, the VBIOS reports
-the number of valid indices, but it doesn't say which indices
-are valid, and not every valid index has an actual connector.
-If we don't find a connector on an index, that is not an error.
+Fix missing configuration for LAN865x silicon revisions B0 and B1 as per
+Microchip Application Note AN1760 (Rev F, June 2024).
 
-Considering these are not actual errors, don't litter the logs.
+The Timer Increment register was not being set, which is required for
+accurate timestamping. As per the application note, configure the MAC to
+set timestamping at the end of the Start of Frame Delimiter (SFD), and
+set the Timer Increment register to 40 ns (corresponding to a 25 MHz
+internal clock).
 
-Fixes: 60df5628144b ("drm/amd/display: handle invalid connector indices")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 249d4bc5f1935f04bb45b3b63c0f8922565124f7)
+Link: https://www.microchip.com/en-us/application-notes/an1760
+
+Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
+Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250818060514.52795-3-parthiban.veerasooran@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c |  5 +----
- drivers/gpu/drm/amd/display/dc/core/dc.c          | 15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ .../net/ethernet/microchip/lan865x/lan865x.c  | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 3bacf470f7c5..a523c5cfcd24 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -174,11 +174,8 @@ static struct graphics_object_id bios_parser_get_connector_id(
- 		return object_id;
+diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+index d03f5a8de58d..84c41f193561 100644
+--- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
++++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+@@ -32,6 +32,10 @@
+ /* MAC Specific Addr 1 Top Reg */
+ #define LAN865X_REG_MAC_H_SADDR1	0x00010023
+ 
++/* MAC TSU Timer Increment Register */
++#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x00010077
++#define MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS	0x0028
++
+ struct lan865x_priv {
+ 	struct work_struct multicast_work;
+ 	struct net_device *netdev;
+@@ -346,6 +350,21 @@ static int lan865x_probe(struct spi_device *spi)
+ 		goto free_netdev;
  	}
  
--	if (tbl->ucNumberOfObjects <= i) {
--		dm_error("Can't find connector id %d in connector table of size %d.\n",
--			 i, tbl->ucNumberOfObjects);
-+	if (tbl->ucNumberOfObjects <= i)
- 		return object_id;
--	}
- 
- 	id = le16_to_cpu(tbl->asObjects[i].usObjectID);
- 	object_id = object_id_from_bios_object_id(id);
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index b089db2b3d87..84e377113e58 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -215,11 +215,24 @@ static bool create_links(
- 		connectors_num,
- 		num_virtual_links);
- 
--	// condition loop on link_count to allow skipping invalid indices
-+	/* When getting the number of connectors, the VBIOS reports the number of valid indices,
-+	 * but it doesn't say which indices are valid, and not every index has an actual connector.
-+	 * So, if we don't find a connector on an index, that is not an error.
-+	 *
-+	 * - There is no guarantee that the first N indices will be valid
-+	 * - VBIOS may report a higher amount of valid indices than there are actual connectors
-+	 * - Some VBIOS have valid configurations for more connectors than there actually are
-+	 *   on the card. This may be because the manufacturer used the same VBIOS for different
-+	 *   variants of the same card.
++	/* LAN865x Rev.B0/B1 configuration parameters from AN1760
++	 * As per the Configuration Application Note AN1760 published in the
++	 * link, https://www.microchip.com/en-us/application-notes/an1760
++	 * Revision F (DS60001760G - June 2024), configure the MAC to set time
++	 * stamping at the end of the Start of Frame Delimiter (SFD) and set the
++	 * Timer Increment reg to 40 ns to be used as a 25 MHz internal clock.
 +	 */
- 	for (i = 0; dc->link_count < connectors_num && i < MAX_LINKS; i++) {
-+		struct graphics_object_id connector_id = bios->funcs->get_connector_id(bios, i);
- 		struct link_init_data link_init_params = {0};
- 		struct dc_link *link;
- 
-+		if (connector_id.id == CONNECTOR_ID_UNKNOWN)
-+			continue;
++	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
++				    MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
++	if (ret) {
++		dev_err(&spi->dev, "Failed to config TSU Timer Incr reg: %d\n",
++			ret);
++		goto oa_tc6_exit;
++	}
 +
- 		DC_LOG_DC("BIOS object table - printing link object info for connector number: %d, link_index: %d", i, dc->link_count);
- 
- 		link_init_params.ctx = dc->ctx;
+ 	/* As per the point s3 in the below errata, SPI receive Ethernet frame
+ 	 * transfer may halt when starting the next frame in the same data block
+ 	 * (chunk) as the end of a previous frame. The RFA field should be
 -- 
 2.50.1
 
