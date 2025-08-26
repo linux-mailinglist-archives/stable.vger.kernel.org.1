@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EC9B363E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5EB2B35BF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EBA5562551
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB00D1884969
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA492BF019;
-	Tue, 26 Aug 2025 13:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB2F2BE7B2;
+	Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3iE4qC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLNjxJb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B9C24169D;
-	Tue, 26 Aug 2025 13:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB8F29D26A;
+	Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214719; cv=none; b=e1BXoM32YjdfMcoHmjk21KusOlNO/+q1SNQIYLjMGn2hwBCt6tAC/2KW8Z3qbcBamP4Xc2ezS5LXeA+BLhwR/wT96PzyJp9GhF6fKUTRkIeEH6Sczc0WlYl3gri11G9aC4+ApzxkR5s1wlH6imOJfN5S2msCIVtZ0/83SD9Erg4=
+	t=1756207520; cv=none; b=QRA8QYyU82oxKo/LBaqKkps7NEeW0YG7khkfpEQNq4ltWIMMjsWNFRL5O3P/egIz+rklD61uiw7O0hpuSoWNTvbzZAsGdhEeM82cO9XrR6fD3cR/c4WBxLZcPdfgX/+TDnAtaiR0VVEXKU/wwRbAMqsUhL8a5XnqN3xNSU0GgMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214719; c=relaxed/simple;
-	bh=QQ756njNW3e8UW5QrT30rjoktgxvFXk0PMkVa/ZhtlQ=;
+	s=arc-20240116; t=1756207520; c=relaxed/simple;
+	bh=n8RP4xWxLKNzgtJkLhjyAbXmwCBTdvXw/N5kSfJDKzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+QVbu8RrNbRa/ujOm0llgjgUEYVv1rboKsp2qbkmG5fMY8qvb+Hj71hwmTJj0fHnu0OISaN+oBjFTlP4W+utxzFqNZpWtIRRULz1aL5jwwx7WTbjTzL+GQABGiNPnXWQDaWvMi6YSexGvRd80R6RBD7MLTB+6+SaXY9ZO5u3Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3iE4qC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574F7C4CEF1;
-	Tue, 26 Aug 2025 13:25:19 +0000 (UTC)
+	 MIME-Version; b=GmpsV9cFEyyqc8ufm6yPkrEX7DTEsBJWl+8RYF+++bih6fdjvUui1L+Rc8TXazodyyT9T8ASzvgTAFZ4BJfRdwhU5sItwwkg3oIin6Xqtz4b1IUrTjKfHWGSsvbhHD+BGTha5M7jeMI4hayMDea9CLcttRPnkYqkVbL6AMoxDjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLNjxJb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1ADC4CEF1;
+	Tue, 26 Aug 2025 11:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214719;
-	bh=QQ756njNW3e8UW5QrT30rjoktgxvFXk0PMkVa/ZhtlQ=;
+	s=korg; t=1756207520;
+	bh=n8RP4xWxLKNzgtJkLhjyAbXmwCBTdvXw/N5kSfJDKzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3iE4qC0TZ7Mez0CSrlFxPcCnUdmluHYdJWsfdX55hzMwwratI2IycM/V+rGAp+pX
-	 H2QHALeuzVe7mrTG2hQ8E80/CA5eeGmq/oSWxcDqmmZI+kccSIgFSW9PqDyUheoGtx
-	 eQJH+opsTda0i4pHkr18MAJzupUh5GKm3157hVZQ=
+	b=eLNjxJb69DioDV/gHOlI7CA94CSCNQYIUVN3AEvW4kBdOhD9pDqh45qiLW/eKnTo1
+	 FZl9bzWzgIcVD7d3uG+ED+k4KqjUFViOfN8VulhyyMD5hb2bFifyfkGiekry5gfYQa
+	 9QVdveHHdqHwDSlLr6WPPLgp/GjTtQmG6fOcGP9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/482] drm/amdgpu: fix incorrect vm flags to map bo
+Subject: [PATCH 6.16 212/457] btrfs: move transaction aborts to the error site in add_block_group_free_space()
 Date: Tue, 26 Aug 2025 13:08:16 +0200
-Message-ID: <20250826110936.773439691@linuxfoundation.org>
+Message-ID: <20250826110942.601789080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
+[ Upstream commit b63c8c1ede4407835cb8c8bed2014d96619389f3 ]
 
-It should use vm flags instead of pte flags
-to specify bo vm attributes.
+Transaction aborts should be done next to the place the error happens,
+which was not done in add_block_group_free_space().
 
-Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 1f06c942aa70 ("btrfs: always abort transaction on failure to add block group to free space tree")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/free-space-tree.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-index c6d4d41c4393..35e635c833f0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -93,8 +93,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1456,16 +1456,17 @@ int add_block_group_free_space(struct bt
+ 	path = btrfs_alloc_path();
+ 	if (!path) {
+ 		ret = -ENOMEM;
++		btrfs_abort_transaction(trans, ret);
+ 		goto out;
  	}
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
--			     AMDGPU_PTE_EXECUTABLE);
-+			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
-+			     AMDGPU_VM_PAGE_EXECUTABLE);
+ 	ret = __add_block_group_free_space(trans, block_group, path);
++	if (ret)
++		btrfs_abort_transaction(trans, ret);
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
--- 
-2.50.1
-
+ out:
+ 	btrfs_free_path(path);
+ 	mutex_unlock(&block_group->free_space_lock);
+-	if (ret)
+-		btrfs_abort_transaction(trans, ret);
+ 	return ret;
+ }
+ 
 
 
 
