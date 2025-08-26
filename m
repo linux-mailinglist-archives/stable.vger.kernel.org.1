@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31956B36394
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6653FB35D78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8981BA6C3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74681BA42D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3839221290;
-	Tue, 26 Aug 2025 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6D78635C;
+	Tue, 26 Aug 2025 11:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4XJZlax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqUY7/56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AD929BDB6;
-	Tue, 26 Aug 2025 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAA29BDB8;
+	Tue, 26 Aug 2025 11:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214638; cv=none; b=s2BM3k7oEQo+mBpySOAyEZ2VpTdf00+PDSNyQMo9Akfa7fz4nlXOhQdwKDAXiPkYZnWp39tVR5yQAI5sj6HuIpKZEARwp2ct6a+JGkibj+gMjmowZr6sC7KwnjWLCfSOujMMv1wEhsRwgXvBe5UDx/SLrHYBr2XMvDbe1Gp0MXw=
+	t=1756208277; cv=none; b=kPS2nV0y+Y3MtPhaSKPou7WuwgFtpXtV3LCEi+heQFHk0+wAIUnzmBL9JDewEOjLghDL+VrVEsKoLF1Y+kQG+gNesdRpuhdDh+MNM8j/L0l5cWVl7DWwWoJbCKzllvOB74CCWz4HwZvUNeiNWfWnie6CSgwH5Wz8/e/desxcOtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214638; c=relaxed/simple;
-	bh=QNiDTCbGtTN5rXLTInfidh6NkY4KWxCA+/5ocNws2OE=;
+	s=arc-20240116; t=1756208277; c=relaxed/simple;
+	bh=YgxSQyT9acoMV0N66+mkdvIKiOofv+OnKV5TsJJCbuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3RoiiDpInwG3XRyF1UN0qDgKd/DZXixlA+k9w2PVFUOYc77WpwxBEDLjX96cA/ErzvQ5F5YbBGdvGvot/hsu3TOV5hAUTwcQTUhGG/4bfbteX8xjjPO202sN4PfXot+G/+u0JvipDd0sIrIa2GKCAhRZE5FFo2z/+fWcapYHBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4XJZlax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF4CC4CEF1;
-	Tue, 26 Aug 2025 13:23:57 +0000 (UTC)
+	 MIME-Version; b=FVv7uURDKA+odI2uc5j1zrXuoNoAOI5J9PV6rZdGVWSsz4LbN+xtPJmCCAOIhLzwuS9mkWRKWXhmGZuGfpWoX02FFm+tAZR2dM95kCwfw4uF400UsLmJUqQtUGecQjcHM7fFDtUjtowjdyMQnQT+X4Bo70U+3HwH+DF+xfERvis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqUY7/56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8867FC4CEF1;
+	Tue, 26 Aug 2025 11:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214638;
-	bh=QNiDTCbGtTN5rXLTInfidh6NkY4KWxCA+/5ocNws2OE=;
+	s=korg; t=1756208276;
+	bh=YgxSQyT9acoMV0N66+mkdvIKiOofv+OnKV5TsJJCbuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4XJZlaxtRgNf++cwc4AryJbsMcw/eIjIJLw0AFntR2ZDhIMSMJNwsqLFF5ke39Be
-	 VuCGGTdT0gR25BAhp7l4KtFUzVD/xcXd0cbOTRDj+2epGt0YfOT8qPR6ytSLw3N5cs
-	 0lWFTW18ateY20h/t8cUVt5ZPXLszeAqo9XoxyZ4=
+	b=lqUY7/56VPF6wcE1OxpG+62WCwEKBBaSx3gEW930QSKMyh6myoN5e5yKMrtqshTJX
+	 8OT6+aeQgTeblJGF3cfBGpd/LDd2AbMLHgAAOYuZ6zCR2EH+j/lIt0rCAjCEAEcD5p
+	 kUVZ0DKlYN2Mar41B82G6x0Bq2DKPrqCp/wsGai8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/482] i3c: dont fail if GETHDRCAP is unsupported
+	Lorenz Brun <lorenz@brun.one>,
+	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 050/322] ata: libata-scsi: Fix ata_to_sense_error() status handling
 Date: Tue, 26 Aug 2025 13:07:45 +0200
-Message-ID: <20250826110936.015576089@linuxfoundation.org>
+Message-ID: <20250826110916.634391561@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 447270cdb41b1c8c3621bb14b93a6749f942556e ]
+commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
 
-'I3C_BCR_HDR_CAP' is still spec v1.0 and has been renamed to 'advanced
-capabilities' in v1.1 onwards. The ST pressure sensor LPS22DF does not
-have HDR, but has the 'advanced cap' bit set. The core still wants to
-get additional information using the CCC 'GETHDRCAP' (or GETCAPS in v1.1
-onwards). Not all controllers support this CCC and will notify the upper
-layers about it. For instantiating the device, we can ignore this
-unsupported CCC as standard communication will work. Without this patch,
-the device will not be instantiated at all.
+Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
+the function ata_to_sense_error(). This entry ties a failed qc which has
+a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
+the additional sense code UNALIGNED WRITE COMMAND. This entry will be
+used to generate a failed qc sense key and sense code when the qc is
+missing sense data and there is no match for the qc error field in the
+sense_table array of ata_to_sense_error().
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250704204524.6124-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, for a failed qc for which we failed to get sense data (e.g.
+read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
+command failed for the non-ncq case, the user very often end up seeing
+the completely misleading "unaligned write command" error, even if qc
+was not a write command. E.g.:
+
+sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
+sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
+sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Fix this by removing the ATA_DRDY entry from the stat_table array so
+that we default to always returning ABORTED COMMAND without any
+additional sense code, since we do not know any better. The entry 0x08
+(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
+error is also misleading (as a parity error would likely be signaled
+through a bus error). So for this case, also default to returning
+ABORTED COMMAND without any additional sense code. With this, the
+previous example error case becomes:
+
+sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
+sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
+sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Together with these fixes, refactor stat_table to make it more readable
+by putting the entries comments in front of the entries and using the
+defined status bits macros instead of hardcoded values.
+
+Reported-by: Lorenz Brun <lorenz@brun.one>
+Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
+Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 18103c1e8d76..513c79e26d9a 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1386,7 +1386,7 @@ static int i3c_master_retrieve_dev_info(struct i3c_dev_desc *dev)
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -855,18 +855,14 @@ static void ata_to_sense_error(u8 drv_st
+ 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
+ 	};
+ 	static const unsigned char stat_table[][4] = {
+-		/* Must be first because BUSY means no other bits valid */
+-		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Busy, fake parity for now
+-		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
+-		// Device ready, unaligned write command
+-		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
+-		// Device fault, internal target failure
+-		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Timed out in xfer, fake parity for now
+-		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
+-		// Recovered ECC error	  Medium error, recovered
+-		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
++		/* Busy: must be first because BUSY means no other bits valid */
++		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
++		/* Device fault: INTERNAL TARGET FAILURE */
++		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
++		/* Corrected data error */
++		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
++
++		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
+ 	};
  
- 	if (dev->info.bcr & I3C_BCR_HDR_CAP) {
- 		ret = i3c_master_gethdrcap_locked(master, &dev->info);
--		if (ret)
-+		if (ret && ret != -ENOTSUPP)
- 			return ret;
- 	}
- 
--- 
-2.39.5
-
+ 	/*
 
 
 
