@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CFBB35D52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CECB36D33
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27B0E7BA980
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D5CA04097
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C751B284B5B;
-	Tue, 26 Aug 2025 11:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A0935AAC6;
+	Tue, 26 Aug 2025 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esI3jGBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKAQCaqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5A3312803;
-	Tue, 26 Aug 2025 11:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F188C350851;
+	Tue, 26 Aug 2025 14:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208582; cv=none; b=ElXrTnFcbsw9Zj1FPJqHMX8uUAjpveZKuRcZorXSFw94T6ssqeWmxK93PoxiyRjC8beBhWGzt04MOEEVdIsR2nVUvmDq7IBA9dmJGW8xnZ9tdsloiyF9x7bjux3AsHPx8qHngFC8bN+UKEo8r1Aj0L1o1FBxutQfEFymlyYPpag=
+	t=1756219186; cv=none; b=ZydfbTX8OgKin2MB/8w97VTdu/JS7etPguUChqcX0NMSlb5f6KwIVOhJxxHswNZcGSjMDg3zKjVoeqsbppy5DUCkcZE0L0f5+HFRMMvExYTf0FrvbbaJNg0nZgfpSYmWcN9mLt7FlqdldQF3FIZWFvM0+1r+Oze+JFwajoP1HmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208582; c=relaxed/simple;
-	bh=GpAIaiwyQn0Qi9LSIM/VgHnRrb2LgfrMhOiQ3Kh8GR4=;
+	s=arc-20240116; t=1756219186; c=relaxed/simple;
+	bh=eclj5VJOk+9I/uIFE9jcwk4T1iXsLWIA2nLem7mNYxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWB1NtsbzdPEDC3TCLQazX/rwLYe9TaFDCplvkuiRDaaaE/ddBjwAWGZUj6Zpv7MIvK0zhVwSGn95+M2t9+FqlvIPIQjNcNkJBwX+0wR4nEslPLoEjhn6pIvzzKhchmlfY67pRC6CmRDPMJT3qmybGYr+GuZoCPo4ygiD9XGfuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esI3jGBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2347C4CEF1;
-	Tue, 26 Aug 2025 11:43:01 +0000 (UTC)
+	 MIME-Version; b=sIIQEmJB2agdkI6CNDLz60rBY6mXY4nbPhynBKXdxi2nLS7jHdyVfLksrreI4GMqtJ11+xV+liCVt8wFaea0SmgKGPQPyT5PFuUeqNffNQJ5YjOKnTskqXilGPD/RqliEIzx6IktvdStONrAZ+KmGg85w8XCcfCe/EtEafIlo08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKAQCaqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FA6C4CEF1;
+	Tue, 26 Aug 2025 14:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208582;
-	bh=GpAIaiwyQn0Qi9LSIM/VgHnRrb2LgfrMhOiQ3Kh8GR4=;
+	s=korg; t=1756219185;
+	bh=eclj5VJOk+9I/uIFE9jcwk4T1iXsLWIA2nLem7mNYxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esI3jGBvO4trLIRLYNKQM+Z0gv9r8FSW4IxJJUndMLSzWs68+YetNbokWlAuDFKak
-	 K0123Qytqq1ueMalsx5L1+dFUstZ0vEzYhEBwSVx+wH7iGey8VBgehLKCrAHxknKN1
-	 lzG0DGKglbY8hCMZn2QLxsf8K+ryECECLHHSszjE=
+	b=xKAQCaqmACDHOS9ngxR5HRo2zlJvqMnheTxU7Hj45Rk+PiPBzqndFcPN7o+suNrIF
+	 qtPtulsCGKDQ8C6JAdgn9gFCPYu9JQDjq0/nmGfKo1auIv7SeNP9i6gGca/+csTXLx
+	 zHqgE1RO6acSID8yfrJ1KZYceNjrpGWSdtrSZaI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 166/322] mmc: sdhci-pci-gli: Add a new function to simplify the code
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 255/403] PCI: pnv_php: Work around switches with broken presence detection
 Date: Tue, 26 Aug 2025 13:09:41 +0200
-Message-ID: <20250826110919.932266625@linuxfoundation.org>
+Message-ID: <20250826110913.869097238@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 upstream.
+[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
 
-In preparation to fix replay timer timeout, add
-sdhci_gli_mask_replay_timer_timeout() function
-to simplify some of the code, allowing it to be re-used.
+The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+was observed to incorrectly assert the Presence Detect Set bit in its
+capabilities when tested on a Raptor Computing Systems Blackbird system,
+resulting in the hot insert path never attempting a rescan of the bus
+and any downstream devices not being re-detected.
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Work around this by additionally checking whether the PCIe data link is
+active or not when performing presence detection on downstream switches'
+ports, similar to the pciehp_hpc.c driver.
+
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -215,6 +215,20 @@
- #define GLI_MAX_TUNING_LOOP 40
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 3687a99383c1..800964c81e06 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -395,6 +395,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	return 0;
+ }
  
- /* Genesys Logic chipset */
-+static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++static int pcie_check_link_active(struct pci_dev *pdev)
 +{
-+	int aer;
-+	u32 value;
++	u16 lnk_status;
++	int ret;
 +
-+	/* mask the replay timer timeout of AER */
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
++	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
++	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
++		return -ENODEV;
++
++	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
++
++	return ret;
 +}
 +
- static inline void gl9750_wt_on(struct sdhci_host *host)
+ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
  {
- 	u32 wt_value;
-@@ -535,7 +549,6 @@ static void gl9750_hw_setting(struct sdh
- {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct pci_dev *pdev;
--	int aer;
- 	u32 value;
- 
- 	pdev = slot->chip->pdev;
-@@ -554,12 +567,7 @@ static void gl9750_hw_setting(struct sdh
- 	pci_set_power_state(pdev, PCI_D0);
- 
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9750_wt_off(host);
- }
-@@ -734,7 +742,6 @@ static void sdhci_gl9755_set_clock(struc
- static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
--	int aer;
- 	u32 value;
- 
- 	gl9755_wt_on(pdev);
-@@ -769,12 +776,7 @@ static void gl9755_hw_setting(struct sdh
- 	pci_set_power_state(pdev, PCI_D0);
- 
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9755_wt_off(pdev);
- }
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+@@ -407,6 +421,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
++		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++			presence == OPAL_PCI_SLOT_EMPTY) {
++			/*
++			 * Similar to pciehp_hpc, check whether the Link Active
++			 * bit is set to account for broken downstream bridges
++			 * that don't properly assert Presence Detect State, as
++			 * was observed on the Microsemi Switchtec PM8533 PFX
++			 * [11f8:8533].
++			 */
++			if (pcie_check_link_active(php_slot->pdev) > 0)
++				presence = OPAL_PCI_SLOT_PRESENT;
++		}
++
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
+-- 
+2.39.5
+
 
 
 
