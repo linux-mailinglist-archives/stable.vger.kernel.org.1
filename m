@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B31B363A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB590B35E00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A88B71883FCB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07EAB4607A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D502AD4B;
-	Tue, 26 Aug 2025 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9953729D280;
+	Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iA9SZUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gbui+Nk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6692AD04;
-	Tue, 26 Aug 2025 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562F717332C;
+	Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214698; cv=none; b=DEu/yaxAPXIuBqUcYRu/ksljs5x8buA7dK1PgzFy5bxiz73GOFwi7gwOVxpsD7es1iCBHPQ0d37+hlvPZDjeyqId4K/wuLsITpKALSsydY35TN1AwokNf7z2c/THT5/cKOX7tlXqYONtmdB9qEkPxAcmcN/DIU4fxX8CE9iXnMQ=
+	t=1756208410; cv=none; b=pp5AWHbo3aNU9fZ9OP0axcXNdQAKJntxQvIE713sFjl+66e67XgV3M28b+cwewnw8BIRyBgzFoAlnt4LFHbKicbG4w1tOTmwMXuq+7DQxil9bzMjhWOpDP3pbbUip/78pmcMpf3bmr/CSFszUDx8TqVvxHxQ4MqmYAdluQBMyBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214698; c=relaxed/simple;
-	bh=H/kp80dYIkDhTmuOmpJ3ezDImnIeTX2w6sFrTfHB/fI=;
+	s=arc-20240116; t=1756208410; c=relaxed/simple;
+	bh=kyd5+5dGTlHqEBbKoqPlwNzwWXUixynv9NKozWGq9Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KO7NU3hWa21WWJF50cc6Hwm3rpM6Ykie+s4HquEoB9sehUSIQ+lukdoky+V9gjb2bO+tNypeUYr/7u3kk0xl5L6LoNuVwFOKsbeyCpa8hhKaG1J15L8CxEnZPbEqTDP0HE7/7goSKwzyjx3eURfssrMWWw2DsVzag8BBgnJ/VtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iA9SZUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD2EC4CEF1;
-	Tue, 26 Aug 2025 13:24:57 +0000 (UTC)
+	 MIME-Version; b=aSrSglocUTPeOkAhmg31+bu/L/jqH+KnUgYryxgBhCZXjiVfnaQB9l+GNeifgWDkgSlJ+jfQT4S7f+ougGL/ZoQPzh7N142JFp2mZCX2TJg+BRbLnKM5K6lLF5H+noLCQ2V+DYT4iDVYRP/4xDY6q3kHOtPs0dFjptbZwwRs/IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gbui+Nk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9368C4CEF1;
+	Tue, 26 Aug 2025 11:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214698;
-	bh=H/kp80dYIkDhTmuOmpJ3ezDImnIeTX2w6sFrTfHB/fI=;
+	s=korg; t=1756208410;
+	bh=kyd5+5dGTlHqEBbKoqPlwNzwWXUixynv9NKozWGq9Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iA9SZUN8iMfia1OO7+8iJCDIyM6A9Jk5xqouGnqyamHvd7YprInertIejulkvJGC
-	 DYPJPhtsOa74dicijNyCKU1F/FqfJcfPwFi01WNIwsVRyQYk4Z3cYWClRA/p6cnigo
-	 kPlSensAIiOuKOoSv/FexLZdprlNmk6nEXV0gnHg=
+	b=Gbui+Nk3xCr3tl+9VUO1D+CFskavgQzrXpEGonbbVzwGYPgoNRCxvDg/Y7W479cOc
+	 F+JY7VT3gj7p383GNN7vAU0408LEiLwXCXAqM3ToG3RdMBbPw51X118Qxrz2b15/m3
+	 6zty2X6DV8ven7Rc+R76jNXm9E5VG5RY5TQjVUB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/482] pNFS: Handle RPC size limit for layoutcommits
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Jan Kara <jack@suse.cz>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 073/322] readahead: fix return value of page_cache_next_miss() when no hole is found
 Date: Tue, 26 Aug 2025 13:08:08 +0200
-Message-ID: <20250826110936.577672115@linuxfoundation.org>
+Message-ID: <20250826110917.390261525@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit d897d81671bc4615c80f4f3bd5e6b218f59df50c ]
+commit bbcaee20e03ecaeeecba32a703816a0d4502b6c4 upstream.
 
-When there are too many block extents for a layoutcommit, they may not
-all fit into the maximum-sized RPC. This patch allows the generic pnfs
-code to properly handle -ENOSPC returned by the block/scsi layout driver
-and trigger additional layoutcommits if necessary.
+max_scan in page_cache_next_miss always decreases to zero when no hole is
+found, causing the return value to be index + 0.
 
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250630183537.196479-5-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by preserving the max_scan value throughout the loop.
+
+Jan said "From what I know and have seen in the past, wrong responses
+from page_cache_next_miss() can lead to readahead window reduction and
+thus reduced read speeds."
+
+Link: https://lkml.kernel.org/r/20250605054935.2323451-1-chizhiling@163.com
+Fixes: 901a269ff3d5 ("filemap: fix page_cache_next_miss() when no hole found")
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ mm/filemap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 7f48e0d870bd..86f008241c56 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -3216,6 +3216,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	loff_t end_pos;
- 	int status;
-+	bool mark_as_dirty = false;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1750,8 +1750,9 @@ pgoff_t page_cache_next_miss(struct addr
+ 			     pgoff_t index, unsigned long max_scan)
+ {
+ 	XA_STATE(xas, &mapping->i_pages, index);
++	unsigned long nr = max_scan;
  
- 	if (!pnfs_layoutcommit_outstanding(inode))
- 		return 0;
-@@ -3267,19 +3268,23 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	if (ld->prepare_layoutcommit) {
- 		status = ld->prepare_layoutcommit(&data->args);
- 		if (status) {
--			put_cred(data->cred);
-+			if (status != -ENOSPC)
-+				put_cred(data->cred);
- 			spin_lock(&inode->i_lock);
- 			set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags);
- 			if (end_pos > nfsi->layout->plh_lwb)
- 				nfsi->layout->plh_lwb = end_pos;
--			goto out_unlock;
-+			if (status != -ENOSPC)
-+				goto out_unlock;
-+			spin_unlock(&inode->i_lock);
-+			mark_as_dirty = true;
- 		}
- 	}
- 
- 
- 	status = nfs4_proc_layoutcommit(data, sync);
- out:
--	if (status)
-+	if (status || mark_as_dirty)
- 		mark_inode_dirty_sync(inode);
- 	dprintk("<-- %s status %d\n", __func__, status);
- 	return status;
--- 
-2.39.5
-
+-	while (max_scan--) {
++	while (nr--) {
+ 		void *entry = xas_next(&xas);
+ 		if (!entry || xa_is_value(entry))
+ 			return xas.xa_index;
 
 
 
