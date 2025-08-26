@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183ABB35EAD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00C0B36274
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D92561362
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A6BE1893CA5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07872BEC34;
-	Tue, 26 Aug 2025 11:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69659341663;
+	Tue, 26 Aug 2025 13:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8QZq4VO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai0CMJNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A3021D3C0;
-	Tue, 26 Aug 2025 11:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24984308F03;
+	Tue, 26 Aug 2025 13:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208932; cv=none; b=ndq/iyh6m+CkNSGJp5s4XKuTfqqJYP+9oR389vuqCc8cNqAhhh6ffsCoXddMZ5TX/m3mSnOEqeW4MEFXatqXeJAiX4yqDsLMUVqrZtkyH/Eo28ySNjeV3YSMzO8ObMght0ARQKcMIGTG/NE16ul9WckthoeKKiiL88VX9AfugTg=
+	t=1756214019; cv=none; b=hqbHdg7cnE4stRbKgWD6dJbEjHPCApTIxQ1KFn6qwfC/WKMv26l8QdgjpiEfhBBj+9/ZpWNIttjJqBS3JrIcj+0/NvLMBkN4tOpQ2G6NOEnIn4Y6hkh3RyI8WB7cNGc9xdNsxBMTIm0PhnujjNtxq+pyjZ2I8ideJkENm/+8qac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208932; c=relaxed/simple;
-	bh=v4/rnBUd6RaIBZ1Crx++Sf43KnxEwUOnHlDFY0gKA1E=;
+	s=arc-20240116; t=1756214019; c=relaxed/simple;
+	bh=J5+11ova6e1cQv+jK+gQc1vyVhb0ymFNisywv00nUv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+MJehGHo7GtbRghkBgtZWYjOPt4rQOfI+bUE0615PW1xCwK+YXe1L/L+D/I5UallgfG3nOPF5JlTITAyp5bBRsrCWwBIItkqs9S3FGp/gtYYgDhP2r4o68xQOGeYpImMUqhnNXJ/ph1ifiPHMYeDWFdNlTMNIT4jwy3T86Qwh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8QZq4VO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0571C4CEF1;
-	Tue, 26 Aug 2025 11:48:51 +0000 (UTC)
+	 MIME-Version; b=pgGTcEXGNiTwmvY+hzhjUeOG1464gIUsWo84v85qZM2koRBa5jHSkp3gtNYJ3eCmcYZ+9kINt9CFrUKmAg5a05ZOQH3rxBhcT0OMACfJJqcgxW4yPiiqzzNbF0+EidqfllH0V2IXUCb6bUp24lfQov/R07S9w0dyapdKy15eXR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai0CMJNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FDBC4CEF1;
+	Tue, 26 Aug 2025 13:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208932;
-	bh=v4/rnBUd6RaIBZ1Crx++Sf43KnxEwUOnHlDFY0gKA1E=;
+	s=korg; t=1756214018;
+	bh=J5+11ova6e1cQv+jK+gQc1vyVhb0ymFNisywv00nUv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8QZq4VODlYAvpnxRzEoigWoxWse5KgRL55hiGKcKdM2Dr/xpHx+iA1Rvfe1mxXPe
-	 ID9V1ga5doYn+xnvdthR8a6rStnY1I/erjBFdOa7symRSx1CzJC7PnEOOZsTXHSZmx
-	 htsldnnkkXeyFZfIqohQ+M9GAagFFYNLCjE5d5RU=
+	b=Ai0CMJNohfrHZy8rtbcC3q514o76+1TG+dSY0QmLlac98dIhnSat6/8O8G654DskN
+	 Cb+xXDdvq3AGBvMGjsF9NO3REfSOhFe280WH7YqZYd9F7tiGLHws3Z0ilbckfVpAfM
+	 Rgpumd6Jv7tv0DO2svTVuZfp4KjbLJSGtwOytdxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/322] microchip: lan865x: fix missing netif_start_queue() call on device open
+Subject: [PATCH 6.6 566/587] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
 Date: Tue, 26 Aug 2025 13:11:55 +0200
-Message-ID: <20250826110923.302234192@linuxfoundation.org>
+Message-ID: <20250826111007.427604566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit 1683fd1b2fa79864d3c7a951d9cea0a9ba1a1923 ]
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-This fixes an issue where the transmit queue is started implicitly only
-the very first time the device is registered. When the device is taken
-down and brought back up again (using `ip` or `ifconfig`), the transmit
-queue is not restarted, causing packet transmission to hang.
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-Adding an explicit call to netif_start_queue() in lan865x_net_open()
-ensures the transmit queue is properly started every time the device
-is reopened.
-
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Link: https://patch.msgid.link/20250818060514.52795-2-parthiban.veerasooran@microchip.com
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index dd436bdff0f8..d03f5a8de58d 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -311,6 +311,8 @@ static int lan865x_net_open(struct net_device *netdev)
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 22a5006ad34a..6e15a65faecc 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -294,6 +294,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
- 	phy_start(netdev->phydev);
- 
-+	netif_start_queue(netdev);
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
 +
- 	return 0;
- }
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
  
 -- 
 2.50.1
