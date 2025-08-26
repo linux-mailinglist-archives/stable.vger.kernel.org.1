@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A56DB36ACD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEC8B36129
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5BF9D4E202A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90D5C7B8BC8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC7D353379;
-	Tue, 26 Aug 2025 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBDA1C5D72;
+	Tue, 26 Aug 2025 13:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6auGTcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPDXAB+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20322350825;
-	Tue, 26 Aug 2025 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7891FFBF0;
+	Tue, 26 Aug 2025 13:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219076; cv=none; b=V+yRls4N+VbtvSuQpaA/KP5HPM8dDd4c1ipk64fNR85QhpP2Ln9LzrlZWJakPRLdGdhpXRvEKIYg5L4eoLFr28X4VBukt02oreJNQ3j7yywenC7gJOjcTwVQBmuziv1Sz4vdp3sKrQU9CTfAjX1QyCz8UTl2O9eUQXJKBFburZg=
+	t=1756213628; cv=none; b=Ako9a7LLEkGb6P6y+eldPLSJ4U98cl3edBWqAKbKpa2rIrVmY6X2DfIB2O8gMrxpNksiRwSh8ExCd0M75MxcXzJXOCb/Y2fhCjKnOsnvIItlO14raQ1duzzPviGxn2Zt8QJnG7LMViYHKQCtKu7r5pIA7t2gfagATi2BI5Vos3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219076; c=relaxed/simple;
-	bh=XPh2Llq2R22Tt3xsDbp2zwdZQVvhqETN8xzBhG813us=;
+	s=arc-20240116; t=1756213628; c=relaxed/simple;
+	bh=td6JmsAdU37t+dui/Vq8yn6Sfdy0pFpfm/qc1G3zyDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrT6sCuxCFI6Gf4LgOXUNZXTHlul+UPTNSIwRdN3bvizSGvMKosE9NDkrQm6PI38A2zdd7IaFO4iF47oljaHGJPnZSNfP0lNOk9qczZdXHZnZJn2SgynkbM5L3nuX9ZUJpf7POAPBLHE0X73jGLI6ikYUQXvCog83rJoH/QABtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6auGTcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CCBC113CF;
-	Tue, 26 Aug 2025 14:37:55 +0000 (UTC)
+	 MIME-Version; b=gQSK3N7G+I0h99H+sTxicNSUPOb98n89ITSChcobpUiNDNW9/o8Xoh8W9dpFACOI1xh2Rej0K8KOQ1RwEsIslw/fzQzPZHkO1mMfCR64U75iKMkRbTJR0kTw3s99Oze6DJsvM1+r7nxY71dm6h1h1X6ULJm+mJWY9zLkAPDgLzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPDXAB+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DCAC4CEF1;
+	Tue, 26 Aug 2025 13:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219076;
-	bh=XPh2Llq2R22Tt3xsDbp2zwdZQVvhqETN8xzBhG813us=;
+	s=korg; t=1756213628;
+	bh=td6JmsAdU37t+dui/Vq8yn6Sfdy0pFpfm/qc1G3zyDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6auGTcMVR+h+kUvcI26fJNoupwCViP0NqGiuxGTdcDPo3cSSlxDMOJl8vqlGqHRf
-	 W1f13hK5ThA8+enFy4+bGLZ7xWsbuTLtkM3nxhNyvOtHBLmfHD5BNwE3D2RfaiIeM/
-	 tSyQqF9podb/Ach3DmT1FLVz3F1+mhreweXBxrt0=
+	b=JPDXAB+HrPPlTloZoKYiBLbMxoyaSIOQOqYuca0GvdMCZ3dhWwqW8PucyYajWTIjD
+	 rCYiwBTFjHbB5RVUHL8xaaqGUguuIP0YaqCq79HBfXXZQLZcYgYgbiMVMvxQ3y3u07
+	 6ZVNnAj910Wtw9DZlk2sUjMXvsKdrMUPrBCrTt28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 243/403] RDMA: hfi1: fix possible divide-by-zero in find_hw_thread_mask()
+	Amber Lin <Amber.Lin@amd.com>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 420/587] drm/amdkfd: Destroy KFD debugfs after destroy KFD wq
 Date: Tue, 26 Aug 2025 13:09:29 +0200
-Message-ID: <20250826110913.541317554@linuxfoundation.org>
+Message-ID: <20250826111003.622861475@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 59f7d2138591ef8f0e4e4ab5f1ab674e8181ad3a ]
+commit 2e58401a24e7b2d4ec619104e1a76590c1284a4c upstream.
 
-The function divides number of online CPUs by num_core_siblings, and
-later checks the divider by zero. This implies a possibility to get
-and divide-by-zero runtime error. Fix it by moving the check prior to
-division. This also helps to save one indentation level.
+Since KFD proc content was moved to kernel debugfs, we can't destroy KFD
+debugfs before kfd_process_destroy_wq. Move kfd_process_destroy_wq prior
+to kfd_debugfs_fini to fix a kernel NULL pointer problem. It happens
+when /sys/kernel/debug/kfd was already destroyed in kfd_debugfs_fini but
+kfd_process_destroy_wq calls kfd_debugfs_remove_process. This line
+    debugfs_remove_recursive(entry->proc_dentry);
+tries to remove /sys/kernel/debug/kfd/proc/<pid> while
+/sys/kernel/debug/kfd is already gone. It hangs the kernel by kernel
+NULL pointer.
 
-Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
-Link: https://patch.msgid.link/20250604193947.11834-3-yury.norov@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Eric Huang <jinhuieric.huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0333052d90683d88531558dcfdbf2525cc37c233)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/affinity.c | 44 +++++++++++++++------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_module.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/affinity.c b/drivers/infiniband/hw/hfi1/affinity.c
-index 832b878fa67e..6933fbea2b46 100644
---- a/drivers/infiniband/hw/hfi1/affinity.c
-+++ b/drivers/infiniband/hw/hfi1/affinity.c
-@@ -1009,31 +1009,35 @@ static void find_hw_thread_mask(uint hw_thread_no, cpumask_var_t hw_thread_mask,
- 				struct hfi1_affinity_node_list *affinity)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_module.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
+@@ -78,8 +78,8 @@ err_ioctl:
+ static void kfd_exit(void)
  {
- 	int possible, curr_cpu, i;
--	uint num_cores_per_socket = node_affinity.num_online_cpus /
-+	uint num_cores_per_socket;
-+
-+	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
-+
-+	if (affinity->num_core_siblings == 0)
-+		return;
-+
-+	num_cores_per_socket = node_affinity.num_online_cpus /
- 					affinity->num_core_siblings /
- 						node_affinity.num_online_nodes;
- 
--	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
--	if (affinity->num_core_siblings > 0) {
--		/* Removing other siblings not needed for now */
--		possible = cpumask_weight(hw_thread_mask);
--		curr_cpu = cpumask_first(hw_thread_mask);
--		for (i = 0;
--		     i < num_cores_per_socket * node_affinity.num_online_nodes;
--		     i++)
--			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
--
--		for (; i < possible; i++) {
--			cpumask_clear_cpu(curr_cpu, hw_thread_mask);
--			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
--		}
-+	/* Removing other siblings not needed for now */
-+	possible = cpumask_weight(hw_thread_mask);
-+	curr_cpu = cpumask_first(hw_thread_mask);
-+	for (i = 0;
-+	     i < num_cores_per_socket * node_affinity.num_online_nodes;
-+	     i++)
-+		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
- 
--		/* Identifying correct HW threads within physical cores */
--		cpumask_shift_left(hw_thread_mask, hw_thread_mask,
--				   num_cores_per_socket *
--				   node_affinity.num_online_nodes *
--				   hw_thread_no);
-+	for (; i < possible; i++) {
-+		cpumask_clear_cpu(curr_cpu, hw_thread_mask);
-+		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
- 	}
-+
-+	/* Identifying correct HW threads within physical cores */
-+	cpumask_shift_left(hw_thread_mask, hw_thread_mask,
-+			   num_cores_per_socket *
-+			   node_affinity.num_online_nodes *
-+			   hw_thread_no);
- }
- 
- int hfi1_get_proc_affinity(int node)
--- 
-2.39.5
-
+ 	kfd_cleanup_processes();
+-	kfd_debugfs_fini();
+ 	kfd_process_destroy_wq();
++	kfd_debugfs_fini();
+ 	kfd_procfs_shutdown();
+ 	kfd_topology_shutdown();
+ 	kfd_chardev_exit();
 
 
 
