@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945E5B360F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBD5B36782
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A88F1BA5486
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4137B8E6B64
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9BE1B85F8;
-	Tue, 26 Aug 2025 13:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C31834F461;
+	Tue, 26 Aug 2025 13:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIQtYRth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjWeswC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1871494D9;
-	Tue, 26 Aug 2025 13:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB9F286881;
+	Tue, 26 Aug 2025 13:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213351; cv=none; b=HAuI6ZqFWDEvD7hVxptWmEkRolzk6wHmXGOn3glGK7cD+HdBjeuc2YmbQaCrWuAH4V2xhM8I6pjlD4T7hyun9tdXRgsvn+E/FmKn0G/vCpRZQZ7izeef0+OoZ9TB+QOIrt/7cNQ7l/1nMfGOHWpQcDGd+pdA2sIsJc75M6eAG0g=
+	t=1756216338; cv=none; b=BBJKfFtA0cezev5LLs20S48hy0nLSe7gOY4Dgh/6+690kQ5XjSYy4+NP0TvG3MFBBPeSK9HSJpvo4Ri2OMJTofy4lTtOuNnIgEaFKKpqGxAkhTEpVFBhsNhuyb0zV0VPvN6II/7ATN8K2SGPudRDTMkeToD4+36mOMRJOlBVJw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213351; c=relaxed/simple;
-	bh=+IRQTblmy+447o+psgOEfSZl5v3tKa7XzoUPxATL738=;
+	s=arc-20240116; t=1756216338; c=relaxed/simple;
+	bh=SfA6hjqj1QSVTDhh5HzT6iBJpjATTMAc2aJnq7c+nfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYlzw0rM6kNsfh2gh0TA65Ygf+6G9F9pahdRB3D0/bvva5B6yPFqMd+rrvzudNoDeBzBYS0IeP8A0CsONn6K0UyBR4m677arTRII8wK8OXHS1OeGgfIta202EPHUOLr1AvPzfcZwNdBzz9mjy3xrCZP0zyIrB6l8NMYRprn6Gek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIQtYRth; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5974AC4CEF1;
-	Tue, 26 Aug 2025 13:02:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GeYDC/zQxMNgxM/F3jCqp2s4cplEO6YUSIk0mTzzSglRFnSSsrILl8ovRWaIGCeG2u8nWvUbKdFRZUgncchHfPCWCOmmNEEBAqHDhi+l/a9zxnCs6SMgjXZerXoQh5bvg7+7KpWqipSuv0W88+To6LLXlTyAht0+Guc345C4Vrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjWeswC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70917C113CF;
+	Tue, 26 Aug 2025 13:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213351;
-	bh=+IRQTblmy+447o+psgOEfSZl5v3tKa7XzoUPxATL738=;
+	s=korg; t=1756216336;
+	bh=SfA6hjqj1QSVTDhh5HzT6iBJpjATTMAc2aJnq7c+nfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIQtYRthbbL63pKIvWLYq2za5WkmWp8Cvq+yjQXePXH/d2PyjxNkufCuAkCIH1S9N
-	 JqL2b9GB4G8VQmllJtJatMWCn0Kv4lYG/sM5dZGOhROl1N6euurO7Ds2dH3qxi4LcI
-	 K8Y8e6Dum1tpQntABce5R7sfCJKj1kUqhaFzVswc=
+	b=YjWeswC7oU5OjxhCg+19gX/Ad2RSK3ONgkPONx/6EaJbRtjCIfHV36ijBGxTmACZT
+	 8asBe8CEmuioSvbGPdaIcpKOwJcNthS+C7Nl86SX8NrbpAxbx8sfTZjNRfmriC1B7c
+	 FUW7hfHDolS46JhrfT2qcNzPD5fYle+MuZ+jWi0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 315/587] btrfs: do not allow relocation of partially dropped subvolumes
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 373/644] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
 Date: Tue, 26 Aug 2025 13:07:44 +0200
-Message-ID: <20250826111000.930421321@linuxfoundation.org>
+Message-ID: <20250826110955.662466419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,131 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 4289b494ac553e74e86fed1c66b2bf9530bc1082 upstream.
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-[BUG]
-There is an internal report that balance triggered transaction abort,
-with the following call trace:
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-  item 85 key (594509824 169 0) itemoff 12599 itemsize 33
-          extent refs 1 gen 197740 flags 2
-          ref#0: tree block backref root 7
-  item 86 key (594558976 169 0) itemoff 12566 itemsize 33
-          extent refs 1 gen 197522 flags 2
-          ref#0: tree block backref root 7
- ...
- BTRFS error (device loop0): extent item not found for insert, bytenr 594526208 num_bytes 16384 parent 449921024 root_objectid 934 owner 1 offset 0
- BTRFS error (device loop0): failed to run delayed ref for logical 594526208 num_bytes 16384 type 182 action 1 ref_mod 1: -117
- ------------[ cut here ]------------
- BTRFS: Transaction aborted (error -117)
- WARNING: CPU: 1 PID: 6963 at ../fs/btrfs/extent-tree.c:2168 btrfs_run_delayed_refs+0xfa/0x110 [btrfs]
-
-And btrfs check doesn't report anything wrong related to the extent
-tree.
-
-[CAUSE]
-The cause is a little complex, firstly the extent tree indeed doesn't
-have the backref for 594526208.
-
-The extent tree only have the following two backrefs around that bytenr
-on-disk:
-
-        item 65 key (594509824 METADATA_ITEM 0) itemoff 13880 itemsize 33
-                refs 1 gen 197740 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-        item 66 key (594558976 METADATA_ITEM 0) itemoff 13847 itemsize 33
-                refs 1 gen 197522 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-
-But the such missing backref item is not an corruption on disk, as the
-offending delayed ref belongs to subvolume 934, and that subvolume is
-being dropped:
-
-        item 0 key (934 ROOT_ITEM 198229) itemoff 15844 itemsize 439
-                generation 198229 root_dirid 256 bytenr 10741039104 byte_limit 0 bytes_used 345571328
-                last_snapshot 198229 flags 0x1000000000001(RDONLY) refs 0
-                drop_progress key (206324 EXTENT_DATA 2711650304) drop_level 2
-                level 2 generation_v2 198229
-
-And that offending tree block 594526208 is inside the dropped range of
-that subvolume.  That explains why there is no backref item for that
-bytenr and why btrfs check is not reporting anything wrong.
-
-But this also shows another problem, as btrfs will do all the orphan
-subvolume cleanup at a read-write mount.
-
-So half-dropped subvolume should not exist after an RW mount, and
-balance itself is also exclusive to subvolume cleanup, meaning we
-shouldn't hit a subvolume half-dropped during relocation.
-
-The root cause is, there is no orphan item for this subvolume.
-In fact there are 5 subvolumes from around 2021 that have the same
-problem.
-
-It looks like the original report has some older kernels running, and
-caused those zombie subvolumes.
-
-Thankfully upstream commit 8d488a8c7ba2 ("btrfs: fix subvolume/snapshot
-deletion not triggered on mount") has long fixed the bug.
-
-[ENHANCEMENT]
-For repairing such old fs, btrfs-progs will be enhanced.
-
-Considering how delayed the problem will show up (at run delayed ref
-time) and at that time we have to abort transaction already, it is too
-late.
-
-Instead here we reject any half-dropped subvolume for reloc tree at the
-earliest time, preventing confusion and extra time wasted on debugging
-similar bugs.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -693,6 +693,25 @@ static struct btrfs_root *create_reloc_r
- 	if (root->root_key.objectid == objectid) {
- 		u64 commit_root_gen;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 091ca9ca49aa..2def9ed34beb 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1167,6 +1167,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1191,6 +1193,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1221,10 +1225,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
  
-+		/*
-+		 * Relocation will wait for cleaner thread, and any half-dropped
-+		 * subvolume will be fully cleaned up at mount time.
-+		 * So here we shouldn't hit a subvolume with non-zero drop_progress.
-+		 *
-+		 * If this isn't the case, error out since it can make us attempt to
-+		 * drop references for extents that were already dropped before.
-+		 */
-+		if (unlikely(btrfs_disk_key_objectid(&root->root_item.drop_progress))) {
-+			struct btrfs_key cpu_key;
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
 +
-+			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
-+			btrfs_err(fs_info,
-+	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
-+				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
-+			ret = -EUCLEAN;
-+			goto fail;
-+		}
-+
- 		/* called by btrfs_init_reloc_root */
- 		ret = btrfs_copy_root(trans, root, root->commit_root, &eb,
- 				      BTRFS_TREE_RELOC_OBJECTID);
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
+ 
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index b2c539a42154..e5776545a8a0 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -92,6 +92,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
+-- 
+2.39.5
+
 
 
 
