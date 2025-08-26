@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B32BB36A39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B41FBB36126
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 388C78E53C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE9463B2604
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005E9350D5D;
-	Tue, 26 Aug 2025 14:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8289F1CAA65;
+	Tue, 26 Aug 2025 13:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rboIEebl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etCDH1m2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BBD2C0F60;
-	Tue, 26 Aug 2025 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404AA18DB2A;
+	Tue, 26 Aug 2025 13:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217873; cv=none; b=P8WpPHmTagLIllWPddObWRRaq+QMOoW5BnnpSUJAsRRGapTcbh8KCsF+y6ow7F3+4x19upfmNJ8G2uZJAwMS6LZ7ZjypuftiEFzt0AyQGThjLapWMrUYLUf7vWa+qqyFWWi0Ch4Y0vqUIUT2dn1f+dV9PDD8gVEAOjtzg+Yv7S8=
+	t=1756213386; cv=none; b=TSp1s4daN92B9aQ2Q+1NUB7sFapPh+X4cCRRWYvxUVqn3dPNsi+vj/OxFv4Q1A6507gsrbo2rIb14wXcPoWR+uNBO0SSw4tZ9O/3bI5m8xu+nW/crY7C9OBH++ip+ZM02X/9a4LepBqybEFwFE6O8NIFAzA64OLA36FA5o7gDBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217873; c=relaxed/simple;
-	bh=VxKiKrYxITYl9BtrrVRN9HNuMhfxvSZkWyhweiJHMJw=;
+	s=arc-20240116; t=1756213386; c=relaxed/simple;
+	bh=P+/CJMcZFcKJ8/Tg/SGA/QFz8jzzV4K4/M0Hgol6bVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ffh2SPAPFIET7Hz7hM+avfgNZ4xdGwk5vsUC5heLzjYjayZSQ8T4Vs1q74CMlL8r00NaMKnRe1ldHH86Ce4Ms0d///v2T0fmhMmZLVVR6eh/r5FX8LaPtqwDNBB+bI9A8o+CI+Gjtt454XELEPjBgaeARzuevLhfQcrkNnsAqaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rboIEebl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BF1C4CEF1;
-	Tue, 26 Aug 2025 14:17:53 +0000 (UTC)
+	 MIME-Version; b=P2aauHim+IvqEixa/UwTbuf+G/Rl3mqgDgOOU2Oye+TQH2pk0IO008cnI4AmiRoCmn6rYADtkjjevOYBQPeogZvEZ+OwaejfAIPeygg5Jno1AC/iVPPY5wxTG/MCQNse74K/lngeGRWgZEk8MfuCC2nhJxiQkoWOwxfSMD626UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etCDH1m2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF92C4CEF1;
+	Tue, 26 Aug 2025 13:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217873;
-	bh=VxKiKrYxITYl9BtrrVRN9HNuMhfxvSZkWyhweiJHMJw=;
+	s=korg; t=1756213385;
+	bh=P+/CJMcZFcKJ8/Tg/SGA/QFz8jzzV4K4/M0Hgol6bVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rboIEeblu1U1S3Rq1XrrnjQFqFadabjBr3n+7qSROViDKU6UiJ5ndDna0b1h9oEN8
-	 P6ifSCb+oPaNaNxttcgaTjd5pRZ29IpVbV6nHYzSgnvKN2QviYmsVdsk5z4eSKC1UQ
-	 GunUf9/k5ht4Fzhr6FK+qgbeEWJJks6a6JGTo4+Y=
+	b=etCDH1m2KpObU3w20bcLPRKSrL9y6Fq/8jAYHvV5kQ9Q5PCU1b/10QJJvIvAZpPjC
+	 D1nbccEAxaN0k8ZRPHhxuQYnDtktwk77AvF9xa36Q1TApjE1XnCp5Nj4J2Ikv6A6lN
+	 FmM88y1RXZlcKJifG0y8pvWoBVBP3cAccSt+6Kvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/523] wifi: cfg80211: Fix interface type validation
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 327/587] HID: apple: avoid setting up battery timer for devices without battery
 Date: Tue, 26 Aug 2025 13:07:56 +0200
-Message-ID: <20250826110930.987256760@linuxfoundation.org>
+Message-ID: <20250826111001.232866315@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit 14450be2332a49445106403492a367412b8c23f4 ]
+commit c061046fe9ce3ff31fb9a807144a2630ad349c17 upstream.
 
-Fix a condition that verified valid values of interface types.
+Currently, the battery timer is set up for all devices using hid-apple,
+irrespective of whether they actually have a battery or not.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709233537.7ad199ca5939.I0ac1ff74798bf59a87a57f2e18f2153c308b119b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+APPLE_RDESC_BATTERY is a quirk that indicates the device has a battery
+and needs the battery timer. This patch checks for this quirk before
+setting up the timer, ensuring that only devices with a battery will
+have the timer set up.
+
+Fixes: 6e143293e17a ("HID: apple: Report Magic Keyboard battery over USB")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-apple.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4536a122c4bc..5595c2a94939 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -510,7 +510,7 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -858,10 +858,12 @@ static int apple_probe(struct hid_device
+ 		return ret;
+ 	}
+ 
+-	timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
+-	mod_timer(&asc->battery_timer,
+-		  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
+-	apple_fetch_battery(hdev);
++	if (quirks & APPLE_RDESC_BATTERY) {
++		timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
++		mod_timer(&asc->battery_timer,
++			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
++		apple_fetch_battery(hdev);
++	}
+ 
+ 	if (quirks & APPLE_BACKLIGHT_CTL)
+ 		apple_backlight_init(hdev);
+@@ -873,7 +875,8 @@ static void apple_remove(struct hid_devi
  {
- 	int i;
+ 	struct apple_sc *asc = hid_get_drvdata(hdev);
  
--	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
-+	if (WARN_ON(iftype >= NUM_NL80211_IFTYPES))
- 		return NULL;
+-	del_timer_sync(&asc->battery_timer);
++	if (asc->quirks & APPLE_RDESC_BATTERY)
++		del_timer_sync(&asc->battery_timer);
  
- 	if (iftype == NL80211_IFTYPE_AP_VLAN)
--- 
-2.39.5
-
+ 	hid_hw_stop(hdev);
+ }
 
 
 
