@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B0DB35D04
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCADB36A85
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F6C3AE172
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 780457A2DD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B674F21D3C0;
-	Tue, 26 Aug 2025 11:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB5352FCC;
+	Tue, 26 Aug 2025 14:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJcxN12I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGmgTsLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C6D20C001;
-	Tue, 26 Aug 2025 11:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E5D340D95;
+	Tue, 26 Aug 2025 14:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208379; cv=none; b=qhxlUkoV3CN27+05iXZlw6LlSRMsoAPAY3EEsjamAdRlPIT8xjy82xhxdnzsCVKKe/DmYKeiEaO0LsOzY8DwolCPxoJ+0HlFVVEQX2MN/MGTtyfrm4ZW2jPS3sqWeOCBj3PEPThhqjGRY9QzPoIpTtPLGQ0f2rDdK2fbPqBmr48=
+	t=1756218908; cv=none; b=snTlnPGZ45Fo6iMjQkCtt2YmpZhQDnHoDI0DSRZkxeDa3dJhS4jXfI7xS4xBXEwZyVJdIUvz2G1tatIhVUjC5oPS7I5fxGy5x/Cr8Jxy9aqZi1egt9kQqkgOWab19mvBfOPFOip5ROf0uYGEbThvhYxMRW/0ssI3bFurrV1TyKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208379; c=relaxed/simple;
-	bh=hXmK7BjMEGkdV5WjEA8QsyVT4LcgFz6clwBS6S3GYqw=;
+	s=arc-20240116; t=1756218908; c=relaxed/simple;
+	bh=7nrLO239b7yQggz7/BNaPJlu3RiVlQalD9cuNA9mYPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOvgafWHHwTxs8/PdpKXrVNX7nuyMGr7XymEAWtEXd0tT+aH1W0gWpKcj+XLHXT/KQ1vK43AG393/0JA5kwuUbAqSroJOd9v9axoQa7bTgOAQni0OspSvdhknTweX/xpKFsSUHfsI5JXWcFqAAqQk97gWO9Y0XIEz4bR/GsEjuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJcxN12I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0D8C4CEF1;
-	Tue, 26 Aug 2025 11:39:38 +0000 (UTC)
+	 MIME-Version; b=vDkNCtL33dBG/dPGhUYIqotcQBjPN2q9WQgEmC0tVqbRoq6onYY0oCLCICEHg1XsSAnX4JyDOMiSe+8l8f3UhEeY85BHJQdqQwHw9LmyVePIXfVEGgzDTihj99xkPSB3vi6/mofTOo7FmCd+7AAaZgDzna5++EVGmhKeEyT8+us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGmgTsLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B738C4CEF1;
+	Tue, 26 Aug 2025 14:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208379;
-	bh=hXmK7BjMEGkdV5WjEA8QsyVT4LcgFz6clwBS6S3GYqw=;
+	s=korg; t=1756218907;
+	bh=7nrLO239b7yQggz7/BNaPJlu3RiVlQalD9cuNA9mYPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJcxN12IOvn72sr4j7ttjsiJQHprHoaspdGL7HxS0pO+fwSRkaTNTYpcC99QykcIS
-	 6FQrhH9udbHmHuPQeqrE04jHo9fKjVze1xFCmYYTRiypFCxSbxdQVXtpKG3iIX4GiT
-	 6kykgYhePE6r77boSpcl0YXKpfVxP7GE6SozmCQk=
+	b=TGmgTsLcDorYBF85INVPLn58rj7KnNmJ56GLqm9TQOdi76Kt383nhDfx2POpeeMwy
+	 Y5DwpEz2wGKrYGLpqjejMJ8b/DcxEFUkkNVIMXGGBj1DIY1fXe8XWysFYgbLmlA28y
+	 oyPjy5Znp/Q73I420TClYq8QTiurrypGnRsVPmNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 089/322] parisc: Check region is readable by user in raw_copy_from_user()
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 178/403] hfs: fix not erasing deleted b-tree node issue
 Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826110917.858670201@linuxfoundation.org>
+Message-ID: <20250826110911.801994347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
+[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
 
-Because of the way the _PAGE_READ is handled in the parisc PTE, an
-access interruption is not generated when the kernel reads from a
-region where the _PAGE_READ is zero. The current code was written
-assuming read access faults would also occur in the kernel.
+The generic/001 test of xfstests suite fails and corrupts
+the HFS volume:
 
-This change adds user access checks to raw_copy_from_user().  The
-prober_user() define checks whether user code has read access to
-a virtual address. Note that page faults are not handled in the
-exception support for the probe instruction. For this reason, we
-precede the probe by a ldb access check.
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
+
+Ran: generic/001
+Failures: generic/001
+Failed 1 of 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+   Unused node is not erased (node = 2)
+   Unused node is not erased (node = 4)
+<skipped>
+   Unused node is not erased (node = 253)
+   Unused node is not erased (node = 254)
+   Unused node is not erased (node = 255)
+   Unused node is not erased (node = 256)
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+                  CBTStat = 0x0004 CatStat = 0x00000000
+** The volume untitled was found corrupt and needs to be repaired.
+	volume type is HFS
+	primary MDB is at block 2 0x02
+	alternate MDB is at block 20971518 0x13ffffe
+	primary VHB is at block 0 0x00
+	alternate VHB is at block 0 0x00
+	sector size = 512 0x200
+	VolumeObject flags = 0x19
+	total sectors for volume = 20971520 0x1400000
+	total sectors for embedded volume = 0 0x00
+
+This patch adds logic of clearing the deleted b-tree node.
+
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/001 9s ...  32s
+Ran: generic/001
+Passed all 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled appears to be OK.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
- arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
- 2 files changed, 46 insertions(+), 1 deletion(-)
+ fs/hfs/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/include/asm/special_insns.h
-+++ b/arch/parisc/include/asm/special_insns.h
-@@ -32,6 +32,34 @@
- 	pa;						\
- })
- 
-+/**
-+ * prober_user() - Probe user read access
-+ * @sr:		Space regster.
-+ * @va:		Virtual address.
-+ *
-+ * Return: Non-zero if address is accessible.
-+ *
-+ * Due to the way _PAGE_READ is handled in TLB entries, we need
-+ * a special check to determine whether a user address is accessible.
-+ * The ldb instruction does the initial access check. If it is
-+ * successful, the probe instruction checks user access rights.
-+ */
-+#define prober_user(sr, va)	({			\
-+	unsigned long read_allowed;			\
-+	__asm__ __volatile__(				\
-+		"copy %%r0,%0\n"			\
-+		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
-+		"\tproberi (%%sr%1,%2),%3,%0\n"		\
-+		"9:\n"					\
-+		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
-+				"or %%r0,%%r0,%%r0")	\
-+		: "=&r" (read_allowed)			\
-+		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
-+		: "memory"				\
-+	);						\
-+	read_allowed;					\
-+})
-+
- #define CR_EIEM 15	/* External Interrupt Enable Mask */
- #define CR_CR16 16	/* CR16 Interval Timer */
- #define CR_EIRR 23	/* External Interrupt Request Register */
---- a/arch/parisc/lib/memcpy.c
-+++ b/arch/parisc/lib/memcpy.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-+#include <linux/mm.h>
- 
- #define get_user_space()	mfsp(SR_USER)
- #define get_kernel_space()	SR_KERNEL
-@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
- unsigned long raw_copy_from_user(void *dst, const void __user *src,
- 			       unsigned long len)
- {
-+	unsigned long start = (unsigned long) src;
-+	unsigned long end = start + len;
-+	unsigned long newlen = len;
-+
- 	mtsp(get_user_space(), SR_TEMP1);
- 	mtsp(get_kernel_space(), SR_TEMP2);
--	return pa_memcpy(dst, (void __force *)src, len);
-+
-+	/* Check region is user accessible */
-+	if (start)
-+	while (start < end) {
-+		if (!prober_user(SR_TEMP1, start)) {
-+			newlen = (start - (unsigned long) src);
-+			break;
-+		}
-+		start += PAGE_SIZE;
-+		/* align to page boundry which may have different permission */
-+		start = PAGE_ALIGN_DOWN(start);
-+	}
-+	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
- }
- EXPORT_SYMBOL(raw_copy_from_user);
- 
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 2039cb6d5f66..219e3b8fd6a8 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -586,6 +586,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
+ 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
+ 			hfs_bnode_unhash(node);
+ 			spin_unlock(&tree->hash_lock);
++			hfs_bnode_clear(node, 0, tree->node_size);
+ 			hfs_bmap_free(node);
+ 			hfs_bnode_free(node);
+ 			return;
+-- 
+2.39.5
+
 
 
 
