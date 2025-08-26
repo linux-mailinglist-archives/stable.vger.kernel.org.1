@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCAEB3605E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F0AB35B20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01581BC0471
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689691BA0898
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31DA225417;
-	Tue, 26 Aug 2025 12:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A62632A3C8;
+	Tue, 26 Aug 2025 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApPvRmWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnXhEMxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901141F09BF;
-	Tue, 26 Aug 2025 12:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285D1327790;
+	Tue, 26 Aug 2025 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212964; cv=none; b=DKf2EdU4kI351iplDGCnrp0LBULn6kjLsD6sff+GTTNBJCo+DwF35WVU9SX41IWSQee9fcx+87mTbChjDuyTR9aWZjKhUWxeq5CvKIWtAgmkefADZ1sIf9JrfS539azA67xnRYIjP1JJSwTbRnLa6UA6bOxxoOmIgyfNFL20+cU=
+	t=1756207060; cv=none; b=TxubI7qUF6Pmsv6++Tk2dEND+6MEaWnIyjRQ6iAv4iLeXYX8zryc29Jp/Q02imyo54GQRlKtAsAEL2NeRGfiA2i5//TpKRzIvZ7KENxpJlfYl896zBX+tWHx7fEupszzzl8IjqvgUKFG9+maOYm1lW6aAjjyXtVDMf7VaVqcaM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212964; c=relaxed/simple;
-	bh=0ecDO2Verj5lA5yQxKcstBLp/sa7TA8TSpIVRSZkhJw=;
+	s=arc-20240116; t=1756207060; c=relaxed/simple;
+	bh=jI1/9AWKRgq/FWt0lOMByFMxrS3hru/Qcc0xdbWSzi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXW2Cb+Z2hkUoFBMTipujxAMWwW5sHktOOeNqoOQmoIij5Tnv+wNi5vKzQFSCCoQmuVhEEFYq5qhu7bLkCZaDYgcg3ioYOkf1lYL0LSdQ/+Uy8UO9WKT0Kd3V5NRxof/k0x53xfHaWRSW8IdDrzugL7+CD8n0rtv5OdDqfjEVGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApPvRmWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A99C4CEF4;
-	Tue, 26 Aug 2025 12:56:03 +0000 (UTC)
+	 MIME-Version; b=AALnr2ijpI0186JHTkrwChlGiNGOu9KNtIReoGdS+OO3KOX2KCNUA4ZSrof90jPJ7+jnwi8AmUxEHCKV8w1m1TOePAbL82cs19fSa5Pv0dcyLEmYM8WjsExIaxdBQ7zy5WtpzkQjbj3Rq1w4gn98Kgtyu4FyHY+xbOAO8cvMJ8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnXhEMxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC3CC4CEF4;
+	Tue, 26 Aug 2025 11:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212964;
-	bh=0ecDO2Verj5lA5yQxKcstBLp/sa7TA8TSpIVRSZkhJw=;
+	s=korg; t=1756207060;
+	bh=jI1/9AWKRgq/FWt0lOMByFMxrS3hru/Qcc0xdbWSzi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApPvRmWlr442KzflEZlqK7GOhNtV258I2nxzWhkeNrUiC3DKO5uYcbksxLxB45O0l
-	 pyb6RB8p0+KkIZ7WRy3poqFLcJ+WP8Eq3cdl/SZFWSbq9SYYzEr0HYF9KNlpYM81HG
-	 NJKj9DbhNsoNOjNKO1YjIwoR2ThqyPsQ8K0OlRCQ=
+	b=JnXhEMxLahH0VLOwVbcW8Q7URHXLLtUTleybi+o+hsWZ5q4Jzw7eCOqrkWvyFiym8
+	 /Vnmf6xL0UZA/82LwoDjmYg4uvaEar8aq+HQRKSTYnG7y5iqUFxBf5+yeyNYUkiWoc
+	 zGoCRl5GefYyGThQeu/mVckxPsZBE+U+qxSKp5Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/587] wifi: rtw89: Fix rtw89_mac_power_switch() for USB
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 035/457] ksmbd: extend the connection limiting mechanism to support IPv6
 Date: Tue, 26 Aug 2025 13:05:19 +0200
-Message-ID: <20250826110957.271065662@linuxfoundation.org>
+Message-ID: <20250826110938.210437673@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit e2b71603333a9dd73ee88347d8894fffc3456ac1 ]
+commit c0d41112f1a5828c194b59cca953114bc3776ef2 upstream.
 
-Clear some bits in some registers in order to allow RTL8851BU to power
-on. This is done both when powering on and when powering off because
-that's what the vendor driver does.
+Update the connection tracking logic to handle both IPv4 and IPv6
+address families.
 
-Also tested with RTL8832BU and RTL8832CU.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/a39da939-d640-4486-ad38-f658f220afc8@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e6bb91939740 ("ksmbd: limit repeated connections from clients with the same IP")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 19 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h |  1 +
- 2 files changed, 20 insertions(+)
+ fs/smb/server/connection.h    |    7 ++++++-
+ fs/smb/server/transport_tcp.c |   26 +++++++++++++++++++++++---
+ 2 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 3c818c4b4653..3d63f8b2770e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1301,6 +1301,23 @@ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev)
- 	rtw89_mac_send_rpwm(rtwdev, state, true);
- }
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -46,7 +46,12 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
+-	__be32				inet_addr;
++	union {
++		__be32			inet_addr;
++#if IS_ENABLED(CONFIG_IPV6)
++		u8			inet6_addr[16];
++#endif
++	};
+ 	char				*request_buf;
+ 	struct ksmbd_transport		*transport;
+ 	struct nls_table		*local_nls;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -87,7 +87,14 @@ static struct tcp_transport *alloc_trans
+ 		return NULL;
+ 	}
  
-+static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
-+{
-+	u32 boot_mode;
-+
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_USB)
-+		return;
-+
-+	boot_mode = rtw89_read32_mask(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	if (!boot_mode)
-+		return;
-+
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFN_ONMAC);
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_STATUS1, B_AX_AUTO_WLPON);
-+	rtw89_write32_clr(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
-+}
-+
- static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
++#if IS_ENABLED(CONFIG_IPV6)
++	if (client_sk->sk->sk_family == AF_INET6)
++		memcpy(&conn->inet6_addr, &client_sk->sk->sk_v6_daddr, 16);
++	else
++		conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
++#else
+ 	conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
++#endif
+ 	conn->transport = KSMBD_TRANS(t);
+ 	KSMBD_TRANS(t)->conn = conn;
+ 	KSMBD_TRANS(t)->ops = &ksmbd_tcp_transport_ops;
+@@ -231,7 +238,6 @@ static int ksmbd_kthread_fn(void *p)
  {
- #define PWR_ACT 1
-@@ -1310,6 +1327,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ 	struct socket *client_sk = NULL;
+ 	struct interface *iface = (struct interface *)p;
+-	struct inet_sock *csk_inet;
+ 	struct ksmbd_conn *conn;
  	int ret;
- 	u8 val;
  
-+	rtw89_mac_power_switch_boot_mode(rtwdev);
-+
- 	if (on) {
- 		cfg_seq = chip->pwr_on_seq;
- 		cfg_func = chip->ops->pwr_on_func;
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index c0aac4d3678a..ef1162595042 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -172,6 +172,7 @@
- 
- #define R_AX_SYS_STATUS1 0x00F4
- #define B_AX_SEL_0XC0_MASK GENMASK(17, 16)
-+#define B_AX_AUTO_WLPON BIT(10)
- #define B_AX_PAD_HCI_SEL_V2_MASK GENMASK(5, 3)
- #define MAC_AX_HCI_SEL_SDIO_UART 0
- #define MAC_AX_HCI_SEL_MULTI_USB 1
--- 
-2.39.5
-
+@@ -254,13 +260,27 @@ static int ksmbd_kthread_fn(void *p)
+ 		/*
+ 		 * Limits repeated connections from clients with the same IP.
+ 		 */
+-		csk_inet = inet_sk(client_sk->sk);
+ 		down_read(&conn_list_lock);
+ 		list_for_each_entry(conn, &conn_list, conns_list)
+-			if (csk_inet->inet_daddr == conn->inet_addr) {
++#if IS_ENABLED(CONFIG_IPV6)
++			if (client_sk->sk->sk_family == AF_INET6) {
++				if (memcmp(&client_sk->sk->sk_v6_daddr,
++					   &conn->inet6_addr, 16) == 0) {
++					ret = -EAGAIN;
++					break;
++				}
++			} else if (inet_sk(client_sk->sk)->inet_daddr ==
++				 conn->inet_addr) {
+ 				ret = -EAGAIN;
+ 				break;
+ 			}
++#else
++			if (inet_sk(client_sk->sk)->inet_daddr ==
++			    conn->inet_addr) {
++				ret = -EAGAIN;
++				break;
++			}
++#endif
+ 		up_read(&conn_list_lock);
+ 		if (ret == -EAGAIN)
+ 			continue;
 
 
 
