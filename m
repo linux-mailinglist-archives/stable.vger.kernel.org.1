@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34828B35CF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74969B36D08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD2F1884C3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC15CA07098
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5618F322754;
-	Tue, 26 Aug 2025 11:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1453568E5;
+	Tue, 26 Aug 2025 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0zWxKpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="II7pyUej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1363832144B;
-	Tue, 26 Aug 2025 11:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA98352FFA;
+	Tue, 26 Aug 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207959; cv=none; b=B918ZgBWyQH/kxsDCAOVjA+/EVztJerfCVRWAY/4DA49RMYdvBLAziA6BfyLpYV2rKMJt1bd5GSIqIgJ9fJ4kdch6hmGFxkJhTdpcZ9HOENa1E3AYE8Ci63cc6un0qdfTs8OFcUyDYOZhB2JSnicw0jn9pwt7XwLk905rlJRXwU=
+	t=1756219250; cv=none; b=JSRf7YVNgIarq2g+oRu6UeePQrWajGFGAraWFudPjoFL3AoKNd6w+Mz60yQvbo6wVN2u5BDE80vS/JefsRaxNrCFVoVWeNgafO/AgZqan00kJ0/sT3NurRb0aKO/+LiRjln33locphiusDECiaI+4s8OGOdbAASHZLsKhHNCpqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207959; c=relaxed/simple;
-	bh=hINt2RYz1hVIanxuI5wet5r9iqwDzvv59AaIMHlnR54=;
+	s=arc-20240116; t=1756219250; c=relaxed/simple;
+	bh=vgh9YIG3os+hu450ms3ZcZVZq4gS0zxwOOoqpOohh/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+pI64PXKp5kbWfEETD9BEr7htHXoTf64q22dAJJqYtWlMtVW4J1dmvU4GoeDjUzAkElBC0IG/ivwXAlUy6cfHyRdosPQ0j7YebpzHTUGd1y9xf1yrePcFbxX3WgDK93Nc/VOSOM2P72kLPq0pbezxzg92hMKGFDkbU01oHPcHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0zWxKpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D2DC4CEF4;
-	Tue, 26 Aug 2025 11:32:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eOMqsCsI52aCVCm0JarrRsks34F7+naeYqdtiedFyw34bc7r3LKswwmmkhw9U6MiwK9ojaqrvToHikUrBIcm3tnZkFO1TAEctE6pmYEo7/JqObDnB8C0bsyRyaJC2WHFD37qDDilwVuHqeLL3j4EhR1EUSlBX+3Xddkw0vhpJAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=II7pyUej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460E7C113CF;
+	Tue, 26 Aug 2025 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207958;
-	bh=hINt2RYz1hVIanxuI5wet5r9iqwDzvv59AaIMHlnR54=;
+	s=korg; t=1756219250;
+	bh=vgh9YIG3os+hu450ms3ZcZVZq4gS0zxwOOoqpOohh/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0zWxKpX9W+/zDx305vggs3SfsCNXM+ScT1PLBbB5/ZwjTqfuX8VOSpdZ+nT8CmCZ
-	 3U1JS5b860DEg4VnkEPCTkkDHrIwWAHVzP8UObxG0sf5BnUykRBxl+C4W9RUz7TDbF
-	 pagzaTzpQzpy4zylcHzGykEAp/5IAmvnB9xhVT+o=
+	b=II7pyUejc7x5l7Wjt+mAdDEmmqxIU4on5KNWrlQ4FT/SLGnzIYHZ3/YbMUE3k3KNG
+	 AK+elR/8fO1egFDjwIhOxTud0P4ojG3hHGQex7m+iDf+Krkdt8+Nal6YUO5QYGiakm
+	 qHBT2KQ9I6y0lf2dRQaNB8yxXMZoSJOgO94detpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 352/457] rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.4 310/403] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
 Date: Tue, 26 Aug 2025 13:10:36 +0200
-Message-ID: <20250826110946.020935439@linuxfoundation.org>
+Message-ID: <20250826110915.374789910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,111 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit fde578c86281f27b182680c7642836a0dbbd0be7 ]
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-aligned_size() dates back to when Rust did support kmalloc() only, but
-is now used in ReallocFunc::call() and hence for all allocators.
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-However, the additional padding applied by aligned_size() is only
-required by the kmalloc() allocator backend.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-Hence, replace aligned_size() with Kmalloc::aligned_layout() and use it
-for the affected allocators, i.e. kmalloc() and kvmalloc(), only.
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
 
-While at it, make Kmalloc::aligned_layout() public, such that Rust
-abstractions, which have to call subsystem specific kmalloc() based
-allocation primitives directly, can make use of it.
-
-Fixes: 8a799831fc63 ("rust: alloc: implement `ReallocFunc`")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250731154919.4132-2-dakr@kernel.org
-[ Remove `const` from Kmalloc::aligned_layout(). - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/allocator.rs | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index aa2dfa9dca4c..2692cf90c948 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -43,17 +43,6 @@ pub struct Vmalloc;
- /// For more details see [self].
- pub struct KVmalloc;
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -992,7 +992,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
--/// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
--fn aligned_size(new_layout: Layout) -> usize {
--    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
--    let layout = new_layout.pad_to_align();
--
--    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
--    // which together with the slab guarantees means the `krealloc` will return a properly aligned
--    // object (see comments in `kmalloc()` for more information).
--    layout.size()
--}
--
- /// # Invariants
- ///
- /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
-@@ -88,7 +77,7 @@ impl ReallocFunc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        let size = aligned_size(layout);
-+        let size = layout.size();
-         let ptr = match ptr {
-             Some(ptr) => {
-                 if old_layout.size() == 0 {
-@@ -123,6 +112,17 @@ impl ReallocFunc {
-     }
- }
- 
-+impl Kmalloc {
-+    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requested size and alignment of
-+    /// `layout`.
-+    pub fn aligned_layout(layout: Layout) -> Layout {
-+        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
-+        // `layout.align()` which together with the slab guarantees means that `Kmalloc` will return
-+        // a properly aligned object (see comments in `kmalloc()` for more information).
-+        layout.pad_to_align()
-+    }
-+}
-+
- // SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
- // - memory remains valid until it is explicitly freed,
- // - passing a pointer to a valid memory allocation is OK,
-@@ -135,6 +135,8 @@ unsafe impl Allocator for Kmalloc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-+        let layout = Kmalloc::aligned_layout(layout);
-+
-         // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
-         unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags) }
-     }
-@@ -176,6 +178,10 @@ unsafe impl Allocator for KVmalloc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-+        // `KVmalloc` may use the `Kmalloc` backend, hence we have to enforce a `Kmalloc`
-+        // compatible layout.
-+        let layout = Kmalloc::aligned_layout(layout);
-+
-         // TODO: Support alignments larger than PAGE_SIZE.
-         if layout.align() > bindings::PAGE_SIZE {
-             pr_warn!("KVmalloc does not support alignments larger than PAGE_SIZE yet.\n");
--- 
-2.50.1
-
 
 
 
