@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6F8B35D26
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F0AB35C48
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246085E68C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70BD177CD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344B7239573;
-	Tue, 26 Aug 2025 11:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A08C2BE03C;
+	Tue, 26 Aug 2025 11:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYh2lr9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDJUqJcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4250393DD1;
-	Tue, 26 Aug 2025 11:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A129BDAE;
+	Tue, 26 Aug 2025 11:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208475; cv=none; b=S39JHmxtFIT2OG6yWpF0PkFgujOR/s0+Cpx3GvfOudt96fdVD6umoJ3J/KnH5kUDvmVm7zTW9LYrIYF0XX1PkokAmia35d5AWl+ATwyhN++/4APdOqvnwZuwF1PUIU4keVmYCdvp7mHW5sACsDcwv53jtDH4Bps60FTvwj/qd1s=
+	t=1756207627; cv=none; b=kCFPEdkeQANR8YYZtLRVThPJLMTE8b/ee3wGOKamzYSwtyBL/msbyh6rQ/8z3YDXO2dN6ETYkslzByXYyNmXAkT7Fz285nhOg9MbQHlFtxvG8XigjV7b45y62oqDWeqCN51MpcdkLJ3gl2/CsftChLPSm0TEzUN6ER3uPVXnhaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208475; c=relaxed/simple;
-	bh=4zi3oAg/r1x81hagi5S5TgFcrDpVDJJHK9Cak/T8AY0=;
+	s=arc-20240116; t=1756207627; c=relaxed/simple;
+	bh=3GTLrMQittrIvipEBSLKz7Rkz9lnQJ96lNsdd8XSzhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crkTKm+lHFgrnduclyBaaUHkr/hxMl+xLgx3BZ7GENo5dAOsV6Iq/RHE8JIsBAy/HzIJWmxyvyEr7r0veVmW7rN9yO7zjIHwMyIGJC0AMcoTLBY2I/C3ahku85FBgsNEWWQnVtfcYtyobyzzL9eVIIBs19F4gdRskTEN7eF0ko8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYh2lr9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719FAC4CEF1;
-	Tue, 26 Aug 2025 11:41:14 +0000 (UTC)
+	 MIME-Version; b=K7PO7c5f7Ajn5AhEn/OFS860Zratu5Hk3QgWQAn3mUZYfeIolXX7DOBbfgjxPjX2vxuZ7dmcCpuDNtgxQiNoyg2KK63xKJ3YcqnyuxDdu+tQv77sGjiKDxusZJc5AU5zAfv5M79dEdp+TjYws/OLtPE/ZaWU/CqWg3e1WWGrgI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDJUqJcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F721C4CEF1;
+	Tue, 26 Aug 2025 11:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208474;
-	bh=4zi3oAg/r1x81hagi5S5TgFcrDpVDJJHK9Cak/T8AY0=;
+	s=korg; t=1756207626;
+	bh=3GTLrMQittrIvipEBSLKz7Rkz9lnQJ96lNsdd8XSzhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYh2lr9EzUO17Zoz2iIlnRfqN35iJ0+fAoyflUwadH1f05CM5vX1bGjxjAHcWig9O
-	 tAXvhzTmJzFJLfp4L/M4LJHpt9SdnZZqmIAtfGVsa+j5NUopmzbjNbLTkleWLPO3TO
-	 i7QFEfBI98uJPMM6XRKH8sAkzCNjvpCugvsYlXOA=
+	b=LDJUqJccbvYE5dsH6dMXLD8y1hSk3mNJULK8FHtzt+Z3q5+ZO9h2SBeZXe1/PBnXX
+	 cb8FDp3K/ZqrTcyUXbdV6xnM5LfUr4Xw+890gYvin+rYsuOtHqy2Y2gWqMepDCXbew
+	 g+2YhnAK97bPGXBmuk3lYoHbsH9uTDAHVYKxKN+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 125/322] drm/amdgpu: update mmhub 4.1.0 client id mappings
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Tomer Tayar <ttayar@habana.ai>
+Subject: [PATCH 6.16 256/457] accel/habanalabs/gaudi2: Use kvfree() for memory allocated with kvcalloc()
 Date: Tue, 26 Aug 2025 13:09:00 +0200
-Message-ID: <20250826110918.886022528@linuxfoundation.org>
+Message-ID: <20250826110943.682326271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-commit a0b34e4c8663b13e45c78267b4de3004b1a72490 upstream.
+commit a44458dfd5bc0c79c6739c3f4c658361d3a5126b upstream.
 
-Update the client id mapping so the correct clients
-get printed when there is a mmhub page fault.
+Use kvfree() to fix the following Coccinelle/coccicheck warning reported
+by kfree_mismatch.cocci:
 
-Tested-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+  WARNING kvmalloc is used to allocate this memory at line 10398
+
+Fixes: f728c17fc97a ("accel/habanalabs/gaudi2: move HMMU page tables to device memory")
+Reported-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Closes: https://patch.msgid.link/20250808085530.233737-1-rongqianfeng@vivo.com
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+[lukas: acknowledge Qianfeng, adjust Thorsten's domain, add Fixes tag]
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Tomer Tayar <ttayar@habana.ai>
+Cc: stable@vger.kernel.org  # v6.9+
+Link: https://patch.msgid.link/20240820231028.136126-1-thorsten.blum@toblux.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c |   34 +++++++++++-------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ drivers/accel/habanalabs/gaudi2/gaudi2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
-@@ -37,39 +37,31 @@
- static const char *mmhub_client_ids_v4_1_0[][2] = {
- 	[0][0] = "VMC",
- 	[4][0] = "DCEDMC",
--	[5][0] = "DCEVGA",
- 	[6][0] = "MP0",
- 	[7][0] = "MP1",
- 	[8][0] = "MPIO",
--	[16][0] = "HDP",
--	[17][0] = "LSDMA",
--	[18][0] = "JPEG",
--	[19][0] = "VCNU0",
--	[21][0] = "VSCH",
--	[22][0] = "VCNU1",
--	[23][0] = "VCN1",
--	[32+20][0] = "VCN0",
--	[2][1] = "DBGUNBIO",
-+	[16][0] = "LSDMA",
-+	[17][0] = "JPEG",
-+	[19][0] = "VCNU",
-+	[22][0] = "VSCH",
-+	[23][0] = "HDP",
-+	[32+23][0] = "VCNRD",
- 	[3][1] = "DCEDWB",
- 	[4][1] = "DCEDMC",
--	[5][1] = "DCEVGA",
- 	[6][1] = "MP0",
- 	[7][1] = "MP1",
- 	[8][1] = "MPIO",
- 	[10][1] = "DBGU0",
- 	[11][1] = "DBGU1",
--	[12][1] = "DBGU2",
--	[13][1] = "DBGU3",
-+	[12][1] = "DBGUNBIO",
- 	[14][1] = "XDP",
- 	[15][1] = "OSSSYS",
--	[16][1] = "HDP",
--	[17][1] = "LSDMA",
--	[18][1] = "JPEG",
--	[19][1] = "VCNU0",
--	[20][1] = "VCN0",
--	[21][1] = "VSCH",
--	[22][1] = "VCNU1",
--	[23][1] = "VCN1",
-+	[16][1] = "LSDMA",
-+	[17][1] = "JPEG",
-+	[18][1] = "VCNWR",
-+	[19][1] = "VCNU",
-+	[22][1] = "VSCH",
-+	[23][1] = "HDP",
- };
+--- a/drivers/accel/habanalabs/gaudi2/gaudi2.c
++++ b/drivers/accel/habanalabs/gaudi2/gaudi2.c
+@@ -10437,7 +10437,7 @@ end:
+ 				(u64 *)(lin_dma_pkts_arr), DEBUGFS_WRITE64);
+ 	WREG32(sob_addr, 0);
  
- static uint32_t mmhub_v4_1_0_get_invalidate_req(unsigned int vmid,
+-	kfree(lin_dma_pkts_arr);
++	kvfree(lin_dma_pkts_arr);
+ 
+ 	return rc;
+ }
 
 
 
