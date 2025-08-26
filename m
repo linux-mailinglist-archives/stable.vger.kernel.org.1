@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12690B367A8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3051B35FD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37EAFB6388B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 100537A3E28
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E742A352FCF;
-	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870941D5AC0;
+	Tue, 26 Aug 2025 12:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA2QM3nL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwS334xJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9980B34AB0D;
-	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451811DAC95;
+	Tue, 26 Aug 2025 12:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217137; cv=none; b=RQn6NnJqhjs6QgI65tzYJsWzxnAxmbjIG49Z1I7EZXmYLfBWaLdthylDaG0wPfBLYAx341ccbqkpYN/TyWp/uTmYM4myTmatV46OaKeRJz5YtEADeQpYY/41dkNADv9sEHA9M3vlEhpico7PYQ5tJ5NBZvYglM3xvRyyoUfSKvQ=
+	t=1756212827; cv=none; b=H2BTpfSFmluaCTeUOIYHymE9YU09s26CrVMuIypnreeGLTMEebglaCH0EO4SPfBq6ag9Q8uvIFCMf+I0BO5yIW0/9uubQMow0oWuGQiEGVIvDKog2BmfXWFsZv/lkNGOOVg9WIuaJbmLhV+Iw1lM2f8lJretbW2ysHQW+p5foTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217137; c=relaxed/simple;
-	bh=ri0E2APLt4U2yrk08d4QovnFQlvs/3hxokWiJFRbwM4=;
+	s=arc-20240116; t=1756212827; c=relaxed/simple;
+	bh=3ykhaF4IneAHc++dLfr6jVHmvQlaPWF0dp7eW5oV2Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/m9J0JgNK04q7jEF4/jhFhjLqYq42blHoibEXJZePoE4WNdJh5v7Jy++jXgJGHT7RdXKCPb5LsrPRd5IPt+l1kWnRNec3GcpdNGgH34S8aCi1L6ZZ7LxDJYcA0GFJNklKUish5Nk81p+VBLA/L3zB3knsc1eOgaEiWPaSIECLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA2QM3nL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBE1C4CEF1;
-	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
+	 MIME-Version; b=hJPbNNuDuayI9JKYvLEwJjaln8e9VFfrjtB1/kYdMIw64uPfzhEXxvBdu9sPgeUvkNf/gmp3r/SyE3Mi34s+6Ts26ESrHZMUQTOSFcatnWTO7EYtgHOADJTaSngsDzIBAsYxAjFy9XFfxbMlA8lE0XRuFBY8t0fCTTuXdguVahE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwS334xJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0B1C4CEF1;
+	Tue, 26 Aug 2025 12:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217137;
-	bh=ri0E2APLt4U2yrk08d4QovnFQlvs/3hxokWiJFRbwM4=;
+	s=korg; t=1756212827;
+	bh=3ykhaF4IneAHc++dLfr6jVHmvQlaPWF0dp7eW5oV2Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IA2QM3nLRpw/3korKvvNIQ/mi+aKkVlUfM2cnONVRNG1w7OLgeck9Ul6ExRE7xXEo
-	 9PGfXmW7nfgFdrDQU2ozaHsZIMm29UpHc1UyzB8Hh5bwFrR0BFJHBd78ibhocKp2TB
-	 prpdOTGrs9G6ytnUNgUO3eOpC+CEoKgMB2gpp3Rw=
+	b=gwS334xJ68jQwUVk82AZyr/nKp/zD+TyYXzRBRm9POymmon65/kwpjDttaCWGhmhJ
+	 kNmJxp8Aipx45x5nDKglLb07bawvSHwAwSEmYhI7JtKtr9Is4kBTIQ1uluv7gA9ilL
+	 7UXzcRrdKMCTKU6SWHaw6nV1Ur9zaVkEWfj/y4g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
-	"Enju, Kohei" <enjuk@amazon.co.jp>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 029/523] comedi: das16m1: Fix bit shift out of bounds
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/587] usb: xhci: Avoid showing errors during surprise removal
 Date: Tue, 26 Aug 2025 13:03:59 +0200
-Message-ID: <20250826110925.315851917@linuxfoundation.org>
+Message-ID: <20250826110955.223806841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
+[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
 
-When checking for a supported IRQ number, the following test is used:
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed as well.
 
-	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
-	if ((1 << it->options[1]) & 0xdcfc) {
+When that flag is set don't show messages in the cleanup path for
+marking the controller dead.
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.
-
-Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
-Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
-Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
-Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/das16m1.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/comedi/drivers/das16m1.c
-+++ b/drivers/staging/comedi/drivers/das16m1.c
-@@ -523,7 +523,8 @@ static int das16m1_attach(struct comedi_
- 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index c6d89b51c678..2a74a47a1c76 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1338,12 +1338,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
+  */
+ void xhci_hc_died(struct xhci_hcd *xhci)
+ {
++	bool notify;
+ 	int i, j;
  
- 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] >= 2 && it->options[1] <= 15 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
+ 	if (xhci->xhc_state & XHCI_STATE_DYING)
+ 		return;
+ 
+-	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
++	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
++	if (notify)
++		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
+ 	xhci->xhc_state |= XHCI_STATE_DYING;
+ 
+ 	xhci_cleanup_command_queue(xhci);
+@@ -1357,7 +1360,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
+ 	}
+ 
+ 	/* inform usb core hc died if PCI remove isn't already handling it */
+-	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
++	if (notify)
+ 		usb_hc_died(xhci_to_hcd(xhci));
+ }
+ 
+-- 
+2.39.5
+
 
 
 
