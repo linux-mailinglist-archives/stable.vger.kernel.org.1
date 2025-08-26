@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE93B36B38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D2DB35B67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAA31C4664F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C66523B0D13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFC92135B8;
-	Tue, 26 Aug 2025 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EA4301486;
+	Tue, 26 Aug 2025 11:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxeM/6Qi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jov2dOSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51435208B;
-	Tue, 26 Aug 2025 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220422BE653;
+	Tue, 26 Aug 2025 11:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218835; cv=none; b=Y+esKSdN/XA3ViKwtmBTarQb8SSd1HJ3tQF6YroiWzDmXnaIQi7saZKn/0kjeJ9g+/mjja2g93kmyLPN50XOxxWZPMinDegdhrs62hB8INEH27eAM3RVMAGBGEbjoh2DCtAj5WnfuOeSYOzVl3aW5rpXEE6Z1R9B7qeIV7xdLOs=
+	t=1756207385; cv=none; b=Cgf53SLPpXdNwnRBiNnsR8MyN7AFimkJ9YaFz5G4wfzrSbn8+rMwAePnBOnDwe12m0xaAFc+MhkbvGZ1UTSueZYYkSlHsTAK38+pQLvThoh+JVj5DKX1mNsMqh6rZpT7Pu9wfVpd3nsukb9lzQUk/lwhpeqGwPGJZNJY3242hK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218835; c=relaxed/simple;
-	bh=oaYjI6oVFfD23Fn6Toz6wNpGYQK/SonMs7/8vBFkAzQ=;
+	s=arc-20240116; t=1756207385; c=relaxed/simple;
+	bh=XC8FVLDepV9pB3oZGWlOUTpeW2aGS+pCJc9EHIme/aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q67YUw1MnB6HJfRzSEyEulQOo95yJlnFHjJUhI1kt0dM/id/XRfkhKv4aGytkF6H4LSvHm5wWeNPOgb44GkSq42coSISHHBCS8WCWnSIYZEiG11yxctBdtM6q05qt0LO/OMsNXzLILMGMnnXidDx1nkNWZfmj4YrDpaYUjnVf8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxeM/6Qi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC171C4CEF1;
-	Tue, 26 Aug 2025 14:33:54 +0000 (UTC)
+	 MIME-Version; b=sNYntqS/mK1xodpczGmbNuxy4Bkd4UBZ/MyXBvVr6F1+pKJkJxC4xPoUzup8G8AxM+K5kNSB4JDuuLJg3aGAn9iBYxrY/JzPOPAoA9jRLvmIeRA9w6s9/6ZzQTIhIGkyfyjv88P5Bu2c4vr1GxulxE4dthqjCFE4Uzyyh5G9LC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jov2dOSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD73EC4CEF1;
+	Tue, 26 Aug 2025 11:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218835;
-	bh=oaYjI6oVFfD23Fn6Toz6wNpGYQK/SonMs7/8vBFkAzQ=;
+	s=korg; t=1756207385;
+	bh=XC8FVLDepV9pB3oZGWlOUTpeW2aGS+pCJc9EHIme/aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxeM/6Qid2xA7MNIlo/ToZTFvESQcOOO+tMDAyDM/cL4zfoVw196HWbzecpGi/lxJ
-	 Es1oX02cRs9tni5yjDuASYyBsbBhFQ+8lt7i0VrjF7yweVmeezy5Sv7Sqzq4kUo/Eh
-	 QkfXaSM8t41lZtYhpzy1lhA0s7JA2GIsPQnpJ1ow=
+	b=jov2dOSVNzJWU0tNOP7k712sTtvDhdqLagaAUymshrlF+rC893kqWVjjEV6wATjbP
+	 MMyI7udjAHcFRzvH6QM7R3z2rqaR8WTRljw5EC1GiBy/oOki6pf2MU8M/9fMbJ2edV
+	 R2BF8nYKYY5W5M8nJ7wfPJCiDE8COygB8PPqBJcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 120/403] soundwire: stream: restore params when prepare ports fail
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 162/457] media: iris: Skip destroying internal buffer if not dequeued
 Date: Tue, 26 Aug 2025 13:07:26 +0200
-Message-ID: <20250826110910.051104930@linuxfoundation.org>
+Message-ID: <20250826110941.378846283@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
+commit 7c452ffda30c0460c568273993a3d3c611486467 upstream.
 
-The bus->params should be restored if the stream is failed to prepare.
-The issue exists since beginning. The Fixes tag just indicates the
-first commit that the commit can be applied to.
+Firmware might hold the DPB buffers for reference in case of sequence
+change, so skip destroying buffers for which QUEUED flag is not removed.
 
-Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_buffer.c |   20 +++++++++++++++++++-
+ drivers/media/platform/qcom/iris/iris_buffer.h |    3 ++-
+ drivers/media/platform/qcom/iris/iris_vdec.c   |    4 ++--
+ drivers/media/platform/qcom/iris/iris_vidc.c   |    4 ++--
+ 4 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index 3b3f909407c3..6e4c7bf9eb0d 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1532,7 +1532,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream)
- 		if (ret < 0) {
- 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
- 				ret);
--			return ret;
-+			goto restore_params;
- 		}
- 	}
+--- a/drivers/media/platform/qcom/iris/iris_buffer.c
++++ b/drivers/media/platform/qcom/iris/iris_buffer.c
+@@ -376,7 +376,7 @@ int iris_destroy_internal_buffer(struct
+ 	return 0;
+ }
  
--- 
-2.39.5
-
+-int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane)
++static int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane, bool force)
+ {
+ 	const struct iris_platform_data *platform_data = inst->core->iris_platform_data;
+ 	struct iris_buffer *buf, *next;
+@@ -396,6 +396,14 @@ int iris_destroy_internal_buffers(struct
+ 	for (i = 0; i < len; i++) {
+ 		buffers = &inst->buffers[internal_buf_type[i]];
+ 		list_for_each_entry_safe(buf, next, &buffers->list, list) {
++			/*
++			 * during stream on, skip destroying internal(DPB) buffer
++			 * if firmware did not return it.
++			 * during close, destroy all buffers irrespectively.
++			 */
++			if (!force && buf->attr & BUF_ATTR_QUEUED)
++				continue;
++
+ 			ret = iris_destroy_internal_buffer(inst, buf);
+ 			if (ret)
+ 				return ret;
+@@ -405,6 +413,16 @@ int iris_destroy_internal_buffers(struct
+ 	return 0;
+ }
+ 
++int iris_destroy_all_internal_buffers(struct iris_inst *inst, u32 plane)
++{
++	return iris_destroy_internal_buffers(inst, plane, true);
++}
++
++int iris_destroy_dequeued_internal_buffers(struct iris_inst *inst, u32 plane)
++{
++	return iris_destroy_internal_buffers(inst, plane, false);
++}
++
+ static int iris_release_internal_buffers(struct iris_inst *inst,
+ 					 enum iris_buffer_type buffer_type)
+ {
+--- a/drivers/media/platform/qcom/iris/iris_buffer.h
++++ b/drivers/media/platform/qcom/iris/iris_buffer.h
+@@ -106,7 +106,8 @@ void iris_get_internal_buffers(struct ir
+ int iris_create_internal_buffers(struct iris_inst *inst, u32 plane);
+ int iris_queue_internal_buffers(struct iris_inst *inst, u32 plane);
+ int iris_destroy_internal_buffer(struct iris_inst *inst, struct iris_buffer *buffer);
+-int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane);
++int iris_destroy_all_internal_buffers(struct iris_inst *inst, u32 plane);
++int iris_destroy_dequeued_internal_buffers(struct iris_inst *inst, u32 plane);
+ int iris_alloc_and_queue_persist_bufs(struct iris_inst *inst);
+ int iris_alloc_and_queue_input_int_bufs(struct iris_inst *inst);
+ int iris_queue_buffer(struct iris_inst *inst, struct iris_buffer *buf);
+--- a/drivers/media/platform/qcom/iris/iris_vdec.c
++++ b/drivers/media/platform/qcom/iris/iris_vdec.c
+@@ -408,7 +408,7 @@ int iris_vdec_streamon_input(struct iris
+ 
+ 	iris_get_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+ 
+-	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
++	ret = iris_destroy_dequeued_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -496,7 +496,7 @@ int iris_vdec_streamon_output(struct iri
+ 
+ 	iris_get_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+ 
+-	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
++	ret = iris_destroy_dequeued_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+ 	if (ret)
+ 		return ret;
+ 
+--- a/drivers/media/platform/qcom/iris/iris_vidc.c
++++ b/drivers/media/platform/qcom/iris/iris_vidc.c
+@@ -233,8 +233,8 @@ int iris_close(struct file *filp)
+ 	iris_session_close(inst);
+ 	iris_inst_change_state(inst, IRIS_INST_DEINIT);
+ 	iris_v4l2_fh_deinit(inst);
+-	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+-	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
++	iris_destroy_all_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
++	iris_destroy_all_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+ 	iris_remove_session(inst);
+ 	mutex_unlock(&inst->lock);
+ 	mutex_destroy(&inst->ctx_q_lock);
 
 
 
