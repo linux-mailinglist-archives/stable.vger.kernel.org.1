@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4156B3615D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4659AB36A7B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 366DB1BA6F1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F3157A581C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9B260586;
-	Tue, 26 Aug 2025 13:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC02D35A28E;
+	Tue, 26 Aug 2025 14:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6yO2YVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNUD90GA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8737D246333;
-	Tue, 26 Aug 2025 13:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97850352FFA;
+	Tue, 26 Aug 2025 14:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213525; cv=none; b=TCiQbOCheEtY7yXw/HzK0u60d2JxXVEHivqhP0+v/VKpengowf/PrjuuTOSCPU2CRSXhqUpCiG2c4Akipp1mrsmdCd0kcjqO4+dcXaQv524QCNRnX5n+iTN+bmecXZqjaEf6lahh8T5RxO5szVjXOYPSMKR27t94663eh8NPEwg=
+	t=1756218871; cv=none; b=DDpoWUIMcJldRnpWOpql2MTKVhCjBBoZgO2d4tadiSTyn+kjaS59hvq2klI+0PDfMbRVyfrL64dhjeBf13jUnQrJxZschco9WPmO7te+8O8dZB4ou1lZOqHP9kqjZPYPSS+gMbTPm2K0uMAdhgxXdTTaqZqK643lDBCOva6Ka/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213525; c=relaxed/simple;
-	bh=IIYbwUyRrluSIsDnICo2Up4wF7Pgl3US9sOQZajsTHY=;
+	s=arc-20240116; t=1756218871; c=relaxed/simple;
+	bh=QC8xSLP21Oy1VYvZdHB4FYd1KxcXENXhMcxX1aiZKT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JV0p8nDVeIBhY+kECGgGuhoOBAjEXsckqLhujg/8PjfuPXqpnoab05c5nCoKrrAjn5pwt24lluP33VFhuJEvlYgtNarxfJThQetrG2RLU6r1bltFHDcgEJJD+x4PmR20Ya8wt4QeqJekkC6U1a+6G6ljAJbJLqkchthtQdyeDuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6yO2YVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E69C4CEF1;
-	Tue, 26 Aug 2025 13:05:24 +0000 (UTC)
+	 MIME-Version; b=Ftb4WTiNvFZn0pW/WbXbw+439Uv97OxCfbVjm1H+9eWFlk7vEKlUVGpjdncfZULbEA4NMTNCE9/sKNf1ZUqUkFB91LCxFkfNyFA5uG0M9C+yEXFkxzuaUl3Bo+sBDAZKt4+AMU5rdILUcv9fB0aliEH2LzAjm4QwhuR712isHLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNUD90GA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27119C4CEF1;
+	Tue, 26 Aug 2025 14:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213525;
-	bh=IIYbwUyRrluSIsDnICo2Up4wF7Pgl3US9sOQZajsTHY=;
+	s=korg; t=1756218871;
+	bh=QC8xSLP21Oy1VYvZdHB4FYd1KxcXENXhMcxX1aiZKT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6yO2YVB1XRggT1nSMk8XXTlop76JlqDtproZ/Kh5IDvdo8bB98CWud3YGi5iDQ1P
-	 cKgAfZbSgioYp0avk1/ppl6FJq0XnRKDO39li9UpC+8Zw+z0+XI1s4ZNR+x8Ni+0Xy
-	 eq9YRfrFvBQLCLrOLQB8tiEXMk7E8pQM71KyQ4Fc=
+	b=FNUD90GAxCGx4FFdOp6WFy76KCGu/sGUVtDAqycB+8cXXggSTMEliRLaNxdekD4ho
+	 YSKZ2TlVjOHwxR+aX7Tt3QPDLBYBx76cLSxRpc+i95RvU3x8q0lJiYsswfVAGwXqKI
+	 mM83G7fQfUGwi87kUDv8c2SRP2YrWwiKJR2ZKWGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 343/587] crypto: qat - flush misc workqueue during device shutdown
+	Jiayi Li <lijiayi@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 166/403] ACPI: processor: perflib: Fix initial _PPC limit application
 Date: Tue, 26 Aug 2025 13:08:12 +0200
-Message-ID: <20250826111001.640801116@linuxfoundation.org>
+Message-ID: <20250826110911.476000622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit 3d4df408ba9bad2b205c7fb8afc1836a6a4ca88a upstream.
+commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
 
-Repeated loading and unloading of a device specific QAT driver, for
-example qat_4xxx, in a tight loop can lead to a crash due to a
-use-after-free scenario. This occurs when a power management (PM)
-interrupt triggers just before the device-specific driver (e.g.,
-qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
-loaded.
+If the BIOS sets a _PPC frequency limit upfront, it will fail to take
+effect due to a call ordering issue.  Namely, freq_qos_update_request()
+is called before freq_qos_add_request() for the given request causing
+the constraint update to be ignored.  The call sequence in question is
+as follows:
 
-Since the driver uses a shared workqueue (`qat_misc_wq`) across all
-devices and owned by intel_qat.ko, a deferred routine from the
-device-specific driver may still be pending in the queue. If this
-routine executes after the driver is unloaded, it can dereference freed
-memory, resulting in a page fault and kernel crash like the following:
+cpufreq_policy_online()
+  acpi_cpufreq_cpu_init()
+    acpi_processor_register_performance()
+      acpi_processor_get_performance_info()
+        acpi_processor_get_platform_limit()
+         freq_qos_update_request(&perflib_req) <- inactive QoS request
+  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
+                               CPUFREQ_CREATE_POLICY)
+    acpi_processor_notifier()
+      acpi_processor_ppc_init()
+        freq_qos_add_request(&perflib_req) <- QoS request activation
 
-    BUG: unable to handle page fault for address: ffa000002e50a01c
-    #PF: supervisor read access in kernel mode
-    RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
-    Call Trace:
-      pm_bh_handler+0x1d2/0x250 [intel_qat]
-      process_one_work+0x171/0x340
-      worker_thread+0x277/0x3a0
-      kthread+0xf0/0x120
-      ret_from_fork+0x2d/0x50
+Address this by adding an acpi_processor_get_platform_limit() call
+to acpi_processor_ppc_init(), after the perflib_req activation via
+freq_qos_add_request(), which causes the initial _PPC limit to be
+picked up as appropriate.  However, also ensure that the _PPC limit
+will not be picked up in the cases when the cpufreq driver does not
+call acpi_processor_register_performance() by adding a pr->performance
+check to the related_cpus loop in acpi_processor_ppc_init().
 
-To prevent this, flush the misc workqueue during device shutdown to
-ensure that all pending work items are completed before the driver is
-unloaded.
-
-Note: This approach may slightly increase shutdown latency if the
-workqueue contains jobs from other devices, but it ensures correctness
-and stability.
-
-Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
+[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
+[ rjw: Subject and changelog adjustments ]
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_common_drv.h |    1 +
- drivers/crypto/intel/qat/qat_common/adf_init.c       |    1 +
- drivers/crypto/intel/qat/qat_common/adf_isr.c        |    5 +++++
- 3 files changed, 7 insertions(+)
+ drivers/acpi/processor_perflib.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
-@@ -193,6 +193,7 @@ void adf_exit_misc_wq(void);
- bool adf_misc_wq_queue_work(struct work_struct *work);
- bool adf_misc_wq_queue_delayed_work(struct delayed_work *work,
- 				    unsigned long delay);
-+void adf_misc_wq_flush(void);
- #if defined(CONFIG_PCI_IOV)
- int adf_sriov_configure(struct pci_dev *pdev, int numvfs);
- void adf_disable_sriov(struct adf_accel_dev *accel_dev);
---- a/drivers/crypto/intel/qat/qat_common/adf_init.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
-@@ -381,6 +381,7 @@ static void adf_dev_shutdown(struct adf_
- 		hw_data->exit_admin_comms(accel_dev);
- 
- 	adf_cleanup_etr_data(accel_dev);
-+	adf_misc_wq_flush();
- 	adf_dev_restore(accel_dev);
- }
- 
---- a/drivers/crypto/intel/qat/qat_common/adf_isr.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_isr.c
-@@ -386,3 +386,8 @@ bool adf_misc_wq_queue_delayed_work(stru
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -176,11 +176,14 @@ void acpi_processor_ppc_init(struct cpuf
  {
- 	return queue_delayed_work(adf_misc_wq, work, delay);
- }
+ 	unsigned int cpu;
+ 
++	if (ignore_ppc == 1)
++		return;
 +
-+void adf_misc_wq_flush(void)
-+{
-+	flush_workqueue(adf_misc_wq);
-+}
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
+ 
+-		if (!pr)
++		if (!pr || !pr->performance)
+ 			continue;
+ 
+ 		/*
+@@ -196,6 +199,11 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
++
++		ret = acpi_processor_get_platform_limit(pr);
++		if (ret)
++			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
+ 	}
+ }
+ 
 
 
 
