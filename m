@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0313B35B7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EDEB363E9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1ADD68019E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612598E0D9D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E912FE065;
-	Tue, 26 Aug 2025 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC182BE62B;
+	Tue, 26 Aug 2025 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg7dJJRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnfmkHJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669F717332C;
-	Tue, 26 Aug 2025 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7191A5B8D;
+	Tue, 26 Aug 2025 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207448; cv=none; b=LP5HX3/80SXPKhkitiHQHJR1GlmDcDUoXs8XE2lJszC8wrUyztvbDHqYDrEtUzL7+0AuT+tWtowZr5gT95a8PXCZ8qGahGIm4AhuseTO3SEAO9fpoSeIZFMS8kWQTrpDZvTnHjMubWKmLV7Gui7f2/YCNJOfLCDXSCBfigTnUpA=
+	t=1756214649; cv=none; b=ZzCMrDupOzeLYxmMT5edAC8YFPErhpQam8LoBB3Gg1gWGpYF6sLqiMfFM5MPA/sOPDuTRTBjS/0plLJeZ3AUYJ/Spv9QiOietVgMAlsOiHYkI/ibgQC7Wj2l1byLQC4bQaGN1Ci9LjEvGSTjpHYMr1IBHXjoyIpZcgPwffQ9oUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207448; c=relaxed/simple;
-	bh=y5ZdgUEiOeZ2+JrOyHp1Bnvbuj9Avk+n4S3qyrRyj7U=;
+	s=arc-20240116; t=1756214649; c=relaxed/simple;
+	bh=MOkiTnO/KW8vvSMaHLgcYO2YNJ1s1b9riFa1XLm1sWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTMVrPgX0e/MAO4Q4VS3fAG2ODVV8/5EAiqpoGFOX76eeXYM+eaL+LAa23EQymdNBHf0REGjihtJFoXoxOSij0cfrwoK+XcvuubS79w29jJrERfoWohd1QnXld04VMH1qaJptcWu/ueCdu9BPyrOVDldQrJ1+1ByvA7K0MCq0gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg7dJJRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A95C4CEF1;
-	Tue, 26 Aug 2025 11:24:07 +0000 (UTC)
+	 MIME-Version; b=gjv0koFBlSh5+cqIb5AjuSM/ANjS4yP8c8JzgGbiCMdATCOZ3nWrgsGhzLEwgUMDlE4M2//ni5wIYaDx249NGe/G5W0+mqpNsTjsldClNynFen0CAUdTFvtlx/baw8o5Zyx3/p5cYP4O6lehncUTyw/17DSjt9F7hTyHs4KC++s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnfmkHJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B345CC4CEF1;
+	Tue, 26 Aug 2025 13:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207448;
-	bh=y5ZdgUEiOeZ2+JrOyHp1Bnvbuj9Avk+n4S3qyrRyj7U=;
+	s=korg; t=1756214649;
+	bh=MOkiTnO/KW8vvSMaHLgcYO2YNJ1s1b9riFa1XLm1sWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wg7dJJRj9MpWBfL3wXYndyb+NVAsmk+7dD3AMiNvr+goznaLAEA/Kk2t3v15SDQmz
-	 cX846TQ7Yjd6V0RaRKvctyNwH6qlgJwuMrSQ/ohADvtPrbj5Ye3qjHnD93M19G6o3M
-	 kNSDH+1+oy139OkPgpUCZY6aRZKIsfas9y448hYY=
+	b=ZnfmkHJWBmOpKlKN1UStilbXEmzdoMtSlk+0LaS+8KV1cZqHvrZeWeqLLKoeXuwmF
+	 6OsEmXjjTLrPPJdwzGoL/41uLw51zckgdaKCsZFN+A+R+GYV5bogSIFZdYka1JDsLT
+	 j1DnUzMhtvrHnN7rYadkjgYa9muq17cGHQeqbev8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 154/457] media: iris: Fix buffer preparation failure during resolution change
-Date: Tue, 26 Aug 2025 13:07:18 +0200
-Message-ID: <20250826110941.180596795@linuxfoundation.org>
+	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 186/482] jfs: truncate good inode pages when hard link is 0
+Date: Tue, 26 Aug 2025 13:07:19 +0200
+Message-ID: <20250826110935.401385371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 91c6d55b477e1b66578c268214e915dff9f5ea57 upstream.
+[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
 
-When the resolution changes, the driver internally updates the width and
-height, but the client continue to queue buffers with the older
-resolution until the last flag is received. This results in a mismatch
-when the buffers are prepared, causing failure due to outdated size.
+The fileset value of the inode copy from the disk by the reproducer is
+AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
+inode pages are not truncated. This causes the bugon to be triggered when
+executing clear_inode() because nrpages is greater than 0.
 
-Introduce a check to prevent size validation during buffer preparation
-if a resolution reconfiguration is in progress, to handle this.
-
-Cc: stable@vger.kernel.org
-Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_vb2.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/jfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_vb2.c b/drivers/media/platform/qcom/iris/iris_vb2.c
-index cdf11feb590b..b3bde10eb6d2 100644
---- a/drivers/media/platform/qcom/iris/iris_vb2.c
-+++ b/drivers/media/platform/qcom/iris/iris_vb2.c
-@@ -259,13 +259,14 @@ int iris_vb2_buf_prepare(struct vb2_buffer *vb)
- 			return -EINVAL;
- 	}
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index d1ec920aa030..d41891bb617a 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
+ 	if (!inode->i_nlink && !is_bad_inode(inode)) {
+ 		dquot_initialize(inode);
  
--	if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
--	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
--		return -EINVAL;
--	if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
--	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
--		return -EINVAL;
--
-+	if (!(inst->sub_state & IRIS_INST_SUB_DRC)) {
-+		if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
-+		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
-+			return -EINVAL;
-+		if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
-+		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
-+			return -EINVAL;
-+	}
- 	return 0;
- }
++		truncate_inode_pages_final(&inode->i_data);
+ 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
+ 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
+-			truncate_inode_pages_final(&inode->i_data);
  
+ 			if (test_cflag(COMMIT_Freewmap, inode))
+ 				jfs_free_zero_link(inode);
 -- 
-2.50.1
+2.39.5
 
 
 
