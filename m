@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-173724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13829B35E07
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B78B36C8C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299B43A4E4B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54755A1501
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066C829D26A;
-	Tue, 26 Aug 2025 11:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCA635A2AE;
+	Tue, 26 Aug 2025 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFFv0d+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY5+f8Gu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63241A23BB;
-	Tue, 26 Aug 2025 11:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC83568E9;
+	Tue, 26 Aug 2025 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208992; cv=none; b=E++5+DMGBsdLuMxetc1S8XeZWTz5e98YxsOED02PGTJA90FPCede25lUmaaZ2TvrvZ/RHNjMP0OUXitVx5+GMJoaG0p0jHWngyTJ07DedB3VOiIwdeyzLNet2zsf7GlB7pTnFMBGujZAdAifkTubWrjNKRtmJDJnXG3EVSfsqd8=
+	t=1756219479; cv=none; b=RSLADK2ALGYIbVQc5XnVqRgkse1joyXPfS7USX+Z+yA9iOYaHLwCYiUrx/GB0qlyoWlDbnT7LMcdNYTSuQIW4ovJIkXHLs6vRGgVqh2NWrjY7lbEK5RC5KI5n7TnftiEIDetOT+4ff2xzKxncuGOfmGMO4URig75EEBAcBNfjco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208992; c=relaxed/simple;
-	bh=lXQyYum5Bf9rqjayvLCNnNKCn9wRjDMCVvkb1VybaWs=;
+	s=arc-20240116; t=1756219479; c=relaxed/simple;
+	bh=hIA3kKWdgt80ARli/iPU3+rceDU8XcjLuIenevXwVFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HifRn6erRcmAmpu3CZI2PJ0InrdgHuDLFpy2EIDM2X9vBk9IuGZWdplgKx8iZfCSkFsDf/qm/IYXmo+iH0poR7SlRvEbK3MaOmLBfmO3ZVzLUdvS8wyZbYlMkNZAAIJY27M7VKhgkahjxOwNVGyj+uGGVGTU8SoK2KbzRFrIrl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFFv0d+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42DBC4CEF1;
-	Tue, 26 Aug 2025 11:49:51 +0000 (UTC)
+	 MIME-Version; b=eEFNaRclCW5CY9f+mi7kSRjpaiJzrveh4fuPSeZh1a/84vxaxbiKpnPTsI+nl2IVWMPpcswN9s/m7hMmTlZUAV2fqmFlQ34rQ453Q0l+/iPUGbBgFgnzjAm95kHfYx12WqdNuI5yJIy/Sn86O+I6tSk67Lu86si7EhOeCavhXvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY5+f8Gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E85BC4CEF1;
+	Tue, 26 Aug 2025 14:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208992;
-	bh=lXQyYum5Bf9rqjayvLCNnNKCn9wRjDMCVvkb1VybaWs=;
+	s=korg; t=1756219479;
+	bh=hIA3kKWdgt80ARli/iPU3+rceDU8XcjLuIenevXwVFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFFv0d+F3WzJerZsFZTA9CM3PTX9GlW+HeqWrJYQ5ItEjHb2StelNfrORqc3Jk6YA
-	 y9uRl38ctROaQFZhh3n+dk52pjG7OJlA3uzUlvoPExkgg6SzZrD9aBKWDxtcj9CyO9
-	 WNhPkLkpIoi+3IpBLORlSrhIOUTJXfx9/0HZspOo=
+	b=iY5+f8GuM908hCd3KKOricwCKjxbTr/P/N5OPH7KnNjV6ZyOJwSrEjYJbtJTsBHsk
+	 r6UzeNkixgy8v5fzDUSy/F8TZ6hZkyPFh3EQubpuevqqJBiQYSACNNLHtShuUOlcY6
+	 +s65zmGBKOt90EH+wJas99/XbZqbmlgyuLoGSLUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dewei Meng <mengdewei@cqsoftware.com.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jason Xing <kernelxing@tencent.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Priya Singh <priyax.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 309/322] ALSA: timer: fix ida_free call while not allocated
+Subject: [PATCH 5.4 398/403] ixgbe: xsk: resolve the negative overflow of budget in ixgbe_xmit_zc
 Date: Tue, 26 Aug 2025 13:12:04 +0200
-Message-ID: <20250826110923.524270102@linuxfoundation.org>
+Message-ID: <20250826110918.028610897@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +67,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dewei Meng <mengdewei@cqsoftware.com.cn>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 5003a65790ed66be882d1987cc2ca86af0de3db1 ]
+[ Upstream commit 4d4d9ef9dfee877d494e5418f68a1016ef08cad6 ]
 
-In the snd_utimer_create() function, if the kasprintf() function return
-NULL, snd_utimer_put_id() will be called, finally use ida_free()
-to free the unallocated id 0.
+Resolve the budget negative overflow which leads to returning true in
+ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
 
-the syzkaller reported the following information:
-  ------------[ cut here ]------------
-  ida_free called for id=0 which is not allocated.
-  WARNING: CPU: 1 PID: 1286 at lib/idr.c:592 ida_free+0x1fd/0x2f0 lib/idr.c:592
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 1286 Comm: syz-executor164 Not tainted 6.15.8 #3 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
-  RIP: 0010:ida_free+0x1fd/0x2f0 lib/idr.c:592
-  Code: f8 fc 41 83 fc 3e 76 69 e8 70 b2 f8 (...)
-  RSP: 0018:ffffc900007f79c8 EFLAGS: 00010282
-  RAX: 0000000000000000 RBX: 1ffff920000fef3b RCX: ffffffff872176a5
-  RDX: ffff88800369d200 RSI: 0000000000000000 RDI: ffff88800369d200
-  RBP: 0000000000000000 R08: ffffffff87ba60a5 R09: 0000000000000000
-  R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-  R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f6f1abc1740(0000) GS:ffff8880d76a0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f6f1ad7a784 CR3: 000000007a6e2000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   snd_utimer_put_id sound/core/timer.c:2043 [inline] [snd_timer]
-   snd_utimer_create+0x59b/0x6a0 sound/core/timer.c:2184 [snd_timer]
-   snd_utimer_ioctl_create sound/core/timer.c:2202 [inline] [snd_timer]
-   __snd_timer_user_ioctl.isra.0+0x724/0x1340 sound/core/timer.c:2287 [snd_timer]
-   snd_timer_user_ioctl+0x75/0xc0 sound/core/timer.c:2298 [snd_timer]
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:907 [inline]
-   __se_sys_ioctl fs/ioctl.c:893 [inline]
-   __x64_sys_ioctl+0x198/0x200 fs/ioctl.c:893
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x7b/0x160 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [...]
+Before this patch, when the budget is decreased to zero and finishes
+sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
+and enter into the while() statement to see if it should keep processing
+packets, but in the meantime it unexpectedly decreases the value again to
+'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
+true, showing 'we complete cleaning the budget'. That also means
+'clean_complete = true' in ixgbe_poll.
 
-The utimer->id should be set properly before the kasprintf() function,
-ensures the snd_utimer_put_id() function will free the allocated id.
+The true theory behind this is if that budget number of descs are consumed,
+it implies that we might have more descs to be done. So we should return
+false in ixgbe_xmit_zc to tell napi poll to find another chance to start
+polling to handle the rest of descs. On the contrary, returning true here
+means job done and we know we finish all the possible descs this time and
+we don't intend to start a new napi poll.
 
-Fixes: 37745918e0e75 ("ALSA: timer: Introduce virtual userspace-driven timers")
-Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
-Link: https://patch.msgid.link/20250821014317.40786-1-mengdewei@cqsoftware.com.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+It is apparently against our expectations. Please also see how
+ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
+to make sure the budget can be decreased to zero at most and the negative
+overflow never happens.
+
+The patch adds 'likely' because we rarely would not hit the loop condition
+since the standard budget is 256.
+
+Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Priya Singh <priyax.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250819222000.3504873-4-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/timer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/timer.c b/sound/core/timer.c
-index d774b9b71ce2..a0dcb4ebb059 100644
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -2139,14 +2139,14 @@ static int snd_utimer_create(struct snd_timer_uinfo *utimer_info,
- 		goto err_take_id;
- 	}
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+index 921a2ddb497e..c68eb5dddf5b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+@@ -582,7 +582,7 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
+ 	dma_addr_t dma;
+ 	u32 cmd_type;
  
-+	utimer->id = utimer_id;
+-	while (budget-- > 0) {
++	while (likely(budget)) {
+ 		if (unlikely(!ixgbe_desc_unused(xdp_ring))) {
+ 			work_done = false;
+ 			break;
+@@ -619,6 +619,8 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
+ 		xdp_ring->next_to_use++;
+ 		if (xdp_ring->next_to_use == xdp_ring->count)
+ 			xdp_ring->next_to_use = 0;
 +
- 	utimer->name = kasprintf(GFP_KERNEL, "snd-utimer%d", utimer_id);
- 	if (!utimer->name) {
- 		err = -ENOMEM;
- 		goto err_get_name;
++		budget--;
  	}
  
--	utimer->id = utimer_id;
--
- 	tid.dev_sclass = SNDRV_TIMER_SCLASS_APPLICATION;
- 	tid.dev_class = SNDRV_TIMER_CLASS_GLOBAL;
- 	tid.card = -1;
+ 	if (tx_desc) {
 -- 
 2.50.1
 
