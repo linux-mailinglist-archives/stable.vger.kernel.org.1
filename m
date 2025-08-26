@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15A0B35CE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5869DB36407
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55F9E7C572D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E6CC2A839E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C62A3093BA;
-	Tue, 26 Aug 2025 11:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121D9246790;
+	Tue, 26 Aug 2025 13:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQf+rFTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7dWzlrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476FA20330;
-	Tue, 26 Aug 2025 11:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17572B2DA;
+	Tue, 26 Aug 2025 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208320; cv=none; b=SXb0CCbxphEFMFDtYhBYx8W7dIcFAcXmQQWtKGaaV5dWl0zYWwGzO++brHFWZsU+Ptt2aUnRIU4W98pzjRiMSv4dHrvWxZw281YGxsDgfTl7/hQAtyaTGqGwOVccVl7YfSqOKvfWF4iap5sj0c/Dgemqx7ekS4zjukXGb6BzxdA=
+	t=1756214606; cv=none; b=K/YRPBfXQntfuSq+CszENsMvelh1XJ9mHwnQcdL4KYKX3zNYD/4zMU3T2cL24hCzRZkrPUfazaDEB2cc7cBArI5Q5LzL8kqzq9Rir1kFV2W+Q5KU5ZE8NflhzbOfiPN7uaKESLZQWeTqoY6hUrkkfIXhblVBhSkcH2s2/4AbJI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208320; c=relaxed/simple;
-	bh=wuj/yY/VQQEPLNGznMR9CJSGrRifeYh9MJcuEVzsz0I=;
+	s=arc-20240116; t=1756214606; c=relaxed/simple;
+	bh=0a6VuS0dmqcMDSIbxbU+8nkSu+La+2d/TYcGqzxIi38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3HGJPUXvVoo7f/PHMD8Wgn87KD+DIIvOHUvRGwSPtGhM04nfNzbbEXYdu5cJx8Q2iFiTdSPrfu+DnNFwsYRuhPoCDkj73gAHo+0w25FMsOtkZvwj8X/0Gy7OupQrZ5DWVEfCAMzEWAoSUlCXRf8ihKWCd/QJICSboEyy2H+QSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQf+rFTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23DAC4CEF1;
-	Tue, 26 Aug 2025 11:38:39 +0000 (UTC)
+	 MIME-Version; b=Oo9t4zSsbq84r2eLEMvaFOydEutf7CEQd/KOIbcGJ1bo45yGvNapiqxLyfqK9IAXc31rTcWtCH3GeX6X7cQKLEwy2dvpYKqzA1s2pMJyEa7tjX5VGWdTnFXB2cerR8rQJJFrs4SeZLyy2Edz8OriNIVvN6YF0MTuEXlOU6J0srk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7dWzlrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F294C4CEF1;
+	Tue, 26 Aug 2025 13:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208320;
-	bh=wuj/yY/VQQEPLNGznMR9CJSGrRifeYh9MJcuEVzsz0I=;
+	s=korg; t=1756214606;
+	bh=0a6VuS0dmqcMDSIbxbU+8nkSu+La+2d/TYcGqzxIi38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQf+rFTPq69DTxm+uLHQiUIya4qXJFaaRCo9QPxyC2GLLHR9feEDjk4qtxT3cJjFp
-	 8ROwj4e4LWJ1mSlzLr4O3VTdqony7SGrDrj6mfkRfq+gpCzufIAO/x8CDaqWLBYL0d
-	 Ro3qvdBy45jCAN2SNFODapKHHutKQrWLjdn0+G6M=
+	b=e7dWzlrRBjotdCb+clRvDVPQn5mVsSNplKmpqnlXb6fT41EG2w/Q14/jhNqjd1bTr
+	 y7PGY6I017cmQ0v4Bg0JtgHZ25IfExtaDJmasXtK0hcdWB050OiCwONb23s/bD3pBS
+	 fBqmjD5S/ymXO4fSV9mcZwR6E6EI1QU5Y2QuuNcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.12 039/322] arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR support
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 201/482] media: tc358743: Return an appropriate colorspace from tc358743_set_fmt
 Date: Tue, 26 Aug 2025 13:07:34 +0200
-Message-ID: <20250826110916.331866911@linuxfoundation.org>
+Message-ID: <20250826110935.757164866@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit 265f70af805f33a0dfc90f50cc0f116f702c3811 upstream.
+[ Upstream commit 377cc006a364dfdab2f3f221cfad63a9265200b8 ]
 
-For eMMC, High Speed DDR mode is not supported [0], so remove
-mmc-ddr-1_8v flag which adds the capability.
+When calling tc358743_set_fmt, the code was calling tc358743_get_fmt
+to choose a valid format. However that sets the colorspace
+based on information read back from the chip, not the colour
+format requested.
 
-[0] https://www.ti.com/lit/gpn/am625
+The result was that if you called try or set format for UYVY
+when the current format was RGB3 then you would get told SRGB,
+and try RGB3 when current was UYVY and you would get told
+SMPTE170M.
 
-Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250707191250.3953990-1-jm@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The value programmed in the VI_REP register for the colorspace
+is always set by this driver, therefore there is no need to read
+back the value, and never set to REC709.
+Return the colorspace based on the format set/tried instead.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 44 ++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 27 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-@@ -553,7 +553,6 @@
- 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
- 		clock-names = "clk_ahb", "clk_xin";
- 		bus-width = <8>;
--		mmc-ddr-1_8v;
- 		mmc-hs200-1_8v;
- 		ti,clkbuf-sel = <0x7>;
- 		ti,otap-del-sel-legacy = <0x0>;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 7251d25106d6..0f9fd9cb77b3 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1668,12 +1668,23 @@ static int tc358743_enum_mbus_code(struct v4l2_subdev *sd,
+ 	return 0;
+ }
+ 
++static u32 tc358743_g_colorspace(u32 code)
++{
++	switch (code) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++		return V4L2_COLORSPACE_SRGB;
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++		return V4L2_COLORSPACE_SMPTE170M;
++	default:
++		return 0;
++	}
++}
++
+ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 		struct v4l2_subdev_state *sd_state,
+ 		struct v4l2_subdev_format *format)
+ {
+ 	struct tc358743_state *state = to_state(sd);
+-	u8 vi_rep = i2c_rd8(sd, VI_REP);
+ 
+ 	if (format->pad != 0)
+ 		return -EINVAL;
+@@ -1683,23 +1694,7 @@ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 	format->format.height = state->timings.bt.height;
+ 	format->format.field = V4L2_FIELD_NONE;
+ 
+-	switch (vi_rep & MASK_VOUT_COLOR_SEL) {
+-	case MASK_VOUT_COLOR_RGB_FULL:
+-	case MASK_VOUT_COLOR_RGB_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_SRGB;
+-		break;
+-	case MASK_VOUT_COLOR_601_YCBCR_LIMITED:
+-	case MASK_VOUT_COLOR_601_YCBCR_FULL:
+-		format->format.colorspace = V4L2_COLORSPACE_SMPTE170M;
+-		break;
+-	case MASK_VOUT_COLOR_709_YCBCR_FULL:
+-	case MASK_VOUT_COLOR_709_YCBCR_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_REC709;
+-		break;
+-	default:
+-		format->format.colorspace = 0;
+-		break;
+-	}
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	return 0;
+ }
+@@ -1713,19 +1708,14 @@ static int tc358743_set_fmt(struct v4l2_subdev *sd,
+ 	u32 code = format->format.code; /* is overwritten by get_fmt */
+ 	int ret = tc358743_get_fmt(sd, sd_state, format);
+ 
+-	format->format.code = code;
++	if (code == MEDIA_BUS_FMT_RGB888_1X24 ||
++	    code == MEDIA_BUS_FMT_UYVY8_1X16)
++		format->format.code = code;
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	switch (code) {
+-	case MEDIA_BUS_FMT_RGB888_1X24:
+-	case MEDIA_BUS_FMT_UYVY8_1X16:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
+ 		return 0;
+ 
+-- 
+2.39.5
+
 
 
 
