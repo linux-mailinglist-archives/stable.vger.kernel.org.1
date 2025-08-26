@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A860FB35C71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2C9B36A4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DD677B878E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 765051C40A88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65E53451AA;
-	Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A180F34F46F;
+	Tue, 26 Aug 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwrHnlsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYsw2u80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6407D3469EE;
-	Tue, 26 Aug 2025 11:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6A2350851;
+	Tue, 26 Aug 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207880; cv=none; b=XYPqOL49hHujKEWcaw5EswT9ItIJH2leSP9GaAvRXKy+cBbtWDfUmcxHjCapKmYS6vIdK7torYZfDGdFWs9s7u2rynAFp95gT1veuILTophLPtHnIBoXtD1CG/WejQhDzPpX3KIA8xGAhaTBdiqNCK+AJCG2DFJlgN4DtUmg3Nw=
+	t=1756218109; cv=none; b=p/bi4PjQyA33ddavASwvloDOTdJQkY7vcvEBLctc26DXSxFbMbPlfDVy4H08fRIDLKoE0ianFI9NA75GZOTQHiHXB9JR6Tey1uYARN5hOw6K3mqP5yRoaasdDzLEZj38STGRdRGsFx0ezrLiDBP7bacZSVh5GYeQlIU8aNv6nog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207880; c=relaxed/simple;
-	bh=FktMn8yBIRbOzavJpqvZgdkB0C52lW2XgNVjkHSYk5I=;
+	s=arc-20240116; t=1756218109; c=relaxed/simple;
+	bh=Q3YSVWJc+zWFz4jmXmVxr5dkMu2iHJsepne/JfgAFTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7YDZB/h7xiRsdkiK7QKG7mixoxltUZWojDYZDdfqLRFs0VI64QlDfPlBsqM/dhIKOD6UKUZeTvG/dZ6XLeMjVr7VJNaGJsVBPuGmuxyzk8CmbDckvgTQTto0RFHHfTSW+JLDFsXVDEhE6MAPukXzWwCSFc8Y68zXpJ7cDQM5kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwrHnlsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9137C4CEF1;
-	Tue, 26 Aug 2025 11:31:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TeV5NrgxvclcpaQbKViOM+zcEyy6N1k+mqDEhJS1YndElpB8rg4RvhOq1ej8TC8nT3fd7LbY1MLG2NX8eE4tkDg0UqfFE6yB99w0H/DISxWB96pyKPtFvQjjjV5Z/3G18NrWOj5pHvezkD+9FGOCZnu5lDIIAwr/NdrbK7hTH7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYsw2u80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C769CC113CF;
+	Tue, 26 Aug 2025 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207880;
-	bh=FktMn8yBIRbOzavJpqvZgdkB0C52lW2XgNVjkHSYk5I=;
+	s=korg; t=1756218109;
+	bh=Q3YSVWJc+zWFz4jmXmVxr5dkMu2iHJsepne/JfgAFTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwrHnlsRzSk0wdGN9sJsRfwt6DuMNTE6ysXSV2wVEnC3876SFJqppjvt0gbM6vUrh
-	 S7j7IrWveLjmLOMRWzCduPABLpA8tP2/pNDETJ5+S6QqQN9MsRXhNAAd62u8a5rziG
-	 DwOgH8MYQ3IeNdl7SZ7LhDAMIRY7ezQq2B7dZknQ=
+	b=oYsw2u806Mzk1O1oeWVdVZgfyrFsWrKAeifMFA3W8ywemZ4LIkfna2MazrdLzHFmY
+	 Ykkinmi0ar+WU/rS4GRVzOdlLj4fSCKZAjR1klyz6FryIzdAIsIBJwhcFZ5UR91+gA
+	 mRM1+nGciGViuGlyPDIDLDg04qmNECBql5P8mVcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.16 322/457] usb: xhci: fix host not responding after suspend and resume
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.10 396/523] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
 Date: Tue, 26 Aug 2025 13:10:06 +0200
-Message-ID: <20250826110945.310016167@linuxfoundation.org>
+Message-ID: <20250826110934.229812754@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit ff9a09b3e09c7b794b56f2f5858f5ce42ba46cb3 upstream.
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-Partially revert commit e1db856bd288 ("usb: xhci: remove '0' write to
-write-1-to-clear register") because the patch cleared the Interrupt Pending
-bit during interrupt enabling and disabling. The Interrupt Pending bit
-should only be cleared when the driver has handled the interrupt.
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-Ideally, all interrupts should be handled before disabling the interrupt;
-consequently, no interrupt should be pending when enabling the interrupt.
-For this reason, keep the debug message informing if an interrupt is still
-pending when an interrupt is disabled.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-Because the Interrupt Pending bit is write-1-to-clear, writing '0' to it
-ensures that the state does not change.
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
 
-Link: https://lore.kernel.org/linux-usb/20250818231103.672ec7ed@foxbook
-Fixes: e1db856bd288 ("usb: xhci: remove '0' write to write-1-to-clear register")
-Closes: https://bbs.archlinux.org/viewtopic.php?id=307641
-cc: stable@vger.kernel.org # 6.16+
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250819125844.2042452-3-mathias.nyman@linux.intel.com
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 0e03691f03bf..742c23826e17 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -309,6 +309,7 @@ int xhci_enable_interrupter(struct xhci_interrupter *ir)
- 		return -EINVAL;
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -992,7 +992,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
- 	iman = readl(&ir->ir_set->iman);
-+	iman &= ~IMAN_IP;
- 	iman |= IMAN_IE;
- 	writel(iman, &ir->ir_set->iman);
- 
-@@ -325,6 +326,7 @@ int xhci_disable_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
- 		return -EINVAL;
- 
- 	iman = readl(&ir->ir_set->iman);
-+	iman &= ~IMAN_IP;
- 	iman &= ~IMAN_IE;
- 	writel(iman, &ir->ir_set->iman);
- 
--- 
-2.50.1
-
 
 
 
