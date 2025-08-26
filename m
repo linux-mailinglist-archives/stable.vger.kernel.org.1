@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16D7B368F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581DEB3601E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7F11C23994
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB7714632A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76170350842;
-	Tue, 26 Aug 2025 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBAA238C07;
+	Tue, 26 Aug 2025 12:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8e9FZbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oijLSyzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D1A35082F;
-	Tue, 26 Aug 2025 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3575F2343BE;
+	Tue, 26 Aug 2025 12:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217232; cv=none; b=igY7pZQvpdQIarwuTXBMGIyf9nth7n9VcjkM2yLpr9rcQD7F5pzV8UF3jDCVFS7t0yvr6m2c4N6Ns7rZjWi3oq2m1tufURXErG+lZZh1a/yyEd1V0Sp+ckGV6duZDW5dSSUeClwMoXsikQ7oqTLTDFwK0IO9sjtRwIdUjebw8MU=
+	t=1756212852; cv=none; b=pOqaT536arzspyvBIZYVOoWGyoUBjp4vrpNoqvCUqEboEIrrLg3bWM9z7iibhCIpTYjBdruvXeIxTRCtCVqYQgH3hPrJoawdxj+i2fen0La65GybV8PVhY3SYLu6NqJTZvWWR8dTv4pwTYucs1IOo4ltJP+UwKkgtGHx6bf3VTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217232; c=relaxed/simple;
-	bh=Y6bKuuyNiSeOpOgiG0RxfcJx7Vu4CFyyzp4sLKl8x70=;
+	s=arc-20240116; t=1756212852; c=relaxed/simple;
+	bh=CWc2XSQzua8A1zIdxJQyReZOyu2DAEVaCdrad6qIC68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xb+bBuXV/f8Qi+ucB/aKwOK7Dd6wXDyJ+C3XtBRlGXrR4aI4L5enUNdb5z7MRQkWKwcdfRhTR+EulVj3FCgjrQ2U5jWDacHGInJICg9RODwBswrrrrhS/71I+OOGfW5/WvUlRvCJqi9ey4tpqOAO4ICS2MbvXyTCbuom6RPgZaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8e9FZbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1506C113D0;
-	Tue, 26 Aug 2025 14:07:11 +0000 (UTC)
+	 MIME-Version; b=PrZBJZjOoK+cuS9XAYyIUZrTo66x6bS/QczAOJLtxGevSQxv2NxzdEM7UfRdAhMg5VzT38LkQ3419rcFkY1HwllhmWFxWpVGxweVSf+CE6kZ11MADpuS85o4hNxtkfji9RpL3BuglR+VktFMzCqg0EgUWkjKxmW8qIeVoJ+UuGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oijLSyzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73A7C4CEF4;
+	Tue, 26 Aug 2025 12:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217232;
-	bh=Y6bKuuyNiSeOpOgiG0RxfcJx7Vu4CFyyzp4sLKl8x70=;
+	s=korg; t=1756212852;
+	bh=CWc2XSQzua8A1zIdxJQyReZOyu2DAEVaCdrad6qIC68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8e9FZbEx+Y2D0hzctzLp3UzL2i3QmnLJ24s7u9uIbfZAn3p3F0f4LgX1KsLFZTF+
-	 23RuGBckY5sKnzb4k43EDxRXTdpPvTacu7ZAnlV0tX5HdCN6o6nQ55ottwcJor08mZ
-	 CsqqbxP51wsKa/JE1vRnhhgp5sEYOxkRweRrt9Ig=
+	b=oijLSyzv1SfoasWtpGDPTIUkcz+mLZ5Ble1FKppDuy9oIfB5wNWKozO9UEfcDNHgs
+	 oVsFRBGjcah1+Q9XPY/L1G5bxgVf+TUGCxT3NQqaOZJMDQsaRbr7OuAiCHII8sT1TU
+	 zhex1ghMfeo74aenMmqzeVzyha0Kz6dnUy49azRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/523] net: emaclite: Fix missing pointer increment in aligned_read()
+Subject: [PATCH 6.6 095/587] cpufreq: Exit governor when failed to start old governor
 Date: Tue, 26 Aug 2025 13:04:04 +0200
-Message-ID: <20250826110925.443765110@linuxfoundation.org>
+Message-ID: <20250826110955.358416384@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 7727ec1523d7973defa1dff8f9c0aad288d04008 ]
+[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
 
-Add missing post-increment operators for byte pointers in the
-loop that copies remaining bytes in xemaclite_aligned_read().
-Without the increment, the same byte was written repeatedly
-to the destination.
-This update aligns with xemaclite_aligned_write()
+Detect the result of starting old governor in cpufreq_set_policy(). If it
+fails, exit the governor and clear policy->governor.
 
-Fixes: bb81b2ddfa19 ("net: add Xilinx emac lite device driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250710173849.2381003-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_emaclite.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-index 02b95afe25066..c8bd4880b609d 100644
---- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-@@ -293,7 +293,7 @@ static void xemaclite_aligned_read(u32 *src_ptr, u8 *dest_ptr,
- 
- 		/* Read the remaining data */
- 		for (; length > 0; length--)
--			*to_u8_ptr = *from_u8_ptr;
-+			*to_u8_ptr++ = *from_u8_ptr++;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index cc98d8cf5433..6ee1767ba08f 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2701,10 +2701,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
+ 	pr_debug("starting governor %s failed\n", policy->governor->name);
+ 	if (old_gov) {
+ 		policy->governor = old_gov;
+-		if (cpufreq_init_governor(policy))
++		if (cpufreq_init_governor(policy)) {
+ 			policy->governor = NULL;
+-		else
+-			cpufreq_start_governor(policy);
++		} else if (cpufreq_start_governor(policy)) {
++			cpufreq_exit_governor(policy);
++			policy->governor = NULL;
++		}
  	}
- }
  
+ 	return ret;
 -- 
 2.39.5
 
