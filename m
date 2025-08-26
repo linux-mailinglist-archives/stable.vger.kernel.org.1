@@ -1,77 +1,125 @@
-Return-Path: <stable+bounces-172930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39B1B35956
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1C4B3595B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE74B16DC95
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 09:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1644B188EBD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 09:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DE73074AD;
-	Tue, 26 Aug 2025 09:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+aDotNs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6E6308F03;
+	Tue, 26 Aug 2025 09:50:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2262FE065;
-	Tue, 26 Aug 2025 09:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28C305E32;
+	Tue, 26 Aug 2025 09:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756201771; cv=none; b=VhM5SEu51YQxuoxmDw+ptpdvFJ4O1BJS46bOkACysW796B9x6TxCnG+5zEe3Mz3KwDe2zyQqBzZS4RA0hPFasaVrVun1hjyCdpbBlyYml8Lp19gct3jpm508IpYSHN0M7sjS3jp4A8vlZT0RPNp64ViEXhs1bf4y4nnri3pt7lQ=
+	t=1756201830; cv=none; b=qFOZf0gv/CgE0HBz3t3hySG9yzyZ8QJcRxnIS37BH7VifhenISKhVo/GdeUUfYrIvOx65G1jSTUN9Pu5ZZFqyU7MdfPEqiFe4//768D+jEcAlTPkACYJsROAOg5zeZ6o0JRhRBdyp3R5NEWONrN7QsuXdMLOnRD+AF5wA7YkD5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756201771; c=relaxed/simple;
-	bh=iaPzBqDKWZB4os6/7I6hJ1eE45Ek8EtyobRUhpF3kbU=;
+	s=arc-20240116; t=1756201830; c=relaxed/simple;
+	bh=r5qMbe4kTDDLldGYy/rC48/6xg03WM0XcsMR1LpgIaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qpKbG7+NfL3G6WnqX8IoGvzfatfvTLKjzR9sAfojOTQL2/m88dEpTNPDV4h2mbarackxPHncDoF63RpS0eo+KkkqIYukWPyN7B/uaPDwsPlkv9siAY5OVKw+V0QkZf3EhtkWukTHXyNHnXqpnBQkpxBHaIrNvFx8Mqb4Rsnxs5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+aDotNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81483C4CEF1;
-	Tue, 26 Aug 2025 09:49:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756201770;
-	bh=iaPzBqDKWZB4os6/7I6hJ1eE45Ek8EtyobRUhpF3kbU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G+aDotNsQ5ukGAXkmP97Gtbn4fNwPDl6pjMK96C4Pg6keNwhs0A/TTmdc88UGkdlx
-	 bnZjymxF9J5Kx0CSHawJtnl+fI/mn+k6EXBgcy/mzJ43MkLF7IBJ3TRnZPb3Lui38p
-	 bIbYiagzl4wKiHy4PuoOFAvXJM3aDuAKzMe5AfV+MU1LljCtuCCfQAh5sUlXQf4JoF
-	 EwV7Dnr4SBdCmRtJCmCuIFFd0v0nouijsdyzuwh9VwlQVOFmoPxS93Cixub40BaCmF
-	 RrHI0SP4LLisEpzro0TeW9SthPOgRQEvah/7rgp4ez19QNOybF4HKPu+2vv+LpGZfz
-	 aHz3XlaYBcEqQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1uqqIp-0000000009w-2bZe;
-	Tue, 26 Aug 2025 11:49:19 +0200
-Date: Tue, 26 Aug 2025 11:49:19 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=DjMbKQAjkjh4+/JH4evv5Yy8wsVvpDKspctbr9hVPdj+BalEDjHq8gbGX/44Hy7m5qMZ2OZbCtU1n64vXhFrIV+Zo590sigT0IfJm6uKlyjwpJB2mUA9JArrHVBizMIvGjkU4+vpytkD4uAQDGSxccL2S33KSgrwraorks8Qvnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3231C1A00;
+	Tue, 26 Aug 2025 02:50:19 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AABA83F63F;
+	Tue, 26 Aug 2025 02:50:22 -0700 (PDT)
+Date: Tue, 26 Aug 2025 10:50:15 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: option: add Telit Cinterion FN990A w/audio
- compositions
-Message-ID: <aK2DH9NB7v6uYraH@hovoldconsulting.com>
-References: <20250806120926.144800-1-fabio.porcedda@gmail.com>
+Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+Message-ID: <aK2DV_joOnaU85Tx@J2N7QTR9R3>
+References: <20250822041526.467434-1-CFSworks@gmail.com>
+ <CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+ <CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250806120926.144800-1-fabio.porcedda@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
 
-On Wed, Aug 06, 2025 at 02:09:26PM +0200, Fabio Porcedda wrote:
-> Add the following Telit Cinterion FN990A w/audio compositions:
+On Sat, Aug 23, 2025 at 04:55:44PM -0700, Sam Edwards wrote:
+> On Sat, Aug 23, 2025 at 3:25 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > Hi Sam,
+> >
+> > On Fri, 22 Aug 2025 at 14:15, Sam Edwards <cfsworks@gmail.com> wrote:
+> > >
+> > > In early boot, Linux creates identity virtual->physical address mappings
+> > > so that it can enable the MMU before full memory management is ready.
+> > > To ensure some available physical memory to back these structures,
+> > > vmlinux.lds reserves some space (and defines marker symbols) in the
+> > > middle of the kernel image. However, because they are defined outside of
+> > > PROGBITS sections, they aren't pre-initialized -- at least as far as ELF
+> > > is concerned.
+> > >
+> > > In the typical case, this isn't actually a problem: the boot image is
+> > > prepared with objcopy, which zero-fills the gaps, so these structures
+> > > are incidentally zero-initialized (an all-zeroes entry is considered
+> > > absent, so zero-initialization is appropriate).
+> > >
+> > > However, that is just a happy accident: the `vmlinux` ELF output
+> > > authoritatively represents the state of memory at entry. If the ELF
+> > > says a region of memory isn't initialized, we must treat it as
+> > > uninitialized. Indeed, certain bootloaders (e.g. Broadcom CFE) ingest
+> > > the ELF directly -- sidestepping the objcopy-produced image entirely --
+> > > and therefore do not initialize the gaps. This results in the early boot
+> > > code crashing when it attempts to create identity mappings.
+> > >
+> > > Therefore, add boot-time zero-initialization for the following:
+> > > - __pi_init_idmap_pg_dir..__pi_init_idmap_pg_end
+> > > - idmap_pg_dir
+> > > - reserved_pg_dir
+> >
+> > I don't think this is the right approach.
+> >
+> > If the ELF representation is inaccurate, it should be fixed, and this
+> > should be achievable without impacting the binary image at all.
+> 
+> Hi Ard,
+> 
+> I don't believe I can declare the ELF output "inaccurate" per se,
+> since it's the linker's final determination about the state of memory
+> at kernel entry -- including which regions are not the loader's
+> responsibility to initialize (and should therefore be initialized at
+> runtime, e.g. .bss). But, I think I understand your meaning: you would
+> prefer consistent load-time zero-initialization over run-time. I'm
+> open to that approach if that's the consensus here, but it will make
+> `vmlinux` dozens of KBs larger (even though it keeps `Image` the same
+> size).
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Our intent was that these are zeroed at build time in the Image. If the
+vmlinux isn't consistent with that, that's a problem with the way we
+generate the vmlinux, and hence "the ELF representation is inaccurate".
 
-Now applied, thanks.
+I agree with Ard that it's better to bring the vmlinux into line with
+that (if we need to handlr this at all), even if that means making the
+vmlinux a few KB bigger.
 
-Johan
+Mark.
 
