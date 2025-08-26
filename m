@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74503B36804
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8F7B36228
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917E51C24440
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D3D016F221
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5CA2AE7F;
-	Tue, 26 Aug 2025 13:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2013405F7;
+	Tue, 26 Aug 2025 13:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amoRU/Gh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeQoGpaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D12634AB1A;
-	Tue, 26 Aug 2025 13:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD40259CB2;
+	Tue, 26 Aug 2025 13:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216797; cv=none; b=jeCLJXfbHcRMT2kimaCuzS/nbijJi1WiAU3xBvS47FrrlQeCEWkoGSY/ZcmytL7b9puuBd5AE3KaRp1wTVZPA0ljY4+24axnbHNe7mfDZnmckoe/Yt0DJH7W7naMsg5QTdylDu+AG20syExXp9ZREkwESA7SDoAepBysadPGxOM=
+	t=1756213817; cv=none; b=M2qzka9/CLi/+Xf9sUrJlXWYcaf3v3QxkzwHZUCO1hc5hzUUGDrhGxPwuCo0ht1WzxQsO0A2xZDYbAL4h4rp8eE0ESjdWbHXPqUwcXKTFClZ5Vqlr4flBIe+EV4h+0vHWRFF/bNQq+pvvcXMqU8eI9/ga+39tBdDiH3idYKserU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216797; c=relaxed/simple;
-	bh=cR5/h1meG/vOREnlgFk7Pq6Ym/1Ob2C+zbk/HA8mwTQ=;
+	s=arc-20240116; t=1756213817; c=relaxed/simple;
+	bh=k6usll1096FWOuBbhLF3PtROU2KwnDec12+Kgvz9C0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8GgM3o2qJJUKZOgChBwNMHZxF/BnVgx5h/y+paUZsFue/C3E2bJxRFNkL3Ng5/7tJUhReIXVEjHEMaSvDdgjLhJf6V8yCjDvZrU0scGMT7BdxlWbqilWO/nMowAPA5rC7TPnacQWgQQb2r/fSc3bvsj9q6Eg05kklKmTtK+Gr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amoRU/Gh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6286C4CEF1;
-	Tue, 26 Aug 2025 13:59:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YYZgz1XueGgR+SGTLLg9cczBrcjJgwN8Y/TCW7OpMyrcIvKffcTf26fxqkATKuDO1RFO/qBgslS893gwvos8ZieHOcpRTIKhpggTrl5nmpeuuQcfRdiTXya9UdqEl2XjwqazG3TFPMuuNVGfZLuvv4Iov2XuMYNm+L5l/zDE+UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeQoGpaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4053C4CEF1;
+	Tue, 26 Aug 2025 13:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216797;
-	bh=cR5/h1meG/vOREnlgFk7Pq6Ym/1Ob2C+zbk/HA8mwTQ=;
+	s=korg; t=1756213817;
+	bh=k6usll1096FWOuBbhLF3PtROU2KwnDec12+Kgvz9C0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amoRU/GhlI6cSYAuLo68YlieJzGVmqnHxWogxuU+KxOh2X0BJuodXuoI8lASQP/zD
-	 y6LbQDmyasCKeHIfq/D3duHz8MhLkNAoxo+Kfj3AEWMjssbyiggkd6Zhmv4/zHK2Qf
-	 rEX70oaZGHJks2CwP+w9VLUh0vQxc31H2aaKVcFE=
+	b=VeQoGpaYPKMelpgFG90jXP5W/VjvJNaAOIfXVoSl2axzZOScIauGUHxGvhYgdNrFv
+	 RTxAttX24GvdnWM84DizjUSTFSAEZyTJhw5S1/ztzhnYgmqfL/jwUn1g5lVmj2mqbH
+	 n0fp34XMt2dAWcxe0prKIkgN/hgIur8xZ2zyjO3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alan J. Wylie" <alan@wylie.me.uk>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.15 548/644] sch_htb: make htb_deactivate() idempotent
-Date: Tue, 26 Aug 2025 13:10:39 +0200
-Message-ID: <20250826111000.106594242@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.6 491/587] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
+Date: Tue, 26 Aug 2025 13:10:40 +0200
+Message-ID: <20250826111005.468160320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 3769478610135e82b262640252d90f6efb05be71 upstream.
+commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
 
-Alan reported a NULL pointer dereference in htb_next_rb_node()
-after we made htb_qlen_notify() idempotent.
+Also needed by DCE 6.
+This way the code that gathers this info can be shared between
+different DCE versions and doesn't have to be repeated.
 
-It turns out in the following case it introduced some regression:
-
-htb_dequeue_tree():
-  |-> fq_codel_dequeue()
-    |-> qdisc_tree_reduce_backlog()
-      |-> htb_qlen_notify()
-        |-> htb_deactivate()
-  |-> htb_next_rb_node()
-  |-> htb_deactivate()
-
-For htb_next_rb_node(), after calling the 1st htb_deactivate(), the
-clprio[prio]->ptr could be already set to  NULL, which means
-htb_next_rb_node() is vulnerable here.
-
-For htb_deactivate(), although we checked qlen before calling it, in
-case of qlen==0 after qdisc_tree_reduce_backlog(), we may call it again
-which triggers the warning inside.
-
-To fix the issues here, we need to:
-
-1) Make htb_deactivate() idempotent, that is, simply return if we
-   already call it before.
-2) Make htb_next_rb_node() safe against ptr==NULL.
-
-Many thanks to Alan for testing and for the reproducer.
-
-Fixes: 5ba8b837b522 ("sch_htb: make htb_qlen_notify() idempotent")
-Reported-by: Alan J. Wylie <alan@wylie.me.uk>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://patch.msgid.link/20250428232955.1740419-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_htb.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
+ 3 files changed, 3 insertions(+), 11 deletions(-)
 
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -345,7 +345,8 @@ static void htb_add_to_wait_tree(struct
-  */
- static inline void htb_next_rb_node(struct rb_node **n)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+@@ -386,8 +386,6 @@ static void dce_pplib_apply_display_requ
  {
--	*n = rb_next(*n);
-+	if (*n)
-+		*n = rb_next(*n);
- }
+ 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
  
- /**
-@@ -606,8 +607,8 @@ static inline void htb_activate(struct h
-  */
- static inline void htb_deactivate(struct htb_sched *q, struct htb_class *cl)
- {
--	WARN_ON(!cl->prio_activity);
+-	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
 -
-+	if (!cl->prio_activity)
-+		return;
- 	htb_deactivate_prios(q, cl);
- 	cl->prio_activity = 0;
- }
-@@ -1506,8 +1507,6 @@ static void htb_qlen_notify(struct Qdisc
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
+@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
+ 	int j;
+ 	int num_cfgs = 0;
+ 
++	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
++	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
++	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
+ 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
+ 
+ 	for (j = 0; j < context->stream_count; j++) {
+@@ -243,13 +246,6 @@ void dce11_pplib_apply_display_requireme
+ 	pp_display_cfg->min_engine_clock_deep_sleep_khz
+ 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
+ 
+-	pp_display_cfg->avail_mclk_switch_time_us =
+-						dce110_get_min_vblank_time_us(context);
+-	/* TODO: dce11.2*/
+-	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
+-
+-	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
+-
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
  {
- 	struct htb_class *cl = (struct htb_class *)arg;
+ 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
  
--	if (!cl->prio_activity)
--		return;
- 	htb_deactivate(qdisc_priv(sch), cl);
- }
+-	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
+-
+ 	dce110_fill_display_configs(context, pp_display_cfg);
  
-@@ -1762,8 +1761,7 @@ static int htb_delete(struct Qdisc *sch,
- 	if (cl->parent)
- 		cl->parent->children--;
- 
--	if (cl->prio_activity)
--		htb_deactivate(q, cl);
-+	htb_deactivate(q, cl);
- 
- 	if (cl->cmode != HTB_CAN_SEND)
- 		htb_safe_rb_erase(&cl->pq_node,
-@@ -1975,8 +1973,7 @@ static int htb_change_class(struct Qdisc
- 			/* turn parent into inner node */
- 			qdisc_purge_queue(parent->leaf.q);
- 			parent_qdisc = parent->leaf.q;
--			if (parent->prio_activity)
--				htb_deactivate(q, parent);
-+			htb_deactivate(q, parent);
- 
- 			/* remove from evt list because of level change */
- 			if (parent->cmode != HTB_CAN_SEND) {
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
 
 
 
