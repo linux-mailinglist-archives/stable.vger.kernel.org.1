@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F029B36101
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E27EB3640A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF7A1BA55CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F408A0C20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3441CD1E4;
-	Tue, 26 Aug 2025 13:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654E22AE5D;
+	Tue, 26 Aug 2025 13:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQxy7N88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrLViHOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4031A8F84;
-	Tue, 26 Aug 2025 13:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11755231A55;
+	Tue, 26 Aug 2025 13:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213375; cv=none; b=b1b4UV7eajrTfVVtB9fA/ht7vCXYuaQpcgGfF7+R/ZDU1Y2Pw2APt6GqCQsUtajS7w8b030WZvzUfmtLr0Fs5DAjKqY7k16Ie1lYGDButUQK3qU+g2ffpsPwrhBSE3rJu6Q0MreqKWqYR2P6ZeIe46/CRhj1eDjO5mSE9Sxk1QI=
+	t=1756214738; cv=none; b=mmu4SSWUdT3jtMWtIUHzn4ZFzSYQKWY30jFBdJ7l1o0IufrGNEYI9qABbHk87Ro8Uk7xpVcPxvNJwyLGkchPyGEPR3q/cI3JLzP9knoamr2bGO4ToFnyCbYuEsl3r0mYhVSjoojfphLX9QTE8oc65CWp9GV1lnzTk1xFBQ23NB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213375; c=relaxed/simple;
-	bh=W3xEbYQIoAl4Ff+IzNcJx8yRa3MXDBK9mKqUkHqGkN0=;
+	s=arc-20240116; t=1756214738; c=relaxed/simple;
+	bh=K48E3KA0aNnljAoUzBk128OKi62ta7XPoPd9qGeOPHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCPeCe3+WJOr/ri++wW4FBl4VbpZVSQKSlVj91UxxZgUvlyqhwhKEzbgOUsj4w0OtDX3Rs0NFOy4v3NomoxiORDldeJ/taT/XwNepjn0WZj/7I0j1YZN97tmw0vx6dOhYcvNOw7deJezEPLmEATozPjqUFdRVAKtMpcZp3D83sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQxy7N88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1591C4CEF1;
-	Tue, 26 Aug 2025 13:02:54 +0000 (UTC)
+	 MIME-Version; b=ZGcd+cUhLXcr7Kq9pMhVNHTOYa3GOkc++GGyFeVuob1Sk8vmQKrCEQLg56VgnYE7HsngE9Tlo56vmLgY1xGMeyC5DZA3v9gdyvQQVirqEgogHmqa2O1VZC4FB/nrV1diGbuATP+OJiMnKjPjLtrAXmLco3NsDAMsnQNudCxt2bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrLViHOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D75C4CEF1;
+	Tue, 26 Aug 2025 13:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213375;
-	bh=W3xEbYQIoAl4Ff+IzNcJx8yRa3MXDBK9mKqUkHqGkN0=;
+	s=korg; t=1756214737;
+	bh=K48E3KA0aNnljAoUzBk128OKi62ta7XPoPd9qGeOPHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQxy7N88alsld9oiUhDdH4OIDUwOy0dibvBYeVQkTy3LE1UXmfY6Ajjjr1n/FidTy
-	 4Ps4IGb80ADE78TpZvKYGPiDdyOQTCLwbFMwZe7L/UtrGzvfTowxlB0FOfJHR2YnPj
-	 1pamrSp8URmCy97swzl/Mjj5nNWoOaGUq2xMlzw4=
+	b=WrLViHOij6mXjA13tL/GcqvT0mmb1yNoYTbPIJn3bLUP0vWtvXF4HrTclrtx17M9z
+	 nHZiK8bojuX6ToaDkhA7mEm/nd8C5xzkAI/3EVsqeUDmTXlVh4MC/L8lZiW6ky4Ncw
+	 P8aMoV8OlW74TMIrc8h0kBr3ZNIqMqZqEuX04VQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 323/587] media: uvcvideo: Do not mark valid metadata as invalid
+	Keith Busch <kbusch@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 219/482] vfio/type1: conditional rescheduling while pinning
 Date: Tue, 26 Aug 2025 13:07:52 +0200
-Message-ID: <20250826111001.134910257@linuxfoundation.org>
+Message-ID: <20250826110936.186362537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Keith Busch <kbusch@kernel.org>
 
-commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
+[ Upstream commit b1779e4f209c7ff7e32f3c79d69bca4e3a3a68b6 ]
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+A large DMA mapping request can loop through dma address pinning for
+many pages. In cases where THP can not be used, the repeated vmf_insert_pfn can
+be costly, so let the task reschedule as need to prevent CPU stalls. Failure to
+do so has potential harmful side effects, like increased memory pressure
+as unrelated rcu tasks are unable to make their reclaim callbacks and
+result in OOM conditions.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:   36-....: (20999 ticks this GP) idle=b01c/1/0x4000000000000000 softirq=35839/35839 fqs=3538
+ rcu:            hardirqs   softirqs   csw/system
+ rcu:    number:        0        107            0
+ rcu:   cputime:       50          0        10446   ==> 10556(ms)
+ rcu:   (t=21075 jiffies g=377761 q=204059 ncpus=384)
+...
+  <TASK>
+  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+  ? walk_system_ram_range+0x63/0x120
+  ? walk_system_ram_range+0x46/0x120
+  ? pgprot_writethrough+0x20/0x20
+  lookup_memtype+0x67/0xf0
+  track_pfn_insert+0x20/0x40
+  vmf_insert_pfn_prot+0x88/0x140
+  vfio_pci_mmap_huge_fault+0xf9/0x1b0 [vfio_pci_core]
+  __do_fault+0x28/0x1b0
+  handle_mm_fault+0xef1/0x2560
+  fixup_user_fault+0xf5/0x270
+  vaddr_get_pfns+0x169/0x2f0 [vfio_iommu_type1]
+  vfio_pin_pages_remote+0x162/0x8e0 [vfio_iommu_type1]
+  vfio_iommu_type1_ioctl+0x1121/0x1810 [vfio_iommu_type1]
+  ? futex_wake+0x1c1/0x260
+  x64_sys_call+0x234/0x17a0
+  do_syscall_64+0x63/0x130
+  ? exc_page_fault+0x63/0x130
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20250715184622.3561598-1-kbusch@meta.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1414,12 +1414,6 @@ static void uvc_video_decode_meta(struct
- 	if (!meta_buf || length == 2)
- 		return;
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 26fac124231f..888f7eeb3d6a 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -692,6 +692,13 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
  
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1440,6 +1434,12 @@ static void uvc_video_decode_meta(struct
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
-+	}
+ 	while (npage) {
+ 		if (!batch->size) {
++			/*
++			 * Large mappings may take a while to repeatedly refill
++			 * the batch, so conditionally relinquish the CPU when
++			 * needed to avoid stalls.
++			 */
++			cond_resched();
 +
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
+ 			/* Empty batch, so refill it. */
+ 			long req_pages = min_t(long, npage, batch->capacity);
+ 
+-- 
+2.39.5
+
 
 
 
