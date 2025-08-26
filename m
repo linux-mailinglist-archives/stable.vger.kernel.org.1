@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B599B367D7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FD9B362D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FEA9B635BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78513B0302
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76BC350D5D;
-	Tue, 26 Aug 2025 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D142F8BC9;
+	Tue, 26 Aug 2025 13:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4hOQiZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQp2LknL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8421835082F;
-	Tue, 26 Aug 2025 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD4834AAE8;
+	Tue, 26 Aug 2025 13:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217229; cv=none; b=YlwDEVVl3rNM3FHHC+zDRNhw27JYMtH38Ia1tDAGRIjYqRL0CIFYBkJ2WcgXT2uG2uKw+lSvqVgJWO837kt180tXMCgOd1u6JgazAxFrubmJ27l0QwaWyDy9sdXyBPOpkqjd9B9rA/Zv7liKNZrny4C0LQ/df7hVaOtejIop29w=
+	t=1756214123; cv=none; b=Q7wGLUsDz9POEgQgiJ5WH+ajdXO4CsYoBnwrzCBykoc1APfXTXx7uDaLL6uaACar03AGr5vCkon7bRjU/mTftGJ8pZEDA8P/kzqR5Q1tncYGjhQArLoGGs1NCF5n0vE4C0/hIJM+RjJpysoo9Zhfx/G6l07p3Fogs5BjkF+L56w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217229; c=relaxed/simple;
-	bh=fbJ8xUHyxmi73/2+oKd4+xYSoUF7vc1LyQO8UBZJIeo=;
+	s=arc-20240116; t=1756214123; c=relaxed/simple;
+	bh=uZUG65esQhKKnYsQ+8tGwQ3PvYrtm9YMsRTu+Bcppz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgaLgXIyilWQpOufWz0gdJqx0v4NVeN+BAECyEKwJ4BAG0GJryYxVIguBUIUITsXGAkLJRCkrdccLlbG4YUAQlsUt/l+3rRzwytE9XACm+iLiOGSfza62TJkJeGYTYEZfZFwpMFqmb4kqenMo9rSgpZKe4SZD5yTUsGNE68II/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4hOQiZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AD9C4CEF1;
-	Tue, 26 Aug 2025 14:07:08 +0000 (UTC)
+	 MIME-Version; b=YlSgpwMCeBmgFKzpgsSgBF4s5MhzfV4WJtuC8eJJVY3W1DMFFsPTiRh36NoN9h/YQfwMKneYxJ5VUdyErnwZjK9S4N8XaGydlFUe/1/yWsePQmFmYFzULwzH2fWX4WiszQ1kv+OCIEv9yAyEiSA3svpZ6mIUlgjEZwARbYVuEfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQp2LknL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE61C4CEF1;
+	Tue, 26 Aug 2025 13:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217229;
-	bh=fbJ8xUHyxmi73/2+oKd4+xYSoUF7vc1LyQO8UBZJIeo=;
+	s=korg; t=1756214123;
+	bh=uZUG65esQhKKnYsQ+8tGwQ3PvYrtm9YMsRTu+Bcppz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4hOQiZOQD0gbkLkj1D8/sCbe4vYr+hA9xlfjymn+tiqwlGDDQCo+CAEtRhfosWY/
-	 DYO9v/Vdz831GXwo1IKo4jRXaFeHoFrNUzax3tSSRwWzy/bafxspywBXLtXFED9sKs
-	 qEneN3nSf1J0MGg7jkiYeRDBu2ps/xVqr1G1S/hY=
+	b=CQp2LknLRyd/x/xob7kJFtwVT0d2vo9YLUYJ2Qo+LaTLwmRtTawoeSmAq1ZT6I33T
+	 cnK+RYd1aE+A/w42cUeJjArPiK8lUfa907HSXVB/XscLQgcimmgJEVOovLtFQnn/yt
+	 xtLWeBtPF2SY0hPo5aBJ7Cl7JMyffBW7yXN6P6GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Hao Lan <lanhao@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/523] net: hns3: fixed vf get max channels bug
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Haoran Jiang <jianghaoran@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 020/482] LoongArch: BPF: Fix jump offset calculation in tailcall
 Date: Tue, 26 Aug 2025 13:04:33 +0200
-Message-ID: <20250826110926.136731598@linuxfoundation.org>
+Message-ID: <20250826110931.288673442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Haoran Jiang <jianghaoran@kylinos.cn>
 
-[ Upstream commit b3e75c0bcc53f647311960bc1b0970b9b480ca5a ]
+commit cd39d9e6b7e4c58fa77783e7aedf7ada51d02ea3 upstream.
 
-Currently, the queried maximum of vf channels is the maximum of channels
-supported by each TC. However, the actual maximum of channels is
-the maximum of channels supported by the device.
+The extra pass of bpf_int_jit_compile() skips JIT context initialization
+which essentially skips offset calculation leaving out_offset = -1, so
+the jmp_offset in emit_bpf_tail_call is calculated by
 
-Fixes: 849e46077689 ("net: hns3: add ethtool_ops.get_channels support for VF")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-4-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"#define jmp_offset (out_offset - (cur_offset))"
+
+is a negative number, which is wrong. The final generated assembly are
+as follow.
+
+54:	bgeu        	$a2, $t1, -8	    # 0x0000004c
+58:	addi.d      	$a6, $s5, -1
+5c:	bltz        	$a6, -16	    # 0x0000004c
+60:	alsl.d      	$t2, $a2, $a1, 0x3
+64:	ld.d        	$t2, $t2, 264
+68:	beq         	$t2, $zero, -28	    # 0x0000004c
+
+Before apply this patch, the follow test case will reveal soft lock issues.
+
+cd tools/testing/selftests/bpf/
+./test_progs --allow=tailcalls/tailcall_bpf2bpf_1
+
+dmesg:
+watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [test_progs:25056]
+
+Cc: stable@vger.kernel.org
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Reviewed-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/loongarch/net/bpf_jit.c |   21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index cf03c2ab7b2eb..15dca78fd736c 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -3346,11 +3346,7 @@ static void hclgevf_uninit_ae_dev(struct hnae3_ae_dev *ae_dev)
- 
- static u32 hclgevf_get_max_channels(struct hclgevf_dev *hdev)
- {
--	struct hnae3_handle *nic = &hdev->nic;
--	struct hnae3_knic_private_info *kinfo = &nic->kinfo;
--
--	return min_t(u32, hdev->rss_size_max,
--		     hdev->num_tqps / kinfo->tc_info.num_tc);
-+	return min(hdev->rss_size_max, hdev->num_tqps);
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -201,11 +201,9 @@ bool bpf_jit_supports_kfunc_call(void)
+ 	return true;
  }
  
- /**
--- 
-2.39.5
-
+-/* initialized on the first pass of build_body() */
+-static int out_offset = -1;
+-static int emit_bpf_tail_call(struct jit_ctx *ctx)
++static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
+ {
+-	int off;
++	int off, tc_ninsn = 0;
+ 	u8 tcc = tail_call_reg(ctx);
+ 	u8 a1 = LOONGARCH_GPR_A1;
+ 	u8 a2 = LOONGARCH_GPR_A2;
+@@ -215,7 +213,7 @@ static int emit_bpf_tail_call(struct jit
+ 	const int idx0 = ctx->idx;
+ 
+ #define cur_offset (ctx->idx - idx0)
+-#define jmp_offset (out_offset - (cur_offset))
++#define jmp_offset (tc_ninsn - (cur_offset))
+ 
+ 	/*
+ 	 * a0: &ctx
+@@ -225,6 +223,7 @@ static int emit_bpf_tail_call(struct jit
+ 	 * if (index >= array->map.max_entries)
+ 	 *	 goto out;
+ 	 */
++	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
+ 	off = offsetof(struct bpf_array, map.max_entries);
+ 	emit_insn(ctx, ldwu, t1, a1, off);
+ 	/* bgeu $a2, $t1, jmp_offset */
+@@ -256,15 +255,6 @@ static int emit_bpf_tail_call(struct jit
+ 	emit_insn(ctx, ldd, t3, t2, off);
+ 	__build_epilogue(ctx, true);
+ 
+-	/* out: */
+-	if (out_offset == -1)
+-		out_offset = cur_offset;
+-	if (cur_offset != out_offset) {
+-		pr_err_once("tail_call out_offset = %d, expected %d!\n",
+-			    cur_offset, out_offset);
+-		return -1;
+-	}
+-
+ 	return 0;
+ 
+ toofar:
+@@ -789,7 +779,7 @@ static int build_insn(const struct bpf_i
+ 	/* tail call */
+ 	case BPF_JMP | BPF_TAIL_CALL:
+ 		mark_tail_call(ctx);
+-		if (emit_bpf_tail_call(ctx) < 0)
++		if (emit_bpf_tail_call(ctx, i) < 0)
+ 			return -EINVAL;
+ 		break;
+ 
+@@ -1170,7 +1160,6 @@ out:
+ 	if (tmp_blinded)
+ 		bpf_jit_prog_release_other(prog, prog == orig_prog ? tmp : orig_prog);
+ 
+-	out_offset = -1;
+ 
+ 	return prog;
+ }
 
 
 
