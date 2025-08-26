@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84F6B36B66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF99B35D8C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F071C25BD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ADC64619F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6185E2AD04;
-	Tue, 26 Aug 2025 14:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C031A32144B;
+	Tue, 26 Aug 2025 11:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJVyHpS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEvepcUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD722C0F9C;
-	Tue, 26 Aug 2025 14:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B15029D26A;
+	Tue, 26 Aug 2025 11:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218458; cv=none; b=D0x6bF401srIiXb8mHhkJMbqfDBD7mGoAWRDC39K03LTo5Yuh2BSedNd6UkCYPJ/4iPS5LPf8vNRBozxk1BPllI+EOA6Odd8J6ocpQFBPsEg1E/QBzO3Gyrq7h+Zv3PP8ikLygEyIM5C4+psD6LSJBAcWuFBrkpRGTb664yqOYk=
+	t=1756208100; cv=none; b=T11evb+ZIZfOidpWQeYzFzpLxeMDRuuH5LlIoltVqzE3x+l7lJGIqoMMraCbQKSgjXFAMfKUVHLcFtfFVbrIPqNvRk2kPvGYPDqUOaVrN2Dr2iQsQ00pdKMdz5axwe9Qfw2QcMD8yvQw9GPfcQCiku9+3gr0HVUJfy4JvrLzL1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218458; c=relaxed/simple;
-	bh=F9wvs114TzbqpmagzU4mgNNDq9lSARuv0ivFcWqKIAQ=;
+	s=arc-20240116; t=1756208100; c=relaxed/simple;
+	bh=erKXwtYIfcHKQT9a/fwGqiE039zHplkJ3fOm5RR49/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiD+/8szGjZ3DXgKRY4TasTbFzSTbfa5rk5N35vOqH+b7ug1hTpg9Wsiu93Wu+P75A3QqgYxA1M2xUZyzYdqnrmude2DHUonog/27YEGjO+aeY7sjMLAN8JUPoLrfV2tVsb/hzZR8KAZppAL983xuqTfscEnMz40tj4WvL54vJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJVyHpS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF93C4CEF1;
-	Tue, 26 Aug 2025 14:27:37 +0000 (UTC)
+	 MIME-Version; b=PrC9j3tMPUq1yfCwREiFr17CLBgzy7SGZKPWimF3LdJgdtElPwK7ci7k2O8I5L6SpxAlkywSU7xAD50FghIyd+w9Gez5V89mWVrKNNFsQt+Q0W+NeAKEDKyft8zrf+1MaWFDfJMly+GVDYsaA9mTycOTkyaUPa3u60orHHdTRs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEvepcUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1787C4CEF1;
+	Tue, 26 Aug 2025 11:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218457;
-	bh=F9wvs114TzbqpmagzU4mgNNDq9lSARuv0ivFcWqKIAQ=;
+	s=korg; t=1756208100;
+	bh=erKXwtYIfcHKQT9a/fwGqiE039zHplkJ3fOm5RR49/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJVyHpS7xfDw4/UV8seS0PGtgrs03Eyo32SK89ALh2//NCXkFhN1R4nb9KDQlk1c2
-	 c4bPuM9a6P/adNVEvYaWLwqlEyK5EOYN1TJWNXcCAmymNjwuAQDvE+qw6kXVMm09pZ
-	 Cc/Sb37AwJWv70pzH/q9C4LVh7Mv/jAwunOJg2zc=
+	b=DEvepcURItEnwgZOKJkFKR0hH+8pfz8n4PSRqJXogD9e84ITGt9eNXIWx28k2SimQ
+	 xhFliIL8643g6WTrni5MGkAFoTEKgqCc5dKj1uobaPBAa54ohWFtvtcK1SAqaL/8dQ
+	 ooZYPaXbpmoeEPasF4VshJaZ7xz2ZMzRYb1AzjFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 510/523] scsi: qla4xxx: Prevent a potential error pointer dereference
-Date: Tue, 26 Aug 2025 13:12:00 +0200
-Message-ID: <20250826110937.021253125@linuxfoundation.org>
+Subject: [PATCH 6.16 437/457] bonding: update LACP activity flag after setting lacp_active
+Date: Tue, 26 Aug 2025 13:12:01 +0200
+Message-ID: <20250826110948.087954458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
+[ Upstream commit b64d035f77b1f02ab449393342264b44950a75ae ]
 
-The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
-but qla4xxx_ep_connect() returns error pointers.  Propagating the error
-pointers will lead to an Oops in the caller, so change the error pointers
-to NULL.
+The port's actor_oper_port_state activity flag should be updated immediately
+after changing the lacp_active option to reflect the current mode correctly.
 
-Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250815062000.22220-2-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/bonding/bond_3ad.c     | 25 +++++++++++++++++++++++++
+ drivers/net/bonding/bond_options.c |  1 +
+ include/net/bond_3ad.h             |  1 +
+ 3 files changed, 27 insertions(+)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index f02d8bbea3e5..fc9382833435 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -6619,6 +6619,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
- 
- 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
- 	vfree(dst_addr);
-+	if (IS_ERR(ep))
-+		return NULL;
- 	return ep;
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index c6807e473ab7..a51305423d28 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -2869,6 +2869,31 @@ void bond_3ad_update_lacp_rate(struct bonding *bond)
+ 	spin_unlock_bh(&bond->mode_lock);
  }
  
++/**
++ * bond_3ad_update_lacp_active - change the lacp active
++ * @bond: bonding struct
++ *
++ * Update actor_oper_port_state when lacp_active is modified.
++ */
++void bond_3ad_update_lacp_active(struct bonding *bond)
++{
++	struct port *port = NULL;
++	struct list_head *iter;
++	struct slave *slave;
++	int lacp_active;
++
++	lacp_active = bond->params.lacp_active;
++	spin_lock_bh(&bond->mode_lock);
++	bond_for_each_slave(bond, slave, iter) {
++		port = &(SLAVE_AD_INFO(slave)->port);
++		if (lacp_active)
++			port->actor_oper_port_state |= LACP_STATE_LACP_ACTIVITY;
++		else
++			port->actor_oper_port_state &= ~LACP_STATE_LACP_ACTIVITY;
++	}
++	spin_unlock_bh(&bond->mode_lock);
++}
++
+ size_t bond_3ad_stats_size(void)
+ {
+ 	return nla_total_size_64bit(sizeof(u64)) + /* BOND_3AD_STAT_LACPDU_RX */
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 91893c29b899..28c53f1b1382 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1637,6 +1637,7 @@ static int bond_option_lacp_active_set(struct bonding *bond,
+ 	netdev_dbg(bond->dev, "Setting LACP active to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.lacp_active = newval->value;
++	bond_3ad_update_lacp_active(bond);
+ 
+ 	return 0;
+ }
+diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
+index 2053cd8e788a..dba369a2cf27 100644
+--- a/include/net/bond_3ad.h
++++ b/include/net/bond_3ad.h
+@@ -307,6 +307,7 @@ int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
+ 			 struct slave *slave);
+ int bond_3ad_set_carrier(struct bonding *bond);
+ void bond_3ad_update_lacp_rate(struct bonding *bond);
++void bond_3ad_update_lacp_active(struct bonding *bond);
+ void bond_3ad_update_ad_actor_settings(struct bonding *bond);
+ int bond_3ad_stats_fill(struct sk_buff *skb, struct bond_3ad_stats *stats);
+ size_t bond_3ad_stats_size(void);
 -- 
 2.50.1
 
