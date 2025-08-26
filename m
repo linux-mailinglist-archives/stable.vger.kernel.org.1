@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C47DB368FF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE0DB36D1D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAAAB7A4402
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F2A8A85B8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82844350D54;
-	Tue, 26 Aug 2025 14:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB1135CECC;
+	Tue, 26 Aug 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF3AWSjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k12t4zf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3AA34DCE8;
-	Tue, 26 Aug 2025 14:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A310F34AAFE;
+	Tue, 26 Aug 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217992; cv=none; b=bfqFz7h1FiVTi8fUwrUAE12BXpFyxakOk2Rd3npQZN3sEyKq9+AY9MUlEhjn8rNVNe1Pp3VnvNqFqBr222dAdwrX31d5OH72/UB8sUd0F8DJKXyhgbt5RGDtukZSrNuIQjePDL6M6GwljR/uT8x2yNm14ssFDkqlF4zRd/Qs1Mw=
+	t=1756219060; cv=none; b=AYiLeeSCYptnZZ/y2wGWtAogxooRIsLskPePuYnIphiTR9gGbT5getLHGZnhpADzEGRVCa+aN7YY1UKNrEpSToU6nGaWKcHCcn+mwX2HoS0+ohBWRs7B4KEtFV2N14G6bS8u7VZ0XXWKofEDpRwM/kPPwfhAWpIu3npEe7l2xzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217992; c=relaxed/simple;
-	bh=EhyQegcEqDxD4m2WMgGhwKPI7k4H2An5pz3XrloBwzY=;
+	s=arc-20240116; t=1756219060; c=relaxed/simple;
+	bh=C9ZGHEkOk8Mc0NQK5vx2m/n+Bi5pezH7q5c/TJeNO54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljUmDmQtSarQTIMYO+5z6vGD0M8yDYmXL6USXKKIxss/XDbukYYlWf3jRi/9dHKds1IHC1QEE/voHLVE8rNvzO0qRfN8i/xd8Ut+t1T2vT9/AuLpWLwnoYjEwo4HOrgCrEStMipA5t1ZETFQywQXT82FfoyCxIcqm8EMQtWjJ5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF3AWSjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79339C4CEF1;
-	Tue, 26 Aug 2025 14:19:51 +0000 (UTC)
+	 MIME-Version; b=LZIjdkvRW5YICeqLqYtb52p1XRS2MgzHxfFUaTVhBaFsZRL63NDq9WghbcIgO7lZRI56k4Lfx4cs2PcAZXn3hT+nT7fSPRkGQ3HFHIGzGUHKNdnpBwih4pucX79kE/kpSWc0ACpHkfe+SKgCBKZMo4L7+Tg5bk4Aa8fHyXKMiwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k12t4zf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DB2C113D0;
+	Tue, 26 Aug 2025 14:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217991;
-	bh=EhyQegcEqDxD4m2WMgGhwKPI7k4H2An5pz3XrloBwzY=;
+	s=korg; t=1756219060;
+	bh=C9ZGHEkOk8Mc0NQK5vx2m/n+Bi5pezH7q5c/TJeNO54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF3AWSjIm0zMc822REMDXSbxKPRyj7d9JXDAqi+euZXPgIEAyNksP//VKOcr/z1Z+
-	 tRb9ZkqJZ5kIE2s0UqqePy5sme08xIswf63lJcXOBABLd29Lxz7b5Z1lhJU9RxtHUb
-	 BFkvQ6Wv3nDmTQsJOUZAd9svhviRHn79rnqZe3kI=
+	b=k12t4zf0E/KNsx8kiWt09znp+pTK2POFoH2W7sws4s9Bj7OPIO14+Tj7LSHCwXAJD
+	 XuGgt02SGZv88GldbRSogERisK1Vl/v3DPZTSDcxO4r6R9jibOF4sAVziYCCcrtHwl
+	 dobxQ+s4W2IUkAe3lnVQLyblQK/EDiIrJhbtknM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.10 353/523] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
+	Shiji Yang <yangshiji66@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 237/403] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
 Date: Tue, 26 Aug 2025 13:09:23 +0200
-Message-ID: <20250826110933.175579414@linuxfoundation.org>
+Message-ID: <20250826110913.378019655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
+[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
 
-The freq_tables[] array has num_possible_cpus() elements so, to avoid an
-out of bounds access, this loop should be capped at "< nb_cpus" instead
-of "<= nb_cpus".  The freq_tables[] array is allocated in
-armada_8k_cpufreq_init().
+These functions are exported but their prototypes are not defined.
+This patch adds the missing function prototypes to fix the following
+compilation warnings:
 
-Cc: stable@vger.kernel.org
-Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
+  180 | void *vpe_alloc(void)
+      |       ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
+  198 | int vpe_start(void *vpe, unsigned long start)
+      |     ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
+  208 | int vpe_stop(void *vpe)
+      |     ^~~~~~~~
+arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
+  229 | int vpe_free(void *vpe)
+      |     ^~~~~~~~
+
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/vpe.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -96,7 +96,7 @@ static void armada_8k_cpufreq_free_table
- {
- 	int opps_index, nb_cpus = num_possible_cpus();
+diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
+index 012731546cf6..3de6b0ff1627 100644
+--- a/arch/mips/include/asm/vpe.h
++++ b/arch/mips/include/asm/vpe.h
+@@ -126,4 +126,12 @@ void cleanup_tc(struct tc *tc);
  
--	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
-+	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
- 		int i;
- 
- 		/* If cpu_dev is NULL then we reached the end of the array */
+ int __init vpe_module_init(void);
+ void __exit vpe_module_exit(void);
++
++#ifdef CONFIG_MIPS_VPE_LOADER_MT
++void *vpe_alloc(void);
++int vpe_start(void *vpe, unsigned long start);
++int vpe_stop(void *vpe);
++int vpe_free(void *vpe);
++#endif /* CONFIG_MIPS_VPE_LOADER_MT */
++
+ #endif /* _ASM_VPE_H */
+-- 
+2.39.5
+
 
 
 
