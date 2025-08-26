@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EA5B368EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E85B36076
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555BD982115
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D6F4464693
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA8D3568E0;
-	Tue, 26 Aug 2025 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1C1E5B62;
+	Tue, 26 Aug 2025 12:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyeBox6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWWKEOOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A65E352077;
-	Tue, 26 Aug 2025 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C810E1C860B;
+	Tue, 26 Aug 2025 12:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217482; cv=none; b=l1O95aU+W/oRSqAYgbXykOEFsGhA1CMSaMQjcsRKbT1S/CUa14nC2nBbLgGd9LkOLQ5yJVNLNbmtSMj67GRXZDDQeV7nkIAqVdtkca02X+/xPU/aJxoNPmhzYfciqRvwNoIbcHX+HPPlzb06MhhH7oRvcqj0KxnAdnynBvVXbIg=
+	t=1756213100; cv=none; b=YhunbsQYIR5FB+TEmUe+QNPbJkr8kUPYJIjGA7S6WozPqF7HXutu/s5DtNXMjJvwiDzvnJwByLWGGrwv6+8VnRwXHx6LhmutPq8wji7jtvf8ygy54nFSygfbSe/PYZnXiusdy0Ax3eYQypRq0iI+DK363qv1UHSXr4XdFUDgVpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217482; c=relaxed/simple;
-	bh=waeLpDnsrOUua/HIHeyr4nXFqgzAu2xZdM9LUGJoweI=;
+	s=arc-20240116; t=1756213100; c=relaxed/simple;
+	bh=4UXw2U71UI+FonbDFqh+1N8FTq9+j3TPFARwWz4ynDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4VEfaRiHnOngiiSzdbAEr8NDfPatXBJP/C9OYYkL8cjnaBQVGx+aV6fVHNHESy3BfMTtVq3Onw7rq6ZRycgpbgBxbWSZIJjnCfxz1gDP4Dlc1UpEuDp/l+Jh6i5g5RTssFSMAdICAYxaijMC7HWscpqFhzJC4CD9Rycr2igV68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyeBox6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90942C4CEF1;
-	Tue, 26 Aug 2025 14:11:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cv4sBg5JyRJe0crSjkcjypNQqlJ9UVcLB2i3wsYbF0ACAQhtoTApeZ0l+SE5TIqbCAO50DMX4cJaxKkcxr1bekoWJ7i1Ccnud/NEF7OuNPf73cnAeS6BGLktZgVaO6zRImVw6Wt9A0BRAbb94Z/ndJJMi+eXlvzOHE3Il8cjbo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWWKEOOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ED9C4CEF1;
+	Tue, 26 Aug 2025 12:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217481;
-	bh=waeLpDnsrOUua/HIHeyr4nXFqgzAu2xZdM9LUGJoweI=;
+	s=korg; t=1756213100;
+	bh=4UXw2U71UI+FonbDFqh+1N8FTq9+j3TPFARwWz4ynDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyeBox6HtxzDwwtYtwNHP810r0wOQtYG+JerTHOMGPHJ6V11Gm7JYew2GIgtZZM9S
-	 OLVlwo7BdHR0IRqES4zwhsc4st3WTraYihzhL/sA4tpbbcG0TA6Hq7EYRJDNrOBeqc
-	 H88EAUBYR/WbXcLgtWEEjDGrt/WQLledtPn2UoT4=
+	b=kWWKEOObtnk+h2Z/DneSSITeSMpgeoNaVtqsTuZyY7e33zTGz2p+ojoWkwC5/DpL4
+	 S+lYvSdWsncOb52ZVuqkX5Ee6ntUI9ODeK6KBQ06TpiVQJP5XqoJZr9jBxW4kI3cBn
+	 vQfM9d5mDmM9VK/HWAAfcH7/W6O0ABhtLaOk9NoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghui Lee <sh043.lee@samsung.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/523] scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume
+Subject: [PATCH 6.6 220/587] cifs: Fix calling CIFSFindFirst() for root path without msearch
 Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110928.395891370@linuxfoundation.org>
+Message-ID: <20250826110958.534594839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghui Lee <sh043.lee@samsung.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 35dabf4503b94a697bababe94678a8bc989c3223 ]
+[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
 
-If the h8 exit fails during runtime resume process, the runtime thread
-enters runtime suspend immediately and the error handler operates at the
-same time.  It becomes stuck and cannot be recovered through the error
-handler.  To fix this, use link recovery instead of the error handler.
+To query root path (without msearch wildcard) it is needed to
+send pattern '\' instead of '' (empty string).
 
-Fixes: 4db7a2360597 ("scsi: ufs: Fix concurrency of error handler and other error recovery paths")
-Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
-Link: https://lore.kernel.org/r/20250717081213.6811-1-sh043.lee@samsung.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Acked-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This allows to use CIFSFindFirst() to query information about root path
+which is being used in followup changes.
+
+This change fixes the stat() syscall called on the root path on the mount.
+It is because stat() syscall uses the cifs_query_path_info() function and
+it can fallback to the CIFSFindFirst() usage with msearch=false.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufshcd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/smb/client/cifssmb.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
-index a4c70fbc809f..a212e6ad11d5 100644
---- a/drivers/scsi/ufs/ufshcd.c
-+++ b/drivers/scsi/ufs/ufshcd.c
-@@ -3872,7 +3872,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 	hba->uic_async_done = NULL;
- 	if (reenable_intr)
- 		ufshcd_enable_intr(hba, UIC_COMMAND_COMPL);
--	if (ret) {
-+	if (ret && !hba->pm_op_in_progress) {
- 		ufshcd_set_link_broken(hba);
- 		ufshcd_schedule_eh_work(hba);
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 81d425f571e2..91f4e50af1e9 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -3984,6 +3984,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
+ 			pSMB->FileName[name_len] = 0;
+ 			pSMB->FileName[name_len+1] = 0;
+ 			name_len += 2;
++		} else if (!searchName[0]) {
++			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
++			pSMB->FileName[1] = 0;
++			pSMB->FileName[2] = 0;
++			pSMB->FileName[3] = 0;
++			name_len = 4;
+ 		}
+ 	} else {
+ 		name_len = copy_path_name(pSMB->FileName, searchName);
+@@ -3995,6 +4001,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
+ 			pSMB->FileName[name_len] = '*';
+ 			pSMB->FileName[name_len+1] = 0;
+ 			name_len += 2;
++		} else if (!searchName[0]) {
++			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
++			pSMB->FileName[1] = 0;
++			name_len = 2;
+ 		}
  	}
-@@ -3880,6 +3880,14 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
- 	mutex_unlock(&hba->uic_cmd_mutex);
- 
-+	/*
-+	 * If the h8 exit fails during the runtime resume process, it becomes
-+	 * stuck and cannot be recovered through the error handler.  To fix
-+	 * this, use link recovery instead of the error handler.
-+	 */
-+	if (ret && hba->pm_op_in_progress)
-+		ret = ufshcd_link_recovery(hba);
-+
- 	return ret;
- }
  
 -- 
 2.39.5
