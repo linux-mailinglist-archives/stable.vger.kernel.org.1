@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C4AB363B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4C1B36BED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010AE8A77AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3470B5A078E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6FB33CEB0;
-	Tue, 26 Aug 2025 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A315835AAAC;
+	Tue, 26 Aug 2025 14:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2TgX9hw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObbeAMdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD7633A010;
-	Tue, 26 Aug 2025 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6087835E4EC;
+	Tue, 26 Aug 2025 14:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214630; cv=none; b=SShAyQucohcCreYWAh2ofixGa3ZKxaIcLr8NDxverWQcXGRClCTEmK+tA/HbhinV7lCM05EE1D/mKg3J3mC+ydpoZ0PgS5d4KNbFEQlKCbW72wSt2C+DjTbU2V9zbJ8T88A05DJMIVA0JYlrUJ5TGfnlikhukC8YXSdB3cHnSRI=
+	t=1756218731; cv=none; b=nP/nCYLQx67rbZyxtNEz00eWYIyxNZ2jTwUsVcmWaFAbZgfOVWiZNxsfs0La4zm/+9slVQQ0oIgi6U6nRZmy1KLmbx7fxF//TgmJuNTo54MaTji8u2R8BQJqXpGzrOuIJcDvIi0VGyUOrY8SQCNC3suBv4+VmUtoI/JrgcORhNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214630; c=relaxed/simple;
-	bh=4+LGFgKZTx53Y2ILqDHy17rvq8oWdlIs/t2sNDQn0KM=;
+	s=arc-20240116; t=1756218731; c=relaxed/simple;
+	bh=rWo3uozOukjiDTGfF1mQEu5Yu3rhDX7wopu3HjPbEBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/zwR3/7iCA23flTAhLqOAj8ys6qzCBxbb2xRWrfN/CAyzm36kM4yQv9Nw40prLNwoDoJGaMtMF4RmzHeEXdynvcO46eXNpQjBje7uso537fPmGrQpDuCVb/+EnqTZdrwIHLA9zv4e+rxiVX8tyApyoeRmKWA+9D1ZSUTTMNuVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2TgX9hw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E046C4CEF1;
-	Tue, 26 Aug 2025 13:23:50 +0000 (UTC)
+	 MIME-Version; b=AdtYqjveUW+GBH2l/qLtilOpQKp9XRP03KYyyFSG3e/saY7gTm8uxvUdzWyAjvqsOER5qvrX3lTNN8gjyevveFzikUqe38KkFpK9moQfnHy3+LZ+6XEDueNycqJWsfRPt8d2+zXt8IuG9iUq+ffGs5ZQokM6XVzk0flimGaqWbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObbeAMdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F4FC4CEF1;
+	Tue, 26 Aug 2025 14:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214630;
-	bh=4+LGFgKZTx53Y2ILqDHy17rvq8oWdlIs/t2sNDQn0KM=;
+	s=korg; t=1756218731;
+	bh=rWo3uozOukjiDTGfF1mQEu5Yu3rhDX7wopu3HjPbEBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2TgX9hwCuVONZH/oLVLKG3vNm0Hrg5nV/CzRGuhiBwOaCPUMwLUKNToBWe1Lv2IZ
-	 bP2AztVIdByt9Xo0ul/Z0ja5/hxTIfWOgORRJXECtaqm7qiW4tdvVOLaF8ExY43/M0
-	 sJtyiBKes9upm775p7hEwFud6YAELj4H7D+nrzLQ=
+	b=ObbeAMdZpBfrYbjGC4g7bywpAU6a5eQh5UMdUHpo3d1HmnOqNd0DvaUyGJL5n9QY7
+	 RlB21lemF+hfiWDKMVwO6WdknWrvT5Bz8vtZkXBT9t9flu1soKhwMW8WG22uqeiz9p
+	 tdPZHQNbLSH5hdumXOx2GecDzB2WhvmTwGdG3EXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/482] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+Subject: [PATCH 5.4 110/403] pinctrl: sunxi: Fix memory leak on krealloc failure
 Date: Tue, 26 Aug 2025 13:07:16 +0200
-Message-ID: <20250826110935.327000708@linuxfoundation.org>
+Message-ID: <20250826110909.725497750@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
+the pinctrl_map array, the function returns -ENOMEM directly
+without freeing the previously allocated *map buffer. This results
+in a memory leak of the original kmalloc_array allocation.
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
-
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index baa949a744cb..babbe8742b81 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -124,4 +124,12 @@ void cleanup_tc(struct tc *tc);
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index 8c41f8b818b2..83775dd12cfa 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -327,6 +327,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	const char *function, *pin_prop;
+ 	const char *group;
+ 	int ret, npins, nmaps, configlen = 0, i = 0;
++	struct pinctrl_map *new_map;
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
+ 	*map = NULL;
+ 	*num_maps = 0;
+@@ -401,9 +402,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	 * We know have the number of maps we need, we can resize our
+ 	 * map array
+ 	 */
+-	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
+-	if (!*map)
+-		return -ENOMEM;
++	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
++	if (!new_map) {
++		ret = -ENOMEM;
++		goto err_free_map;
++	}
 +
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
++	*map = new_map;
+ 
+ 	return 0;
+ 
 -- 
 2.39.5
 
