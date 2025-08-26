@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F337B36542
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF870B36073
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80D187BC6BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 116537C5C34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F1E34DCCC;
-	Tue, 26 Aug 2025 13:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA031E5718;
+	Tue, 26 Aug 2025 12:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtquXOeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmSWwwoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95582BEC45;
-	Tue, 26 Aug 2025 13:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAEE4C6D;
+	Tue, 26 Aug 2025 12:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215929; cv=none; b=Xh7ce7NaiBWh/U70wN3bHGaZdGZBuQH72yOHe2WxDxWXMWCixLx3Il2UUYnf5ktlHywisXhU3WfcOUwK+jxm/Rh7q51sQcutIy0PjdeBbsec+wyRW+WIutEQKV3XFJYhfjNbyx/Dm0Fd7gyQDTNrgXcjrykEgdh45fYIssN+zm8=
+	t=1756213022; cv=none; b=S/euaKvRr+VxZ6AiwIM3oekd5KrdJQwCH0U3X7hMEDuRCnI0eD2932LMINSEK3ZILFtOCQ8kh3cJQwwaLwh6tYlvAb4gicwc2DlF9IU3qfocM8exdtm8bp7d2cRQ1g0ydQ11pILy0hBSNUIaStb652nM8hBzEHL6HsZrbLwjlQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215929; c=relaxed/simple;
-	bh=8OvbNbfE0Ss6xhCrFskhLG9kPzS3Ky0IPp74pg4Rghs=;
+	s=arc-20240116; t=1756213022; c=relaxed/simple;
+	bh=8wYE4WezxN0EHrS2jvzwEWjvZahUMQU39uINBOucQK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8VBj99Y/arBiNOU1XTUiH6rcAfdXUfrYAuAvdr0XVAUJBWAJzR/Qx3aRtHp+0pdVCbkhwxU3ERC6gxQ4VQz5uHKjZBhmm2DZlIcdqATu5AJpXnBmZ2FzOJ7Z1Ibo3f/pY+slC7hKEIe4kuag+DDdKLE2IVHIJAzZUNCsDo4cz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtquXOeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B961C4CEF1;
-	Tue, 26 Aug 2025 13:45:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dzfsapu8oFsfFpvkLzcDvNkgrI7BK8HhQ1jGHliOQ+aBguDdmiCXXcXITTApiUUcoWpVbugJz/sYH6guMdamT7k4SUcEK4KBZkdq6yVf+yngSoytlNUfb5V+YEmYgqpjsuzkEHmQlJ8E5YgKos62gwpTFrgc4zg3hI0ItQioOHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmSWwwoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92859C4CEF1;
+	Tue, 26 Aug 2025 12:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215929;
-	bh=8OvbNbfE0Ss6xhCrFskhLG9kPzS3Ky0IPp74pg4Rghs=;
+	s=korg; t=1756213021;
+	bh=8wYE4WezxN0EHrS2jvzwEWjvZahUMQU39uINBOucQK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtquXOeYdFfxfuorwBeJ4Yg7+Ch8pRiWQ7OUrIDbaNwMbXuEuUh4Y+S8+mqbg6F1j
-	 c43z0a419b+ZKuHhuk8CYlJsAv4U3uDTXQc/1J0ZG9tUUMqPF1YdfZ5Cd4FDDrDdDV
-	 HRWDVqJD0emX4g1IZnr1/YDZi9GpwFDgWuHqcNLI=
+	b=CmSWwwoVC0/0HLJaOPfmrHRRV4VuJdp3s58THAiqfrm9k0H77vi6Ob/GHuukRzfy3
+	 DaaMqihyygUmVeY7wqxiu5QLRoeKohNox84uT5YZh1R0P0r6CG28jk5x5bPLSCkdz3
+	 6KaCI6pt2qfmqbeSPdxhaEWyx028/23WvyVR5Y9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nam Cao <namcao@linutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/644] kconfig: qconf: fix ConfigList::updateListAllforAll()
+Subject: [PATCH 6.6 161/587] um: Re-evaluate thread flags repeatedly
 Date: Tue, 26 Aug 2025 13:05:10 +0200
-Message-ID: <20250826110951.854503838@linuxfoundation.org>
+Message-ID: <20250826110957.040942660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
+[ Upstream commit b9e2f2246eb2b5617d53af7b5e4e1b8c916f26a8 ]
 
-ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
-are identical.
+The thread flags may change during their processing.
+For example a task_work can queue a new signal to be sent.
+This signal should be delivered before returning to usespace again.
 
-Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
-to ConfigList class") was a misconversion.
+Evaluate the flags repeatedly similar to other architectures.
 
-Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://patch.msgid.link/20250704-uml-thread_flags-v1-1-0e293fd8d627@linutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/um/include/asm/thread_info.h |  4 ++++
+ arch/um/kernel/process.c          | 20 ++++++++++++--------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index 61b679f6c2f2..c31dead186cc 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -478,7 +478,7 @@ void ConfigList::updateListAllForAll()
- 	while (it.hasNext()) {
- 		ConfigList *list = it.next();
+diff --git a/arch/um/include/asm/thread_info.h b/arch/um/include/asm/thread_info.h
+index c7b4b49826a2..40d823f36c09 100644
+--- a/arch/um/include/asm/thread_info.h
++++ b/arch/um/include/asm/thread_info.h
+@@ -68,7 +68,11 @@ static inline struct thread_info *current_thread_info(void)
+ #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+ #define _TIF_MEMDIE		(1 << TIF_MEMDIE)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
++#define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
+ #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
  
--		list->updateList();
-+		list->updateListAll();
- 	}
++#define _TIF_WORK_MASK		(_TIF_NEED_RESCHED | _TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL | \
++				 _TIF_NOTIFY_RESUME)
++
+ #endif
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index afe67d816146..e7fbf610bda8 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -98,14 +98,18 @@ void *__switch_to(struct task_struct *from, struct task_struct *to)
+ void interrupt_end(void)
+ {
+ 	struct pt_regs *regs = &current->thread.regs;
+-
+-	if (need_resched())
+-		schedule();
+-	if (test_thread_flag(TIF_SIGPENDING) ||
+-	    test_thread_flag(TIF_NOTIFY_SIGNAL))
+-		do_signal(regs);
+-	if (test_thread_flag(TIF_NOTIFY_RESUME))
+-		resume_user_mode_work(regs);
++	unsigned long thread_flags;
++
++	thread_flags = read_thread_flags();
++	while (thread_flags & _TIF_WORK_MASK) {
++		if (thread_flags & _TIF_NEED_RESCHED)
++			schedule();
++		if (thread_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
++			do_signal(regs);
++		if (thread_flags & _TIF_NOTIFY_RESUME)
++			resume_user_mode_work(regs);
++		thread_flags = read_thread_flags();
++	}
  }
  
+ int get_current_pid(void)
 -- 
 2.39.5
 
