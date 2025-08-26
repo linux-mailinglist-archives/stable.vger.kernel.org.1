@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A692B35D75
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73776B36BD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEEE4618E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F3F7BE367
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E453469E3;
-	Tue, 26 Aug 2025 11:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B3E352060;
+	Tue, 26 Aug 2025 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0hm5On/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7xw/9xK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68059285CA9;
-	Tue, 26 Aug 2025 11:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EBF341AA6;
+	Tue, 26 Aug 2025 14:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208074; cv=none; b=W6oa3hupATZYpHeqd8+GACsGwevypNpYFM6YF4SRkwaUVIK+i20/CkqCpkHetQCaYE+iqMmXQH1Mp4Ao9jg7AaJuWu6pE3QB6uALANfZVB5+64Xj5ixdVehWbglMpUkStBK6B3vaCgNKIyobue4WL262KKG31roGvO0iTyrgd1U=
+	t=1756219495; cv=none; b=e77xqSqufADF9h6BJ3eZ/617w+jb/26rBW5jUNj5ybB7A4pHCEerStR7dQO8wcaSvxnm3AlFvHv9I7CRQ+JgcRcMu0S/9IWIM+AdazoN0bF+tpci/gnVrVn9xlOACJGlRUVq7gJDE9T+ovNDXJGHf7+VDf/Ew8yEtNUIOMrJ4JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208074; c=relaxed/simple;
-	bh=uIjfNtshM4t1Q3KGt+M1O3NFl1pJ/H7jCnPYetDu/dw=;
+	s=arc-20240116; t=1756219495; c=relaxed/simple;
+	bh=xnRSBTlmvlORcuXWCZtYqGEpRvA6Qbj51tCaRepXVoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNSOPwsg/p8a00uyn2oJN/6e4Yn/4lMDUEBMtY4v8vw78dr/enCJrAeRyhp/tnhOhrFVKEqtcuR7zzISEE78S1XY+BmBFLPNtDz1KJrKcMr+aSt+3/3ZIbGEqdcGk86eqJbPqZbLEsseO7n15ohLMj7RTSBKoJZk0ADA8z+yIpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0hm5On/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ECCC4CEF1;
-	Tue, 26 Aug 2025 11:34:33 +0000 (UTC)
+	 MIME-Version; b=q7yTe5G9Io3pHM9uUoX7jneVlRPa0fvMg0y8mrHBIEGHcaNPfnKeDE5lpOeGb1e4yUDjO0WSnFLm89zBPaS9oRXVHag2BdYmu1vrUCgXqIz0XWM0tliFj1WYiT2Bn9GXGr/Q5P0+reo251gTGgvculQ8+4gwDKXDhIqcoz6M+6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7xw/9xK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B932C4CEF1;
+	Tue, 26 Aug 2025 14:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208074;
-	bh=uIjfNtshM4t1Q3KGt+M1O3NFl1pJ/H7jCnPYetDu/dw=;
+	s=korg; t=1756219494;
+	bh=xnRSBTlmvlORcuXWCZtYqGEpRvA6Qbj51tCaRepXVoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0hm5On/xj7raUNFZYNPRWJhxidVowCVVfV+sxTJS66yfZ7LWTB00lsVgCuScuUTT
-	 8gi+N09Lr9/eFwlGbpGM7X8K65mTxp579kxJd6d4iQaIUNVhJe/wd5zitUt7xLakht
-	 r+QramjjWy+MSE25ADWRa0q7JkAK2s/NZHVTkmWw=
+	b=G7xw/9xKjIJWC2Z7haQfR/iMRcSkVurkc+uYmGI6PybahBt54xYLljkeP1IkTHBa2
+	 2xkBPZ1ykWPI/yZdS4HQdhAuZxbfgtX83wH3pQZDtsJwS/2hVsWXKhQCvrka87RK4D
+	 L0bGW7cCmRzS+D6yqpgOCL/oBsYVUGQk8YnqD2zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 428/457] s390/mm: Do not map lowcore with identity mapping
+	Jiri Pirko <jiri@mellanox.com>,
+	Ido Schimmel <idosch@mellanox.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 386/403] selftests: forwarding: tc_actions.sh: add matchall mirror test
 Date: Tue, 26 Aug 2025 13:11:52 +0200
-Message-ID: <20250826110947.865946344@linuxfoundation.org>
+Message-ID: <20250826110917.682840395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Jiri Pirko <jiri@mellanox.com>
 
-[ Upstream commit 93f616ff870a1fb7e84d472cad0af651b18f9f87 ]
+[ Upstream commit 075c8aa79d541ea08c67a2e6d955f6457e98c21c ]
 
-Since the identity mapping is pinned to address zero the lowcore is always
-also mapped to address zero, this happens regardless of the relocate_lowcore
-command line option. If the option is specified the lowcore is mapped
-twice, instead of only once.
+Add test for matchall classifier with mirred egress mirror action.
 
-This means that NULL pointer accesses will succeed instead of causing an
-exception (low address protection still applies, but covers only parts).
-To fix this never map the first two pages of physical memory with the
-identity mapping.
-
-Fixes: 32db401965f1 ("s390/mm: Pin identity mapping base to zero")
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiri Pirko <jiri@mellanox.com>
+Signed-off-by: Ido Schimmel <idosch@mellanox.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/boot/vmem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/forwarding/tc_actions.sh |   26 +++++++++++++------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
-index 1d073acd05a7..cea3de4dce8c 100644
---- a/arch/s390/boot/vmem.c
-+++ b/arch/s390/boot/vmem.c
-@@ -530,6 +530,9 @@ void setup_vmem(unsigned long kernel_start, unsigned long kernel_end, unsigned l
- 			 lowcore_address + sizeof(struct lowcore),
- 			 POPULATE_LOWCORE);
- 	for_each_physmem_usable_range(i, &start, &end) {
-+		/* Do not map lowcore with identity mapping */
-+		if (!start)
-+			start = sizeof(struct lowcore);
- 		pgtable_populate((unsigned long)__identity_va(start),
- 				 (unsigned long)__identity_va(end),
- 				 POPULATE_IDENTITY);
--- 
-2.50.1
-
+--- a/tools/testing/selftests/net/forwarding/tc_actions.sh
++++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
+@@ -2,7 +2,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ ALL_TESTS="gact_drop_and_ok_test mirred_egress_redirect_test \
+-	mirred_egress_mirror_test gact_trap_test"
++	mirred_egress_mirror_test matchall_mirred_egress_mirror_test \
++	gact_trap_test"
+ NUM_NETIFS=4
+ source tc_common.sh
+ source lib.sh
+@@ -50,6 +51,9 @@ switch_destroy()
+ mirred_egress_test()
+ {
+ 	local action=$1
++	local protocol=$2
++	local classifier=$3
++	local classifier_args=$4
+ 
+ 	RET=0
+ 
+@@ -62,9 +66,9 @@ mirred_egress_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_fail $? "Matched without redirect rule inserted"
+ 
+-	tc filter add dev $swp1 ingress protocol ip pref 1 handle 101 flower \
+-		$tcflags dst_ip 192.0.2.2 action mirred egress $action \
+-		dev $swp2
++	tc filter add dev $swp1 ingress protocol $protocol pref 1 handle 101 \
++		$classifier $tcflags $classifier_args \
++		action mirred egress $action dev $swp2
+ 
+ 	$MZ $h1 -c 1 -p 64 -a $h1mac -b $h2mac -A 192.0.2.1 -B 192.0.2.2 \
+ 		-t ip -q
+@@ -72,10 +76,11 @@ mirred_egress_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_err $? "Did not match incoming $action packet"
+ 
+-	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
++	tc filter del dev $swp1 ingress protocol $protocol pref 1 handle 101 \
++		$classifier
+ 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
+ 
+-	log_test "mirred egress $action ($tcflags)"
++	log_test "mirred egress $classifier $action ($tcflags)"
+ }
+ 
+ gact_drop_and_ok_test()
+@@ -187,12 +192,17 @@ cleanup()
+ 
+ mirred_egress_redirect_test()
+ {
+-	mirred_egress_test "redirect"
++	mirred_egress_test "redirect" "ip" "flower" "dst_ip 192.0.2.2"
+ }
+ 
+ mirred_egress_mirror_test()
+ {
+-	mirred_egress_test "mirror"
++	mirred_egress_test "mirror" "ip" "flower" "dst_ip 192.0.2.2"
++}
++
++matchall_mirred_egress_mirror_test()
++{
++	mirred_egress_test "mirror" "all" "matchall" ""
+ }
+ 
+ trap cleanup EXIT
 
 
 
