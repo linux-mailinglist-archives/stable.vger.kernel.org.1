@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1859B36289
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA8B36B4C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B118A5D5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74A701C46369
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274D933A015;
-	Tue, 26 Aug 2025 13:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F94C35AAD4;
+	Tue, 26 Aug 2025 14:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZctEmzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCLPErmD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D5F29D28A;
-	Tue, 26 Aug 2025 13:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C95035690A;
+	Tue, 26 Aug 2025 14:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213965; cv=none; b=YHTmfejDput0hoWe9f93rULdtEyq46yxovILTeXEEw4X/OVQaxGvDXJIHPar6iPRM0nLdvrNSCq0QATDxC+6FhP2QoaKnDkkgCgBNOhsVkk7KnAkToBdOSnmQCv6zSzTdOJxMu20urT5C6gZf6ijl1m341RjTkiOjEHRpOYrjhw=
+	t=1756218258; cv=none; b=figToWETOhGeyZd1fuC7JN/fRW9bMOyYFCHP13wpmgglUFfp/9EFwmMWmO+tokgqTPSvfyQV2R0oUyNGaIJipw/0N81Bxozxlm+/+HgVfkyAz6FExesWfYcysE4wM4hgLVyqqK6r6umi+vt0d8dmz/Ge4RI+5yfXOKEsC/ZYEKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213965; c=relaxed/simple;
-	bh=QkchxEt+Is2mxkzgqNp/iMbYzeyiU3q9xstVdu8LQVU=;
+	s=arc-20240116; t=1756218258; c=relaxed/simple;
+	bh=7vfTfbvwnGtjjyJyxR+6TitsQmPGUwXVhHUWUs658e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePY5vqOReZbRuHkjuSYWQujuOUERPldFGP6UpsXPhcg0wto51mpvudzLiBM5MkyjTJZg8g80q0uWU4LnpHAtNSFR5MCx3+8CbCBpVeKbZ+/9O4fhnHWYjYTVH9aulE2wwWUJms4nP4/2appM2l9HS63xFhfv5gvFx08Ti2P2oxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZctEmzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F416C4CEF1;
-	Tue, 26 Aug 2025 13:12:44 +0000 (UTC)
+	 MIME-Version; b=QAEFkEBP94gBlI4cchvUqrK/fkUcgBBnuySctq62+8B7RlG7nZglq5YqaD+DpQ4nTjUz8H+N0DKpOsnUjhpbZwFs75DIWL4BEqBMdi/4peSBLPhSvP1vyUgnmgTbFD4fDaD1AafN+6qXdnQsI4DDHWAEXL+bzZEY0/HY49ZMInE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCLPErmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DA8C4CEF1;
+	Tue, 26 Aug 2025 14:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213964;
-	bh=QkchxEt+Is2mxkzgqNp/iMbYzeyiU3q9xstVdu8LQVU=;
+	s=korg; t=1756218258;
+	bh=7vfTfbvwnGtjjyJyxR+6TitsQmPGUwXVhHUWUs658e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZctEmzLl7DFEOWERJGsdm2i3P7JcXrGLFL02SHXEiSLVN16GxrTDZ/y8rP8WUl9y
-	 H1zJlPqmyKwt0fZUxSx37DFuTXgoiuVgQSALVv9HDnWYl+DkrLkyQ0MdSYpx6H+62c
-	 tSajp4p1Njkf+KvW74CmYPTp82ymrYeZiMwMTEzY=
+	b=vCLPErmDOtlIlqUDlC3FCinkfbrQr2/GlcP4AX2Oxn7O1+Si5/MPceewGu63McFre
+	 6by7UVGES5hhRNvH6S5dofCERmAZZGBuDR9LM2jAvXiTD5R2L2yT4ai3ZKfHHi+9zz
+	 dNp0dbT5ysLwXKVCxWs8+kdsV4UViTkRSH3UmHfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 515/587] iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
+	Jack Wang <jinpu.wang@ionos.com>,
+	Ajish Koshy <Ajish.Koshy@microchip.com>,
+	Viswas G <Viswas.G@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 454/523] scsi: pm80xx: Fix memory leak during rmmod
 Date: Tue, 26 Aug 2025 13:11:04 +0200
-Message-ID: <20250826111006.099057224@linuxfoundation.org>
+Message-ID: <20250826110935.649092161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Ajish Koshy <Ajish.Koshy@microchip.com>
 
-commit 43c0f6456f801181a80b73d95def0e0fd134e1cc upstream.
+[ Upstream commit 51e6ed83bb4ade7c360551fa4ae55c4eacea354b ]
 
-`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
-Check its return value using `IS_ERR()` and propagate the error if
-necessary.
+Driver failed to release all memory allocated. This would lead to memory
+leak during driver removal.
 
-Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Properly free memory when the module is removed.
+
+Link: https://lore.kernel.org/r/20210906170404.5682-5-Ajish.Koshy@microchip.com
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Ajish Koshy <Ajish.Koshy@microchip.com>
+Signed-off-by: Viswas G <Viswas.G@microchip.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-core.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/scsi/pm8001/pm8001_init.c |   11 +++++++++++
+ drivers/scsi/pm8001/pm8001_sas.h  |    1 +
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -2152,11 +2152,12 @@ int bmp280_common_probe(struct device *d
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -1166,6 +1166,7 @@ pm8001_init_ccb_tag(struct pm8001_hba_in
+ 		goto err_out;
  
- 	/* Bring chip out of reset if there is an assigned GPIO line */
- 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpiod))
-+		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
+ 	/* Memory region for ccb_info*/
++	pm8001_ha->ccb_count = ccb_count;
+ 	pm8001_ha->ccb_info = (struct pm8001_ccb_info *)
+ 		kcalloc(ccb_count, sizeof(struct pm8001_ccb_info), GFP_KERNEL);
+ 	if (!pm8001_ha->ccb_info) {
+@@ -1226,6 +1227,16 @@ static void pm8001_pci_remove(struct pci
+ 			tasklet_kill(&pm8001_ha->tasklet[j]);
+ #endif
+ 	scsi_host_put(pm8001_ha->shost);
 +
- 	/* Deassert the signal */
--	if (gpiod) {
--		dev_info(dev, "release reset\n");
--		gpiod_set_value(gpiod, 0);
--	}
-+	dev_info(dev, "release reset\n");
-+	gpiod_set_value(gpiod, 0);
- 
- 	data->regmap = regmap;
- 
++	for (i = 0; i < pm8001_ha->ccb_count; i++) {
++		dma_free_coherent(&pm8001_ha->pdev->dev,
++			sizeof(struct pm8001_prd) * PM8001_MAX_DMA_SG,
++			pm8001_ha->ccb_info[i].buf_prd,
++			pm8001_ha->ccb_info[i].ccb_dma_handle);
++	}
++	kfree(pm8001_ha->ccb_info);
++	kfree(pm8001_ha->devices);
++
+ 	pm8001_free(pm8001_ha);
+ 	kfree(sha->sas_phy);
+ 	kfree(sha->sas_port);
+--- a/drivers/scsi/pm8001/pm8001_sas.h
++++ b/drivers/scsi/pm8001/pm8001_sas.h
+@@ -515,6 +515,7 @@ struct pm8001_hba_info {
+ 	u32			iomb_size; /* SPC and SPCV IOMB size */
+ 	struct pm8001_device	*devices;
+ 	struct pm8001_ccb_info	*ccb_info;
++	u32			ccb_count;
+ #ifdef PM8001_USE_MSIX
+ 	int			number_of_intr;/*will be used in remove()*/
+ 	char			intr_drvname[PM8001_MAX_MSIX_VEC]
 
 
 
