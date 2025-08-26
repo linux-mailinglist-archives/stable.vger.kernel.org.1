@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-175164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E4BB36626
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE904B35E1C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 753727B1135
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20DE0462E7F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91EA352FF8;
-	Tue, 26 Aug 2025 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92D322530;
+	Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGHFNERD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7Ddohx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAB0352066;
-	Tue, 26 Aug 2025 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EED32144B;
+	Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216310; cv=none; b=ZRwv6m1he2MuAKqJYy9xpVEd0hW3kT1LP++teqNITBby4PsKL1HV+vkhDGImrGyiL0xD2oirH/wn6Os8pWp1ImUVk9DJuwDyVmuiGNKcpnALtrvMPq6MH8KtgT5yF/iDVJSS4dpr+BrzJgQr0PBeJukCBbn5Z/kqSTKPiGdCl60=
+	t=1756208333; cv=none; b=pG5ie51DAuDjEo9uk3wy/0Q2AsGgiogA+rOH7maZRgHBZZV+rl1DHeCGUy9qRRy0qLhjUPzEU+Uu6MaoG3C2McBy6TvN+RhahaHDuCCYXIupUhEKQ/XVrVJaVFf3EOYMYm0UNs8rkL4g3WWbZfyQZfMzrNmaLzJ7KmOo9VJA5VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216310; c=relaxed/simple;
-	bh=T1xfVbKPtecWu+8gI13GyUM6GqLcZ+NZ/cZXlSAzDB8=;
+	s=arc-20240116; t=1756208333; c=relaxed/simple;
+	bh=n7Xx6eUvvD14cThD+oBujrd+OMuEIDiiFpztLRkwIBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DYlx5hEy0biHXzyQEtMmR3U99qpERr/1tfqeAgnh+jsinMr3VPB7kZ8YzXNw8GP2hBKMuHOH/9yxMvdUDJnSixVcIDV08VefyxIubsws72ujU5kN0ziWfbw1qriBbUVJqjR3HXjrZg59xap628BGHwkznyiqF2PO+zPn051K+Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGHFNERD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C72C4CEF1;
-	Tue, 26 Aug 2025 13:51:49 +0000 (UTC)
+	 MIME-Version; b=CyKau4SOO24ggBWu2VGUsYEA9WB46rLvs8blA73osw+zeSY8DT800miWLOm7r/Rldepa8SelWeoY8ItEzqew1+tpxuffHg+Bpv8brdFWa0JI3B5ectTswkFgTSM3W5YEHqsIuEs+of3PgDSeh8ue4i+sseca4kOjHqIn0OjkIvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7Ddohx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF26C4CEF1;
+	Tue, 26 Aug 2025 11:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216310;
-	bh=T1xfVbKPtecWu+8gI13GyUM6GqLcZ+NZ/cZXlSAzDB8=;
+	s=korg; t=1756208333;
+	bh=n7Xx6eUvvD14cThD+oBujrd+OMuEIDiiFpztLRkwIBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGHFNERDQ1vSxPOrYiDdFOtBfaDwsz0CbBHp4rytVi7q8xrlvXaH1sDnnEW81Ns9a
-	 ZTJoM1HaIOYJdpkLUbbcs347wPKqfNErtWX2/aFjyqqNN7QkA5z1XwcljdeO4qOpvF
-	 vP/TdZ3WTlfBZrL154JU0jbY1UvKnsL6fBo99aag=
+	b=q7Ddohx8E4txT13gQOoaL9S9+9qRydLTjCz7kgMmvRQZ0O67yxufi+dWg49SqzFmF
+	 MmsUjmz+asWBRjOtPT7oBeHAnPtLJS3C+brbJYQcM0SzEt0Evk9h1TF+cdWl+8QtKt
+	 4VZhapH59Y/u+DcktSzbo8PkifoIEYQtU+aTS+I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wen Chen <Wen.Chen3@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 364/644] drm/amd/display: Fix failed to blank crtc!
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.12 040/322] arm64: dts: ti: k3-pinctrl: Enable Schmitt Trigger by default
 Date: Tue, 26 Aug 2025 13:07:35 +0200
-Message-ID: <20250826110955.435199458@linuxfoundation.org>
+Message-ID: <20250826110916.360315497@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Chen <Wen.Chen3@amd.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
+commit 5b272127884bded21576a6ddceca13725a351c63 upstream.
 
-[why]
-DCN35 is having “DC: failed to blank crtc!” when running HPO
-test cases. It's caused by not having sufficient udelay time.
+Switch Schmitt Trigger functions for PIN_INPUT* macros by default. This is
+HW PoR configuration, the slew rate requirements without ST enabled are
+pretty tough for these devices. We've noticed spurious GPIO interrupts even
+with noise-free edges but not meeting slew rate requirements (3.3E+6 V/s
+for 3.3v LVCMOS).
 
-[how]
-Replace the old wait_for_blank_complete function with fsleep function to
-sleep just until the next frame should come up. This way it doesn't poll
-in case the pixel clock or other clock was bugged or until vactive and
-the vblank are hit again.
+It's not obvious why one might want to disable the PoR-enabled ST on any
+pin. Just enable it by default. As it's not possible to provide OR-able
+macros to disable the ST, shall anyone require it, provide a set of
+new macros with _NOST suffix.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe49f2d776f7 ("arm64: dts: ti: Use local header for pinctrl register values")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250701105437.3539924-1-alexander.sverdlin@siemens.com
+[vigneshr@ti.com: Add Fixes tag]
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-pinctrl.h |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index 59d16c553800..3935c8b32a2b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -729,7 +729,7 @@ enum dc_status dcn20_enable_stream_timing(
- 		return DC_ERROR_UNEXPECTED;
- 	}
+--- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
++++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
+@@ -8,11 +8,16 @@
+ #ifndef DTS_ARM64_TI_K3_PINCTRL_H
+ #define DTS_ARM64_TI_K3_PINCTRL_H
  
--	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
-+	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
++#define ST_EN_SHIFT		(14)
+ #define PULLUDEN_SHIFT		(16)
+ #define PULLTYPESEL_SHIFT	(17)
+ #define RXACTIVE_SHIFT		(18)
+ #define DEBOUNCE_SHIFT		(11)
  
- 	params.vertical_total_min = stream->adjust.v_total_min;
- 	params.vertical_total_max = stream->adjust.v_total_max;
--- 
-2.39.5
-
++/* Schmitt trigger configuration */
++#define ST_DISABLE		(0 << ST_EN_SHIFT)
++#define ST_ENABLE		(1 << ST_EN_SHIFT)
++
+ #define PULL_DISABLE		(1 << PULLUDEN_SHIFT)
+ #define PULL_ENABLE		(0 << PULLUDEN_SHIFT)
+ 
+@@ -26,9 +31,13 @@
+ #define PIN_OUTPUT		(INPUT_DISABLE | PULL_DISABLE)
+ #define PIN_OUTPUT_PULLUP	(INPUT_DISABLE | PULL_UP)
+ #define PIN_OUTPUT_PULLDOWN	(INPUT_DISABLE | PULL_DOWN)
+-#define PIN_INPUT		(INPUT_EN | PULL_DISABLE)
+-#define PIN_INPUT_PULLUP	(INPUT_EN | PULL_UP)
+-#define PIN_INPUT_PULLDOWN	(INPUT_EN | PULL_DOWN)
++#define PIN_INPUT		(INPUT_EN | ST_ENABLE | PULL_DISABLE)
++#define PIN_INPUT_PULLUP	(INPUT_EN | ST_ENABLE | PULL_UP)
++#define PIN_INPUT_PULLDOWN	(INPUT_EN | ST_ENABLE | PULL_DOWN)
++/* Input configurations with Schmitt Trigger disabled */
++#define PIN_INPUT_NOST		(INPUT_EN | PULL_DISABLE)
++#define PIN_INPUT_PULLUP_NOST	(INPUT_EN | PULL_UP)
++#define PIN_INPUT_PULLDOWN_NOST	(INPUT_EN | PULL_DOWN)
+ 
+ #define PIN_DEBOUNCE_DISABLE	(0 << DEBOUNCE_SHIFT)
+ #define PIN_DEBOUNCE_CONF1	(1 << DEBOUNCE_SHIFT)
 
 
 
