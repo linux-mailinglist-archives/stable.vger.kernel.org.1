@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCE4B367D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98133B36A34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE38C1C2400B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80055E813A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F266B34A32D;
-	Tue, 26 Aug 2025 13:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C079A352092;
+	Tue, 26 Aug 2025 14:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHu9ukfJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njYE6n5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0268C133;
-	Tue, 26 Aug 2025 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D73F34AAFE;
+	Tue, 26 Aug 2025 14:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216751; cv=none; b=g7BBvhXEVBtRBLwQoycdQgloqa5pW+pBQQAWtRfROsrM2qrde5AFgA4MtVgpZzn7rtgYMMt8Caq2uVH0lYZ2sFlK/H9zfHF+72sOC7m99T5g6iyHc1H2BSi7PO/hBNFQZVc/ahfD8wzcsFXMJvgKo3lV9mnQRgaKYOk3s6fvPYU=
+	t=1756218224; cv=none; b=p5Pj0I6hsvd24kILr39gCAaiA4+ADLEsPJ/y3+p3ysWnxH33N8vcqBWv5K2P9KZ1BSsNjuk7UjUzbXl70pSJrgxahf+pYIdIZD8aLBTzLDuhLxJtHZ8I14X2zSNTzVodMMdvDAv/bently4euoj7vVBYjNRFmGZscyRLlnVOyJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216751; c=relaxed/simple;
-	bh=3tUtQmifoFGwVwUPos4RaDBMS7hmRFFG3IfnOAwEczM=;
+	s=arc-20240116; t=1756218224; c=relaxed/simple;
+	bh=btcLGzm3/k3SbMHBAolCanSh6QgoRdeBr5O0IGK1u6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGt1CQd+gvf9EGGoagmTHCIbcDSq4KYX3outTKM5aazkXazDMS5iRbIzw+fNrsUoXfKmXRe4qxptrn7UrH0MtKHK6nMVAU8NkVAiTUNeA+AozZxGaUW52pUcb8YdSMD8YgZm5c3M7WIcNtLqfkOcsKrhvDsuuPhINVT61R9e4Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHu9ukfJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF84C4CEF1;
-	Tue, 26 Aug 2025 13:59:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CjAkqruVWC3LmkSWbVfAGVFdbjoVGv0QQpUtx71VetoyGA8lNf0jgz2cHEqyoVM0khuJHIL2Eue4JWZtSNBYN20xE3tslB8B9AlDiXezko7/yD3g7VOD4LDFQo9geq3WWss2fMJu9jIXzjQXST10L/uh98WX0furPXn+oueXKe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njYE6n5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D23C4CEF1;
+	Tue, 26 Aug 2025 14:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216750;
-	bh=3tUtQmifoFGwVwUPos4RaDBMS7hmRFFG3IfnOAwEczM=;
+	s=korg; t=1756218224;
+	bh=btcLGzm3/k3SbMHBAolCanSh6QgoRdeBr5O0IGK1u6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHu9ukfJZ7cSQJFJuWvQEk+3JzKqsqAOWWVJ3erwCED3ED1sUT61NC5UtLbxNm0HT
-	 usC3jCxOBWQXS+Y+QnqOTsR1CUGsRXD+a4wEPIuIKh/mLnK+quY0RYM01QoBXtXlN4
-	 RXerhP82pdHMJXDwJ4MUPpUXj4QlibM//TzmUci4=
+	b=njYE6n5Cv7l198HvaPTHFT5UuoLvr6ky+jGTyKIJCA+pGhlO4Ga752cnoMhmFbpGF
+	 vtz+qVGRMJjG5dJL+y/BmZkPUUIyLuDxFIkYmcH65XlQHI51BqVW6bFbEz88+pzuAe
+	 QJP6Zg3d5D18o7n+ft0RVOUz6fQmIaZTo14nbX8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 529/644] NFS: Create an nfs4_server_set_init_caps() function
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 5.10 410/523] usb: renesas-xhci: Fix External ROM access timeouts
 Date: Tue, 26 Aug 2025 13:10:20 +0200
-Message-ID: <20250826110959.622308985@linuxfoundation.org>
+Message-ID: <20250826110934.570511968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 01dde76e471229e3437a2686c572f4980b2c483e ]
+commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
 
-And call it before doing an FSINFO probe to reset to the baseline
-capabilities before probing.
+Increase the External ROM access timeouts to prevent failures during
+programming of External SPI EEPROM chips. The current timeouts are
+too short for some SPI EEPROMs used with uPD720201 controllers.
 
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+the current timeout for Sector Erase issued by the controller before
+Page Program in renesas_fw_download_image() is also 100 ms. Neither
+timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+
+MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
+PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
+= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
+that the maximum time required for Chip Erase opcode to complete is 2 s,
+and for Sector Erase it is 300 ms .
+
+MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
+PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
+(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
+"tCE" indicate that the maximum time required for Chip Erase opcode to
+complete is 3.2 s, and for Sector Erase it is 400 ms .
+
+Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
+and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
+to be sufficient for majority of SPI EEPROM chips.
+
+[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
+[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
+
+Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/internal.h   |    1 +
- fs/nfs/nfs4client.c |   33 +++++++++++++++++++--------------
- fs/nfs/nfs4proc.c   |    2 ++
- 3 files changed, 22 insertions(+), 14 deletions(-)
+ drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -219,6 +219,7 @@ extern struct nfs_client *
- nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct fs_context *);
-+extern void nfs4_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(struct fs_context *);
- extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
- extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1065,6 +1065,24 @@ static void nfs4_session_limit_xasize(st
- #endif
- }
+--- a/drivers/usb/host/xhci-pci-renesas.c
++++ b/drivers/usb/host/xhci-pci-renesas.c
+@@ -47,8 +47,9 @@
+ #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
+ #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
  
-+void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+	/* Set the basic capabilities */
-+	server->caps |= server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+			server->caps &= ~NFS_CAP_READDIRPLUS;
-+	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
-+		server->caps &= ~NFS_CAP_READ_PLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+}
-+
- static int nfs4_server_common_setup(struct nfs_server *server,
- 		struct nfs_fh *mntfh, bool auth_probe)
- {
-@@ -1084,20 +1102,7 @@ static int nfs4_server_common_setup(stru
- 	if (error < 0)
- 		goto out;
+-#define RENESAS_RETRY	10000
+-#define RENESAS_DELAY	10
++#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
++#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
++#define RENESAS_DELAY			10
  
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
--		server->caps &= ~NFS_CAP_READ_PLUS;
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--
-+	nfs4_server_set_init_caps(server);
+ static int renesas_fw_download_image(struct pci_dev *dev,
+ 				     const u32 *fw, size_t step, bool rom)
+@@ -409,7 +410,7 @@ static void renesas_rom_erase(struct pci
+ 	/* sleep a bit while ROM is erased */
+ 	msleep(20);
  
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3968,6 +3968,8 @@ int nfs4_server_capabilities(struct nfs_
- 		.interruptible = true,
- 	};
- 	int err;
-+
-+	nfs4_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
+-	for (i = 0; i < RENESAS_RETRY; i++) {
++	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
+ 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
+ 					      &status);
+ 		status &= RENESAS_ROM_STATUS_ERASE;
 
 
 
