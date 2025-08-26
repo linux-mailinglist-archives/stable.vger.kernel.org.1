@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E059DB365B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC84B3625E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97B41BA634A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 027E37AD4C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9EC34164F;
-	Tue, 26 Aug 2025 13:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E41DAC95;
+	Tue, 26 Aug 2025 13:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/bVNPZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyQ4zK3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50F2D0621;
-	Tue, 26 Aug 2025 13:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAA11A83ED;
+	Tue, 26 Aug 2025 13:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215829; cv=none; b=oDwk0q1piHaRoo8o/P/zwtFOwfvxnMQYnlnYGZSy9dR5VxS8lIw4Zkhhek/Vy28WpQlHxz2G8qcA0uA+NyokOkaXTrNL9EFfHeT+IlOdmcB8nngTHwdfBp6rJi7VAHIxUtnY0/h77hGXzI7FACt+z+rK+Fa+oa+15inCSvrrjwA=
+	t=1756214208; cv=none; b=g+V8RPkRuCbNhrbL0GsSg+LG6GWGFoMWliTtMhSyVLJC8lYX3PWZfMAof4iRFPl/hQX6kWo/6kIT85qtfwyNnUbQ9gcndLS5x2r6tOtJi+wwBwYx2i/wFmptCALHd9VaniV96NTIMKJVGSlQvpr/xdzvIzJGR3INd2EYZlK5O20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215829; c=relaxed/simple;
-	bh=L3NX2TuBDmpxVAbAa/kqAtuL1H6GkpGcQMom/NKJaoc=;
+	s=arc-20240116; t=1756214208; c=relaxed/simple;
+	bh=8mPZ1Xpu/oRj1GQElPC9vQWdZKRTUd/jDLXseqtCn8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cESiGjnobNw4HdCI6OIPNanVpc4BA7c5AL96JNm7Aq9kKQRCrPpoHYXUviZSyHiieNOFFZXz+g6WQ7LuLKniUiaMjFpNd9FgKlK3NZuZ3A9XlHDDtw7XZlAmlf+5+Iy1OcJUjbcZWKOyCtnHGLnOhTfWJ4vhYT8b4CHO1IwBzFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/bVNPZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C6DC4CEF1;
-	Tue, 26 Aug 2025 13:43:48 +0000 (UTC)
+	 MIME-Version; b=t3+f5vySQy2wEfDXBgd1aryC5WnDFWJ6jNeG7wCkBKIsorfs9sGPlrDd1rwrT3HeDXARPI5kz+KSR3SGLtLe0cvWHrujcvGLDcMf2tjxB/T08obMZJhRiFCtoeDbSOmUX2RO5SlD5tV45p+7CGiF9DdwnzvQxI3aM1YvCFxYHOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyQ4zK3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42FFC4CEF1;
+	Tue, 26 Aug 2025 13:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215828;
-	bh=L3NX2TuBDmpxVAbAa/kqAtuL1H6GkpGcQMom/NKJaoc=;
+	s=korg; t=1756214208;
+	bh=8mPZ1Xpu/oRj1GQElPC9vQWdZKRTUd/jDLXseqtCn8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/bVNPZe0clb4jz9aRvndVdqADvRxgg8VOIF7fJ+kX1lJJCbRWPNBKYdSJbwM/y+R
-	 uG0gO1ECFS23FvFP0qkrGC8wha/5XQeC8n0Y8q9dVAlXnnqB/O8ottkc4x6s/7NQ6x
-	 rV+HWtQiStoCHPg46OxKvwCC7oc5FKIAtp8dEN1Y=
+	b=wyQ4zK3+bRPlE7+SN6R+ztuHu30rUK0oFe8Xd9EVA25t/wMRTSa14uVGvSlorB6Bu
+	 sQsNhKjDK9OhYEzgLFgNXDkQHNB+7cYTdVHrCLFTbkSXpZz/a3dG/bHZc7yIytqFgL
+	 bR/bUrBAeitrXJA9hzWWNveJCIn4eysPSlT3S6Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/644] perf tests bp_account: Fix leaked file descriptor
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.1 019/482] PCI: Extend isolated function probing to LoongArch
 Date: Tue, 26 Aug 2025 13:04:32 +0200
-Message-ID: <20250826110950.952590550@linuxfoundation.org>
+Message-ID: <20250826110931.263868638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+commit a02fd05661d73a8507dd70dd820e9b984490c545 upstream.
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+Like s390 and the jailhouse hypervisor, LoongArch's PCI architecture allows
+passing isolated PCI functions to a guest OS instance. So it is possible
+that there is a multi-function device without function 0 for the host or
+guest.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
+Allow probing such functions by adding a IS_ENABLED(CONFIG_LOONGARCH) case
+in the hypervisor_isolated_pci_functions() helper.
 
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
+This is similar to commit 189c6c33ff42 ("PCI: Extend isolated function
+probing to s390").
 
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624062927.4037734-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/hypervisor.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 489b50604cf2..ac39f4947fd8 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -89,6 +89,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
- 	}
+--- a/include/linux/hypervisor.h
++++ b/include/linux/hypervisor.h
+@@ -37,6 +37,9 @@ static inline bool hypervisor_isolated_p
+ 	if (IS_ENABLED(CONFIG_S390))
+ 		return true;
  
- 	for (i = 0; i < wp_cnt; i++)
--- 
-2.39.5
-
++	if (IS_ENABLED(CONFIG_LOONGARCH))
++		return true;
++
+ 	return jailhouse_paravirt();
+ }
+ 
 
 
 
