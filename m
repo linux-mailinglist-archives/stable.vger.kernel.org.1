@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8583AB35E46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FF8B35CEF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9671886CA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8715D1BA5FF2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B862BEFF0;
-	Tue, 26 Aug 2025 11:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D8D3376BD;
+	Tue, 26 Aug 2025 11:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9A8aJ4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgBY5wIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BFE200112;
-	Tue, 26 Aug 2025 11:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6234A31F;
+	Tue, 26 Aug 2025 11:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208861; cv=none; b=HZNPscAiJTtCIm3NhQVRfsVxTbqRLhGERbkBo1nq8okB7jgKuMc4yrvD2ZUDh6sQupn47InEgNmEfLbP1h3QOLBn6PSMkyEdidKShGKZSPaS6jQX549lTkJOXhPjoSw9Qejkgk6pGnDvYpfmxNN+WcSoc7tREt/496LexXzfjs8=
+	t=1756207935; cv=none; b=BflKZQayhGunnoe8C9qN9zLjClLqfUPV4rI7TRWaZw/9AMnWTAXmPg4P6QbGIhXfHSm9veXqcrO8REyKUrjuDNjD5yMNkax3a9zt/zX10zpqzymAqPDXNgJ0xqIqDNTrhtaHD3XMNtfcitA6c++yhpnH0rxWUtyj97EiFBFi4d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208861; c=relaxed/simple;
-	bh=5GsFcIxMmZO3AlDfZECLZR8uXcafK8PVd9jKW1i54Nw=;
+	s=arc-20240116; t=1756207935; c=relaxed/simple;
+	bh=arbwwwQ4fQuONvjC9OEFCkh66XDmduIbhchjKd90xW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0TYnasnaL7e5r8Bljsv0A+sT4y6HVsNGpxpmgc8yhX+QFdpXIl02ZQ1rZXcVH5x49bSdCojjD71Wko/YiCtsvgRwX3mn28x1lzw/t+WAqnFPg1NMZ1N4Z08fwGPB0UJelailb6bAT+S2wvqPXQDIZ0bbOG2xyUwGbvnuNUyFXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9A8aJ4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE975C4CEF1;
-	Tue, 26 Aug 2025 11:47:40 +0000 (UTC)
+	 MIME-Version; b=hlHaIrFX2ew5FSjMrgkxK8Fsp0dfFGbNqCwaJIC7JYMOEWhK5ObzjkgRx71fpHktKfWctKB+X0hcN0GgfsnKCEtzcqlff8ZI0PwC6dhM/Xu2dSGmDPu/WiAfOrpNBnc0zx+8BXhyWHreY2kG3tBg+pqcDXzqBrejDXndsyYP0+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgBY5wIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC49C4CEF1;
+	Tue, 26 Aug 2025 11:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208861;
-	bh=5GsFcIxMmZO3AlDfZECLZR8uXcafK8PVd9jKW1i54Nw=;
+	s=korg; t=1756207935;
+	bh=arbwwwQ4fQuONvjC9OEFCkh66XDmduIbhchjKd90xW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9A8aJ4voWvhSr83eX8WH/2QzAnjnM6M6YltYpaYQVEhBn3FXowBOQCf+phFrYMAl
-	 GH3LmN5yi1iv5tABdHtuiLWJiF6+/1EJ/Q5BFeJF2vSdhQ5phEj8qbFo5SXPUwMbW4
-	 CLNSwyACHwNsakC5jSDhh4oOyvK33C1jRmR1x3yw=
+	b=SgBY5wInyUp53iGvq2rPalWNbRWNcFubRWNhwhEu8wceA0mwbEnX/RypSmbZXoWBk
+	 RI5oBY6LNiqKvLOaMzwx5UNWGQZNC8iRAHDgrgBDNiSiqaugllANLbR2ZyHkHKhUQJ
+	 4M8awo/jsfnUKi8dhiBp9urYQnG3ebAVAhZVtt9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Jiande Lu <jiande.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/322] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
-Date: Tue, 26 Aug 2025 13:10:57 +0200
-Message-ID: <20250826110921.895442522@linuxfoundation.org>
+Subject: [PATCH 6.16 374/457] Bluetooth: btmtk: Fix wait_on_bit_timeout interruption during shutdown
+Date: Tue, 26 Aug 2025 13:10:58 +0200
+Message-ID: <20250826110946.540897902@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Jiande Lu <jiande.lu@mediatek.com>
 
-[ Upstream commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 ]
+[ Upstream commit 099799fa9b76c5c02b49e07005a85117a25b01ea ]
 
-__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
-As long as "sym" doesn't contain any odd characters, no quoting is
-required for its use with .quad / .long. In fact the quotation gets in
-the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
-are half-way properly supported.
+During the shutdown process, an interrupt occurs that
+prematurely terminates the wait for the expected event.
+This change replaces TASK_INTERRUPTIBLE with
+TASK_UNINTERRUPTIBLE in the wait_on_bit_timeout call to ensure
+the shutdown process completes as intended without being
+interrupted by signals.
 
-However, assembly being different from C anyway, drop
-__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
-.global directive will suffice to get the symbol "declared", i.e. into
-the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
-and STATIC_CALL_KEY().
-
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
-[ Adjust context ]
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
+Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |    5 +++--
- include/linux/compiler.h             |    8 --------
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ drivers/bluetooth/btmtk.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- #ifdef MODULE
- #define __ADDRESSABLE_xen_hypercall
- #else
--#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
-+#define __ADDRESSABLE_xen_hypercall \
-+	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
- #endif
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 4390fd571dbd..a8c520dc09e1 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -642,12 +642,7 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 	 * WMT command.
+ 	 */
+ 	err = wait_on_bit_timeout(&data->flags, BTMTK_TX_WAIT_VND_EVT,
+-				  TASK_INTERRUPTIBLE, HCI_INIT_TIMEOUT);
+-	if (err == -EINTR) {
+-		bt_dev_err(hdev, "Execution of wmt command interrupted");
+-		clear_bit(BTMTK_TX_WAIT_VND_EVT, &data->flags);
+-		goto err_free_wc;
+-	}
++				  TASK_UNINTERRUPTIBLE, HCI_INIT_TIMEOUT);
  
- #define __HYPERCALL					\
- 	__ADDRESSABLE_xen_hypercall			\
--	"call __SCT__xen_hypercall"
-+	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
- 
- #define __HYPERCALL_ENTRY(x)	"a" (x)
- 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -223,14 +223,6 @@ static inline void *offset_to_ptr(const
- #define __ADDRESSABLE(sym) \
- 	___ADDRESSABLE(sym, __section(".discard.addressable"))
- 
--#define __ADDRESSABLE_ASM(sym)						\
--	.pushsection .discard.addressable,"aw";				\
--	.align ARCH_SEL(8,4);						\
--	ARCH_SEL(.quad, .long) __stringify(sym);			\
--	.popsection;
--
--#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
--
- /* &a[0] degrades to a pointer: a different type from an array */
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
- 
+ 	if (err) {
+ 		bt_dev_err(hdev, "Execution of wmt command timed out");
+-- 
+2.50.1
+
 
 
 
