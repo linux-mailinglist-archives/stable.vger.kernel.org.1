@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6367EB36BE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B5CB36752
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F201C41D12
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30169824A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B5322128B;
-	Tue, 26 Aug 2025 14:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D41350852;
+	Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K49WWWLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qP2iDNq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED322370D;
-	Tue, 26 Aug 2025 14:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543EB374C4;
+	Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218958; cv=none; b=TbGEVff1X/gA0dU+fLCB55Xy0tCcD7Qio7YGXSeUD3DfgqBbeYDYc32cnc+vr7wIjj/u380sAZBead3piQkvcBvgBkmLU2yDdN2iWdvFXVQuY/AKVoGoTGLXCW1UBD7KdNFBGG0dHsv1RJeEoSYci1tE6Tm/1ZWBjt00t6LeN9s=
+	t=1756216546; cv=none; b=DA56L4BwTD/sW1eYc432QfcHFESknry+jXcGKcM37T4TiVzVcDEtQmRAbhVzYldTeXcMyDstZSYR2zfXy/MfAsUQPvrE2rHr/Not0IniIKJmKGWJTf5p2fhZM/r7ZpAomvS3bximCxLEhZbuKex/+vUwTbxoGt4BGhSVKzMWnWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218958; c=relaxed/simple;
-	bh=7+oIhm1ozrT1/86FnJXB1Y2qINFE98AdMWFHACcL4EM=;
+	s=arc-20240116; t=1756216546; c=relaxed/simple;
+	bh=HFl7B7MaDPY/uFclLDQXHEDWYW8+y0vFyXw/9lVlalM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5BMgihFAMSSpmZkLxU2vwO2KF6Gf4TkzWK2cLXkE1ieKj75yT8ehpeHtmgaiWeVakqN3TmtdKgKqfofbIf3OfO1xRwxVCJGJRGXLU1KfPSuTypZF1NX4vwYzqG6tnzg0iglcsJHI4Acgkz/IK49UbhlhaqDOkHGiUKb02ZbwPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K49WWWLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57685C4CEF1;
-	Tue, 26 Aug 2025 14:35:56 +0000 (UTC)
+	 MIME-Version; b=mll8aybEb88k7yCAkxMg7DqdF4mdUNZDmSl6J6yppr/3JDu0wkPBs5yL4gH3Y5QRaaiy/aSFDs4GJUaF8kzefeJmJRIh9iyillnovYxqIdTK9mQYW+PXprwD8z0lnFJ3XvXxIUgDJfE5O35ik7K8yFqYCMlaWQoNsB6+0sM+264=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qP2iDNq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4859C113CF;
+	Tue, 26 Aug 2025 13:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218956;
-	bh=7+oIhm1ozrT1/86FnJXB1Y2qINFE98AdMWFHACcL4EM=;
+	s=korg; t=1756216546;
+	bh=HFl7B7MaDPY/uFclLDQXHEDWYW8+y0vFyXw/9lVlalM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K49WWWLS4sr/K0VGjyCaoYKQqKXanH9V3oqPilO3/EnsJpu6obZNC4WgQRdwYjc3w
-	 h6P8Tx4mCaMcjYSTUirR/Gg75Yx1rrOHGr+l7qVMeqtAJbUWXwp+ekz/mEP6Eh6yWN
-	 B5KL+4ryyN76vf62KEldUfOLa5eq7euVLQU+bZlQ=
+	b=qP2iDNq2zV3fJQWSuWqUdzG0rcq4DlOlSOYAmpHYUKy+QSOfRw6cny9XPNY2IRFlp
+	 NNK4s7JieWnv9PvD2+YVyXtl2XVwgnHWBGg3emcNQzjlSvqZgPP4fYiAppcfrLZR0M
+	 rjFyPOK7c50G8JCFKmkukBqeZHUpYOWUzMoqE7K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 199/403] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
+Subject: [PATCH 5.15 434/644] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
 Date: Tue, 26 Aug 2025 13:08:45 +0200
-Message-ID: <20250826110912.362120722@linuxfoundation.org>
+Message-ID: <20250826110957.220059238@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Some chip types in the ds1307 driver already have OSF handling to
+determine whether .read_time provides valid RTC data or returns -EINVAL.
+
+This change removes the clear of the OSF in .probe as the OSF needs to
+be preserved to expand the OSF handling to the ds1341 chip type (note
+that DS1341 and DS1342 share a datasheet).
+
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index 5150e8d38975..87a23a4660e8 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2285,7 +2285,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index f8e32f5c37e3..e02bc2a2e77f 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1819,10 +1819,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
+ 
+-		/* oscillator fault?  clear flag, and warn */
++		/* oscillator fault? warn */
+ 		if (regs[1] & DS1337_BIT_OSF) {
+-			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
+-				     regs[1] & ~DS1337_BIT_OSF);
+ 			dev_warn(ds1307->dev, "SET TIME!\n");
+ 		}
+ 		break;
 -- 
 2.39.5
 
