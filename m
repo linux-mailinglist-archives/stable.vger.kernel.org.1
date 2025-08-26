@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9CBB36A1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B1EB35BFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2A3585C6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 228593B0202
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0B5306D3F;
-	Tue, 26 Aug 2025 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A489A343D6C;
+	Tue, 26 Aug 2025 11:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DE8kWecg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqzmZi2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38624342CA7;
-	Tue, 26 Aug 2025 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7934320F;
+	Tue, 26 Aug 2025 11:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217921; cv=none; b=G8q1i2lNBwc5zUcWJDSpHdRSQZrnz7e8IyDB8C4Q99yfssW6/wQIZB9ARTvT8XvxhosL0gNJRk8VQlwZA8OWuY9wGprscbRuZhiJYWDfdnihrZEvkFzQ2Uesqu+dr/0yE92qFJxDkc0ZZzWKZBpkahbcdFjdE7cF364+bPzLl5c=
+	t=1756207697; cv=none; b=rXwRU0BWrPiBbpXeC6BA8tBeDGzHI9/RZAV32b/K/iS9BMGhcP6cNZ2SHJ5wgIxuwd3AFhSKN0aDLJjXUwkSOKAntjubbw99yO+tJOle/ilPrZOmAZ0G698iapLWf0BESibuTd40uyQeBJhhfNvATUJN+SoT89tKQA9FwOEsS+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217921; c=relaxed/simple;
-	bh=qE6HAwA0Y7873TGq7Jwua7KK2vdNkVFT8kcdhCwIvWY=;
+	s=arc-20240116; t=1756207697; c=relaxed/simple;
+	bh=E/tVS9LmXIZQI3FAwGdbznoapdEt+sMQiYVTMSwhYYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1318PqBBM1+UXzGETILUY0Pno7E3WoH2kRKpZyW62GKKST9G55OAv5NdepSDYd2p6NKGCzb6EwdqMKwdhY1xWXwyHz5uxqyO98jxJkrwSM4kAVbJmYHkccC5lcEl8oGUO+gFpTFl0f0CYDzEQkUDIaexopy/wKCF4om+xE/Y1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DE8kWecg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B700CC4CEF1;
-	Tue, 26 Aug 2025 14:18:40 +0000 (UTC)
+	 MIME-Version; b=FgrcGl95N1f2tL50UcH/IPjjuZbwMuh+5tiQ7WcpDcSqrr1zWo/XA2QAo4liC1S336izaKFDdCWTI9G3kzp1vvJB7ydLAaKHBUuDdqKoUC6A+JOYZoemVBNvphrPlRXSfcehBr06OEnwp394tVcxsRnuF2bQNM5cXfnRYN6t9bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqzmZi2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87415C4CEF1;
+	Tue, 26 Aug 2025 11:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217921;
-	bh=qE6HAwA0Y7873TGq7Jwua7KK2vdNkVFT8kcdhCwIvWY=;
+	s=korg; t=1756207695;
+	bh=E/tVS9LmXIZQI3FAwGdbznoapdEt+sMQiYVTMSwhYYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DE8kWecgM2sEC9EMDLIUXsdICzYSzkqgiGfSUnbSEvJ907kk3vw0pKVpPYRoaidY3
-	 6IGY/W8mbrmr8F8QmnP7c0Vd4ak4OS/3EYUHbew8PvtVX5srua9dC0SOJiW+BwBW6o
-	 0GOHsQqHW7ItVZnMMrt7M57bmLIzfWxpVq0wcu9o=
+	b=aqzmZi2YpY1bnsYF2hIw4JlVIO88XnsYiEq6SdIAmTjqRNecKSDn2Y08LGzMnCxPy
+	 tBdLehLaxK5eHU3/ETw6pw2BEeAqise5uHxymYpM3Kli5qSi/7kbpdZwaQXH6UdFMQ
+	 lNvVyjjHlHN+EkEtEV6uc4B0iKxw0o/Ev3aOd4ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 325/523] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
+	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.16 251/457] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
 Date: Tue, 26 Aug 2025 13:08:55 +0200
-Message-ID: <20250826110932.488528726@linuxfoundation.org>
+Message-ID: <20250826110943.565080924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
+Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
+quirk to enable the mute LED.
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index b89f300751b1..5b01985aed22 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4307,10 +4307,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
- 
- 		/* Generate an error response for the message. */
- 		msg->rsp[0] = msg->data[0] | (1 << 2);
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10662,6 +10662,8 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 
 
 
