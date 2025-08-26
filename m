@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20C4B36461
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40C5B35CCE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229211BC395E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BF61BA2BD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324B22F6590;
-	Tue, 26 Aug 2025 13:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D7E3451CD;
+	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ60TcbJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFo+si1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E357E27A455;
-	Tue, 26 Aug 2025 13:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9959D3451AA;
+	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215004; cv=none; b=d+sfB+UcZH86VQaNvMPbNUghzUiGfyuvkjsfWjaN5ZbmdLrG5mRSf1yPVrqEAbGVoqQhGR3G/OeZVJalwCz2h4A9YfCc3pNaJTfaXNvdydAY6ZMJj3q+4cZmpI9uSA3EV11nmi8E/xiHCqMAs2Nj8h9fMzMtD7M4gimnHekWOYs=
+	t=1756207869; cv=none; b=IhcGR9LMXtE0A2ts1O4Mv4vzYsjvcTfNL+x8ByQ5dyl8Wy8XbsXK9JXL3dx19vJ888+eS1zeqLqCXyGFpgkPPKT7bimRll63jQEB1dxaYY2xyRecOgbksFuFOcUwvODTs4tnK9PkqQk2Ij2Lh7xo9y+80EpeQBq2e+JXI03IeuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215004; c=relaxed/simple;
-	bh=xdelo/lVKSV/CI8/eiCOt0xjNrHV9wH5pI2/BZKgaS8=;
+	s=arc-20240116; t=1756207869; c=relaxed/simple;
+	bh=+BFQWOvGtPBwo4SG53yU1cO3oG7P0QaEtpA4tWgI1CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hf3ym+p0964K29r5TvHoqNgF7yVZynkjB4Io19DhqnpgOkO1Dj8YGyboWwWcJtprhHSeMscbWzKsXuUcltYL6jxqbHVrPmRAzEazBF1tPN0YoFe/Zeee8VyEUHu6qDEOZ0qXpyW3MZM4rGENvm4MqfmxrlbopIRVdikc8LbREsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ60TcbJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5142CC4CEF1;
-	Tue, 26 Aug 2025 13:30:03 +0000 (UTC)
+	 MIME-Version; b=K+oVpdOlpI//sxj+CwzvALm56pmgP6XTa71e89ZkUHbP4xZdUoVdG+QcrtsC9+BK+UhSJhag+M2qxmQygyn+E342kAmZk4i56CR+ytXuQ4IwUffQ+8GY1a7tVdyREWJjaRGUIF2m9KShKfnkfI8nj0RjMvN4G6g0lfDBTWIvGLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFo+si1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B118C4CEF1;
+	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215003;
-	bh=xdelo/lVKSV/CI8/eiCOt0xjNrHV9wH5pI2/BZKgaS8=;
+	s=korg; t=1756207869;
+	bh=+BFQWOvGtPBwo4SG53yU1cO3oG7P0QaEtpA4tWgI1CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ60TcbJKovxBD8c5iel4C/il992GqhtkV6csiZOoIodlF3wDzjjoHMMO0aoH9Swk
-	 mHV88J+Qn3Q+lcBTsdaMiNbI1dmUpM832b9ur7ERNejey4BwVnUsFiC76QBnk3Ic/A
-	 uTDgPjutn539SUtfZBd9/OcoDVEALNSjU4x/ohH0=
+	b=wFo+si1Fb+bhs78qbaYlpgAnNt1PU0AwHa6wW8qqUzhRvXTVEpTaexpm3jy97pgtZ
+	 FzhUvOvRmQbYMfTHHQUmEW47NlRJqMrKLJTON9tWTFav1WjjI7s9EFD056rqUOs551
+	 Cv1YdHNCfzTsH4lVocy35AX0RBKbARqMgbKOrX+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 349/482] btrfs: fix qgroup reservation leak on failure to allocate ordered extent
+	stable <stable@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.16 318/457] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
 Date: Tue, 26 Aug 2025 13:10:02 +0200
-Message-ID: <20250826110939.455285465@linuxfoundation.org>
+Message-ID: <20250826110945.212660517@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 1f2889f5594a2bc4c6a52634c4a51b93e785def5 ]
+commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
 
-If we fail to allocate an ordered extent for a COW write we end up leaking
-a qgroup data reservation since we called btrfs_qgroup_release_data() but
-we didn't call btrfs_qgroup_free_refroot() (which would happen when
-running the respective data delayed ref created by ordered extent
-completion or when finishing the ordered extent in case an error happened).
+Many Realtek USB Wi-Fi dongles released in recent years have two modes:
+one is driver CD mode which has Windows driver onboard, another one is
+Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
+Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
 
-So make sure we call btrfs_qgroup_free_refroot() if we fail to allocate an
-ordered extent for a COW write.
+Currently there are only two USB IDs known to be used by these multi-mode
+Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
 
-Fixes: 7dbeaad0af7d ("btrfs: change timing for qgroup reserved space for ordered extents to fix reserved space leak")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adjust to code movements ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=a192 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=1a2b Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ordered-data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -173,9 +173,10 @@ int btrfs_add_ordered_extent(struct btrf
- 	struct btrfs_ordered_extent *entry;
- 	int ret;
- 	u64 qgroup_rsv = 0;
-+	const bool is_nocow = (flags &
-+	       ((1U << BTRFS_ORDERED_NOCOW) | (1U << BTRFS_ORDERED_PREALLOC)));
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1501,6 +1501,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_WP_DETECT ),
  
--	if (flags &
--	    ((1 << BTRFS_ORDERED_NOCOW) | (1 << BTRFS_ORDERED_PREALLOC))) {
-+	if (is_nocow) {
- 		/* For nocow write, we can release the qgroup rsv right now */
- 		ret = btrfs_qgroup_free_data(inode, NULL, file_offset, num_bytes, &qgroup_rsv);
- 		if (ret < 0)
-@@ -191,8 +192,13 @@ int btrfs_add_ordered_extent(struct btrf
- 			return ret;
- 	}
- 	entry = kmem_cache_zalloc(btrfs_ordered_extent_cache, GFP_NOFS);
--	if (!entry)
-+	if (!entry) {
-+		if (!is_nocow)
-+			btrfs_qgroup_free_refroot(inode->root->fs_info,
-+						  btrfs_root_id(inode->root),
-+						  qgroup_rsv, BTRFS_QGROUP_RSV_DATA);
- 		return -ENOMEM;
-+	}
- 
- 	entry->file_offset = file_offset;
- 	entry->num_bytes = num_bytes;
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
+ UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
+ 		"Maxtor",
+ 		"USB to SATA",
 
 
 
