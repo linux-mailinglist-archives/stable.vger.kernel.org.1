@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-176256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E7AB36CED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:03:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8309B35CD7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9659A987212
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB72A367FCC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B413568F0;
-	Tue, 26 Aug 2025 14:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7199F31813A;
+	Tue, 26 Aug 2025 11:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZmEuEHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKt5pajH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7366F352084;
-	Tue, 26 Aug 2025 14:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D277221FC3;
+	Tue, 26 Aug 2025 11:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219183; cv=none; b=jD3VtIVvdUPMfUOmVWraO8ocglfxEzfI5EbOxjm6AGv26bsn6eCe3wfl/5Z2D2+E174+SnCfHWqs3pO3DRrrSfE/sJv0MVy7LcZSTB6S/wZ43Ald5z/V1j2Cw4uJyFe4nxMgYO9rP6nv2mF3TpaJ0AbFUgnc1LbCVALt3PaskfI=
+	t=1756207732; cv=none; b=X//ROV7Y79AL1/bKk9L+70avj1htdSCzweTLCK9gLb5V1BzVbzJ1tuYz/AGw8Rlf5hQhnsIM8SHGTAMKOiHy25HfjIXeimrGL8nmyRuPIyH7zpDJxATjc0SW/eyVDwCMNBo8FMHQZkZGjh5x6giijGduHSv2Ob2AcYUhYBjwH8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219183; c=relaxed/simple;
-	bh=Lm4nrumM6k+eVJ3wjg9szAdJj5gPE1+j1gIsIb40tro=;
+	s=arc-20240116; t=1756207732; c=relaxed/simple;
+	bh=ne4GpHa9o/aqFxwP+UIxUfqDzOBB53gKaaGcfK6uP5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOwGbLo6NM9uXab0902+9rzAvS3nSptmlEDZ7pYgLkm/U0wMxJKMVWIHGmr5XpQMATKjZa6sTZMzrMLtbqFTsx9zdPiTqgrStm2zeRVAUwbmObe+ar+QjrMAynuqLkOmmo5rLxECS9ftkGW2fIsIVqkF/KY9FemO0uO0gr/s59k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZmEuEHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9822FC4CEF1;
-	Tue, 26 Aug 2025 14:39:42 +0000 (UTC)
+	 MIME-Version; b=uqMItFoVQKxT13QnZ9rfhgyEZmhgLe3+1VH74iLoAOTHwnvdS+a40/tXb7suJ5QMmagbE0puOaJR1Ray7A5VCd4ir7XZpyjlEOZJwBy80MQj+EqU48jGiVGkualHupmgsJarfIWepPiJaPQySLQhoI9Wx2csas2HckF/SrweH/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKt5pajH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFACBC4CEF1;
+	Tue, 26 Aug 2025 11:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219182;
-	bh=Lm4nrumM6k+eVJ3wjg9szAdJj5gPE1+j1gIsIb40tro=;
+	s=korg; t=1756207732;
+	bh=ne4GpHa9o/aqFxwP+UIxUfqDzOBB53gKaaGcfK6uP5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZmEuEHC+1ifzMCl0D9x4lgQO95I0hvNyHWjpYt0A9RijjIYtuWHjBwKa31hO/dSs
-	 jkVwVlJteVcFg9+yOP0U94Yxtx0xDKADg/jR5Ah2KFjZfTjBvIFYPKUCIO501GtydO
-	 7QaS7CgqyPFoZ2fsl2fjd7eQhzwDfhQukZjxpEHQ=
+	b=LKt5pajH8IeQhgRRsMp1S4hXa68iUPsOVV4UZyiRwuMlS3US82SsMVuG9Xtz257fd
+	 70kACkZEbXt2ZKQjOnu0em8ZSA317Dau/rWr/9k6Vg67nuED8njUp5Oz5cMJRrNHBe
+	 ICvEgekVKAdqGmzXPNy00G01ignpb5EsDWKOggWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 254/403] i3c: add missing include to internal header
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 296/457] iio: accel: sca3300: fix uninitialized iio scan data
 Date: Tue, 26 Aug 2025 13:09:40 +0200
-Message-ID: <20250826110913.840670594@linuxfoundation.org>
+Message-ID: <20250826110944.694735478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+commit 4e5b705cc6147f0b9173c6219079f41416bdd3c0 upstream.
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+Fix potential leak of uninitialized stack data to userspace by ensuring
+that the `channels` array is zeroed before use.
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
-
-Add the proper header to where the IO accessors are used.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: edeb67fbbf4b ("iio: accel: sca3300: use IIO_DECLARE_BUFFER_WITH_TS")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250723-iio-accel-sca3300-fix-uninitialized-iio-scan-data-v1-1-12dbfb3307b7@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/accel/sca3300.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 86b7b44cfca2..1906c711f38a 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+--- a/drivers/iio/accel/sca3300.c
++++ b/drivers/iio/accel/sca3300.c
+@@ -479,7 +479,7 @@ static irqreturn_t sca3300_trigger_handl
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct sca3300_data *data = iio_priv(indio_dev);
+ 	int bit, ret, val, i = 0;
+-	IIO_DECLARE_BUFFER_WITH_TS(s16, channels, SCA3300_SCAN_MAX);
++	IIO_DECLARE_BUFFER_WITH_TS(s16, channels, SCA3300_SCAN_MAX) = { };
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
- 
- extern struct bus_type i3c_bus_type;
- 
--- 
-2.39.5
-
+ 	iio_for_each_active_channel(indio_dev, bit) {
+ 		ret = sca3300_read_reg(data, indio_dev->channels[bit].address, &val);
 
 
 
