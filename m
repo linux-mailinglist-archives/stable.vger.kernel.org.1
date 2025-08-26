@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4E9B3666B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6E7B36351
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CEA467300
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7620D7C57FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5284834A330;
-	Tue, 26 Aug 2025 13:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F33034A328;
+	Tue, 26 Aug 2025 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkapVUv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chhXuW0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840734320F;
-	Tue, 26 Aug 2025 13:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4131FBE9B;
+	Tue, 26 Aug 2025 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216001; cv=none; b=TA+MT7o5y+T4Dkx1vQgKXpsH9DO8RYCwRERCW0D3KeVcHSs1WKa+dplzOBreUymyE9e9bMTeEMwKK/2UKuqdQiS4G7fcjoIWC8hK9VqjBahkBW2mx+p1ym01LHd2YsC2m4TcYlJRZPSRxHIS8CFTHnFO9o8ZQ9V71m9ETyrdyCI=
+	t=1756214382; cv=none; b=JXe4CNfGCog6dy+keipS6Y9S98Pw6RStDrHRRCA5O9E3wevdW9JW9jc+zb0iBsgzIOk830z7GSEjzuFVliKiosyKUM6SYed407e4/UeRlgf/NtDOUu3oJRfzXRFcfaregY90kEx7OhPaHQ4Kn/6xXvveUVDOSMscAbmJqlJVNms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216001; c=relaxed/simple;
-	bh=47xnqZlebzd1oD3/pJpCaXJ9JKDGBr5T/XMKYtuFs6Q=;
+	s=arc-20240116; t=1756214382; c=relaxed/simple;
+	bh=/8kJ6RN59kgc4ozoKaNgraJb4UdsB2x7FB8vu8sFIs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmPScN3PpKZaB8pUY3lCZuVHHU7rBeQNfR96aH1omxstroofEz63oSZeHerW/IsYA/E2dUcKesnZ2C785TA4/AH1GdevGbiHxZXUbzxguGX1A56zoDWpGnRdbbtH2MJnG9VZtbkIV7WDMj5aUmZBF3WTnZ8MxEGNKo+oealtea0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkapVUv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E74C116D0;
-	Tue, 26 Aug 2025 13:46:40 +0000 (UTC)
+	 MIME-Version; b=L0ljCjWT30NrZY+sUuJJKMzJCiJwEt1eZ9HWUfoClqRSFGLBdtCYJ5sYktR/EdoGFqakwPTCPidPau2rYc+mxMDzVJf2bbiYJqF41ByYkUs76q8CaBiFHDfPOstcuEDARXiEaBbxNCgzbJ9HXeQvXWRRp7w7nTsDzYWWn6Xet8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chhXuW0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B039FC4CEF1;
+	Tue, 26 Aug 2025 13:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216000;
-	bh=47xnqZlebzd1oD3/pJpCaXJ9JKDGBr5T/XMKYtuFs6Q=;
+	s=korg; t=1756214382;
+	bh=/8kJ6RN59kgc4ozoKaNgraJb4UdsB2x7FB8vu8sFIs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkapVUv1Sojl3ARQ3BlEyoMSqGA8uQW3glJAXImuBKlaWIh2XQKGnHlqanvB6hNCX
-	 MoyNdZ7gz7Jq4kKNoCMYbADoRMNDh1DjeHRBm/0h6vwhDFcqyBHQEn9diQeCwOEWiB
-	 h+dKBTS1rNjOhqUz1iYtsUyJNDje/9ALra+9TLBI=
+	b=chhXuW0wTSGOoG12X3oNRhLWbaqLqbqxsuzJ5Vck5LiTT501Ws6z+6/dXede4o0ZW
+	 Z1EqzW8Tx3eKIUTcxehWYuAgrg2Pq6a0CndPSlRkNZE56W5bseUzNhYj7lL/0JofNh
+	 yHv6DGhCX4UbZt8YWPjWq8RFLV3I3pWWyBEyZLiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 5.15 246/644] perf/core: Exit early on perf_mmap() fail
-Date: Tue, 26 Aug 2025 13:05:37 +0200
-Message-ID: <20250826110952.487730091@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/482] selftests: tracing: Use mutex_unlock for testing glob filter
+Date: Tue, 26 Aug 2025 13:05:38 +0200
+Message-ID: <20250826110932.930223585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-When perf_mmap() fails to allocate a buffer, it still invokes the
-event_mapped() callback of the related event. On X86 this might increase
-the perf_rdpmc_allowed reference counter. But nothing undoes this as
-perf_mmap_close() is never called in this case, which causes another
-reference count leak.
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-Return early on failure to prevent that.
+Use mutex_unlock instead.
 
-Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6600,6 +6600,9 @@ aux_unlock:
- 		mutex_unlock(aux_mutex);
- 	mutex_unlock(&event->mmap_mutex);
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index 4b994b6df5ac..ed81eaf2afd6 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
- 	 * vma.
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
+ 
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
+-- 
+2.39.5
+
 
 
 
