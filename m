@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-173774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD17B35F9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:51:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA007B36554
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0038208B40
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9C991BC488D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6451F1A00F0;
-	Tue, 26 Aug 2025 12:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AB922DFA7;
+	Tue, 26 Aug 2025 13:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TTph2DS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlhQx6Z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212FB11187;
-	Tue, 26 Aug 2025 12:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ACC1F4CA9;
+	Tue, 26 Aug 2025 13:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212636; cv=none; b=KkbJo1wW/rYrKZKlJuH2AjuH+nG73a7q7EDCmmWvVfdafWg1lFp5qXw78wm4bizkX2II0dEaUXeGHvyjU2s2ePfyT+PIHUFYhPV+sSO/eQpNvttE5fU7hDO5+4Pv6m0bW57tNYTLlIh1LaPz3ZXV5uK9qBd7QZ20Tb0L0D95r50=
+	t=1756215621; cv=none; b=huhHLInTF8FHVzm0kRrlAJ1KD9y6WycxcBpuRC8NdErxqdzAWuogrDaN/8cGk+NS3Yc1aNTGZ5aUT5gdH6VGcMmjcdgk/M3qFxAgh6maZqJPJrYYV+PL/jbtTjXlPGoVsYOW14L9leG+NzgmYBVB1Ce9oBX4vpiq/ik/Od89UPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212636; c=relaxed/simple;
-	bh=+FPu8PdlTqfEh8R7UkHlf44EaldPTNsIafR7Kc0187o=;
+	s=arc-20240116; t=1756215621; c=relaxed/simple;
+	bh=BxCfLaqtnV+02w6BNIEBRfJdwJsIoGb+d7Qhe48V1Kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poTPbulMoJVf4sIZv7S4kMriMwElkDzXJc1WXaaW8bl3q/X+93/koCIAb8sAGvFSAbBoK3rSg4g8nBdAfABs35k3khcv7uxs/VOYmt5jus2kQC81GlwVoc8aJfJj6J5OmgI4Q2zS4frMrCJqFceAoKxYdjQmGJMwY9PRY38+Jig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TTph2DS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A258CC113CF;
-	Tue, 26 Aug 2025 12:50:35 +0000 (UTC)
+	 MIME-Version; b=LyGiXcizbbO5z03DSGTcOXSeE6G4urSzLdvlH83aPeyEv2q4AJ9VdiKNwySYfcj6XySbEHyzqsdJ2np8ghxXP6aSlWb0Bj7GDDzPzj1nyFsG2ugvqi9kCkVd61PuxlTJUD/0AHzLfzxifFcNsEYYG10kZKxXGICmqIfVMoMPolE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlhQx6Z6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC49AC4CEF1;
+	Tue, 26 Aug 2025 13:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212636;
-	bh=+FPu8PdlTqfEh8R7UkHlf44EaldPTNsIafR7Kc0187o=;
+	s=korg; t=1756215621;
+	bh=BxCfLaqtnV+02w6BNIEBRfJdwJsIoGb+d7Qhe48V1Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TTph2DST/xioTsOTxggisqus84Svukv3416RK+AGuIY6/JyxdoMxBsfegBHp6Oww
-	 MWnxcpsDIRjVou+tjaygyoxmokbm9eGMO1XNcWZrW3D3PAEo9WEMN9MmmMSsGYZ6NK
-	 FHwzJ6LMAA+e9QUU8x1ggvfIVAH6A1G9PK6QZU+M=
+	b=QlhQx6Z6G5CWHzxtSiygjI5uM5gAAEHlmuz7keQSxpTrh+dSPbtmGhvgV8CDhqOr3
+	 EENDYHuGFQLAgcZGZD0H2esq5+FfqtmAZZ6NrSOcADg/8kZVufwN7OUt63TpA6LFgu
+	 6s+uTXdG/l8SocC+COucjj62mUVVZp8A4+1yzfjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/587] KVM: x86: Move handling of is_guest_mode() into fastpath exit handlers
-Date: Tue, 26 Aug 2025 13:03:13 +0200
-Message-ID: <20250826110954.066419547@linuxfoundation.org>
+	Michael Zhivich <mzhivich@akamai.com>
+Subject: [PATCH 5.15 103/644] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
+Date: Tue, 26 Aug 2025 13:03:14 +0200
+Message-ID: <20250826110949.067063401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Michael Zhivich <mzhivich@akamai.com>
 
-[ Upstream commit bf1a49436ea37b98dd2f37c57608951d0e28eecc ]
+For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
+field in zen_patch_rev union on the stack may be garbage.  If so, it will
+prevent correct microcode check when consulting p.ucode_rev, resulting in
+incorrect mitigation selection.
 
-Let the fastpath code decide which exits can/can't be handled in the
-fastpath when L2 is active, e.g. when KVM generates a VMX preemption
-timer exit to forcefully regain control, there is no "work" to be done and
-so such exits can be handled in the fastpath regardless of whether L1 or
-L2 is active.
+This is a stable-only fix.
 
-Moving the is_guest_mode() check into the fastpath code also makes it
-easier to see that L2 isn't allowed to use the fastpath in most cases,
-e.g. it's not immediately obvious why handle_fastpath_preemption_timer()
-is called from the fastpath and the normal path.
-
-Link: https://lore.kernel.org/r/20240110012705.506918-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: f2b75f1368af ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c | 6 +++---
- arch/x86/kvm/vmx/vmx.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5a230be224d1..f42c6ef7dc20 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4157,6 +4157,9 @@ static int svm_vcpu_pre_run(struct kvm_vcpu *vcpu)
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -592,6 +592,8 @@ static bool amd_check_tsa_microcode(void
+ 	p.model		= c->x86_model;
+ 	p.ext_model	= c->x86_model >> 4;
+ 	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
  
- static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- {
-+	if (is_guest_mode(vcpu))
-+		return EXIT_FASTPATH_NONE;
-+
- 	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_MSR &&
- 	    to_svm(vcpu)->vmcb->control.exit_info_1)
- 		return handle_fastpath_set_msr_irqoff(vcpu);
-@@ -4315,9 +4318,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
- 
- 	svm_complete_interrupts(vcpu);
- 
--	if (is_guest_mode(vcpu))
--		return EXIT_FASTPATH_NONE;
--
- 	return svm_exit_handlers_fastpath(vcpu);
- }
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 631fdd4a575a..4c991d514015 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7258,6 +7258,9 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
- 
- static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- {
-+	if (is_guest_mode(vcpu))
-+		return EXIT_FASTPATH_NONE;
-+
- 	switch (to_vmx(vcpu)->exit_reason.basic) {
- 	case EXIT_REASON_MSR_WRITE:
- 		return handle_fastpath_set_msr_irqoff(vcpu);
-@@ -7468,9 +7471,6 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
- 	vmx_recover_nmi_blocking(vmx);
- 	vmx_complete_interrupts(vmx);
- 
--	if (is_guest_mode(vcpu))
--		return EXIT_FASTPATH_NONE;
--
- 	return vmx_exit_handlers_fastpath(vcpu);
- }
- 
--- 
-2.50.1
-
+ 	if (c->x86 == 0x19) {
+ 		switch (p.ucode_rev >> 8) {
 
 
 
