@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA57AB36BE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC98B36786
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 360D458291B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A070564748
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E478352071;
-	Tue, 26 Aug 2025 14:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C176C350D53;
+	Tue, 26 Aug 2025 13:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJnka9Iu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7WzoYR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C35350D54;
-	Tue, 26 Aug 2025 14:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAFF34A338;
+	Tue, 26 Aug 2025 13:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219144; cv=none; b=dj+LX6MUviiIDALB84x55HtMiVdP1QDsbAobD1k3YSNrDn5RXGj43xVPFbJSWiEaHhuWIXb3jwkGTkVkUHb0MLd4CNSEV0k/5FYTCq25mOvxpIxfSGnVRL7kNWpohN9gQ+aHYF3eeg37SZwi0CI0tPqD6vGjmUEWigIHdo8cBHA=
+	t=1756216640; cv=none; b=exf7du/59LS5+m0Kv123Rty3P0n1sJTDmHGEJPA9oFmGhHv5Aj0ISqFyHa5TeugQVAQNdfXWEV7ymYBKIeu7t1V5eXVHLlz8jIcPxSymOUTthJJf3muFWyGyF+kWu55DqEsl6TIzYiWg6TDv2IKWzWj2IftVEAQ0rrrqcrG5AbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219144; c=relaxed/simple;
-	bh=VzJsjKsz/h/Fc6pGivXYVWLEsmtg1/xkhFlMQigwn6I=;
+	s=arc-20240116; t=1756216640; c=relaxed/simple;
+	bh=NcqErEcuzN4l0Gv4IOENpPRR89qSStNZFXQ5yD9BZgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuTvPHbMUjXY7I0dKl73ykKS92Eu4w5fmFIJE8MD6055OECAgOc6RZM0Iermi0GAwpJqrU+taRb4N3npMA3oc+w0wfCX/0c4tz2dRMrzr6yos0YI4IdlFifMZTJxbOO2fqhreTLhjBconr1cOjcKtUT9TSK2CPRcKuSMY4nYDhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJnka9Iu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B71C4CEF1;
-	Tue, 26 Aug 2025 14:39:03 +0000 (UTC)
+	 MIME-Version; b=L00PmHgF8m8v8ao8eT9OjdfqjsjXSnOxh0bUw2CB82gh+l1ZVg/ElD4/CguFv3IHpIQHn9ONt0YksqcESN6/XQe/bhwI5Cs1w8Gcg6N+OCqr6imt0RgwhB5yWTAee/jSH81sQ4sclcGphhMVN84O4WV8OyOKWgYO3KfFqqE4qRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7WzoYR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9B8C4CEF1;
+	Tue, 26 Aug 2025 13:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219143;
-	bh=VzJsjKsz/h/Fc6pGivXYVWLEsmtg1/xkhFlMQigwn6I=;
+	s=korg; t=1756216640;
+	bh=NcqErEcuzN4l0Gv4IOENpPRR89qSStNZFXQ5yD9BZgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJnka9IuBVu8qAGKN3zAGXyYdEfiUDJwUm3WWTELv8pfiCOqVXwivb1PDE+DlUAzj
-	 GrR9kk5bpf0lfZjCrcIBKgITxZbXkb3uFLYXIJbDd8gEENMeWTqJ5w7cNJd5V7dSVM
-	 hpu/EkajZFY1/voa3X/NI25qq/hbz6nmt8aexx7k=
+	b=x7WzoYR2mQ1nxCjtP/AKKlAIZ2flePwqsdNuHvr00chabwn4NiZ7icpBUVAbVqzVZ
+	 Nsy+n+WFXJ9edFvCgincaQge7QNtlqbGKz4Q5xOWDdz2FBeZulkODHgh6POfSLIDkc
+	 TM9/5eM6SL3iyRn5DBp3Wwhw9c1zcuzaDtnktNHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 252/403] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 487/644] media: hi556: correct the test pattern configuration
 Date: Tue, 26 Aug 2025 13:09:38 +0200
-Message-ID: <20250826110913.784466478@linuxfoundation.org>
+Message-ID: <20250826110958.559644854@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
+commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
 
-In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash.
+Hynix hi556 support 8 test pattern modes:
+hi556_test_pattern_menu[] = {
+{
+	"Disabled",
+	"Solid Colour",
+	"100% Colour Bars",
+	"Fade To Grey Colour Bars",
+	"PN9",
+	"Gradient Horizontal",
+	"Gradient Vertical",
+	"Check Board",
+	"Slant Pattern",
+}
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+The test pattern is set by a 8-bit register according to the
+specification.
++--------+-------------------------------+
+| BIT[0] |  Solid color                  |
++--------+-------------------------------+
+| BIT[1] |  Color bar                    |
++--------+-------------------------------+
+| BIT[2] |  Fade to grey color bar       |
++--------+-------------------------------+
+| BIT[3] |  PN9                          |
++--------+-------------------------------+
+| BIT[4] |  Gradient horizontal          |
++--------+-------------------------------+
+| BIT[5] |  Gradient vertical            |
++--------+-------------------------------+
+| BIT[6] |  Check board                  |
++--------+-------------------------------+
+| BIT[7] |  Slant pattern                |
++--------+-------------------------------+
+Based on function above, current test pattern programming is wrong.
+This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
+will disable the test pattern generation and set the pattern to 0.
 
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index d31ce5c7104d..41dcbabdc193 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2198,6 +2198,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 3)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -602,21 +602,23 @@ static int hi556_test_pattern(struct hi5
+ 	int ret;
+ 	u32 val;
  
- 	while (n_overflow == 1 && i) {
-@@ -2217,6 +2219,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1, n_empty = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 1 || msg[1].len < 2)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 	u16 read_word;
+-	if (pattern) {
+-		ret = hi556_read_reg(hi556, HI556_REG_ISP,
+-				     HI556_REG_VALUE_08BIT, &val);
+-		if (ret)
+-			return ret;
+-
+-		ret = hi556_write_reg(hi556, HI556_REG_ISP,
+-				      HI556_REG_VALUE_08BIT,
+-				      val | HI556_REG_ISP_TPG_EN);
+-		if (ret)
+-			return ret;
+-	}
++	ret = hi556_read_reg(hi556, HI556_REG_ISP,
++			     HI556_REG_VALUE_08BIT, &val);
++	if (ret)
++		return ret;
++
++	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
++		(val & ~HI556_REG_ISP_TPG_EN);
++
++	ret = hi556_write_reg(hi556, HI556_REG_ISP,
++			      HI556_REG_VALUE_08BIT, val);
++	if (ret)
++		return ret;
++
++	val = pattern ? BIT(pattern - 1) : 0;
  
--- 
-2.39.5
-
+ 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
+-			       HI556_REG_VALUE_08BIT, pattern);
++			       HI556_REG_VALUE_08BIT, val);
+ }
+ 
+ static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
 
 
 
