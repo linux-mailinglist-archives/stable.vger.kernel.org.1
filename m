@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F46BB36C67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD666B36069
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B773B982515
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8591BC0DE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A28350D45;
-	Tue, 26 Aug 2025 14:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E50202F8E;
+	Tue, 26 Aug 2025 12:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJNcFeun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDFoBh8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9A534F48A;
-	Tue, 26 Aug 2025 14:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4C31F9F73;
+	Tue, 26 Aug 2025 12:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218476; cv=none; b=kQriDqTOKEk7r0jHyjyM3Xwc/m+GH4fkLZNrUfe0wKCNOJCA9kZkVjPcYrX/Vxu1vjQxySrX+3UPfw216QM7lQbC+YTFo93ylxpjP9FGQr0HzY1Wfj/oYwoNzQpt7XkNteKxyqelqROalA9Q5PtH9nAX4sXo1p3/xM+6gFac5lE=
+	t=1756213006; cv=none; b=tBO29dO5YEtlYjL7Ozn13e8eZe+8MjZyG4LnQf3q2XWmFp8nGgVcJAo2hZUT8BUathFKUGjE4hFELhOvFxYIso0cGZRWC63nvAuxc9HIA6LJfRJq6XLG3J/wEEatG/BbO5HQ2i8qalxBrP4a1cD/nKvBaGaV6Do4tKwCB5UxOtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218476; c=relaxed/simple;
-	bh=JrHrZgMoBvwEDgjyQNG3x8BKPq4cG8vIh6rInZpjeA4=;
+	s=arc-20240116; t=1756213006; c=relaxed/simple;
+	bh=YgTtQaU46RCBiXp4K1OowkQn1UBB/7iqaZeyWe3oJVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+dOmIn/WZ/szJBZhZLRGkja5r9WGOjVKC2AP4+gAZF81KHJhTIEKjqwXCgQMm1IW/SSwBLO+eI5Yb6M6mYgcM3B0iHzWd8Cl504FOwtXjpr3asiKu9RhSg1+/NXmydyZjWTnRvacgP/qvoEkSYRZnAyxtXFvc1dZpjvsLxFmFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJNcFeun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F847C4CEF1;
-	Tue, 26 Aug 2025 14:27:55 +0000 (UTC)
+	 MIME-Version; b=Hvrjer7s6/pZpbP7WqQcCfeaLObavRkJoWLYkX/oPHRtvkhjhCnUNQZVYoZAbxVXMlTFZVeqaOq5lrshLsyiqpFGtRrO0xQhqyq8/uCLQMYNTJ296Dvfip69CKRoCG9++kLYEqas5KgNvgxlgkuDVSQndZrmDnqXGDafmOrPX2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDFoBh8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35BBC4CEF1;
+	Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218475;
-	bh=JrHrZgMoBvwEDgjyQNG3x8BKPq4cG8vIh6rInZpjeA4=;
+	s=korg; t=1756213006;
+	bh=YgTtQaU46RCBiXp4K1OowkQn1UBB/7iqaZeyWe3oJVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJNcFeunHZbOJCzgHOlXvyr/4MBwcsPi61/oJSMdPrg9uMFM/FLvE2PjE/3LQ3LAD
-	 D4xISC68dZSowv2z7KNOcYYu6cGGVlxaJsDWMhsYXbES6uJgjAQDBSvWsvx0yS+4g4
-	 tInaQGCBcYQixKAjOjOFE22gzWmJbbKEgE0hbNjg=
+	b=XDFoBh8pwtijBzVlj1gY0VtdWOyAkv7E9PNOSlCr2LWsuT3xDbMZitBhIN3P+d/+M
+	 GTpj9ziWI8zeJhRQGOQ6PPwhaidH+NtUEXjm2+yRs9TsOwRw+lRcfUqahAg1fjIZFs
+	 4tj7KUQCPQDhH4N+mt4eOWzXFLl+A1W1mgdzrFu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.4 007/403] pch_uart: Fix dma_sync_sg_for_device() nents value
+	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 184/587] wifi: mac80211: update radar_required in channel context after channel switch
 Date: Tue, 26 Aug 2025 13:05:33 +0200
-Message-ID: <20250826110905.844039095@linuxfoundation.org>
+Message-ID: <20250826110957.622486876@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-commit 6c0e9f05c9d7875995b0e92ace71be947f280bbd upstream.
+[ Upstream commit 140c6a61d83cbd85adba769b5ef8d61acfa5b392 ]
 
-The dma_sync_sg_for_device() functions should be called with the same
-nents as the dma_map_sg(), not the value the map function returned
-according to the documentation in Documentation/core-api/dma-api.rst:450:
-	With the sync_sg API, all the parameters must be the same
-	as those passed into the sg mapping API.
+Currently, when a non-DFS channel is brought up and the bandwidth is
+expanded from 80 MHz to 160 MHz, where the primary 80 MHz is non-DFS
+and the secondary 80 MHz consists of DFS channels, radar detection
+fails if radar occurs in the secondary 80 MHz.
 
-Fixes: da3564ee027e ("pch_uart: add multi-scatter processing")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250701113452.18590-2-fourier.thomas@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When the channel is switched from 80 MHz to 160 MHz, with the primary
+80 MHz being non-DFS and the secondary 80 MHz consisting of DFS
+channels, the radar required flag in the channel switch parameters
+is set to true. However, when using a reserved channel context,
+it is not updated in sdata, which disables radar detection in the
+secondary 80 MHz DFS channels.
+
+Update the radar required flag in sdata to fix this issue when using
+a reserved channel context.
+
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Signed-off-by: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250608140324.1687117-1-ramasamy.kaliappan@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/pch_uart.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/chan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -1025,7 +1025,7 @@ static unsigned int dma_handle_tx(struct
- 			__func__);
- 		return 0;
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 31c4f112345e..4a21e53afa72 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1313,6 +1313,7 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
+ 		goto out;
  	}
--	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, nent, DMA_TO_DEVICE);
-+	dma_sync_sg_for_device(port->dev, priv->sg_tx_p, num, DMA_TO_DEVICE);
- 	priv->desc_tx = desc;
- 	desc->callback = pch_dma_tx_complete;
- 	desc->callback_param = priv;
+ 
++	link->radar_required = link->reserved_radar_required;
+ 	list_move(&link->assigned_chanctx_list, &new_ctx->assigned_links);
+ 	rcu_assign_pointer(link_conf->chanctx_conf, &new_ctx->conf);
+ 
+-- 
+2.39.5
+
 
 
 
