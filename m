@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38EBB36B3A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAFEB366EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA3A189575D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47C341B6789A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A151535AAC1;
-	Tue, 26 Aug 2025 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0FC352091;
+	Tue, 26 Aug 2025 13:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otUvamJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHcThzxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A45B352084;
-	Tue, 26 Aug 2025 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1DE352078;
+	Tue, 26 Aug 2025 13:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218804; cv=none; b=OzuAD/0ALus1BRrsyQkJEGZKzug08kwq/DKi987AYWtG3Kly4BhTfc0CHWBxlYowuqo2pi9JZrUTEY0zXDc4vBL4azPodhq5UmL7bIDjnoV6/bosNSM9DhsYu/fPlUz5h8JV7/+W2WK82bEV14nNRKISTSSao6XOWeeHyX3EtJA=
+	t=1756216339; cv=none; b=Rr4lMp8tN1O8dlXzFEKSkhEDhjs5EJXruYdqFc2TTBE8VbfLp00Q8LWVmO1DBOrTM5BLTWbOdEtHOeOJUTLRviDcUx+5K768w/k6LRtzUHyxWmd1Vq15OZR5EglQsAIFLIIPKGG8ex42oEEO989Kuka55TQbNHEYkpvxVvbKKuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218804; c=relaxed/simple;
-	bh=5qiGtdL5WAAjVSQYgINuxvWyPst+iKKoIYM09kwFnF8=;
+	s=arc-20240116; t=1756216339; c=relaxed/simple;
+	bh=jnhu0gEJwY6pZLeT03JQiRG6gTkvi7gDWbowNcait8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7hZxmyT0bjSUg5W4OSTprlB9MuPPCHNNdXxfsX1BV7aDaEjhcbLZy7IIVZC1gMFvvMmIEgLEfRVKPSeInGM/H6W8pym3F+8hSvb7MZ5bWYETypD2zgqr+e7MzAqgBfJGsEh4e6fOpeVNlFKcWDQTawWyhyEG+30/u1BPH8/5rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otUvamJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2502C4CEF1;
-	Tue, 26 Aug 2025 14:33:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U/5zArZndFwN9ZStUxPeWcwrT/c49gjftSt6lPE5jZtEuMNyKQTcCNZziYqgJ4GNVVYi/CAQ6Gn2XSfeVSWKlPCGji5fKUrQckFYN80fEsF1JKZN86tAQ/QIl5Gs3+NjbJsUAxYtF7oQcLuG30iX23OLMpKEJwAMjfHWc78gXhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHcThzxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1F9C4CEF1;
+	Tue, 26 Aug 2025 13:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218804;
-	bh=5qiGtdL5WAAjVSQYgINuxvWyPst+iKKoIYM09kwFnF8=;
+	s=korg; t=1756216339;
+	bh=jnhu0gEJwY6pZLeT03JQiRG6gTkvi7gDWbowNcait8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otUvamJwbxoPFAaX103tsRVemo5Rf3c4a8tevkBQDd41Rq2ys4tBJDKVSg3M+bRRT
-	 jv+knshzJsDREhREL3VTyCcLWcj1eckRkh4j/qR5/GKkRJrCie8mTUQqPwGKTDFe8f
-	 iDZm36CA0vPKRR4h32qvYYGJyjFK+JLHdIZZJIRk=
+	b=nHcThzxa0Blh2x6ZQeoOfKvA+7VJJMTkpINRh6z6S4jKw9S4RJ9U4ZIgzp6DBDL3r
+	 ozB7xuiwwC/+E/G+OrIdbCOcE6DM2d+jd4uePRDLv5ZcgqpZPz/2IrLp6A/RE8EOFQ
+	 sZpBWktf8MOF91v+EbviFYOZPHU/dyPLA94H4bak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alastair DSilva <alastair@d-silva.org>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/403] pci/hotplug/pnv-php: Wrap warnings in macro
+Subject: [PATCH 5.15 374/644] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
 Date: Tue, 26 Aug 2025 13:07:45 +0200
-Message-ID: <20250826110910.592936622@linuxfoundation.org>
+Message-ID: <20250826110955.686937984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 748ac391ab9acd8d7f3c93cbf3e63c773c0b2638 ]
+[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
 
-An opencapi slot doesn't have an associated bridge device. It's not
-needed for operation, but any warning is displayed through pci_warn()
-which uses the pci_dev struct of the assocated bridge device. So wrap
-those warning so that a different trace mechanism can be used if it's
-an opencapi slot.
+BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
+or writing it.
 
-Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191121134918.7155-11-fbarrat@linux.ibm.com
-Stable-dep-of: 466861909255 ("PCI: pnv_php: Clean up allocated IRQs on unplug")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 51 +++++++++++++++++++----------------
- 1 file changed, 28 insertions(+), 23 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 8223fe0b751f..3687a99383c1 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -18,6 +18,9 @@
- #define DRIVER_AUTHOR	"Gavin Shan, IBM Corporation"
- #define DRIVER_DESC	"PowerPC PowerNV PCI Hotplug Driver"
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 2def9ed34beb..ef6191d753e8 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -561,6 +561,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
+ {
+ 	u16 reg;
  
-+#define SLOT_WARN(sl, x...) \
-+	((sl)->pdev ? pci_warn((sl)->pdev, x) : dev_warn(&(sl)->bus->dev, x))
++	if (is5325(dev))
++		return;
 +
- struct pnv_php_event {
- 	bool			added;
- 	struct pnv_php_slot	*php_slot;
-@@ -270,7 +273,7 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
+ 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
+ 	if (learning)
+ 		reg &= ~BIT(port);
+@@ -2034,7 +2037,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
+ 		     struct switchdev_brport_flags flags,
+ 		     struct netlink_ext_ack *extack)
+ {
+-	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
++	struct b53_device *dev = ds->priv;
++	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
++
++	if (!is5325(dev))
++		mask |= BR_LEARNING;
++
++	if (flags.mask & ~mask)
+ 		return -EINVAL;
  
- 	ret = pnv_pci_get_device_tree(php_slot->dn->phandle, fdt1, 0x10000);
- 	if (ret) {
--		pci_warn(php_slot->pdev, "Error %d getting FDT blob\n", ret);
-+		SLOT_WARN(php_slot, "Error %d getting FDT blob\n", ret);
- 		goto free_fdt1;
- 	}
- 
-@@ -284,7 +287,7 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
- 	dt = of_fdt_unflatten_tree(fdt, php_slot->dn, NULL);
- 	if (!dt) {
- 		ret = -EINVAL;
--		pci_warn(php_slot->pdev, "Cannot unflatten FDT\n");
-+		SLOT_WARN(php_slot, "Cannot unflatten FDT\n");
- 		goto free_fdt;
- 	}
- 
-@@ -294,15 +297,15 @@ static int pnv_php_add_devtree(struct pnv_php_slot *php_slot)
- 	ret = pnv_php_populate_changeset(&php_slot->ocs, php_slot->dn);
- 	if (ret) {
- 		pnv_php_reverse_nodes(php_slot->dn);
--		pci_warn(php_slot->pdev, "Error %d populating changeset\n",
--			 ret);
-+		SLOT_WARN(php_slot, "Error %d populating changeset\n",
-+			  ret);
- 		goto free_dt;
- 	}
- 
- 	php_slot->dn->child = NULL;
- 	ret = of_changeset_apply(&php_slot->ocs);
- 	if (ret) {
--		pci_warn(php_slot->pdev, "Error %d applying changeset\n", ret);
-+		SLOT_WARN(php_slot, "Error %d applying changeset\n", ret);
- 		goto destroy_changeset;
- 	}
- 
-@@ -342,10 +345,10 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
- 	if (ret > 0) {
- 		if (be64_to_cpu(msg.params[1]) != php_slot->dn->phandle	||
- 		    be64_to_cpu(msg.params[2]) != state) {
--			pci_warn(php_slot->pdev, "Wrong msg (%lld, %lld, %lld)\n",
--				 be64_to_cpu(msg.params[1]),
--				 be64_to_cpu(msg.params[2]),
--				 be64_to_cpu(msg.params[3]));
-+			SLOT_WARN(php_slot, "Wrong msg (%lld, %lld, %lld)\n",
-+				  be64_to_cpu(msg.params[1]),
-+				  be64_to_cpu(msg.params[2]),
-+				  be64_to_cpu(msg.params[3]));
- 			return -ENOMSG;
- 		}
- 		if (be64_to_cpu(msg.params[3]) != OPAL_SUCCESS) {
-@@ -364,8 +367,8 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
- 	return ret;
- 
- error:
--	pci_warn(php_slot->pdev, "Error %d powering %s\n",
--		 ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
-+	SLOT_WARN(php_slot, "Error %d powering %s\n",
-+		  ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(pnv_php_set_slot_power_state);
-@@ -383,8 +386,8 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
- 	 */
- 	ret = pnv_pci_get_power_state(php_slot->id, &power_state);
- 	if (ret) {
--		pci_warn(php_slot->pdev, "Error %d getting power status\n",
--			 ret);
-+		SLOT_WARN(php_slot, "Error %d getting power status\n",
-+			  ret);
- 	} else {
- 		*state = power_state;
- 	}
-@@ -407,7 +410,7 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- 		*state = presence;
- 		ret = 0;
- 	} else {
--		pci_warn(php_slot->pdev, "Error %d getting presence\n", ret);
-+		SLOT_WARN(php_slot, "Error %d getting presence\n", ret);
- 	}
- 
- 	return ret;
-@@ -680,7 +683,7 @@ static int pnv_php_register_slot(struct pnv_php_slot *php_slot)
- 	ret = pci_hp_register(&php_slot->slot, php_slot->bus,
- 			      php_slot->slot_no, php_slot->name);
- 	if (ret) {
--		pci_warn(php_slot->pdev, "Error %d registering slot\n", ret);
-+		SLOT_WARN(php_slot, "Error %d registering slot\n", ret);
- 		return ret;
- 	}
- 
-@@ -733,7 +736,7 @@ static int pnv_php_enable_msix(struct pnv_php_slot *php_slot)
- 	/* Enable MSIx */
- 	ret = pci_enable_msix_exact(pdev, &entry, 1);
- 	if (ret) {
--		pci_warn(pdev, "Error %d enabling MSIx\n", ret);
-+		SLOT_WARN(php_slot, "Error %d enabling MSIx\n", ret);
- 		return ret;
- 	}
- 
-@@ -783,8 +786,9 @@ static irqreturn_t pnv_php_interrupt(int irq, void *data)
- 		   (sts & PCI_EXP_SLTSTA_PDC)) {
- 		ret = pnv_pci_get_presence_state(php_slot->id, &presence);
- 		if (ret) {
--			pci_warn(pdev, "PCI slot [%s] error %d getting presence (0x%04x), to retry the operation.\n",
--				 php_slot->name, ret, sts);
-+			SLOT_WARN(php_slot,
-+				  "PCI slot [%s] error %d getting presence (0x%04x), to retry the operation.\n",
-+				  php_slot->name, ret, sts);
- 			return IRQ_HANDLED;
- 		}
- 
-@@ -814,8 +818,9 @@ static irqreturn_t pnv_php_interrupt(int irq, void *data)
- 	 */
- 	event = kzalloc(sizeof(*event), GFP_ATOMIC);
- 	if (!event) {
--		pci_warn(pdev, "PCI slot [%s] missed hotplug event 0x%04x\n",
--			 php_slot->name, sts);
-+		SLOT_WARN(php_slot,
-+			  "PCI slot [%s] missed hotplug event 0x%04x\n",
-+			  php_slot->name, sts);
- 		return IRQ_HANDLED;
- 	}
- 
-@@ -839,7 +844,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 	/* Allocate workqueue */
- 	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
- 	if (!php_slot->wq) {
--		pci_warn(pdev, "Cannot alloc workqueue\n");
-+		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
- 		pnv_php_disable_irq(php_slot, true);
- 		return;
- 	}
-@@ -863,7 +868,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 			  php_slot->name, php_slot);
- 	if (ret) {
- 		pnv_php_disable_irq(php_slot, true);
--		pci_warn(pdev, "Error %d enabling IRQ %d\n", ret, irq);
-+		SLOT_WARN(php_slot, "Error %d enabling IRQ %d\n", ret, irq);
- 		return;
- 	}
- 
-@@ -899,7 +904,7 @@ static void pnv_php_enable_irq(struct pnv_php_slot *php_slot)
- 
- 	ret = pci_enable_device(pdev);
- 	if (ret) {
--		pci_warn(pdev, "Error %d enabling device\n", ret);
-+		SLOT_WARN(php_slot, "Error %d enabling device\n", ret);
- 		return;
- 	}
- 
+ 	return 0;
 -- 
 2.39.5
 
