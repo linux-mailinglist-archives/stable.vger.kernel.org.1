@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-174928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A91B365A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701A9B35F94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CB008E0B10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D5CC2089A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFFA23D28F;
-	Tue, 26 Aug 2025 13:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E334C1C701F;
+	Tue, 26 Aug 2025 12:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJxQpZ3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoCFXKvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE51D2139C9;
-	Tue, 26 Aug 2025 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9D213790B;
+	Tue, 26 Aug 2025 12:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215686; cv=none; b=l+Fqr4LyOpEPZLtLImuvIUTfTi530hWNdP0UZALH1NoVLXM1cqIfvhHXTVxK6vncF5NCajQ381MaA94IPHeTJIIY+CwftSUpsDVMm/OPCT6fnJewpq28oUBVNzabpA1IBuvnF8Uu81Z/qKjHG6TTxxkyMQeDXB39Y6xhMz6HPS4=
+	t=1756212617; cv=none; b=KGUUvtUNHcQKAuywzlI29mjX15btOCmjDCcafV2Y/HNU9I6YluPE/IwSAMjX5WP1yH1q9AdkvR2Ni5FaidY6soa2ymGX2KbIZJ0s0fzGRFdURMDgO8t40LI8l+BuhGzcEAhLnpUV143tuUzQGneivwpfkTERW9Vtq84g7BcCc0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215686; c=relaxed/simple;
-	bh=PCiy0VUCPBljuYIl/w4GmtMkbb8jydh8cG6jqVznl9k=;
+	s=arc-20240116; t=1756212617; c=relaxed/simple;
+	bh=uRQm+XmKDeIyNChn1yR1CJ0+51xeqdan4zg4tPZe5KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4IZRHg2arrrEUylGgIHTVt43w2VtZKIAT0M48UAO3LUwUC8vzDg01EW+3NvMEKvPgyS1OSIfoN/5KcxMGWh7eosibknUu09UaUORWeridJQXpPppVl0dP/X/w7TUiErFTIXYe/Fo9z8llZRxwI7h/QXcqqq1SHyKnBVwcd8eLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJxQpZ3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD51C116B1;
-	Tue, 26 Aug 2025 13:41:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DfNB3lsSFtlWMvwybAxea82aaPXMhR83eV077fos164jY0gDxtwYNY1Lw9oqdtgB64pcr38Cc4C4ZZgftJGFSV6pSXXjDJGy9eOudUkDnR4jVRwTHKhReokX+xPY1DctrJT9XiT6hHGfbMihgHXH/3Oa+5I7BC8nHPtZjmscDI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoCFXKvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F04FC4CEF1;
+	Tue, 26 Aug 2025 12:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215686;
-	bh=PCiy0VUCPBljuYIl/w4GmtMkbb8jydh8cG6jqVznl9k=;
+	s=korg; t=1756212617;
+	bh=uRQm+XmKDeIyNChn1yR1CJ0+51xeqdan4zg4tPZe5KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJxQpZ3+Pe+ANcjXySaEdkjXZ0yCG42wXHUd17tnCrQf3lTU6B648h4c+afA/5iUf
-	 ugL7fdehn9XFCi4tk1Xz/atMvNBibhC+bUoAYQZHbKTVGFUnaa7B5Ogxsl1M2SWeSP
-	 HE1mMRrQcg+wvj/tcbGDXnHbR/wx9TCjDNvLWoVY=
+	b=HoCFXKvgEBQkhz/PUPFG7ybSWjBSmyweQjqsvl/wSybCUuLq9z06SLvvnqGr9JQhg
+	 53qv13TDtPquyGhTc+g+VlYDXcbGh643bdpzcIgR879yXXrHtJc6DPnpe8cIGBZZTp
+	 tzTVhEwvZCr1dYun7yHH4m6+mCIL5xbLRa1D1YYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Vlad URSU <vlad@ursu.me>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 096/644] e1000e: ignore uninitialized checksum word on tgp
+	=?UTF-8?q?Markku=20Ahvenj=C3=A4rvi?= <mankku@gmail.com>,
+	Janne Karhunen <janne.karhunen@gmail.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/587] KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID
 Date: Tue, 26 Aug 2025 13:03:07 +0200
-Message-ID: <20250826110948.888152238@linuxfoundation.org>
+Message-ID: <20250826110953.917850376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Chao Gao <chao.gao@intel.com>
 
-commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
+[ Upstream commit 04bc93cf49d16d01753b95ddb5d4f230b809a991 ]
 
-As described by Vitaly Lifshits:
+If KVM emulates an EOI for L1's virtual APIC while L2 is active, defer
+updating GUEST_INTERUPT_STATUS.SVI, i.e. the VMCS's cache of the highest
+in-service IRQ, until L1 is active, as vmcs01, not vmcs02, needs to track
+vISR.  The missed SVI update for vmcs01 can result in L1 interrupts being
+incorrectly blocked, e.g. if there is a pending interrupt with lower
+priority than the interrupt that was EOI'd.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set.
+This bug only affects use cases where L1's vAPIC is effectively passed
+through to L2, e.g. in a pKVM scenario where L2 is L1's depriveleged host,
+as KVM will only emulate an EOI for L1's vAPIC if Virtual Interrupt
+Delivery (VID) is disabled in vmc12, and L1 isn't intercepting L2 accesses
+to its (virtual) APIC page (or if x2APIC is enabled, the EOI MSR).
 
-Unfortunately some systems have left the factory with an uninitialized
-value of 0xFFFF at register address 0x3F (checksum word location).
-So on Tiger Lake platform we ignore the computed checksum when such
-condition is encountered.
+WARN() if KVM updates L1's ISR while L2 is active with VID enabled, as an
+EOI from L2 is supposed to affect L2's vAPIC, but still defer the update,
+to try to keep L1 alive.  Specifically, KVM forwards all APICv-related
+VM-Exits to L1 via nested_vmx_l1_wants_exit():
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Tested-by: Vlad URSU <vlad@ursu.me>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+	case EXIT_REASON_APIC_ACCESS:
+	case EXIT_REASON_APIC_WRITE:
+	case EXIT_REASON_EOI_INDUCED:
+		/*
+		 * The controls for "virtualize APIC accesses," "APIC-
+		 * register virtualization," and "virtual-interrupt
+		 * delivery" only come from vmcs12.
+		 */
+		return true;
+
+Fixes: c7c9c56ca26f ("x86, apicv: add virtual interrupt delivery support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/kvm/20230312180048.1778187-1-jason.cj.chen@intel.com
+Reported-by: Markku Ahvenjärvi <mankku@gmail.com>
+Closes: https://lore.kernel.org/all/20240920080012.74405-1-mankku@gmail.com
+Cc: Janne Karhunen <janne.karhunen@gmail.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+[sean: drop request, handle in VMX, write changelog]
+Tested-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20241128000010.4051275-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: resolve minor syntactic conflict in lapic.h, account for lack of
+       kvm_x86_call(), drop sanity check due to lack of wants_to_run]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
- drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
- 2 files changed, 9 insertions(+)
+ arch/x86/kvm/lapic.c      | 11 +++++++++++
+ arch/x86/kvm/lapic.h      |  1 +
+ arch/x86/kvm/vmx/nested.c |  5 +++++
+ arch/x86/kvm/vmx/vmx.c    | 16 ++++++++++++++++
+ arch/x86/kvm/vmx/vmx.h    |  1 +
+ 5 files changed, 34 insertions(+)
 
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -638,6 +638,9 @@
- /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
- #define NVM_SUM                    0xBABA
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index cbf85a1ffb74..ba1c2a7f74f7 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -803,6 +803,17 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+ 	}
+ }
  
-+/* Uninitialized ("empty") checksum word value */
-+#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
++void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu)
++{
++	struct kvm_lapic *apic = vcpu->arch.apic;
 +
- /* PBA (printed board assembly) number words */
- #define NVM_PBA_OFFSET_0           8
- #define NVM_PBA_OFFSET_1           9
---- a/drivers/net/ethernet/intel/e1000e/nvm.c
-+++ b/drivers/net/ethernet/intel/e1000e/nvm.c
-@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
- 		checksum += nvm_data;
++	if (WARN_ON_ONCE(!lapic_in_kernel(vcpu)) || !apic->apicv_active)
++		return;
++
++	static_call(kvm_x86_hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
++}
++EXPORT_SYMBOL_GPL(kvm_apic_update_hwapic_isr);
++
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu)
+ {
+ 	/* This may race with setting of irr in __apic_accept_irq() and
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 0a0ea4b5dd8c..0dd069b8d6d1 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -124,6 +124,7 @@ int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
+ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu);
++void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu);
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+ 
+ u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index d3e346a574f1..fdf7503491f9 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4900,6 +4900,11 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
  	}
  
-+	if (hw->mac.type == e1000_pch_tgp &&
-+	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
-+		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
-+		return 0;
++	if (vmx->nested.update_vmcs01_hwapic_isr) {
++		vmx->nested.update_vmcs01_hwapic_isr = false;
++		kvm_apic_update_hwapic_isr(vcpu);
 +	}
 +
- 	if (checksum != (u16)NVM_SUM) {
- 		e_dbg("NVM Checksum Invalid\n");
- 		return -E1000_ERR_NVM;
+ 	if ((vm_exit_reason != -1) &&
+ 	    (enable_shadow_vmcs || evmptr_is_valid(vmx->nested.hv_evmcs_vmptr)))
+ 		vmx->nested.need_vmcs12_to_shadow_sync = true;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cde01eb1f5e3..4563e7a9a851 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6839,6 +6839,22 @@ static void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
+ 	u16 status;
+ 	u8 old;
+ 
++	/*
++	 * If L2 is active, defer the SVI update until vmcs01 is loaded, as SVI
++	 * is only relevant for if and only if Virtual Interrupt Delivery is
++	 * enabled in vmcs12, and if VID is enabled then L2 EOIs affect L2's
++	 * vAPIC, not L1's vAPIC.  KVM must update vmcs01 on the next nested
++	 * VM-Exit, otherwise L1 with run with a stale SVI.
++	 */
++	if (is_guest_mode(vcpu)) {
++		/*
++		 * KVM is supposed to forward intercepted L2 EOIs to L1 if VID
++		 * is enabled in vmcs12; as above, the EOIs affect L2's vAPIC.
++		 */
++		to_vmx(vcpu)->nested.update_vmcs01_hwapic_isr = true;
++		return;
++	}
++
+ 	if (max_isr == -1)
+ 		max_isr = 0;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 6be1627d888e..88c5b7ebf9d3 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -177,6 +177,7 @@ struct nested_vmx {
+ 	bool reload_vmcs01_apic_access_page;
+ 	bool update_vmcs01_cpu_dirty_logging;
+ 	bool update_vmcs01_apicv_status;
++	bool update_vmcs01_hwapic_isr;
+ 
+ 	/*
+ 	 * Enlightened VMCS has been enabled. It does not mean that L1 has to
+-- 
+2.50.1
+
 
 
 
