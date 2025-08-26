@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F0DB362E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD072B365F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9E81896B09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072301C216D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF47345752;
-	Tue, 26 Aug 2025 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133B321457;
+	Tue, 26 Aug 2025 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsbzQ0Wm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ksgulzca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8FD34DCD4;
-	Tue, 26 Aug 2025 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98E3191F84;
+	Tue, 26 Aug 2025 13:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214234; cv=none; b=TlYpNpdt9mB7CuZbdJOmba4S+LGNrTD4VWxtWYDBV7pA5Z+PvhJ3k54fI2WjeEcPuFzHprvENdnmHrzvw8vCtDCQC5OmEDhUV6sH6TY6bZ0VXWVWmtptJ0dazP5yUryG/cpIfY1MjYBdVe0I6MzCX66p81aEwhuCgVjdpG2ofQI=
+	t=1756215945; cv=none; b=Ykrkl1g9xrN2grxYlqSuNrEdrYHsSazrKgBDFbNurhXkbgXJ3x97yjqOKZxRkKFf6KwIAUt2rk7y2dI5ROYjnLrVq4vhbNdlDEhcS9u69OTp0OWQh6SPNLlIeBagtWQnldLeFUGndbKnL0+HlHqvExTCmKCU4VDW7F15Rd4qvuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214234; c=relaxed/simple;
-	bh=dKqDjZ48mcFrA7A5AAFYdLUqq0pWeRHxkVc3VIu/uD4=;
+	s=arc-20240116; t=1756215945; c=relaxed/simple;
+	bh=B8BvrzaRonWSTf4j/XOjgLwWUUIdx4v7KkU7+JpRoa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOL1d9GIEEDjWOi4d0EWStoZGuOwSMCtAnPKyCW4Vgj7GdMNB3uGrquW0xd/7HzwpMTloBL1mvAAf80d+lga8aHfgKTQw0Tj32SqdLX+X+XA5UWyFN6Z8vcPELFKiOrneVWU2+YgqMLvJZ60VRQ9YQEiuiIgncIr77ihu4mj5EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsbzQ0Wm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB28C4CEF1;
-	Tue, 26 Aug 2025 13:17:13 +0000 (UTC)
+	 MIME-Version; b=qSoOT5OfixUicmG8hmdLfUN1Riksq/HUswCh9ZyfXplPUVmihT411L3txeAq31Yxs3yfu+AyC9MGBmNtXlO/ZpG0y68v40h+bQ4UMr5xbhsHQogerqCU7l/eYhGTWjqTBe7U1cr89k5iDibZbtU0PFe3gJkOcy1TYY6YYquakig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ksgulzca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FBFC4CEF1;
+	Tue, 26 Aug 2025 13:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214234;
-	bh=dKqDjZ48mcFrA7A5AAFYdLUqq0pWeRHxkVc3VIu/uD4=;
+	s=korg; t=1756215945;
+	bh=B8BvrzaRonWSTf4j/XOjgLwWUUIdx4v7KkU7+JpRoa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsbzQ0WmJxZgFHmiR0dNKZm/BtA7KKUckTc1SK8n2OJ9lQWb3qYFL4djISlOLGxnm
-	 eS0w8WNvW7DuJ1jw310K6tCawJWavWFdV1UUZB8zQFDM1iE6T5yhoBcLyWjbWJubL2
-	 9ZmGPif3ZdkJuwl1Bg7FtYDWMeQwuLXY7YOEIFFA=
+	b=KsgulzcaBU7pmxjt0AkWvDfnZ+l5+YHJF/NARqC42CKVBlXYHaL+IVKGYZAAC5KQc
+	 EXXSLvkcpjf8ILl09uCYWzgVrGhyjTPtioyub81UNI5NGS0mX9wNxw2Sn69jlPzyyb
+	 fPXDpqvzW9tBDhA3Xn5Pz3tgAsIzGY6gu3tanuYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Gao <wegao@suse.com>,
-	Jan Kara <jack@suse.cz>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/482] ext2: Handle fiemap on empty files to prevent EINVAL
+Subject: [PATCH 5.15 224/644] powerpc/eeh: Make EEH driver device hotplug safe
 Date: Tue, 26 Aug 2025 13:05:15 +0200
-Message-ID: <20250826110932.356380152@linuxfoundation.org>
+Message-ID: <20250826110951.971892695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Gao <wegao@suse.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
+[ Upstream commit 1010b4c012b0d78dfb9d3132b49aa2ef024a07a7 ]
 
-Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
-i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
-would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
-then result in an -EINVAL error, even for valid queries on empty files.
+Multiple race conditions existed between the PCIe hotplug driver and the
+EEH driver, leading to a variety of kernel oopses of the same general
+nature:
 
-Link: https://github.com/linux-test-project/ltp/issues/1246
-Signed-off-by: Wei Gao <wegao@suse.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
+<pcie device unplug>
+<eeh driver trigger>
+<hotplug removal trigger>
+<pcie tree reconfiguration>
+<eeh recovery next step>
+<oops in EEH driver bus iteration loop>
+
+A second class of oops is also seen when the underlying bus disappears
+during device recovery.
+
+Refactor the EEH module to be PCI rescan and remove safe.  Also clean
+up a few minor formatting / readability issues.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/1334208367.1359861.1752615503144.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/inode.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/eeh_driver.c | 48 +++++++++++++++++++++-----------
+ arch/powerpc/kernel/eeh_pe.c     | 10 ++++---
+ 2 files changed, 38 insertions(+), 20 deletions(-)
 
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index 5a32fcd55183..430ccd983491 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -860,9 +860,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		u64 start, u64 len)
- {
- 	int ret;
-+	loff_t i_size;
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 665d847ef9b5..ed5be1bff60c 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -258,13 +258,12 @@ static void eeh_pe_report_edev(struct eeh_dev *edev, eeh_report_fn fn,
+ 	struct pci_driver *driver;
+ 	enum pci_ers_result new_result;
  
- 	inode_lock(inode);
--	len = min_t(u64, len, i_size_read(inode));
-+	i_size = i_size_read(inode);
-+	/*
-+	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
-+	 * length to 0 but still trim the range as much as possible since
-+	 * ext2_get_blocks() iterates unmapped space block by block which is
-+	 * slow.
-+	 */
-+	if (i_size == 0)
-+		i_size = 1;
-+	len = min_t(u64, len, i_size);
- 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
- 	inode_unlock(inode);
+-	pci_lock_rescan_remove();
+ 	pdev = edev->pdev;
+ 	if (pdev)
+ 		get_device(&pdev->dev);
+-	pci_unlock_rescan_remove();
+ 	if (!pdev) {
+ 		eeh_edev_info(edev, "no device");
++		*result = PCI_ERS_RESULT_DISCONNECT;
+ 		return;
+ 	}
+ 	device_lock(&pdev->dev);
+@@ -305,8 +304,9 @@ static void eeh_pe_report(const char *name, struct eeh_pe *root,
+ 	struct eeh_dev *edev, *tmp;
  
+ 	pr_info("EEH: Beginning: '%s'\n", name);
+-	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
+-		eeh_pe_report_edev(edev, fn, result);
++	eeh_for_each_pe(root, pe)
++		eeh_pe_for_each_dev(pe, edev, tmp)
++			eeh_pe_report_edev(edev, fn, result);
+ 	if (result)
+ 		pr_info("EEH: Finished:'%s' with aggregate recovery state:'%s'\n",
+ 			name, pci_ers_result_name(*result));
+@@ -384,6 +384,8 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 	if (!edev)
+ 		return;
+ 
++	pci_lock_rescan_remove();
++
+ 	/*
+ 	 * The content in the config space isn't saved because
+ 	 * the blocked config space on some adapters. We have
+@@ -394,14 +396,19 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 		if (list_is_last(&edev->entry, &edev->pe->edevs))
+ 			eeh_pe_restore_bars(edev->pe);
+ 
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+ 	pdev = eeh_dev_to_pci_dev(edev);
+-	if (!pdev)
++	if (!pdev) {
++		pci_unlock_rescan_remove();
+ 		return;
++	}
+ 
+ 	pci_restore_state(pdev);
++
++	pci_unlock_rescan_remove();
+ }
+ 
+ /**
+@@ -648,9 +655,7 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (any_passed || driver_eeh_aware || (pe->type & EEH_PE_VF)) {
+ 		eeh_pe_dev_traverse(pe, eeh_rmv_device, rmv_data);
+ 	} else {
+-		pci_lock_rescan_remove();
+ 		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
+ 	}
+ 
+ 	/*
+@@ -666,8 +671,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (rc)
+ 		return rc;
+ 
+-	pci_lock_rescan_remove();
+-
+ 	/* Restore PE */
+ 	eeh_ops->configure_bridge(pe);
+ 	eeh_pe_restore_bars(pe);
+@@ -675,7 +678,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	/* Clear frozen state */
+ 	rc = eeh_clear_pe_frozen_state(pe, false);
+ 	if (rc) {
+-		pci_unlock_rescan_remove();
+ 		return rc;
+ 	}
+ 
+@@ -710,7 +712,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	pe->tstamp = tstamp;
+ 	pe->freeze_count = cnt;
+ 
+-	pci_unlock_rescan_remove();
+ 	return 0;
+ }
+ 
+@@ -844,10 +845,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
+ 	int devices = 0;
+ 
++	pci_lock_rescan_remove();
++
+ 	bus = eeh_pe_bus_get(pe);
+ 	if (!bus) {
+ 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
+ 			__func__, pe->phb->global_number, pe->addr);
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1089,10 +1093,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+ 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+ 
+-		pci_lock_rescan_remove();
+-		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
++		bus = eeh_pe_bus_get(pe);
++		if (bus)
++			pci_hp_remove_devices(bus);
++		else
++			pr_err("%s: PCI bus for PHB#%x-PE#%x disappeared\n",
++				__func__, pe->phb->global_number, pe->addr);
++
+ 		/* The passed PE should no longer be used */
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1109,6 +1118,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 			eeh_clear_slot_attention(edev->pdev);
+ 
+ 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
++
++	pci_unlock_rescan_remove();
+ }
+ 
+ /**
+@@ -1127,6 +1138,7 @@ void eeh_handle_special_event(void)
+ 	unsigned long flags;
+ 	int rc;
+ 
++	pci_lock_rescan_remove();
+ 
+ 	do {
+ 		rc = eeh_ops->next_error(&pe);
+@@ -1166,10 +1178,12 @@ void eeh_handle_special_event(void)
+ 
+ 			break;
+ 		case EEH_NEXT_ERR_NONE:
++			pci_unlock_rescan_remove();
+ 			return;
+ 		default:
+ 			pr_warn("%s: Invalid value %d from next_error()\n",
+ 				__func__, rc);
++			pci_unlock_rescan_remove();
+ 			return;
+ 		}
+ 
+@@ -1181,7 +1195,9 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
+ 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
+ 			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
++			pci_unlock_rescan_remove();
+ 			eeh_handle_normal_event(pe);
++			pci_lock_rescan_remove();
+ 		} else {
+ 			eeh_for_each_pe(pe, tmp_pe)
+ 				eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
+@@ -1194,7 +1210,6 @@ void eeh_handle_special_event(void)
+ 				eeh_report_failure, NULL);
+ 			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 
+-			pci_lock_rescan_remove();
+ 			list_for_each_entry(hose, &hose_list, list_node) {
+ 				phb_pe = eeh_phb_pe_get(hose);
+ 				if (!phb_pe ||
+@@ -1213,7 +1228,6 @@ void eeh_handle_special_event(void)
+ 				}
+ 				pci_hp_remove_devices(bus);
+ 			}
+-			pci_unlock_rescan_remove();
+ 		}
+ 
+ 		/*
+@@ -1223,4 +1237,6 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_DEAD_IOC)
+ 			break;
+ 	} while (rc != EEH_NEXT_ERR_NONE);
++
++	pci_unlock_rescan_remove();
+ }
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index 3f55e372f259..fea58e9546f9 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -670,10 +670,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
+ 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
+ 
+ 	/* Check link */
+-	if (!edev->pdev->link_active_reporting) {
+-		eeh_edev_dbg(edev, "No link reporting capability\n");
+-		msleep(1000);
+-		return;
++	if (edev->pdev) {
++		if (!edev->pdev->link_active_reporting) {
++			eeh_edev_dbg(edev, "No link reporting capability\n");
++			msleep(1000);
++			return;
++		}
+ 	}
+ 
+ 	/* Wait the link is up until timeout (5s) */
 -- 
 2.39.5
 
