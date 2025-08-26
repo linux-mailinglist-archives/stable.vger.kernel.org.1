@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DFBB36C56
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADCEB36B12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CB998274C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53371C41DD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF17362066;
-	Tue, 26 Aug 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976D335206D;
+	Tue, 26 Aug 2025 14:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwIVxbO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFc5+n81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF70362084;
-	Tue, 26 Aug 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5475510E0;
+	Tue, 26 Aug 2025 14:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219266; cv=none; b=rtlHtE5NuMiLiaZTYZrd7/zj2cIL63vwHsh2rDR9isUXa+mXEaVVtcn0AzG9Fw/CVcEUWBJVvkurqHmS8Brl6TgRd1nEuB2yvsqddqZls3QOsxoQe++HlfpoEEwJBmLzITQ86Gd8Zyh1KfUC8ywiVZxVRRltiPHaW1PHQraKwPQ=
+	t=1756218201; cv=none; b=VQ+if90rKWDd049LGILaCS3gFRnyS5rYu49OuhUvCsh5G++8j0cztzBpAB1wQP871WO2Y1u3wO9GQ5IP2nEENoI+V/bbi7x++XA4YzhGEtfUDJc1QJCYBWIYDbVXLxPQew+NdWWURfXS4YqJn7DHTbkZnAx0K75rWmVxeagn0WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219266; c=relaxed/simple;
-	bh=6LmisT4qe/heEaj9YA0blcGVtv0oc0GRRIjh6+NNHH0=;
+	s=arc-20240116; t=1756218201; c=relaxed/simple;
+	bh=XjiNVeXq+CNH4Mjw8Atk3RQjxTBQTNDNXuTq09ccxkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0lmsEFsfs0VcUL4VDTtFK12CQWyfFpovbmgjN7ZgRq8FTYXlSb9LZJvuGeH8Lgi8pU/YLPZIZKzkhsGwQm598h+x9ipR224bHNT5NGlUtMlT3rfdVyjg49PTXKLQptCqQYMQfkW7hEIiPfqMzopDdoe1UWpLAHUXtzq2q9tXEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwIVxbO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDACC116B1;
-	Tue, 26 Aug 2025 14:41:05 +0000 (UTC)
+	 MIME-Version; b=QsYcU5M1zdTEleQenAwX7VlraXiFlrBsp7Y9dmEvLVZrGW98+EsSgAl7X0UM77hTTnEqsf9vlgWx7Q/hY3HxVQA7B0AjcLPakfyedCCUdHM3MxG6QTWdHqovwqbFG/OBmNfjmfF9ys5QZy0ds9HxWkeGykjb8sVSeCJT1nJ6hRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFc5+n81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF46C4CEF1;
+	Tue, 26 Aug 2025 14:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219266;
-	bh=6LmisT4qe/heEaj9YA0blcGVtv0oc0GRRIjh6+NNHH0=;
+	s=korg; t=1756218201;
+	bh=XjiNVeXq+CNH4Mjw8Atk3RQjxTBQTNDNXuTq09ccxkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwIVxbO4HqdvJNK0KG14RqsIf94Az0S6Q308vxtqBOuQbgf7K0cYzvl+1ud7Ed9X+
-	 WT2g3RvpKud6kioHN+cXEgQxTeVK6h2XqiaGpJFoAp+P/lVtfNzTPSwBrIrb8MZWPQ
-	 52v9l3WQ++UrabFQaa1b9f5evboW1Iuqo58puSq4=
+	b=HFc5+n818Hb/ygBBWl2oa5D890Sl+KwNZ8YmBPwN2XsJWn+4qEinqo7CYCJ+tikBU
+	 6hsLgn8yvK2Q2bFh/xIn9WZIOzHVJRS3ahA+qR8KE5fD724fBGkIFP1YnM30TT3yme
+	 5PjeE+jA5R4uYAj67l6Udm+pJ7kJoasOrDto41LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Pisa <pisa@fel.cvut.cz>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 5.4 315/403] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
+	stable <stable@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 431/523] usb: typec: fusb302: cache PD RX state
 Date: Tue, 26 Aug 2025 13:10:41 +0200
-Message-ID: <20250826110915.519496664@linuxfoundation.org>
+Message-ID: <20250826110935.087262723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
+[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
 
-dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
-get the number of mapped segments.
+This patch fixes a race condition communication error, which ends up in
+PD hard resets when losing the race. Some systems, like the Radxa ROCK
+5B are powered through USB-C without any backup power source and use a
+FUSB302 chip to do the PD negotiation. This means it is quite important
+to avoid hard resets, since that effectively kills the system's
+power-supply.
 
-Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
-Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
-Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
-Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
+I've found the following race condition while debugging unplanned power
+loss during booting the board every now and then:
+
+1. lots of TCPM/FUSB302/PD initialization stuff
+2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
+3. the remote PD source does not send anything, so TCPM does a SOFT RESET
+4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
+   (tcpm_set_pd_rx is enabled again, even though it is still on)
+
+At this point I've seen broken CRC good messages being send by the
+FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
+messages are being lost and things generally going haywire with one of
+the two sides doing a hard reset once a broken CRC good message was send
+to the bus.
+
+I think the system is running into a race condition, that the FIFOs are
+being cleared and/or the automatic good CRC message generation flag is
+being updated while a message is already arriving.
+
+Let's avoid this by caching the PD RX enabled state, as we have already
+processed anything in the FIFOs and are in a good state. As a side
+effect that this also optimizes I2C bus usage :)
+
+As far as I can tell the problem theoretically also exists when TCPM
+enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
+critical for the following reason:
+
+On devices like the ROCK 5B, which are powered through a TCPM backed
+USB-C port, the bootloader must have done some prior PD communication
+(initial communication must happen within 5 seconds after plugging the
+USB-C plug). This means the first time the kernel TCPM state machine
+reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
+actively. On other devices a hard reset simply adds some extra delay and
+things should be good afterwards.
+
+Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ replaced str_on_off(on) with ternary operator ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/fpga/zynq-fpga.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
- 		}
- 	}
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -103,6 +103,7 @@ struct fusb302_chip {
+ 	bool vconn_on;
+ 	bool vbus_on;
+ 	bool charge_on;
++	bool pd_rx_on;
+ 	bool vbus_present;
+ 	enum typec_cc_polarity cc_polarity;
+ 	enum typec_cc_status cc1;
+@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 	int ret = 0;
  
--	priv->dma_nelms =
--	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
--	if (priv->dma_nelms == 0) {
-+	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
-+	if (err) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
--		return -ENOMEM;
-+		return err;
+ 	mutex_lock(&chip->lock);
++	if (chip->pd_rx_on == on) {
++		fusb302_log(chip, "pd is already %s", on ? "on" : "off");
++		goto done;
++	}
++
+ 	ret = fusb302_pd_rx_flush(chip);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
+@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 			    on ? "on" : "off", ret);
+ 		goto done;
  	}
-+	priv->dma_nelms = sgt->nents;
- 
- 	/* enable clock */
- 	err = clk_enable(priv->clk);
++
++	chip->pd_rx_on = on;
+ 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
+ done:
+ 	mutex_unlock(&chip->lock);
 
 
 
