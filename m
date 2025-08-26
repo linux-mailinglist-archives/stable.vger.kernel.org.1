@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9B8B363F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C93CB35BD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE0216B252
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 303932A4CE6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E6D3093BA;
-	Tue, 26 Aug 2025 13:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10F32142D;
+	Tue, 26 Aug 2025 11:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koTKxuwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHWfRYM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5A338F50;
-	Tue, 26 Aug 2025 13:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543272FD7DE;
+	Tue, 26 Aug 2025 11:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214506; cv=none; b=QQtBSNyDaRo6pcciHhwOXBP08klzBNkNxFbHAzomG1nxog9d+B8dACc+Ff0C56lu5LG3KArV5uuVNokHmGTMn3UEJM9dD3PgWaPDZVVZVYW4GDqztHdoTwyzBidVduv72gBBwF+hq0lu4JxULZKaBKwvcdiojkgr9gHZWrv7zuA=
+	t=1756207313; cv=none; b=TGcAzm9Ub5BNY3ecZCXGWBSN6kUOhmklG2j3pEmx4ioArJBVon6AcsyIJnngR9OhH4A6kStmz3bMN6Rixuvad0dkScKxeUb3NeiRPNkEyYEkWl10mWoPd5GaITCWo6BrwfYJfszo6K6YuwE7l0V7KwUMAUaIv3ox46vT+jI1yy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214506; c=relaxed/simple;
-	bh=OgQA3TrlVY2DVsAkAx2kVJkvOFmOfZ+yh8RVebNLXbI=;
+	s=arc-20240116; t=1756207313; c=relaxed/simple;
+	bh=DrmfzGLNWD5neFK87rMv2KULR2gD/QaytsF11i0Jf0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c61qbiD1uH8Cc+7arxz9kD5L71j+S1YBlGA9EqzFXRknozlb7ry05Dff7AduW1bF+Ba6qxHxct3RoCb4d8u2Ey9X/BWaxW+p9bqfdHwnMZw9eNhoPJNayVsIo/PzxiABDS1Do0dwyn2KqfOby2url36l3YA8p9dOSDhBfLEO0Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koTKxuwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17406C4CEF1;
-	Tue, 26 Aug 2025 13:21:45 +0000 (UTC)
+	 MIME-Version; b=qiMzMjiazL1gsO/28+Ky03+GR9VRp71loigaPHMA+gz70gipcmBaHsEgkCJvjm4cXfW6KPn41dMKfp8MKGUpE0eXVLqQmdjUYnWXdtxxBjj3Wg0XRlZpSHhM9aUIynCtR9Z53bfCrDrXd5zFz/IjLqe6rhYy38YHtqwct9kD34A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHWfRYM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98E8C4CEF1;
+	Tue, 26 Aug 2025 11:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214506;
-	bh=OgQA3TrlVY2DVsAkAx2kVJkvOFmOfZ+yh8RVebNLXbI=;
+	s=korg; t=1756207313;
+	bh=DrmfzGLNWD5neFK87rMv2KULR2gD/QaytsF11i0Jf0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koTKxuwrNMBBVwTACAZEhH7JJTN6aiBqXkBmkYNqeJqVaGaWZ1yUpCIMjwJvZHHjt
-	 DyEcw9XjhgSqcO7vQQXMoFE9B/ed6m24rFL+un1581+jzBwNAhTxkO6FTqG5He0+nz
-	 kfpaXhCscbzbe9LETCcZdk7IbsfhJ5AAYrWXXNes=
+	b=aHWfRYM79A3tI7wSFxOIG0bJIcIh60lZYITsc1sfGtUJfc+zW1ZSEaMhqezx3o7y6
+	 HKjG29KzWrdtVBZxR+QOSN5g94bzOKB6Zsv3MezKUncSbm4f3tp4mPDsrJltS1xmkS
+	 XgavL8dxm2jX7FjlvuHpkGYrHJt9A9uzAqb6OoSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Joe Damato <joe@dama.to>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/482] ionic: clean dbpage in de-init
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 133/457] media: ipu6: isys: Use correct pads for xlate_streams()
 Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110934.863696091@linuxfoundation.org>
+Message-ID: <20250826110940.660005102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit c9080abea1e69b8b1408ec7dec0acdfdc577a3e2 ]
+commit ff49672a28f3a856717f09d61380e524e243121f upstream.
 
-Since the kern_dbpage gets set up in ionic_lif_init() and that
-function's error path will clean it if needed, the kern_dbpage
-on teardown should be cleaned in ionic_lif_deinit(), not in
-ionic_lif_free().  As it is currently we get a double call
-to iounmap() on kern_dbpage if the PCI ionic fails setting up
-the lif.  One example of this is when firmware isn't responding
-to AdminQ requests and ionic's first AdminQ call fails to
-setup the NotifyQ.
+The pad argument to v4l2_subdev_state_xlate_streams() is incorrect, static
+pad number is used for the source pad even though the pad number is
+dependent on the stream. Fix it.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index b746944bcd2a..7ed77a8304e6 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3142,10 +3142,6 @@ void ionic_lif_free(struct ionic_lif *lif)
- 	lif->info = NULL;
- 	lif->info_pa = 0;
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -354,9 +354,9 @@ static int ipu6_isys_csi2_enable_streams
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
  
--	/* unmap doorbell page */
--	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
--	lif->kern_dbpage = NULL;
--
- 	mutex_destroy(&lif->config_lock);
- 	mutex_destroy(&lif->queue_lock);
+-	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
+-						       CSI2_PAD_SINK,
+-						       &streams_mask);
++	sink_streams =
++		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
++						&streams_mask);
  
-@@ -3171,6 +3167,9 @@ void ionic_lif_deinit(struct ionic_lif *lif)
- 	ionic_lif_qcq_deinit(lif, lif->notifyqcq);
- 	ionic_lif_qcq_deinit(lif, lif->adminqcq);
+ 	ret = ipu6_isys_csi2_calc_timing(csi2, &timing, CSI2_ACCINV);
+ 	if (ret)
+@@ -384,9 +384,9 @@ static int ipu6_isys_csi2_disable_stream
+ 	struct media_pad *remote_pad;
+ 	u64 sink_streams;
  
-+	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
-+	lif->kern_dbpage = NULL;
-+
- 	ionic_lif_reset(lif);
- }
+-	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
+-						       CSI2_PAD_SINK,
+-						       &streams_mask);
++	sink_streams =
++		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
++						&streams_mask);
  
--- 
-2.39.5
-
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
 
 
 
