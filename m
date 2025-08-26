@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17592B3641D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2954B36987
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F908A8377
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70E711C40241
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FA8341AD4;
-	Tue, 26 Aug 2025 13:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6408C352096;
+	Tue, 26 Aug 2025 14:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPiXNzYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY0ncfLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0E9288511;
-	Tue, 26 Aug 2025 13:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3001CD1F;
+	Tue, 26 Aug 2025 14:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214871; cv=none; b=WD6B/uNeO+OCefSDj6p20/WpifZkbKFR1ndu/2iLAlKEy6Z1YdRsFIJ3fWcgqZlRha1l/HSsZoxyJDYnUbuqze7t9ryPCpbil3wvJYLLcBWADrDzHrcdac1wruSweN8SPMhFnvpP1g47xHe8wcgC7i7ig7ioZBvHPvszLrlmlms=
+	t=1756217968; cv=none; b=mzek0VOVDDo7t2w1xlifMg7t9t6YpN7h4ftWr3Mhwx+KcFGfYryFT+Dep8kx6PVJO7iZcN8Y3nfsNnljfsO6COexVvCU8YKbCiThvanjrFHZVIEU2cYelmuAMbOI0YnSD4BrRegyh0WCDUofjRZ5jWnyo0WA+KgqbO7KSZXCM+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214871; c=relaxed/simple;
-	bh=hJ4bCE5tUivmrqZBCTtTk1Wa0YK0PAnzqQ+anoaJxkc=;
+	s=arc-20240116; t=1756217968; c=relaxed/simple;
+	bh=GO60ysB27pCYJOmeLe/gIf8MZ3EjDDI531hh+MkQ1UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SvBMj4lChg728Kz18m/lmFrYAaPrWoznI0caMGTO6zsBELstPK6cY8P6kEXu0X4r5TmNQ3Mkk9aY2IxiUJbytVO7Genkh9yDRFRwBnnuweR0JOcYIs2s6LhbdCVxYYhA7NjnYk6dkMIQmMumjwdJaGWRkmuY/AT2Vb9Gd2ZAKhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPiXNzYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A508DC4CEF1;
-	Tue, 26 Aug 2025 13:27:49 +0000 (UTC)
+	 MIME-Version; b=jTiap14lOkf3TEhF81SDGpFE1/RPzOltvERWjiO/hf31SmFLJpVG4WTLbvA1hX9ARosOZhSAZKc0TmNsDvbqa0IiO38XnJN7ZjMWNAM06eTrMV1yV8UFBzNiEXjgpB8JFxxHa7Q+Ae9OvHEC2k5N/nAiDRyBDvg8cV4pIFtSiE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY0ncfLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A786CC4CEF1;
+	Tue, 26 Aug 2025 14:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214870;
-	bh=hJ4bCE5tUivmrqZBCTtTk1Wa0YK0PAnzqQ+anoaJxkc=;
+	s=korg; t=1756217968;
+	bh=GO60ysB27pCYJOmeLe/gIf8MZ3EjDDI531hh+MkQ1UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPiXNzYtj8ucr4RqjLzHfK3dCEHT0yUvcjxI6OT+yMIdlBz49VvCd9i9YfHJl40Xy
-	 P2LpiQkPLIT3jb/D83GjJPWPAzMrj3JLkrNUUjV4bEf/W0wb+FzcWZ8HFB/pY6Sy3Y
-	 ExlL+i94WjbuzQQThDztoQ3EjUaO9V3q6TkCIlzU=
+	b=JY0ncfLt0FUeXluq0dKT9r5K4QA2H3A7BuvM176th3VlrJSGyVQhrHL2WEEvQJSjO
+	 +EFNBtCDw7fsV9Vzweg3EB40LoL8bOqGShhjEUZ4eHc8QYjFWQ+CLy29WEQ+KLwuPy
+	 61gZTX6I3inqPQf/L6Z7vqcXT8w88zC92EKEamWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 301/482] pwm: mediatek: Fix duty and period setting
+	stable <stable@kernel.org>,
+	syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 344/523] comedi: fix race between polling and detaching
 Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826110938.237114683@linuxfoundation.org>
+Message-ID: <20250826110932.955355045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
+commit 35b6fc51c666fc96355be5cd633ed0fe4ccf68b2 upstream.
 
-The period generated by the hardware is
+syzbot reports a use-after-free in comedi in the below link, which is
+due to comedi gladly removing the allocated async area even though poll
+requests are still active on the wait_queue_head inside of it. This can
+cause a use-after-free when the poll entries are later triggered or
+removed, as the memory for the wait_queue_head has been freed.  We need
+to check there are no tasks queued on any of the subdevices' wait queues
+before allowing the device to be detached by the `COMEDI_DEVCONFIG`
+ioctl.
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
+Tasks will read-lock `dev->attach_lock` before adding themselves to the
+subdevice wait queue, so fix the problem in the `COMEDI_DEVCONFIG` ioctl
+handler by write-locking `dev->attach_lock` before checking that all of
+the subdevices are safe to be deleted.  This includes testing for any
+sleepers on the subdevices' wait queues.  It remains locked until the
+device has been detached.  This requires the `comedi_device_detach()`
+function to be refactored slightly, moving the bulk of it into new
+function `comedi_device_detach_locked()`.
 
-according to my tests with a signal analyser and also the documentation.
+Note that the refactor of `comedi_device_detach()` results in
+`comedi_device_cancel_all()` now being called while `dev->attach_lock`
+is write-locked, which wasn't the case previously, but that does not
+matter.
 
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
+Thanks to Jens Axboe for diagnosing the problem and co-developing this
+patch.
 
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 2f3fdcd7ce93 ("staging: comedi: add rw_semaphore to protect against device detachment")
+Link: https://lore.kernel.org/all/687bd5fe.a70a0220.693ce.0091.GAE@google.com/
+Reported-by: syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01523a0ae5600aef5895
+Co-developed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250722155316.27432-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/staging/comedi/comedi_fops.c     |   33 +++++++++++++++++++++++--------
+ drivers/staging/comedi/comedi_internal.h |    1 
+ drivers/staging/comedi/drivers.c         |   13 +++++++++---
+ 3 files changed, 36 insertions(+), 11 deletions(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -163,7 +163,10 @@ static int pwm_mediatek_config(struct pw
- 	do_div(resolution, clk_rate);
+--- a/drivers/staging/comedi/comedi_fops.c
++++ b/drivers/staging/comedi/comedi_fops.c
+@@ -783,6 +783,7 @@ static int is_device_busy(struct comedi_
+ 	struct comedi_subdevice *s;
+ 	int i;
  
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -186,9 +189,16 @@ static int pwm_mediatek_config(struct pw
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (!dev->attached)
+ 		return 0;
+@@ -791,7 +792,16 @@ static int is_device_busy(struct comedi_
+ 		s = &dev->subdevices[i];
+ 		if (s->busy)
+ 			return 1;
+-		if (s->async && comedi_buf_is_mmapped(s))
++		if (!s->async)
++			continue;
++		if (comedi_buf_is_mmapped(s))
++			return 1;
++		/*
++		 * There may be tasks still waiting on the subdevice's wait
++		 * queue, although they should already be about to be removed
++		 * from it since the subdevice has no active async command.
++		 */
++		if (wq_has_sleeper(&s->async->wait_head))
+ 			return 1;
  	}
  
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
+@@ -821,15 +831,22 @@ static int do_devconfig_ioctl(struct com
+ 		return -EPERM;
+ 
+ 	if (!arg) {
+-		if (is_device_busy(dev))
+-			return -EBUSY;
+-		if (dev->attached) {
+-			struct module *driver_module = dev->driver->module;
++		int rc = 0;
+ 
+-			comedi_device_detach(dev);
+-			module_put(driver_module);
++		if (dev->attached) {
++			down_write(&dev->attach_lock);
++			if (is_device_busy(dev)) {
++				rc = -EBUSY;
++			} else {
++				struct module *driver_module =
++					dev->driver->module;
 +
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
++				comedi_device_detach_locked(dev);
++				module_put(driver_module);
++			}
++			up_write(&dev->attach_lock);
+ 		}
+-		return 0;
++		return rc;
+ 	}
  
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -217,11 +227,8 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
+ 	if (copy_from_user(&it, arg, sizeof(it)))
+--- a/drivers/staging/comedi/comedi_internal.h
++++ b/drivers/staging/comedi/comedi_internal.h
+@@ -50,6 +50,7 @@ extern struct mutex comedi_drivers_list_
+ int insn_inval(struct comedi_device *dev, struct comedi_subdevice *s,
+ 	       struct comedi_insn *insn, unsigned int *data);
  
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
++void comedi_device_detach_locked(struct comedi_device *dev);
+ void comedi_device_detach(struct comedi_device *dev);
+ int comedi_device_attach(struct comedi_device *dev,
+ 			 struct comedi_devconfig *it);
+--- a/drivers/staging/comedi/drivers.c
++++ b/drivers/staging/comedi/drivers.c
+@@ -159,7 +159,7 @@ static void comedi_device_detach_cleanup
+ 	int i;
+ 	struct comedi_subdevice *s;
  
- 	return err;
+-	lockdep_assert_held(&dev->attach_lock);
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (dev->subdevices) {
+ 		for (i = 0; i < dev->n_subdevices; i++) {
+@@ -196,16 +196,23 @@ static void comedi_device_detach_cleanup
+ 	comedi_clear_hw_dev(dev);
  }
+ 
+-void comedi_device_detach(struct comedi_device *dev)
++void comedi_device_detach_locked(struct comedi_device *dev)
+ {
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	comedi_device_cancel_all(dev);
+-	down_write(&dev->attach_lock);
+ 	dev->attached = false;
+ 	dev->detach_count++;
+ 	if (dev->driver)
+ 		dev->driver->detach(dev);
+ 	comedi_device_detach_cleanup(dev);
++}
++
++void comedi_device_detach(struct comedi_device *dev)
++{
++	lockdep_assert_held(&dev->mutex);
++	down_write(&dev->attach_lock);
++	comedi_device_detach_locked(dev);
+ 	up_write(&dev->attach_lock);
+ }
+ 
 
 
 
