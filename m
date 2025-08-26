@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E459CB35D9C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D5EB3670C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA0E7A270A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 797D0B6138D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AEB200112;
-	Tue, 26 Aug 2025 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF2E350840;
+	Tue, 26 Aug 2025 14:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wpNIXna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyrlJQZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAABC284678;
-	Tue, 26 Aug 2025 11:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FD330AAD8;
+	Tue, 26 Aug 2025 14:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208749; cv=none; b=u+NziZsgB+15hl/2LhWWw+eXcgKZDTyMpHrLR00lPP7EhBY5FSff/L7knLiZmEdoisQ0LC7zV2cZIsRxvutoIvm/pXbvxrld4d7a/Dfx8k0kk/5vyIfAg2UZtS2Lt4NyFrtTPsN7gI7U4A+wZWIZ/D12XRDE/9ajskv+66UJl1s=
+	t=1756216817; cv=none; b=g6NG0gpfwweYLqwtRHBQshbRl5b+2wka9ylgESvsOmOK9kgNKLiB3lUx8eJRxNeUMqXDYQ9GNHBBJ4JZx8nvRqHiXE5uwzQ0ojf8oPz4v19XoPsu5i7kUx22EYSSi1TWRyXkY33dMeTRjBzcV0QyYJLPNNjYp7z7Ke/WXM1okME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208749; c=relaxed/simple;
-	bh=Py/Os3PvbtoZJ8T4WbFD8/UbR0zgruv8YbYEreRt6R8=;
+	s=arc-20240116; t=1756216817; c=relaxed/simple;
+	bh=WdHENq4MXH6gK4JKtTXf47ZCHtZeIyJxEVGH0sn0Bug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJNtBOLs3QwTKom58cQ55aWthkAJYDtCd3uxyVAyMpg/jRSQ/SPr4bC/VDYk4p2r0Z8kqsUR1Ale4ZbVWN1VpewU819SkBm5p2cxDJlR+/v6rkP+gtFYlj0527LNotVcmhxwDNXJVp1gniZFG2ZPU59RBZ1Zctq1KLoSizQG/u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wpNIXna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083D3C4CEF1;
-	Tue, 26 Aug 2025 11:45:48 +0000 (UTC)
+	 MIME-Version; b=mupOXmGsunmaPAvER3AEHCNYeYJFAxt7aiy9NwomzBk3nP1YAF3igjbfE0jZq7PZpGh/6VrNvf3njMelmIhGalwTXZ06W6pkE5QN8HViz+1D0fjkUsapJVc5yJQoJG/hlrTgk2dDJT2aIWW29bv6CAjZDH3QgiVoFcQB7Mo73PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyrlJQZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD0AC4CEF1;
+	Tue, 26 Aug 2025 14:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208749;
-	bh=Py/Os3PvbtoZJ8T4WbFD8/UbR0zgruv8YbYEreRt6R8=;
+	s=korg; t=1756216817;
+	bh=WdHENq4MXH6gK4JKtTXf47ZCHtZeIyJxEVGH0sn0Bug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0wpNIXnapS6Ia2kFVPhvO3vwoFfMRD4cqe+Lk6hiuvV2eE8AaBN+gbgF29e7gSf3R
-	 H9kmfsrqTSjqNOINbXmxhvlRBAuE+Pjl8uz0GDaZfMDjQ3nLt9RKbHvONaA/V9eywC
-	 tUbqn0K39nh+v7lxIuEuxA6GtmsO7cVhE/RtpZC8=
+	b=UyrlJQZFSeoYh1VXEk5OnvREY9HbNpuOYXmFKVXm+4q4JoA05wxW0RyFUxR5FGzPI
+	 83uluK1jAd9LgRz2SEB1qMJK6QWQHcP54yxLPBvsovgGXcJZ6pVMnrodqiaz/uBQTm
+	 QwZiHMcCHrY/ty39u4nyu/2DUCzwnUa1yF/JfS8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.12 230/322] usb: typec: maxim_contaminant: disable low power mode when reading comparator values
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 554/644] selftests: mptcp: connect: also cover checksum
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826110921.580039661@linuxfoundation.org>
+Message-ID: <20250826111000.256073947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit cabb6c5f4d9e7f49bdf8c0a13c74bd93ee35f45a upstream.
+commit fdf0f60a2bb02ba581d9e71d583e69dd0714a521 upstream.
 
-Low power mode is enabled when reading CC resistance as part of
-`max_contaminant_read_resistance_kohm()` and left in that state.
-However, it's supposed to work with 1uA current source. To read CC
-comparator values current source is changed to 80uA. This causes a storm
-of CC interrupts as it (falsely) detects a potential contaminant. To
-prevent this, disable low power mode current sourcing before reading
-comparator values.
+The checksum mode has been added a while ago, but it is only validated
+when manually launching mptcp_connect.sh with "-C".
 
-Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/stable/20250814-fix-upstream-contaminant-v1-1-801ce8089031%40google.com
-Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-1-6c8d6c3adafb@google.com
+The different CIs were then not validating these MPTCP Connect tests
+with checksum enabled. To make sure they do, add a new test program
+executing mptcp_connect.sh with the checksum mode.
+
+Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in Makefile, in the context, because userspace_pm.sh test
+  has been introduced later, in commit 3ddabc433670 ("selftests: mptcp:
+  validate userspace PM tests by default"), which is not in this
+  version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/maxim_contaminant.c |    5 +++++
- drivers/usb/typec/tcpm/tcpci_maxim.h       |    1 +
- 2 files changed, 6 insertions(+)
+ tools/testing/selftests/net/mptcp/Makefile                  |    2 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
 
---- a/drivers/usb/typec/tcpm/maxim_contaminant.c
-+++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
-@@ -188,6 +188,11 @@ static int max_contaminant_read_comparat
- 	if (ret < 0)
- 		return ret;
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -6,7 +6,7 @@ KSFT_KHDR_INSTALL := 1
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g  -I$(top_srcdir)/usr/include
  
-+	/* Disable low power mode */
-+	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL,
-+				 FIELD_PREP(CCLPMODESEL,
-+					    LOW_POWER_MODE_DISABLE));
+ TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
+-	      pm_netlink.sh mptcp_join.sh diag.sh \
++	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
 +
- 	/* Sleep to allow comparators settle */
- 	usleep_range(5000, 6000);
- 	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL, TCPC_TCPC_CTRL_ORIENTATION, PLUG_ORNT_CC1);
---- a/drivers/usb/typec/tcpm/tcpci_maxim.h
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim.h
-@@ -21,6 +21,7 @@
- #define CCOVPDIS                                BIT(6)
- #define SBURPCTRL                               BIT(5)
- #define CCLPMODESEL                             GENMASK(4, 3)
-+#define LOW_POWER_MODE_DISABLE                  0
- #define ULTRA_LOW_POWER_MODE                    1
- #define CCRPCTRL                                GENMASK(2, 0)
- #define UA_1_SRC                                1
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
 
 
 
