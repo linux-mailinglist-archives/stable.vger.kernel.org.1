@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-175993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBCBB36B2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7ACB35B37
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556001C47FA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 606D75E44FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A55352FD9;
-	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026143375DC;
+	Tue, 26 Aug 2025 11:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es26n7yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbEjGbR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F1D2F83BA;
-	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A967B312806;
+	Tue, 26 Aug 2025 11:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218504; cv=none; b=IgX8HWuALbxZ7yGo5brZqmi5AP0GHypAyxudod7NNIltOC0QxKKF7QXTri0PpUx98N6q1tmkDE9U9zl3ff1vh8Xy4wRjR2pcWO5sido0Uxsvxd7aopJ4cnCE33WBu918brXFaXrQjE3ayytkf1FGHhJPfTGsqe9ZA+O/F4um+uA=
+	t=1756207147; cv=none; b=boRX2OpAQ9cbqHny+0NZnkRLzNJKTYJi0HMNnLVgmEXQWz6MQp3hMX6hOX7EGSxC1wI+IzY/mY1MJPvD5WL4bKGndmYaqegMDpUDlhHV38/hgUYZao0RyUpXfR6tNLwjihr1CYBZoQ4mGXNE1KzG05xlYLV2ZtgD763rJLcCDfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218504; c=relaxed/simple;
-	bh=6icj9BTYIC8kwqsxCOLC01tuAqZ0EE7gS8Fj7vrANG0=;
+	s=arc-20240116; t=1756207147; c=relaxed/simple;
+	bh=bjgLHQccHj437onU+DsuSmi6/Ho8dgQPM2TSGFHo4qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSNkwzYknXskaxGIZL+1gmqjfUcoAYrOCZFnTuSN975k5nRqTNKmMVX1PqbY6OcXytLS3Z4P4voXVNYD5mCRrhz/rNYwnkjeaPPkb/eNI5y4D4NakUhxvIKpWB62jdYoziS6Z7LreFIXSSG0oBSrczh8yT2YiZa+ThJ+KFWDuKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es26n7yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB72C113D0;
-	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
+	 MIME-Version; b=YdwrShLifoSmW5M+YsbsQoC9uNZer4x8tbT0OZJ8mxQgOU1yJxYAFE1IKe/Nj2O5sfKbzrQDbOcSniCWTGR+I0pKseTO3I/w7pGNmc/zy7ni+hMXkVLipsp5VqnpEVK5Y2PnFN3myDPufSsdmCVQIJhRPZkyev98AtBaQtmQrtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbEjGbR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF9BC4CEF1;
+	Tue, 26 Aug 2025 11:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218504;
-	bh=6icj9BTYIC8kwqsxCOLC01tuAqZ0EE7gS8Fj7vrANG0=;
+	s=korg; t=1756207147;
+	bh=bjgLHQccHj437onU+DsuSmi6/Ho8dgQPM2TSGFHo4qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Es26n7yqAf75hP7XW2hdVWJ3hgw6/xt3/A9hL9ybmdGKli0Qo8JK2OyYlGW6kLIMU
-	 6aEr7nkrBf76b2DF2qQkhzopcfDuMKiKY+9COdDA+BBMzt/k1hfBPzyDTXSVfCXj6f
-	 4ljVmWXkwqQuwxBWhg4qBKm1eJOVzRJ46TsM2K10=
+	b=XbEjGbR9MmvYqu41wYIgaAMLXYlbMs4///Mjz2Y4oDHkwXjGj3q/IMcAjQqHs/ThX
+	 uXK5gwxS+p4GsYqWbJWg3KSpjOLctJkODfebvn1yfbMM45Xrp/Bf7Lx5KQA8wTeasH
+	 ryhtfnft5Bg+9BCYuXEDUbrfwiFSzY1B0kGempOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.4 026/403] comedi: aio_iiro_16: Fix bit shift out of bounds
+	Lorenz Brun <lorenz@brun.one>,
+	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.16 068/457] ata: libata-scsi: Fix ata_to_sense_error() status handling
 Date: Tue, 26 Aug 2025 13:05:52 +0200
-Message-ID: <20250826110906.509963248@linuxfoundation.org>
+Message-ID: <20250826110939.046857940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 66acb1586737a22dd7b78abc63213b1bcaa100e4 upstream.
+commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
+the function ata_to_sense_error(). This entry ties a failed qc which has
+a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
+the additional sense code UNALIGNED WRITE COMMAND. This entry will be
+used to generate a failed qc sense key and sense code when the qc is
+missing sense data and there is no match for the qc error field in the
+sense_table array of ata_to_sense_error().
 
-	if ((1 << it->options[1]) & 0xdcfc) {
+As a result, for a failed qc for which we failed to get sense data (e.g.
+read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
+command failed for the non-ncq case, the user very often end up seeing
+the completely misleading "unaligned write command" error, even if qc
+was not a write command. E.g.:
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
+sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
+sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
+sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
 
-Fixes: ad7a370c8be4 ("staging: comedi: aio_iiro_16: add command support for change of state detection")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707134622.75403-1-abbotti@mev.co.uk
+Fix this by removing the ATA_DRDY entry from the stat_table array so
+that we default to always returning ABORTED COMMAND without any
+additional sense code, since we do not know any better. The entry 0x08
+(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
+error is also misleading (as a parity error would likely be signaled
+through a bus error). So for this case, also default to returning
+ABORTED COMMAND without any additional sense code. With this, the
+previous example error case becomes:
+
+sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
+sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
+sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Together with these fixes, refactor stat_table to make it more readable
+by putting the entries comments in front of the entries and using the
+defined status bits macros instead of hardcoded values.
+
+Reported-by: Lorenz Brun <lorenz@brun.one>
+Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
+Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers/aio_iiro_16.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/staging/comedi/drivers/aio_iiro_16.c
-+++ b/drivers/staging/comedi/drivers/aio_iiro_16.c
-@@ -178,7 +178,8 @@ static int aio_iiro_16_attach(struct com
- 	 * Digital input change of state interrupts are optionally supported
- 	 * using IRQ 2-7, 10-12, 14, or 15.
- 	 */
--	if ((1 << it->options[1]) & 0xdcfc) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0xdcfc) {
- 		ret = request_irq(it->options[1], aio_iiro_16_cos, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0)
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -859,18 +859,14 @@ static void ata_to_sense_error(u8 drv_st
+ 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
+ 	};
+ 	static const unsigned char stat_table[][4] = {
+-		/* Must be first because BUSY means no other bits valid */
+-		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Busy, fake parity for now
+-		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
+-		// Device ready, unaligned write command
+-		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
+-		// Device fault, internal target failure
+-		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Timed out in xfer, fake parity for now
+-		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
+-		// Recovered ECC error	  Medium error, recovered
+-		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
++		/* Busy: must be first because BUSY means no other bits valid */
++		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
++		/* Device fault: INTERNAL TARGET FAILURE */
++		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
++		/* Corrected data error */
++		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
++
++		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
+ 	};
+ 
+ 	/*
 
 
 
