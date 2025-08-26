@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3125CB3664C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF8DB3684E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FADB563769
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC326561FBB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B285A2FDC44;
-	Tue, 26 Aug 2025 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A34352FF1;
+	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAwPtJ6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho6cBKil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFCD24466D;
-	Tue, 26 Aug 2025 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D288352FDA;
+	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215789; cv=none; b=kHAo/ppPXUvDOYF2U/VoDSQPV25t37O4sZ7ybkIFtSOYGPOYoifCwgOPVOtVtT2/I4EgiCmp43hfPwWwP1f6L1NPPtuQC5Qhy8iUszuGr4unaB+QEFlPCnAPFcFSzBwymS799y1HMUrlzephU2qoKi1JYui7l8HbJECglVZsQ9g=
+	t=1756217163; cv=none; b=HyTGO9sH6rDHi0oCdVyU0o7L7E6Fr4hkqiWsRrALH8PWb46QBxcbUAP1ujTcgEqm1XTVYYoFREq7pX3NNonCxL0Lz5u40elpmRvmg5f69U7lodgZk0MssObiDiYvmC2DtUV+W89BGLPAcXl6EXMRGJnAzynxLQHecx/uO+iQEVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215789; c=relaxed/simple;
-	bh=74oJR5zL0JTQyCd5cKVgBCKXpl03b7PkQmBKQTcZ0x4=;
+	s=arc-20240116; t=1756217163; c=relaxed/simple;
+	bh=+jaNbMfzAgaCwdneBOtH+X5+oWYbjL4iPXBeNmPYddY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NItT58xhuMrI4Q54cu6pNkBY3HoWLuF/S2fTTpT9T2GF5QtRyMREnSx/gihxbTaRCZIzOVAUg6+fC1eZLyPE/ynG96hJ+A1SGjx5NwntFj4AC0iYq5mGZMBnVLJNEiUk0b/xDH8zoEOOReJ5cLve6D+FN/LQ6VUigAmystmAwdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAwPtJ6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D82DC4CEF1;
-	Tue, 26 Aug 2025 13:43:08 +0000 (UTC)
+	 MIME-Version; b=HzD2UUBLh7DVSWexns9TPTrBeOiFtsjMtuUmCoKJ9Yzr8j2C1yRYgKRD81+nOXDd6Tf6RpTaCDU8urRbYe7UVuG8h57ry6hBcAr0+waHbesy8VYJsxC+ZTsVN9QnysIAtDa+Cb1hwYrAwCL9ep06iZBEeOw/Gko8r/eulJXtj0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho6cBKil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D771C113CF;
+	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215789;
-	bh=74oJR5zL0JTQyCd5cKVgBCKXpl03b7PkQmBKQTcZ0x4=;
+	s=korg; t=1756217163;
+	bh=+jaNbMfzAgaCwdneBOtH+X5+oWYbjL4iPXBeNmPYddY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAwPtJ6DYrx1xqKePzVS71koyWZJh4hQgVlXihlu8pfWov4pfk42gzPOToU2Yj1rI
-	 Qa9Om/DAc8ZWaFOudhDr96zYid/c/+fEgnqQYPkveCASDp4GLEn1tfF5Vl9d57xCaO
-	 pdgqaCf0dvrPFWX6HJ8r3LuL2qfkgjTDO8JGSkfQ=
+	b=ho6cBKil68Vci6VZXbiDdQWBV6eOYWrjrjT6bLgLIL5jf+KW7d9d0D6H/3uHqE8VL
+	 rSRj8ytD43LhoeH4/jWgEcNjkPaOvNkW/RCrvv7hSXwRA+SAhQJjGu0zjFqAxlsIX1
+	 RH23tZ1XsUC+zTySUyfibUxNJe33LpWO+2zeHrOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/644] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Subject: [PATCH 5.10 040/523] Bluetooth: SMP: If an unallowed command is received consider it a failure
 Date: Tue, 26 Aug 2025 13:04:10 +0200
-Message-ID: <20250826110950.417024467@linuxfoundation.org>
+Message-ID: <20250826110925.587502919@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
+[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
 
-After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
+If a command is received while a bonding is ongoing consider it a
+pairing failure so the session is cleanup properly and the device is
+disconnected immediately instead of continuing with other commands that
+may result in the session to get stuck without ever completing such as
+the case bellow:
 
-Because of this, as part of the scan request handler for the P2P Discovery,
-vif struct used for adding the Probe Request P2P IE in firmware got changed
-from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-requests frames and the other P2P peers were unable to discover this device
-causing a regression on the P2P feature.
+> ACL Data RX: Handle 2048 flags 0x02 dlen 21
+      SMP: Identity Information (0x08) len 16
+        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
+> ACL Data RX: Handle 2048 flags 0x02 dlen 21
+      SMP: Signing Information (0x0a) len 16
+        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
+Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
+> ACL Data RX: Handle 2048 flags 0x02 dlen 12
+      SMP: Identity Address Information (0x09) len 7
+        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
 
-To fix this, while setting the P2P IE in firmware, properly use the vif of
-the P2P discovery wdev on which the driver received the P2P scan request.
-This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-is completed.
+While accourding to core spec 6.1 the expected order is always BD_ADDR
+first first then CSRK:
 
-Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+When using LE legacy pairing, the keys shall be distributed in the
+following order:
+
+    LTK by the Peripheral
+
+    EDIV and Rand by the Peripheral
+
+    IRK by the Peripheral
+
+    BD_ADDR by the Peripheral
+
+    CSRK by the Peripheral
+
+    LTK by the Central
+
+    EDIV and Rand by the Central
+
+    IRK by the Central
+
+    BD_ADDR by the Central
+
+    CSRK by the Central
+
+When using LE Secure Connections, the keys shall be distributed in the
+following order:
+
+    IRK by the Peripheral
+
+    BD_ADDR by the Peripheral
+
+    CSRK by the Peripheral
+
+    IRK by the Central
+
+    BD_ADDR by the Central
+
+    CSRK by the Central
+
+According to the Core 6.1 for commands used for key distribution "Key
+Rejected" can be used:
+
+  '3.6.1. Key distribution and generation
+
+  A device may reject a distributed key by sending the Pairing Failed command
+  with the reason set to "Key Rejected".
+
+Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/smp.c | 19 ++++++++++++++++++-
+ net/bluetooth/smp.h |  1 +
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 1c95e8f75916..ebd2db226488 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1199,10 +1199,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 		return -EAGAIN;
- 	}
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 8f9566f37498e..5a56e862ba13c 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2972,8 +2972,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
+ 	if (code > SMP_CMD_MAX)
+ 		goto drop;
  
--	/* If scan req comes for p2p0, send it over primary I/F */
--	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
--		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
--
- 	brcmf_dbg(SCAN, "START ESCAN\n");
+-	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
++	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
++		/* If there is a context and the command is not allowed consider
++		 * it a failure so the session is cleanup properly.
++		 */
++		switch (code) {
++		case SMP_CMD_IDENT_INFO:
++		case SMP_CMD_IDENT_ADDR_INFO:
++		case SMP_CMD_SIGN_INFO:
++			/* 3.6.1. Key distribution and generation
++			 *
++			 * A device may reject a distributed key by sending the
++			 * Pairing Failed command with the reason set to
++			 * "Key Rejected".
++			 */
++			smp_failure(conn, SMP_KEY_REJECTED);
++			break;
++		}
+ 		goto drop;
++	}
  
- 	cfg->scan_request = request;
-@@ -1218,6 +1214,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 	if (err)
- 		goto scan_out;
+ 	/* If we don't have a context the only allowed commands are
+ 	 * pairing request and security request.
+diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
+index 5fe68e255cb29..bad594642a53d 100644
+--- a/net/bluetooth/smp.h
++++ b/net/bluetooth/smp.h
+@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
+ #define SMP_NUMERIC_COMP_FAILED		0x0c
+ #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
+ #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
++#define SMP_KEY_REJECTED		0x0f
  
-+	/* If scan req comes for p2p0, send it over primary I/F */
-+	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-+		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
-+
- 	err = brcmf_do_escan(vif->ifp, request);
- 	if (err)
- 		goto scan_out;
+ #define SMP_MIN_ENC_KEY_SIZE		7
+ #define SMP_MAX_ENC_KEY_SIZE		16
 -- 
 2.39.5
 
