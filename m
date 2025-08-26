@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FFAB36622
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B578B36063
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44983A76CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E1E5E32A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A1F343218;
-	Tue, 26 Aug 2025 13:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6023238149;
+	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lb0tkY1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuZC11gk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B926B747;
-	Tue, 26 Aug 2025 13:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CEF221DA5;
+	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215948; cv=none; b=YBu2sIpfz2Bv2xaGolCn4KV0GT7DLVBOp8e8/IB2mXvdpHZa3bAYTyzXNZzCplclFqBBJXJGLkqLZrOSDA6u5xF//ZCCVROSXM5XJQ59J5Z/XAzoqEP9LWPB5eTirD5Btkx15g/GHIY6WLN/VHlhhLJZrfP0fWBft5saTvqMm3s=
+	t=1756212956; cv=none; b=hwljgXvPuToa/LYlz62UiMW/kIbPwCn/zZxV+jw4RGFfaClCBREPVXXN28rG9rhhPiFDSSkNvyeiLbF3b+iPfzYx7/wzn6eL7NVi/ToPNZ6c2ex9nmcnqF2y7fDbYzauzb9T5+sGvbDrFFs89kmeZve5fH1lrQPqO0zI3DcCZGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215948; c=relaxed/simple;
-	bh=fFOGhFqy6w6GCREs9XbZXjLtyEBGkyuzjLDaP7t5Lpc=;
+	s=arc-20240116; t=1756212956; c=relaxed/simple;
+	bh=pkBLlfIg+/Zo4Dx5LU3Sh+NfodsgUPL8/vFz5ajqyhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tacRTeyNYNZbajMpVBY49y57fgyZ4388V+wAW06+RLjlc0DbsIdE7jW0/RxXD5NnLHHGFT+bCGdV3QXk/KVffIX4pTDr2EZEArkJ7qfw5vqNih4zayqt3l63rXmukF4Gi2fKKyocYVkqMJhErtpg/g3PYCNKKwmolBezvTB3RZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lb0tkY1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08FCC4CEF1;
-	Tue, 26 Aug 2025 13:45:47 +0000 (UTC)
+	 MIME-Version; b=hyGYtk3wrOl9EvzQ5Q7XoQwHZjhrPbAPERi9SpMgvQUy6XUT1hT/NOwPYo8aENK366IymPb6BdYA0qs5CHXoogMzZ/zlGrgVYIaO1vSHujDds2R44yiQUBcfRRMj2HwWpzGDTzIaTdVMPwASb/Pb5MGa9/1nHH+rlUsmfm5bZSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuZC11gk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6EEC19421;
+	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215948;
-	bh=fFOGhFqy6w6GCREs9XbZXjLtyEBGkyuzjLDaP7t5Lpc=;
+	s=korg; t=1756212956;
+	bh=pkBLlfIg+/Zo4Dx5LU3Sh+NfodsgUPL8/vFz5ajqyhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lb0tkY1DobCZo6junlGnuHn720Dyz6aKTJ9bzZCOnXhtDuoddoVp2Ka6FwX7tnJBe
-	 G8faH8WORXLADpSwZUuLOhVe+wh/OzJ7ZCfBaVkqg8iyER1yDPk/XsWVBe4ybJ2+L6
-	 eTrVG/4JnVKU7Ev3aohS3AsEzmOZRKjS0SiZudAo=
+	b=SuZC11gk8Wnc8Pk/nBlLCEWEXDrjxxcg3rL2CQa7Fp3X5CzDefbQ/vg0tVH1VA77E
+	 XOjYT5/NrR99xL6ZwgTJCQdDE2On1yx5ya7UJH9qADcJL064RUCKQRmlA7Tw+pVr4w
+	 f8PoWQw6uOkuUkDIAFYgB5wkLwAfSRfOXCNlKYD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 225/644] PCI: pnv_php: Fix surprise plug detection and recovery
+Subject: [PATCH 6.6 167/587] ipv6: mcast: Check inet6_dev->dead under idev->mc_lock in __ipv6_dev_mc_inc().
 Date: Tue, 26 Aug 2025 13:05:16 +0200
-Message-ID: <20250826110951.995171103@linuxfoundation.org>
+Message-ID: <20250826110957.193865882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,216 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a2a2a6fc2469524caa713036297c542746d148dc ]
+[ Upstream commit dbd40f318cf2f59759bd170c401adc20ba360a3e ]
 
-The existing PowerNV hotplug code did not handle surprise plug events
-correctly, leading to a complete failure of the hotplug system after device
-removal and a required reboot to detect new devices.
+Since commit 63ed8de4be81 ("mld: add mc_lock for protecting
+per-interface mld data"), every multicast resource is protected
+by inet6_dev->mc_lock.
 
-This comes down to two issues:
+RTNL is unnecessary in terms of protection but still needed for
+synchronisation between addrconf_ifdown() and __ipv6_dev_mc_inc().
 
- 1) When a device is surprise removed, often the bridge upstream
-    port will cause a PE freeze on the PHB.  If this freeze is not
-    cleared, the MSI interrupts from the bridge hotplug notification
-    logic will not be received by the kernel, stalling all plug events
-    on all slots associated with the PE.
+Once we removed RTNL, there would be a race below, where we could
+add a multicast address to a dead inet6_dev.
 
- 2) When a device is removed from a slot, regardless of surprise or
-    programmatic removal, the associated PHB/PE ls left frozen.
-    If this freeze is not cleared via a fundamental reset, skiboot
-    is unable to clear the freeze and cannot retrain / rescan the
-    slot.  This also requires a reboot to clear the freeze and redetect
-    the device in the slot.
+  CPU1                            CPU2
+  ====                            ====
+  addrconf_ifdown()               __ipv6_dev_mc_inc()
+                                    if (idev->dead) <-- false
+    dead = true                       return -ENODEV;
+    ipv6_mc_destroy_dev() / ipv6_mc_down()
+      mutex_lock(&idev->mc_lock)
+      ...
+      mutex_unlock(&idev->mc_lock)
+                                    mutex_lock(&idev->mc_lock)
+                                    ...
+                                    mutex_unlock(&idev->mc_lock)
 
-Issue the appropriate unfreeze and rescan commands on hotplug events,
-and don't oops on hotplug if pci_bus_to_OF_node() returns NULL.
+The race window can be easily closed by checking inet6_dev->dead
+under inet6_dev->mc_lock in __ipv6_dev_mc_inc() as addrconf_ifdown()
+will acquire it after marking inet6_dev dead.
 
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-[bhelgaas: tidy comments]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/171044224.1359864.1752615546988.JavaMail.zimbra@raptorengineeringinc.com
+Let's check inet6_dev->dead under mc_lock in __ipv6_dev_mc_inc().
+
+Note that now __ipv6_dev_mc_inc() no longer depends on RTNL and
+we can remove ASSERT_RTNL() there and the RTNL comment above
+addrconf_join_solict().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250702230210.3115355-4-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/pci-hotplug.c |   3 +
- drivers/pci/hotplug/pnv_php.c     | 110 +++++++++++++++++++++++++++++-
- 2 files changed, 110 insertions(+), 3 deletions(-)
+ net/ipv6/addrconf.c |  7 +++----
+ net/ipv6/mcast.c    | 11 +++++------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-index 2fc12198ec07..62de678f9f50 100644
---- a/arch/powerpc/kernel/pci-hotplug.c
-+++ b/arch/powerpc/kernel/pci-hotplug.c
-@@ -110,6 +110,9 @@ void pci_hp_add_devices(struct pci_bus *bus)
- 	struct pci_controller *phb;
- 	struct device_node *dn = pci_bus_to_OF_node(bus);
- 
-+	if (!dn)
-+		return;
-+
- 	phb = pci_bus_to_host(bus);
- 
- 	mode = PCI_PROBE_NORMAL;
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index f99987f26ff0..9ff979678644 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -4,11 +4,13 @@
-  *
-  * Copyright Gavin Shan, IBM Corporation 2016.
-  * Copyright (C) 2025 Raptor Engineering, LLC
-+ * Copyright (C) 2025 Raptor Computing Systems, LLC
-  */
- 
- #include <linux/libfdt.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/delay.h>
- #include <linux/pci_hotplug.h>
- 
- #include <asm/opal.h>
-@@ -467,6 +469,61 @@ static int pnv_php_set_attention_state(struct hotplug_slot *slot, u8 state)
- 	return 0;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index f6188bd9f55b..1c3b0ba289fb 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2193,13 +2193,12 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
+ 	in6_ifa_put(ifp);
  }
  
-+static int pnv_php_activate_slot(struct pnv_php_slot *php_slot,
-+				 struct hotplug_slot *slot)
-+{
-+	int ret, i;
-+
-+	/*
-+	 * Issue initial slot activation command to firmware
-+	 *
-+	 * Firmware will power slot on, attempt to train the link, and
-+	 * discover any downstream devices. If this process fails, firmware
-+	 * will return an error code and an invalid device tree. Failure
-+	 * can be caused for multiple reasons, including a faulty
-+	 * downstream device, poor connection to the downstream device, or
-+	 * a previously latched PHB fence.  On failure, issue fundamental
-+	 * reset up to three times before aborting.
-+	 */
-+	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
-+	if (ret) {
-+		SLOT_WARN(
-+			php_slot,
-+			"PCI slot activation failed with error code %d, possible frozen PHB",
-+			ret);
-+		SLOT_WARN(
-+			php_slot,
-+			"Attempting complete PHB reset before retrying slot activation\n");
-+		for (i = 0; i < 3; i++) {
-+			/*
-+			 * Slot activation failed, PHB may be fenced from a
-+			 * prior device failure.
-+			 *
-+			 * Use the OPAL fundamental reset call to both try a
-+			 * device reset and clear any potentially active PHB
-+			 * fence / freeze.
-+			 */
-+			SLOT_WARN(php_slot, "Try %d...\n", i + 1);
-+			pci_set_pcie_reset_state(php_slot->pdev,
-+						 pcie_warm_reset);
-+			msleep(250);
-+			pci_set_pcie_reset_state(php_slot->pdev,
-+						 pcie_deassert_reset);
-+
-+			ret = pnv_php_set_slot_power_state(
-+				slot, OPAL_PCI_SLOT_POWER_ON);
-+			if (!ret)
-+				break;
-+		}
-+
-+		if (i >= 3)
-+			SLOT_WARN(php_slot,
-+				  "Failed to bring slot online, aborting!\n");
-+	}
-+
-+	return ret;
-+}
-+
- static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
+-/* Join to solicited addr multicast group.
+- * caller must hold RTNL */
++/* Join to solicited addr multicast group. */
+ void addrconf_join_solict(struct net_device *dev, const struct in6_addr *addr)
  {
- 	struct hotplug_slot *slot = &php_slot->slot;
-@@ -529,7 +586,7 @@ static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
- 		goto scan;
+ 	struct in6_addr maddr;
  
- 	/* Power is off, turn it on and then scan the slot */
--	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
-+	ret = pnv_php_activate_slot(php_slot, slot);
- 	if (ret)
- 		return ret;
+-	if (dev->flags&(IFF_LOOPBACK|IFF_NOARP))
++	if (READ_ONCE(dev->flags) & (IFF_LOOPBACK | IFF_NOARP))
+ 		return;
  
-@@ -836,16 +893,63 @@ static int pnv_php_enable_msix(struct pnv_php_slot *php_slot)
- 	return entry.vector;
- }
+ 	addrconf_addr_solict_mult(addr, &maddr);
+@@ -3834,7 +3833,7 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
+ 	 *	   Do not dev_put!
+ 	 */
+ 	if (unregister) {
+-		idev->dead = 1;
++		WRITE_ONCE(idev->dead, 1);
  
-+static void
-+pnv_php_detect_clear_suprise_removal_freeze(struct pnv_php_slot *php_slot)
-+{
-+	struct pci_dev *pdev = php_slot->pdev;
-+	struct eeh_dev *edev;
-+	struct eeh_pe *pe;
-+	int i, rc;
-+
-+	/*
-+	 * When a device is surprise removed from a downstream bridge slot,
-+	 * the upstream bridge port can still end up frozen due to related EEH
-+	 * events, which will in turn block the MSI interrupts for slot hotplug
-+	 * detection.
-+	 *
-+	 * Detect and thaw any frozen upstream PE after slot deactivation.
-+	 */
-+	edev = pci_dev_to_eeh_dev(pdev);
-+	pe = edev ? edev->pe : NULL;
-+	rc = eeh_pe_get_state(pe);
-+	if ((rc == -ENODEV) || (rc == -ENOENT)) {
-+		SLOT_WARN(
-+			php_slot,
-+			"Upstream bridge PE state unknown, hotplug detect may fail\n");
-+	} else {
-+		if (pe->state & EEH_PE_ISOLATED) {
-+			SLOT_WARN(
-+				php_slot,
-+				"Upstream bridge PE %02x frozen, thawing...\n",
-+				pe->addr);
-+			for (i = 0; i < 3; i++)
-+				if (!eeh_unfreeze_pe(pe))
-+					break;
-+			if (i >= 3)
-+				SLOT_WARN(
-+					php_slot,
-+					"Unable to thaw PE %02x, hotplug detect will fail!\n",
-+					pe->addr);
-+			else
-+				SLOT_WARN(php_slot,
-+					  "PE %02x thawed successfully\n",
-+					  pe->addr);
-+		}
-+	}
-+}
-+
- static void pnv_php_event_handler(struct work_struct *work)
+ 		/* protected by rtnl_lock */
+ 		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index e153dac47a53..160b452f75e7 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -906,23 +906,22 @@ static struct ifmcaddr6 *mca_alloc(struct inet6_dev *idev,
+ static int __ipv6_dev_mc_inc(struct net_device *dev,
+ 			     const struct in6_addr *addr, unsigned int mode)
  {
- 	struct pnv_php_event *event =
- 		container_of(work, struct pnv_php_event, work);
- 	struct pnv_php_slot *php_slot = event->php_slot;
+-	struct ifmcaddr6 *mc;
+ 	struct inet6_dev *idev;
+-
+-	ASSERT_RTNL();
++	struct ifmcaddr6 *mc;
  
--	if (event->added)
-+	if (event->added) {
- 		pnv_php_enable_slot(&php_slot->slot);
--	else
-+	} else {
- 		pnv_php_disable_slot(&php_slot->slot);
-+		pnv_php_detect_clear_suprise_removal_freeze(php_slot);
-+	}
+ 	/* we need to take a reference on idev */
+ 	idev = in6_dev_get(dev);
+-
+ 	if (!idev)
+ 		return -EINVAL;
  
- 	kfree(event);
- }
+-	if (idev->dead) {
++	mutex_lock(&idev->mc_lock);
++
++	if (READ_ONCE(idev->dead)) {
++		mutex_unlock(&idev->mc_lock);
+ 		in6_dev_put(idev);
+ 		return -ENODEV;
+ 	}
+ 
+-	mutex_lock(&idev->mc_lock);
+ 	for_each_mc_mclock(idev, mc) {
+ 		if (ipv6_addr_equal(&mc->mca_addr, addr)) {
+ 			mc->mca_users++;
 -- 
 2.39.5
 
