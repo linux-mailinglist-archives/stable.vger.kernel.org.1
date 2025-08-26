@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-173373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09628B35CA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A50B36C73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 249DC7B0E3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9617A981F65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61783376BD;
-	Tue, 26 Aug 2025 11:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440D3345747;
+	Tue, 26 Aug 2025 14:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crUh2VJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7kmI802"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CD52135B8;
-	Tue, 26 Aug 2025 11:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4231F4C90;
+	Tue, 26 Aug 2025 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208079; cv=none; b=OgcxaSW9YT8JcmVjrgAOi8P2bVqaCWhrun4x2Hi1UTY9higjWgelzJSfVf7FMe1EFBnH+euFfkU+hwi7nBaJz80E8sbDlb3OTUDxbTHUQsASop34rAdpWSdf748Nqae7nmck5HynBSBW9zHEJ+ehVUZ7cyDJE5mrooMgTynOkZE=
+	t=1756218437; cv=none; b=FgfkeWANS64N6Cg7qC/x98N0JWFGYvcuHRrpT3OQ7XWzmlGslrWs/f8JY6qU2fRGLW64dcrYuZixwIc3VR+oihaCq3WYXwpkMxfI7Sp8lb6Eb2+QyKAT4BK0R2g3Q1F5IUZ3ESn0qpfDnPeRasI1vNV3u76vpYYCg56pUH68O88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208079; c=relaxed/simple;
-	bh=nSfsrQ0GoofU90GV03H9uxwRdhRxvB0XyoC0Gwkdlvc=;
+	s=arc-20240116; t=1756218437; c=relaxed/simple;
+	bh=w1TuPsVismq2PfJXiGDg2UjZFD9Q7Piyb6ziBjrzvkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Akx74MvTPXZXwnZzztChLkglDJD5BK1omLkdP55vMfInGk7Piqgt/q97cGhH/E5zD6+k3LLniyF63525zueYbUjb0OG43sexzANiQjBwwy0bJFJA1v70qu6FoLnutbvgAbVVs6q83Gk3BMpdpKwm5pqO1RVPxLmsWE7518QpayM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crUh2VJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E9CC4CEF1;
-	Tue, 26 Aug 2025 11:34:38 +0000 (UTC)
+	 MIME-Version; b=DwxFTpJKAfX6R3NIpfd6/VfAVg5EZJnGwBI75c/MRMmXCTQPR+IWPGVYModTRu7lze/B8A8bawaIM3vUkQR0OdPCktOxj/NQb3NQRdk+iM34KAG8ltaMIHgIyxjk/whsvx+NdUYmQApHqMqmbalJKwbRrbea01q7Eurgm9AJuZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7kmI802; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ED4C4CEF1;
+	Tue, 26 Aug 2025 14:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208079;
-	bh=nSfsrQ0GoofU90GV03H9uxwRdhRxvB0XyoC0Gwkdlvc=;
+	s=korg; t=1756218436;
+	bh=w1TuPsVismq2PfJXiGDg2UjZFD9Q7Piyb6ziBjrzvkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crUh2VJKCNTefdZ3ITPKJPmERzjuPHMnSUf5z9Fx9KTTyJ1dRiJMGWuIFfiTGL2no
-	 U9YRHa+Gr4vM3CiEafTPf8BtAL/jU4+K4RbV/TC6ZKG2IYydXj768qY1ZxpiuEJWLb
-	 wJgKiTgKqKujbqcYMko/c2EkJOK3Bn2ZyvxO6Ts8=
+	b=O7kmI802RFSsILYXhtA23NJ1gJW2jvYYpHv4Bh4byPcjCGkX1xN+GABKvQPnLCrdL
+	 fAJO+8tbIfAmL3gk9Vo2dM5GGR60J/V39RgfS1QBJXwmdsZ0TmvewMxfn+MYFeqKdq
+	 WY3LfmhojSBuxCKd0Hju28yWAhsfkeSSzjbe3agc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@cqsoftware.com.cm>,
-	Song Gao <gaosong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 430/457] LoongArch: KVM: Use kvm_get_vcpu_by_id() instead of kvm_get_vcpu()
+Subject: [PATCH 5.10 504/523] tracing: Remove unneeded goto out logic
 Date: Tue, 26 Aug 2025 13:11:54 +0200
-Message-ID: <20250826110947.915979060@linuxfoundation.org>
+Message-ID: <20250826110936.871533700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Gao <gaosong@loongson.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 0dfd9ea7bf80fabe11f5b775d762a5cd168cdf41 ]
+[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
 
-Since using kvm_get_vcpu() may fail to retrieve the vCPU context,
-kvm_get_vcpu_by_id() should be used instead.
+Several places in the trace.c file there's a goto out where the out is
+simply a return. There's no reason to jump to the out label if it's not
+doing any more logic but simply returning from the function.
 
-Fixes: 8e3054261bc3 ("LoongArch: KVM: Add IPI user mode read and write function")
-Fixes: 3956a52bc05b ("LoongArch: KVM: Add EIOINTC read and write functions")
-Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cm>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Replace the goto outs with a return and remove the out labels.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/intc/eiointc.c | 7 ++++++-
- arch/loongarch/kvm/intc/ipi.c     | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ kernel/trace/trace.c |   37 ++++++++++++++-----------------------
+ 1 file changed, 14 insertions(+), 23 deletions(-)
 
-diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index 3cf9894999da..0207cfe1dbd6 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -45,7 +45,12 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1613,7 +1613,7 @@ int trace_get_user(struct trace_parser *
+ 
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1627,7 +1627,7 @@ int trace_get_user(struct trace_parser *
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				goto out;
++				return ret;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1637,8 +1637,7 @@ int trace_get_user(struct trace_parser *
+ 		/* only spaces were written */
+ 		if (isspace(ch) || !ch) {
+ 			*ppos += read;
+-			ret = read;
+-			goto out;
++			return read;
+ 		}
  	}
  
- 	cpu = s->sw_coremap[irq];
--	vcpu = kvm_get_vcpu(s->kvm, cpu);
-+	vcpu = kvm_get_vcpu_by_id(s->kvm, cpu);
-+	if (unlikely(vcpu == NULL)) {
-+		kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
-+		return;
-+	}
+@@ -1646,13 +1645,12 @@ int trace_get_user(struct trace_parser *
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else
++			return -EINVAL;
 +
- 	if (level) {
- 		/* if not enable return false */
- 		if (!test_bit(irq, (unsigned long *)s->enable.reg_u32))
-diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-index 6a13d2f44575..4859e320e3a1 100644
---- a/arch/loongarch/kvm/intc/ipi.c
-+++ b/arch/loongarch/kvm/intc/ipi.c
-@@ -318,7 +318,7 @@ static int kvm_ipi_regs_access(struct kvm_device *dev,
- 	cpu = (attr->attr >> 16) & 0x3ff;
- 	addr = attr->attr & 0xff;
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1667,15 +1665,11 @@ int trace_get_user(struct trace_parser *
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
  
--	vcpu = kvm_get_vcpu(dev->kvm, cpu);
-+	vcpu = kvm_get_vcpu_by_id(dev->kvm, cpu);
- 	if (unlikely(vcpu == NULL)) {
- 		kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
- 		return -EINVAL;
--- 
-2.50.1
-
+ 	*ppos += read;
+-	ret = read;
+-
+-out:
+-	return ret;
++	return read;
+ }
+ 
+ /* TODO add a seq_buf_to_buffer() */
+@@ -2139,10 +2133,10 @@ int __init register_tracer(struct tracer
+ 	mutex_unlock(&trace_types_lock);
+ 
+ 	if (ret || !default_bootup_tracer)
+-		goto out_unlock;
++		return ret;
+ 
+ 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
+-		goto out_unlock;
++		return 0;
+ 
+ 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
+ 	/* Do we want this tracer to start on bootup? */
+@@ -2154,8 +2148,7 @@ int __init register_tracer(struct tracer
+ 	/* disable other selftests, since this will break it. */
+ 	disable_tracing_selftest("running a tracer");
+ 
+- out_unlock:
+-	return ret;
++	return 0;
+ }
+ 
+ static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
+@@ -8240,11 +8233,10 @@ ftrace_trace_snapshot_callback(struct tr
+  out_reg:
+ 	ret = tracing_alloc_snapshot_instance(tr);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = register_ftrace_function_probe(glob, tr, ops, count);
+ 
+- out:
+ 	return ret < 0 ? ret : 0;
+ }
+ 
+@@ -9746,7 +9738,7 @@ __init static int tracer_alloc_buffers(v
+ 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
+ 
+ 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
+-		goto out;
++		return -ENOMEM;
+ 
+ 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_buffer_mask;
+@@ -9857,7 +9849,6 @@ out_free_cpumask:
+ 	free_cpumask_var(global_trace.tracing_cpumask);
+ out_free_buffer_mask:
+ 	free_cpumask_var(tracing_buffer_mask);
+-out:
+ 	return ret;
+ }
+ 
 
 
 
