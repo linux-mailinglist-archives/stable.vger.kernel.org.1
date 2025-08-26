@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08951B36616
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3B0B3608F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4DEE7BD056
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5CB7360677
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FD352FD5;
-	Tue, 26 Aug 2025 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905391DE2B4;
+	Tue, 26 Aug 2025 12:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q26DPNu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNODunRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24348352FCD;
-	Tue, 26 Aug 2025 13:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE551DD0D4;
+	Tue, 26 Aug 2025 12:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216282; cv=none; b=kYTlP+iwsRMWTnQYS2g7j3OcTJN5wGTOczeiZWJEaXmcind/ssvFtnCM4n1BQ6IxhUnIlvWABgPZMLPPP1UPPkCdkTTFVpmiiVTd8afNNbjYEC9i+I+V26iwUeRbEnnyIZWW6saogsPxlsL6HkjT6wessmfdPN9VYUC1Sp4GagI=
+	t=1756213143; cv=none; b=hEWuW1pNOsY4qirrNW9eoslr9HDh0Nfr/teBC9GuIxSkv1f40XY6RS0glZogb0mZc1gPvoz8F0Lb26zT9h6KK8To5SNaWZshVldkhWDW9wWd0MGlXV4jyKN3y5mMtKLig6SfTQsU98kdOUIQ0oleYcFgatGfLizIT1wBdL59Wxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216282; c=relaxed/simple;
-	bh=DHcZ5msGnAUz3NF3yXO/yArrKsHUKFZvqdXHFqC+RA4=;
+	s=arc-20240116; t=1756213143; c=relaxed/simple;
+	bh=HMv+Ws94QyBEsOD2P09uiXLVeSPy9IPuUqbXFmitHLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+dZx463htWLLqNpfBlLjAX3hMfbESsGeEAUgK8E4tNceLHjrocSrNcfzoCcmo15C/dB5k1w+b+eczdQeXvEkWj0sU86FiVMqbWQ62QYjsI6mu8UnkyqVmVE5KlT+tsBG9huH6N9pdvgUU0HNO/jC9SiIpQc3U38ruNwjMZ199A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q26DPNu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC2CC4CEF1;
-	Tue, 26 Aug 2025 13:51:21 +0000 (UTC)
+	 MIME-Version; b=VMDq0r6PrwV5I7yfY1Y4laB0VLRAjMUAJWCl6n87W3MdE4kOtvKh4jGoUy2A2nhifcNPrHpOiqk2WITdxa1JZhKaK/rkXWIQg2sLLjI5XwHb3qG4DOy6s8WXmM8+qXl/UZtKzILXLSYCOyREahUHAM2Xh44Ko10QUGDsAnlJfn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNODunRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC58BC4CEF1;
+	Tue, 26 Aug 2025 12:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216281;
-	bh=DHcZ5msGnAUz3NF3yXO/yArrKsHUKFZvqdXHFqC+RA4=;
+	s=korg; t=1756213143;
+	bh=HMv+Ws94QyBEsOD2P09uiXLVeSPy9IPuUqbXFmitHLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q26DPNu1OwhZrof3C2mQYNQxAvklCUSGxNjhiVA10xYkgcMfdk23naxjCGZ+9Wl2/
-	 1wbQTyGrpAnf5YflDNylBrwLXT7oEM0mKFeZb8D9P5kjaznV7zDNdNawI2Dju1C1X9
-	 V9LdsokyD0DsNLsmV1v9SiSvIi0icEKeZCRUFyjI=
+	b=bNODunRybiii0X9xPwGx7njdQB4Gm1O7jCQCmLAOy+2qwghw6cT0lhpyPa+GX+Qhk
+	 9KVwCmEFCQ8hE4yn8vuWMvcSEmNznS7kKf5rvrks3VRHIOHckzr8/sRpBpOgJhtsED
+	 ldReIlZC1KyfW9gYWV3HqWMsAmPo0oy9PlKXqKPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Prashant Malani <pmalani@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Stephan Mueller <smueller@chronox.de>,
+	Markus Theil <theil.markus@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/644] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+Subject: [PATCH 6.6 238/587] crypto: jitter - fix intermediary handling
 Date: Tue, 26 Aug 2025 13:06:27 +0200
-Message-ID: <20250826110953.720119285@linuxfoundation.org>
+Message-ID: <20250826110958.988464867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashant Malani <pmalani@google.com>
+From: Markus Theil <theil.markus@gmail.com>
 
-[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
+[ Upstream commit 735b72568c73875269a6b73ab9543a70f6ac8a9f ]
 
-AMU counters on certain CPPC-based platforms tend to yield inaccurate
-delivered performance measurements on systems that are idle/mostly idle.
-This results in an inaccurate frequency being stored by cpufreq in its
-policy structure when the CPU is brought online. [1]
+The intermediary value was included in the wrong
+hash state. While there, adapt to user-space by
+setting the timestamp to 0 if stuck and inserting
+the values nevertheless.
 
-Consequently, if the userspace governor tries to set the frequency to a
-new value, there is a possibility that it would be the erroneous value
-stored earlier. In such a scenario, cpufreq would assume that the
-requested frequency has already been set and return early, resulting in
-the correct/new frequency request never making it to the hardware.
-
-Since the operating frequency is liable to this sort of inconsistency,
-mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
-invoked when a target frequency update is requested.
-
-Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Prashant Malani <pmalani@google.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Markus Theil <theil.markus@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/jitterentropy-kcapi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index c5a4aa0c2c9a..b7294531816b 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -682,7 +682,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
- };
+diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
+index 7d1463a1562a..dd05faf00571 100644
+--- a/crypto/jitterentropy-kcapi.c
++++ b/crypto/jitterentropy-kcapi.c
+@@ -134,7 +134,7 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
+ 	 * Inject the data from the previous loop into the pool. This data is
+ 	 * not considered to contain any entropy, but it stirs the pool a bit.
+ 	 */
+-	ret = crypto_shash_update(desc, intermediary, sizeof(intermediary));
++	ret = crypto_shash_update(hash_state_desc, intermediary, sizeof(intermediary));
+ 	if (ret)
+ 		goto err;
  
- static struct cpufreq_driver cppc_cpufreq_driver = {
--	.flags = CPUFREQ_CONST_LOOPS,
-+	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify = cppc_verify_policy,
- 	.target = cppc_cpufreq_set_target,
- 	.get = cppc_cpufreq_get_rate,
+@@ -147,11 +147,12 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
+ 	 * conditioning operation to have an identical amount of input data
+ 	 * according to section 3.1.5.
+ 	 */
+-	if (!stuck) {
+-		ret = crypto_shash_update(hash_state_desc, (u8 *)&time,
+-					  sizeof(__u64));
++	if (stuck) {
++		time = 0;
+ 	}
+ 
++	ret = crypto_shash_update(hash_state_desc, (u8 *)&time, sizeof(__u64));
++
+ err:
+ 	shash_desc_zero(desc);
+ 	memzero_explicit(intermediary, sizeof(intermediary));
 -- 
 2.39.5
 
