@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-173516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E1FB35E34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C4CB35BEA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D5DA4637B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D2377B4E15
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8057829D27E;
-	Tue, 26 Aug 2025 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D708933A01A;
+	Tue, 26 Aug 2025 11:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs5P6yLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daxrgVM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3730117332C;
-	Tue, 26 Aug 2025 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935A531DDBC;
+	Tue, 26 Aug 2025 11:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208451; cv=none; b=XNPZf2kmD5iZkAApbweurVDMMtJI7CSmHXTOkV3PAxkA/Lecq4wXzZKjghIJB4AReywZ0gnWg7xrqd4LvmqLh5DVxZDPPOL8P/dDF3DZ910TMCpS7Msr+VXFtch3aFmDB6RA22OwMwkDBF4mEc33Leb31t3L6IB6EX+stdV0Kxs=
+	t=1756207680; cv=none; b=nc52NnpGRuVzc/jhgsqT/CymJDoaDk0+QpXgyS+yXQ1S4crhidms6IpCGJUdJ/n4oxrmY5aav5+s+uH002AjlDWivJ0ktRKpfdiBjfl3TIZ4uLqnHYqFgD0A8/VFwHGctAMTM6XTNnCalht8e4EhAqN/HV3h50a7gELIfZCohMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208451; c=relaxed/simple;
-	bh=NhokpoxBbMyDHsUTdixwcCe9OIuki7FOQAX1c1heFY0=;
+	s=arc-20240116; t=1756207680; c=relaxed/simple;
+	bh=LsrQ+mOvbU1yy7BprcpHUO8iQ5QhvdOfn9uAZIXMyWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUmkSgv/4R1goEq2vD/tKlfJgy14M/+gFFR/FzpD2VF5w9Ubh9HeLHzlAc8951bBpW7JMuWbeywgo1+Y/OqLP9NOmN78dX3FMSgIQuJG08Xdd3FZCzjb1OSmVXGz6aA9LruudkLsvLvdd9VLawJtwWEMxwWtf/2XXWL/VSovd94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs5P6yLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA64C4CEF1;
-	Tue, 26 Aug 2025 11:40:50 +0000 (UTC)
+	 MIME-Version; b=IE0GhuTxNd8/Q+NErNGqlqjNjWjJDVkmpQ8A0zglyW/QcdNhPfhmZ3ayu65ZIRZ4gQ4ocS72gfik3rM94wrkkWTHLkMCzCNN76M+ZNdOkJIK3elwKjXdnkz52EFNRk7VihKREk0VqOX5mTydsb1poItbtwxlB7YDfdkG4DU45s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daxrgVM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB087C4CEF1;
+	Tue, 26 Aug 2025 11:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208451;
-	bh=NhokpoxBbMyDHsUTdixwcCe9OIuki7FOQAX1c1heFY0=;
+	s=korg; t=1756207680;
+	bh=LsrQ+mOvbU1yy7BprcpHUO8iQ5QhvdOfn9uAZIXMyWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zs5P6yLX/N+ATUwWdstLmPMPqDHGIj3LlK7StWzNPvWC8RkpXZpi2lsSD6DmHfK6m
-	 I8k16HIJz/emmewafzs91FpKYW7/wQLgHQfLxYVu0JsjBUkzI2wo7RlcEilMJZjrx1
-	 4HF0zbx+IT9BSV2wChBeOTZWCOshGP/gJo/NgSYg=
+	b=daxrgVM8GDX2rA4ZKBeRh6owxakPOMfczgnvGUNKIDN9st0NFbMXpcqo+VFH9deaN
+	 BT8qi00SgFXYcXMM7x9Vslfb9gpqwUn5qqzqqJzOinxdjC3hEpVtcUFXuqKvlpT39Y
+	 REskNgVFT8aLB9fvcsViKgxOe5xP7G4dxSGIT3uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.12 117/322] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
-Date: Tue, 26 Aug 2025 13:08:52 +0200
-Message-ID: <20250826110918.685559292@linuxfoundation.org>
+	David Hildenbrand <david@redhat.com>,
+	syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 249/457] mm/mremap: fix WARN with uffd that has remap events disabled
+Date: Tue, 26 Aug 2025 13:08:53 +0200
+Message-ID: <20250826110943.519621346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +68,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
+commit 772e5b4a5e8360743645b9a466842d16092c4f94 upstream.
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+Registering userfaultd on a VMA that spans at least one PMD and then
+mremap()'ing that VMA can trigger a WARN when recovering from a failed
+page table move due to a page table allocation error.
 
-Clamp the param if the user provides a value that will result in an invalid
-fps.
+The code ends up doing the right thing (recurse, avoiding moving actual
+page tables), but triggering that WARN is unpleasant:
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_normal_pmd mm/mremap.c:357 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_pgt_entry mm/mremap.c:595 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Modules linked in:
+CPU: 2 UID: 0 PID: 6133 Comm: syz.0.19 Not tainted 6.17.0-rc1-syzkaller-00004-g53e760d89498 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:move_normal_pmd mm/mremap.c:357 [inline]
+RIP: 0010:move_pgt_entry mm/mremap.c:595 [inline]
+RIP: 0010:move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Code: ...
+RSP: 0018:ffffc900037a76d8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000032930007 RCX: ffffffff820c6645
+RDX: ffff88802e56a440 RSI: ffffffff820c7201 RDI: 0000000000000007
+RBP: ffff888037728fc0 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000032930007 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffc900037a79a8 R14: 0000000000000001 R15: dffffc0000000000
+FS:  000055556316a500(0000) GS:ffff8880d68bc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30863fff CR3: 0000000050171000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ copy_vma_and_data+0x468/0x790 mm/mremap.c:1215
+ move_vma+0x548/0x1780 mm/mremap.c:1282
+ mremap_to+0x1b7/0x450 mm/mremap.c:1406
+ do_mremap+0xfad/0x1f80 mm/mremap.c:1921
+ __do_sys_mremap+0x119/0x170 mm/mremap.c:1977
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f00d0b8ebe9
+Code: ...
+RSP: 002b:00007ffe5ea5ee98 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
+RAX: ffffffffffffffda RBX: 00007f00d0db5fa0 RCX: 00007f00d0b8ebe9
+RDX: 0000000000400000 RSI: 0000000000c00000 RDI: 0000200000000000
+RBP: 00007ffe5ea5eef0 R08: 0000200000c00000 R09: 0000000000000000
+R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f00d0db5fa0 R14: 00007f00d0db5fa0 R15: 0000000000000005
+ </TASK>
+
+The underlying issue is that we recurse during the original page table
+move, but not during the recovery move.
+
+Fix it by checking for both VMAs and performing the check before the
+pmd_none() sanity check.
+
+Add a new helper where we perform+document that check for the PMD and PUD
+level.
+
+Thanks to Harry for bisecting.
+
+Link: https://lkml.kernel.org/r/20250818175358.1184757-1-david@redhat.com
+Fixes: 0cef0bb836e3 ("mm: clear uffd-wp PTE/PMD state on mremap()")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/689bb893.050a0220.7f033.013a.GAE@google.com
+Tested-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/venc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/mremap.c |   41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -294,6 +294,25 @@ static inline bool arch_supports_page_ta
+ }
+ #endif
  
--	if (!us_per_frame)
--		return -EINVAL;
++static inline bool uffd_supports_page_table_move(struct pagetable_move_control *pmc)
++{
++	/*
++	 * If we are moving a VMA that has uffd-wp registered but with
++	 * remap events disabled (new VMA will not be registered with uffd), we
++	 * need to ensure that the uffd-wp state is cleared from all pgtables.
++	 * This means recursing into lower page tables in move_page_tables().
++	 *
++	 * We might get called with VMAs reversed when recovering from a
++	 * failed page table move. In that case, the
++	 * "old"-but-actually-"originally new" VMA during recovery will not have
++	 * a uffd context. Recursing into lower page tables during the original
++	 * move but not during the recovery move will cause trouble, because we
++	 * run into already-existing page tables. So check both VMAs.
++	 */
++	return !vma_has_uffd_without_event_remap(pmc->old) &&
++	       !vma_has_uffd_without_event_remap(pmc->new);
++}
++
+ #ifdef CONFIG_HAVE_MOVE_PMD
+ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 			pmd_t *old_pmd, pmd_t *new_pmd)
+@@ -306,6 +325,8 @@ static bool move_normal_pmd(struct paget
+ 
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pmd shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -332,15 +353,6 @@ static bool move_normal_pmd(struct paget
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
+-	/* If this pmd belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
 -
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -389,6 +401,8 @@ static bool move_normal_pud(struct paget
  
- 	inst->timeperframe = *timeperframe;
- 	inst->fps = fps;
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pud shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -396,15 +410,6 @@ static bool move_normal_pud(struct paget
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
+-	/* If this pud belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
+-
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
 
 
 
