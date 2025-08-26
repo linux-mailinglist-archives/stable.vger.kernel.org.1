@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AD3B364C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DE2B36CAC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9CD8E3664
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61861C282F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42F52FC01F;
-	Tue, 26 Aug 2025 13:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01F235AADC;
+	Tue, 26 Aug 2025 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NHmL2Og"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0cXHJuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD82857D2;
-	Tue, 26 Aug 2025 13:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619E352084;
+	Tue, 26 Aug 2025 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215101; cv=none; b=qwia1Skshht/YVthFBC9yyGxmmJsMJzFfiC/IFOfYVeMZOXThGDXNTUXr7td9UhrEyqFjPSzpBsZ6bQYkjKNXn8a5uKldTFKjVIC088sC3YbznQInV3cb4208jTdfQKoIdg+5UmUA1XAK+OCa3G1FUqCYUl+xGX+40GKs5YliCI=
+	t=1756219201; cv=none; b=K/XGOd7zwlQgXaud37XGAQQrfmiWuDtFduiMbRCBPYZojdn5rC3ylkSKyB0LGcGk85n6OConebnkesoJDBvg0pXIxP8cWXtoyCq7t+XdWdF1JwAsmbZDkapXP3h8nb1KGrRuxIxF0N4D4Hrz+/hx6tV/MRSzp5HKBopSruan7Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215101; c=relaxed/simple;
-	bh=ghy5rdelO+ZDFZvkgo3VGFCiI/Usmzqm8tvSSP4KeN4=;
+	s=arc-20240116; t=1756219201; c=relaxed/simple;
+	bh=jENMh6HQy0YUNH89xi7AjnQUagcseXZuokXG97BUJYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7+H8cI8nefbT8kQjKjGJPUzhnfBdVO4eQIOk8DHPZByFaiFUJoCqma0J1WnONuGoT9ZHzkCSYAGs5zwcLvm82sTgVHb6wlxMGlSnqgvy9Ck3aiP0tNi9HC8linfa5FtrAcadd/Euuvk5Y9Dh6Vz/lkkHTDvIkH0Y5GUHZV573Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NHmL2Og; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1B9C4CEF1;
-	Tue, 26 Aug 2025 13:31:40 +0000 (UTC)
+	 MIME-Version; b=NaYD7Jey5QkY2c+vbUP6as4rxICzuSgqre0h2S6V/IaxexTCZ8F4ufzZm1wTB4wMAQVVOMjoTbDH1oxHGSDTUNx6sUffo6ShmkYvqlK5+5I8eET3RpP0kBFzp+zVUGe/UXEMqQq5ZU82uAZlT4T8PGRlGqjMF59nZ9o+KZTob/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0cXHJuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F9EC4CEF1;
+	Tue, 26 Aug 2025 14:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215101;
-	bh=ghy5rdelO+ZDFZvkgo3VGFCiI/Usmzqm8tvSSP4KeN4=;
+	s=korg; t=1756219201;
+	bh=jENMh6HQy0YUNH89xi7AjnQUagcseXZuokXG97BUJYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NHmL2OgLQWwMmZcDgpyMRwLMTzYqpmw1Okso/QtVmxlKjGQi4hd4suyJnHPjshXq
-	 kQtxh4sa2PpS5r6aisTzHkNgHa+zRoe0R/T45VDnS2QrQKpmgEx21u5ePfuAIK+I7I
-	 6j5QN4i0J1DTf8hlIPYePs/fcM4+HrVV6+dIJgco=
+	b=K0cXHJuyNFyBl73Rz1dg9qlyKGykdc3kj431MhHa+xtkhPvyvo3t54/+Ib82hCeIZ
+	 CwQdKSHaqm1aSTA9DQM93vCCsbdjh02uzvCfXs6NUTMi+Um0b3EPRwgAzzdSXGVq3k
+	 uhPmzW+C0KwfQsepWgzzurlvft5MfJmgAWDFYsM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 357/482] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
+	Finn Thain <fthain@linux-m68k.org>,
+	Stan Johnson <userm57@yahoo.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 5.4 284/403] m68k: Fix lost column on framebuffer debug console
 Date: Tue, 26 Aug 2025 13:10:10 +0200
-Message-ID: <20250826110939.655684363@linuxfoundation.org>
+Message-ID: <20250826110914.659371245@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
+commit 210a1ce8ed4391b64a888b3fb4b5611a13f5ccc7 upstream.
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+Move the cursor position rightward after rendering the character,
+not before. This avoids complications that arise when the recursive
+console_putc call has to wrap the line and/or scroll the display.
+This also fixes the linewrap bug that crops off the rightmost column.
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
+When the cursor is at the bottom of the display, a linefeed will not
+move the cursor position further downward. Instead, the display scrolls
+upward. Avoid the repeated add/subtract sequence by way of a single
+subtraction at the initialization of console_struct_num_rows.
 
-The resulting runtime PM ref imbalance causes warning messages such as:
-
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
-
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
-
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
-
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
-
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
-
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
-[ changed "recent enough PCIe ports" comment to "some PCIe ports" ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/9d4e8c68a456d5f2bc254ac6f87a472d066ebd5e.1743115195.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c |    4 +---
- drivers/pci/pci.c      |    8 ++++++--
- drivers/pci/probe.c    |    2 +-
- include/linux/pci.h    |   10 +++++++++-
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ arch/m68k/kernel/head.S |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -793,13 +793,11 @@ int pci_acpi_program_hp_params(struct pc
- bool pciehp_is_native(struct pci_dev *bridge)
- {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3379,6 +3379,7 @@ L(console_clear_loop):
  
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
+ 	movel	%d4,%d1				/* screen height in pixels */
+ 	divul	%a0@(FONT_DESC_HEIGHT),%d1	/* d1 = max num rows */
++	subql	#1,%d1				/* row range is 0 to num - 1 */
  
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
+ 	movel	%d0,%a2@(Lconsole_struct_num_columns)
+ 	movel	%d1,%a2@(Lconsole_struct_num_rows)
+@@ -3525,15 +3526,14 @@ func_start	console_putc,%a0/%a1/%d0-%d7
+ 	cmpib	#10,%d7
+ 	jne	L(console_not_lf)
+ 	movel	%a0@(Lconsole_struct_cur_row),%d0
+-	addil	#1,%d0
+-	movel	%d0,%a0@(Lconsole_struct_cur_row)
+ 	movel	%a0@(Lconsole_struct_num_rows),%d1
+ 	cmpl	%d1,%d0
+ 	jcs	1f
+-	subil	#1,%d0
+-	movel	%d0,%a0@(Lconsole_struct_cur_row)
+ 	console_scroll
++	jra	L(console_exit)
+ 1:
++	addql	#1,%d0
++	movel	%d0,%a0@(Lconsole_struct_cur_row)
+ 	jra	L(console_exit)
  
- 	if (pcie_ports_native)
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3019,8 +3019,12 @@ static const struct dmi_system_id bridge
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
-  *
-- * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-+ *
-+ * Return: Whether it is possible to move the bridge to D3.
-+ *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
+ L(console_not_lf):
+@@ -3560,12 +3560,6 @@ L(console_not_cr):
   */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1592,7 +1592,7 @@ void set_pcie_hotplug_bridge(struct pci_
+ L(console_not_home):
+ 	movel	%a0@(Lconsole_struct_cur_column),%d0
+-	addql	#1,%a0@(Lconsole_struct_cur_column)
+-	movel	%a0@(Lconsole_struct_num_columns),%d1
+-	cmpl	%d1,%d0
+-	jcs	1f
+-	console_putc	#'\n'	/* recursion is OK! */
+-1:
+ 	movel	%a0@(Lconsole_struct_cur_row),%d1
  
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
- }
- 
- static void set_pcie_thunderbolt(struct pci_dev *dev)
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -317,7 +317,14 @@ struct pci_sriov;
- struct pci_p2pdma;
- struct rcec_ea;
- 
--/* The pci_dev structure describes PCI devices */
-+/* struct pci_dev - describes a PCI device
-+ *
-+ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
-+ *			Conventional PCI Hot-Plug, ACPI slot).
-+ *			Such bridges are allocated additional MMIO and bus
-+ *			number resources to allow for hierarchy expansion.
-+ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
-+ */
- struct pci_dev {
- 	struct list_head bus_list;	/* Node in per-bus list */
- 	struct pci_bus	*bus;		/* Bus this device is on */
-@@ -438,6 +445,7 @@ struct pci_dev {
- 	unsigned int	is_physfn:1;
- 	unsigned int	is_virtfn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
  	/*
+@@ -3612,6 +3606,23 @@ L(console_do_font_scanline):
+ 	addq	#1,%d1
+ 	dbra	%d7,L(console_read_char_scanline)
+ 
++	/*
++	 *	Register usage in the code below:
++	 *	a0 = pointer to console globals
++	 *	d0 = cursor column
++	 *	d1 = cursor column limit
++	 */
++
++	lea	%pc@(L(console_globals)),%a0
++
++	movel	%a0@(Lconsole_struct_cur_column),%d0
++	addql	#1,%d0
++	movel	%d0,%a0@(Lconsole_struct_cur_column)	/* Update cursor pos */
++	movel	%a0@(Lconsole_struct_num_columns),%d1
++	cmpl	%d1,%d0
++	jcs	L(console_exit)
++	console_putc	#'\n'		/* Line wrap using tail recursion */
++
+ L(console_exit):
+ func_return	console_putc
+ 
 
 
 
