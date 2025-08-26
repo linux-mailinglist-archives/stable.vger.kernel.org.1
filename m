@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41988B36552
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4908FB36A7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 300322A826F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38E111C43D89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B370343D76;
-	Tue, 26 Aug 2025 13:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA01D35208B;
+	Tue, 26 Aug 2025 14:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18vzE4gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsJ4ZGup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C62343218;
-	Tue, 26 Aug 2025 13:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7551335207C;
+	Tue, 26 Aug 2025 14:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215021; cv=none; b=egIvNiic6+DNqabr9I5IYo7IJjcCoCRhZTADQOOI74+EvvqMFv0SNIIfcJ8xQzzB2hXprKMS65eBoby8cH8M1CFZQjAk5qZv71CLvwF8wDBBXcLkmu/kgsy8kRJeVJt2Hb/IZvI0+1ZTW+BlLpEMTIGlbUrSqRu2+RENnaT5nQ8=
+	t=1756218056; cv=none; b=Bsu0U0PHfWSiXpXa3UKYLbwrms8tigDg1Zrsj+L1y1lX7TvUQ8m2aq1H4pdPuY5VB48iY75Qw8yybVte+Zy1uIgOMygGyTM7IQG3I2nUWgyC02Guh6THHXNUenT1FD0JZ/oMkD0DORt36qJDbAcr+n98GwvdlloPRq5K8uXQDKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215021; c=relaxed/simple;
-	bh=xHCIT3APP/2FydIjXjSMBrn4XGUCprHnFkKJ5AY94ks=;
+	s=arc-20240116; t=1756218056; c=relaxed/simple;
+	bh=X6YqMUn871OxclPXbC5riGTFMyPe7TFaK7eaJRBLFXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myA6jKIneUWvdAQewf3iuzvdS/+3vkugXBH56uVzVHbZQzFgk4hWr18vH2OYg7vG59HeWkGIAb4Os0tJLV08nc/WjErBCrsoR8nEOfoiFUaN9i67g1nnTVaAxoyTHNKYRIQNzM75yqY0Dqz9hxAoKSo7CO/rZK+J1lMzJyctNgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18vzE4gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261C3C4CEF1;
-	Tue, 26 Aug 2025 13:30:18 +0000 (UTC)
+	 MIME-Version; b=DNa+pXqfcFFOzVHaDBt2ijfKitdW/vhZxkr25tc+bKa2YtDU4/wdNlrwsY5S/o4ltuVvG2dvBsiqObN7CKmHSajh7Y+CkxH4fx+NNbe5q90NLrXhdG2tiS+u/8weGZPsTImoUBYwbZa1VKUgn+Q20n+5HijLy5jwnV2DXybprNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsJ4ZGup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C2BC4CEF1;
+	Tue, 26 Aug 2025 14:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215019;
-	bh=xHCIT3APP/2FydIjXjSMBrn4XGUCprHnFkKJ5AY94ks=;
+	s=korg; t=1756218056;
+	bh=X6YqMUn871OxclPXbC5riGTFMyPe7TFaK7eaJRBLFXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18vzE4gkmwmjRPXxyt6lsBlgjFeQ76pKOpVhMlGzv7KLUhtneB9PUkY2O3PpcZyM1
-	 J8OPbR2GkuzQLPyf6AjEieQJfoz+LYdkWXsgrftzalNiWCrqEunqp48mTyM6qspVF9
-	 MxEicPtglI/IIw2wjiLPYgPzJoiRLkCxlFMudtps=
+	b=HsJ4ZGupZ3eJfWrFMr5EqdXx6cGvTwjOmS2sJ/RmEQMW51F2S10eB2uim8mKxcHLP
+	 mHEQomE8GBqdt0qhB3oN1o62VnhI8oPn0JvBr4MKtaQ+5Hdx6FlxizSGnQqkrnscvc
+	 8meyre4j8InVHQATthx9IV1/euCWxXIoG0VOXx44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 325/482] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
-Date: Tue, 26 Aug 2025 13:09:38 +0200
-Message-ID: <20250826110938.840177493@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.10 369/523] wifi: ath11k: fix source ring-buffer corruption
+Date: Tue, 26 Aug 2025 13:09:39 +0200
+Message-ID: <20250826110933.568985743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
+commit 6efa0df54022c6c9fd4d294b87622c7fcdc418c8 upstream.
 
-In the interrupt handler rain_interrupt(), the buffer full check on
-rain->buf_len is performed before acquiring rain->buf_lock. This
-creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
-rain->buf_len is concurrently accessed and modified in the work
-handler rain_irq_work_handler() under the same lock.
+Add the missing memory barrier to make sure that LMAC source ring
+descriptors are written before updating the head pointer to avoid
+passing stale data to the firmware on weakly ordered architectures like
+aarch64.
 
-Multiple interrupt invocations can race, with each reading buf_len
-before it becomes full and then proceeding. This can lead to both
-interrupts attempting to write to the buffer, incrementing buf_len
-beyond its capacity (DATA_SIZE) and causing a buffer overflow.
+Note that non-LMAC rings use MMIO write accessors which have the
+required write memory barrier.
 
-Fix this bug by moving the spin_lock() to before the buffer full
-check. This ensures that the check and the subsequent buffer modification
-are performed atomically, preventing the race condition. An corresponding
-spin_unlock() is added to the overflow path to correctly release the
-lock.
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-This possible bug was found by an experimental static analysis tool
-developed by our team.
-
-Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-5-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-+++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
- {
- 	struct rain *rain = serio_get_drvdata(serio);
- 
-+	spin_lock(&rain->buf_lock);
- 	if (rain->buf_len == DATA_SIZE) {
-+		spin_unlock(&rain->buf_lock);
- 		dev_warn_once(rain->dev, "buffer overflow\n");
- 		return IRQ_HANDLED;
- 	}
--	spin_lock(&rain->buf_lock);
- 	rain->buf_len++;
- 	rain->buf[rain->buf_wr_idx] = data;
- 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -841,7 +841,11 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
+-			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
++			/* Make sure descriptor is written before updating the
++			 * head pointer.
++			 */
++			dma_wmb();
++			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+ 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
+@@ -850,6 +854,10 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			/* Assume implementation use an MMIO write accessor
++			 * which has the required wmb() so that the descriptor
++			 * is written before the updating the head pointer.
++			 */
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.src_ring.hp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
