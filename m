@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B52B36AE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8865BB35D99
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 023114E2971
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCF2B5E4648
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C9F35082E;
-	Tue, 26 Aug 2025 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2952343214;
+	Tue, 26 Aug 2025 11:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeTK1ll0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2owuIGin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C70223335;
-	Tue, 26 Aug 2025 14:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41043431FC;
+	Tue, 26 Aug 2025 11:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219126; cv=none; b=PaCW/N9fTDTKFSQIm7Ft9edG7IJ2vNYPPXBub5uopUGeEHYojzGjIU/4m6IeaH47llnT9Uwfr3AtdJm32PJ1dd8/TVb+zv5OlnYU8vJc5m2cP+79nBkSK2RNZbH0m4x8+T/VkpfBB16AAalNa6mF086mlEpFDotj5mEc+OH5uyI=
+	t=1756208673; cv=none; b=oHbBARPexn4/AGMFY8WaZeo3wP8kbBI25sWk4Ekw7tE74TlkE7+eGeLIxqREWOap7d2K3pIwJ14Usw26ImK6XmkTX/kbyXrwNW9QkF3rjS1zv9Re8OKzCamgEtvsQJciJ5g0UiST417smFwxnfYlBfXM3/XAfHfhLkqmH8S+mNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219126; c=relaxed/simple;
-	bh=8h6jLWjFY+e7MtWYfveXxkNzNy6b4WK8hRW2Lw0HDCg=;
+	s=arc-20240116; t=1756208673; c=relaxed/simple;
+	bh=MCrGEbFNkk4NmX3/2TCu0l3fxP93fQ1rLd+NCnkDaTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0QYhqyNqrSt5vvkdom/PcWv7fknxNPS6fpUSqLf1kKqxipDuZRZwJGpWTRd+SB9Ie42ysFHRnrksuiCMxfCx4CiEjaEHARK9fJ7qmb0ma3gOFgqFLrlmLTZj03I1WlvL4CYOH3UlNZw70Jah4PscrVFLyUc12xLBzLGitQ+daU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeTK1ll0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56526C113CF;
-	Tue, 26 Aug 2025 14:38:45 +0000 (UTC)
+	 MIME-Version; b=nStu8W5gBrW1jM4y8mBX3odqnJ+xop4QMKoilvrW9oimiHkXSWaJC8mDSCPp5K4Y5aOmgPUaRvCmGPGBgcem9KQm/OhS5en6yflKDHzxpIG2MJGJm4Gviqbg1QutcxG46HMeJ2ggnWocDt4111cPMoATHbUrj8aBLXuLclMye6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2owuIGin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04DFC113CF;
+	Tue, 26 Aug 2025 11:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219125;
-	bh=8h6jLWjFY+e7MtWYfveXxkNzNy6b4WK8hRW2Lw0HDCg=;
+	s=korg; t=1756208673;
+	bh=MCrGEbFNkk4NmX3/2TCu0l3fxP93fQ1rLd+NCnkDaTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeTK1ll0f8F2CJ2KvK2J8jeqMGKxkjtXe5aHQr5ZCzt7GmQsLIBSSOkMbXAn9FP7v
-	 +RoWrINWYB7wNYeXJ5vwo8Sbp6ufBQh/6hvW5nb2QAiAxPStsYzahZYhn9ZrzI6Llj
-	 nVmesszPdiUXtnrLXaMmQLQwEO/XKfFJNgcDTEnQ=
+	b=2owuIGinNNGKsMZs2Cu1VrTyCksJw7X6R15qNuab8Vqu+riCsBq2FrNJzmywSPwuV
+	 pprFnWy8+KuUPtOMCaiYRVdjP2sBpqV4wL0oRN6dEYquSqnq2z7ESkcZy7hpiJa7l6
+	 0rEVRdsS0i9+9H0zVcq44aoNuSPb90bzCd5ootW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 263/403] kconfig: gconf: fix potential memory leak in renderer_edited()
+	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 174/322] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
 Date: Tue, 26 Aug 2025 13:09:49 +0200
-Message-ID: <20250826110914.078948736@linuxfoundation.org>
+Message-ID: <20250826110920.156272653@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
 
-[ Upstream commit f72ed4c6a375e52a3f4b75615e4a89d29d8acea7 ]
+commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
 
-If gtk_tree_model_get_iter() fails, gtk_tree_path_free() is not called.
+The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
+Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
+quirk to enable the mute LED.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index bd1fdbd949cc..6eb71c75b765 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -786,7 +786,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 	struct symbol *sym;
- 
- 	if (!gtk_tree_model_get_iter(model2, &iter, path))
--		return;
-+		goto free;
- 
- 	gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
- 	sym = menu->sym;
-@@ -798,6 +798,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 
- 	update_tree(&rootmenu, NULL);
- 
-+free:
- 	gtk_tree_path_free(path);
- }
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10576,6 +10576,8 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 
 
 
