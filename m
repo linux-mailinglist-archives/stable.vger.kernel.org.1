@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-173441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECCEB35DB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BE4B362E9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E826D364302
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7623A7BCD09
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DDB33CEAF;
-	Tue, 26 Aug 2025 11:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090F42857D2;
+	Tue, 26 Aug 2025 13:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISx8xc5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBVxPY2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B977533A02E;
-	Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9679196C7C;
+	Tue, 26 Aug 2025 13:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208256; cv=none; b=knmrz9pkjjmeYkPnP62BwCaVAis1nrjTLxYlJabwAkPRmZWIlL6wSvSDi4nOXAUJiaGlAv2nsrGM8J0069kwzkTCTDBiaW/u+XtRCbyPMwXdXmiiW/3Bape+B4nUZTewIvl3lUq4QKJ426GsMaSGYDcpNwVrXw3kdlwzQahST/Q=
+	t=1756214532; cv=none; b=IvK2VTskurH+bodKD+BAjMbu8D3aHOya/VKOacID5RVfVvjmeCLX5raP9GzWH6phXB1PQeCyGWdWK9PPZZnwH6BuvcBOeqs3lZRivRMhW9WRW29jKxxdR+yrXC6k9pa2kM1ZiEcOKc8fGIgEbPXkzDE+gHE4qiosxY41WhITuzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208256; c=relaxed/simple;
-	bh=bELnGM60o/yx+WHC7OxWobbBvriIv7AG7+6u3jOn4OU=;
+	s=arc-20240116; t=1756214532; c=relaxed/simple;
+	bh=5Vl7G6eRLx1ljua6UIS6vcjR3bI9jXXvYaDD/CzLPgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+s9HLtaRJp3DeAV1J5nM2K832qDNU3rpvVcqa+J9N3MC2Kf+jaGUJFGpfgnHmk4ADI2fMWrko+wg8fhdVtzuHiYZvLQDn8MeUvqPISDwBCOU+ADM3DpLUYqp9TG9fuoCuSRCxIgrwFvoI33HDN0NR9a6VPXfyIzFO/JhQ9Rlts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISx8xc5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E2C4CEF1;
-	Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
+	 MIME-Version; b=giexBLpCeVXAmKbRFGe/Wv3Z/4MHTDwufo/qw9LMxG2yL1cLT7W3qB3nNTvyA12Jcxhwn7mW7h3TNDzCOjl1KZ2rkbYPSgzFnnyYF1oEv5UHt2X/BKDRlMCReZkOeV5WH2K1uLEqP/0lSUEgXcelZd6JMAN+o5N44oTtRLXMBM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBVxPY2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C28CC113CF;
+	Tue, 26 Aug 2025 13:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208256;
-	bh=bELnGM60o/yx+WHC7OxWobbBvriIv7AG7+6u3jOn4OU=;
+	s=korg; t=1756214532;
+	bh=5Vl7G6eRLx1ljua6UIS6vcjR3bI9jXXvYaDD/CzLPgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISx8xc5UhOfn3+ACZDu+5VgnKtcaEYCu3gXX212Xs3PxW5aRrFJRa5P29i8fHynfz
-	 x5cQDZMHD1gSGkYVVaK2H2XdZKz0F3iUPCbarRmPOK0eeJNcrOSdQUKYlhmBn6U6A/
-	 ZMJpQnNykh6CIVh/LxQiQ9lt49IpUlR2+evS+ArA=
+	b=tBVxPY2uCPLqj6ALCnLpu+ZYFELLqLiNU/iZvkI4aHCmXbMgG2uf+ijv/WY5cGa2A
+	 Fxwd8BIuQ58fFCmpaN+sXfn+QuT+nEC5RjS5VFrkf/uevXojnoxpzFmzVA8Ev/mhpK
+	 ogcN8852tdV4H/OF4rW4B8sYGWSYz+hL0LOb030w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 010/322] usb: gadget: udc: renesas_usb3: fix device leak at unbind
-Date: Tue, 26 Aug 2025 13:07:05 +0200
-Message-ID: <20250826110915.481065376@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 173/482] drm/amd/display: Only finalize atomic_obj if it was initialized
+Date: Tue, 26 Aug 2025 13:07:06 +0200
+Message-ID: <20250826110935.083106012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
+[ Upstream commit b174084b3fe15ad1acc69530e673c1535d2e4f85 ]
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+[Why]
+If amdgpu_dm failed to initalize before amdgpu_dm_initialize_drm_device()
+completed then freeing atomic_obj will lead to list corruption.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+Check if atomic_obj state is initialized before trying to free.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2658,6 +2658,7 @@ static void renesas_usb3_remove(struct p
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 64f626cc7913..8cd88b2aa54c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4638,7 +4638,8 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+ static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm)
+ {
+-	drm_atomic_private_obj_fini(&dm->atomic_obj);
++	if (dm->atomic_obj.state)
++		drm_atomic_private_obj_fini(&dm->atomic_obj);
+ }
  
- 	cancel_work_sync(&usb3->role_work);
+ /******************************************************************************
+-- 
+2.39.5
+
 
 
 
