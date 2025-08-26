@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6305BB36015
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DDEB36866
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B50D6463DD0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B231BC4F1B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BB71E5718;
-	Tue, 26 Aug 2025 12:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3093126D6;
+	Tue, 26 Aug 2025 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAIcaRlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtOQbfaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD558770FE;
-	Tue, 26 Aug 2025 12:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B92225390;
+	Tue, 26 Aug 2025 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212832; cv=none; b=my9oe2+bYULohmlxebXJNV6NSAlW5gMv63WWmKjnzQbY+m241lNJDtfUqpxT8WuMNRrUuKGFCRgYdA2dpNwj6bN+vN6GdGbeD3+vaEIohxF/Q3U3YTVKSDa/50D357Q34+PtvH9AB7Y8zsc/lqex7nQ0MB5UWilN9VR1PNWirZ8=
+	t=1756217210; cv=none; b=ll70B+KvjNjEOvgyvWwCKUquhuktVp4ih6tb5rp8Vc29eT9ZBb4EMUADHD0RRfIjsA6PLW3Xv7JoJMncJFVYjj5b5uQBdEeg0esBeUsGYX/nKlbJ6HwGB7NZxgT5/eDNLfdj728Gf0NXgLSTdf5DvGjjI229ECibANR/nIphdH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212832; c=relaxed/simple;
-	bh=vSQnlyJ/fH3c/YAWOagU3YUr+X2uFhu9pK5D4XQd67w=;
+	s=arc-20240116; t=1756217210; c=relaxed/simple;
+	bh=hucWIIgZvmW4xObCKpxmzrx6c8EzDC7wxCrSr+C1VIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlbTWu+yX1zsavDniLmxa4ly9ElOcfFhErGKi34I0ynWKgCW2q0IKMPx4tK15A/xEDaPzZ0xOocRZt4EzxD3EI876jtfB4KWVk6qonbmICMEf7Ez3gh842USQcZH5iND8tHnu0/TV+UaSKaPjJFfrATrE/7YvFZCouoeWOCVpWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAIcaRlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF57CC4CEF1;
-	Tue, 26 Aug 2025 12:53:51 +0000 (UTC)
+	 MIME-Version; b=BfC9x/W0Jefwlu0ofrlP4diFWGB6H2MJY7Ez3Y2YdMpBR9N4JktqXNKA1/QCj19PL0I05cFFoiMkDCi1KnfSJ/lFVibyy7qXbw7yLMAQc9YDlgiXNd4m//mTPZV7GZ2Xx4gmNetiuqDCZpPTvQWuzZuH5RMvbQGhU5GQVgjAkGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtOQbfaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380E7C113CF;
+	Tue, 26 Aug 2025 14:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212832;
-	bh=vSQnlyJ/fH3c/YAWOagU3YUr+X2uFhu9pK5D4XQd67w=;
+	s=korg; t=1756217210;
+	bh=hucWIIgZvmW4xObCKpxmzrx6c8EzDC7wxCrSr+C1VIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAIcaRlLFoFs56uuUBe6grATi9o9ZKY1Y+BurJw72IuMqQ2H87SWYHVpGRpoOqosJ
-	 fGadS6kxa/mQgV/c1F5hTKXTWNeTY7sX8NJm+nq4lx15baRWzfiFfmiEbf/J/LVSfu
-	 49L6omUWIjEc4bppv3fjf1EbnMpN3x19NdqnZObE=
+	b=dtOQbfaC8GYDrAIc/CJdRUwI5Nnqftx3ChK30y+G7BYk+HFTKMbmwrBjc+NOdYF3m
+	 afD9rD7rZPtVqDvMff0FhzUpSaGSdTnAF6qU5RYlA4JlEAdf5Z8/5dV8BBUnAggo0C
+	 cIwp0bo9tQTuTo/gxJ0KwBS3iU1+tN6E9bMYezvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/587] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
+	Yajun Deng <yajun.deng@linux.dev>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 5.10 057/523] i40e: Add rx_missed_errors for buffer exhaustion
 Date: Tue, 26 Aug 2025 13:04:27 +0200
-Message-ID: <20250826110955.967047072@linuxfoundation.org>
+Message-ID: <20250826110925.995348688@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
+[ Upstream commit 5337d294973331660e84e41836a54014de22e5b0 ]
 
-mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
-belonging to the device being released.
+As the comment in struct rtnl_link_stats64, rx_dropped should not
+include packets dropped by the device due to buffer exhaustion.
+They are counted in rx_missed_errors, procfs folds those two counters
+together.
 
-If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
-the mei-client being freed might still be part of the mei_device's
-file_list and iterating over this list after the freeing will then trigger
-a use-afer-free bug.
+Add rx_missed_errors for buffer exhaustion, rx_missed_errors corresponds
+to rx_discards, rx_dropped corresponds to rx_discards_other.
 
-Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
-mei-client is not on the mei_device's file_list.
-
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 50b2af451597 ("i40e: report VF tx_dropped with tx_errors instead of tx_discards")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/bus.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c |  3 ++-
+ drivers/net/ethernet/intel/i40e/i40e_main.c    | 18 +++++++-----------
+ .../net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  2 +-
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
-index 2e65ce6bdec7..b94cf7393fad 100644
---- a/drivers/misc/mei/bus.c
-+++ b/drivers/misc/mei/bus.c
-@@ -1269,10 +1269,16 @@ static void mei_dev_bus_put(struct mei_device *bus)
- static void mei_cl_bus_dev_release(struct device *dev)
- {
- 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
-+	struct mei_device *mdev = cldev->cl->dev;
-+	struct mei_cl *cl;
- 
- 	mei_cl_flush_queues(cldev->cl, NULL);
- 	mei_me_cl_put(cldev->me_cl);
- 	mei_dev_bus_put(cldev->bus);
-+
-+	list_for_each_entry(cl, &mdev->file_list, link)
-+		WARN_ON(cl == cldev->cl);
-+
- 	kfree(cldev->cl);
- 	kfree(cldev);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 520929f4d535f..7f8fc9b3b105f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -247,6 +247,7 @@ static const struct i40e_stats i40e_gstrings_net_stats[] = {
+ 	I40E_NETDEV_STAT(rx_errors),
+ 	I40E_NETDEV_STAT(tx_errors),
+ 	I40E_NETDEV_STAT(rx_dropped),
++	I40E_NETDEV_STAT(rx_missed_errors),
+ 	I40E_NETDEV_STAT(tx_dropped),
+ 	I40E_NETDEV_STAT(collisions),
+ 	I40E_NETDEV_STAT(rx_length_errors),
+@@ -317,7 +318,7 @@ static const struct i40e_stats i40e_gstrings_stats[] = {
+ 	I40E_PF_STAT("port.rx_broadcast", stats.eth.rx_broadcast),
+ 	I40E_PF_STAT("port.tx_broadcast", stats.eth.tx_broadcast),
+ 	I40E_PF_STAT("port.tx_errors", stats.eth.tx_errors),
+-	I40E_PF_STAT("port.rx_dropped", stats.eth.rx_discards),
++	I40E_PF_STAT("port.rx_discards", stats.eth.rx_discards),
+ 	I40E_PF_STAT("port.tx_dropped_link_down", stats.tx_dropped_link_down),
+ 	I40E_PF_STAT("port.rx_crc_errors", stats.crc_errors),
+ 	I40E_PF_STAT("port.illegal_bytes", stats.illegal_bytes),
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 35a903f6df215..aa24d1808c981 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -492,6 +492,7 @@ static void i40e_get_netdev_stats_struct(struct net_device *netdev,
+ 	stats->tx_dropped	= vsi_stats->tx_dropped;
+ 	stats->rx_errors	= vsi_stats->rx_errors;
+ 	stats->rx_dropped	= vsi_stats->rx_dropped;
++	stats->rx_missed_errors	= vsi_stats->rx_missed_errors;
+ 	stats->rx_crc_errors	= vsi_stats->rx_crc_errors;
+ 	stats->rx_length_errors	= vsi_stats->rx_length_errors;
  }
+@@ -683,17 +684,13 @@ i40e_stats_update_rx_discards(struct i40e_vsi *vsi, struct i40e_hw *hw,
+ 			      struct i40e_eth_stats *stat_offset,
+ 			      struct i40e_eth_stats *stat)
+ {
+-	u64 rx_rdpc, rx_rxerr;
+-
+ 	i40e_stat_update32(hw, I40E_GLV_RDPC(stat_idx), offset_loaded,
+-			   &stat_offset->rx_discards, &rx_rdpc);
++			   &stat_offset->rx_discards, &stat->rx_discards);
+ 	i40e_stat_update64(hw,
+ 			   I40E_GL_RXERR1H(i40e_compute_pci_to_hw_id(vsi, hw)),
+ 			   I40E_GL_RXERR1L(i40e_compute_pci_to_hw_id(vsi, hw)),
+ 			   offset_loaded, &stat_offset->rx_discards_other,
+-			   &rx_rxerr);
+-
+-	stat->rx_discards = rx_rdpc + rx_rxerr;
++			   &stat->rx_discards_other);
+ }
+ 
+ /**
+@@ -715,9 +712,6 @@ void i40e_update_eth_stats(struct i40e_vsi *vsi)
+ 	i40e_stat_update32(hw, I40E_GLV_TEPC(stat_idx),
+ 			   vsi->stat_offsets_loaded,
+ 			   &oes->tx_errors, &es->tx_errors);
+-	i40e_stat_update32(hw, I40E_GLV_RDPC(stat_idx),
+-			   vsi->stat_offsets_loaded,
+-			   &oes->rx_discards, &es->rx_discards);
+ 	i40e_stat_update32(hw, I40E_GLV_RUPP(stat_idx),
+ 			   vsi->stat_offsets_loaded,
+ 			   &oes->rx_unknown_protocol, &es->rx_unknown_protocol);
+@@ -958,8 +952,10 @@ static void i40e_update_vsi_stats(struct i40e_vsi *vsi)
+ 	ns->tx_errors = es->tx_errors;
+ 	ons->multicast = oes->rx_multicast;
+ 	ns->multicast = es->rx_multicast;
+-	ons->rx_dropped = oes->rx_discards;
+-	ns->rx_dropped = es->rx_discards;
++	ons->rx_dropped = oes->rx_discards_other;
++	ns->rx_dropped = es->rx_discards_other;
++	ons->rx_missed_errors = oes->rx_discards;
++	ns->rx_missed_errors = es->rx_discards;
+ 	ons->tx_dropped = oes->tx_discards;
+ 	ns->tx_dropped = es->tx_discards;
+ 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 852ece241a278..65093c310dce8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4835,7 +4835,7 @@ int i40e_get_vf_stats(struct net_device *netdev, int vf_id,
+ 	vf_stats->tx_bytes   = stats->tx_bytes;
+ 	vf_stats->broadcast  = stats->rx_broadcast;
+ 	vf_stats->multicast  = stats->rx_multicast;
+-	vf_stats->rx_dropped = stats->rx_discards;
++	vf_stats->rx_dropped = stats->rx_discards + stats->rx_discards_other;
+ 	vf_stats->tx_dropped = stats->tx_discards;
+ 
+ 	return 0;
 -- 
 2.39.5
 
