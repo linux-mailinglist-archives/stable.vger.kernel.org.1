@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A23B36CA8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEE5B367EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93E3A1C45506
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B6421B67AAC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEB835CEDD;
-	Tue, 26 Aug 2025 14:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7706F350831;
+	Tue, 26 Aug 2025 13:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg+HG3Gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2n/VyIpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93F935FC30;
-	Tue, 26 Aug 2025 14:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D4722128B;
+	Tue, 26 Aug 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219138; cv=none; b=uCGZUxHUpbeYMweAubn55q0ud1fI5l53AHlcM13N8bySDguyc0ULuHRYKYwvqEWggzpidiSGbfE5gk8dsCSh2+8c8gSuWGJdMmPVOqH8Q0aypC3TaSR1yDQNAhNfGROfgGBR6IlWvNXYUui2yX57uH7fBv7LwRLmJ947PX4OY00=
+	t=1756216753; cv=none; b=fPlmP7LG8Oi3/EKA9mWbucrb1tqX83mIkfBPDz+tlg3MQioJ/OnOLdOA/bOJZH86KaDBKozRfgztCCnsxp+599SHAjBNyiWs0BA2pPfnhdbc0bsoM1NsVsuNZ+JJw1zg2/uJkb1hBdlBYk12X0DlpoSgSRYSRE5JN1Cx2W9x1Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219138; c=relaxed/simple;
-	bh=hoCC3uoU/a6AxJO9LKaV1vXbe3aYDu7kZA0abMfw3YE=;
+	s=arc-20240116; t=1756216753; c=relaxed/simple;
+	bh=AxINCqH/dX7+yBzGhjP+12JLXiLmh76WP9OMMsIrir4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOXNLM5saQ9YA+FV7JUhL4OEptFz9IEpA2LALQj1CNeUgL8BbfJNK3t0bWECtsEFgtc0Ou8e/e5CAuP8pm/hqe6trS3gZFzY5Uc5KFYLeKO8AYXX/WfH4E9YRc0rs/eFUspOwrs/TClMk9ybSfweqS8Of0tC3cyDEasYwIC+n6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg+HG3Gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3C2C4CEF1;
-	Tue, 26 Aug 2025 14:38:58 +0000 (UTC)
+	 MIME-Version; b=X3WEcq4UjyCPL1yXkkF0DWk2Px4fZ42VuHDa1VfU8HAyCM++qUyDuGe4jzobKYTgVt8fJYiTXvQahNDaHONNMQXpyOWFIBw5ha4ppl+w0vFe1Ay6aJ4Zu7W6YKV5JYqOf9hB+OejFG9d6Lekca0cw3eOGcHWPVuejW7QzVeFQNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2n/VyIpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A051C4CEF1;
+	Tue, 26 Aug 2025 13:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219138;
-	bh=hoCC3uoU/a6AxJO9LKaV1vXbe3aYDu7kZA0abMfw3YE=;
+	s=korg; t=1756216752;
+	bh=AxINCqH/dX7+yBzGhjP+12JLXiLmh76WP9OMMsIrir4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zg+HG3GdeceVGRbiP1NGq0koBgnbcj+5Kqfj7kzdWdElqPvUKA+cAmQHsz/js23xv
-	 wxXy2xcgjDQnJdnnkgbSLo58LnmW3X5fMt5/QEDJToxzjY0VGY1edS/GyS+VGw6/3w
-	 x76vaNxwbjFYCu0AbKdpeFfEWKJmzu1XpsZoRRog=
+	b=2n/VyIpTi30REjBVbANuTFBdWQdooV1PMhBDZtpeAYpB0Cs4TL2R74ZN7S68XrD3U
+	 k1jRHwXberZLRcdtYmzV+ey4sdhCy1iF1+kx8eyVwNa7PsGhRbSRhC/LQoaaTdXvSE
+	 XFycb0euEc9Oc6yMa5LI7kGK+l5b6ZBdrRGSU+to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 268/403] pNFS: Fix disk addr range check in block/scsi layout
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 503/644] sch_htb: make htb_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:54 +0200
-Message-ID: <20250826110914.207585041@linuxfoundation.org>
+Message-ID: <20250826110958.963427907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
+commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5 upstream.
 
-At the end of the isect translation, disc_addr represents the physical
-disk offset. Thus, end calculated from disk_addr is also a physical disk
-offset. Therefore, range checking should be done using map->disk_offset,
-not map->start.
+htb_qlen_notify() always deactivates the HTB class and in fact could
+trigger a warning if it is already deactivated. Therefore, it is not
+idempotent and not friendly to its callers, like fq_codel_dequeue().
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_htb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 9f10b90debec..4f929134fc63 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -171,8 +171,8 @@ do_add_page_to_bio(struct bio *bio, int npg, int rw, sector_t isect,
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1506,6 +1506,8 @@ static void htb_qlen_notify(struct Qdisc
+ {
+ 	struct htb_class *cl = (struct htb_class *)arg;
  
- 	/* limit length to what the device mapping allows */
- 	end = disk_addr + *len;
--	if (end >= map->start + map->len)
--		*len = map->start + map->len - disk_addr;
-+	if (end >= map->disk_offset + map->len)
-+		*len = map->disk_offset + map->len - disk_addr;
++	if (!cl->prio_activity)
++		return;
+ 	htb_deactivate(qdisc_priv(sch), cl);
+ }
  
- retry:
- 	if (!bio) {
--- 
-2.39.5
-
 
 
 
