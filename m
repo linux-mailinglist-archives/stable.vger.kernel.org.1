@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBF1B36659
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A03B35CFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D7CAB60521
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63C53A9F2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CECC350D70;
-	Tue, 26 Aug 2025 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3302BEC34;
+	Tue, 26 Aug 2025 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7PbpuCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AijNPsVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C5134DCC9;
-	Tue, 26 Aug 2025 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7642BE03C;
+	Tue, 26 Aug 2025 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216428; cv=none; b=Qn4cn2NzSmMlvqM4EfLMS8skhz0ijK2RhagITroCrl0HQdi86Te1j04a3swpvy8wtWxtke4wXhomhrQZ2/d2PDR9iL5ywjXLJ4ar5pcY15MC2YDp2WOJ9MyWcQg+WvRkXKW3E/bJV/t/BOm8khCgpx4GduaPy9DtMnLcQqpMTVM=
+	t=1756208366; cv=none; b=Y4S3u4pR3beI+lLjPjV6Nevs6lufqOEMXPP4S4p2YFLqPgTGYaMKYXf9j3cwjZbRG0Fq3x09ezM1RBBRFM/7e19chfElyCRPgMij1Tj6t/m9tPnFiTQdeeaAD8T9tTOOM9uVddhTLX0yLqciDtgMACEwcK8Mr58zLhgGdz/WLLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216428; c=relaxed/simple;
-	bh=uW8bxpyA96MVeVXFI8TUhFRj8vfZIgrm03yrsldbivo=;
+	s=arc-20240116; t=1756208366; c=relaxed/simple;
+	bh=1tXcCL52Cljf7I8TlppnFRqvbBBYBSMARtYSg/CR/S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awfbAG0QZ2JaKNMpnj4+902AGTNu4oV+yxpKHuoo/E3lUODzdkhidpHuKeYqHlEAS6t6m1998ablc/8fVs9MzK4UA0BNagrDkC3+x++WjUNXeBgV/9E71OG8t865yISMsNX2DD3T/lBeyKh/9YgyZesFoHh73LApvJ0sYWYYkWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7PbpuCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46000C4CEF1;
-	Tue, 26 Aug 2025 13:53:46 +0000 (UTC)
+	 MIME-Version; b=iA0eevX6yV9bYWeganektChuuaUlHmScypiDjWnnpRTegtjJH0LYofWkZ+JYRlIPeTs3Fuu8BitYoxDgVr7Nn/RefckFADeH0eYNom49P8N48QCN4vDPITIOMrkf8CjTSKUqCfCDG2Q8IKw/bULc7Pg/63X2X9iVQTXCJHjyRVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AijNPsVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5AC4CEF1;
+	Tue, 26 Aug 2025 11:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216426;
-	bh=uW8bxpyA96MVeVXFI8TUhFRj8vfZIgrm03yrsldbivo=;
+	s=korg; t=1756208366;
+	bh=1tXcCL52Cljf7I8TlppnFRqvbBBYBSMARtYSg/CR/S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7PbpuCVUjXIEqTu4EXk7i5XRrNBzLpeBa15H0x06j+NuZGVysvFTpcnX5wV5hQzS
-	 p9QDzGpFLCaX92MHkenCqnhQRZtOsK9r/1dptC18xjLDEz60ViZn1SurgJPKz/YIUm
-	 XAqNTK8ps3/yoEm51NQvtHNlpVYTScczdWD6UdvA=
+	b=AijNPsVjqEGItoYcnJ+YfUBLDP+p7uQ0s80DnxaOxQcRrwVwskmOKKhoNtGci54Tz
+	 1PbfvRNaCICfzDHApuIiC12b7GjpVl+cVTFIwFs5r3dHE96ORixsKTVAz1XZWaBFlS
+	 aLtBfTlbvy3tTUrHpKV9p88Xc5kwUviMKFTyx3yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 408/644] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 084/322] ASoC: SOF: amd: acp-loader: Use GFP_KERNEL for DMA allocations in resume context
 Date: Tue, 26 Aug 2025 13:08:19 +0200
-Message-ID: <20250826110956.565717201@linuxfoundation.org>
+Message-ID: <20250826110917.703738235@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
+commit eb3bb145280b6c857a748731a229698e4a7cf37b upstream.
 
-In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
-msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
-msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash. Similar issue occurs when access
-msg[1].buf[0] and msg[1].buf[1].
+Replace GFP_ATOMIC with GFP_KERNEL for dma_alloc_coherent() calls. This
+change improves memory allocation reliability during firmware loading,
+particularly during system resume when memory pressure is high. Because
+of using GFP_KERNEL, reclaim can happen which can reduce the probability
+of failure.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+Fixes memory allocation failures observed during system resume with
+fragmented memory conditions.
 
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP firmware after resume -12
+
+Fixes: 145d7e5ae8f4e ("ASoC: SOF: amd: add option to use sram for data bin loading")
+Fixes: 7e51a9e38ab20 ("ASoC: SOF: amd: Add fw loader and renoir dsp ops to load firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://patch.msgid.link/20250725190254.1081184-1-usama.anjum@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/sof/amd/acp-loader.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index 8c426baf76ee..a4d060fb1bab 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
- 	u16 word;
- 
- 	if (num == 1) {		/* write */
-+		if (msg[0].len < 3)
-+			return -EOPNOTSUPP;
- 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
- 	} else {
-+		if (msg[1].len < 2)
-+			return -EOPNOTSUPP;
- 		word = dib7000p_read_word(state, apb_address);
- 		msg[1].buf[0] = (word >> 8) & 0xff;
- 		msg[1].buf[1] = (word) & 0xff;
--- 
-2.39.5
-
+--- a/sound/soc/sof/amd/acp-loader.c
++++ b/sound/soc/sof/amd/acp-loader.c
+@@ -65,7 +65,7 @@ int acp_dsp_block_write(struct snd_sof_d
+ 			dma_size = page_count * ACP_PAGE_SIZE;
+ 			adata->bin_buf = dma_alloc_coherent(&pci->dev, dma_size,
+ 							    &adata->sha_dma_addr,
+-							    GFP_ATOMIC);
++							    GFP_KERNEL);
+ 			if (!adata->bin_buf)
+ 				return -ENOMEM;
+ 		}
+@@ -77,7 +77,7 @@ int acp_dsp_block_write(struct snd_sof_d
+ 			adata->data_buf = dma_alloc_coherent(&pci->dev,
+ 							     ACP_DEFAULT_DRAM_LENGTH,
+ 							     &adata->dma_addr,
+-							     GFP_ATOMIC);
++							     GFP_KERNEL);
+ 			if (!adata->data_buf)
+ 				return -ENOMEM;
+ 		}
+@@ -90,7 +90,7 @@ int acp_dsp_block_write(struct snd_sof_d
+ 			adata->sram_data_buf = dma_alloc_coherent(&pci->dev,
+ 								  ACP_DEFAULT_SRAM_LENGTH,
+ 								  &adata->sram_dma_addr,
+-								  GFP_ATOMIC);
++								  GFP_KERNEL);
+ 			if (!adata->sram_data_buf)
+ 				return -ENOMEM;
+ 		}
 
 
 
