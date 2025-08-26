@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72A7B35D46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50957B365A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188E818973D7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1FE565B51
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCC01FECAB;
-	Tue, 26 Aug 2025 11:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91371DE4CD;
+	Tue, 26 Aug 2025 13:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RutMwOQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1hd3WEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2662E267D;
-	Tue, 26 Aug 2025 11:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B6E1ADFFE;
+	Tue, 26 Aug 2025 13:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208136; cv=none; b=ZmrE+rRdminA6F6QQ4bNNfYLGz2J1Tco9f+J6yYTqu0HPpM7lK+N5pIEj/MfjV+Kb4zr2KIGHbcipmTIJEFJHstA1VwBiemdAsS7x1IjsbKtk4FNlSeFtauJKzrLdApr+VMKfb8G3V0Z8ww6vUT0aBNK01XxAFURN8BFV1pxX/w=
+	t=1756215321; cv=none; b=WuvoKox/mOwbiLZnuvAJNvx+N8X+lwBraicyHpgmZ7JL0ZFiHEcozXsv564PRKsfchTeZ+zmKW4NuomOJeApV/FfIi1rH6z7TfMIyTvOktjZFsiMbBWcLZqh1wC5tS1dDxTGrA6vWtVwaHVXq+LEaEXrbV7Rpu6HWL6LSOt7OQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208136; c=relaxed/simple;
-	bh=0gpWJfKG4V8DCOhfTbIYXyp/MG3C9nc0S4lotQ2lrbo=;
+	s=arc-20240116; t=1756215321; c=relaxed/simple;
+	bh=RLtriJ9jytw6MajdEy5o4q8pGMltgGK6RlvKFjnrsgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJl9tC27PL0++H6bGt5bSf1E+THDoR0LTAiFywsiCYupKxCwwS2BSbKQYf60hKywms8JnZMkyvZNsc5WshKzvZXuZmOo7gnBl+UH8ndDjzx2pe/ed2uYH82HdZ7LsRUF6XNLgeRaec4XQYF9MFSRgkje6rYFhBG8Fd9IW6uoGZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RutMwOQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3C9C4CEF1;
-	Tue, 26 Aug 2025 11:35:36 +0000 (UTC)
+	 MIME-Version; b=lqEyogSpkLJ6kC4tZGV8uGBMd5dLMu8iDGiDIpj5vsamPZyW49Rq6q4HUNhmIfRpfKaAiQiy2wIq9BHfIppUQeZ2rM6PwjBiLh7ZJPPTLOROloqLBp5k8Dhqfy3qMjaoFkK8m3L+xIZG/1RfdcGhiVq8GTPZvON+YvNHjf5xmn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1hd3WEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9786FC4CEF1;
+	Tue, 26 Aug 2025 13:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208136;
-	bh=0gpWJfKG4V8DCOhfTbIYXyp/MG3C9nc0S4lotQ2lrbo=;
+	s=korg; t=1756215319;
+	bh=RLtriJ9jytw6MajdEy5o4q8pGMltgGK6RlvKFjnrsgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RutMwOQB+ampU4lS33lxEPNKcDZksBp2vdzJzXUTmjMbZhnV4wZvqscCdcsmsy9jQ
-	 CfsU8GgKFO3j+/7OTOyjEe4duEku0AZY5WWjUx7Rv8DLY0/5pAkpXBq38N/e/w040E
-	 X0Z2h4LNMT0qWrlTPO23bMbOifRrR+RjOC07fWqE=
+	b=z1hd3WEGPRvLi/ypwO6dtRCo9rTsKs1bijIfbUCSuRXKCtpiaERs3Xqjc9vmNyufr
+	 akAI2WbMdnwF1ghZxjStAUhEXpZwmlG1diSYJclO5786vFk2qs+BVCbJIhgVlcf/kH
+	 uHJbqQFbPQYOjQ23+eboQkO6UOiG3sNnFHaGqESs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 421/457] microchip: lan865x: fix missing Timer Increment config for Rev.B0/B1
+	Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 452/482] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
 Date: Tue, 26 Aug 2025 13:11:45 +0200
-Message-ID: <20250826110947.697811153@linuxfoundation.org>
+Message-ID: <20250826110941.996125968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-[ Upstream commit 2cd58fec912acec273cb155911ab8f06ddbb131a ]
+commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
 
-Fix missing configuration for LAN865x silicon revisions B0 and B1 as per
-Microchip Application Note AN1760 (Rev F, June 2024).
+Since
 
-The Timer Increment register was not being set, which is required for
-accurate timestamping. As per the application note, configure the MAC to
-set timestamping at the end of the Start of Frame Delimiter (SFD), and
-set the Timer Increment register to 40 ns (corresponding to a 25 MHz
-internal clock).
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
 
-Link: https://www.microchip.com/en-us/application-notes/an1760
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250818060514.52795-3-parthiban.veerasooran@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
+
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/microchip/lan865x/lan865x.c  | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/kernel/cpu/hygon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index d03f5a8de58d..84c41f193561 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -32,6 +32,10 @@
- /* MAC Specific Addr 1 Top Reg */
- #define LAN865X_REG_MAC_H_SADDR1	0x00010023
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -14,6 +14,7 @@
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
++#include <asm/resctrl.h>
  
-+/* MAC TSU Timer Increment Register */
-+#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x00010077
-+#define MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS	0x0028
-+
- struct lan865x_priv {
- 	struct work_struct multicast_work;
- 	struct net_device *netdev;
-@@ -346,6 +350,21 @@ static int lan865x_probe(struct spi_device *spi)
- 		goto free_netdev;
+ #include "cpu.h"
+ 
+@@ -239,6 +240,8 @@ static void bsp_init_hygon(struct cpuinf
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
  	}
- 
-+	/* LAN865x Rev.B0/B1 configuration parameters from AN1760
-+	 * As per the Configuration Application Note AN1760 published in the
-+	 * link, https://www.microchip.com/en-us/application-notes/an1760
-+	 * Revision F (DS60001760G - June 2024), configure the MAC to set time
-+	 * stamping at the end of the Start of Frame Delimiter (SFD) and set the
-+	 * Timer Increment reg to 40 ns to be used as a 25 MHz internal clock.
-+	 */
-+	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
-+				    MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to config TSU Timer Incr reg: %d\n",
-+			ret);
-+		goto oa_tc6_exit;
-+	}
 +
- 	/* As per the point s3 in the below errata, SPI receive Ethernet frame
- 	 * transfer may halt when starting the next frame in the same data block
- 	 * (chunk) as the end of a previous frame. The RFA field should be
--- 
-2.50.1
-
++	resctrl_cpu_detect(c);
+ }
+ 
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 
 
 
