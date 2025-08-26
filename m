@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-172970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCD4B35B0A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9723BB365F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDC13A8409
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319D71C2362D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BB32BD00C;
-	Tue, 26 Aug 2025 11:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0E634A325;
+	Tue, 26 Aug 2025 13:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCsQo3Ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svHa/a+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6787283FDF;
-	Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3182F9992;
+	Tue, 26 Aug 2025 13:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207037; cv=none; b=Sfy6UhY8fvq0Yd1hz/VrYoYHkRmxzU42HdgeerNwMG4wFTqBl99fCOOibWuQZurdsv0S60GI0+V59vxwzhaU8UhwI/6SXqq37n8NrE3VyAYdDYpHTxer1I8ZAz91cl7EQKsgSI2oZ1Do/vUpMOR9IPi8MoF+K83ki7vI4w8ifwI=
+	t=1756215935; cv=none; b=hn/l09zGx677WyjY1SAgV0khahwtqTsOs2HIEb+OvnOLFhHD30kobnU27lvgys7uAqJ1KPkqeCJICSrXY1t9SciMmAIjBnjfxPdcxJqSNA7/nq670pRtxh4JspHXI5Lp+y4JOZ9V5lQSbkrwonX+HT/tF9Td60YU0uEGwCgVHUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207037; c=relaxed/simple;
-	bh=5lZoCaNl6N+RmmVkpE6MAK2Qevg4699JeABKrONUNV0=;
+	s=arc-20240116; t=1756215935; c=relaxed/simple;
+	bh=sIT1oanR6vpJDTqXjlrkNZmfZ/aOBL5hGRmlClVzBR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DKUHrfZtGsawHFYRo8aIQHJ9mJJF6+ucfez1SpkuYl/m7aqsMno4BCgxY8JOT6wlDNdQ8NSCNIWFyV8vFvhYB2MELjaCp8cpS9h1Pa9lAFYHSJdivyi9B7nwERiJ57MDJT/Bj9xlqVmLaQ0PDqygyx//pSLPm3GUOAcuD4GOgts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCsQo3Ut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6715EC4CEF1;
-	Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
+	 MIME-Version; b=l4rvi0ZIOkP8FmAO+omKFCZ8u++iIGq9sNhl6DvycfIzgV5wLVG0GNSJzsuUHaUbKxhijsxBp+EnbvdkBEHImSPKoc7eunkBIjDdJQzDPoCdiJqUWssIdC7a2b+uvo/I5/A2PLmz4PLdhRwXCQBMlXmMcLCOjmaeB13N0U/hVI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svHa/a+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE225C4CEF1;
+	Tue, 26 Aug 2025 13:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207037;
-	bh=5lZoCaNl6N+RmmVkpE6MAK2Qevg4699JeABKrONUNV0=;
+	s=korg; t=1756215935;
+	bh=sIT1oanR6vpJDTqXjlrkNZmfZ/aOBL5hGRmlClVzBR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCsQo3UtS8geheAMjKaeuzw4+EC6TU9+fCq8xMXUiwUPYvWwOPouq74gKYZrzMx9x
-	 2sOhqZstRYnoI8LEkPeG3Sj8QI34kN7uUBCCx9N5LIWHsdX/20E4wV+eNzI2xYagGZ
-	 FIjNhlobfnmmWAMxG6O72Q83k+X9kzdA9gt9Q208=
+	b=svHa/a+HqfJo1i33KjJfqIEXRQGHwK8qUQW5q1k0vEA+Jwyu4Vdm5aHYdljq2Ueij
+	 36Z8myUWxQ2T0o0OT8K4Lvi1efmCiNAaPjOIrofngqM6kiL8ZAWvMSqcaVtcsOSuvS
+	 PmH5Wl1adWNSYA63e1LTuVBgPdVrlNPj/yJdmU6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 027/457] crypto: x86/aegis - Fix sleeping when disallowed on PREEMPT_RT
-Date: Tue, 26 Aug 2025 13:05:11 +0200
-Message-ID: <20250826110938.006909528@linuxfoundation.org>
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 221/644] PCI: pnv_php: Work around switches with broken presence detection
+Date: Tue, 26 Aug 2025 13:05:12 +0200
+Message-ID: <20250826110951.902973444@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 upstream.
+[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
 
-skcipher_walk_done() can call kfree(), which takes a spinlock, which
-makes it incorrect to call while preemption is disabled on PREEMPT_RT.
-Therefore, end the kernel-mode FPU section before calling
-skcipher_walk_done(), and restart it afterwards.
+The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+was observed to incorrectly assert the Presence Detect Set bit in its
+capabilities when tested on a Raptor Computing Systems Blackbird system,
+resulting in the hot insert path never attempting a rescan of the bus
+and any downstream devices not being re-detected.
 
-Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
-atomic=true.  The point of atomic=true was to make skcipher_walk_done()
-safe to call while in a kernel-mode FPU section, but that does not
-actually work.  So just use the usual atomic=false.
+Work around this by additionally checking whether the PCIe data link is
+active or not when performing presence detection on downstream switches'
+ports, similar to the pciehp_hpc.c driver.
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/aegis128-aesni-glue.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/arch/x86/crypto/aegis128-aesni-glue.c
-+++ b/arch/x86/crypto/aegis128-aesni-glue.c
-@@ -119,7 +119,9 @@ crypto_aegis128_aesni_process_crypt(stru
- 					   walk->dst.virt.addr,
- 					   round_down(walk->nbytes,
- 						      AEGIS128_BLOCK_SIZE));
-+		kernel_fpu_end();
- 		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
-+		kernel_fpu_begin();
- 	}
- 
- 	if (walk->nbytes) {
-@@ -131,7 +133,9 @@ crypto_aegis128_aesni_process_crypt(stru
- 			aegis128_aesni_dec_tail(state, walk->src.virt.addr,
- 						walk->dst.virt.addr,
- 						walk->nbytes);
-+		kernel_fpu_end();
- 		skcipher_walk_done(walk, 0);
-+		kernel_fpu_begin();
- 	}
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index c1c1d30bd86b..f99987f26ff0 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -389,6 +389,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	return 0;
  }
  
-@@ -176,9 +180,9 @@ crypto_aegis128_aesni_crypt(struct aead_
- 	struct aegis_state state;
- 
- 	if (enc)
--		skcipher_walk_aead_encrypt(&walk, req, true);
-+		skcipher_walk_aead_encrypt(&walk, req, false);
- 	else
--		skcipher_walk_aead_decrypt(&walk, req, true);
-+		skcipher_walk_aead_decrypt(&walk, req, false);
- 
- 	kernel_fpu_begin();
- 
++static int pcie_check_link_active(struct pci_dev *pdev)
++{
++	u16 lnk_status;
++	int ret;
++
++	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
++	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
++		return -ENODEV;
++
++	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
++
++	return ret;
++}
++
+ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ {
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+@@ -401,6 +415,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
++		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++			presence == OPAL_PCI_SLOT_EMPTY) {
++			/*
++			 * Similar to pciehp_hpc, check whether the Link Active
++			 * bit is set to account for broken downstream bridges
++			 * that don't properly assert Presence Detect State, as
++			 * was observed on the Microsemi Switchtec PM8533 PFX
++			 * [11f8:8533].
++			 */
++			if (pcie_check_link_active(php_slot->pdev) > 0)
++				presence = OPAL_PCI_SLOT_PRESENT;
++		}
++
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
+-- 
+2.39.5
+
 
 
 
