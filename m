@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6483AB36998
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376AAB36764
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F081C24B07
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A85D981F9F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFE2352FFF;
-	Tue, 26 Aug 2025 14:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF88034F47D;
+	Tue, 26 Aug 2025 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mCDIB8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGP78ZYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF81352FFA;
-	Tue, 26 Aug 2025 14:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C90D34DCFE;
+	Tue, 26 Aug 2025 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217947; cv=none; b=t72Tg4Za/fUU9N9vEyzwDxzw8o9uNMN7FmDVpBFeJSRs8uoYAdzp8yUTGjA3mfuqC08Gta/2NJKVkTWARbf408zy5fW6CJ9G7eDM1SkPAEK82z7aiG3VsDyRKkJHNvyDbaD6YxmrwLXMvcQ6PJzO2mWN6C8msUNLTPpxPeNnV7E=
+	t=1756216473; cv=none; b=Vci6Om1FERwvLzcEV17kat7lRNr+SOqz74zI/5evqviXt46S3AKOmLTItJ8/G1sF7kswIGLFdEQOiL9yBVUpFi/5mz9yvBYG8P0w5QXkvoX4lZ5CTDGgrJt1/lAtY7npStgHA1ZNWOjyTpG6wSN5wKdGeCct0nFBe+B2LhoLRsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217947; c=relaxed/simple;
-	bh=w/90j2oxKqdPJAN2ZDfffp1ZyMYlD8WgfaenWo/qVa8=;
+	s=arc-20240116; t=1756216473; c=relaxed/simple;
+	bh=XafPz7ZIQksSvraX3qw4iZjZdaX6Hx5mlLXztQ5FQlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAOx0yj+EWbLI1wLPOJ7x3wcfbKpnLlcRSZf2f9+nvEUNjWDPHAGu+Hpr1Wx8DE+ykNOp+Ym8L+2PeyHObqzSbhdOTz7P5z56iFzZlYtg2yBhRMWOCgtOaiZTNmmof+wBvIOVc09lGWhsn1EhkwLo40Byg7oVWVCeTshxiknJlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mCDIB8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15D8C4CEF1;
-	Tue, 26 Aug 2025 14:19:06 +0000 (UTC)
+	 MIME-Version; b=YM+YKmnQumrG5MPLiPC9ycf0DSUZqaAYyq8mVkKzVXOORrVqLXHVSvhEx7RdVDRw7OdbTyXHOTSvRO/X9U+HlW9rMfgBEFcVzuNSuTgyY737aW2fc1TJvQf/RAgfilMYOaDjkwy6Ainx7LIucVBX0tEMor6NaW5OlXFvq+elg2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGP78ZYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92B1C4CEF1;
+	Tue, 26 Aug 2025 13:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217947;
-	bh=w/90j2oxKqdPJAN2ZDfffp1ZyMYlD8WgfaenWo/qVa8=;
+	s=korg; t=1756216473;
+	bh=XafPz7ZIQksSvraX3qw4iZjZdaX6Hx5mlLXztQ5FQlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mCDIB8BNUH0YmVAt/asEHmt/KlpY1mIK3ueedyhr1d+bnJIaUGwesxjsScorkNzg
-	 xmPd8CWXr+RG7GISRlXpfLGnk0tgRV+33kp2S6Aco4GUkKXGASj2jEumI5PjXEmuND
-	 vp05bXioHtKjTYik0nhd2GoRiMngl786z3uX9px4=
+	b=KGP78ZYCDm7PMS88jloYoo/V/lDenzelTAFl4vy9XvBoNnC4c7r85Ok3gfr/1eCmv
+	 MMLNbiFhP/uqbyzU8/1o2xuEPDpj21gXJ0odWJy4XqlO8P17udXjGhck5AmF0jp4oi
+	 SkJnwfePxHsTJpQJ+EiLgY6vEdGn0FzfKymARCN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 304/523] RDMA/core: reduce stack using in nldev_stat_get_doit()
+Subject: [PATCH 5.15 423/644] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
 Date: Tue, 26 Aug 2025 13:08:34 +0200
-Message-ID: <20250826110931.953809994@linuxfoundation.org>
+Message-ID: <20250826110956.943113287@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+During BMC firmware upgrades on live systems, the ipmi_msghandler
+generates excessive "BMC returned incorrect response" warnings
+while the BMC is temporarily offline. This can flood system logs
+in large deployments.
 
-The result is a function with an overly large stack frame and a warning:
+Replace dev_warn() with dev_warn_ratelimited() to throttle these
+warnings and prevent log spam during BMC maintenance operations.
 
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
-
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index f8dfec7ad7cc..1475069aa428 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1240,10 +1240,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
- 	},
- };
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 15c211c5d6f4..af563ee827aa 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4294,10 +4294,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
+ 		 * The NetFN and Command in the response is not even
+ 		 * marginally correct.
+ 		 */
+-		dev_warn(intf->si_dev,
+-			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
+-			 (msg->data[0] >> 2) | 1, msg->data[1],
+-			 msg->rsp[0] >> 2, msg->rsp[1]);
++		dev_warn_ratelimited(intf->si_dev,
++				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
++				     (msg->data[0] >> 2) | 1, msg->data[1],
++				     msg->rsp[0] >> 2, msg->rsp[1]);
  
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
- {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -1877,10 +1878,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
- 
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
- {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -1970,8 +1971,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
- 
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
- 
- {
- 	static enum rdma_nl_counter_mode mode;
+ 		/* Generate an error response for the message. */
+ 		msg->rsp[0] = msg->data[0] | (1 << 2);
 -- 
 2.39.5
 
