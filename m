@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91313B36688
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF070B36C46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 918E01C22F6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5521998851D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604EF35208B;
-	Tue, 26 Aug 2025 13:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4490B341AD4;
+	Tue, 26 Aug 2025 14:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsVkJjq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pT7I4N5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4FD350845;
-	Tue, 26 Aug 2025 13:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032F72AD32;
+	Tue, 26 Aug 2025 14:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216166; cv=none; b=eM201HoksGaBlG6IirGBjh3ipZz5zeP2mLTN1O8UAdM8gd6gA+R9GUR+K80MZTixXuVSYGjA1O9ddYLsGWGJTiysXH+v+6LN/jM1jW0+fj0r9HMNyxAOThDSis81ctTXVC2Vf+rcASfOdi/ns6a5MWyXX8ps+29/h+5jl0A6f30=
+	t=1756218636; cv=none; b=tOx50LFCea3eYUh+lLbjLdXFsrOhYThZCPekbTlWsKNlefpVfPfbxuip1CNT+a7/i7Xwif0UGyGR3cTjiuq1mCLrv0QjJzRwn/6x/Q1u/ffLh3XdlROv3yU3OnOjxKrjsE1abe1JFuHnsRvU5tRUe2Jqyq7U/NNl0E0XLT4u87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216166; c=relaxed/simple;
-	bh=jjGHPavrJwnvc16l0z01zzM827+TbDt3fpfkxJOhJx4=;
+	s=arc-20240116; t=1756218636; c=relaxed/simple;
+	bh=rp0Kr6If0JP6AEX7X4TqkiKi8qrFKmU8csqYygBzBBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KL3VrxOfL440p7Iie+3fY5+AHmULWsmUffeOtoD+odhir2vtQuTg/xfxmie7UhSU9dAgxGqk7H8gqwNv87ACWr3lX/Sf+86mGKvAGc2wnWyT926YCvon5Y5bZz560OlyYY0j0ibB6b1gHnXGSXI9Nyx00N+T5TKgvTUpPAR/B5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsVkJjq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66512C4CEF1;
-	Tue, 26 Aug 2025 13:49:25 +0000 (UTC)
+	 MIME-Version; b=isvZpLGoua84RC68QTFaErOP5H58KWvVJakLqyXK8WVEbARbdcwUiXnRrJ0A1S2UvTEpqlOPJOJNVaqK6Frwa/O+hhRI41YZEZrVsJo2JaeynLHc4XgeU9C0RUR7X/5KTAu3cAlgaIDP5e2sxuc5BXPTh9iQ1a0A1CC2RYL3weQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pT7I4N5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6AEC4CEF1;
+	Tue, 26 Aug 2025 14:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216165;
-	bh=jjGHPavrJwnvc16l0z01zzM827+TbDt3fpfkxJOhJx4=;
+	s=korg; t=1756218635;
+	bh=rp0Kr6If0JP6AEX7X4TqkiKi8qrFKmU8csqYygBzBBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsVkJjq3F7QL6t45zMJlY+ejt6f2/Yd3S12HpmHIT5n/z5lhzjz1LuvZHwkbBZCv6
-	 MhcAwYyqlpJchvI3tE2DWWoGhq3O48pwE4eqohrKaw7S441ACsxfjXE/w2uJwc3NsJ
-	 Nskicx/bAWlXZYHyil59V+3DDEO0hXuiK1IV//0s=
+	b=pT7I4N5x6UdjLTUuwqNmeQUanFrAvztU0yrmug6I2HhHM2Bb1Wb2NlVvPSfzTVqt0
+	 JkOKZMpklWiq4evDsOuBO+yrmvUZTo+RI0PX4oYZUSxRvrRGt+ZGQCLbgY2IWeuT4H
+	 2CQXuV8ThazlhnxuazY33J6gfOJVly3anY/wMFD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 310/644] gpio: tps65912: check the return value of regmap_update_bits()
+Subject: [PATCH 5.4 075/403] staging: fbtft: fix potential memory leak in fbtft_framebuffer_alloc()
 Date: Tue, 26 Aug 2025 13:06:41 +0200
-Message-ID: <20250826110954.066117648@linuxfoundation.org>
+Message-ID: <20250826110908.468975690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
+[ Upstream commit eb2cb7dab60f9be0b435ac4a674255429a36d72c ]
 
-regmap_update_bits() can fail, check its return value like we do
-elsewhere in the driver.
+In the error paths after fb_info structure is successfully allocated,
+the memory allocated in fb_deferred_io_init() for info->pagerefs is not
+freed. Fix that by adding the cleanup function on the error path.
 
-Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250626172412.18355-1-abdun.nihaal@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps65912.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/staging/fbtft/fbtft-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
-index fab771cb6a87..bac757c191c2 100644
---- a/drivers/gpio/gpio-tps65912.c
-+++ b/drivers/gpio/gpio-tps65912.c
-@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
- 					  unsigned offset, int value)
- {
- 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
-+	int ret;
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 771697508cec..a524cacd89cd 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -752,6 +752,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
+ 	return info;
  
- 	/* Set the initial value */
--	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
--			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
-+				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	if (ret)
-+		return ret;
+ release_framebuf:
++	fb_deferred_io_cleanup(info);
+ 	framebuffer_release(info);
  
- 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
- 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
+ alloc_fail:
 -- 
 2.39.5
 
