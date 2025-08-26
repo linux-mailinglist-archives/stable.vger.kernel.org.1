@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D43AB36BEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123D9B3646B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0473298379D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D8C1BC3CA5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA2F35CEA6;
-	Tue, 26 Aug 2025 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ABA2FC01F;
+	Tue, 26 Aug 2025 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuMziX8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KivGwKOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46EA35691F;
-	Tue, 26 Aug 2025 14:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91F5219300;
+	Tue, 26 Aug 2025 13:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219198; cv=none; b=hc2RYo7Oi8tgMPok/ul5wOvjo6c++Z+MH23svXmwrPrcz391Ssd9N8cP875nMcraDwy0v5ubgJkDtzeCaavg9mdzC9vNeNHJxSXd9HtHhlFgnG8yxGXwqRAl2PAAkkytUEunQOBQARu/40jUpGktAc221k3S7G5/MG7MiONip6k=
+	t=1756215014; cv=none; b=DbVReEC0kkCosH+ztXSqX/ciCZW1+OjyI1QBCqDFZfAP8KNGQ6lTNcmV1LVq1Y6qD++wj7DZp8dWhwJb/BuEjtQNXJ1T7DBduFwoY3cgkseO8xlQae+TQki8hpuF+j4essw4jjaTwvyYxWgQc1KhxKC7No/ZHE8DCDpnjLBr7RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219198; c=relaxed/simple;
-	bh=8Vbl6+KyOSqg/rvZlT/a9L8UPZWERrmzGLEIrmpxLv0=;
+	s=arc-20240116; t=1756215014; c=relaxed/simple;
+	bh=gVdMEv9x56O2xWyM7ZXFwzq73G8bO7VECjkTfxNBUvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KylNNy0f+wiz/zoF8W/yJCEmhD0GTzGZ0SLj+GCXYnMjAXOOf3uhGJp5o8xJemXzxxjV/5npewRL9ehZt3wRK5/rOB4qWtEJoP2us6HSQC92IYWv9NkHWIiasvE4T0WL3s6JHA/dUyuuHD4sN7iZTh1EiLXoFyYkPaRfxWRI7bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuMziX8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67204C4CEF1;
-	Tue, 26 Aug 2025 14:39:58 +0000 (UTC)
+	 MIME-Version; b=AHFSz9ijDv6oyd4baboqfR3ghk0m9GtcRuL1xGzlzn4IYtc9NTWHmZeUYBH2xHKQ5Je047UET9940FEU1LFmwTLIXVzR3jzrSlKdFz1nuOl82bhDfXSD0w0CQedfsyCOOjwW6I+8YtyNzfDfhshPbufC1sxpS7BOpYZJJbagC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KivGwKOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF1CC4CEF1;
+	Tue, 26 Aug 2025 13:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219198;
-	bh=8Vbl6+KyOSqg/rvZlT/a9L8UPZWERrmzGLEIrmpxLv0=;
+	s=korg; t=1756215014;
+	bh=gVdMEv9x56O2xWyM7ZXFwzq73G8bO7VECjkTfxNBUvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuMziX8YZf+PzF1eqU78EvV8XFokJ/4F2Pf0ANwfctPPi+t1o+cUuFao5YAXlRgI+
-	 hdPGAVZ8yroAdpZvs/zIc6HKV8lYB1C+Lnmy7tJOPBajiZ4zoAfKk7ZPXUKPCYbCuw
-	 r7ua/bkhpbvfAX35k2nxUn+z7jnhpbL8vqgSXeMM=
+	b=KivGwKODXFHGMRfHwxdAOg5MsrPcDi7Qy8LU1qAtGPkQvfRq/tmrAiq4KSzwwAlaA
+	 qfOryr9ZFRC5A2eD2j5Wozf2OCXLRuQTS2nvSbn+bdI4nLFzw0p3C9/ZMyNIDGwE+s
+	 uWNTh0Pb37rIcMJ7ZEQtaq9L6WUkbbUG8Oesn4Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 250/403] media: usb: hdpvr: disable zero-length read messages
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 6.1 323/482] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
 Date: Tue, 26 Aug 2025 13:09:36 +0200
-Message-ID: <20250826110913.724600814@linuxfoundation.org>
+Message-ID: <20250826110938.789701779@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
+commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+It's a common pattern in drivers to free the control handler's resources
+and then return the handler's error code on drivers' error handling paths.
+Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
+effectively indicating successful return to the caller.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+There's no apparent need to touch the error field while releasing the
+control handler's resources and cleaning up stale pointers. Not touching
+the handler's error field is a more certain way to address this problem
+than changing all the users, in which case the pattern would be likely to
+re-emerge in new drivers.
+
+Do just that, don't touch the control handler's error field in
+v4l2_ctrl_handler_free().
+
+Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-index 785c8508a46e..e6a190fe0e87 100644
---- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
-+++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
- 	.functionality = hdpvr_functionality,
- };
- 
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks hdpvr_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
-+
- static const struct i2c_adapter hdpvr_i2c_adapter_template = {
- 	.name   = "Hauppauge HD PVR I2C",
- 	.owner  = THIS_MODULE,
- 	.algo   = &hdpvr_algo,
-+	.quirks = &hdpvr_quirks,
- };
- 
- static int hdpvr_activate_ir(struct hdpvr_device *dev)
--- 
-2.39.5
-
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -1327,7 +1327,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
+ 	kvfree(hdl->buckets);
+ 	hdl->buckets = NULL;
+ 	hdl->cached = NULL;
+-	hdl->error = 0;
+ 	mutex_unlock(hdl->lock);
+ 	mutex_destroy(&hdl->_lock);
+ }
 
 
 
