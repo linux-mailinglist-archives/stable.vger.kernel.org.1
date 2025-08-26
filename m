@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7962BB35D4D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 779C6B36446
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AF797C1FD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5538A3193
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED012BE65E;
-	Tue, 26 Aug 2025 11:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FC42F6564;
+	Tue, 26 Aug 2025 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWTCpFm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA6qhv81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C198A22D792;
-	Tue, 26 Aug 2025 11:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29229BD83;
+	Tue, 26 Aug 2025 13:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208579; cv=none; b=CckvZ00IpBA2bxjvOEWvX6w/Qct6Lha2ux3ikMjoJm++bpvNvAk04VmqhXTbDs4/6GU7SJALlQ09n/my+dk30s+d88QstSxzPYl69SiCale4nJNTjQWntNPVJWmW1V2kesKx/XBqk7BoHKJkGdmXPNr8TdCIMspVOYtDD9syeEs=
+	t=1756214937; cv=none; b=mXuAkEaj3GfPmXDsR7k21XX45T0vJ0URCx79HG+TXFXtw30UKQal69Y4bty4ck/NxIOW2H69nVV6wUoFE819jMs1NLMzoKc7ZuXzAamnfrIQ+1AIDWRHfRU66/aw9clM3BQVLDjiQVH7Ezc+Dl4DzUrYyr9Ekk2UlP/jc9WOIIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208579; c=relaxed/simple;
-	bh=+5A3IbCx/wd+kq9L/Zi3a/X1WPrUeZ5dPrzyIFWLfk8=;
+	s=arc-20240116; t=1756214937; c=relaxed/simple;
+	bh=eoEMHxd+TdTtf5uUJFPJbfXy2/5JSKsXVeGVdF8r990=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ueNkwM7qVha6/3ShcZhAzIX5POw4pBwCNNLk9ZgNOa5q48o/zEBjwNKIcpoX9aM0CW1mTbMaASwfr/Ao8Eiqrgxi2XjvyU6cFPnj6qJPRvWXQQ13SBefwb2sjLeudOg35MsqvFEzGZF36iAmgS+9qGUF2HdCm95RWC3rnlg+mzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWTCpFm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B84C16AAE;
-	Tue, 26 Aug 2025 11:42:59 +0000 (UTC)
+	 MIME-Version; b=L43RlezcOYVk7KMbSUXitDqhVJj0ZvQQZnGC7UcxSwyF1AO8g4LVe/cP57WCs5eCRMycibl3Dlhpt0r2zpMmc1RJ+wevQmJiobfEvTn7mhSFKiVvO2gnatDuVkKgIOvW7rqhKfrNmAzOqf8e4VeWa+NhhsE4yi0vKwI322UqtF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA6qhv81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEBEC4CEF1;
+	Tue, 26 Aug 2025 13:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208579;
-	bh=+5A3IbCx/wd+kq9L/Zi3a/X1WPrUeZ5dPrzyIFWLfk8=;
+	s=korg; t=1756214937;
+	bh=eoEMHxd+TdTtf5uUJFPJbfXy2/5JSKsXVeGVdF8r990=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWTCpFm0og3dQ2hnX2g/D7tHiV2g3OeF6HcfqoeQ7XMax9T10yBZzhLAjadJxxqP/
-	 Z9hvn+sQTenQscXjH0S9j62+st4JRcxOfq6+aqE7X8jhjWNv8HjNMpqH7VY+Zr2iIO
-	 1O57HQAzUTaaBaxHb5ob0bCcMSXK8jMpjLZJqqLA=
+	b=BA6qhv81MLsXjlId+skcSYBK+S+fhBAPtvsnC9jcvVqVQGE1igsyaqgEC8RPoU4BG
+	 mObS02Yo5DbmHxNsBoQ8anvSyug3jfU5PLlGrMidnaZwBYxwJd5ro5m0RqMEbfaIgP
+	 uJ4hk8NFlkJ7vvAG0gjwUP7NgQDb9eRilmZ6Bi8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 165/322] iommu/arm-smmu-v3: Fix smmu_domain->nr_ats_masters decrement
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 327/482] media: qcom: camss: cleanup media device allocated resource on error path
 Date: Tue, 26 Aug 2025 13:09:40 +0200
-Message-ID: <20250826110919.906732492@linuxfoundation.org>
+Message-ID: <20250826110938.891554313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-commit 685ca577b408ffd9c5a4057a2acc0cd3e6978b36 upstream.
+commit 69080ec3d0daba8a894025476c98ab16b5a505a4 upstream.
 
-The arm_smmu_attach_commit() updates master->ats_enabled before calling
-arm_smmu_remove_master_domain() that is supposed to clean up everything
-in the old domain, including the old domain's nr_ats_masters. So, it is
-supposed to use the old ats_enabled state of the device, not an updated
-state.
+A call to media_device_init() requires media_device_cleanup() counterpart
+to complete cleanup and release any allocated resources.
 
-This isn't a problem if switching between two domains where:
- - old ats_enabled = false; new ats_enabled = false
- - old ats_enabled = true;  new ats_enabled = true
-but can fail cases where:
- - old ats_enabled = false; new ats_enabled = true
-   (old domain should keep the counter but incorrectly decreased it)
- - old ats_enabled = true;  new ats_enabled = false
-   (old domain needed to decrease the counter but incorrectly missed it)
+This has been done in the driver .remove() right from the beginning, but
+error paths on .probe() shall also be fixed.
 
-Update master->ats_enabled after arm_smmu_remove_master_domain() to fix
-this.
-
-Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
+Fixes: a1d7c116fcf7 ("media: camms: Add core files")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Link: https://lore.kernel.org/r/20250801030127.2006979-1-nicolinc@nvidia.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2778,9 +2778,9 @@ static void arm_smmu_attach_commit(struc
- 		/* ATS is being switched off, invalidate the entire ATC */
- 		arm_smmu_atc_inv_master(master, IOMMU_NO_PASID);
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1658,7 +1658,7 @@ static int camss_probe(struct platform_d
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		goto err_genpd_cleanup;
++		goto err_media_device_cleanup;
  	}
--	master->ats_enabled = state->ats_enabled;
  
- 	arm_smmu_remove_master_domain(master, state->old_domain, state->ssid);
-+	master->ats_enabled = state->ats_enabled;
- }
+ 	v4l2_async_nf_init(&camss->notifier);
+@@ -1710,6 +1710,8 @@ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
+ 	pm_runtime_disable(dev);
++err_media_device_cleanup:
++	media_device_cleanup(&camss->media_dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
  
- static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 
 
