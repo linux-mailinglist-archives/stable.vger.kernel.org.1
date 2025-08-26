@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A12B35FDD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0A0B364C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77E27C78A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A6A7BA524
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41212CD88;
-	Tue, 26 Aug 2025 12:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927F24DD11;
+	Tue, 26 Aug 2025 13:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNRL3Pcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoOmNm/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22D1A83ED;
-	Tue, 26 Aug 2025 12:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780151E480;
+	Tue, 26 Aug 2025 13:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212725; cv=none; b=kgMhkkDgxB93SjJmDLXwSdyiyvnnibnXWqLPLvAp64rKBEkjVQhwvD1v5Bar789APWdCdYKzDGgzYffiKYngCoBGjLiYyqXVht66mIkevvtqFOyWSp8DDkL6Y1nv9BhQmKOgy/C5PGivIvKFDs7T0saj5i+Q2wYUTVJjSLgNd7I=
+	t=1756215710; cv=none; b=TlrduJP6FtBpI+SIxe7rpRmQMCevNHuQPXPG00FuloLqp9A9PwqsnfRfM4EAcitHTYwIrhCwvQ5WRdUL39Z4BWm9la1hvFd6hwG+hRVRIZ6HdM8m8LeG3zUHWltzFp7M+9AGQ1uoKl6wR55W1G3ZObdbYMTvvwbApcvK/oxXFks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212725; c=relaxed/simple;
-	bh=vPlwNojVTQII08IGi9mmM9KLd/jJA9hITGaweZ+hMbE=;
+	s=arc-20240116; t=1756215710; c=relaxed/simple;
+	bh=3sN0Jap7/25NmhDvQ8/pCRV4zNg3PJFt7TwBb+16dYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJUZOoDZYC/U6wXHhpWgAi+dgmV7SKV9ofuVnyzljDb6dNe7ZU3ioTa1elmEQIq0lEG6jA+NlLmnt+gCuJOfx12DYkcX8TK6lreZCiSzuRkmftI5+gDMWNJ0kCDqYRlHYl87/7cvomj+O7TmAjYyUHSzAjZNjoHr9QurKbJA+AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNRL3Pcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD11C4CEF1;
-	Tue, 26 Aug 2025 12:52:04 +0000 (UTC)
+	 MIME-Version; b=G41mULyNVbajSvc7FiEPXN6R/y5EtOXh46rJeENb8E+WREsLho9rb6dtepEwvcvsQkeZKKeMV7EkhsVJxEnieqWHQe1Qify867QK4mFRTrnzdlJY7UFa5rCEcLuRuPnukIaeCAMdTNEqTzMqp34otjjbeH4oxSVFBu4m7dnXK8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoOmNm/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B31C113D0;
+	Tue, 26 Aug 2025 13:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212725;
-	bh=vPlwNojVTQII08IGi9mmM9KLd/jJA9hITGaweZ+hMbE=;
+	s=korg; t=1756215710;
+	bh=3sN0Jap7/25NmhDvQ8/pCRV4zNg3PJFt7TwBb+16dYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNRL3Pcw4sMJ3VK6m0ruy9E16dw3WWCJF6GyYM9KaYCz933Rn3s0WhalXfBhEuF2N
-	 XR7rUjJ1GXDVNkpNTrGPqMOrJ0ziWQ+pmd9FQ99h7tUZ1KXBwmar0SujnhYalCyLjt
-	 uT6pV2HSHTHhe/HFPhBAuYs9off20sAcFaGz1Xro=
+	b=AoOmNm/H7k2uoI0OI8V+SS5qlUpyQd6XrnzP4kn/1x5GL0cFOiTMoLXJFMWVD3jaI
+	 ukxYeFDKBJV6GgnAKieNG6bWGC8caT+KsMwKo/urySLm1e3riwA2HI57oO+pJ3pvhc
+	 4lTYQYTNoRWPjXPZEh2Q7ErKiU46UKN0KSdecPlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <ulin0208@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/587] fs/ntfs3: correctly create symlink for relative path
-Date: Tue, 26 Aug 2025 13:03:47 +0200
-Message-ID: <20250826110954.919261976@linuxfoundation.org>
+Subject: [PATCH 5.15 137/644] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
+Date: Tue, 26 Aug 2025 13:03:48 +0200
+Message-ID: <20250826110949.896586447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <ulin0208@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit b1e9d89408f402858c00103f9831b25ffa0994d3 ]
+[ Upstream commit 178f6a5c8cb3b6be1602de0964cd440243f493c9 ]
 
-After applying this patch, could correctly create symlink:
+When sending plaintext data, we initially calculated the corresponding
+ciphertext length. However, if we later reduced the plaintext data length
+via socket policy, we failed to recalculate the ciphertext length.
 
-ln -s "relative/path/to/file" symlink
+This results in transmitting buffers containing uninitialized data during
+ciphertext transmission.
 
-Signed-off-by: Rong Zhang <ulin0208@gmail.com>
-[almaz.alexandrovich@paragon-software.com: added cpu_to_le32 macro to
-rs->Flags assignment]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+This causes uninitialized bytes to be appended after a complete
+"Application Data" packet, leading to errors on the receiving end when
+parsing TLS record.
+
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/bpf/20250609020910.397930-2-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index af7c0cbba74e..0150a2210209 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1130,10 +1130,10 @@ int inode_write_data(struct inode *inode, const void *data, size_t bytes)
-  * Number of bytes for REPARSE_DATA_BUFFER(IO_REPARSE_TAG_SYMLINK)
-  * for unicode string of @uni_len length.
-  */
--static inline u32 ntfs_reparse_bytes(u32 uni_len)
-+static inline u32 ntfs_reparse_bytes(u32 uni_len, bool is_absolute)
- {
- 	/* Header + unicode string + decorated unicode string. */
--	return sizeof(short) * (2 * uni_len + 4) +
-+	return sizeof(short) * (2 * uni_len + (is_absolute ? 4 : 0)) +
- 	       offsetof(struct REPARSE_DATA_BUFFER,
- 			SymbolicLinkReparseBuffer.PathBuffer);
- }
-@@ -1146,8 +1146,11 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
- 	struct REPARSE_DATA_BUFFER *rp;
- 	__le16 *rp_name;
- 	typeof(rp->SymbolicLinkReparseBuffer) *rs;
-+	bool is_absolute;
- 
--	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2), GFP_NOFS);
-+	is_absolute = (strlen(symname) > 1 && symname[1] == ':');
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 6648008f5da7..6b0fd0e5fc88 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -857,6 +857,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 		delta = msg->sg.size;
+ 		psock->eval = sk_psock_msg_verdict(sk, psock, msg);
+ 		delta -= msg->sg.size;
 +
-+	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2, is_absolute), GFP_NOFS);
- 	if (!rp)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1162,7 +1165,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
- 		goto out;
- 
- 	/* err = the length of unicode name of symlink. */
--	*nsize = ntfs_reparse_bytes(err);
-+	*nsize = ntfs_reparse_bytes(err, is_absolute);
- 
- 	if (*nsize > sbi->reparse.max_size) {
- 		err = -EFBIG;
-@@ -1182,7 +1185,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
- 
- 	/* PrintName + SubstituteName. */
- 	rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
--	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + 8);
-+	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + (is_absolute ? 8 : 0));
- 	rs->PrintNameLength = rs->SubstituteNameOffset;
- 
- 	/*
-@@ -1190,16 +1193,18 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
- 	 * parse this path.
- 	 * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE).
- 	 */
--	rs->Flags = 0;
-+	rs->Flags = cpu_to_le32(is_absolute ? 0 : SYMLINK_FLAG_RELATIVE);
- 
--	memmove(rp_name + err + 4, rp_name, sizeof(short) * err);
-+	memmove(rp_name + err + (is_absolute ? 4 : 0), rp_name, sizeof(short) * err);
- 
--	/* Decorate SubstituteName. */
--	rp_name += err;
--	rp_name[0] = cpu_to_le16('\\');
--	rp_name[1] = cpu_to_le16('?');
--	rp_name[2] = cpu_to_le16('?');
--	rp_name[3] = cpu_to_le16('\\');
-+	if (is_absolute) {
-+		/* Decorate SubstituteName. */
-+		rp_name += err;
-+		rp_name[0] = cpu_to_le16('\\');
-+		rp_name[1] = cpu_to_le16('?');
-+		rp_name[2] = cpu_to_le16('?');
-+		rp_name[3] = cpu_to_le16('\\');
-+	}
- 
- 	return rp;
- out:
++		if ((s32)delta > 0) {
++			/* It indicates that we executed bpf_msg_pop_data(),
++			 * causing the plaintext data size to decrease.
++			 * Therefore the encrypted data size also needs to
++			 * correspondingly decrease. We only need to subtract
++			 * delta to calculate the new ciphertext length since
++			 * ktls does not support block encryption.
++			 */
++			struct sk_msg *enc = &ctx->open_rec->msg_encrypted;
++
++			sk_msg_trim(sk, enc, enc->sg.size - delta);
++		}
+ 	}
+ 	if (msg->cork_bytes && msg->cork_bytes > msg->sg.size &&
+ 	    !enospc && !full_record) {
 -- 
 2.39.5
 
