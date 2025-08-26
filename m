@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87D1B35FE9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3787B3655C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278567C711B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7FA189C261
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54D6213236;
-	Tue, 26 Aug 2025 12:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A38D2139C9;
+	Tue, 26 Aug 2025 13:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YH/xn73/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T55XEtfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C71DE4C2;
-	Tue, 26 Aug 2025 12:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CB92F84F;
+	Tue, 26 Aug 2025 13:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212751; cv=none; b=iz5qjfzAtnnmmk0Xj6dEldtpDmLIv4yvWfNnG7KZrtJNIIyEXCRGXaJvWpVa0ZSwXMjhwPT4y0ZakS2EGor4HcXrG9XBDzXzTF5f4zN/yUK/GyNATQINmk2PbI5A/HeEuc9EZk4KvqMn9AhhqwooSv3EusrGM4FmDayQjGr2d14=
+	t=1756215658; cv=none; b=BuNhxo2taDuXpEDhwUmhklulyAF3MHxz7zkk/f8uv0TtQqkJ086lYxT9fPTj8uoRPoYqk+kpJkZpMmoL2rAN0/AFWZF1D3Qxk7S+Yk+w58zGcPg+JvaQYMJ3A6V2cvRj1EBW3ll2tbF/LipV3xaUdv1xDqp5oW6/JU4BntYFMzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212751; c=relaxed/simple;
-	bh=4Pw7T+VdSrrlIvZlKYrGVjNIdnWi+KGQ/y1eI7JGzcM=;
+	s=arc-20240116; t=1756215658; c=relaxed/simple;
+	bh=safEChWgYbeNIDfUTNvXwufdxFsNP7iC0Frg6rQDm/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raGqoXL/B40anvfJJtKrRguoKnFQpMqe+4u+UdM4eSaElUVaRV/k3+AOd6Uyr222LniAvaUH0J5Oz83n2wdD3ZrVH1pbd+1Uc0j9O6RyAr0e6OB/Qb6dsHMiWH9YP433+oT/zTt7jkB5piRQcLYacv94R8tdDj3D3EMec1FgFZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YH/xn73/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CF0C4CEF1;
-	Tue, 26 Aug 2025 12:52:31 +0000 (UTC)
+	 MIME-Version; b=teZqRRCWYlSnp9v5iKvXUBSEWJW2oPfagVSv7VAIC353rn68M9HeBcfoJGmUzJ/N1ReXBuHcFUbaXSIu4TuxgpkxzrHi1Y73ihq7vX0kK8agCx2Q0EZFUdxuD80KXkbPOIxt7hZYmmRv1agJ7TXoeJ6LIKL+b9pibZ7h6OCLDV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T55XEtfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2AAC4CEF1;
+	Tue, 26 Aug 2025 13:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212751;
-	bh=4Pw7T+VdSrrlIvZlKYrGVjNIdnWi+KGQ/y1eI7JGzcM=;
+	s=korg; t=1756215658;
+	bh=safEChWgYbeNIDfUTNvXwufdxFsNP7iC0Frg6rQDm/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YH/xn73/0aTRckjrEejSVimNDfamwF9pjGqDyyi7cOOgC987EHA0cf3YI5u3noECL
-	 DcxSaXcBsof2aNN9lk3RMZ9QEuHvKhPbfDZJ43EGajXHztkapsHQGiz6bsFD4oH6A5
-	 aR+MgHZYcj6R4TdZIDxtB0sEw5uWPc53ggeTpS+o=
+	b=T55XEtfYSLQ053dENdkBhQZ0QgwBXPupszw9eQxVMozorTsbkbhTbGCNVdioJrzQf
+	 rtDWxEex/ePshPDHZVl8DL9j9SV6UmPUOa3WrzF1tXA3j/r57hIHgQn/B+RNBlW0HL
+	 oecW5xEkqZqsAKwnbziy0wxTK0FZ/b+hrBp/19CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/587] intel_idle: Allow loading ACPI tables for any family
+Subject: [PATCH 5.15 116/644] selftests: Fix errno checking in syscall_user_dispatch test
 Date: Tue, 26 Aug 2025 13:03:27 +0200
-Message-ID: <20250826110954.414726829@linuxfoundation.org>
+Message-ID: <20250826110949.400529443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Dmitry Vyukov <dvyukov@google.com>
 
-[ Upstream commit e91a158b694d7f4bd937763dde79ed0afa472d8a ]
+[ Upstream commit b89732c8c8357487185f260a723a060b3476144e ]
 
-There is no reason to limit intel_idle's loading of ACPI tables to
-family 6.  Upcoming Intel processors are not in family 6.
+Successful syscalls don't change errno, so checking errno is wrong
+to ensure that a syscall has failed. For example for the following
+sequence:
 
-Below "Fixes" really means "applies cleanly until".
-That syntax commit didn't change the previous logic,
-but shows this patch applies back 5-years.
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+	EXPECT_EQ(EINVAL, errno);
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+	EXPECT_EQ(EINVAL, errno);
 
-Fixes: 4a9f45a0533f ("intel_idle: Convert to new X86 CPU match macros")
-Signed-off-by: Len Brown <len.brown@intel.com>
-Link: https://patch.msgid.link/06101aa4fe784e5b0be1cb2c0bdd9afcf16bd9d4.1754681697.git.len.brown@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+only the first syscall may fail and set errno, but the second may succeed
+and keep errno intact, and the check will falsely pass.
+Or if errno happened to be EINVAL before, even the first check may falsely
+pass.
+
+Also use EXPECT/ASSERT consistently. Currently there is an inconsistent mix
+without obvious reasons for usage of one or another.
+
+Fixes: 179ef035992e ("selftests: Add kselftest for syscall user dispatch")
+Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/af6a04dbfef9af8570f5bab43e3ef1416b62699a.1747839857.git.dvyukov@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/idle/intel_idle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../syscall_user_dispatch/sud_test.c          | 50 +++++++++----------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 44842f243f40..6908052dea77 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -1432,7 +1432,7 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
- };
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index d975a6767329..48cf01aeec3e 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -79,6 +79,21 @@ TEST_SIGNAL(dispatch_trigger_sigsys, SIGSYS)
+ 	}
+ }
  
- static const struct x86_cpu_id intel_mwait_ids[] __initconst = {
--	X86_MATCH_VENDOR_FAM_FEATURE(INTEL, 6, X86_FEATURE_MWAIT, NULL),
-+	X86_MATCH_VENDOR_FAM_FEATURE(INTEL, X86_FAMILY_ANY, X86_FEATURE_MWAIT, NULL),
- 	{}
- };
++static void prctl_valid(struct __test_metadata *_metadata,
++			unsigned long op, unsigned long off,
++			unsigned long size, void *sel)
++{
++	EXPECT_EQ(0, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++}
++
++static void prctl_invalid(struct __test_metadata *_metadata,
++			  unsigned long op, unsigned long off,
++			  unsigned long size, void *sel, int err)
++{
++	EXPECT_EQ(-1, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++	EXPECT_EQ(err, errno);
++}
++
+ TEST(bad_prctl_param)
+ {
+ 	char sel = SYSCALL_DISPATCH_FILTER_ALLOW;
+@@ -86,57 +101,42 @@ TEST(bad_prctl_param)
  
+ 	/* Invalid op */
+ 	op = -1;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0, 0, &sel);
+-	ASSERT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0, 0, &sel, EINVAL);
+ 
+ 	/* PR_SYS_DISPATCH_OFF */
+ 	op = PR_SYS_DISPATCH_OFF;
+ 
+ 	/* offset != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, 0, EINVAL);
+ 
+ 	/* len != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0xff, 0, EINVAL);
+ 
+ 	/* sel != NULL */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x0, &sel, EINVAL);
+ 
+ 	/* Valid parameter */
+-	errno = 0;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, 0x0);
+-	EXPECT_EQ(0, errno);
++	prctl_valid(_metadata, op, 0x0, 0x0, 0x0);
+ 
+ 	/* PR_SYS_DISPATCH_ON */
+ 	op = PR_SYS_DISPATCH_ON;
+ 
+ 	/* Dispatcher region is bad (offset > 0 && len == 0) */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, -1L, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, &sel, EINVAL);
++	prctl_invalid(_metadata, op, -1L, 0x0, &sel, EINVAL);
+ 
+ 	/* Invalid selector */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x1, (void *) -1);
+-	ASSERT_EQ(EFAULT, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x1, (void *) -1, EFAULT);
+ 
+ 	/*
+ 	 * Dispatcher range overflows unsigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, 1, -1L, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, 1, -1L, &sel, EINVAL);
+ 
+ 	/*
+ 	 * Allowed range overflows usigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel, EINVAL);
+ }
+ 
+ /*
 -- 
-2.50.1
+2.39.5
 
 
 
