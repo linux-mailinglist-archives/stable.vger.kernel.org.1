@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7695DB35C7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE070B367EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FE5B7C4BCA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB2691C24898
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7082B321438;
-	Tue, 26 Aug 2025 11:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3375822DFA7;
+	Tue, 26 Aug 2025 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDiE/Rxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlrT8mxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A52F9C23;
-	Tue, 26 Aug 2025 11:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E551A2AE7F;
+	Tue, 26 Aug 2025 14:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207944; cv=none; b=siMaFa9X8y6iVce73oW+zUF04/nNIqjJqxvqaljJ3+ckjZHmH4dP8gl+V5KlRW3pauPHvnnw4NpicVCHyHYuN1CsglzlNqqHmYlbdP9gfvPTWseNmWa40M2iNjbNmPndFJWNWDon2bETqZzchJ+awSZ/lygYaCd76VSqK6V5/m8=
+	t=1756216904; cv=none; b=mIS65c0C9PHmsHpe1u0iICPfQSPB1Mh4sk/HkNGE9UASVZTvvLfaI1VfP6dQ7nL8Q8XG4a0uVeHm2sBkHSnjVfmmixO9CUyOJTD4O0b1zTcyEOq4O0yhOCCZkLR+aSHgr8jCantSlWkfovgomD036tZj7FPfvM6tOZX4LGC0C04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207944; c=relaxed/simple;
-	bh=4P1SBD4A/b15JK6ihwThcF0mrZyMYxpHc50Tfwe3PCE=;
+	s=arc-20240116; t=1756216904; c=relaxed/simple;
+	bh=XzVamd1rf5efMgbJmDOI/ZsESUE7vZj9cEaYW8oT0TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQHWT91LoX0NyoXpgxbtADiTJCZ+augdFbQDSJ+xkiUjn8uaapx7igffXf+7Fp8pfbdUfp5wYFjdywI8U/1Qohm7hSdcQabrJGU63+9sUFP/yT1rvbywSLqWLNYqfT/STSEXVevycxYrFOG+LfaNTR/1PUmTLtv5GllvIr0x+ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDiE/Rxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B02FC4CEF1;
-	Tue, 26 Aug 2025 11:32:23 +0000 (UTC)
+	 MIME-Version; b=KwaFRoe/UT5pNWAl1algvqu3W6XX8dcC3PRnfDBwVRVPPntc5imahJrBCpTOBaO0bVXbTF0i3YBAqCDzA/etG74Lvhh7Kfl18cY/JhaaUdEF9iPXJV9/jOzwsanEn0Mq2pftf1uXefCZ4TgG/TQsJ1g0uCX0a3vQaShdPbq0Bzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlrT8mxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D5DC4CEF1;
+	Tue, 26 Aug 2025 14:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207943;
-	bh=4P1SBD4A/b15JK6ihwThcF0mrZyMYxpHc50Tfwe3PCE=;
+	s=korg; t=1756216903;
+	bh=XzVamd1rf5efMgbJmDOI/ZsESUE7vZj9cEaYW8oT0TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDiE/RxbVN1xLVRENtwfwrHtj1YUYwrHXD1c6Ecyl0zPDrB8YwSyFtnYU/9eEazxU
-	 DKh/spQmhOUvSelw2jGH8jNISvC3YBshhvsPBrZfhiELfygC3vXomux/QV/SAFpjCt
-	 3a0L4oM/f5/JITzcZ3JV9a/8Axk3Y2/M7HUWJysY=
+	b=WlrT8mxbscaSH7LRPl4kqEEYyXk+tkHDBRd2fPyXTmfJLILQYcyhbrCoAr4DvJNrG
+	 5Qxq9uWDpsPcCWGlVfYsfdDgiDjIeuVCLFLuKGiA7Y5oAKVxB95lb5bvkHrPaWF8S/
+	 M6mNF53I+JAkq3VVsW1T2PcuZQ4q/4AGGxzU7P7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 376/457] Bluetooth: hci_core: Fix using ll_privacy_capable for current settings
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 5.15 569/644] drm/amd/display: Avoid a NULL pointer dereference
 Date: Tue, 26 Aug 2025 13:11:00 +0200
-Message-ID: <20250826110946.588893764@linuxfoundation.org>
+Message-ID: <20250826111000.631647339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 3dcf7175f2c04bd3a7d50db3fa42a0bd933b6e23 ]
+commit 07b93a5704b0b72002f0c4bd1076214af67dc661 upstream.
 
-ll_privacy_capable only indicates that the controller supports the
-feature but it doesnt' check that LE is enabled so it end up being
-marked as active in the current settings when it shouldn't.
+[WHY]
+Although unlikely drm_atomic_get_new_connector_state() or
+drm_atomic_get_old_connector_state() can return NULL.
 
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[HOW]
+Check returns before dereference.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1e5e8d672fec9f2ab352be121be971877bff2af9)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h | 1 +
- net/bluetooth/mgmt.c             | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index e77cb840deee..2fcd62fdbc87 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1951,6 +1951,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
- 			 ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_CODED))
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7105,6 +7105,9 @@ amdgpu_dm_connector_atomic_check(struct
+ 	struct drm_crtc_state *new_crtc_state;
+ 	int ret;
  
- #define ll_privacy_capable(dev) ((dev)->le_features[0] & HCI_LE_LL_PRIVACY)
-+#define ll_privacy_enabled(dev) (le_enabled(dev) && ll_privacy_capable(dev))
++	if (WARN_ON(unlikely(!old_con_state || !new_con_state)))
++		return -EINVAL;
++
+ 	trace_amdgpu_dm_connector_atomic_check(new_con_state);
  
- #define privacy_mode_capable(dev) (ll_privacy_capable(dev) && \
- 				   ((dev)->commands[39] & 0x04))
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 7a75309e6fd4..d4405d3d9bc1 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -934,7 +934,7 @@ static u32 get_current_settings(struct hci_dev *hdev)
- 	if (sync_recv_enabled(hdev))
- 		settings |= MGMT_SETTING_ISO_SYNC_RECEIVER;
- 
--	if (ll_privacy_capable(hdev))
-+	if (ll_privacy_enabled(hdev))
- 		settings |= MGMT_SETTING_LL_PRIVACY;
- 
- 	return settings;
--- 
-2.50.1
-
+ 	if (!crtc)
 
 
 
