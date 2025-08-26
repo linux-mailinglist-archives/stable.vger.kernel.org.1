@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1E2B3662F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A12B35FDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FCDD4683A7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77E27C78A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BE423A9A0;
-	Tue, 26 Aug 2025 13:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41212CD88;
+	Tue, 26 Aug 2025 12:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpy60YaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNRL3Pcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5D51E480;
-	Tue, 26 Aug 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22D1A83ED;
+	Tue, 26 Aug 2025 12:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215707; cv=none; b=Do1C8suX2rQDcdgSWnfmDlPeYs3hpvPjpZzGyQHL1eBjRSFkU6kgVSWbYPRCkqQrrLhc/Z3vttX/zS7M1ctnZDteffcep6EVfagOAMghUPHDzjXAyH+uwrANQxdRaAgpTmDXkrZf/ljr397IKBGZAJtINScI32XLpOAz8oFFWsA=
+	t=1756212725; cv=none; b=kgMhkkDgxB93SjJmDLXwSdyiyvnnibnXWqLPLvAp64rKBEkjVQhwvD1v5Bar789APWdCdYKzDGgzYffiKYngCoBGjLiYyqXVht66mIkevvtqFOyWSp8DDkL6Y1nv9BhQmKOgy/C5PGivIvKFDs7T0saj5i+Q2wYUTVJjSLgNd7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215707; c=relaxed/simple;
-	bh=9zt526DnKHd3xwtTES+8JQOoM/Bbp3Sufd+6v7hdf0M=;
+	s=arc-20240116; t=1756212725; c=relaxed/simple;
+	bh=vPlwNojVTQII08IGi9mmM9KLd/jJA9hITGaweZ+hMbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1gvh1OX6GbWroBvFrPCYDSYPmJOudzTnXTo4tQv63cB11mhAxGirGRuf2lI8Rpu/KLUwysbGi7/SQScsoMFcKlJ0hLAuD5Z6Ktlyt0QQW9vCd66kL9jWF+zC5qmLg5tp5NIYtxYu2/n9qHmT/PyEQ7NZdxC+cxQaBh8m/qZiM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpy60YaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5437DC116B1;
-	Tue, 26 Aug 2025 13:41:47 +0000 (UTC)
+	 MIME-Version; b=RJUZOoDZYC/U6wXHhpWgAi+dgmV7SKV9ofuVnyzljDb6dNe7ZU3ioTa1elmEQIq0lEG6jA+NlLmnt+gCuJOfx12DYkcX8TK6lreZCiSzuRkmftI5+gDMWNJ0kCDqYRlHYl87/7cvomj+O7TmAjYyUHSzAjZNjoHr9QurKbJA+AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNRL3Pcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD11C4CEF1;
+	Tue, 26 Aug 2025 12:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215707;
-	bh=9zt526DnKHd3xwtTES+8JQOoM/Bbp3Sufd+6v7hdf0M=;
+	s=korg; t=1756212725;
+	bh=vPlwNojVTQII08IGi9mmM9KLd/jJA9hITGaweZ+hMbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpy60YaYYKWC/t0I5+GVb5/h6XIwzez4g7Q5tZk35dfhC0FyisGMg3tmytq8WaJcv
-	 /7QhCgeKf2ewcVQV6fcltZuNqFJUQ59diSab9BI8nRrNfWroQJE1whxGBPloCI+7Xz
-	 6ZIYdb4KpbrfxPBUbgOxS6a9h8ig9JidFFF6frfc=
+	b=qNRL3Pcw4sMJ3VK6m0ruy9E16dw3WWCJF6GyYM9KaYCz933Rn3s0WhalXfBhEuF2N
+	 XR7rUjJ1GXDVNkpNTrGPqMOrJ0ziWQ+pmd9FQ99h7tUZ1KXBwmar0SujnhYalCyLjt
+	 uT6pV2HSHTHhe/HFPhBAuYs9off20sAcFaGz1Xro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Rong Zhang <ulin0208@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/644] bpf, sockmap: Fix psock incorrectly pointing to sk
+Subject: [PATCH 6.6 078/587] fs/ntfs3: correctly create symlink for relative path
 Date: Tue, 26 Aug 2025 13:03:47 +0200
-Message-ID: <20250826110949.874157247@linuxfoundation.org>
+Message-ID: <20250826110954.919261976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Rong Zhang <ulin0208@gmail.com>
 
-[ Upstream commit 76be5fae32febb1fdb848ba09f78c4b2c76cb337 ]
+[ Upstream commit b1e9d89408f402858c00103f9831b25ffa0994d3 ]
 
-We observed an issue from the latest selftest: sockmap_redir where
-sk_psock(psock->sk) != psock in the backlog. The root cause is the special
-behavior in sockmap_redir - it frequently performs map_update() and
-map_delete() on the same socket. During map_update(), we create a new
-psock and during map_delete(), we eventually free the psock via rcu_work
-in sk_psock_drop(). However, pending workqueues might still exist and not
-be processed yet. If users immediately perform another map_update(), a new
-psock will be allocated for the same sk, resulting in two psocks pointing
-to the same sk.
+After applying this patch, could correctly create symlink:
 
-When the pending workqueue is later triggered, it uses the old psock to
-access sk for I/O operations, which is incorrect.
+ln -s "relative/path/to/file" symlink
 
-Timing Diagram:
-
-cpu0                        cpu1
-
-map_update(sk):
-    sk->psock = psock1
-    psock1->sk = sk
-map_delete(sk):
-   rcu_work_free(psock1)
-
-map_update(sk):
-    sk->psock = psock2
-    psock2->sk = sk
-                            workqueue:
-                                wakeup with psock1, but the sk of psock1
-                                doesn't belong to psock1
-rcu_handler:
-    clean psock1
-    free(psock1)
-
-Previously, we used reference counting to address the concurrency issue
-between backlog and sock_map_close(). This logic remains necessary as it
-prevents the sk from being freed while processing the backlog. But this
-patch prevents pending backlogs from using a psock after it has been
-stopped.
-
-Note: We cannot call cancel_delayed_work_sync() in map_delete() since this
-might be invoked in BPF context by BPF helper, and the function may sleep.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20250609025908.79331-1-jiayuan.chen@linux.dev
+Signed-off-by: Rong Zhang <ulin0208@gmail.com>
+[almaz.alexandrovich@paragon-software.com: added cpu_to_le32 macro to
+rs->Flags assignment]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ntfs3/inode.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 1d7cf920bf4e..68e5fd7aa128 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -648,6 +648,13 @@ static void sk_psock_backlog(struct work_struct *work)
- 	bool ingress;
- 	int ret;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index af7c0cbba74e..0150a2210209 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1130,10 +1130,10 @@ int inode_write_data(struct inode *inode, const void *data, size_t bytes)
+  * Number of bytes for REPARSE_DATA_BUFFER(IO_REPARSE_TAG_SYMLINK)
+  * for unicode string of @uni_len length.
+  */
+-static inline u32 ntfs_reparse_bytes(u32 uni_len)
++static inline u32 ntfs_reparse_bytes(u32 uni_len, bool is_absolute)
+ {
+ 	/* Header + unicode string + decorated unicode string. */
+-	return sizeof(short) * (2 * uni_len + 4) +
++	return sizeof(short) * (2 * uni_len + (is_absolute ? 4 : 0)) +
+ 	       offsetof(struct REPARSE_DATA_BUFFER,
+ 			SymbolicLinkReparseBuffer.PathBuffer);
+ }
+@@ -1146,8 +1146,11 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	struct REPARSE_DATA_BUFFER *rp;
+ 	__le16 *rp_name;
+ 	typeof(rp->SymbolicLinkReparseBuffer) *rs;
++	bool is_absolute;
  
-+	/* If sk is quickly removed from the map and then added back, the old
-+	 * psock should not be scheduled, because there are now two psocks
-+	 * pointing to the same sk.
-+	 */
-+	if (!sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED))
-+		return;
+-	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2), GFP_NOFS);
++	is_absolute = (strlen(symname) > 1 && symname[1] == ':');
 +
- 	/* Increment the psock refcnt to synchronize with close(fd) path in
- 	 * sock_map_close(), ensuring we wait for backlog thread completion
- 	 * before sk_socket freed. If refcnt increment fails, it indicates
++	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2, is_absolute), GFP_NOFS);
+ 	if (!rp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1162,7 +1165,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 		goto out;
+ 
+ 	/* err = the length of unicode name of symlink. */
+-	*nsize = ntfs_reparse_bytes(err);
++	*nsize = ntfs_reparse_bytes(err, is_absolute);
+ 
+ 	if (*nsize > sbi->reparse.max_size) {
+ 		err = -EFBIG;
+@@ -1182,7 +1185,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 
+ 	/* PrintName + SubstituteName. */
+ 	rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
+-	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + 8);
++	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + (is_absolute ? 8 : 0));
+ 	rs->PrintNameLength = rs->SubstituteNameOffset;
+ 
+ 	/*
+@@ -1190,16 +1193,18 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	 * parse this path.
+ 	 * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE).
+ 	 */
+-	rs->Flags = 0;
++	rs->Flags = cpu_to_le32(is_absolute ? 0 : SYMLINK_FLAG_RELATIVE);
+ 
+-	memmove(rp_name + err + 4, rp_name, sizeof(short) * err);
++	memmove(rp_name + err + (is_absolute ? 4 : 0), rp_name, sizeof(short) * err);
+ 
+-	/* Decorate SubstituteName. */
+-	rp_name += err;
+-	rp_name[0] = cpu_to_le16('\\');
+-	rp_name[1] = cpu_to_le16('?');
+-	rp_name[2] = cpu_to_le16('?');
+-	rp_name[3] = cpu_to_le16('\\');
++	if (is_absolute) {
++		/* Decorate SubstituteName. */
++		rp_name += err;
++		rp_name[0] = cpu_to_le16('\\');
++		rp_name[1] = cpu_to_le16('?');
++		rp_name[2] = cpu_to_le16('?');
++		rp_name[3] = cpu_to_le16('\\');
++	}
+ 
+ 	return rp;
+ out:
 -- 
 2.39.5
 
