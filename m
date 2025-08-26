@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760E3B362F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B45EB366B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75DDC1896EDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8FB5808AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFB322DFA7;
-	Tue, 26 Aug 2025 13:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303353451D5;
+	Tue, 26 Aug 2025 13:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YofyZh7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCYS9wtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697552405E1;
-	Tue, 26 Aug 2025 13:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E021B393DC0;
+	Tue, 26 Aug 2025 13:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214268; cv=none; b=Fzx44ho1QzVonema9cEp535Emw9qnLi26rwW36ca+ApCy2tXVpNSdA9ztmHxAWoavkqMcF7rtQGP5UdncpbPXbPC6FxIVAlEH+kRPjt9bRRLEhc+HZEtWkTRXU3QqtpJ1LV9TDgttq9Mqhs5WOT4p3LI4LD+VXIlcSmv5SKcg98=
+	t=1756215972; cv=none; b=b+EfLj0PF4Pzt3sN0Y0sEwafaYgEq6nGU3akxt8yG+ymTl1iEfFfBr+Ec7gXlHczIjWJq44zg2tOoUuPOZXN6OIW+FRq0h6A6NMuuI+/hpMYugWpIEZ0JSG5/C/UwqT/AyAOtICEUtr7vIQ6Vz2GPWBdeP8Kb+zlPyy/6ZHilds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214268; c=relaxed/simple;
-	bh=ol/1tBdWBJM12u5MUwaIJQfY44IuF1gjj712BiaW494=;
+	s=arc-20240116; t=1756215972; c=relaxed/simple;
+	bh=JbmGzEex/o9+udMFcGAJ2xw8FGmBJY7Oh9EnWdN5Nrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uc7Hu5LireU8sDvrzKVNXA450a62GQkS8NxOSlAnIINMou8iQTtT60YPE5tdpF3RsPTq7RZZ3do32rLFdN/BrQwI0Yug166jWSIvn8NxrIGJI8mC8Bd0/LKEvv9yxhitXgbA0xokr6qaO8X1Pj7HQyGP8XBrwgO0YfLaBulmzI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YofyZh7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A09C4CEF1;
-	Tue, 26 Aug 2025 13:17:47 +0000 (UTC)
+	 MIME-Version; b=IPfjJYHQVdD8J+YNxKYGM0bgcVgMcVpgdtBMXqvyTh/8bVj87qIXnJLlrqaCnsp3FWx+IxwL25gAciBEMYuHWKwhYLNiEgspb4fsI3aUi3tOle9Dzjf4xbMCgA4m3fwD6w0Jj+h/fIWwRVU9ce2J6K/aKVcM1/WkP/xJlsJqNus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCYS9wtQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71098C4CEF1;
+	Tue, 26 Aug 2025 13:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214268;
-	bh=ol/1tBdWBJM12u5MUwaIJQfY44IuF1gjj712BiaW494=;
+	s=korg; t=1756215971;
+	bh=JbmGzEex/o9+udMFcGAJ2xw8FGmBJY7Oh9EnWdN5Nrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YofyZh7k1B5po82AIi19L/95q5ziMqMbGeuYf5W9FGMTovHjk53XWlOxmxgTgvOFc
-	 DzmwH8KSMIjdtnFc0hAJa4TRNmp+ARf8675+q/MYmkoObBajMC5iSGq19cMxS/4dU5
-	 C5NCGjc9MLreWs+txj5XVOson0YLB43FfGw4kTGU=
+	b=uCYS9wtQsCEh0Osa2vpxt7bniZ1mJfbFE0fS70FRiKIcBMWnc3RMg54JJC36Hjif8
+	 qzKcBSmrq6NgYphOAlY601FOx+/tGHsi/3uf8WmYJlNFfNirc7Koq41sdpjJkY+qaA
+	 Kr6iEHiBTxQiH/df1eqz8VksFBGBeDT+ILHnOW8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/482] cpufreq: Exit governor when failed to start old governor
+Subject: [PATCH 5.15 236/644] net: drop UFO packets in udp_rcv_segment()
 Date: Tue, 26 Aug 2025 13:05:27 +0200
-Message-ID: <20250826110932.662958972@linuxfoundation.org>
+Message-ID: <20250826110952.253724656@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
+[ Upstream commit d46e51f1c78b9ab9323610feb14238d06d46d519 ]
 
-Detect the result of starting old governor in cpufreq_set_policy(). If it
-fails, exit the governor and clear policy->governor.
+When sending a packet with virtio_net_hdr to tun device, if the gso_type
+in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
+size, below crash may happen.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  ------------[ cut here ]------------
+  kernel BUG at net/core/skbuff.c:4572!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
+  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
+  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
+  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
+  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
+  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
+  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
+  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
+  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
+   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
+   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
+   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
+   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
+   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
+   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
+   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
+   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
+   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
+   napi_complete_done+0x78/0x180 net/core/dev.c:6580
+   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
+   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
+   vfs_write+0x300/0x420 fs/read_write.c:593
+   ksys_write+0x60/0xd0 fs/read_write.c:686
+   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
+   </TASK>
+
+To trigger gso segment in udp_queue_rcv_skb(), we should also set option
+UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
+hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
+to pull udphdr, but the skb size has been segmented to gso size, which
+leads to this crash.
+
+Previous commit cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
+introduces segmentation in UDP receive path only for GRO, which was never
+intended to be used for UFO, so drop UFO packets in udp_rcv_segment().
+
+Link: https://lore.kernel.org/netdev/20250724083005.3918375-1-wangliang74@huawei.com/
+Link: https://lore.kernel.org/netdev/20250729123907.3318425-1-wangliang74@huawei.com/
+Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730101458.3470788-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/net/udp.h | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 805b4d26e9d2..90bdccab1dff 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2649,10 +2649,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
- 	pr_debug("starting governor %s failed\n", policy->governor->name);
- 	if (old_gov) {
- 		policy->governor = old_gov;
--		if (cpufreq_init_governor(policy))
-+		if (cpufreq_init_governor(policy)) {
- 			policy->governor = NULL;
--		else
--			cpufreq_start_governor(policy);
-+		} else if (cpufreq_start_governor(policy)) {
-+			cpufreq_exit_governor(policy);
-+			policy->governor = NULL;
-+		}
+diff --git a/include/net/udp.h b/include/net/udp.h
+index 10508c66e7a1..3dbfa4cfac50 100644
+--- a/include/net/udp.h
++++ b/include/net/udp.h
+@@ -483,6 +483,16 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
+ {
+ 	netdev_features_t features = NETIF_F_SG;
+ 	struct sk_buff *segs;
++	int drop_count;
++
++	/*
++	 * Segmentation in UDP receive path is only for UDP GRO, drop udp
++	 * fragmentation offload (UFO) packets.
++	 */
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP) {
++		drop_count = 1;
++		goto drop;
++	}
+ 
+ 	/* Avoid csum recalculation by skb_segment unless userspace explicitly
+ 	 * asks for the final checksum values
+@@ -506,16 +516,18 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
+ 	 */
+ 	segs = __skb_gso_segment(skb, features, false);
+ 	if (IS_ERR_OR_NULL(segs)) {
+-		int segs_nr = skb_shinfo(skb)->gso_segs;
+-
+-		atomic_add(segs_nr, &sk->sk_drops);
+-		SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, segs_nr);
+-		kfree_skb(skb);
+-		return NULL;
++		drop_count = skb_shinfo(skb)->gso_segs;
++		goto drop;
  	}
  
- 	return ret;
+ 	consume_skb(skb);
+ 	return segs;
++
++drop:
++	atomic_add(drop_count, &sk->sk_drops);
++	SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, drop_count);
++	kfree_skb(skb);
++	return NULL;
+ }
+ 
+ static inline void udp_post_segment_fix_csum(struct sk_buff *skb)
 -- 
 2.39.5
 
