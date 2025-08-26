@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FB9B36453
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC94FB369A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640528A342F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4A41C432DA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6322BE62B;
-	Tue, 26 Aug 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D116352FD0;
+	Tue, 26 Aug 2025 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5sfJMJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwJ7RbHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D801DE4CD;
-	Tue, 26 Aug 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A346134F490;
+	Tue, 26 Aug 2025 14:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214916; cv=none; b=ou3P2B+KSyZKih5bar2axLM2qVpnHmN+Sp57PPYw8t+wbhSO2iopU1x081rDlZ92Sb3uCIi2vp5IT7B3QC23GCe4unHGNTjXUSPBZcNn3ctR4rwwAAswsfaz2z87EdkEU/j4cNKSY3g4eaa9AfbxhwrAJ4PRoTKb7smLs+xjPns=
+	t=1756217937; cv=none; b=C+UYl3Qzo+G/8xMU8u20qJzHnxLRbviZG2RfQzOlNDXb2Qyy3+Oghwx8Dyze3ZspxXcJJJzGVqM/B/ANLs56peIziExfPJzuJfoy6k1zFUUiivkAcYHRPI6Z+4Im7P+t2rgAi15KTQrcVpQyfnfZG643J8UDpGf+sWNAaPPNtkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214916; c=relaxed/simple;
-	bh=XzfeYpMmyhw/9rOYmW3Bj+bi85w2uoX4y74rjTQ78jM=;
+	s=arc-20240116; t=1756217937; c=relaxed/simple;
+	bh=3JmrLNp0ioVE09QqUON8IEX4xrtkiyAJ3m1Ih8jT5Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3qaYKKUI/4leLkMWMw3Fhj7w/uHSDQk6iENk2IIOjG4+eYodQkTGo+caNH398As62SiZVYfri9eXcrj1FfU76Thh9e5PbS+ktl/QfuwHD8NWTzgSJ9gCDiInWpuUwPDWn1+eIbUHVXZrpitO59ZE39z6btGQukm284BsuLzXRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5sfJMJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3774EC4CEF1;
-	Tue, 26 Aug 2025 13:28:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=prVAqxESTU6Xxxmaf4FYNv8J4WcPnDqAWgI5EEnv4rJADe/V4JgwIDW3WcKsoCpEgM3FBU+9Eziit8Ohyu6A3MLgaCBreiG4MGFoL7D57c9lZy7Cz6cLRMC2IIvl60d+rvWwD73PMuhfLYf5rg/fnuLlA4dA4pH69cVEgDcnR2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwJ7RbHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87348C113CF;
+	Tue, 26 Aug 2025 14:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214916;
-	bh=XzfeYpMmyhw/9rOYmW3Bj+bi85w2uoX4y74rjTQ78jM=;
+	s=korg; t=1756217936;
+	bh=3JmrLNp0ioVE09QqUON8IEX4xrtkiyAJ3m1Ih8jT5Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5sfJMJPkXpYdirZlLLkdOMovSr8kURdToxtFT/CupRL46yhktexhrOLaIM05+1Uc
-	 IfxctyPihmINlYhAJyLwjNSF3PeR//E+Nvg2nLLBlXj6b2LzYSAByeTG9zpcTJnkfm
-	 FQBD8EsWRTuSqN//e9yMcpZWAud+4uHdZPL1jZqQ=
+	b=wwJ7RbHH0nzVZMCjKMaztQr8UOe6xxvbkdLRO5SpliMsiEyUstg4m2aqKR+DpZmm+
+	 fWoFehkq1PVAjIHNlwRhPbu0PGVblURjBY4JqbCwMDMyMagIB+/dDAcITucOS4y8fr
+	 XfJNNGJ9SDmtvUdt8wTTYNn44fScyJnlVZtS9psI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.1 287/482] dt-bindings: display: sprd,sharkl3-dsi-host: Fix missing clocks constraints
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 330/523] net: phy: smsc: add proper reset flags for LAN8710A
 Date: Tue, 26 Aug 2025 13:09:00 +0200
-Message-ID: <20250826110937.880928231@linuxfoundation.org>
+Message-ID: <20250826110932.617413188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-commit 2558df8c13ae3bd6c303b28f240ceb0189519c91 upstream.
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-'minItems' alone does not impose upper bound, unlike 'maxItems' which
-implies lower bound.  Add missing clock constraint so the list will have
-exact number of items (clocks).
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-Fixes: 2295bbd35edb ("dt-bindings: display: add Unisoc's mipi dsi controller bindings")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250720123003.37662-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dsi-host.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dsi-host.yaml
-+++ b/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dsi-host.yaml
-@@ -20,7 +20,7 @@ properties:
-     maxItems: 2
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index d860a2626b13..c799c6505767 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -427,6 +427,7 @@ static struct phy_driver smsc_phy_driver[] = {
  
-   clocks:
--    minItems: 1
-+    maxItems: 1
+ 	/* PHY_BASIC_FEATURES */
  
-   clock-names:
-     items:
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
+ 	.remove		= smsc_phy_remove,
+ 
+-- 
+2.39.5
+
 
 
 
