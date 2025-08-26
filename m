@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A2CB36A96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C12B3609B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0A2A5855F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F851BA7C4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984243568F3;
-	Tue, 26 Aug 2025 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33D207DF3;
+	Tue, 26 Aug 2025 12:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2TRAr02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhleI0du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5729D352096;
-	Tue, 26 Aug 2025 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A08B1C860B;
+	Tue, 26 Aug 2025 12:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218567; cv=none; b=MRopi5B/667xn2VT1u/J5tJbE136VbI7qpqPc9BWtcbqU1OqisheZfMD8JccVcxzohj7p1onV+arsLpVegDx7zGJF5jpy+TSAe7z7uBv7SHlKa9Gq8Deg/4gKO5XOvQr4VublhNYhXZ18uNNscOEiiOGpkmRbHDIcIBiuHZfHRo=
+	t=1756213114; cv=none; b=pv9qY95dN1wBbNvNx5eczijHL8qv3TAS7Zq8hPJEJMXQO1CV+XfKjJONozI53RzV2LeYvK1KKJyb9dyGnCfeDa4xE+6jmm7Xpvs6cyYwJ3KKSdGJZFlpASvnMyXr+AfOx7+dp0DrvHOweWT50FPclDPgYWZlnnVkZdZSyM9k68E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218567; c=relaxed/simple;
-	bh=YKrkwnxzQcCIhQxDTM+Vlr+qDGRn2HtVf9HaJOUg3Dg=;
+	s=arc-20240116; t=1756213114; c=relaxed/simple;
+	bh=PPjkU87hZLjRwWeHVAilZ1R0A6qBK7ONcu9UgMxEDO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtsHzjUKSuT95I3stPHrFXJ5wq0ATpWvEGGHxnCF9ZB6hqiap2Z1f0LxZ47fUgg25cl1z1NlTi8XVm7PiB2t1zl6r6Np7AVmmlTo24eYRPh7UQSSTpe3VpfzWn8j3TcoJmoHBZwQ46UGn1k9/BE4H11Qf+2Kh199tvhHedIgQLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2TRAr02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E225EC113CF;
-	Tue, 26 Aug 2025 14:29:26 +0000 (UTC)
+	 MIME-Version; b=tgAlhZMnpMvjWPgde7FZJqyiMvY807PS45UrIxpUgaOcSO0SD3poJgWfONeCRJ+cpAVddkt02wI8modCwwocTUratWSxTvLnBUN9XHBaGvukKPqL0TqpOMpn9EqUx7jPdUIgmNRFB7fwdLbVDBTfz9VKFprZYe9LfgQVhf3UQlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhleI0du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919EAC4CEF1;
+	Tue, 26 Aug 2025 12:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218567;
-	bh=YKrkwnxzQcCIhQxDTM+Vlr+qDGRn2HtVf9HaJOUg3Dg=;
+	s=korg; t=1756213113;
+	bh=PPjkU87hZLjRwWeHVAilZ1R0A6qBK7ONcu9UgMxEDO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2TRAr02EZjuUjwbghqCq6u/CqVCTLBVKJPPWTNyM+PuGn5C5Is1aEY/TVxX8S1Wv
-	 U940THisxid/3OPLy5HnDR2hOkDRRqwxQo9J9LKhLWttCo4/b4CqW5to4bHlIhgks5
-	 422ek6gQcOBslzYqyXcFeIMlmT9Bj+vWgWJGWXxs=
+	b=PhleI0durj+U2WR+3uyR5rUjzvRfSMuZxHz2D7C1mHz3c/moaLaYlytT1QS7jjUOk
+	 xhO42ZHsDfhEY2I1ykJEXRU/GxN4U28vZ71MF8pgNRLDsKMHX77TEmP3fVRj6/ehrn
+	 hNdfYgH864SO0hcKJMDXyi7iKvqsTAj4kl68xKHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 018/403] mmc: sdhci-pci: Quirk for broken command queuing on Intel GLK-based Positivo models
+	Alex Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 195/587] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
 Date: Tue, 26 Aug 2025 13:05:44 +0200
-Message-ID: <20250826110906.269784936@linuxfoundation.org>
+Message-ID: <20250826110957.901005909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 50c78f398e92fafa1cbba3469c95fe04b2e4206d upstream.
+[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
 
-Disable command queuing on Intel GLK-based Positivo models.
+When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
+helpers use BUG() unconditionally.
 
-Without this quirk, CQE (Command Queuing Engine) causes instability
-or I/O errors during operation. Disabling it ensures stable
-operation on affected devices.
+This code should not be reached, as callers of these functions should
+always check for is_vlan_dev() first, but the usage of BUG() is not
+recommended, replace it with WARN_ON() instead.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Fixes: bedf9fc01ff1 ("mmc: sdhci: Workaround broken command queuing on Intel GLK")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250626112442.9791-1-edson.drosdeck@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/if_vlan.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -972,7 +972,8 @@ static bool glk_broken_cqhci(struct sdhc
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index a6b46f0eab16..272d9ad73960 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -258,19 +258,19 @@ vlan_for_each(struct net_device *dev,
+ 
+ static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
  {
- 	return slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_GLK_EMMC &&
- 	       (dmi_match(DMI_BIOS_VENDOR, "LENOVO") ||
--		dmi_match(DMI_SYS_VENDOR, "IRBIS"));
-+		dmi_match(DMI_SYS_VENDOR, "IRBIS") ||
-+		dmi_match(DMI_SYS_VENDOR, "Positivo Tecnologia SA"));
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return NULL;
  }
  
- static int glk_emmc_probe_slot(struct sdhci_pci_slot *slot)
+ static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
+ static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
