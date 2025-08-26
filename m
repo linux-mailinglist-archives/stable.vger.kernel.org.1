@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE06B36910
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E39B363E0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBA91C2559E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00EBF5618D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07813350D4F;
-	Tue, 26 Aug 2025 14:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE2A34A33C;
+	Tue, 26 Aug 2025 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8js+ZgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9iJ0e5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE72D350831;
-	Tue, 26 Aug 2025 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473D34A336;
+	Tue, 26 Aug 2025 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217577; cv=none; b=ljGP6FjEZC5BfhwYWq+9+gG4nX92efd+RnMudhWC2H6QKnX2zqrIktFBQM9Javddynle4qs4T4V/SnoPRWKjllr1DVBG7NOA0S/rg1/vSQsbeRwrQ391h5IBWww9DyduisGT65OdxA82FlJLfo0MyhUyDjcSVaurwzLYxVEHCtQ=
+	t=1756214559; cv=none; b=j6TSFP6NvMw0A7BQcqug/wMGzbds4RkxY2xnI7wO0tQtLymvSFyqC40d6zUfR8PXCh0iZLIYrlDFk06P7mPwHZjSZiHqejmbkQ+QeUUL4W2+oFx377VXhgkqflFKoRbKvVqAdP5KxSoFpPUGML+UiMtOTOvu45y2HuvJeL3wSkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217577; c=relaxed/simple;
-	bh=hZsD4Zmbkntt7xLApH98TT5u1sF/KMerh0pU56i7Bfo=;
+	s=arc-20240116; t=1756214559; c=relaxed/simple;
+	bh=txjcL6GgXemDNY2BAURbtxqFBDW7vpuWgN/+Ua8PjTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpuW5Z1OelVJTuESFXQl0ZVP/wtgAHZnGRnutucvo1XtqNPb4xwkTyTjoMrfM/T3WukfpxJQNY9fNkA7009Z0rPiVnt1IZoyrWTvRFNCJFWt2xclAtfY/5kF4epNhMq2A2HuGOanPlQhy6cpcgyFXyLfxU0paE+Mn/QwN3Kgpcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8js+ZgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B17DC4CEF1;
-	Tue, 26 Aug 2025 14:12:57 +0000 (UTC)
+	 MIME-Version; b=oJuSETA1eznRKGdddRpM/2lAZUmmuiEWbEWMznIibuXqicNGVJPkgjZ3q6B/5a4H+NXeg4NzSZpTKbgjxdBapyEiWAh8WBrI9bfbZKQk5Wpxs62n4G1FW2MDOKNeeD4ilVotyf0dQ6SnK0g4pvsyO+fddgRadASuunR9EwptFbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9iJ0e5v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069C3C4CEF1;
+	Tue, 26 Aug 2025 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217577;
-	bh=hZsD4Zmbkntt7xLApH98TT5u1sF/KMerh0pU56i7Bfo=;
+	s=korg; t=1756214559;
+	bh=txjcL6GgXemDNY2BAURbtxqFBDW7vpuWgN/+Ua8PjTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8js+ZgXxNVG+tzOMtRuXnnb5UKJEXMSYX0akGgmtOMVWTTCyXyA3viae+AshPLFX
-	 k0BOJQHv9d/0T22eUxL65jPCcr/+w4/fQEp5Di+1mhpfWKVZ/HwB7DeNPOCxIiosQV
-	 Oy6sYJI2U6oz6yz6qdqd/K/bNUi4Dsf8gxIq3Uw0=
+	b=R9iJ0e5v7mnvZw5i2W3fIyaYq6ZFrIceHz7nGE1KQxq7m4Qc8xrF0GmGPIGuobBNP
+	 dcbgkNKU3aRjYRXcknPdgTHz9dDywYHjq7LSMyhcQFUK6/PYTeYqjJug0dUu+msud0
+	 91u5y91rdXmjtNvWM/2JQRQVDhNNbgNVIGIBDm64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Nicolas Escande <nico.escande@gmail.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 195/523] netlink: avoid infinite retry looping in netlink_unicast()
-Date: Tue, 26 Aug 2025 13:06:45 +0200
-Message-ID: <20250826110929.257713093@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/482] neighbour: add support for NUD_PERMANENT proxy entries
+Date: Tue, 26 Aug 2025 13:06:46 +0200
+Message-ID: <20250826110934.594921049@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
+[ Upstream commit c7d78566bbd30544a0618a6ffbc97bc0ddac7035 ]
 
-netlink_attachskb() checks for the socket's read memory allocation
-constraints. Firstly, it has:
+As discussesd before in [0] proxy entries (which are more configuration
+than runtime data) should stay when the link (carrier) goes does down.
+This is what happens for regular neighbour entries.
 
-  rmem < READ_ONCE(sk->sk_rcvbuf)
+So lets fix this by:
+  - storing in proxy entries the fact that it was added as NUD_PERMANENT
+  - not removing NUD_PERMANENT proxy entries when the carrier goes down
+    (same as how it's done in neigh_flush_dev() for regular neigh entries)
 
-to check if the just increased rmem value fits into the socket's receive
-buffer. If not, it proceeds and tries to wait for the memory under:
+[0]: https://lore.kernel.org/netdev/c584ef7e-6897-01f3-5b80-12b53f7b4bf4@kernel.org/
 
-  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
-
-The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
-equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
-these conditions, nor manages to reschedule the task - and is called in
-retry loop for indefinite time which is caught as:
-
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
-  (t=26000 jiffies g=230833 q=259957)
-  NMI backtrace for cpu 0
-  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
-  Call Trace:
-  <IRQ>
-  dump_stack lib/dump_stack.c:120
-  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
-  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
-  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
-  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
-  update_process_times kernel/time/timer.c:1953
-  tick_sched_handle kernel/time/tick-sched.c:227
-  tick_sched_timer kernel/time/tick-sched.c:1399
-  __hrtimer_run_queues kernel/time/hrtimer.c:1652
-  hrtimer_interrupt kernel/time/hrtimer.c:1717
-  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
-  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
-  </IRQ>
-
-  netlink_attachskb net/netlink/af_netlink.c:1234
-  netlink_unicast net/netlink/af_netlink.c:1349
-  kauditd_send_queue kernel/audit.c:776
-  kauditd_thread kernel/audit.c:897
-  kthread kernel/kthread.c:328
-  ret_from_fork arch/x86/entry/entry_64.S:304
-
-Restore the original behavior of the check which commit in Fixes
-accidentally missed when restructuring the code.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
+Link: https://patch.msgid.link/20250617141334.3724863-1-nico.escande@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/neighbour.h |  1 +
+ net/core/neighbour.c    | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1213,7 +1213,7 @@ int netlink_attachskb(struct sock *sk, s
- 	nlk = nlk_sk(sk);
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index ccc4a0f8b4ad..93aecfaa7628 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -180,6 +180,7 @@ struct pneigh_entry {
+ 	netdevice_tracker	dev_tracker;
+ 	u32			flags;
+ 	u8			protocol;
++	bool			permanent;
+ 	u32			key[];
+ };
  
--	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
-+	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		return 0;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index bcc3950638b9..92dc1f1788de 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -55,7 +55,8 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid);
+ static void neigh_update_notify(struct neighbour *neigh, u32 nlmsg_pid);
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev);
++				    struct net_device *dev,
++				    bool skip_perm);
+ 
+ #ifdef CONFIG_PROC_FS
+ static const struct seq_operations neigh_stat_seq_ops;
+@@ -444,7 +445,7 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+ {
+ 	write_lock_bh(&tbl->lock);
+ 	neigh_flush_dev(tbl, dev, skip_perm);
+-	pneigh_ifdown_and_unlock(tbl, dev);
++	pneigh_ifdown_and_unlock(tbl, dev, skip_perm);
+ 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
+ 			   tbl->family);
+ 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
+@@ -845,7 +846,8 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
+ }
+ 
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev)
++				    struct net_device *dev,
++				    bool skip_perm)
+ {
+ 	struct pneigh_entry *n, **np, *freelist = NULL;
+ 	u32 h;
+@@ -853,12 +855,15 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+ 	for (h = 0; h <= PNEIGH_HASHMASK; h++) {
+ 		np = &tbl->phash_buckets[h];
+ 		while ((n = *np) != NULL) {
++			if (skip_perm && n->permanent)
++				goto skip;
+ 			if (!dev || n->dev == dev) {
+ 				*np = n->next;
+ 				n->next = freelist;
+ 				freelist = n;
+ 				continue;
+ 			}
++skip:
+ 			np = &n->next;
+ 		}
+ 	}
+@@ -2023,6 +2028,7 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		pn = pneigh_lookup(tbl, net, dst, dev, 1);
+ 		if (pn) {
+ 			pn->flags = ndm_flags;
++			pn->permanent = !!(ndm->ndm_state & NUD_PERMANENT);
+ 			if (protocol)
+ 				pn->protocol = protocol;
+ 			err = 0;
+-- 
+2.39.5
+
 
 
 
