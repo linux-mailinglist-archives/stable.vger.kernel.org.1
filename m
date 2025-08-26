@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3435DB36A25
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11D9B360D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27D6F4E140F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8361216B565
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92B330AAD8;
-	Tue, 26 Aug 2025 14:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24064196C7C;
+	Tue, 26 Aug 2025 13:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5M4VgdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cir5KQg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6510F340DA7;
-	Tue, 26 Aug 2025 14:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61DD13957E;
+	Tue, 26 Aug 2025 13:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218723; cv=none; b=YKh65txJh+FZe6X2+KO30Igx7Tp1WrsvTAw7h/4MDXn9aexzmNbM0cqh1WdwB0mD6XChQA7akxMuL0lWewP5VmsT1VjUAAfuayhQXCMtLupA5Ot0gkarN2OybggiAfX7b1A4chTSxjVYvrs0//1Gd8RTasEjgv8gx4jmBjV0Cmg=
+	t=1756213277; cv=none; b=aFtHxcqON22TDFIeu/wqn23MR+XQuuv8io1ZLYdwUUK6azo3/251LB250hn1RNseZVr3rW1j29PNLBhiUCeImct4koHorHVNGk3g5/QXZFy1vNIOFRB3Wyq2A/bL6jfIaPAmggEk0FMttjUli56FeYv4Ht7wEh+o0IWj9H/7hbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218723; c=relaxed/simple;
-	bh=o2zp0+GuwJqLimiFSFYZ4Tt4wHCvYYQcTK9AcxGfMHA=;
+	s=arc-20240116; t=1756213277; c=relaxed/simple;
+	bh=zhSKBxD/LL260WR5Bzj5D6HS7vfFANWyoNxyXnvp2fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyGbKSa/kjncj73+3OZ2ZidcvHqE2atouridhjGPlkyKbWqJURh6CaQjw3n5AYBJCfaHC03lmNvLlIQVhtdB1XThAczb7Ynb2nw1bANnSimuXL0Ts556QO/wl7rx25klDIpTl2wNRKBU4fhhtZfw68VGEwwPp1i0F11aEymhDBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5M4VgdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2A1C4CEF1;
-	Tue, 26 Aug 2025 14:32:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g/EP9PiNzJEMrmgfKVFmmGCi37CJ0exZ34T+oPxkXdPW62bQwqJ6kwz+GD6Cl1YzHoaBhYX61eqgeTwc2ADCmJFE/UTdaNyF8KLqq3fFyMNvTUbPF8sjcmz5VyRMybkGc2GXVPEhpTfrPNGQJwmmaCmP6QOJlL4iwXCqA52U9sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cir5KQg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674B9C4CEF4;
+	Tue, 26 Aug 2025 13:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218723;
-	bh=o2zp0+GuwJqLimiFSFYZ4Tt4wHCvYYQcTK9AcxGfMHA=;
+	s=korg; t=1756213277;
+	bh=zhSKBxD/LL260WR5Bzj5D6HS7vfFANWyoNxyXnvp2fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5M4VgdZT/IuYUKlVykXYse4YRk9CcPqpLp2lKiPveoO7RcZh2AehqmvNqLrjgVxy
-	 bWSC01Lq+kDbjVRAGnxN+ONNZOaYE8im+LQqaF8ge3Z2omugF4Uh7MTsOisxinu7Dm
-	 ncWV5pNLahV1IO0W2O4iDxHs8OCRZijgJmQjjf28=
+	b=cir5KQg+G59Bh/lQ5DvJQKeCBXwhUTfFToL9Z+iPWrLOhhkBvMleSH6eT3xrKyk/5
+	 ZlQAPWr7TyJDoKfi9rcDuNf1ismVWouxoo8fNTDcEVmgcY57t1DaEcbOuU5y/AL3ao
+	 2e7qS0f0UMRTAU/aPAfKJgYWnDRxwEpXi/Jp09hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	David Lechner <david@lechnology.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 108/403] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
-Date: Tue, 26 Aug 2025 13:07:14 +0200
-Message-ID: <20250826110909.669089623@linuxfoundation.org>
+Subject: [PATCH 6.6 286/587] net: phy: smsc: add proper reset flags for LAN8710A
+Date: Tue, 26 Aug 2025 13:07:15 +0200
+Message-ID: <20250826111000.207378190@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-davinci_lpsc_clk_register() does not check for this case, which results
-in a NULL pointer dereference.
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensuring
-no resources are left allocated.
-
-Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
-Reviewed-by: David Lechner <david@lechnology.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/davinci/psc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
-index 5b69e24a224f..2e153320fc53 100644
---- a/drivers/clk/davinci/psc.c
-+++ b/drivers/clk/davinci/psc.c
-@@ -278,6 +278,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 4ca813c00947..5f9bb0ebe455 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -786,6 +786,7 @@ static struct phy_driver smsc_phy_driver[] = {
  
- 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
- 					      best_dev_name(dev), name);
-+	if (!lpsc->pm_domain.name) {
-+		clk_hw_unregister(&lpsc->hw);
-+		kfree(lpsc);
-+		return ERR_PTR(-ENOMEM);
-+	}
- 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
- 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
- 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
+ 	/* PHY_BASIC_FEATURES */
+ 
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
+ 
+ 	/* basic functions */
 -- 
 2.39.5
 
