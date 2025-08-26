@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DD3B362E5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D166B35B30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99328A503A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48CC07BC402
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B0F26FA57;
-	Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36923277A2;
+	Tue, 26 Aug 2025 11:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW7I78qG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul7lMGQV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7650A1A23A4;
-	Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E406322524;
+	Tue, 26 Aug 2025 11:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214184; cv=none; b=ACf6x39ML9fWWqfsI+4hrp/yq1k3d7ErdiuFpGNdO5cMY/9igZl6F4i9E66TnOJUw1NNU63eyh8N/0NpV8DkeYw5B6IvfxZe2Bt5eJUum732CA9LH1PvmjkuMRPZSDevV3kMNCpWEftG6BDq8Dp+kA2lv5AvFSi3KMXF0hiesCE=
+	t=1756207101; cv=none; b=WoAfZRK+8iMoFM0BtijA4xjd+rpQqZ2pKW9rbQUU+caABxg8WSYPopzBMTDhe2m6Al5oXLV66r39/LvOSDnyeLGGXKyZ+A/VtiAn5LrfnUahudqio4zhrNCRwJui4GShlO/iY7ACf7G1a/BVsmOE2heN+K0HukjKXyHDtQ6364c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214184; c=relaxed/simple;
-	bh=4ihjZ61q7+regvTlhexXDBEdmBllIvoT2ZJ4LkTOFyA=;
+	s=arc-20240116; t=1756207101; c=relaxed/simple;
+	bh=yhFRPgUtTOVwfYitBtgSPYU/A3PhBbHsfvqLEqVtWL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPmghGI5VLhGCOYSsn2oV0dPqVcR0nN3O0VBHzOHeRXZCO213CCdRtN5PfPPAMIYPycVogzcoSJs2YBfJSngXz33jJMsi2rLewOgoxhfOUs2oDaa/Kj7muSBmE7EKG+29NcGQahbe3JvonCXHlr2T8X11IiT2vwnE28YtfseCWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW7I78qG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08871C113CF;
-	Tue, 26 Aug 2025 13:16:23 +0000 (UTC)
+	 MIME-Version; b=S3QT1Qmy8wcQGS1vO2XjBkgXi8GDYnykkMARLXbYTlVmzO+gNNPGP3HC3FD9fSDjCSN/nw/fIrx+i99jG9fZDAPXWKUZzfWghSHeVtvqFxb9KJ5BjXDZpwFVQCmZExBWM8b+6CWMMjQopFo8N2zeffVKy11YuNkr0LN048yyyHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul7lMGQV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E301FC4CEF1;
+	Tue, 26 Aug 2025 11:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214184;
-	bh=4ihjZ61q7+regvTlhexXDBEdmBllIvoT2ZJ4LkTOFyA=;
+	s=korg; t=1756207101;
+	bh=yhFRPgUtTOVwfYitBtgSPYU/A3PhBbHsfvqLEqVtWL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pW7I78qGaoLpdKg/qpZ6e82gdXdRTjNM8Pmh8hmnHRw4M8Ac0SewMRSEyw93EnJ7n
-	 4xr+i6M+HIiueT9fZ2ZIW1nCnNBLGvzdyXWvvn3ZonkAm6jpicYExR+Oi5cyO0zScF
-	 cOjxLvAZYaSBeu8Jv+ojY7tau2T55qhgtUv7nD1E=
+	b=ul7lMGQVpnpdEjFiKlIBRLvWt3WOW1NttdEtE/b5dhug4sUTfcOaOpXuB/xMEjiZH
+	 yZws39oDrH3hBkD8IIdlLwXP3q+dyAzbIQTaNfQXVNfvDETmAk3lwjIgJSdFxHsPck
+	 xURTvI1R7mK9vSnqpi63YC9Tb5MA/IqFBujZ1ISk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/482] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new KVM_RUN flag
-Date: Tue, 26 Aug 2025 13:04:54 +0200
-Message-ID: <20250826110931.826688892@linuxfoundation.org>
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.16 011/457] usb: gadget: udc: renesas_usb3: fix device leak at unbind
+Date: Tue, 26 Aug 2025 13:04:55 +0200
+Message-ID: <20250826110937.592838655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 80c64c7afea1da6a93ebe88d3d29d8a60377ef80 ]
+commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
 
-Instruct vendor code to load the guest's DR6 into hardware via a new
-KVM_RUN flag, and remove kvm_x86_ops.set_dr6(), whose sole purpose was to
-load vcpu->arch.dr6 into hardware when DR6 can be read/written directly
-by the guest.
+Make sure to drop the reference to the companion device taken during
+probe when the driver is unbound.
 
-Note, TDX already WARNs on any run_flag being set, i.e. will yell if KVM
-thinks DR6 needs to be reloaded.  TDX vCPUs force KVM_DEBUGREG_AUTO_SWITCH
-and never clear the flag, i.e. should never observe KVM_RUN_LOAD_GUEST_DR6.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: account for lack of vmx/main.c]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 -
- arch/x86/include/asm/kvm_host.h    |  2 +-
- arch/x86/kvm/svm/svm.c             | 10 ++++++----
- arch/x86/kvm/vmx/vmx.c             | 10 +++-------
- arch/x86/kvm/x86.c                 |  2 +-
- 5 files changed, 11 insertions(+), 14 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 0e5ae3b0c867..c068565fe954 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -47,7 +47,6 @@ KVM_X86_OP(set_idt)
- KVM_X86_OP(get_gdt)
- KVM_X86_OP(set_gdt)
- KVM_X86_OP(sync_dirty_debug_regs)
--KVM_X86_OP(set_dr6)
- KVM_X86_OP(set_dr7)
- KVM_X86_OP(cache_reg)
- KVM_X86_OP(get_rflags)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 1383f5e5238a..c8fc4f2acf69 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1458,6 +1458,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2657,6 +2657,7 @@ static void renesas_usb3_remove(struct p
+ 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
  
- enum kvm_x86_run_flags {
- 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
-+	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
- };
+ 	debugfs_remove_recursive(usb3->dentry);
++	put_device(usb3->host_dev);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
- struct kvm_x86_ops {
-@@ -1504,7 +1505,6 @@ struct kvm_x86_ops {
- 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
--	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
- 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index dc8a1b72d8ec..5a6bd9d5cceb 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4052,10 +4052,13 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	svm_hv_update_vp_id(svm->vmcb, vcpu);
- 
- 	/*
--	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
--	 * of a #DB.
-+	 * Run with all-zero DR6 unless the guest can write DR6 freely, so that
-+	 * KVM can get the exact cause of a #DB.  Note, loading guest DR6 from
-+	 * KVM's snapshot is only necessary when DR accesses won't exit.
- 	 */
--	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
-+	if (unlikely(run_flags & KVM_RUN_LOAD_GUEST_DR6))
-+		svm_set_dr6(vcpu, vcpu->arch.dr6);
-+	else if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
- 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
- 
- 	clgi();
-@@ -4822,7 +4825,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.set_idt = svm_set_idt,
- 	.get_gdt = svm_get_gdt,
- 	.set_gdt = svm_set_gdt,
--	.set_dr6 = svm_set_dr6,
- 	.set_dr7 = svm_set_dr7,
- 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
- 	.cache_reg = svm_cache_reg,
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 382f42200688..60d1ff3fca45 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5530,12 +5530,6 @@ static void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
- 	set_debugreg(DR6_RESERVED, 6);
- }
- 
--static void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	lockdep_assert_irqs_disabled();
--	set_debugreg(vcpu->arch.dr6, 6);
--}
--
- static void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
- {
- 	vmcs_writel(GUEST_DR7, val);
-@@ -7251,6 +7245,9 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vmcs_writel(GUEST_RIP, vcpu->arch.regs[VCPU_REGS_RIP]);
- 	vcpu->arch.regs_dirty = 0;
- 
-+	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
-+		set_debugreg(vcpu->arch.dr6, 6);
-+
- 	/*
- 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
- 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
-@@ -8208,7 +8205,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.set_idt = vmx_set_idt,
- 	.get_gdt = vmx_get_gdt,
- 	.set_gdt = vmx_set_gdt,
--	.set_dr6 = vmx_set_dr6,
- 	.set_dr7 = vmx_set_dr7,
- 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
- 	.cache_reg = vmx_cache_reg,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 83e5e823cbae..9d66830d594c 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10833,7 +10833,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		set_debugreg(vcpu->arch.eff_db[3], 3);
- 		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
- 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
--			static_call(kvm_x86_set_dr6)(vcpu, vcpu->arch.dr6);
-+			run_flags |= KVM_RUN_LOAD_GUEST_DR6;
- 	} else if (unlikely(hw_breakpoint_active())) {
- 		set_debugreg(0, 7);
- 	}
--- 
-2.50.1
-
+ 	cancel_work_sync(&usb3->role_work);
 
 
 
