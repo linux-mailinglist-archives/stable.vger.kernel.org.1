@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC279B3640B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82134B35D36
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762001B61138
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794343BA954
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44DD341AA6;
-	Tue, 26 Aug 2025 13:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8812BF3CF;
+	Tue, 26 Aug 2025 11:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byHZCgjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgMXXbzJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19075341AA1;
-	Tue, 26 Aug 2025 13:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565C52BE65E;
+	Tue, 26 Aug 2025 11:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214868; cv=none; b=LN3/6houypd3CQtBUtqSm8vQZTweE5VQ6+oGbi+0qB0eF9w+eKxWWhWKI5l1GGm1qmJx5bJDOKnhHwrrTKOPohTL5B39evJ2tNwZ7EUtF1TCKs7+m13S+koo9/KSN/RGQnnanVQPFX9yDzBh8BC5QsemXinV55KrML5actJoBr8=
+	t=1756208527; cv=none; b=koDC3Csxpf8n6IMRvVQEbuiWMOA/uwdDoY6NVW6o09NP8KkAXwGB6P+hhDEMG3C7+GwpHtoZmbCOE6nSGbE/6F20oRKxDWOSjsT77id/doclK7KaUjBoOdvJ76vF5EeVOhT3oQYQeYZvwY6StDn7sx5A/8H3Kmmgcrp675EqWCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214868; c=relaxed/simple;
-	bh=EfOpTvZzDdObl7QBQDX5NjHSfRc3fXkgg6jv2J2bn9U=;
+	s=arc-20240116; t=1756208527; c=relaxed/simple;
+	bh=hpniVx54CHP9il3csDHENb6UUaFApuIYD1saRQ9tA2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r5UrjMcZ3TMFmoShk1vLYIIECMV/oKsR/WTNNB0mupUYgpsdc1ZRa7/1IoiQcp2ZkKUtT1pttvH1wj5ijazIuXQBg8IvVbDtC1LMbVTL8lAajvV6kwYm6Y0HiVYzgmM5pDKVYqF+Cnic9Qafgv67jhTX+qSIp+EvoVWD7odGVbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byHZCgjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19625C4CEF1;
-	Tue, 26 Aug 2025 13:27:46 +0000 (UTC)
+	 MIME-Version; b=hXk8OKF8I7iEr8fTmvk6jiOQXWoF7qYF/6gkZ4tg9UOaQlgSHeqds1ROJUtk3AG3FHIUvGLCjJFQd2e3CC8m6NvPK9VzNB9Hhyp1B4iCRCq3XafODfrA/ADCST/ZHZHHhLKyy2Iet8I3UzDNFYzl7kyJli9zluGJIa0pdFS7Vfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgMXXbzJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47F2C4CEF4;
+	Tue, 26 Aug 2025 11:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214867;
-	bh=EfOpTvZzDdObl7QBQDX5NjHSfRc3fXkgg6jv2J2bn9U=;
+	s=korg; t=1756208527;
+	bh=hpniVx54CHP9il3csDHENb6UUaFApuIYD1saRQ9tA2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byHZCgjKZAsBoiuozrH7lmzo6jFxIBL40qIRNbFEB0nhKzMUXxglJ3loQDeno70iq
-	 7Lvl5nDK2QvZ+laX6wCFfCuVXgo25h/UWJVfqHjnfv2jGyovtLRoS2uMVWf+vm+bKl
-	 KbEjmi8vyDbwL2KddtsEksCIAhms/lss7jLXpXus=
+	b=RgMXXbzJdq3VAC1XE6JRJkLtNeF4QKuMmpXF/Cyh7vVYBZxWCH1uuEkbfmjkod++P
+	 Q5YsG3eIqEupMYlKtCfbAjGYJwU1AwYvLnPZfqi3nNLO2xp69ov6+aF1y0cRoNAiss
+	 saW8or5wYXWkag2asmT5b423ECnZ/VTMlxeveqqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 300/482] pwm: mediatek: Handle hardware enable and clock enable separately
+	SeongJae Park <sj@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	Hyeongtak Ji <hyeongtak.ji@sk.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 138/322] mm/damon/ops-common: ignore migration request to invalid nodes
 Date: Tue, 26 Aug 2025 13:09:13 +0200
-Message-ID: <20250826110938.211143772@linuxfoundation.org>
+Message-ID: <20250826110919.211534130@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 704d918341c378c5f9505dfdf32d315e256d3846 upstream.
+commit 7e6c3130690a01076efdf45aa02ba5d5c16849a0 upstream.
 
-Stop handling the clocks in pwm_mediatek_enable() and
-pwm_mediatek_disable(). This is a preparing change for the next commit
-that requires that clocks and the enable bit are handled separately.
+damon_migrate_pages() tries migration even if the target node is invalid.
+If users mistakenly make such invalid requests via
+DAMOS_MIGRATE_{HOT,COLD} action, the below kernel BUG can happen.
 
-Also move these two functions a bit further up in the source file to
-make them usable in pwm_mediatek_config(), which is needed in the next
-commit, too.
+    [ 7831.883495] BUG: unable to handle page fault for address: 0000000000001f48
+    [ 7831.884160] #PF: supervisor read access in kernel mode
+    [ 7831.884681] #PF: error_code(0x0000) - not-present page
+    [ 7831.885203] PGD 0 P4D 0
+    [ 7831.885468] Oops: Oops: 0000 [#1] SMP PTI
+    [ 7831.885852] CPU: 31 UID: 0 PID: 94202 Comm: kdamond.0 Not tainted 6.16.0-rc5-mm-new-damon+ #93 PREEMPT(voluntary)
+    [ 7831.886913] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
+    [ 7831.887777] RIP: 0010:__alloc_frozen_pages_noprof (include/linux/mmzone.h:1724 include/linux/mmzone.h:1750 mm/page_alloc.c:4936 mm/page_alloc.c:5137)
+    [...]
+    [ 7831.895953] Call Trace:
+    [ 7831.896195]  <TASK>
+    [ 7831.896397] __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
+    [ 7831.896787] migrate_pages_batch (mm/migrate.c:1189 mm/migrate.c:1851)
+    [ 7831.897228] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.897735] migrate_pages (mm/migrate.c:2078)
+    [ 7831.898141] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.898664] damon_migrate_folio_list (mm/damon/ops-common.c:321 mm/damon/ops-common.c:354)
+    [ 7831.899140] damon_migrate_pages (mm/damon/ops-common.c:405)
+    [...]
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Add a target node validity check in damon_migrate_pages().  The validity
+check is stolen from that of do_pages_move(), which is being used for the
+move_pages() system call.
+
+Link: https://lkml.kernel.org/r/20250720185822.1451-1-sj@kernel.org
+Fixes: b51820ebea65 ("mm/damon/paddr: introduce DAMOS_MIGRATE_COLD action for demotion")	[6.11.x]
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Honggyu Kim <honggyu.kim@sk.com>
+Cc: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ mm/damon/paddr.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -114,6 +114,26 @@ static inline void pwm_mediatek_writel(s
- 	writel(value, chip->regs + pwm_mediatek_reg_offset[num] + offset);
- }
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -431,6 +431,10 @@ static unsigned long damon_pa_migrate_pa
+ 	if (list_empty(folio_list))
+ 		return nr_migrated;
  
-+static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
++	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
++			!node_state(target_nid, N_MEMORY))
++		return nr_migrated;
 +
-+	value = readl(pc->regs);
-+	value |= BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
-+static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value &= ~BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
- static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       int duty_ns, int period_ns)
- {
-@@ -176,35 +196,6 @@ out:
- 	return ret;
- }
+ 	noreclaim_flag = memalloc_noreclaim_save();
  
--static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--	int ret;
--
--	ret = pwm_mediatek_clk_enable(chip, pwm);
--	if (ret < 0)
--		return ret;
--
--	value = readl(pc->regs);
--	value |= BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	return 0;
--}
--
--static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--
--	value = readl(pc->regs);
--	value &= ~BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	pwm_mediatek_clk_disable(chip, pwm);
--}
--
- static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			      const struct pwm_state *state)
- {
-@@ -214,8 +205,10 @@ static int pwm_mediatek_apply(struct pwm
- 		return -EINVAL;
- 
- 	if (!state->enabled) {
--		if (pwm->state.enabled)
-+		if (pwm->state.enabled) {
- 			pwm_mediatek_disable(chip, pwm);
-+			pwm_mediatek_clk_disable(chip, pwm);
-+		}
- 
- 		return 0;
- 	}
-@@ -224,8 +217,11 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled)
--		err = pwm_mediatek_enable(chip, pwm);
-+	if (!pwm->state.enabled) {
-+		err = pwm_mediatek_clk_enable(chip, pwm);
-+		if (!err)
-+			pwm_mediatek_enable(chip, pwm);
-+	}
- 
- 	return err;
- }
+ 	nid = folio_nid(lru_to_folio(folio_list));
 
 
 
