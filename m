@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991D9B35D12
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2EEB3626C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42C5188CC9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36FF18A0FC8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A80733A01A;
-	Tue, 26 Aug 2025 11:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66332144B;
+	Tue, 26 Aug 2025 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdI+9j9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSKK6CkK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2536733EAE1;
-	Tue, 26 Aug 2025 11:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16202252900;
+	Tue, 26 Aug 2025 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207998; cv=none; b=tvwgpENwJBb9pv4RD1N0QuoZW9aE9DYXxrddGbJucxLG7S7e9043nrsGEcZ54kT6yHWjJnH418iODNNw5PhtLD1wHlJogF97XWtishPKMHKaqxhcrGfIRoQ485m2pJ84PaJ1W0TYG78EPlhbk1T0e+aBYsAJxFgw2We1p+A78KE=
+	t=1756213933; cv=none; b=LusHjvxcr7zh8MOiwUZk4v0tH3+sCryaW034+N8J4ECHOq7bvrbZrBxU3xF2Em9kR1OxxaxqJQWSPlFZZCOazoLsb1pkV/B7VYOlfEvuc/voO3i2QPgCMZovQNZHNnT2ogQHtUAbTyQkjQfD9xzUBQg4hA8XFtAecpnqj/lrEq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207998; c=relaxed/simple;
-	bh=0BrNLOlDihK5ofrMcIrE9R7JKugd0XSNxkxprMwmKN4=;
+	s=arc-20240116; t=1756213933; c=relaxed/simple;
+	bh=0rGm+7WsAfPKyuPIXAZQC/khyJELsrtNGCg6O4tRLF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egeckB8S4Ht4ol29hIs6g8K23W2wn/bb2tDpn8Ggyw/qgo4Je7J4fsVKwitkgSwHM3vs5owvfG9diLwDfhd5P+wvBQgp+WV5gr/74YQp0gx6fTQjV2TL557QjlU0UWw0PYQV48Uo9C6W9I7jkii6R+Dw1BcDVuAAHRYjNs3Rflw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdI+9j9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614A7C4CEF1;
-	Tue, 26 Aug 2025 11:33:17 +0000 (UTC)
+	 MIME-Version; b=Mitl/2jEB8WfyB663DmHv9yyANMaD92FFpIcjuFz629yLI+LnL30haynel2LiIfRF2iNiK+oTVjANriUw7zslKOK0w/kUe+PKMC5PniF0nnZNJr0s7pQEh8Zkcfw/XIqUOFIwjWD6pU+pMONlQvwTDlnyLQ2q/Mkshm3xo8Zf6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSKK6CkK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B4CC4CEF4;
+	Tue, 26 Aug 2025 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207997;
-	bh=0BrNLOlDihK5ofrMcIrE9R7JKugd0XSNxkxprMwmKN4=;
+	s=korg; t=1756213933;
+	bh=0rGm+7WsAfPKyuPIXAZQC/khyJELsrtNGCg6O4tRLF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdI+9j9Oq5EfFN13mWM6I5Rh62If+QaFetObckultFDmypgq+6ywkuaqIqj6ubD7O
-	 3TCxCsaLmG9r7zb6pf5CxxmoWexS11X0bh/RkSd6WMGbpGv0Ci5qNxiFgPK4vUBP6V
-	 I5TllRi3LQuFr+iCL0HLHlHqs4pR9ujvlNgfoIaE=
+	b=zSKK6CkKZn8zHdynjfXLNSjxbzrYFOglnrmsUxyL0TViSGZdj65w4Xcn78XGqRrJn
+	 pJ88PE2bGZ1soLf/Zs9QhUaNP763EFYPbaAch9SKYve3aR96tuVukJvYgi9a/2WfwJ
+	 O6kT7adlsRy/0j8LvYhwzHdCkgdd0n/Px0OwOMVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 399/457] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
+	Michal Suchanek <msuchanek@suse.de>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.6 534/587] powerpc/boot: Fix build with gcc 15
 Date: Tue, 26 Aug 2025 13:11:23 +0200
-Message-ID: <20250826110947.156110405@linuxfoundation.org>
+Message-ID: <20250826111006.592029116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minhong He <heminhong@kylinos.cn>
+From: Michal Suchanek <msuchanek@suse.de>
 
-[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
+commit 5a821e2d69e26b51b7f3740b6b0c3462b8cacaff upstream.
 
-The seg6_genl_sethmac() directly uses the algorithm ID provided by the
-userspace without verifying whether it is an HMAC algorithm supported
-by the system.
-If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
-will be dropped during encapsulation or decapsulation.
+Similar to x86 the ppc boot code does not build with GCC 15.
 
-Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Copy the fix from
+commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250331105722.19709-1-msuchanek@suse.de
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_hmac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/boot/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 5dae892bbc73..fd58426f222b 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -305,6 +305,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 	int err;
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -72,6 +72,7 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE
+ BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
  
-+	if (!__hmac_get_algo(hinfo->alg_id))
-+		return -EINVAL;
-+
- 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
- 					    rht_params);
- 
--- 
-2.50.1
-
+ BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
++		   -std=gnu11 \
+ 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		   -fno-strict-aliasing -O2 \
+ 		   -msoft-float -mno-altivec -mno-vsx \
 
 
 
