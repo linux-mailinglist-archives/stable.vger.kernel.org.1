@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5599DB35DE0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1158DB366CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6F9462B33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F50E1C25F08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0E02BE65E;
-	Tue, 26 Aug 2025 11:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A157A352FF6;
+	Tue, 26 Aug 2025 13:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGiGFu/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuea4F6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7151F560B;
-	Tue, 26 Aug 2025 11:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F9D352FF2;
+	Tue, 26 Aug 2025 13:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208292; cv=none; b=MISY8nlpmcUciJcJJ5/p8c1saWiLTiMtiwAgq+yOA1WT7JvQUf44NoOtfJ1mdQ5mLVqGVAZRU1Vjde7e4/PRMTmQ7aHNbyS139KgF9YmEezKLtZdl3xo1dB1AXGHU+u8M/XChbFBpHo6B2sI+MzM0pBh/G6MPZFi6H1dMfWK2iU=
+	t=1756216305; cv=none; b=QoloROF65aK1eHPmP0g+8i+OCwmQNJFU7cpN4ywEzyAPqjJ07kvJz9N7ySg3/XMXln9uZtd/TiV2Zh+0EBRpAMtMHk9H21Z65Zp9CUGvgREOEwIyiWPvsrDXGtGQJ94M0DEh/b3U+bo6oejVUWE8pp+BKUNYY9B/QacNeXwkkN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208292; c=relaxed/simple;
-	bh=i6P5IxZQFmH1nIp2KlEM3sZ33LROn4MTS7BC5bvdKAk=;
+	s=arc-20240116; t=1756216305; c=relaxed/simple;
+	bh=MZCD2Pgczw6+OxF9ym4/BkHkT6cM0TuU1mNQed3UwPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eV7qtwz38VolxNX8+DpzlzXbxosXdF6J9O0hZWcLTgpSSxP6aatt9DtEd07XkuQBhEb8P2esUZl5MyyOBjIZqhk1bWJUM/EAGfbdVirRV/13vXQdO1Ag9cYLMxyRaxE1qW6f83WqsJiZxQAhsKdKG1ECuuLOm8ZEp+i2jnpqQ28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGiGFu/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB32C4CEF1;
-	Tue, 26 Aug 2025 11:38:11 +0000 (UTC)
+	 MIME-Version; b=n5slD83NNzlTGLOXNjpUwhy+ow83tNVrcVtlShKs22Etar3aj86rfwpyLitW6tnENneXIedNEkyvU/EIWFgegZBmTr3HRHIRhlFLuPfHwTpIIva7NWqHwM6yi0Nw3jjqly3CKSycFQLeg+s6+ap94KtFaZ/dkWie7B4swh2EUxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuea4F6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D728EC4CEF1;
+	Tue, 26 Aug 2025 13:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208292;
-	bh=i6P5IxZQFmH1nIp2KlEM3sZ33LROn4MTS7BC5bvdKAk=;
+	s=korg; t=1756216305;
+	bh=MZCD2Pgczw6+OxF9ym4/BkHkT6cM0TuU1mNQed3UwPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGiGFu/TdiDxJRrHZWFkORydjweghue8Soq576C41byp6WxK4KWcJVm6jIGWOmSez
-	 Pp+HneAwM+WutQznyYyFspeuE2qAJ4KNouFYSbPsqFcCaGk6896QYt2eFl5ZgfT8Md
-	 3GesDg0eHktWR1j1WfTzSJKR2S1gKG9OzOfa5/sA=
+	b=uuea4F6FZ5okcqWeEz9moc5vUfX3WTqb+QvGniC9VOHRYkF28FtbzAMe2qtuQWwYE
+	 1ldXOq41VYZlmSthaChLRL2YVREua3EidaXASmo0tJ5VlXaJb2Juaxp97QYWu1Juqf
+	 E9eUQ7L0TQxX3qPZpBs2s62ObUwTC2Q/PEapXL18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Kyoji Ogasawara <sawara04.o@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 038/322] btrfs: fix printing of mount info messages for NODATACOW/NODATASUM
+	Rand Deeb <rand.sec96@gmail.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 362/644] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
 Date: Tue, 26 Aug 2025 13:07:33 +0200
-Message-ID: <20250826110916.305892821@linuxfoundation.org>
+Message-ID: <20250826110955.384227840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoji Ogasawara <sawara04.o@gmail.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit 74857fdc5dd2cdcdeb6e99bdf26976fd9299d2bb upstream.
+[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
 
-The NODATASUM message was printed twice by mistake and the NODATACOW was
-missing from the 'unset' part.  Fix the duplication and make the output
-look the same.
+The 'index' variable in the rs_fill_link_cmd() function can reach
+LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
+variable is used as an index for the lq_cmd->rs_table array, which has a
+size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
 
-Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
-CC: stable@vger.kernel.org # 6.8+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Modify the condition of the inner loop to ensure that the 'index' variable
+does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
+potential overflow issues.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1438,7 +1438,7 @@ static void btrfs_emit_options(struct bt
- {
- 	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
- 	btrfs_info_if_set(info, old, DEGRADED, "allowing degraded mounts");
--	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
-+	btrfs_info_if_set(info, old, NODATACOW, "setting nodatacow");
- 	btrfs_info_if_set(info, old, SSD, "enabling ssd optimizations");
- 	btrfs_info_if_set(info, old, SSD_SPREAD, "using spread ssd allocation scheme");
- 	btrfs_info_if_set(info, old, NOBARRIER, "turning off barriers");
-@@ -1460,6 +1460,7 @@ static void btrfs_emit_options(struct bt
- 	btrfs_info_if_set(info, old, IGNOREMETACSUMS, "ignoring meta csums");
- 	btrfs_info_if_set(info, old, IGNORESUPERFLAGS, "ignoring unknown super block flags");
- 
-+	btrfs_info_if_unset(info, old, NODATASUM, "setting datasum");
- 	btrfs_info_if_unset(info, old, NODATACOW, "setting datacow");
- 	btrfs_info_if_unset(info, old, SSD, "not using ssd optimizations");
- 	btrfs_info_if_unset(info, old, SSD_SPREAD, "not using spread ssd allocation scheme");
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index 958bfc38d390..f44448a13172 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -2926,7 +2926,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
+ 		/* Repeat initial/next rate.
+ 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
+ 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
+-		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
++		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
+ 			if (is_legacy(tbl_type.lq_type)) {
+ 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
+ 					ant_toggle_cnt++;
+-- 
+2.39.5
+
 
 
 
