@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FACB35BE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C248B3670E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CA0F361F74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A3C563064
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AC531987F;
-	Tue, 26 Aug 2025 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2842350D44;
+	Tue, 26 Aug 2025 13:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0OjETbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txnm0KcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19EB2BE03C;
-	Tue, 26 Aug 2025 11:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67626350820;
+	Tue, 26 Aug 2025 13:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207374; cv=none; b=XYg1pGb+vwTLLE09PMQy22kgqGwKwn52X22GZUUO0jSfMAv4E/5UYkDn4IZz66oFVmCthDxJbl1K9C37oMBzaF4Y4nZKGkxQPaP9eq7CmMnND7SItGEMO0i4DadrnM093Wp/rxJjJjLY6Jq6gMyklQlKvtChlxYb8RvJcgsWhDE=
+	t=1756216394; cv=none; b=qhzSXWicKHWA5iN6QivarFBzGVhiBIYY9vDViqRZNrWbc6vqqhBNxfYIAHxlxn6U076snSV//i7IIGZjgVeVToOGUFPAZn/T6ypEpPQ60elTFpXB0DDkBfnKfO7mZF3XKYQj/UNG551cQdAr9+GAOCmuPqTNpFt7YSM+tOZkXRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207374; c=relaxed/simple;
-	bh=IrFFurL4cIBbSwuNredabTYHn0ycmvmE9+GRR30DgY0=;
+	s=arc-20240116; t=1756216394; c=relaxed/simple;
+	bh=vYCvYM6KMa3Uw/kbhgHZ6ty6khDEjT7RN79eAzQmgFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qceFhKaODk80POxlz/Hho78m2nG1md8orgMAa45G+gwR9/yRT9u/XvDtoinK5rD1m3dKS7k/lef2CCrXvZXBKSWdlZ3U0R0NdAraEaIPHLt/QC/MLm2I2QXGZziw0t9M10bE11O+lymyZIxmsaqvrTd2nqWUu768ms7oltqOUd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0OjETbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D27C4CEF1;
-	Tue, 26 Aug 2025 11:22:54 +0000 (UTC)
+	 MIME-Version; b=IxaYrEGXWMLbFzStg686aiPBWnP7Xng0LQzck+HW8aMWJszBWYz6ku9MKyxbTuGMQBHvIVrD6Cc8pYB9gCwgO7iQXuRFrj7GnUsmeDAUhvRZF7740iXWQUtAwFICtXnD3eHDqLLmDe/i8TAvGPd4/KPwCHz9qWVrmVt9Y+x3veU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txnm0KcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3F5C4CEF1;
+	Tue, 26 Aug 2025 13:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207374;
-	bh=IrFFurL4cIBbSwuNredabTYHn0ycmvmE9+GRR30DgY0=;
+	s=korg; t=1756216394;
+	bh=vYCvYM6KMa3Uw/kbhgHZ6ty6khDEjT7RN79eAzQmgFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0OjETbvr0kzwgvEBeFel2+n4+IMVN5781ZM6ug7+sBKWf1s9lVDkPKcRQpF6lZ7W
-	 zW6xbxsMmvv86kY/8t8rC4CEXX08UWx2Qpy/OXS5MqRRVsAAH5nMMOqfKGV+LtMIqA
-	 jmgEWfiJ5Jm+SomGcie4HUVLMhWfLuYwD4nnJPr8=
+	b=Txnm0KcBUQMutUHfqdvIZuqrlMJ9R0ipG7JbghcDIHQ0kirzojjPTsVXTpkJj1qyX
+	 htEM4L7EBcqVKiZBokoR7Pgks/lMnzuWruoWKA31RLkWnuCLQfj8E0antLElC9XkZu
+	 86I638DBdjc98L7z+H3jPWu8CHJ0sL8h5M+yy5G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 158/457] media: iris: Prevent HFI queue writes when core is in deinit state
+	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 351/644] sched/deadline: Fix accounting after global limits change
 Date: Tue, 26 Aug 2025 13:07:22 +0200
-Message-ID: <20250826110941.278732347@linuxfoundation.org>
+Message-ID: <20250826110955.096261203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-commit 2781662dee7bbb9675e5440f5dff4e3991dc5624 upstream.
+[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
 
-The current check only considers the core error state before allowing
-writes to the HFI queues. However, the core can also transition to the
-deinit state due to a system error triggered by the response thread.
-In such cases, writing to the HFI queues should not be allowed.
+A global limits change (sched_rt_handler() logic) currently leaves stale
+and/or incorrect values in variables related to accounting (e.g.
+extra_bw).
 
-Fix this by adding a check for the core deinit state, ensuring that
-writes are rejected when core is not in a valid state.
+Properly clean up per runqueue variables before implementing the change
+and rebuild scheduling domains (so that accounting is also properly
+restored) after such a change is complete.
 
-Cc: stable@vger.kernel.org
-Fixes: fb583a214337 ("media: iris: introduce host firmware interface with necessary hooks")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
+Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_queue.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/deadline.c | 4 +++-
+ kernel/sched/rt.c       | 6 ++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/iris/iris_hfi_queue.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_queue.c
-@@ -113,7 +113,7 @@ int iris_hfi_queue_cmd_write_locked(stru
- {
- 	struct iris_iface_q_info *q_info = &core->command_queue;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 66eb68c59f0b..708c3960bd06 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2661,6 +2661,9 @@ void sched_dl_do_global(void)
+ 	if (global_rt_runtime() != RUNTIME_INF)
+ 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
  
--	if (core->state == IRIS_CORE_ERROR)
-+	if (core->state == IRIS_CORE_ERROR || core->state == IRIS_CORE_DEINIT)
- 		return -EINVAL;
++	for_each_possible_cpu(cpu)
++		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
++
+ 	for_each_possible_cpu(cpu) {
+ 		rcu_read_lock_sched();
  
- 	if (!iris_hfi_queue_write(q_info, pkt, pkt_size)) {
+@@ -2676,7 +2679,6 @@ void sched_dl_do_global(void)
+ 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
+ 
+ 		rcu_read_unlock_sched();
+-		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
+ 	}
+ }
+ 
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 5fc99dce5145..9720b3c19ab9 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2861,6 +2861,12 @@ int sched_rt_handler(struct ctl_table *table, int write, void *buffer,
+ 	}
+ 	mutex_unlock(&mutex);
+ 
++	/*
++	 * After changing maximum available bandwidth for DEADLINE, we need to
++	 * recompute per root domain and per cpus variables accordingly.
++	 */
++	rebuild_sched_domains();
++
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
