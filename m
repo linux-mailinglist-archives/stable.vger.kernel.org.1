@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECD4B35C7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2BBB3617B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F692A50BF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99593189706C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35D23376BE;
-	Tue, 26 Aug 2025 11:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E70B23B616;
+	Tue, 26 Aug 2025 13:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOlu1m7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTjqf5Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A66B334717;
-	Tue, 26 Aug 2025 11:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B331238C0B;
+	Tue, 26 Aug 2025 13:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207670; cv=none; b=WYShY7dEQtqb2FVwaIug5ze56ko14YTGsej6KPBfimRe/4f3hKqMkWodaNKZc6Qor0RvI4TaDqWjwREW+Gm5Vp7DiGuuxxnR1I0pqYhbg5rz4toEdbPbAnW3of7QrcTD37uLATX1oeyFPSZnDb7JIBo2dgvA27yE+45PkDiesRs=
+	t=1756213599; cv=none; b=abV43O3cMk9ZCIFnguo7S27W7S+Pr3j42ETs0TkwIuekHogbgWUFFCrYGzY3imuP4V6B2EFNdUkH4iBpvOlNiUWG+YnlbXQBn506WL/JZUdxNq/Bq8Xp96S/n63xLkgAoJ+H/LMGOc6H+HwUCWgbd2hJ2GxuRBDBAlEWmsFEKJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207670; c=relaxed/simple;
-	bh=3rusqoVL8WJGDFMRAX9qZYiXRfmdLjeSBNwFbBiFfaU=;
+	s=arc-20240116; t=1756213599; c=relaxed/simple;
+	bh=G8vWxrj2OuBIopLpXu/zVSQ0quls3LaZtZgMszWf49U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BOg3hU6hCK/cVZpFx6aAiG87lAlXMLErCK43TOuWWKZ8GK1VrYHv4Z0L6sNqA/RwzVu96gslALZIRETRTB6mTyHdXxXudacjMipg0msIYNoelhTObG45P/78H5A2TrxygLRJ2T3zCk6e4AQTR40BDUYaTlh6yfWcpt9aLplaAfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOlu1m7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A2FC4CEF1;
-	Tue, 26 Aug 2025 11:27:49 +0000 (UTC)
+	 MIME-Version; b=VjUEBH37KptzVAmqOntR/AbJ2WszEObztRPelJlhxn24m3Mu1V8LHy8n8GNI0pWYb2gjXyxmfiUiUOipivLPyzqKPQ74zIlfdkKWlDHyrCHehgs9DDfsy6mPg6K/Jok+3j18r7IdP6z9J1F67U3VEoA8pU8Mb3tqWEXnCAcDZ14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTjqf5Gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF45CC4CEF1;
+	Tue, 26 Aug 2025 13:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207670;
-	bh=3rusqoVL8WJGDFMRAX9qZYiXRfmdLjeSBNwFbBiFfaU=;
+	s=korg; t=1756213599;
+	bh=G8vWxrj2OuBIopLpXu/zVSQ0quls3LaZtZgMszWf49U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOlu1m7qHK+IJFWjmn0VBJlTmapntOFn5n6EwlzUKs+TqdY5LuwVClMJnhwmLwTVG
-	 jNyE7yaFFL3EZc7Jl7IHYsst/clsJniQpxFW6HCcHK/FADkcwJs6gM8Wm11WzGCN0J
-	 hq26OgX/qyXZnkDStsOxnIyq9HbiC6rfeWpLV4+Y=
+	b=pTjqf5GrTSoki7y14d9etsIEUJreYHOvM7YrYScvoNHwZXx8MKFwlPuXpvc+AkAJm
+	 C6SfVSlpdQm7C0QaZngDmhPQyeZYCVBiGY3MKiGv5Vx/sMX1x2ehEVXalDaxzsjJ1x
+	 suHtxXNpwaUcJqvabCgNwpC2sAv9zApgCP1bGWx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.16 272/457] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
+	Ludwig Disterhof <ludwig@disterhof.eu>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 407/587] media: usbtv: Lock resolution while streaming
 Date: Tue, 26 Aug 2025 13:09:16 +0200
-Message-ID: <20250826110944.100909357@linuxfoundation.org>
+Message-ID: <20250826111003.282456430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ludwig Disterhof <ludwig@disterhof.eu>
 
-commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
+commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
 
-Also needed by DCE 6.
-This way the code that gathers this info can be shared between
-different DCE versions and doesn't have to be repeated.
+When an program is streaming (ffplay) and another program (qv4l2)
+changes the TV standard from NTSC to PAL, the kernel crashes due to trying
+to copy to unmapped memory.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
+Changing from NTSC to PAL increases the resolution in the usbtv struct,
+but the video plane buffer isn't adjusted, so it overflows.
+
+Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
 Cc: stable@vger.kernel.org
+Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -391,8 +391,6 @@ static void dce_pplib_apply_display_requ
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
+--- a/drivers/media/usb/usbtv/usbtv-video.c
++++ b/drivers/media/usb/usbtv/usbtv-video.c
+@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
+ 	}
  
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
- 	int j;
- 	int num_cfgs = 0;
- 
-+	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
-+	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
-+	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
- 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
- 
- 	for (j = 0; j < context->stream_count; j++) {
-@@ -243,13 +246,6 @@ void dce11_pplib_apply_display_requireme
- 	pp_display_cfg->min_engine_clock_deep_sleep_khz
- 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
- 
--	pp_display_cfg->avail_mclk_switch_time_us =
--						dce110_get_min_vblank_time_us(context);
--	/* TODO: dce11.2*/
--	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
--
--	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
- 
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+ 	if (params) {
++		if (vb2_is_busy(&usbtv->vb2q) &&
++		    (usbtv->width != params->cap_width ||
++		     usbtv->height != params->cap_height))
++			return -EBUSY;
+ 		usbtv->width = params->cap_width;
+ 		usbtv->height = params->cap_height;
+ 		usbtv->n_chunks = usbtv->width * usbtv->height
 
 
 
