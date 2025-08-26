@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-172963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9D3B35B00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F824B36035
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768497C2CDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E7FF46537F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4221F2BE7A7;
-	Tue, 26 Aug 2025 11:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8A52222AF;
+	Tue, 26 Aug 2025 12:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sf4Lkmw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMdnFMzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F032E29B8CF;
-	Tue, 26 Aug 2025 11:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD8A1DD9D3;
+	Tue, 26 Aug 2025 12:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207020; cv=none; b=puD72HIkxtPw2t0i7n9mWmytcwwqRu5S5iO5DY0ROO5zzRM9TDHOrz2NaSZHqKgaA/mkyhf44RoyfjLEMEPUcPKeRhJhTh+gd0brilLEjxYtvmagszpp47ZqXbbhGOlF68yAYOZqJ3D+xN8kqpUY/WgQNJhChHQCl9bwO4oBISA=
+	t=1756212907; cv=none; b=pvAc1neoxxkj4AExTEaHkpcg4xdd3i3i9wFMEe+pYb414BRiCWUCf3xUpi/R0SjLItdKdRU/Df4uAAtuvLWwtHWXDPNgLA3W1Sj93RkO+gdBR+vSELjU3d4hDri5tyTZ2hQpPT6uokyCZHMOpyIRNCUdunfrq1ekBK+380J4Fqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207020; c=relaxed/simple;
-	bh=sR8vx/h/02PTdfwHoSNb1iuWHMiXLQiVeRDBDZIHeKs=;
+	s=arc-20240116; t=1756212907; c=relaxed/simple;
+	bh=rlPUqiYeb8poXzhjBkIDtbGJIa154yvRTmshT6Xvm7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDJee/pN4r5JVcbH2U6Ocy4PtQGRcNET2Zanof+TmZLphtypksKYAnZWggwbFlgQ49OPVMvisk5emvyXIe63uNsc/l0inqEglVYq2MN3yBSM61KH3d+Ht0u66ect8KD3yFtDkvn0oJTunNsMiBEUPc9IiDfgeLFe6D7i7VNugWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sf4Lkmw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293D0C4CEF1;
-	Tue, 26 Aug 2025 11:16:58 +0000 (UTC)
+	 MIME-Version; b=VnIu/q5a1IckKNBrJv9lrzO290BBNUH9w/C78qmHEWw5Tl4o8KRvNfgfILr+q3opRm5z8P+GfkMPI7c3YIbsrpqgkqSKh3a/Bhr2WoGv8JX3P21MO1u+YLRwJL+JztA/AfrP3GsCylHGIwaKLOE6/S9Ra0ReErbJ7vKfc/7/+w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMdnFMzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF26FC4CEF1;
+	Tue, 26 Aug 2025 12:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207019;
-	bh=sR8vx/h/02PTdfwHoSNb1iuWHMiXLQiVeRDBDZIHeKs=;
+	s=korg; t=1756212907;
+	bh=rlPUqiYeb8poXzhjBkIDtbGJIa154yvRTmshT6Xvm7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sf4Lkmw33mosi5zm1GP5JvVJImTj+4la/zK3Y8q8jiPDAdz8ECyvfff/Juz/ebqM2
-	 9R3PT8IkTXsZKo5WbUAvawzHYidMpsDymRiCdpTGy+Qj9vGzgYxGdZaFzeMM3ob/59
-	 KcxaT0MA8lvgK12FqE04+iHF4gH6or5y/0qj/FAM=
+	b=KMdnFMzzorPKEfZkz4IhkCZRFvnMumqafp0DifSHMkvvFcPxkveFlSFi6LjY97EWT
+	 T1fPT54qkimqZDPZZPK8x0hNL7VyfUXx0auuTdAxyCSFwcgnATPb/cRs3sbbU/QUV8
+	 ZjI9NG49o8sXJ+izbQIeyl0dAaEdJ9g6iipRdFJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.16 012/457] usb: musb: omap2430: fix device leak at unbind
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 147/587] be2net: Use correct byte order and format string for TCP seq and ack_seq
 Date: Tue, 26 Aug 2025 13:04:56 +0200
-Message-ID: <20250826110937.620337882@linuxfoundation.org>
+Message-ID: <20250826110956.692369590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 1473e9e7679bd4f5a62d1abccae894fb86de280f upstream.
+[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+The TCP header fields seq and ack_seq are 32-bit values in network
+byte order as (__be32). these fields were earlier printed using
+ntohs(), which converts only 16-bit values and produces incorrect
+results for 32-bit fields. This patch is changeing the conversion
+to ntohl(), ensuring correct interpretation of these sequence numbers.
 
-Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Notably, the format specifier is updated from %d to %u to reflect the
+unsigned nature of these fields.
+
+improves the accuracy of debug log messages for TCP sequence and
+acknowledgment numbers during TX timeouts.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/musb/omap2430.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -400,7 +400,7 @@ static int omap2430_probe(struct platfor
- 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add resources\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	if (populate_irqs) {
-@@ -413,7 +413,7 @@ static int omap2430_probe(struct platfor
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 		if (!res) {
- 			ret = -EINVAL;
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
- 
- 		musb_res[i].start = res->start;
-@@ -441,14 +441,14 @@ static int omap2430_probe(struct platfor
- 		ret = platform_device_add_resources(musb, musb_res, i);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
- 	}
- 
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	pm_runtime_enable(glue->dev);
-@@ -463,7 +463,9 @@ static int omap2430_probe(struct platfor
- 
- err3:
- 	pm_runtime_disable(glue->dev);
--
-+err_put_control_otghs:
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- err2:
- 	platform_device_put(musb);
- 
-@@ -477,6 +479,8 @@ static void omap2430_remove(struct platf
- 
- 	platform_device_unregister(glue->musb);
- 	pm_runtime_disable(glue->dev);
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- }
- 
- #ifdef CONFIG_PM
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 6bc0fde95f9d..0fda17bc8e23 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1465,10 +1465,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ 						 ntohs(tcphdr->source));
+ 					dev_info(dev, "TCP dest port %d\n",
+ 						 ntohs(tcphdr->dest));
+-					dev_info(dev, "TCP sequence num %d\n",
+-						 ntohs(tcphdr->seq));
+-					dev_info(dev, "TCP ack_seq %d\n",
+-						 ntohs(tcphdr->ack_seq));
++					dev_info(dev, "TCP sequence num %u\n",
++						 ntohl(tcphdr->seq));
++					dev_info(dev, "TCP ack_seq %u\n",
++						 ntohl(tcphdr->ack_seq));
+ 				} else if (ip_hdr(skb)->protocol ==
+ 					   IPPROTO_UDP) {
+ 					udphdr = udp_hdr(skb);
+-- 
+2.39.5
+
 
 
 
