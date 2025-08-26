@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22466B368DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FE4B36C74
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB92A7A7A3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444235A1997
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8283E3570AD;
-	Tue, 26 Aug 2025 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABC4356913;
+	Tue, 26 Aug 2025 14:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNQRPsZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agZRkiqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404DF35083D;
-	Tue, 26 Aug 2025 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106EE299A94;
+	Tue, 26 Aug 2025 14:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217884; cv=none; b=XQKD5x0HBlEe3YOu2CUsd1ek0GWn6I8up9YGdSy78ZAI2qfGpDylkVKAA9IkNe9eaXjAD/hxWAIHnU1L13GkOs3M8bONmLuwYQ06kZjTuCnPYVYq5o1MulSPLh5LJYnppUrWvrrGFL6W+OU9+qSsBf+BbZEPi4nWr05CujiGSD0=
+	t=1756218949; cv=none; b=l/qkSQoL46IBySjMkIZy5G2ElCd7nrZLETRrUmf4JtGkeCjrX7eW4CAkMCK27dgFqi1epI+wvQyHo0aM+rmmq6xIvcU+N1h+jNHaA7JfSu87t3QcvXG2RGpcVobPNp/CgQwyJZLIImZQWIULeqRd9qafGXU7vcBqCIf/gSGN5iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217884; c=relaxed/simple;
-	bh=GL/YoysjY5FA1SsdhPRh/oSzLjErCpKBdPjWIZOGSTs=;
+	s=arc-20240116; t=1756218949; c=relaxed/simple;
+	bh=QnhewsbJ+9tuNQ07pZlakyStjI0nUb4OWAPXDlZF14g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOPfFCoeQXBKEDktTcf1yHVbnKT/iXtr8ZDLEzL8m/x+RW43dfcwQ5EK6entCn8KobpHBk6YCpCIY2CotAkYJgMxSrGkv8dW7w+zi/F6qhCtLAYgsdps22zFaOddPkpAv67EzoFpchoWuFnTFSPnLnKN6aYkyCgnlhMXCAOy8cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNQRPsZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EF9C4CEF1;
-	Tue, 26 Aug 2025 14:18:03 +0000 (UTC)
+	 MIME-Version; b=QpDgIq7gzksBg4pDgB+H3mmM21w1l7DHDuhH1J6y8pYvEGmVWdcHLJ2+kWWGb/ZFZOm9IfEdi3BZKIoNtdjbGqu8Ar/hGXnSJpAVcVuxpFronyecIi7QXB3GTDfXN69deBTbLPnGNfgYuTcqIUCCus/xSbrcy4ZyMADlSCbMN90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agZRkiqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E8EC4CEF1;
+	Tue, 26 Aug 2025 14:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217884;
-	bh=GL/YoysjY5FA1SsdhPRh/oSzLjErCpKBdPjWIZOGSTs=;
+	s=korg; t=1756218948;
+	bh=QnhewsbJ+9tuNQ07pZlakyStjI0nUb4OWAPXDlZF14g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNQRPsZnXJhpR9InEO+98ctRzSAt5YXtSNg7kcbg3pwC0d2Al9vwQoKYBPv6gqKxU
-	 5XjKBPOHZytbjcBOCKhIe+CYdtvx0DS9tnDuUe49KKtlzkWJHrPMqQUeWowFbYwlS1
-	 mw5y6U36+KDZdmpYc3Xrh8/Ik+QLBrkN0ByS6yjc=
+	b=agZRkiqyuTQIhKgwfrA4C4EgFNF3JRjDWFV8MpyWxr2VpHQqflPt09sFdKYmILzo5
+	 BNp/kjNnoMYfPb6rK+MkKziE8vxV1laoqsDLDHz0UYYF55MVKrYEbuGb9mfu8t0y9+
+	 9PSU3VpNImsrHBnpYgVleKWHhhVmU2oH1jxImaAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 312/523] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
+Subject: [PATCH 5.4 196/403] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
 Date: Tue, 26 Aug 2025 13:08:42 +0200
-Message-ID: <20250826110932.158502996@linuxfoundation.org>
+Message-ID: <20250826110912.283253668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
-msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
-msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash. Similar issue occurs when access
-msg[1].buf[0] and msg[1].buf[1].
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index 8c426baf76ee..a4d060fb1bab 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
- 	u16 word;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 50bed5a70812..d02d7cbab387 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -709,6 +709,8 @@ static void __ghes_panic(struct ghes *ghes,
  
- 	if (num == 1) {		/* write */
-+		if (msg[0].len < 3)
-+			return -EOPNOTSUPP;
- 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
- 	} else {
-+		if (msg[1].len < 2)
-+			return -EOPNOTSUPP;
- 		word = dib7000p_read_word(state, apb_address);
- 		msg[1].buf[0] = (word >> 8) & 0xff;
- 		msg[1].buf[1] = (word) & 0xff;
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+ 	if (!panic_timeout)
 -- 
 2.39.5
 
