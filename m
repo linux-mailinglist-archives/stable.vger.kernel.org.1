@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC88B35B4F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C24B3632D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF1E7C3A5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD7131BC4BB7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F046D2C15A8;
-	Tue, 26 Aug 2025 11:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062A234DCE5;
+	Tue, 26 Aug 2025 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZQO0H50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZxvxnz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987DF2248A5;
-	Tue, 26 Aug 2025 11:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BB134DCE0;
+	Tue, 26 Aug 2025 13:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207267; cv=none; b=D/JHARyktAZlFdwmJ/rcO6kl2LJWzXQ883a36KzV2YQLuQ9k6AcDkL2xjQdFw9301g3PNAnaC4IsBIr0YKh9ZAx0cZYsmgeO/dIRaVNtXwi3gR3AjfM4qhg1hErQ0Kze6aALVLrcSutBxuIwF1RYPlxJrLvW5gDg9ldEKhR8Hm0=
+	t=1756214424; cv=none; b=p+KgK+JocvO9ZE2pK+d78NQ/WR7p60yHfeXv2APDeLzJ/lelHpmMux5PKf4L8MDGJ8yfjqhhv48lHqzrcW0k3NRJ8bn+f5SWFbG0biCkMP06kgQeQwbFsZW0gBCs1Qggi17NEkBbAsxh89nKhCAYkhlFruw56Bv643/aC56etnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207267; c=relaxed/simple;
-	bh=HAiFi9GGHPiwnV3mLk+/MRMcjzVAa3VzxKQGG5wKkYE=;
+	s=arc-20240116; t=1756214424; c=relaxed/simple;
+	bh=1hZUlWBCN7Mw5Tud1DRZI1GlZjc2xdBKHisv5jOU1R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bw6RNgjzbjJiBrLc24JRKNuKSwueR678hMy4R0tA/z5Tc7JgfndNv7QyDCI/bwfRm1VXRpFYTg6kzQ1gab5ESw0g0ZTIln+Fh6yThpZvoeQG9k96lV6xWbleESRJwCA6qZJ7NmDUEUqZENKMu4ThcUN8rf1ZJRRN4nofJtOLvig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZQO0H50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAFBC4CEF1;
-	Tue, 26 Aug 2025 11:21:07 +0000 (UTC)
+	 MIME-Version; b=E7U59bLsArZrNl/833oI/Y39eaztRiptw/pJiqGlg5y0ZBylvtpEoi0/oPMLfng766hDXZm6CWbcdq5k/4DZErcj7k1Qc1IYg0U01ceY9p3ShkhWG6b5Jd+AOajaG16kcuY9jY91tjMehYZwOc6Sb1eeYalC4D36HYcpRw6SDqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZxvxnz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD1AC4CEF1;
+	Tue, 26 Aug 2025 13:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207267;
-	bh=HAiFi9GGHPiwnV3mLk+/MRMcjzVAa3VzxKQGG5wKkYE=;
+	s=korg; t=1756214424;
+	bh=1hZUlWBCN7Mw5Tud1DRZI1GlZjc2xdBKHisv5jOU1R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZQO0H50IazBI8Cjyyf+b3j8KFtkajL6JC1uDcSY4LO2DvSevQNVe0aARFDthKcP1
-	 3Vv4vXqiCO+0mmHR+aLkCCMUrTVnW8yWLkuU5AbAMN2o1BsUbD+gh17zOX5udSWzWJ
-	 dljrZPap1ECiRTfYQQd334UwEv6m6/8gJ8hxcApg=
+	b=NZxvxnz0vslX+Hk2ZR2qmlXmdGqNUnhYui7BX20jKtbixXEN9yaI+cJ/s5HjkJcSo
+	 hOl769oAkmtVRBNRGnjimhltygXgkn09ZKq2adT70gdaxUakRUuEGN/Lcsa76psVu+
+	 8cISVcLeKhAaojASwrCuQf+UQd93BuGtJWyllQ9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.16 084/457] wifi: ath11k: fix dest ring-buffer corruption
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/482] ktest.pl: Prevent recursion of default variable options
 Date: Tue, 26 Aug 2025 13:06:08 +0200
-Message-ID: <20250826110939.455788541@linuxfoundation.org>
+Message-ID: <20250826110933.667656253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 8c1ba5091fa9a2d1478da63173b16a701bdf86bb upstream.
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-Add the missing memory barrier to make sure that destination ring
-descriptors are read after the head pointers to avoid using stale data
-on weakly ordered architectures like aarch64.
+If a default variable contains itself, do not recurse on it.
 
-The barrier is added to the ath11k_hal_srng_access_begin() helper for
-symmetry with follow-on fixes for source ring buffer corruption which
-will add barriers to ath11k_hal_srng_access_end().
+For example:
 
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org	# 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604143457.26032-2-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
+
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ce.c    |    3 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |    3 ---
- drivers/net/wireless/ath/ath11k/hal.c   |   12 +++++++++++-
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -393,9 +393,6 @@ static int ath11k_ce_completed_recv_next
- 		goto err;
- 	}
- 
--	/* Make sure descriptor is read after the head pointer. */
--	dma_rmb();
--
- 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
- 
- 	*skb = pipe->dest_ring->skb[sw_index];
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2650,9 +2650,6 @@ int ath11k_dp_process_rx(struct ath11k_b
- try_again:
- 	ath11k_hal_srng_access_begin(ab, srng);
- 
--	/* Make sure descriptor is read after the head pointer. */
--	dma_rmb();
--
- 	while (likely(desc =
- 	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
- 									     srng))) {
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -823,13 +823,23 @@ u32 *ath11k_hal_srng_src_peek(struct ath
- 
- void ath11k_hal_srng_access_begin(struct ath11k_base *ab, struct hal_srng *srng)
- {
-+	u32 hp;
-+
- 	lockdep_assert_held(&srng->lock);
- 
- 	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 		srng->u.src_ring.cached_tp =
- 			*(volatile u32 *)srng->u.src_ring.tp_addr;
- 	} else {
--		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
-+		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
-+
-+		if (hp != srng->u.dst_ring.cached_hp) {
-+			srng->u.dst_ring.cached_hp = hp;
-+			/* Make sure descriptor is read after the head
-+			 * pointer.
-+			 */
-+			dma_rmb();
-+		}
- 
- 		/* Try to prefetch the next descriptor in the ring */
- 		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 2109bd42c144..26544bba3f8f 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1351,7 +1351,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
+-- 
+2.39.5
+
 
 
 
