@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-173260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D633CB35CF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00ADB36AD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3860C460613
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 98F514E24CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD80322C80;
-	Tue, 26 Aug 2025 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6194D2F998D;
+	Tue, 26 Aug 2025 14:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO2Eh0Aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbDPn9WS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350AF299959;
-	Tue, 26 Aug 2025 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E52F352FF3;
+	Tue, 26 Aug 2025 14:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207786; cv=none; b=Q1mKqYps9/Jdg/SmJge9n/k0Yx50lvCoQig87NA0K5tFpLAQwb1ODwDUJw62Eim+mMd7+jqgDH7bqvVgIUuJDcGpVD1PYjWTBINxNv1WoRpl8kiEY6sjEgu0tDCC761GoVwDKGs4zCM1B0CBfAjWMvA5nftwuGhvqDUCWi36ZmY=
+	t=1756219079; cv=none; b=k+uehQ1CpD1z86KpPQaDv6PNW4QLwlNkfYxQ40nkHzHd3phJrXM7FbVfdlhw2djli1vhVin2tzSSfkQnLyuxIChnYkhZf0EvK0S7rjLgI3pHbPBEm71ZfjZF2xiNBHpgGPfiZHKRtwZ30DbC4tK95CfS2vgW/Rp9CqU0xHeUyNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207786; c=relaxed/simple;
-	bh=dzfpCfMGrbPtxMdJvhwOUHcmAAcLfV/RpT3kwgVMVpM=;
+	s=arc-20240116; t=1756219079; c=relaxed/simple;
+	bh=6QaZesHp6vqHrTqvrkCcw02EyWl4XSZh9Blo6qDDW5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nb1PIutku4bQlXnJmqwa+i8qrKgwbaXJpbrfKPHFxIrmRKu4J14nbPZ6Iv5Y5UnA773EI0abwWj0yPp65dtSMNitXwgo3O9vezpfBKc/7BSVGHYqFkY7WOFLBi6y0C21+gmlDkVKtziJLMR/ii1bZvwrDJuF7j6kfGJQJ4fi81Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO2Eh0Aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91541C4CEF1;
-	Tue, 26 Aug 2025 11:29:45 +0000 (UTC)
+	 MIME-Version; b=RfjknLSILtgcMpo+Hh2BXxI6DRLtQh7v68oIlSj/65Se45cXrBtHM6Kx4KZ+Wjikwap45ONu5V8ZTVx2RkAgy6hxuRWjqHK11txHETIzc9I+AppIX57QesQz2xMqSr9h43XSJUKY1nAvIXF88q8ra5mvVq9fduIgANAlwz3qHCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbDPn9WS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DE3C4CEF1;
+	Tue, 26 Aug 2025 14:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207786;
-	bh=dzfpCfMGrbPtxMdJvhwOUHcmAAcLfV/RpT3kwgVMVpM=;
+	s=korg; t=1756219078;
+	bh=6QaZesHp6vqHrTqvrkCcw02EyWl4XSZh9Blo6qDDW5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fO2Eh0Aq3NoOso5mJuKHQqDE1VfeqJKWoJNQd/pRg2b4/DqE6UcnsflcBPylXa+Jq
-	 +Od8ecO+oI9AJM+YDcTOnX1eqF8czLRpYsDRp6CvV2V2G3ShJZIfAD4I8gou317Ng4
-	 EdRsu3UuU+CYsb4GJ9SIpz7PZodaccpYGDXjy49M=
+	b=CbDPn9WSh6ebdk9g8XBVcFV5TpK/laz1XIlDfIksflTx/fxyWMNPp+vkukrSJx48I
+	 V285nJooIJUfdiFyf8YLBHRgQTccg0+YaFri+E5gyEOnvXCQ02i4kXn73tOyubR8Bj
+	 wau2XVcXiFGFN08W68GTGX3XzAzx2MbXj8hUlKLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 286/457] smb: server: split ksmbd_rdma_stop_listening() out of ksmbd_rdma_destroy()
+Subject: [PATCH 5.4 244/403] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
 Date: Tue, 26 Aug 2025 13:09:30 +0200
-Message-ID: <20250826110944.448736385@linuxfoundation.org>
+Message-ID: <20250826110913.569846590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit bac7b996d42e458a94578f4227795a0d4deef6fa ]
+[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
 
-We can't call destroy_workqueue(smb_direct_wq); before stop_sessions()!
+If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
+resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
+occur before sli4_hba.hdwqs are allocated.  This may result in a null
+pointer dereference when attempting to take the abts_io_buf_list_lock for
+the first hardware queue.  Fix by adding a null ptr check on
+phba->sli4_hba.hdwq and early return because this situation means there
+must have been an error during port initialization.
 
-Otherwise already existing connections try to use smb_direct_wq as
-a NULL pointer.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c     | 3 ++-
- fs/smb/server/transport_rdma.c | 5 ++++-
- fs/smb/server/transport_rdma.h | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 3f04a2977ba8..67c4f73398df 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -504,7 +504,8 @@ void ksmbd_conn_transport_destroy(void)
- {
- 	mutex_lock(&init_lock);
- 	ksmbd_tcp_destroy();
--	ksmbd_rdma_destroy();
-+	ksmbd_rdma_stop_listening();
- 	stop_sessions();
-+	ksmbd_rdma_destroy();
- 	mutex_unlock(&init_lock);
- }
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 8d366db5f605..5466aa8c39b1 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -2194,7 +2194,7 @@ int ksmbd_rdma_init(void)
- 	return 0;
- }
- 
--void ksmbd_rdma_destroy(void)
-+void ksmbd_rdma_stop_listening(void)
- {
- 	if (!smb_direct_listener.cm_id)
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index f238e0f41f07..1d58895b3943 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -469,6 +469,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
+ 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
  		return;
-@@ -2203,7 +2203,10 @@ void ksmbd_rdma_destroy(void)
- 	rdma_destroy_id(smb_direct_listener.cm_id);
  
- 	smb_direct_listener.cm_id = NULL;
-+}
- 
-+void ksmbd_rdma_destroy(void)
-+{
- 	if (smb_direct_wq) {
- 		destroy_workqueue(smb_direct_wq);
- 		smb_direct_wq = NULL;
-diff --git a/fs/smb/server/transport_rdma.h b/fs/smb/server/transport_rdma.h
-index 77aee4e5c9dc..a2291b77488a 100644
---- a/fs/smb/server/transport_rdma.h
-+++ b/fs/smb/server/transport_rdma.h
-@@ -54,13 +54,15 @@ struct smb_direct_data_transfer {
- 
- #ifdef CONFIG_SMB_SERVER_SMBDIRECT
- int ksmbd_rdma_init(void);
-+void ksmbd_rdma_stop_listening(void);
- void ksmbd_rdma_destroy(void);
- bool ksmbd_rdma_capable_netdev(struct net_device *netdev);
- void init_smbd_max_io_size(unsigned int sz);
- unsigned int get_smbd_max_read_write_size(void);
- #else
- static inline int ksmbd_rdma_init(void) { return 0; }
--static inline int ksmbd_rdma_destroy(void) { return 0; }
-+static inline void ksmbd_rdma_stop_listening(void) { }
-+static inline void ksmbd_rdma_destroy(void) { }
- static inline bool ksmbd_rdma_capable_netdev(struct net_device *netdev) { return false; }
- static inline void init_smbd_max_io_size(unsigned int sz) { }
- static inline unsigned int get_smbd_max_read_write_size(void) { return 0; }
++	/* may be called before queues established if hba_setup fails */
++	if (!phba->sli4_hba.hdwq)
++		return;
++
+ 	spin_lock_irqsave(&phba->hbalock, iflag);
+ 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
+ 		qp = &phba->sli4_hba.hdwq[idx];
 -- 
-2.50.1
+2.39.5
 
 
 
