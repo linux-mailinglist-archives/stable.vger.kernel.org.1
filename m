@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3A3B36BF6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B754B36BA2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE81F980F3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33A007BB199
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC687352FDB;
-	Tue, 26 Aug 2025 14:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7C33568F0;
+	Tue, 26 Aug 2025 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agH5DNYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ElNUd/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F66235208F;
-	Tue, 26 Aug 2025 14:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3772F352FEE;
+	Tue, 26 Aug 2025 14:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218209; cv=none; b=X0lLYV+G+NEe6X0ovWga79utOacTbEYGidv5nz72CJB29elAG1KwFw5hmiXfP+fFmgUkfbxUsanT28WOdHF+V3hOyD1ZwL+cQ4v7tgGzDVE12tzWJ3zW4g5NWOZKyXBiTyudQXyJa2SFAY4bg0nOgnClC1hnVQAthVlNJ0Qgwck=
+	t=1756219378; cv=none; b=GiJjVIoIf0DaWjicVrj0zSR4Ip9OZZF1F7DfRq6JWN8LbDWGeFxwk0vRhaT20esJz1naWN/y5WVmv+wHwET19HzRZEdtD/ygaxK3mBk/rtREz0F6MJULP/dEJVf9DsLrxIqYFDxur4iyEhY/Yy/Rp8TQuhUrpM8DdP/xUEyLeaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218209; c=relaxed/simple;
-	bh=Y9kt6WWTPQ9mrgrTEYBiQLTaxrc9ypqr40M1EO4fwzM=;
+	s=arc-20240116; t=1756219378; c=relaxed/simple;
+	bh=Vb3LMFbrP5l0jDPoACsk+nu6jsceIB9jLAprf62dZJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urGXWbVPlc+eFgqZnEzqk8nC8lMu2mVTeCffYi03TDekFcVbYmyg4d5fqAjYzx/j9MsosqXNUr2n8dWAKZ9y8wc1x5dWN7Jm0MG3hcvSaZ3pWPec62kuTU66dCmMrwwLcsz+QLsBnHj/f/tvLM0akGB+DpXxY1egt/b1WciuvVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agH5DNYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924E5C4CEF1;
-	Tue, 26 Aug 2025 14:23:28 +0000 (UTC)
+	 MIME-Version; b=VC0Iy33MrktvnCOupfogxaIrBjqcYIyMkMGI3wEIvJdqJ9LrQ9BzNhcYqAOlhnbc1pCC3qT8mj/ZOFSAByk7pSFS7OrGnUBeRYE9hH0eALbB0WAvh3GnzQGVDxpVcH96DqWsndHZIGKpsurv3VdTNI2e3WySbdi5jXR3eE43EaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ElNUd/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F11DC4CEF1;
+	Tue, 26 Aug 2025 14:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218208;
-	bh=Y9kt6WWTPQ9mrgrTEYBiQLTaxrc9ypqr40M1EO4fwzM=;
+	s=korg; t=1756219377;
+	bh=Vb3LMFbrP5l0jDPoACsk+nu6jsceIB9jLAprf62dZJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agH5DNYwAyLLzM7OUOaE5mO4nooTTjoEVgaM/iOGdEJWZcczKAZty8gmzqfiyr+3b
-	 y+pPhJNCFnajuLCVWCOswuts2pygEE/wVMCNxLdnngqQw4NfKeO9oZXMUHw9XxRl0v
-	 hBqIX9k/Se9DOxKbHDO87C/AFgACsHlLU3N8IKSo=
+	b=2ElNUd/2Pm49ZgW7AbOWjSUqjw4P2gj6Bli8GFuY5Yhw9HDBAaXNKQsbyKSbLdviY
+	 NRx/jfuq8H/LmtwAc8iH3VaLouChfeWBWFn4AM2wEtVJ6bFGwwkLTdoaWmu8qno1l8
+	 TaasavCKxjmBFTLYWVAUy7XJm4EdkS9U/apPBLBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 433/523] block: Make REQ_OP_ZONE_FINISH a write operation
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 317/403] iio: proximity: isl29501: fix buffered read on big-endian systems
 Date: Tue, 26 Aug 2025 13:10:43 +0200
-Message-ID: <20250826110935.137056833@linuxfoundation.org>
+Message-ID: <20250826110915.570500958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 3f66ccbaaef3a0c5bd844eab04e3207b4061c546 ]
+commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
 
-REQ_OP_ZONE_FINISH is defined as "12", which makes
-op_is_write(REQ_OP_ZONE_FINISH) return false, despite the fact that a
-zone finish operation is an operation that modifies a zone (transition
-it to full) and so should be considered as a write operation (albeit
-one that does not transfer any data to the device).
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-Fix this by redefining REQ_OP_ZONE_FINISH to be an odd number (13), and
-redefine REQ_OP_ZONE_RESET and REQ_OP_ZONE_RESET_ALL using sequential
-odd numbers from that new value.
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250625093327.548866-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Extra renames ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/proximity/isl29501.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -353,13 +353,13 @@ enum req_opf {
- 	/* Close a zone */
- 	REQ_OP_ZONE_CLOSE	= 11,
- 	/* Transition a zone to full */
--	REQ_OP_ZONE_FINISH	= 12,
-+	REQ_OP_ZONE_FINISH	= 13,
- 	/* write data at the current zone write pointer */
--	REQ_OP_ZONE_APPEND	= 13,
-+	REQ_OP_ZONE_APPEND	= 15,
- 	/* reset a zone write pointer */
--	REQ_OP_ZONE_RESET	= 15,
-+	REQ_OP_ZONE_RESET	= 17,
- 	/* reset all the zone present on the device */
--	REQ_OP_ZONE_RESET_ALL	= 17,
-+	REQ_OP_ZONE_RESET_ALL	= 19,
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
- 	/* SCSI passthrough using struct scsi_request */
- 	REQ_OP_SCSI_IN		= 32,
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
++	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
