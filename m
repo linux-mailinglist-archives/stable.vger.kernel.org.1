@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FE2B35CB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B145B361A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09DAB189A001
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C62967BA0AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629812F9992;
-	Tue, 26 Aug 2025 11:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF9725DB0A;
+	Tue, 26 Aug 2025 13:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opfk2/Rj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8PA/iqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9E2FAC1C;
-	Tue, 26 Aug 2025 11:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFD5230BDF;
+	Tue, 26 Aug 2025 13:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207765; cv=none; b=gDjWtavbRYAtNSZ9RBm3ohPCi2L5Icx+a/q3FZFJ4BNGXBJvfphyluLu/uNqbNa6/ihp0nZk0u7d42cjPUO9FQQ4bdG7Kg7GBtkXcooezFrkxNjcmAzKnnuW0DArpbdCUVOcrEeLHVn/fWfAeXzekAFWS+LlgDlH9hZhnbsMkqo=
+	t=1756213801; cv=none; b=nhLtgrLrMObSSM0VPb9ieyHuqOjnIOoKIZa+JJJKDb9zfsaxwy1BNDClKZ6X1JFO8L16Z8djSJXnJernlV5W4idxZ9/YsfWfqSygpCV3YMFp2XbMmdmIEV+hHyh5aLdFKdKco9ScJ8r0oT5om+3YLPzByoYraxi6COHi/7sxyYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207765; c=relaxed/simple;
-	bh=MTOAbDqewJOrgkMyPYqzhr9ufqf4fr+IzTKrDbhKDhU=;
+	s=arc-20240116; t=1756213801; c=relaxed/simple;
+	bh=xqcZswslpcV1SmLmHutzrJivp20MpaWfMouoqTTAg00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVkxhGkh4JVS7C+X8IVhbpI0rvsqGUUSfeXt3VeAftXlnlIznCIpuMX9NMbaoaxDOT+TAJ1NiEUgtCC0dLEZn+W1T2HjfvMBxcpyMDqgaQVNwHiyH9+1rpNPCF3hhycMX1+ISWDwUCTcl9lJWIyYmqeXaYgc3z/8XNTpVtwT6mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opfk2/Rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA801C4CEF1;
-	Tue, 26 Aug 2025 11:29:24 +0000 (UTC)
+	 MIME-Version; b=XC+AxIpaNFyPZbxEtkcBb3+Vr29ogRCVbeyJkukhz9DUWz43Ati6XgvVOXTYEVyf4xlFRLBrolTxxPoyHRkZRdEMlR11uW8OfbO5TT/bUG+6H3yHBr2xvWrI/Ykj+7SYaI1QpbRkhzYnS5Bb4QArc1IoCgsFAif4WzF+Bmpz9uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8PA/iqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5066AC4CEF1;
+	Tue, 26 Aug 2025 13:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207765;
-	bh=MTOAbDqewJOrgkMyPYqzhr9ufqf4fr+IzTKrDbhKDhU=;
+	s=korg; t=1756213801;
+	bh=xqcZswslpcV1SmLmHutzrJivp20MpaWfMouoqTTAg00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opfk2/RjsqclIo1EGCg1KBnHQ9CMYyY7aMOwTDaZC5yBNE0ieaZlmClkDEgQloqGT
-	 rimnluhAO6NwgMhTbgm9pA0L0xM2w0SLlpW2KVyVIw0WE4yQO32lY5nl4SUK1wntFd
-	 fy4sBC/QUfA1mc8G1PU0XSwxAcvnE+gm3SJ6+Y7s=
+	b=Q8PA/iqXLTdkQG3hV4BXfj2nomw1U4nVK9Ec2M+MbK3fJw17uC9eWSQfx8/VBoIkA
+	 +a32X6CubOoyrxWgQ4fHSvHSJoKj81NH1ELGecbsJ3wYtS0mwJnVc+RMxVxi3xhLao
+	 HRZ5EVsiQ0JyvFYydyB6V9W77ir0rYYzVz9v4LcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.16 308/457] kcov, usb: Dont disable interrupts in kcov_remote_start_usb_softirq()
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 443/587] usb: typec: fusb302: cache PD RX state
 Date: Tue, 26 Aug 2025 13:09:52 +0200
-Message-ID: <20250826110944.976658825@linuxfoundation.org>
+Message-ID: <20250826111004.226225859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 9528d32873b38281ae105f2f5799e79ae9d086c2 upstream.
+[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
 
-kcov_remote_start_usb_softirq() the begin of urb's completion callback.
-HCDs marked HCD_BH will invoke this function from the softirq and
-in_serving_softirq() will detect this properly.
-Root-HUB (RH) requests will not be delayed to softirq but complete
-immediately in IRQ context.
-This will confuse kcov because in_serving_softirq() will report true if
-the softirq is served after the hardirq and if the softirq got
-interrupted by the hardirq in which currently runs.
+This patch fixes a race condition communication error, which ends up in
+PD hard resets when losing the race. Some systems, like the Radxa ROCK
+5B are powered through USB-C without any backup power source and use a
+FUSB302 chip to do the PD negotiation. This means it is quite important
+to avoid hard resets, since that effectively kills the system's
+power-supply.
 
-This was addressed by simply disabling interrupts in
-kcov_remote_start_usb_softirq() which avoided the interruption by the RH
-while a regular completion callback was invoked.
-This not only changes the behaviour while kconv is enabled but also
-breaks PREEMPT_RT because now sleeping locks can no longer be acquired.
+I've found the following race condition while debugging unplanned power
+loss during booting the board every now and then:
 
-Revert the previous fix. Address the issue by invoking
-kcov_remote_start_usb() only if the context is just "serving softirqs"
-which is identified by checking in_serving_softirq() and in_hardirq()
-must be false.
+1. lots of TCPM/FUSB302/PD initialization stuff
+2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
+3. the remote PD source does not send anything, so TCPM does a SOFT RESET
+4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
+   (tcpm_set_pd_rx is enabled again, even though it is still on)
 
-Fixes: f85d39dd7ed89 ("kcov, usb: disable interrupts in kcov_remote_start_usb_softirq")
+At this point I've seen broken CRC good messages being send by the
+FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
+messages are being lost and things generally going haywire with one of
+the two sides doing a hard reset once a broken CRC good message was send
+to the bus.
+
+I think the system is running into a race condition, that the FIFOs are
+being cleared and/or the automatic good CRC message generation flag is
+being updated while a message is already arriving.
+
+Let's avoid this by caching the PD RX enabled state, as we have already
+processed anything in the FIFOs and are in a good state. As a side
+effect that this also optimizes I2C bus usage :)
+
+As far as I can tell the problem theoretically also exists when TCPM
+enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
+critical for the following reason:
+
+On devices like the ROCK 5B, which are powered through a TCPM backed
+USB-C port, the bootloader must have done some prior PD communication
+(initial communication must happen within 5 seconds after plugging the
+USB-C plug). This means the first time the kernel TCPM state machine
+reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
+actively. On other devices a hard reset simply adds some extra delay and
+things should be good afterwards.
+
+Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
 Cc: stable <stable@kernel.org>
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Closes: https://lore.kernel.org/all/20250725201400.1078395-2-ysk@kzalloc.com/
-Tested-by: Yunseong Kim <ysk@kzalloc.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250811082745.ycJqBXMs@linutronix.de
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hcd.c |   12 +++++-------
- include/linux/kcov.h   |   47 +++++++++--------------------------------------
- 2 files changed, 14 insertions(+), 45 deletions(-)
+ drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -1623,7 +1623,6 @@ static void __usb_hcd_giveback_urb(struc
- 	struct usb_hcd *hcd = bus_to_hcd(urb->dev->bus);
- 	struct usb_anchor *anchor = urb->anchor;
- 	int status = urb->unlinked;
--	unsigned long flags;
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -103,6 +103,7 @@ struct fusb302_chip {
+ 	bool vconn_on;
+ 	bool vbus_on;
+ 	bool charge_on;
++	bool pd_rx_on;
+ 	bool vbus_present;
+ 	enum typec_cc_polarity cc_polarity;
+ 	enum typec_cc_status cc1;
+@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 	int ret = 0;
  
- 	urb->hcpriv = NULL;
- 	if (unlikely((urb->transfer_flags & URB_SHORT_NOT_OK) &&
-@@ -1641,14 +1640,13 @@ static void __usb_hcd_giveback_urb(struc
- 	/* pass ownership to the completion handler */
- 	urb->status = status;
- 	/*
--	 * Only collect coverage in the softirq context and disable interrupts
--	 * to avoid scenarios with nested remote coverage collection sections
--	 * that KCOV does not support.
--	 * See the comment next to kcov_remote_start_usb_softirq() for details.
-+	 * This function can be called in task context inside another remote
-+	 * coverage collection section, but kcov doesn't support that kind of
-+	 * recursion yet. Only collect coverage in softirq context for now.
- 	 */
--	flags = kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
-+	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
- 	urb->complete(urb);
--	kcov_remote_stop_softirq(flags);
-+	kcov_remote_stop_softirq();
- 
- 	usb_anchor_resume_wakeups(anchor);
- 	atomic_dec(&urb->use_count);
---- a/include/linux/kcov.h
-+++ b/include/linux/kcov.h
-@@ -57,47 +57,21 @@ static inline void kcov_remote_start_usb
- 
- /*
-  * The softirq flavor of kcov_remote_*() functions is introduced as a temporary
-- * workaround for KCOV's lack of nested remote coverage sections support.
-- *
-- * Adding support is tracked in https://bugzilla.kernel.org/show_bug.cgi?id=210337.
-- *
-- * kcov_remote_start_usb_softirq():
-- *
-- * 1. Only collects coverage when called in the softirq context. This allows
-- *    avoiding nested remote coverage collection sections in the task context.
-- *    For example, USB/IP calls usb_hcd_giveback_urb() in the task context
-- *    within an existing remote coverage collection section. Thus, KCOV should
-- *    not attempt to start collecting coverage within the coverage collection
-- *    section in __usb_hcd_giveback_urb() in this case.
-- *
-- * 2. Disables interrupts for the duration of the coverage collection section.
-- *    This allows avoiding nested remote coverage collection sections in the
-- *    softirq context (a softirq might occur during the execution of a work in
-- *    the BH workqueue, which runs with in_serving_softirq() > 0).
-- *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
-- *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted in
-- *    the middle of its remote coverage collection section, and the interrupt
-- *    handler might invoke __usb_hcd_giveback_urb() again.
-+ * work around for kcov's lack of nested remote coverage sections support in
-+ * task context. Adding support for nested sections is tracked in:
-+ * https://bugzilla.kernel.org/show_bug.cgi?id=210337
-  */
- 
--static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
-+static inline void kcov_remote_start_usb_softirq(u64 id)
- {
--	unsigned long flags = 0;
--
--	if (in_serving_softirq()) {
--		local_irq_save(flags);
-+	if (in_serving_softirq() && !in_hardirq())
- 		kcov_remote_start_usb(id);
--	}
--
--	return flags;
- }
- 
--static inline void kcov_remote_stop_softirq(unsigned long flags)
-+static inline void kcov_remote_stop_softirq(void)
- {
--	if (in_serving_softirq()) {
-+	if (in_serving_softirq() && !in_hardirq())
- 		kcov_remote_stop();
--		local_irq_restore(flags);
--	}
- }
- 
- #ifdef CONFIG_64BIT
-@@ -131,11 +105,8 @@ static inline u64 kcov_common_handle(voi
- }
- static inline void kcov_remote_start_common(u64 id) {}
- static inline void kcov_remote_start_usb(u64 id) {}
--static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
--{
--	return 0;
--}
--static inline void kcov_remote_stop_softirq(unsigned long flags) {}
-+static inline void kcov_remote_start_usb_softirq(u64 id) {}
-+static inline void kcov_remote_stop_softirq(void) {}
- 
- #endif /* CONFIG_KCOV */
- #endif /* _LINUX_KCOV_H */
+ 	mutex_lock(&chip->lock);
++	if (chip->pd_rx_on == on) {
++		fusb302_log(chip, "pd is already %s", str_on_off(on));
++		goto done;
++	}
++
+ 	ret = fusb302_pd_rx_flush(chip);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
+@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 			    on ? "on" : "off", ret);
+ 		goto done;
+ 	}
++
++	chip->pd_rx_on = on;
+ 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
+ done:
+ 	mutex_unlock(&chip->lock);
 
 
 
