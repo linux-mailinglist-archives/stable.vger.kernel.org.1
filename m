@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67605B35BE9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7522DB366B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AAB0363D5F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B5F5667A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B632FD7DE;
-	Tue, 26 Aug 2025 11:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E9F34F496;
+	Tue, 26 Aug 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HavRSs2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coUjSKL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC152F619C;
-	Tue, 26 Aug 2025 11:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C2341650;
+	Tue, 26 Aug 2025 13:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207438; cv=none; b=gEJWBzrTuONnIXo6XjB2nVFphbjTWpxfDtBrBKVIs+79E/O1Nh6Jexv8Z7APatTfHoqYHTa669JGS4WcNpVvaoGFjhuP1mwXaGzHMjOpZ/eMZEV5iCMtEHYvIbxx3HAy7730twNNkHKxjtjhFVbKD7iiDE97skAr2R2Dk32XhbI=
+	t=1756216263; cv=none; b=RRACq5EGvaoT5Xv9+Te8g13PqzCwuGeP2FXiNKiEU2WOIEcNlWS3/p/s48emFxbj/Kvc1QJv9O26mLPrHDTV6i9bv6GXHYOeb8JDGudO+VHLbVGzBRF4Cfig6Gx74qkTFjKm5l78NQ/ZwyhPAzI7nUf0Kb49Q8jozLj5Q34FiRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207438; c=relaxed/simple;
-	bh=Fsn4ZAYhWzaaBM9gHyPLq0FNkbPdbtCgdDg3eulWVZo=;
+	s=arc-20240116; t=1756216263; c=relaxed/simple;
+	bh=3xsIC9qqir2cL7xmzn/il4aBxpp9cpTEEyrfAAEYv+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gi/xelov1UCw/Fsgo2tzu+Uy13crOl2zNlFavMMmAcOLmvOgv96CW7I20bWKCh5RfWtirU32H2j+lWsvif1TJ+xzLWDB7HFmSTMd8hjBP9FqgT2KPRGjpZgOFPIeNhOtgfP3xCb4pD1G9gl4yosNWwotfi4WWHb3EtUIkMvhuF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HavRSs2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB53C4CEF1;
-	Tue, 26 Aug 2025 11:23:57 +0000 (UTC)
+	 MIME-Version; b=LdAk1vZs6bBHe4Mfqrcmf3enF04yimyKSMbTJCrwt0drqW8sgcgLfJ2CVhyyrSmRV6qySL5Syxt6jW/v3+1QBX2N5SCKjVXuVeFrsQ9uMkql9JMQKZcxvKXndznn6eITwemselMi9Cc5VrTrfK9w2S+F0E6u8Q3rK3Diz0ePmn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coUjSKL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0562EC113CF;
+	Tue, 26 Aug 2025 13:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207438;
-	bh=Fsn4ZAYhWzaaBM9gHyPLq0FNkbPdbtCgdDg3eulWVZo=;
+	s=korg; t=1756216263;
+	bh=3xsIC9qqir2cL7xmzn/il4aBxpp9cpTEEyrfAAEYv+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HavRSs2w8YuAT3Kl4yzlaIAFMTg5XtfNNIcKBdrEuj7ZhNKIZ8RYAywW8qjJYQYPH
-	 0EsYivBp6oM/6iJxw2wOI5IjnkKJpJyHj/UFz3QWHuE5aVxqtXWyzyQHvsxIDC/O0E
-	 BrodF+DXSFnk7855DkJ8lTQz14RoUJ2/K+YIF/jo=
+	b=coUjSKL5Z4Yif3x3Okvgo/aQTMj92nxpBLLvaW7N7eFA2Dllx+jMkh2IUL8wXFktD
+	 TRbMlp22RcmG7waxQCbXeplWy4BNCk55qsnAvAAdFhGiDUV7pBIwmLri2Jn/bJM2Dl
+	 ipIBqj59Y0sL7kkr1oAYnjiPBf2IqWhCeEoUDzmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.16 150/457] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 343/644] net: ag71xx: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:07:14 +0200
-Message-ID: <20250826110941.079158096@linuxfoundation.org>
+Message-ID: <20250826110954.894086527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
+[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+The DMA map functions can fail and should be tested for errors.
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
-Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h |    2 ++
- drivers/media/platform/qcom/venus/vdec.c |    5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -28,6 +28,8 @@
- #define VIDC_RESETS_NUM_MAX		2
- #define VIDC_MAX_HIER_CODING_LAYER 6
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 9d8b214c129d..d5be9ca4d4fe 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1287,6 +1287,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
+ 	buf->rx.rx_buf = data;
+ 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
+ 					  DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
++		skb_free_frag(data);
++		buf->rx.rx_buf = NULL;
++		return false;
++	}
+ 	desc->data = (u32)buf->rx.dma_addr + offset;
+ 	return true;
+ }
+@@ -1585,6 +1590,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
  
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
+ 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
+ 				  DMA_TO_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
++		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
++		goto err_drop;
++	}
  
- struct freq_tbl {
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
- 
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
- 
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+ 	i = ring->curr & ring_mask;
+ 	desc = ag71xx_ring_desc(ring, i);
+-- 
+2.39.5
+
 
 
 
