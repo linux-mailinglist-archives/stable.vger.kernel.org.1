@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14F5B36AA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A05B36818
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A230C1C46428
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094D25811AE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B16F352FC5;
-	Tue, 26 Aug 2025 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F700345741;
+	Tue, 26 Aug 2025 14:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmDqP13B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfFurcQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390C8352FD9;
-	Tue, 26 Aug 2025 14:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4A1E7C08;
+	Tue, 26 Aug 2025 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218266; cv=none; b=uPZsQWmQftV69UVvQR12SbRytTy9gxxbp+Om3UTHa3KYzSZxkohSs/jHQGWnUFoz+MjiS2KZRU2+gLNSFbzxKVFNK2lsyujH7Zi8zvGRmzee0e3n7ksq0d7fR/1SWzGOpVLUrX77CiNHySzzFN/V9rNIkitXzWjd6aJWdjRYAtI=
+	t=1756216961; cv=none; b=Ng++TeIWfU3oB5xGMD3wn7j5sfxGnY3+EIqfFiqt8u1E8MPcBzuCI7CIYLnUBz8kSi4Ruw7/Uu6ea7htiyaAgwKzg+Cf4JYRQYwYTJpWVixrFlHv9FJssa/hOJm60IRX/YkVQgBHcgI8SkkywO2ZzDtII/F+ifqexT23pZG6RY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218266; c=relaxed/simple;
-	bh=i/BbdCfvnCfCQK+DKkJXrUcSOIfYrsVoiyAxN6t82SE=;
+	s=arc-20240116; t=1756216961; c=relaxed/simple;
+	bh=XtFooGdewyaJDnvh37CDBzzC15Apr4Fwr5Z2swuNOUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cW3wuCb9QVGToYvlf5apfMVreSrTcPF8B6W+A/zjUgh90QaEdPVHmrhRevByG8l+9myDB+BQ9jrI5pxAd7DjJiYtzddOBqi9+5eBZikxtBXIB9fnzz7HYpkp9m5BsvzjSxFSjmeHTeDhfmsKORQTAK6fPIb/u1/mapBPB3f9mkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmDqP13B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD0AC4CEF1;
-	Tue, 26 Aug 2025 14:24:25 +0000 (UTC)
+	 MIME-Version; b=hcfU0LHNYsUcTFRXpvMaX1XS7qx4LzAPM/rHNT0pddqqIZmE7iZ93dNUdq96aotVisL9RtFrg1GGEdq7niOntjkJDf+VhK/zpych5FjNKxEJ4f0BMtpXjz2gLeGhD8BrBPAAK3nDYotW3Q1kTurfFHXs5EXxROuz+U7XhO06G4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfFurcQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62EEC4CEF1;
+	Tue, 26 Aug 2025 14:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218265;
-	bh=i/BbdCfvnCfCQK+DKkJXrUcSOIfYrsVoiyAxN6t82SE=;
+	s=korg; t=1756216961;
+	bh=XtFooGdewyaJDnvh37CDBzzC15Apr4Fwr5Z2swuNOUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmDqP13Bg6ZM3LW/SIZSGprylJu/EYRPJIc465hLz2Kb9DhbkzY//4QRiiwCynfEB
-	 fOPRzeOFJa/ZkJCa0W7tVd9B+yPFe71Ox8CCPrgSasHGr3QWw8RHtsuA8N7kcDZ+vp
-	 RDURrEx01vzVA8bROYhWVVEdAksC0jL8cflagync=
+	b=jfFurcQYEGAEcVGt9BdObMKaaF3Omyjvaa+g2i5XWlaTTbGhwkAnZXYSgkVHBrzET
+	 3N0+8of2BCrujWbc0wTV21UQRggkUBuBOv84aVs3gnfNwKNT6oZbJyKHYSk7p1LoMg
+	 o02kSnfuaxlWe5MLQT8EI4VZM2tqAWDF8qKmJJAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 456/523] NFSv4: Fix nfs4_bitmap_copy_adjust()
+Subject: [PATCH 5.15 575/644] use uniform permission checks for all mount propagation changes
 Date: Tue, 26 Aug 2025 13:11:06 +0200
-Message-ID: <20250826110935.696386887@linuxfoundation.org>
+Message-ID: <20250826111000.779189458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit a71029b86752e8d40301af235a6bbf4896cc1402 ]
+[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
 
-Don't remove flags from the set retrieved from the cache_validity.
-We do want to retrieve all attributes that are listed as being
-invalid, whether or not there is a delegation set.
+do_change_type() and do_set_group() are operating on different
+aspects of the same thing - propagation graph.  The latter
+asks for mounts involved to be mounted in namespace(s) the caller
+has CAP_SYS_ADMIN for.  The former is a mess - originally it
+didn't even check that mount *is* mounted.  That got fixed,
+but the resulting check turns out to be too strict for userland -
+in effect, we check that mount is in our namespace, having already
+checked that we have CAP_SYS_ADMIN there.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+What we really need (in both cases) is
+	* only touch mounts that are mounted.  That's a must-have
+constraint - data corruption happens if it get violated.
+	* don't allow to mess with a namespace unless you already
+have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
+
+That's an equivalent of what do_set_group() does; let's extract that
+into a helper (may_change_propagation()) and use it in both
+do_set_group() and do_change_type().
+
+Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |   33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ fs/namespace.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -292,7 +292,7 @@ const u32 nfs4_fs_locations_bitmap[3] =
- };
- 
- static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
--		struct inode *inode)
-+				    struct inode *inode, unsigned long flags)
- {
- 	unsigned long cache_validity;
- 
-@@ -300,22 +300,19 @@ static void nfs4_bitmap_copy_adjust(__u3
- 	if (!inode || !nfs4_have_delegation(inode, FMODE_READ))
- 		return;
- 
--	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity);
--	if (!(cache_validity & NFS_INO_REVAL_FORCED))
--		cache_validity &= ~(NFS_INO_INVALID_CHANGE
--				| NFS_INO_INVALID_SIZE);
-+	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity) | flags;
- 
-+	/* Remove the attributes over which we have full control */
-+	dst[1] &= ~FATTR4_WORD1_RAWDEV;
- 	if (!(cache_validity & NFS_INO_INVALID_SIZE))
- 		dst[0] &= ~FATTR4_WORD0_SIZE;
- 
- 	if (!(cache_validity & NFS_INO_INVALID_CHANGE))
- 		dst[0] &= ~FATTR4_WORD0_CHANGE;
--}
- 
--static void nfs4_bitmap_copy_adjust_setattr(__u32 *dst,
--		const __u32 *src, struct inode *inode)
--{
--	nfs4_bitmap_copy_adjust(dst, src, inode);
-+	if (!(cache_validity & NFS_INO_INVALID_OTHER))
-+		dst[1] &= ~(FATTR4_WORD1_MODE | FATTR4_WORD1_OWNER |
-+			    FATTR4_WORD1_OWNER_GROUP);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 9e1717692be3..35d63bb3b22d 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2296,6 +2296,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
+ 	return attach_recursive_mnt(mnt, p, mp, false);
  }
  
- static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dentry,
-@@ -3379,12 +3376,15 @@ static int nfs4_do_setattr(struct inode
- 		.inode = inode,
- 		.stateid = &arg.stateid,
- 	};
-+	unsigned long adjust_flags = NFS_INO_INVALID_CHANGE;
- 	int err;
- 
-+	if (sattr->ia_valid & (ATTR_MODE|ATTR_UID|ATTR_GID))
-+		adjust_flags |= NFS_INO_INVALID_OTHER;
++static int may_change_propagation(const struct mount *m)
++{
++        struct mnt_namespace *ns = m->mnt_ns;
 +
- 	do {
--		nfs4_bitmap_copy_adjust_setattr(bitmask,
--				nfs4_bitmask(server, olabel),
--				inode);
-+		nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, olabel),
-+					inode, adjust_flags);
++	 // it must be mounted in some namespace
++	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
++		 return -EINVAL;
++	 // and the caller must be admin in userns of that namespace
++	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
++		 return -EPERM;
++	 return 0;
++}
++
+ /*
+  * Sanity check the flags to change_mnt_propagation.
+  */
+@@ -2332,10 +2345,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
- 		err = _nfs4_do_setattr(inode, &arg, &res, cred, ctx);
- 		switch (err) {
-@@ -4192,8 +4192,7 @@ static int _nfs4_proc_getattr(struct nfs
- 	if (inode && (server->flags & NFS_MOUNT_SOFTREVAL))
- 		task_flags |= RPC_TASK_TIMEOUT;
+ 	namespace_lock();
+-	if (!check_mnt(mnt)) {
+-		err = -EINVAL;
++	err = may_change_propagation(mnt);
++	if (err)
+ 		goto out_unlock;
+-	}
++
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+@@ -2730,18 +2743,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
  
--	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode);
+ 	namespace_lock();
+ 
+-	err = -EINVAL;
+-	/* To and From must be mounted */
+-	if (!is_mounted(&from->mnt))
+-		goto out;
+-	if (!is_mounted(&to->mnt))
+-		goto out;
 -
-+	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode, 0);
- 	nfs_fattr_init(fattr);
- 	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
- 	return nfs4_do_call_sync(server->client, server, &msg,
-@@ -4795,8 +4794,8 @@ static int _nfs4_proc_link(struct inode
- 	}
+-	err = -EPERM;
+-	/* We should be allowed to modify mount namespaces of both mounts */
+-	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+-	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(to);
++	if (err)
+ 		goto out;
  
- 	nfs4_inode_make_writeable(inode);
--	nfs4_bitmap_copy_adjust_setattr(bitmask, nfs4_bitmask(server, res.label), inode);
--
-+	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, res.label), inode,
-+				NFS_INO_INVALID_CHANGE);
- 	status = nfs4_call_sync(server->client, server, &msg, &arg.seq_args, &res.seq_res, 1);
- 	if (!status) {
- 		nfs4_update_changeattr(dir, &res.cinfo, res.fattr->time_start,
+ 	err = -EINVAL;
+-- 
+2.50.1
+
 
 
 
