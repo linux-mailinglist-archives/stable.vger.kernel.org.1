@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-174875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02166B36555
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FB3B35F78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC17C2A623F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528976881A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2994393DF2;
-	Tue, 26 Aug 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAEB78F3A;
+	Tue, 26 Aug 2025 12:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj/Br2gQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09dOmAeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D52139C9;
-	Tue, 26 Aug 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564EF11187;
+	Tue, 26 Aug 2025 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215546; cv=none; b=OAO1R+fF2IGQpTwd3+7JAQSCC56HnM3r6K7uT/ykWyaFSSVP0kDTHMWHomNov4J2d4IaHETEyg36B1uEMDc+NOP+tgNLSRFiz6sT+oxdLzAf0yRdS0jYknkC9GG6MRmP3i89Q3HGW4WHGSpTTkO72BOs8mXPIYRjxNUoKh6ssOo=
+	t=1756212562; cv=none; b=Rb2++XOSOGx4qCYVv6yGNNKn0sBOcrKiRJYPzLylhMKN8Q3LwMkUWoX4bVZk1+LMToRGQWsXA9lLad2Q9+k33XViD8Kt2IQNL59tQMSCOl4hPwnolUVnj7uhJRvik37EoVHU2O2On+O2IKpOIfdWnIXUpN9ePU0SabnD65zMLtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215546; c=relaxed/simple;
-	bh=Z4Pjnq+vWZchiNBQO1YRGaXXAZBhbwr2oQuIuYl95EY=;
+	s=arc-20240116; t=1756212562; c=relaxed/simple;
+	bh=pbQgeMLnkrcYQFrS0T56cuprPmARJOx3usr1whXfQ2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rfxi/6jrtO+CkJxh1A64SeSN0yYVGuXgBnHWVA/v0JFwPwgz3xhPCKfdMKdyvLZqQYMI7ELLyPJNt6wsfxT+ttPc3UyObEUZj+MifiVh4xCnbXNexKBAN1MuAo3i9pgCgd6s2UJtKYaKLW5TILZf3xqWRIWKpsNWpoQYlsXQa38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj/Br2gQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7426AC4CEF1;
-	Tue, 26 Aug 2025 13:39:05 +0000 (UTC)
+	 MIME-Version; b=TBeGojjppjZ7hH/7Z6VwoObU9c81z2MmfEgZ9xGZMKKrag6jMHp4Qd6rPkZ1vqJskcLMf07id5ub/770sA5GEbYrF2cBrD2kigNGM2yX3n99c6plJu/XzlRUEnsnj4WA9f5rSvLF1QZOq+FhRdEn+IzJ8tAQS3tWHr3aMsrjwuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09dOmAeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815E7C116B1;
+	Tue, 26 Aug 2025 12:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215546;
-	bh=Z4Pjnq+vWZchiNBQO1YRGaXXAZBhbwr2oQuIuYl95EY=;
+	s=korg; t=1756212561;
+	bh=pbQgeMLnkrcYQFrS0T56cuprPmARJOx3usr1whXfQ2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yj/Br2gQdgi5ApN+Qu+9tZsVGfGZHj5gGeMhNgAIy60F+aIkQZCbn1NBTaotcWYgx
-	 Jbwf3Td0U7V7uk/XzHDX12WpeKdeyve0lTup8C4Sl1Nl91wsXj80/Hc0LNhcl+tgpz
-	 M13Yvptpdg/dYIIm1B7Nale2zxPXwIDBPJfcMZcg=
+	b=09dOmAeH8FX5z0Atr496dmhlgjzPYjgD46g9k/nr0oZxnjoNmxNW2PggwlkuEjP0a
+	 76OrXiL8gqRj05w7pJVpe/4MGLWfaQEvtxpTgSgeD1+F5WMIxqlDPR2YHrsK0pY5kJ
+	 af2de3JvDttepNhnKJZ78B5A/dMgXs6jLNOryth8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Justin Forbes <jmforbes@linuxtx.org>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Siddhi Katage <siddhi.katage@oracle.com>
-Subject: [PATCH 5.15 075/644] x86: Pin task-stack in __get_wchan()
+	Felix Fietkau <nbd@nbd.name>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 017/587] net: mtk_eth_soc: fix device leak at probe
 Date: Tue, 26 Aug 2025 13:02:46 +0200
-Message-ID: <20250826110948.356842368@linuxfoundation.org>
+Message-ID: <20250826110953.391412534@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0dc636b3b757a6b747a156de613275f9d74a4a66 upstream.
+commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
 
-When commit 5d1ceb3969b6 ("x86: Fix __get_wchan() for !STACKTRACE")
-moved from stacktrace to native unwind_*() usage, the
-try_get_task_stack() got lost, leading to use-after-free issues for
-dying tasks.
+The reference count to the WED devices has already been incremented when
+looking them up using of_find_device_by_node() so drop the bogus
+additional reference taken during probe.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Fixes: 5d1ceb3969b6 ("x86: Fix __get_wchan() for !STACKTRACE")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215031
-Link: https://lore.kernel.org/stable/YZV02RCRVHIa144u@fedora64.linuxtx.org/
-Reported-by: Justin Forbes <jmforbes@linuxtx.org>
-Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Siddhi Katage <siddhi.katage@oracle.com>
+Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/process.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -975,6 +975,9 @@ unsigned long __get_wchan(struct task_st
- 	struct unwind_state state;
- 	unsigned long addr = 0;
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -1886,7 +1886,6 @@ void mtk_wed_add_hw(struct device_node *
+ 	if (!pdev)
+ 		goto err_of_node_put;
  
-+	if (!try_get_task_stack(p))
-+		return 0;
-+
- 	for (unwind_start(&state, p, NULL, NULL); !unwind_done(&state);
- 	     unwind_next_frame(&state)) {
- 		addr = unwind_get_return_address(&state);
-@@ -985,6 +988,8 @@ unsigned long __get_wchan(struct task_st
- 		break;
- 	}
- 
-+	put_task_stack(p);
-+
- 	return addr;
- }
- 
+-	get_device(&pdev->dev);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		goto err_put_device;
 
 
 
