@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DCFB3684F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5E8B36B01
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 926557BC374
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC301BC5AE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B063352FC7;
-	Tue, 26 Aug 2025 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1107B35334D;
+	Tue, 26 Aug 2025 14:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNWFUz7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMlLeVe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A6E352071;
-	Tue, 26 Aug 2025 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2312343D63;
+	Tue, 26 Aug 2025 14:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217458; cv=none; b=hdnii6kLPtDEnIFg8JkwiopENktx6rz4YXhdTU8ddplXrR2jN83Ch1771bKt0p2IvU+vPnMEtMuU3qvG7vjvDX/Tj+8F0HmR78VdJuZriqYIBSxVT3wmsYcSD5FJWsmXnRqNmmO4kLG9J864Ye3bpGlQ1/OMU0t1A6UCHk2F5mk=
+	t=1756218530; cv=none; b=RaBVCbPFtuMmSg9/nTu0d/4qgrbz1Zagxb8qeWrYzAZFI0tkrSQ43f5ihK3+jeUj9LCfY7TPpjvt6fGMKka4o87d4yavt7egLNwrj1Vi2X7lv5/dhaTTBZ295qpM+I32mq0GdobKmOZUkA+Qyi+OX+L3IVbC93kDGgwtP01O+yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217458; c=relaxed/simple;
-	bh=0cWPbGFxune0xI0353paFKAmBpl5c42HNnXqlr/dPHA=;
+	s=arc-20240116; t=1756218530; c=relaxed/simple;
+	bh=T2lMROflOuoj+i6/ohrq+vcDgrwzxIMvLkRxShkIsLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERoc/vpDvAy6aWzF1mhH/J7d7Ufj4HtzefOYoSfZI/2BZlG5HPuZrVYIOSweeL4EN8g//dvTi2oAiaL85g66YhTvPpe+R4hUiv5D8J8g8IgFq3XjSgd3dZlud96gU7bp0ziAp/BS+4CTmI9IaTS5j/ha4jdk6LTyAuOXJd57oc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNWFUz7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3058C113CF;
-	Tue, 26 Aug 2025 14:10:57 +0000 (UTC)
+	 MIME-Version; b=DZ3SejdGu1mR/Pp49AZ5h4klIhIAn3esA+IXLHLwwP163JpslMn80A8iV9OIUfUI/zUyChDzjKyzrMp5PtLRhFILGtLq5F1BDC0kfddzmdSClD8lBAgmyizAo8UBx0Un3Mbb/tuNwMsLplfrIqjrNE7w7YtijAuW6NCAQAr7hX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMlLeVe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AE6C4CEF1;
+	Tue, 26 Aug 2025 14:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217458;
-	bh=0cWPbGFxune0xI0353paFKAmBpl5c42HNnXqlr/dPHA=;
+	s=korg; t=1756218530;
+	bh=T2lMROflOuoj+i6/ohrq+vcDgrwzxIMvLkRxShkIsLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNWFUz7VY1BLpnQqd6kp0Km8dqaGmuTLl0GVW7/eVmqNLrzpn9Rx212bI2Q4Nnb6W
-	 tOedi1Nm/LzvvwWrkvlkR2YEzfTfuMcj2/aASI9K1yTmYhhv/msljaFl0ALXPYOm77
-	 8J8IfLrlIm9l9rAJaigrE4J8Redr4A6+PFk4C25w=
+	b=MMlLeVe74mZ+DuJcC01rri26dJz0Hu/sqVEo9Y4vE2PjeufRaJwCe/JxwFn+eZaM3
+	 Ya9SvKG/kafyS/jG5IxAXcsNn4Iq5J+RmQ6Ze6nihYXjMI3ZzUCpq6gz5vC30+Khdo
+	 h8OLhD3A36vLl5ad1HSGXmIGWbuuzVidGJyA71tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/523] rtc: hym8563: fix incorrect maximum clock rate handling
+Subject: [PATCH 5.4 035/403] Bluetooth: SMP: If an unallowed command is received consider it a failure
 Date: Tue, 26 Aug 2025 13:06:01 +0200
-Message-ID: <20250826110928.209455502@linuxfoundation.org>
+Message-ID: <20250826110906.785636410@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d0a518eb0a692a2ab8357e844970660c5ea37720 ]
+[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
 
-When hym8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+If a command is received while a bonding is ongoing consider it a
+pairing failure so the session is cleanup properly and the device is
+disconnected immediately instead of continuing with other commands that
+may result in the session to get stuck without ever completing such as
+the case bellow:
 
-Fixes: dcaf038493525 ("rtc: add hym8563 rtc-driver")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-2-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> ACL Data RX: Handle 2048 flags 0x02 dlen 21
+      SMP: Identity Information (0x08) len 16
+        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
+> ACL Data RX: Handle 2048 flags 0x02 dlen 21
+      SMP: Signing Information (0x0a) len 16
+        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
+Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
+> ACL Data RX: Handle 2048 flags 0x02 dlen 12
+      SMP: Identity Address Information (0x09) len 7
+        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
+
+While accourding to core spec 6.1 the expected order is always BD_ADDR
+first first then CSRK:
+
+When using LE legacy pairing, the keys shall be distributed in the
+following order:
+
+    LTK by the Peripheral
+
+    EDIV and Rand by the Peripheral
+
+    IRK by the Peripheral
+
+    BD_ADDR by the Peripheral
+
+    CSRK by the Peripheral
+
+    LTK by the Central
+
+    EDIV and Rand by the Central
+
+    IRK by the Central
+
+    BD_ADDR by the Central
+
+    CSRK by the Central
+
+When using LE Secure Connections, the keys shall be distributed in the
+following order:
+
+    IRK by the Peripheral
+
+    BD_ADDR by the Peripheral
+
+    CSRK by the Peripheral
+
+    IRK by the Central
+
+    BD_ADDR by the Central
+
+    CSRK by the Central
+
+According to the Core 6.1 for commands used for key distribution "Key
+Rejected" can be used:
+
+  '3.6.1. Key distribution and generation
+
+  A device may reject a distributed key by sending the Pairing Failed command
+  with the reason set to "Key Rejected".
+
+Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-hym8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/smp.c | 19 ++++++++++++++++++-
+ net/bluetooth/smp.h |  1 +
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-hym8563.c b/drivers/rtc/rtc-hym8563.c
-index 0fb79c4afb46..b5e76d6ee64b 100644
---- a/drivers/rtc/rtc-hym8563.c
-+++ b/drivers/rtc/rtc-hym8563.c
-@@ -312,7 +312,7 @@ static long hym8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 4d5ba9778885d..3227956eb7417 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2908,8 +2908,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
+ 	if (code > SMP_CMD_MAX)
+ 		goto drop;
  
--	return 0;
-+	return clkout_rates[0];
- }
+-	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
++	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
++		/* If there is a context and the command is not allowed consider
++		 * it a failure so the session is cleanup properly.
++		 */
++		switch (code) {
++		case SMP_CMD_IDENT_INFO:
++		case SMP_CMD_IDENT_ADDR_INFO:
++		case SMP_CMD_SIGN_INFO:
++			/* 3.6.1. Key distribution and generation
++			 *
++			 * A device may reject a distributed key by sending the
++			 * Pairing Failed command with the reason set to
++			 * "Key Rejected".
++			 */
++			smp_failure(conn, SMP_KEY_REJECTED);
++			break;
++		}
+ 		goto drop;
++	}
  
- static int hym8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	/* If we don't have a context the only allowed commands are
+ 	 * pairing request and security request.
+diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
+index 121edadd5f8da..f17de3d9778d0 100644
+--- a/net/bluetooth/smp.h
++++ b/net/bluetooth/smp.h
+@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
+ #define SMP_NUMERIC_COMP_FAILED		0x0c
+ #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
+ #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
++#define SMP_KEY_REJECTED		0x0f
+ 
+ #define SMP_MIN_ENC_KEY_SIZE		7
+ #define SMP_MAX_ENC_KEY_SIZE		16
 -- 
 2.39.5
 
