@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBC9B364F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C400DB36275
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C482B1C20A4C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C32191895268
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68A02BE653;
-	Tue, 26 Aug 2025 13:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4070341ABD;
+	Tue, 26 Aug 2025 13:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JodzKsW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4wfz9AK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F97024DD11;
-	Tue, 26 Aug 2025 13:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E333277A4;
+	Tue, 26 Aug 2025 13:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215309; cv=none; b=BWuAp84rE4f1Ox68Prc2C+dT5MwzkBGoQyqLcRxL6ERKqXEa9mr5Tc24RHJmkP8wDuLs8fkki1bKn6JGV98BAZD5t6DU1Ndobpvlp8w/Uu0sURTXF0bwlvXDERKlTKx2sMOTs/FYj/fG4ljSy9BrDAvTKiS08J1iZ5nMC17PEhg=
+	t=1756214029; cv=none; b=fupKE5VRPXkC15eypgyei3/1xBQKgbWSbaDAJcJDmJ39tJf8Y2XBsLx5+3hrGsZM0res2iZd9/79bV3O6wD5hasMCYyXvcjVoxHEpk4FI/v4NCEfOWhJuuorul2w5ShsyfEK85WfvQsrb6SWckYeaebT5IPH/nqsUabUo3W1Dlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215309; c=relaxed/simple;
-	bh=XWrd09b3IT0SUuvConxwuGvhRDWRdUFQDXH7V+LOFco=;
+	s=arc-20240116; t=1756214029; c=relaxed/simple;
+	bh=oXT0pRv0vsxq+hvuAY0nYSCIbnqkFJF8yJKVLWrpAcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/Ka6CMauNL511/3WC8S001jFeQQbRX8aguZQtFEfzEbyY4m/Z4aDUYl3xT1OdPd0XRMZaZdhAfQdfg7lfskufAFpnd0gNzuJl8Qb938bB6TYh4PCOoAWmRxprn7PGxGnORaemVi2Bfk3YDvEoi6vvkrWXlhaqLjAiTPZlMOznE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JodzKsW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2670C4CEF1;
-	Tue, 26 Aug 2025 13:35:08 +0000 (UTC)
+	 MIME-Version; b=koA0rShMqWkiu2SzjvEQ7IqrlCZFBavdPXCdSfvc5EwgJCsVtPTC4jDhHZfhJ3O71HELRut2EGQhidFb/4j2KlZMKdJCec2FkMj01Mdd5UPlDlJfmvuc0WBD7PJxYKhUlsenCsl01R8L9IRDg/kXx4sCCiX+o5pzX2SYnTuhpcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4wfz9AK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98B8C4CEF1;
+	Tue, 26 Aug 2025 13:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215309;
-	bh=XWrd09b3IT0SUuvConxwuGvhRDWRdUFQDXH7V+LOFco=;
+	s=korg; t=1756214029;
+	bh=oXT0pRv0vsxq+hvuAY0nYSCIbnqkFJF8yJKVLWrpAcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JodzKsW/WtLps+2MCjugjWCrFghcexjukXcZCFzgotXbiLGojgEnTm+tGM2oO9yHV
-	 +ddaI5yQ/wdiT8E02Ne7ybulL4INJd9B6taxauECLMVHuluYE5aO/gYvTxLqZFgLE1
-	 V7bCO8nf0UqUrY3cDGRIhHestlO3v8USBiIqW37Y=
+	b=V4wfz9AK/K3EmkBuQxYWrHiMDPdlOL/BKdKnPfrdPAIGC460BlGXTgQMTS8XbxJSo
+	 cMEQ2jeZljiwX4bDrMPUGMUwyWVssl/yIFiFQUVazvF29XXOMeBEy+/Av0vEUeB4r+
+	 8bSwE1UCoMkjIZdVXDHtLe5GtesWrvfc00BSuN+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
+	Yuichiro Tsuji <yuichtsu@amazon.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 466/482] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
+Subject: [PATCH 6.6 570/587] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
 Date: Tue, 26 Aug 2025 13:11:59 +0200
-Message-ID: <20250826110942.333915028@linuxfoundation.org>
+Message-ID: <20250826111007.534343340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minhong He <heminhong@kylinos.cn>
+From: Yuichiro Tsuji <yuichtsu@amazon.com>
 
-[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
+[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
 
-The seg6_genl_sethmac() directly uses the algorithm ID provided by the
-userspace without verifying whether it is an HMAC algorithm supported
-by the system.
-If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
-will be dropped during encapsulation or decapsulation.
+Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
 
-Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
+The PHY address should be masked to 5 bits (0-31). Without this
+mask, invalid PHY addresses could be used, potentially causing issues
+with MDIO bus operations.
+
+Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
+it stays within the valid range.
+
+Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
+Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
+Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_hmac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/asix_devices.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index dd7406a9380f..b90c286d77ed 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -294,6 +294,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 	int err;
- 
-+	if (!__hmac_get_algo(hinfo->alg_id))
-+		return -EINVAL;
-+
- 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
- 					    rht_params);
- 
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 6a2567a67902..f4340d4ef7ee 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 -- 
 2.50.1
 
