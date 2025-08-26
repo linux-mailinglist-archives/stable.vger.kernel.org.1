@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CA1B35DA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B88B36B96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 829797A1EDC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD15B7BCC08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C2D267386;
-	Tue, 26 Aug 2025 11:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C5125DB0A;
+	Tue, 26 Aug 2025 14:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwHfaUGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzEVKqjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7301218DF9D;
-	Tue, 26 Aug 2025 11:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC60350830;
+	Tue, 26 Aug 2025 14:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208770; cv=none; b=XeMzBlFS7LGOkzrntYH9WKBwCxp9xUQ3IP/surarYObx1bbcQ4/6iZVjCg4oU8n43V2BFJlRb0xbltzPCcpFrIfitnsG95pgFpVwrHH/gS89oQqgVapZIMybQRYAQOhHBIOEpn+Sv+XrC83zGwngGt+yGdONgycsZn38ArmgoQg=
+	t=1756219375; cv=none; b=OUOi5tNladCd213jvuizbfZmpDSUR9opMVM+JdEHHyE4OKiEAChWxB2JllQYN5be72bjQuARJmt+iUOmII64Dn5K7hi38ZkXc+N7Ajd1huc712W5LGrvZ471muA7238WOWc7wr3DILpMyoOPN2GashPJLVlvgI8OzbiM+Z5IsyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208770; c=relaxed/simple;
-	bh=EtZRtzjEZlOZT9hgROLcwL3EQ8RiXTqQt4PzfcquxeA=;
+	s=arc-20240116; t=1756219375; c=relaxed/simple;
+	bh=7gW1HRrutcwferKOpT3Z8fFV2hDzUQvSLoNDGNagRLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnqMsjuaIti9HjI6lyXaKMHab48RsWkkhLziSugBgVxMlHkDGtVq2yVN0CifrA40krseLRDlOSx9R1dkdIo9jxj0gx51aEtqZmJWLJHJ9KhDClzOtvM961jzUKLTRiObCvgwxlIPNnQw/64YfAYORmcKv8p58LWuj6SMwwlb1Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwHfaUGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0A1C4CEF1;
-	Tue, 26 Aug 2025 11:46:09 +0000 (UTC)
+	 MIME-Version; b=AKaNFRhQbE0fbEVFJ/YFqAvowNVvrXexCD7sbcHelZzJrU331AuHn5C4PiFlLnQviji6SGaUxYjb9wSml6m5EX50cmp6EZle+0ueq75A+dyJOKxRiWxKIii8xSBlssc+7niFjaYtVOFKnbmjwJUf/cRLAeKvRAOH1zIBZB9u8og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzEVKqjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EECC4CEF1;
+	Tue, 26 Aug 2025 14:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208770;
-	bh=EtZRtzjEZlOZT9hgROLcwL3EQ8RiXTqQt4PzfcquxeA=;
+	s=korg; t=1756219375;
+	bh=7gW1HRrutcwferKOpT3Z8fFV2hDzUQvSLoNDGNagRLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwHfaUGl4UcUBwoN81ZIypxpaKh2Ys4vPq9syhhwjf9jTEON8EH9cqdwV3j+npu3s
-	 eS3QcYDxzTIJwTDSjH0inYaVdyPUQa0bxa7TfUy6Bt2G4y0q+GgjVL++b8SQX6hBrG
-	 SlkUT8RxuCjJXyoVMO++kH2EVmqbWaFBvjtxjB3k=
+	b=NzEVKqjz3inqtUAt+G1Vr8u7273RqFghMF49kxonB7lcuWMIvO4UxPpnxGEouK0Xd
+	 3zGH8F/l0u2Q64GRo1U1ta3O95LlEbqeYdTeJOWFqiUV9pXrWBg6ePALRbaFNqCvA6
+	 otcxTfBcFQ0Fmhg/dJr/dBCGoqLKJ37kt9uSpGAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/322] iio: light: as73211: Ensure buffer holes are zeroed
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.4 326/403] kbuild: Add CLANG_FLAGS to as-instr
 Date: Tue, 26 Aug 2025 13:10:52 +0200
-Message-ID: <20250826110921.757893875@linuxfoundation.org>
+Message-ID: <20250826110915.828687953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 433b99e922943efdfd62b9a8e3ad1604838181f2 ]
+commit cff6e7f50bd315e5b39c4e46c704ac587ceb965f upstream.
 
-Given that the buffer is copied to a kfifo that ultimately user space
-can read, ensure we zero it.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following errors appear multiple times when
+building ARCH=powerpc powernv_defconfig:
 
-Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250802164436.515988-2-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12d4): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717520 is not in [-2147483648, 2147483647]; references '__start___soft_mask_table'
+  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12e8): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717392 is not in [-2147483648, 2147483647]; references '__stop___soft_mask_table'
+
+Diffing the .o.cmd files reveals that -DHAVE_AS_ATHIGH=1 is not present
+anymore, because as-instr only uses KBUILD_AFLAGS, which will no longer
+contain '--target'.
+
+Mirror Kconfig's as-instr and add CLANG_FLAGS explicitly to the
+invocation to ensure the target information is always present.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/as73211.c |    2 +-
+ scripts/Kbuild.include |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -643,7 +643,7 @@ static irqreturn_t as73211_trigger_handl
- 	struct {
- 		__le16 chan[4];
- 		aligned_s64 ts;
--	} scan;
-+	} scan = { };
- 	int data_result, ret;
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -108,7 +108,7 @@ as-option = $(call try-run,\
+ # Usage: aflags-y += $(call as-instr,instr,option1,option2)
  
- 	mutex_lock(&data->mutex);
+ as-instr = $(call try-run,\
+-	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
++	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
+ 
+ # __cc-option
+ # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
 
 
 
