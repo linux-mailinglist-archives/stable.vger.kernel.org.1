@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-176381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56AAB36CDE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400A9B36582
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53C81C8159F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD2A8565A93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B435E35083A;
-	Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCC1299AAB;
+	Tue, 26 Aug 2025 13:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSXWGexB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoicpSp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F002FDC5C;
-	Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6F7265CCD;
+	Tue, 26 Aug 2025 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219510; cv=none; b=k77MhYPWPky7OzVamZt1WSGvqaxMLeeuBIBN6iwnMx5y2EpJ2P7mRIH0TdFJDDfW5O1VN8xW4CBAQV5Td5biCBt5+POMhQTvO57Sjiensttj0queK2hkjqlkajPkCaqU2lV4U0nNyVS0px1H7AHP/d2NQWETXt6NqA0QRlvdEUI=
+	t=1756215306; cv=none; b=ANJZnyQt1bVSrJmG/lwYkcmynKc3+5b8/gEm6VOHu0foDmLYRAazlrrVxQcsaIVzxaNkFNC7EPs61TzPIwyvyV1G26quVNsCODTE05tWvkbiJygJkuVu82Ydt7uq8X58bqVycnFRd8McU20lBK0Tl4lR+TS9iYVMimhXuEBxVKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219510; c=relaxed/simple;
-	bh=aFBnRvvV98YqgdZJRGGH8pIlFVwyIeHNlLl3Ci6HqZc=;
+	s=arc-20240116; t=1756215306; c=relaxed/simple;
+	bh=GvVn8jBnYHzTYeusE7syH6v6hi1+U3QzOE1hiLEMTSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0YFTJH60yLXTVrKWyIlLIbqZFwhJoCX2Qy6pCqV+Ad0PYDFWl9Jaqj7vLgCXZVzxNWoo5aX4I7vNFj+xw/O3sjyIb89CbgE3n9+Eqkmr/7+n9VySyNBWp6ugiQQ6/KXsJM/XCc7Dh4fNOTiC1HWtoOvEikkCkI5shhyQrsrZyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSXWGexB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AD0C4CEF1;
-	Tue, 26 Aug 2025 14:45:09 +0000 (UTC)
+	 MIME-Version; b=CD9IRzl4Mys40nTqDTSe6/ykmQO+0Rf4uuJyYtoqQPaSfzYQRgkXZ3S0ZaJSXB5KIiuBAcRhsNdhJgtcNiM6GI3qAvNeyIZbOl1q9qp+pIQ11jNFUkHMQ55dnFFYH5wFrltpgaCXoad1qJmqMQzmtSkbdAfqs+Qli/HLo1RKqJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoicpSp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51639C4CEF1;
+	Tue, 26 Aug 2025 13:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219510;
-	bh=aFBnRvvV98YqgdZJRGGH8pIlFVwyIeHNlLl3Ci6HqZc=;
+	s=korg; t=1756215306;
+	bh=GvVn8jBnYHzTYeusE7syH6v6hi1+U3QzOE1hiLEMTSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSXWGexBhA4MVd6kQbL9gGHzitiUR2DtDm1wG6PeqE8ojByu1g3ktVgqmiYfZpolT
-	 AKrvx8EN0gG7q3fPPZ7aiMfqSmIKGn/4rLQIrJZq2dcfsBZbtI8+4dIuyfH2PVEKQm
-	 YvRDuXYS1eRG77t8+llaNvRIGpOHwmIo0SerTivQ=
+	b=HoicpSp5ZsWRDTUP5sLR0D0UQv9W55CiN2pvmLpm4pH83VKWjmB4LTCVZe3UYfUSI
+	 GqeEw/eoIDcFEZ14WHoWpBE82IGWUunfIa/lGlSXuobcuX8U5yxkFV5ZCiysWwwyjZ
+	 hIO5tG5MM8xtSO97mtsS1bbkA//JY3CQSrKm65gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chanho Min <chanho.min@lge.com>,
+	Tianhao Zhao <tizhao@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jakub Ramaseuski <jramaseu@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 392/403] NFS: Fix up commit deadlocks
+Subject: [PATCH 6.1 465/482] net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM
 Date: Tue, 26 Aug 2025 13:11:58 +0200
-Message-ID: <20250826110917.863347852@linuxfoundation.org>
+Message-ID: <20250826110942.309533446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jakub Ramaseuski <jramaseu@redhat.com>
 
-commit 133a48abf6ecc535d7eddc6da1c3e4c972445882 upstream.
+[ Upstream commit 864e3396976ef41de6cc7bc366276bf4e084fff2 ]
 
-If O_DIRECT bumps the commit_info rpcs_out field, then that could lead
-to fsync() hangs. The fix is to ensure that O_DIRECT calls
-nfs_commit_end().
+When performing Generic Segmentation Offload (GSO) on an IPv6 packet that
+contains extension headers, the kernel incorrectly requests checksum offload
+if the egress device only advertises NETIF_F_IPV6_CSUM feature, which has
+a strict contract: it supports checksum offload only for plain TCP or UDP
+over IPv6 and explicitly does not support packets with extension headers.
+The current GSO logic violates this contract by failing to disable the feature
+for packets with extension headers, such as those used in GREoIPv6 tunnels.
 
-Fixes: 723c921e7dfc ("sched/wait, fs/nfs: Convert wait_on_atomic_t() usage to the new wait_var_event() API")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Chanho Min <chanho.min@lge.com>
+This violation results in the device being asked to perform an operation
+it cannot support, leading to a `skb_warn_bad_offload` warning and a collapse
+of network throughput. While device TSO/USO is correctly bypassed in favor
+of software GSO for these packets, the GSO stack must be explicitly told not
+to request checksum offload.
+
+Mask NETIF_F_IPV6_CSUM, NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4
+in gso_features_check if the IPv6 header contains extension headers to compute
+checksum in software.
+
+The exception is a BIG TCP extension, which, as stated in commit
+68e068cabd2c6c53 ("net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets"):
+"The feature is only enabled on devices that support BIG TCP TSO.
+The header is only present for PF_PACKET taps like tcpdump,
+and not transmitted by physical devices."
+
+kernel log output (truncated):
+WARNING: CPU: 1 PID: 5273 at net/core/dev.c:3535 skb_warn_bad_offload+0x81/0x140
+...
+Call Trace:
+ <TASK>
+ skb_checksum_help+0x12a/0x1f0
+ validate_xmit_skb+0x1a3/0x2d0
+ validate_xmit_skb_list+0x4f/0x80
+ sch_direct_xmit+0x1a2/0x380
+ __dev_xmit_skb+0x242/0x670
+ __dev_queue_xmit+0x3fc/0x7f0
+ ip6_finish_output2+0x25e/0x5d0
+ ip6_finish_output+0x1fc/0x3f0
+ ip6_tnl_xmit+0x608/0xc00 [ip6_tunnel]
+ ip6gre_tunnel_xmit+0x1c0/0x390 [ip6_gre]
+ dev_hard_start_xmit+0x63/0x1c0
+ __dev_queue_xmit+0x6d0/0x7f0
+ ip6_finish_output2+0x214/0x5d0
+ ip6_finish_output+0x1fc/0x3f0
+ ip6_xmit+0x2ca/0x6f0
+ ip6_finish_output+0x1fc/0x3f0
+ ip6_xmit+0x2ca/0x6f0
+ inet6_csk_xmit+0xeb/0x150
+ __tcp_transmit_skb+0x555/0xa80
+ tcp_write_xmit+0x32a/0xe90
+ tcp_sendmsg_locked+0x437/0x1110
+ tcp_sendmsg+0x2f/0x50
+...
+skb linear:   00000000: e4 3d 1a 7d ec 30 e4 3d 1a 7e 5d 90 86 dd 60 0e
+skb linear:   00000010: 00 0a 1b 34 3c 40 20 11 00 00 00 00 00 00 00 00
+skb linear:   00000020: 00 00 00 00 00 12 20 11 00 00 00 00 00 00 00 00
+skb linear:   00000030: 00 00 00 00 00 11 2f 00 04 01 04 01 01 00 00 00
+skb linear:   00000040: 86 dd 60 0e 00 0a 1b 00 06 40 20 23 00 00 00 00
+skb linear:   00000050: 00 00 00 00 00 00 00 00 00 12 20 23 00 00 00 00
+skb linear:   00000060: 00 00 00 00 00 00 00 00 00 11 bf 96 14 51 13 f9
+skb linear:   00000070: ae 27 a0 a8 2b e3 80 18 00 40 5b 6f 00 00 01 01
+skb linear:   00000080: 08 0a 42 d4 50 d5 4b 70 f8 1a
+
+Fixes: 04c20a9356f283da ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
+Reported-by: Tianhao Zhao <tizhao@redhat.com>
+Suggested-by: Michal Schmidt <mschmidt@redhat.com>
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250814105119.1525687-1-jramaseu@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/direct.c        |    2 +-
- fs/nfs/write.c         |    9 ++++++---
- include/linux/nfs_fs.h |    1 +
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ net/core/dev.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -700,7 +700,7 @@ static void nfs_direct_commit_complete(s
- 		nfs_unlock_and_release_request(req);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 212a909b4840..114fc8bc37f8 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3610,6 +3610,18 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 			features &= ~NETIF_F_TSO_MANGLEID;
  	}
  
--	if (atomic_dec_and_test(&cinfo.mds->rpcs_out))
-+	if (nfs_commit_end(cinfo.mds))
- 		nfs_direct_write_complete(dreq);
++	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
++	 * so neither does TSO that depends on it.
++	 */
++	if (features & NETIF_F_IPV6_CSUM &&
++	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
++	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
++	    skb_transport_header_was_set(skb) &&
++	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
++	    !ipv6_has_hopopt_jumbo(skb))
++		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
++
+ 	return features;
  }
  
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -1658,10 +1658,13 @@ static void nfs_commit_begin(struct nfs_
- 	atomic_inc(&cinfo->rpcs_out);
- }
- 
--static void nfs_commit_end(struct nfs_mds_commit_info *cinfo)
-+bool nfs_commit_end(struct nfs_mds_commit_info *cinfo)
- {
--	if (atomic_dec_and_test(&cinfo->rpcs_out))
-+	if (atomic_dec_and_test(&cinfo->rpcs_out)) {
- 		wake_up_var(&cinfo->rpcs_out);
-+		return true;
-+	}
-+	return false;
- }
- 
- void nfs_commitdata_release(struct nfs_commit_data *data)
-@@ -1756,6 +1759,7 @@ void nfs_init_commit(struct nfs_commit_d
- 	data->res.fattr   = &data->fattr;
- 	data->res.verf    = &data->verf;
- 	nfs_fattr_init(&data->fattr);
-+	nfs_commit_begin(cinfo->mds);
- }
- EXPORT_SYMBOL_GPL(nfs_init_commit);
- 
-@@ -1801,7 +1805,6 @@ nfs_commit_list(struct inode *inode, str
- 
- 	/* Set up the argument struct */
- 	nfs_init_commit(data, head, NULL, cinfo);
--	atomic_inc(&cinfo->mds->rpcs_out);
- 	return nfs_initiate_commit(NFS_CLIENT(inode), data, NFS_PROTO(inode),
- 				   data->mds_ops, how, 0);
- }
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -549,6 +549,7 @@ extern int nfs_wb_page_cancel(struct ino
- extern int  nfs_commit_inode(struct inode *, int);
- extern struct nfs_commit_data *nfs_commitdata_alloc(bool never_fail);
- extern void nfs_commit_free(struct nfs_commit_data *data);
-+bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
- 
- static inline int
- nfs_have_writebacks(struct inode *inode)
+-- 
+2.50.1
+
 
 
 
