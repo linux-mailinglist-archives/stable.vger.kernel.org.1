@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3692FB3683F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D47FB3696D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA644984715
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F3137B4757
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE1B350D70;
-	Tue, 26 Aug 2025 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B5235AACE;
+	Tue, 26 Aug 2025 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYgQ/e0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXvC8YZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8235B345741;
-	Tue, 26 Aug 2025 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82CC352FC2;
+	Tue, 26 Aug 2025 14:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216953; cv=none; b=jOUYfRo/1GXh8G2l679pPQYXq0rqVWEs+9iayWJKQ9QPVer23TTdXlNmZ55gObejCMX2XMLtexAN7txvstburb9qSBhIBJJDRT6YgYKwFiGNj2In8DppkT+EeBJw9VNf4vm7wjv8/2tjMzAWvhChXmpCScpj9Y4Ew7rFRTCNHGc=
+	t=1756218255; cv=none; b=jJm7O89BMuIW86T8a1IqcJWwdsKgqiMh9iAjNCTDl1qWGSvXJtxK5RlPjndImsFYIByqnSsqjKhQrHgq/GL23Ch55t/wsrHkvmGmkAfdJX/ytYDxmEJrloW3HgB4gNuxe/HbnHe1c21E8y7GWyLGbPpTqtIN8jiKlu+8lc9RIls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216953; c=relaxed/simple;
-	bh=SpEv1jHkpOeCQ3YrH5Vle+zu0F+Sm2mBrMYcP8RQttU=;
+	s=arc-20240116; t=1756218255; c=relaxed/simple;
+	bh=eUaGdm16dVLe/lqCQIzREU7S3tng9BrUVgp/w++G0ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RkrzgWnlba/0RPJ1G1yI2VMm0aGEBmwsO/j8B7UitdiRUiuDOU1R/6L2jGMODJa0XnLasvL7CsMQzEZATeOZ3y8FybWyLkBfQCN6ToyBTYvY6vFmdwfyqdUiwNlYM8dSHEPkzO9I9u5ZIwN5f1Ae6hUbPyDpboPcejcJEU/SBk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYgQ/e0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14256C4CEF1;
-	Tue, 26 Aug 2025 14:02:32 +0000 (UTC)
+	 MIME-Version; b=gTCd+EaamJ5ORWfpEha75OEC4aJ3a+NY9E+D7wdN2rdjyWKaf9q5+gT8eCnYV9hgKltT2t5picgDH4cJGxGvZbaEcIyKngCVVfggJ7RoyWgV0IMfxkhR1GeaiNK6mnsV6Cw7QjxLaP5RpqOYDKw9DJ5qiR2aCROng6/OuBmDFxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXvC8YZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D2BC113CF;
+	Tue, 26 Aug 2025 14:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216953;
-	bh=SpEv1jHkpOeCQ3YrH5Vle+zu0F+Sm2mBrMYcP8RQttU=;
+	s=korg; t=1756218255;
+	bh=eUaGdm16dVLe/lqCQIzREU7S3tng9BrUVgp/w++G0ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYgQ/e0NJRKrvUIcW1PZZY6PK5EQGTkaEwfJk6jb3f7tZJzPS0CeIPlu9QM6EieGA
-	 ADcrEn3EZnp/DYvNL6D4dxJswgWN1+LOIyixeFjXKQ6WLtkROQ7MS6HVEp/m5dG1Ow
-	 1g06/ipmvJub6GdHMMBgHozyckfb/2BWXvTiUlCc=
+	b=gXvC8YZHeTqw1Z4RJIU1uExle0/39yYau8TFoxaZvhFfLJSVju31x4btXyTfBQQQE
+	 pnkd39/uDHbCYUECN19wR+eeCfhrhVqL/WytNUbJoYHJoOSKPXPutpkLwNvKOBjlKn
+	 6KTxjz7jpV7pDApY389gLOlYP8dLNaOmDYBkK3Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.15 572/644] drm/amd/display: Find first CRTC and its line time in dce110_fill_display_configs
+	Justin Tee <justin.tee@broadcom.com>,
+	James Smart <jsmart2021@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 453/523] scsi: lpfc: Fix link down processing to address NULL pointer  dereference
 Date: Tue, 26 Aug 2025 13:11:03 +0200
-Message-ID: <20250826111000.706710089@linuxfoundation.org>
+Message-ID: <20250826110935.623944590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: James Smart <jsmart2021@gmail.com>
 
-commit 669f73a26f6112eedbadac53a2f2707ac6d0b9c8 upstream.
+[ Upstream commit 1854f53ccd88ad4e7568ddfafafffe71f1ceb0a6 ]
 
-dce110_fill_display_configs is shared between DCE 6-11, and
-finding the first CRTC and its line time is relevant to DCE 6 too.
-Move the code to find it from DCE 11 specific code.
+If an FC link down transition while PLOGIs are outstanding to fabric well
+known addresses, outstanding ABTS requests may result in a NULL pointer
+dereference. Driver unload requests may hang with repeated "2878" log
+messages.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4ab09785f8d5d03df052827af073d5c508ff5f63)
-Cc: stable@vger.kernel.org
+The Link down processing results in ABTS requests for outstanding ELS
+requests. The Abort WQEs are sent for the ELSs before the driver had set
+the link state to down. Thus the driver is sending the Abort with the
+expectation that an ABTS will be sent on the wire. The Abort request is
+stalled waiting for the link to come up. In some conditions the driver may
+auto-complete the ELSs thus if the link does come up, the Abort completions
+may reference an invalid structure.
+
+Fix by ensuring that Abort set the flag to avoid link traffic if issued due
+to conditions where the link failed.
+
+Link: https://lore.kernel.org/r/20211020211417.88754-7-jsmart2021@gmail.com
+Co-developed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: James Smart <jsmart2021@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   30 ++++++----
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/scsi/lpfc/lpfc_sli.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -120,9 +120,12 @@ void dce110_fill_display_configs(
- 	const struct dc_state *context,
- 	struct dm_pp_display_configuration *pp_display_cfg)
- {
-+	struct dc *dc = context->clk_mgr->ctx->dc;
- 	int j;
- 	int num_cfgs = 0;
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -11432,10 +11432,12 @@ lpfc_sli_abort_iotag_issue(struct lpfc_h
+ 	if (cmdiocb->iocb_flag & LPFC_IO_FOF)
+ 		abtsiocbp->iocb_flag |= LPFC_IO_FOF;
  
-+	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
-+
- 	for (j = 0; j < context->stream_count; j++) {
- 		int k;
+-	if (phba->link_state >= LPFC_LINK_UP)
+-		iabt->ulpCommand = CMD_ABORT_XRI_CN;
+-	else
++	if (phba->link_state < LPFC_LINK_UP ||
++	    (phba->sli_rev == LPFC_SLI_REV4 &&
++	     phba->sli4_hba.link_state.status == LPFC_FC_LA_TYPE_LINK_DOWN))
+ 		iabt->ulpCommand = CMD_CLOSE_XRI_CN;
++	else
++		iabt->ulpCommand = CMD_ABORT_XRI_CN;
  
-@@ -164,6 +167,23 @@ void dce110_fill_display_configs(
- 		cfg->v_refresh /= stream->timing.h_total;
- 		cfg->v_refresh = (cfg->v_refresh + stream->timing.v_total / 2)
- 							/ stream->timing.v_total;
-+
-+		/* Find first CRTC index and calculate its line time.
-+		 * This is necessary for DPM on SI GPUs.
-+		 */
-+		if (cfg->pipe_idx < pp_display_cfg->crtc_index) {
-+			const struct dc_crtc_timing *timing =
-+				&context->streams[0]->timing;
-+
-+			pp_display_cfg->crtc_index = cfg->pipe_idx;
-+			pp_display_cfg->line_time_in_us =
-+				timing->h_total * 10000 / timing->pix_clk_100hz;
-+		}
-+	}
-+
-+	if (!num_cfgs) {
-+		pp_display_cfg->crtc_index = 0;
-+		pp_display_cfg->line_time_in_us = 0;
- 	}
- 
- 	pp_display_cfg->display_count = num_cfgs;
-@@ -232,16 +252,6 @@ void dce11_pplib_apply_display_requireme
- 
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
--	/* TODO: is this still applicable?*/
--	if (pp_display_cfg->display_count == 1) {
--		const struct dc_crtc_timing *timing =
--			&context->streams[0]->timing;
--
--		pp_display_cfg->crtc_index =
--			pp_display_cfg->disp_configs[0].pipe_idx;
--		pp_display_cfg->line_time_in_us = timing->h_total * 10000 / timing->pix_clk_100hz;
--	}
--
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
- 		dm_pp_apply_display_requirements(dc->ctx, pp_display_cfg);
- }
+ 	abtsiocbp->iocb_cmpl = lpfc_sli_abort_els_cmpl;
+ 	abtsiocbp->vport = vport;
 
 
 
