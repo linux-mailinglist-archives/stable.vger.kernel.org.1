@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F4B36952
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A235CB363C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF64C9806A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62CB88A0F47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5292FE580;
-	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6F428750C;
+	Tue, 26 Aug 2025 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4eJ43ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uROjd0qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D409225390;
-	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B853AD4B;
+	Tue, 26 Aug 2025 13:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217698; cv=none; b=WD5O/te9keGimJrRdiEGki88T0yOVjiG+pki8VVu34TDWAYF5We9iTkUjAQ6BGqttTpo2eACqcS1J35R+rr+IoGV1z51eC6yElsm2Cu2uNlgwWN574m87OlNcY1mv1Ao+4EfUgDnKINOxrWkM9dmh3DdaDeQU85insAR72OF3Q0=
+	t=1756214578; cv=none; b=BAV1tBnxbXgRfj2OuWP9IU7RpLGKc5DvRUFgcAMIHVIaXGpGhhFs7YyOAzdlgj2u/YVfYtNJ6ZyYIXTbscrNZ99QOKUIZqk3FwOqIHiRbHZWND+Z6rixzTYHR4GJw8lnFWu4esfiwgBmmEpeLjHqC9uwONB1d4IO+okKfOzb/6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217698; c=relaxed/simple;
-	bh=F7X7vOIw2AFiNLTDVB2RCdU/HCdDGK80ldKt4L2ngnM=;
+	s=arc-20240116; t=1756214578; c=relaxed/simple;
+	bh=ZsvwhIn0M9QiUeH/Ia1IRS/Z3o2vUpyisr2Ay9yJeY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l909LX7nEyeWH/w4R6KO/6m7RenIUftztIKwLzk5RheZCw8BLFn3XU8tLtxQZTHJ3ua1DyO3kTJ8uZWYHPWtBpRmBDgVaMn4RJpxeQvccSiblzBngpyXymnKVL9YTxkL8bZa7E/xjln7KS9SK6F8S6oOCWTNzx+KNCu7SolGN7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4eJ43ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296BFC4CEF1;
-	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bLBh/2Az+M8DqaQO3tmS0n0JI+gpSi6e8avyNRrMloC5i5vWDLWKnfysy9qJIp2uCsDOSD5VB9FXfdDJNykPUD/4xALWRHPYfyJthpOrHXvd+QFriUoEM4EHhl9yGDGxZRkfUEkHP1WogA+1X7+T4bAnom8J3dA1QrIyxhFg5zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uROjd0qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3794FC4CEF1;
+	Tue, 26 Aug 2025 13:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217698;
-	bh=F7X7vOIw2AFiNLTDVB2RCdU/HCdDGK80ldKt4L2ngnM=;
+	s=korg; t=1756214577;
+	bh=ZsvwhIn0M9QiUeH/Ia1IRS/Z3o2vUpyisr2Ay9yJeY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4eJ43aimOS0JacidI/2M/wpBE/aW8we7zJ0X1G0zHRgdvm29BwuxgI1aGSNj/OQe
-	 z2uIvk4Cr+n2alHD/0dZOclOsXoBvVbxCyIXRe0JIcNvhWQEwacyR15sPYj1G3tu+z
-	 pBHRE9VSiFhPi2h5fPlu6b58KQNI2NFHAKbitGek=
+	b=uROjd0qfXewTQ5VgiazbG3IV9M7GlqqNxSx49FQ0ogKpGOQbpIfwUBVEm35OLun9k
+	 XIiYTsaWrdxeFE9yvPew40XPZA5DMUMVq+3IMGkeG2RebuksOEerttcXMLvH9e1DF4
+	 Cc9vPwfK/lPHNGXzZ1AnqFvFh0eyyBPOe3zwL8wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/523] ARM: tegra: Use I/O memcpy to write to IRAM
+Subject: [PATCH 6.1 191/482] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
 Date: Tue, 26 Aug 2025 13:07:24 +0200
-Message-ID: <20250826110930.221258607@linuxfoundation.org>
+Message-ID: <20250826110935.523039703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
+[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
 
-Kasan crashes the kernel trying to check boundaries when using the
-normal memcpy.
+When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
+two line warning is printed each time the pipeline is started. Reduce
+this excessive logging by only warning once for the missing control.
 
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-tegra/reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-index d5c805adf7a8..ea706fac6358 100644
---- a/arch/arm/mach-tegra/reset.c
-+++ b/arch/arm/mach-tegra/reset.c
-@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
- 	BUG_ON(is_enabled);
- 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
+diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
+index 40f56e044640..1c8d36684809 100644
+--- a/drivers/media/v4l2-core/v4l2-common.c
++++ b/drivers/media/v4l2-core/v4l2-common.c
+@@ -475,10 +475,10 @@ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
  
--	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
-+	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
- 			tegra_cpu_reset_handler_size);
+ 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
  
- 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
+-		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
+-			__func__);
+-		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
+-			__func__);
++		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
++			     __func__);
++		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
++			     __func__);
+ 	}
+ 
+ 	return freq > 0 ? freq : -EINVAL;
 -- 
 2.39.5
 
