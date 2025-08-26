@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-173386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71481B35D4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12419B35E79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C712C1BA71E0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E449189A669
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1F4322A03;
-	Tue, 26 Aug 2025 11:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C85285CA9;
+	Tue, 26 Aug 2025 11:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYZ88V5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Azj/hS4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DEA32143D;
-	Tue, 26 Aug 2025 11:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9462D2D0C91;
+	Tue, 26 Aug 2025 11:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208113; cv=none; b=Nd0nLt4V9i/087Bo6a6gWImze2S9sEkufWqkwxRlmfh7AC5TWKWD6VkoWIFOyAHT9zswuJhN2Wc3zULccGk6dHY6lNE/VUjJ496+8mIAFf8JaRkcqLTdmI3pIvRpalhHQ5JMnqtJRZVlU6ABUXnzGe8MHPbEgwl52KRCtcGRWPs=
+	t=1756208997; cv=none; b=I9M3LpsC6GLS7JLN81fRkpLAQuHctI1ATRgJF6q2FVPvUbfqrnieAzVr0yjfe2XYol6G5MHasgjAT3+aWEn9qzfyKIb6Lvm/zFvbrldUy+N2R2Ul0mqIuKtZF5BRqh1iJZ04AEk0+eIS+hcC7KfXBxTZtxDLgnQhM7XhpMOH7Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208113; c=relaxed/simple;
-	bh=F4HKLhPYH04mvXdbN540nHbpzTzGa3hTgjzoaKJS1Qg=;
+	s=arc-20240116; t=1756208997; c=relaxed/simple;
+	bh=PyjBOLt1ZcjVUltqXM7O1+Fyfa7llEU4/aIifFjpw00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsJzDEx9iKYD8vQPOXc5IPKTZLh+8sM4YOrolwLZhMAo4+exo1q7Gd7tThb9EahsBjT00J4NQI/GcUEQAPkgYRd0Mn1ILNW4+BmDYXLnA9EQCQYQXRrQlZowVb3lCXjKSW583LM4/uT0/zSkH6aaeaEWl+wFOogaPyOXHyr2gpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYZ88V5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4059C4CEF1;
-	Tue, 26 Aug 2025 11:35:12 +0000 (UTC)
+	 MIME-Version; b=VRzJuba93LaqIJ080pXCNbgAgVrjiM096hUMNv5PNVb6CIjLBkLxPzQRQxjCIWP4gGDoJIK6rb2mnFYOEdo2zJ8V8RIeAC/yU7sW2Bz3yHXXL7sv4zV3J4ODh8NqlHKC/Zkx7oGzMeLMd3H2jifHoZao1BWLs2Mg5jGPyBFjQhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Azj/hS4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BC8C4CEF1;
+	Tue, 26 Aug 2025 11:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208113;
-	bh=F4HKLhPYH04mvXdbN540nHbpzTzGa3hTgjzoaKJS1Qg=;
+	s=korg; t=1756208997;
+	bh=PyjBOLt1ZcjVUltqXM7O1+Fyfa7llEU4/aIifFjpw00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYZ88V5ThMka30YB+JVbA+O/jb/RWRoyX6DWNKUSSQKScgcFaxNM5E2XUb0fRuiJg
-	 GVUyImp6mNOl15qyGOXZde6jGdGshH+f35bzRGW7upt+Np7SZQeCYBK8qyBrxGfCZQ
-	 M7Wd7XDU1S0eu7jQXtCoxoAtM6osCtiQJMv2erSk=
+	b=Azj/hS4Hx98wC/zEUsbpz666XFo6jhBJ3BkYhEOV2NWE8/gA8sMLEIYwOvphadD32
+	 lh4/OPlnbwnHGEQWZ32y9BnYiXilMzP6RhMz76NYNMiFX+ec5+wNv7gFRWRVPsK1pC
+	 UiFWuo6kXUpfk6D/nDpUqDlFLwFP48u1lTvV7nAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 442/457] block: fix potential deadlock while running nr_hw_queue update
+Subject: [PATCH 6.12 311/322] bonding: send LACPDUs periodically in passive mode after receiving partners LACPDU
 Date: Tue, 26 Aug 2025 13:12:06 +0200
-Message-ID: <20250826110948.209833042@linuxfoundation.org>
+Message-ID: <20250826110923.572453253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,274 +62,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 04225d13aef11b2a539014def5e47d8c21fd74a5 ]
+[ Upstream commit 0599640a21e98f0d6a3e9ff85c0a687c90a8103b ]
 
-Move scheduler tags (sched_tags) allocation and deallocation outside
-both the ->elevator_lock and ->freeze_lock when updating nr_hw_queues.
-This change breaks the dependency chain from the percpu allocator lock
-to the elevator lock, helping to prevent potential deadlocks, as
-observed in the reported lockdep splat[1].
+When `lacp_active` is set to `off`, the bond operates in passive mode, meaning
+it only "speaks when spoken to." However, the current kernel implementation
+only sends an LACPDU in response when the partner's state changes.
 
-This commit introduces batch allocation and deallocation helpers for
-sched_tags, which are now used from within __blk_mq_update_nr_hw_queues
-routine while iterating through the tagset.
+As a result, once LACP negotiation succeeds, the actor stops sending LACPDUs
+until the partner times out and sends an "expired" LACPDU. This causes
+continuous LACP state flapping.
 
-With this change, all sched_tags memory management is handled entirely
-outside the ->elevator_lock and the ->freeze_lock context, thereby
-eliminating the lock dependency that could otherwise manifest during
-nr_hw_queues updates.
+According to IEEE 802.1AX-2014, 6.4.13 Periodic Transmission machine. The
+values of Partner_Oper_Port_State.LACP_Activity and
+Actor_Oper_Port_State.LACP_Activity determine whether periodic transmissions
+take place. If either or both parameters are set to Active LACP, then periodic
+transmissions occur; if both are set to Passive LACP, then periodic
+transmissions do not occur.
 
-[1] https://lore.kernel.org/all/0659ea8d-a463-47c8-9180-43c719e106eb@linux.ibm.com/
+To comply with this, we remove the `!bond->params.lacp_active` check in
+`ad_periodic_machine()`. Instead, we initialize the actor's port's
+`LACP_STATE_LACP_ACTIVITY` state based on `lacp_active` setting.
 
-Reported-by: Stefan Haberland <sth@linux.ibm.com>
-Closes: https://lore.kernel.org/all/0659ea8d-a463-47c8-9180-43c719e106eb@linux.ibm.com/
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250730074614.2537382-4-nilay@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 2d82f3bd8910 ("blk-mq: fix lockdep warning in __blk_mq_update_nr_hw_queues")
+Additionally, we avoid setting the partner's state to
+`LACP_STATE_LACP_ACTIVITY` in the EXPIRED state, since we should not assume
+the partner is active by default.
+
+This ensures that in passive mode, the bond starts sending periodic LACPDUs
+after receiving one from the partner, and avoids flapping due to inactivity.
+
+Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250815062000.22220-3-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-sched.c | 65 ++++++++++++++++++++++++++++++++++++++++++++
- block/blk-mq-sched.h |  4 +++
- block/blk-mq.c       | 16 +++++++----
- block/blk.h          |  4 ++-
- block/elevator.c     | 15 ++++------
- 5 files changed, 89 insertions(+), 15 deletions(-)
+ drivers/net/bonding/bond_3ad.c | 42 +++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
-index 2d6d1ebdd8fb..e2ce4a28e6c9 100644
---- a/block/blk-mq-sched.c
-+++ b/block/blk-mq-sched.c
-@@ -427,6 +427,32 @@ void blk_mq_free_sched_tags(struct elevator_tags *et,
- 	kfree(et);
- }
- 
-+void blk_mq_free_sched_tags_batch(struct xarray *et_table,
-+		struct blk_mq_tag_set *set)
-+{
-+	struct request_queue *q;
-+	struct elevator_tags *et;
-+
-+	lockdep_assert_held_write(&set->update_nr_hwq_lock);
-+
-+	list_for_each_entry(q, &set->tag_list, tag_set_list) {
-+		/*
-+		 * Accessing q->elevator without holding q->elevator_lock is
-+		 * safe because we're holding here set->update_nr_hwq_lock in
-+		 * the writer context. So, scheduler update/switch code (which
-+		 * acquires the same lock but in the reader context) can't run
-+		 * concurrently.
-+		 */
-+		if (q->elevator) {
-+			et = xa_load(et_table, q->id);
-+			if (unlikely(!et))
-+				WARN_ON_ONCE(1);
-+			else
-+				blk_mq_free_sched_tags(et, set);
-+		}
-+	}
-+}
-+
- struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
- 		unsigned int nr_hw_queues)
- {
-@@ -477,6 +503,45 @@ struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
- 	return NULL;
- }
- 
-+int blk_mq_alloc_sched_tags_batch(struct xarray *et_table,
-+		struct blk_mq_tag_set *set, unsigned int nr_hw_queues)
-+{
-+	struct request_queue *q;
-+	struct elevator_tags *et;
-+	gfp_t gfp = GFP_NOIO | __GFP_ZERO | __GFP_NOWARN | __GFP_NORETRY;
-+
-+	lockdep_assert_held_write(&set->update_nr_hwq_lock);
-+
-+	list_for_each_entry(q, &set->tag_list, tag_set_list) {
-+		/*
-+		 * Accessing q->elevator without holding q->elevator_lock is
-+		 * safe because we're holding here set->update_nr_hwq_lock in
-+		 * the writer context. So, scheduler update/switch code (which
-+		 * acquires the same lock but in the reader context) can't run
-+		 * concurrently.
-+		 */
-+		if (q->elevator) {
-+			et = blk_mq_alloc_sched_tags(set, nr_hw_queues);
-+			if (!et)
-+				goto out_unwind;
-+			if (xa_insert(et_table, q->id, et, gfp))
-+				goto out_free_tags;
-+		}
-+	}
-+	return 0;
-+out_free_tags:
-+	blk_mq_free_sched_tags(et, set);
-+out_unwind:
-+	list_for_each_entry_continue_reverse(q, &set->tag_list, tag_set_list) {
-+		if (q->elevator) {
-+			et = xa_load(et_table, q->id);
-+			if (et)
-+				blk_mq_free_sched_tags(et, set);
-+		}
-+	}
-+	return -ENOMEM;
-+}
-+
- /* caller must have a reference to @e, will grab another one if successful */
- int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e,
- 		struct elevator_tags *et)
-diff --git a/block/blk-mq-sched.h b/block/blk-mq-sched.h
-index 0cde00cd1c47..b554e1d55950 100644
---- a/block/blk-mq-sched.h
-+++ b/block/blk-mq-sched.h
-@@ -25,8 +25,12 @@ void blk_mq_sched_free_rqs(struct request_queue *q);
- 
- struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
- 		unsigned int nr_hw_queues);
-+int blk_mq_alloc_sched_tags_batch(struct xarray *et_table,
-+		struct blk_mq_tag_set *set, unsigned int nr_hw_queues);
- void blk_mq_free_sched_tags(struct elevator_tags *et,
- 		struct blk_mq_tag_set *set);
-+void blk_mq_free_sched_tags_batch(struct xarray *et_table,
-+		struct blk_mq_tag_set *set);
- 
- static inline void blk_mq_sched_restart(struct blk_mq_hw_ctx *hctx)
- {
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 32d11305d51b..4cb2f5ca8656 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4972,12 +4972,13 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
-  * Switch back to the elevator type stored in the xarray.
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index a51305423d28..4c2560ae8866 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -95,13 +95,13 @@ static int ad_marker_send(struct port *port, struct bond_marker *marker);
+ static void ad_mux_machine(struct port *port, bool *update_slave_arr);
+ static void ad_rx_machine(struct lacpdu *lacpdu, struct port *port);
+ static void ad_tx_machine(struct port *port);
+-static void ad_periodic_machine(struct port *port, struct bond_params *bond_params);
++static void ad_periodic_machine(struct port *port);
+ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr);
+ static void ad_agg_selection_logic(struct aggregator *aggregator,
+ 				   bool *update_slave_arr);
+ static void ad_clear_agg(struct aggregator *aggregator);
+ static void ad_initialize_agg(struct aggregator *aggregator);
+-static void ad_initialize_port(struct port *port, int lacp_fast);
++static void ad_initialize_port(struct port *port, const struct bond_params *bond_params);
+ static void ad_enable_collecting(struct port *port);
+ static void ad_disable_distributing(struct port *port,
+ 				    bool *update_slave_arr);
+@@ -1296,10 +1296,16 @@ static void ad_rx_machine(struct lacpdu *lacpdu, struct port *port)
+ 			 * case of EXPIRED even if LINK_DOWN didn't arrive for
+ 			 * the port.
+ 			 */
+-			port->partner_oper.port_state &= ~LACP_STATE_SYNCHRONIZATION;
+ 			port->sm_vars &= ~AD_PORT_MATCHED;
++			/* Based on IEEE 8021AX-2014, Figure 6-18 - Receive
++			 * machine state diagram, the statue should be
++			 * Partner_Oper_Port_State.Synchronization = FALSE;
++			 * Partner_Oper_Port_State.LACP_Timeout = Short Timeout;
++			 * start current_while_timer(Short Timeout);
++			 * Actor_Oper_Port_State.Expired = TRUE;
++			 */
++			port->partner_oper.port_state &= ~LACP_STATE_SYNCHRONIZATION;
+ 			port->partner_oper.port_state |= LACP_STATE_LACP_TIMEOUT;
+-			port->partner_oper.port_state |= LACP_STATE_LACP_ACTIVITY;
+ 			port->sm_rx_timer_counter = __ad_timer_to_ticks(AD_CURRENT_WHILE_TIMER, (u16)(AD_SHORT_TIMEOUT));
+ 			port->actor_oper_port_state |= LACP_STATE_EXPIRED;
+ 			port->sm_vars |= AD_PORT_CHURNED;
+@@ -1405,11 +1411,10 @@ static void ad_tx_machine(struct port *port)
+ /**
+  * ad_periodic_machine - handle a port's periodic state machine
+  * @port: the port we're looking at
+- * @bond_params: bond parameters we will use
+  *
+  * Turn ntt flag on priodically to perform periodic transmission of lacpdu's.
   */
- static void blk_mq_elv_switch_back(struct request_queue *q,
--		struct xarray *elv_tbl)
-+		struct xarray *elv_tbl, struct xarray *et_tbl)
+-static void ad_periodic_machine(struct port *port, struct bond_params *bond_params)
++static void ad_periodic_machine(struct port *port)
  {
- 	struct elevator_type *e = xa_load(elv_tbl, q->id);
-+	struct elevator_tags *t = xa_load(et_tbl, q->id);
+ 	periodic_states_t last_state;
  
- 	/* The elv_update_nr_hw_queues unfreezes the queue. */
--	elv_update_nr_hw_queues(q, e);
-+	elv_update_nr_hw_queues(q, e, t);
+@@ -1418,8 +1423,7 @@ static void ad_periodic_machine(struct port *port, struct bond_params *bond_para
  
- 	/* Drop the reference acquired in blk_mq_elv_switch_none. */
- 	if (e)
-@@ -5029,7 +5030,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 	int prev_nr_hw_queues = set->nr_hw_queues;
- 	unsigned int memflags;
- 	int i;
--	struct xarray elv_tbl;
-+	struct xarray elv_tbl, et_tbl;
- 
- 	lockdep_assert_held(&set->tag_list_lock);
- 
-@@ -5042,6 +5043,10 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 
- 	memflags = memalloc_noio_save();
- 
-+	xa_init(&et_tbl);
-+	if (blk_mq_alloc_sched_tags_batch(&et_tbl, set, nr_hw_queues) < 0)
-+		goto out_memalloc_restore;
-+
- 	xa_init(&elv_tbl);
- 
- 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
-@@ -5085,7 +5090,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- switch_back:
- 	/* The blk_mq_elv_switch_back unfreezes queue for us. */
- 	list_for_each_entry(q, &set->tag_list, tag_set_list)
--		blk_mq_elv_switch_back(q, &elv_tbl);
-+		blk_mq_elv_switch_back(q, &elv_tbl, &et_tbl);
- 
- 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
- 		blk_mq_sysfs_register_hctxs(q);
-@@ -5096,7 +5101,8 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 	/* check if port was reinitialized */
+ 	if (((port->sm_vars & AD_PORT_BEGIN) || !(port->sm_vars & AD_PORT_LACP_ENABLED) || !port->is_enabled) ||
+-	    (!(port->actor_oper_port_state & LACP_STATE_LACP_ACTIVITY) && !(port->partner_oper.port_state & LACP_STATE_LACP_ACTIVITY)) ||
+-	    !bond_params->lacp_active) {
++	    (!(port->actor_oper_port_state & LACP_STATE_LACP_ACTIVITY) && !(port->partner_oper.port_state & LACP_STATE_LACP_ACTIVITY))) {
+ 		port->sm_periodic_state = AD_NO_PERIODIC;
  	}
- 
- 	xa_destroy(&elv_tbl);
--
-+	xa_destroy(&et_tbl);
-+out_memalloc_restore:
- 	memalloc_noio_restore(memflags);
- 
- 	/* Free the excess tags when nr_hw_queues shrink. */
-diff --git a/block/blk.h b/block/blk.h
-index 4746a7704856..5d9ca8c95193 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -12,6 +12,7 @@
- #include "blk-crypto-internal.h"
- 
- struct elevator_type;
-+struct elevator_tags;
- 
- #define	BLK_DEV_MAX_SECTORS	(LLONG_MAX >> 9)
- #define	BLK_MIN_SEGMENT_SIZE	4096
-@@ -322,7 +323,8 @@ bool blk_bio_list_merge(struct request_queue *q, struct list_head *list,
- 
- bool blk_insert_flush(struct request *rq);
- 
--void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e);
-+void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e,
-+		struct elevator_tags *t);
- void elevator_set_default(struct request_queue *q);
- void elevator_set_none(struct request_queue *q);
- 
-diff --git a/block/elevator.c b/block/elevator.c
-index e9dc837b7b70..fe96c6f4753c 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -705,7 +705,8 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
-  * The I/O scheduler depends on the number of hardware queues, this forces a
-  * reattachment when nr_hw_queues changes.
+ 	/* check if state machine should change state */
+@@ -1943,16 +1947,16 @@ static void ad_initialize_agg(struct aggregator *aggregator)
+ /**
+  * ad_initialize_port - initialize a given port's parameters
+  * @port: the port we're looking at
+- * @lacp_fast: boolean. whether fast periodic should be used
++ * @bond_params: bond parameters we will use
   */
--void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e)
-+void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e,
-+		struct elevator_tags *t)
+-static void ad_initialize_port(struct port *port, int lacp_fast)
++static void ad_initialize_port(struct port *port, const struct bond_params *bond_params)
  {
- 	struct blk_mq_tag_set *set = q->tag_set;
- 	struct elv_change_ctx ctx = {};
-@@ -715,25 +716,21 @@ void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e)
+ 	static const struct port_params tmpl = {
+ 		.system_priority = 0xffff,
+ 		.key             = 1,
+ 		.port_number     = 1,
+ 		.port_priority   = 0xff,
+-		.port_state      = 1,
++		.port_state      = 0,
+ 	};
+ 	static const struct lacpdu lacpdu = {
+ 		.subtype		= 0x01,
+@@ -1970,12 +1974,14 @@ static void ad_initialize_port(struct port *port, int lacp_fast)
+ 		port->actor_port_priority = 0xff;
+ 		port->actor_port_aggregator_identifier = 0;
+ 		port->ntt = false;
+-		port->actor_admin_port_state = LACP_STATE_AGGREGATION |
+-					       LACP_STATE_LACP_ACTIVITY;
+-		port->actor_oper_port_state  = LACP_STATE_AGGREGATION |
+-					       LACP_STATE_LACP_ACTIVITY;
++		port->actor_admin_port_state = LACP_STATE_AGGREGATION;
++		port->actor_oper_port_state  = LACP_STATE_AGGREGATION;
++		if (bond_params->lacp_active) {
++			port->actor_admin_port_state |= LACP_STATE_LACP_ACTIVITY;
++			port->actor_oper_port_state  |= LACP_STATE_LACP_ACTIVITY;
++		}
  
- 	if (e && !blk_queue_dying(q) && blk_queue_registered(q)) {
- 		ctx.name = e->elevator_name;
--		ctx.et = blk_mq_alloc_sched_tags(set, set->nr_hw_queues);
--		if (!ctx.et) {
--			WARN_ON_ONCE(1);
--			goto unfreeze;
--		}
-+		ctx.et = t;
-+
- 		mutex_lock(&q->elevator_lock);
- 		/* force to reattach elevator after nr_hw_queue is updated */
- 		ret = elevator_switch(q, &ctx);
- 		mutex_unlock(&q->elevator_lock);
- 	}
--unfreeze:
- 	blk_mq_unfreeze_queue_nomemrestore(q);
- 	if (!ret)
- 		WARN_ON_ONCE(elevator_change_done(q, &ctx));
- 	/*
- 	 * Free sched tags if it's allocated but we couldn't switch elevator.
- 	 */
--	if (ctx.et && !ctx.new)
--		blk_mq_free_sched_tags(ctx.et, set);
-+	if (t && !ctx.new)
-+		blk_mq_free_sched_tags(t, set);
- }
+-		if (lacp_fast)
++		if (bond_params->lacp_fast)
+ 			port->actor_oper_port_state |= LACP_STATE_LACP_TIMEOUT;
  
- /*
+ 		memcpy(&port->partner_admin, &tmpl, sizeof(tmpl));
+@@ -2187,7 +2193,7 @@ void bond_3ad_bind_slave(struct slave *slave)
+ 		/* port initialization */
+ 		port = &(SLAVE_AD_INFO(slave)->port);
+ 
+-		ad_initialize_port(port, bond->params.lacp_fast);
++		ad_initialize_port(port, &bond->params);
+ 
+ 		port->slave = slave;
+ 		port->actor_port_number = SLAVE_AD_INFO(slave)->id;
+@@ -2499,7 +2505,7 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
+ 		}
+ 
+ 		ad_rx_machine(NULL, port);
+-		ad_periodic_machine(port, &bond->params);
++		ad_periodic_machine(port);
+ 		ad_port_selection_logic(port, &update_slave_arr);
+ 		ad_mux_machine(port, &update_slave_arr);
+ 		ad_tx_machine(port);
 -- 
 2.50.1
 
