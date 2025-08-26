@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84815B35E4B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E9DB362B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9CE1BA6297
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2B4C465988
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1C53218C9;
-	Tue, 26 Aug 2025 11:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89AE230BDF;
+	Tue, 26 Aug 2025 13:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMNeVJXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH2s0kKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097D02798ED;
-	Tue, 26 Aug 2025 11:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D9C1A83ED;
+	Tue, 26 Aug 2025 13:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208809; cv=none; b=XyAhvnsYuwZ7aNn+8Ubiu15mMzCSyQFsv+mNeUy0GSzB/f6xEs8PA2nUiteFuci17E6cq5iCediPRRdF0VCZFcsdtvclw1q72MSglPGNJ2Jv8R4DTtEUezBEDMwJ5mpRGwv6790a0i6b1oX6siZFD5KIXBZ6y23OK9tnQ+l4FII=
+	t=1756213978; cv=none; b=l7Y2GvYQdoeVhOMgOk9jpS8/T5n5o4IODFXQAV487w19nd4x1hOpqvqPlPSpH/d3RzLYzdw1D2R/0m74RrL3x62LaQQqKc1hXfnA5hOmIqkk0iR4h50q7LZyR4C700v14h5hW3XJgdjZw/KSrmLZmD0nROZKTWckEzc3KnOzfgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208809; c=relaxed/simple;
-	bh=kJO6/D9A+KNizT0lZugbC0KonxmFSo3+Pm76nvABGrw=;
+	s=arc-20240116; t=1756213978; c=relaxed/simple;
+	bh=jHZF5qmAOV/ks/Z0DCkox/m3Zeo+xH5T+0XrxveoJg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmUSfWKwuRKVQrUefILLWxxj5eQh3M8vwhsD6GW/fOsrQzgOt1VFG1+ZitqRJxTNh8IPyq6vukL1AIUnBWnTSPzyT9PBc//D9YK6pu2zS+Am0IQy4TgK/HBGewVPa+ORhu7MH3vvn+tMp5/Mi7bqkUEWL1A4SwAfa2MhROEdQnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMNeVJXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE52C4CEF1;
-	Tue, 26 Aug 2025 11:46:48 +0000 (UTC)
+	 MIME-Version; b=qsQDSnO9J9uVI74ONV3+xMS6fXgHnSrVYTye5rbl+MaosJ7yusFYt162Uh520XrvT/svyAw261pyuSrFo38hnl9zC8dsh+af0wpCBDuAKg7LKQakya+WoF1YT0Rpt+MJztajXCmuPew69fQ+jeCPbjhxmldOUUCkPGPJLBxfHF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH2s0kKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84124C113CF;
+	Tue, 26 Aug 2025 13:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208808;
-	bh=kJO6/D9A+KNizT0lZugbC0KonxmFSo3+Pm76nvABGrw=;
+	s=korg; t=1756213978;
+	bh=jHZF5qmAOV/ks/Z0DCkox/m3Zeo+xH5T+0XrxveoJg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMNeVJXFHyabg6xBdPv9KWnWn0hPzGa7awBklV4lEnaunrEAGpPXkI9+66YzDp+/M
-	 4lJb1xYlig5IkhVlfR5q6qJk0dG/UzjldbbqjhVyqv+SxryCO69avsW4ZjFXGSBb0O
-	 AEQrD+0g97uhRmvhssvNHN+0fu36MiEy/eZcHLWA=
+	b=bH2s0kKECEKY6U99jx884uBUpo3Q051h3RVLq+R/L3ikTnWpRuRLBCvf8fCO5JFQg
+	 /sxpFthduPxXSBx8d96LRYwv64W4247TA94RUJxmMZm48Ampsoker61QJVdDLazAra
+	 av5YdAlKaO5JJ7cWif5660MFrb4CdW6b6p0NN4XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 254/322] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 520/587] comedi: Make insn_rw_emulate_bits() do insn->n samples
 Date: Tue, 26 Aug 2025 13:11:09 +0200
-Message-ID: <20250826110922.208172216@linuxfoundation.org>
+Message-ID: <20250826111006.224679468@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
+commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
 
-The following lockdep splat was observed.
+The `insn_rw_emulate_bits()` function is used as a default handler for
+`INSN_READ` instructions for subdevices that have a handler for
+`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
+handler for `INSN_WRITE` instructions for subdevices that have a handler
+for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
+`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
+`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
+instructions are supposed to be able read or write multiple samples,
+indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
+only handles a single sample.  For `INSN_READ`, the comedi core will
+copy `insn->n` samples back to user-space.  (That triggered KASAN
+kernel-infoleak errors when `insn->n` was greater than 1, but that is
+being fixed more generally elsewhere in the comedi core.)
 
-[  812.359086] ============================================
-[  812.359089] WARNING: possible recursive locking detected
-[  812.359097] --------------------------------------------
-[  812.359100] runtest.sh/30042 is trying to acquire lock:
-[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
-[  812.359131]
-[  812.359131] but task is already holding lock:
-[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
-     :
-[  812.359267] Call Trace:
-[  812.359272]  <TASK>
-[  812.359367]  cpus_read_lock+0x3c/0xe0
-[  812.359382]  static_key_enable+0xe/0x20
-[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
-[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
-[  812.359411]  cgroup_file_write+0x1c7/0x660
-[  812.359467]  kernfs_fop_write_iter+0x358/0x530
-[  812.359479]  vfs_write+0xabe/0x1250
-[  812.359529]  ksys_write+0xf9/0x1d0
-[  812.359558]  do_syscall_64+0x5f/0xe0
+Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
+an error, to conform to the general expectation for `INSN_READ` and
+`INSN_WRITE` handlers.
 
-Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
-and hotplug lock order"), the ordering of cpu hotplug lock
-and cpuset_mutex had been reversed. That patch correctly
-used the cpuslocked version of the static branch API to enable
-cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
-same for cpusets_insane_config_key.
-
-The cpusets_insane_config_key can be enabled in the
-check_insane_mems_config() which is called from update_nodemask()
-or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
-cpuset_mutex held. Deadlock can happen with a pending hotplug event that
-tries to acquire the cpu hotplug write lock which will block further
-cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
-switching to use static_branch_enable_cpuslocked().
-
-Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org> # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/comedi/drivers.c |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index d1fb4bfbbd4c..af5dc30bfe4b 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -267,7 +267,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
- {
- 	if (!cpusets_insane_config() &&
- 		movable_only_nodes(nodes)) {
--		static_branch_enable(&cpusets_insane_config_key);
-+		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
- 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
- 			"Cpuset allocations might fail even with a lot of memory available.\n",
- 			nodemask_pr_args(nodes));
--- 
-2.50.1
-
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -619,11 +619,9 @@ static int insn_rw_emulate_bits(struct c
+ 	unsigned int chan = CR_CHAN(insn->chanspec);
+ 	unsigned int base_chan = (chan < 32) ? 0 : chan;
+ 	unsigned int _data[2];
++	unsigned int i;
+ 	int ret;
+ 
+-	if (insn->n == 0)
+-		return 0;
+-
+ 	memset(_data, 0, sizeof(_data));
+ 	memset(&_insn, 0, sizeof(_insn));
+ 	_insn.insn = INSN_BITS;
+@@ -634,18 +632,21 @@ static int insn_rw_emulate_bits(struct c
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1U << (chan - base_chan);		     /* mask */
+-		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		/* mask */
+ 	}
++	for (i = 0; i < insn->n; i++) {
++		if (insn->insn == INSN_WRITE)
++			_data[1] = data[i] ? _data[0] : 0;	/* bits */
++
++		ret = s->insn_bits(dev, s, &_insn, _data);
++		if (ret < 0)
++			return ret;
+ 
+-	ret = s->insn_bits(dev, s, &_insn, _data);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (insn->insn == INSN_READ)
+-		data[0] = (_data[1] >> (chan - base_chan)) & 1;
++		if (insn->insn == INSN_READ)
++			data[i] = (_data[1] >> (chan - base_chan)) & 1;
++	}
+ 
+-	return 1;
++	return insn->n;
+ }
+ 
+ static int __comedi_device_postconfig_async(struct comedi_device *dev,
 
 
 
