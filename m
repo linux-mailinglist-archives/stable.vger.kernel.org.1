@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67D3B35E66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7112B364C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BAD56181F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B5781894F8D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC5F29D292;
-	Tue, 26 Aug 2025 11:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE992F7473;
+	Tue, 26 Aug 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2TBy5HW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+imhIqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C24E200112;
-	Tue, 26 Aug 2025 11:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF11312803;
+	Tue, 26 Aug 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208960; cv=none; b=I+sIUnWfUN33ju6QvZqcYDwKlF0bqvcgIHL1a93Ryd3to648+Puo4qqeRvyLXRwVgTJmlv6Vny6GKxP8UZ8OKm1vjlRmUx+X17dXkcEkgO6DPSyuQ2XRDyBP3+YCdCun5tU7SIh235scYAhNXLFIQ9yhEHvUx5ctvMxkY+tXMe4=
+	t=1756215244; cv=none; b=cpv0nMgMxz9CCBrzjvkN4XZzMaFzS8yneMvGTSmH6NEAzY7HR9Z8mBk+V7+swSafRJorS1/glMki+maMSK4/yifRV4bLGaYj3XIxyZ12mCHQOE6TwbupCX8I503uJEV3VZBbAL20V7LFpZHw70NOY9+EcLgnLMH3F5Q07hZFzaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208960; c=relaxed/simple;
-	bh=rIttr2jSlxhc896CXQczCR6aIquQGQg47MxbMnUQHbA=;
+	s=arc-20240116; t=1756215244; c=relaxed/simple;
+	bh=OFtOf+GYLqm4WuxI5F9XGaZ6mtkNLDz9th/3P66nQwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlhWnfrimIh8rvGxT+Nu8EDS2cHV+u4XWtjKpB6SK3yyC1Cis5BjkhTzCgM8v7ItdsKPBkZEYxh8tvxTZcLfxycca6wH2hV93b7U7RfkcIwBsvalG3YTLOlhKJGs09Sy94n4ueqmWZmcpvF6yRYiseMpOaPqMNzSzNgKDTM5O8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2TBy5HW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD5FC4CEF1;
-	Tue, 26 Aug 2025 11:49:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r5cmnzDx/c/KbOcpWlgqAx3Z5azCH+Tu0DkC2nHJo4/kuxP1NdiiH1lI/Cu0W6h5JmUVzAJIg1kWsPjUcD84p0gcG01qpL6Xj6TU0Ns8hjd98+TjY7X7bBH1hy0dE+i30LDw0rY3vyyDVhG25isLvs6BPliUYEQLr1pOGYbGxi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+imhIqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B0AC4CEF1;
+	Tue, 26 Aug 2025 13:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208958;
-	bh=rIttr2jSlxhc896CXQczCR6aIquQGQg47MxbMnUQHbA=;
+	s=korg; t=1756215244;
+	bh=OFtOf+GYLqm4WuxI5F9XGaZ6mtkNLDz9th/3P66nQwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2TBy5HWNU126C9jrTzZSKikdJyVmOYmNZ68BcUq2BfPXYiZOR3YYpJT1xoGTfBW7
-	 CApyuFNl8gxcEubo/qqLgre2joT8PEv+KqITuObwSrUSP+XwJ7pY947qpsi7onm6eY
-	 OKe0JuBvYMja2VEd8D4YqpBj5RvQk/GYhhBBU59g=
+	b=i+imhIqp8apaRMLLT/yjWaDBIngC8TA2c9K1FjJOJAnqoqDmX2lVTe4tM9IvgK/Mg
+	 kPu7G7CKhxJZZ8ALOJyvEF9xkDb5Ow8V9voffc4cTG3lC2+YqVbgiMhPNFr2VaklDW
+	 oFg90o+e2J84UhtB3j9EZmpEkklOmjpa9jI6RvyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li@amlogic.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 279/322] Bluetooth: hci_sync: Prevent unintended PA sync when SID is 0xFF
+Subject: [PATCH 6.1 441/482] drm/amd/display: Dont overclock DCE 6 by 15%
 Date: Tue, 26 Aug 2025 13:11:34 +0200
-Message-ID: <20250826110922.813329637@linuxfoundation.org>
+Message-ID: <20250826110941.726091443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li@amlogic.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 4d19cd228bbe8ff84a63fe7b11bc756b4b4370c7 ]
+[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
 
-After LE Extended Scan times out, conn->sid remains 0xFF,
-so the PA sync creation process should be aborted.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-Btmon snippet from PA sync with SID=0xFF:
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-< HCI Command: LE Set Extended.. (0x08|0x0042) plen 6  #74726 [hci0] 863.107927
-        Extended scan: Enabled (0x01)
-        Filter duplicates: Enabled (0x01)
-        Duration: 0 msec (0x0000)
-        Period: 0.00 sec (0x0000)
-> HCI Event: Command Complete (0x0e) plen 4            #74727 [hci0] 863.109389
-      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
-        Status: Success (0x00)
-< HCI Command: LE Periodic Ad.. (0x08|0x0044) plen 14  #74728 [hci0] 865.141168
-        Options: 0x0000
-        Use advertising SID, Advertiser Address Type and address
-        Reporting initially enabled
-        SID: 0xff
-        Adv address type: Random (0x01)
-        Adv address: 0D:D7:2C:E7:42:46 (Non-Resolvable)
-        Skip: 0x0000
-        Sync timeout: 20000 msec (0x07d0)
-        Sync CTE type: 0x0000
-> HCI Event: Command Status (0x0f) plen 4              #74729 [hci0] 865.143223
-      LE Periodic Advertising Create Sync (0x08|0x0044) ncmd 1
-        Status: Success (0x00)
-
-Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
-Signed-off-by: Yang Li <yang.li@amlogic.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Cc: stable@vger.kernel.org
+[ `MIN` => `min` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index c7fd657c86ff..af86df9de941 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -7020,10 +7020,13 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
- 	 * it.
- 	 */
--	if (conn->sid == HCI_SID_INVALID)
--		__hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
--					 HCI_EV_LE_EXT_ADV_REPORT,
--					 conn->conn_timeout, NULL);
-+	if (conn->sid == HCI_SID_INVALID) {
-+		err = __hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
-+					       HCI_EV_LE_EXT_ADV_REPORT,
-+					       conn->conn_timeout, NULL);
-+		if (err == -ETIMEDOUT)
-+			goto done;
-+	}
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -112,11 +112,9 @@ static void dce60_update_clocks(struct c
+ {
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
- 	memset(&cp, 0, sizeof(cp));
- 	cp.options = qos->bcast.options;
-@@ -7053,6 +7056,7 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 		__hci_cmd_sync_status(hdev, HCI_OP_LE_PA_CREATE_SYNC_CANCEL,
- 				      0, NULL, HCI_CMD_TIMEOUT);
- 
-+done:
- 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
- 
- 	/* Update passive scan since HCI_PA_SYNC flag has been cleared */
--- 
-2.50.1
-
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
 
