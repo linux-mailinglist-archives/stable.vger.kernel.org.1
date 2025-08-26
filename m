@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA08EB36D18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FA4B35DF2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30926854C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D4E5463754
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746E4350D44;
-	Tue, 26 Aug 2025 14:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5475429BDB8;
+	Tue, 26 Aug 2025 11:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FC8GJncm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABImMEgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC4F350D50;
-	Tue, 26 Aug 2025 14:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9A917332C;
+	Tue, 26 Aug 2025 11:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218971; cv=none; b=DFg57Jt8yOc07EvIal0O+QoolonPxk4lZQY5jO53JOMXf+KgS4MO8jPzTPyWImxZ1P1WkPbTLGj8w0xQF1IGA7GSrFaWRtDRt4eLNz2u0sDUTsP7Yjk3E3vK24aiMCjtm11PljvoyaSsK5iFJhIYnnBFeTco9tzJWqV6GmNh98I=
+	t=1756208444; cv=none; b=r7Fs7UWRHlAxSjwA2WNSr1YFx6jsWPs8Cq3DZ6iW59wS90aUul5BUVgTbBMtJlf5zZTVffYrImz+zFahWaOOZYdeakIFkxEPKrcwQOfXousg9lwacciLZ6V/uCUMO1W9iqlS00KC+IziC3cnvnxI2WKQcvK5HWIgDpocbUz75nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218971; c=relaxed/simple;
-	bh=LdeMQYV+/hmHW6UlrKEHYN6tJXxZHNrCqr/aoF40NmA=;
+	s=arc-20240116; t=1756208444; c=relaxed/simple;
+	bh=GzyPM8yHi1iIuUKm9gIbnFDsWqSTlMge7z93e3pViM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbiRbL7RRYkxZXN9ndz6VB2FlR3k/Wg2c27P1Ls0nVNXYrwnfPWPdOUhK53kQz6k4y4vYAhJ/oBduEo6+B4QcEb4UU0Pq8/Hyg8bTykSF+WsY+Ph3jFmzFnkOoefPxuKISHU6623S+LU78FlvfodltRsCTK3jHQnaur+WQbYByk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FC8GJncm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F04AC4CEF1;
-	Tue, 26 Aug 2025 14:36:09 +0000 (UTC)
+	 MIME-Version; b=m67OGKnugKbVNM78Bvyzh9VWZvzkrkTHb8RXFwRB0LSvYYwerVKDo88W1ZLj1Cwai+TrNwR+TUr5v6yTwDu5RgTryB3erACVkRg09EIImc8fZv77Ul9pGSCFu5fpYMHjosnVkipdcwV/st5cNVPAdiaLe9cUeDtiEKK3Ms8nUR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABImMEgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B7EC4CEF1;
+	Tue, 26 Aug 2025 11:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218969;
-	bh=LdeMQYV+/hmHW6UlrKEHYN6tJXxZHNrCqr/aoF40NmA=;
+	s=korg; t=1756208443;
+	bh=GzyPM8yHi1iIuUKm9gIbnFDsWqSTlMge7z93e3pViM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FC8GJncmVCqIU4ZZHCXcZVLSYesHD9oy+Hd6xWlQpkbCJusVyZJf1ttEVaam3a5eg
-	 xQ86ShbyUEktUr+FD8a4rZtfqt6X+DGnu0jy6kXKlcT7ygj9eTkFvea/dfVaLLcp24
-	 zlF8nW89gLe4QkRcbJHDOmZSfvLD8RJ3Z3CDLYRA=
+	b=ABImMEgDqirN9iYYztC1mUqWn7f6ApBzba3RO2/KUPQNu2UgabGnGc3+cX1EEkRYX
+	 Dhm+SmwBGp0ah1a9fw+TfD01LoRiwbhz6BdBg374ej1++VW2YQHGshRWloGQmbjOAS
+	 45kdLGRZp6kekxqNQJ1JcZrjwRqOGpt37SpNv8Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 203/403] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
+	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 114/322] media: venus: hfi: explicitly release IRQ during teardown
 Date: Tue, 26 Aug 2025 13:08:49 +0200
-Message-ID: <20250826110912.462723310@linuxfoundation.org>
+Message-ID: <20250826110918.602549417@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
 
-[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
+commit 640803003cd903cea73dc6a86bf6963e238e2b3f upstream.
 
-The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
-buffer if either string argument is too long. This triggers a compiler
-warning.
-Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
-overflow.
+Ensure the IRQ is disabled - and all pending handlers completed - before
+dismantling the interrupt routing and clearing related pointers.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
-Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
-Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This prevents any possibility of the interrupt triggering after the
+handler context has been invalidated.
+
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_ca0132.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index 40f50571ad63..dee38dd872b5 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -4014,7 +4014,7 @@ static int add_tuning_control(struct hda_codec *codec,
- 	}
- 	knew.private_value =
- 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
--	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
-+	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
- 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1693,6 +1693,7 @@ void venus_hfi_destroy(struct venus_core
+ 	venus_interface_queues_release(hdev);
+ 	mutex_destroy(&hdev->lock);
+ 	kfree(hdev);
++	disable_irq(core->irq);
+ 	core->ops = NULL;
  }
  
--- 
-2.39.5
-
 
 
 
