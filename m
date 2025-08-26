@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-173877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199BFB36034
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F45AB365EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A940463839
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F6EB56247A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3410E2F657F;
-	Tue, 26 Aug 2025 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F57A341655;
+	Tue, 26 Aug 2025 13:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enx64k54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdnW2OZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FB922CBCB;
-	Tue, 26 Aug 2025 12:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D25128314A;
+	Tue, 26 Aug 2025 13:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212902; cv=none; b=HRCNtDFFxKkM5G6P1K44Q0Ik9lPAq6gTf0d9fPatmMKvXiXa7BvqbjFUQtgPScObJZkobym9eJS0FKsMUOgkRWlibduiwd5GJauZQtrR1B8VZHkYq0dANv4Y/Jl4D4LhPcKcM50jPgxLIA4DnTgadRD4QzAdFj44ofqtKYAspaY=
+	t=1756215885; cv=none; b=ALYUfbunyziZFfEBXqUwPp72l2tUezzDHF8F/L9aenUc6YJUZECDyY1bLtTr0P0tv6I8O1Af1wM+ASHNMpw0NrE/bhl3ZXqtZlYnkatT9XGxY+ZQqERyrHeF2bFtZvpYCYVrInLs8kAlabCdYscxR4wai8dYdW3eH6u4507wyF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212902; c=relaxed/simple;
-	bh=2vioXI1afoKi7TNIHZWPn7yQK66xPLuenFdEyyuEFA0=;
+	s=arc-20240116; t=1756215885; c=relaxed/simple;
+	bh=Zq6qgLoauGsh/zUxLi2QThKXJLiMbHnkHD+qyOwqxSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW5IGqzsfWCqzmEbQsN6UPbhvJUbI9NL1b8X8gUHK91aaWZOFQeuKswFsD5gTAqy14KG/E+JBNNEpnW7KazIEQBU7S0MJlsScjHNcEMfCY2OrxFSn8J6k+nUkjrO67An+AApRh7u8ot99XVAWLi0p601F8DNAv4dLhW7NelLKZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enx64k54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C2AC4CEF1;
-	Tue, 26 Aug 2025 12:55:01 +0000 (UTC)
+	 MIME-Version; b=sIH+lfpXpcemAWMrgpUnu1gGZPdtmMhfXE9WDptA4WnOOW1hqw+bLIHZS2LVCBlGPTFy2xSNWf1KjVPSpuOGHmeUb68zY867LkDuIoeAByOct/C5mLH1i8iwY24HlTqsV1Sebg5Ih7rXC3I2cfy1DDrrUI/IwPcSCW16jQWxHyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdnW2OZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898A2C4CEF1;
+	Tue, 26 Aug 2025 13:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212901;
-	bh=2vioXI1afoKi7TNIHZWPn7yQK66xPLuenFdEyyuEFA0=;
+	s=korg; t=1756215883;
+	bh=Zq6qgLoauGsh/zUxLi2QThKXJLiMbHnkHD+qyOwqxSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enx64k54aY8k0NOiJb+K0SAqBP51SbevPx/oFd+Gv4zzAQFeWsaIWBCpi01alfQta
-	 dL5DrPPKUmV6nSydc4zSgCELix+aqU3HM9qLJ1Ax0SafxBdUlyP5jQ2pIMysoqhQO9
-	 xyYa8pTkQ9n2LC//iBCBwC+gLnO0oUXXsl+UDez4=
+	b=NdnW2OZ/0Ucgrg5yGXKTW7Q4m3AcnyNVFNUzQ6ESYSDl1aDylUSM1WJA30/MJBe2l
+	 Unv3GUDqkWsSPVQ0zJbvsE4whGecRk2AbKNMG/L3fGVzQZs4e48nMEq0U6VO1346GK
+	 vnX1Bm1h29MkPLU7n00bnK+5SFwS1FdjOUGLrTDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/587] wifi: cfg80211: reject HTC bit for management frames
+Subject: [PATCH 5.15 203/644] bpf: Check flow_dissector ctx accesses are aligned
 Date: Tue, 26 Aug 2025 13:04:54 +0200
-Message-ID: <20250826110956.641092748@linuxfoundation.org>
+Message-ID: <20250826110951.467259230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit ead3d7b2b6afa5ee7958620c4329982a7d9c2b78 ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+flow_dissector_is_valid_access doesn't check that the context access is
+aligned. As a consequence, an unaligned access within one of the exposed
+field is considered valid and later rejected by
+flow_dissector_convert_ctx_access when we try to convert it.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The later rejection is problematic because it's reported as a verifier
+bug with a kernel warning and doesn't point to the right instruction in
+verifier logs.
+
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Reported-by: syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccac90e482b2a81d74aa
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/cc1b036be484c99be45eddf48bd78cc6f72839b1.1754039605.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/filter.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 55a1d3633853..3d631f8073f0 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -739,7 +739,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 169d9ba4e7a0..f346f19cf468 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -8764,6 +8764,9 @@ static bool flow_dissector_is_valid_access(int off, int size,
+ 	if (off < 0 || off >= sizeof(struct __sk_buff))
+ 		return false;
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
++	if (off % size != 0)
++		return false;
++
+ 	if (type == BPF_WRITE)
+ 		return false;
  
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
 -- 
 2.39.5
 
