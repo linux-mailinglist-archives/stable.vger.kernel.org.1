@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2A7B36926
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481F2B36AB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B910C5842FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27CF91C4561E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE0C352090;
-	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B85B35CEB8;
+	Tue, 26 Aug 2025 14:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH6QVcKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UToDqHfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A78E352074;
-	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0884A352094;
+	Tue, 26 Aug 2025 14:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217593; cv=none; b=mhTYLvebSYko9kvYsK4/gFx3gvc24tdEPCrJA3G9b4V1HbF2L3m2GwPezKUQ8TdUoWxHaCgSMtOQQcnKQMe0mZOoggFsL+mbwY2HcBDmtbGmh+3Jt/qwlsaVvs4lVdBgOIi42dWx9aieP0u9T1M6VbJ7Nr20KL+S/SLqlnBkXGM=
+	t=1756218662; cv=none; b=troNnb7iqbEEfBMtdm1PhfAMSRv2jP1kNXQZ+2ikmy99c+plNY4nqaicMsecY5tS5Q1pYMQN1bh4hKo7qjPDSiJcqpZibVu0NkIvnMtoDwRuCzLwFnSnsdjsy4Ijuoaj2NqiXvJG71Nnwqf4YjyGvEsa6O4HQxOF6tP/coNVMNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217593; c=relaxed/simple;
-	bh=TyanilUoJldmfHhOhg33Tk5SkKrpKU/0O1AoDP2FycE=;
+	s=arc-20240116; t=1756218662; c=relaxed/simple;
+	bh=XBE7EiqdAIllcI6XeYXMV+W+q8ginNseURqcZdbdsmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifEVj6w34jQL5UTjvsqrmdkdzInzgLtXVxykU1dboXArRbaAQgxJYuHNyixdMzEaFue52oaQsDvH+L2vP+Bx0tPCUHmq25D+8f44Xm+eJJg23EFoPh19icF4aMlgRu2T59kUkzTYGLvP6xDm1SQ9IBfCSyKH45OwqiNLzDjhECE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH6QVcKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02DC4CEF1;
-	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
+	 MIME-Version; b=SfN64vhTkNIRBGTYsYCMvdTu207Bh7hbtLM273GlZuIa3gPDUCRbdyAiEvRQeccp1RSRwCPdh5Y2YqzEAZO2TnX7Pf6Y9/BJtfgEf3u4YOfYU0H0ef5gF1ddrRJm0EF49eCTvnBo9ljuZp+m44/2KQ5AgkBn7rDzRD4QBSmWnFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UToDqHfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CC0C4CEF1;
+	Tue, 26 Aug 2025 14:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217593;
-	bh=TyanilUoJldmfHhOhg33Tk5SkKrpKU/0O1AoDP2FycE=;
+	s=korg; t=1756218661;
+	bh=XBE7EiqdAIllcI6XeYXMV+W+q8ginNseURqcZdbdsmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH6QVcKeiwpHifMaqOFCVHdYtX6OeuKCcFxrmjxhgFuc2HNq4N/ojn383/i1f758R
-	 Kkpwl/LC7/5MHXNaMZvigKmeRR6AxUl6DtEldzIw3oT34iyQmmulvxf8pJKLbQtOsV
-	 B4nIJ7M0uTbKpb52qJrZNzS7M27oBldPuuIjSlC0=
+	b=UToDqHfhHAIeEiGsYJeaZV7PcC+pNaGLWJraOkwWeG8FFvWJz0lg0o80yHb772Jue
+	 mz/xvrIC9U5OH2B+YsTWPM5EMuGSk6JE6OnETz7TmtAOfBOok17Nj6w8C4hAWlmuFF
+	 UeG0Tid/Ohzdv4uhMYDRVD59me6ZdJQhN+miEq+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/523] NFSv4.2: another fix for listxattr
+Subject: [PATCH 5.4 054/403] usb: hub: fix detection of high tier USB3 devices behind suspended hubs
 Date: Tue, 26 Aug 2025 13:06:20 +0200
-Message-ID: <20250826110928.660810696@linuxfoundation.org>
+Message-ID: <20250826110907.358500842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 9acb237deff7667b0f6b10fe6b1b70c4429ea049 ]
+commit 8f5b7e2bec1c36578fdaa74a6951833541103e27 upstream.
 
-Currently, when the server supports NFS4.1 security labels then
-security.selinux label in included twice. Instead, only add it
-when the server doesn't possess security label support.
+USB3 devices connected behind several external suspended hubs may not
+be detected when plugged in due to aggressive hub runtime pm suspend.
 
-Fixes: 243fea134633 ("NFSv4.2: fix listxattr to return selinux security label")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Link: https://lore.kernel.org/r/20250722205641.79394-1-okorniev@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+The hub driver immediately runtime-suspends hubs if there are no
+active children or port activity.
+
+There is a delay between the wake signal causing hub resume, and driver
+visible port activity on the hub downstream facing ports.
+Most of the LFPS handshake, resume signaling and link training done
+on the downstream ports is not visible to the hub driver until completed,
+when device then will appear fully enabled and running on the port.
+
+This delay between wake signal and detectable port change is even more
+significant with chained suspended hubs where the wake signal will
+propagate upstream first. Suspended hubs will only start resuming
+downstream ports after upstream facing port resumes.
+
+The hub driver may resume a USB3 hub, read status of all ports, not
+yet see any activity, and runtime suspend back the hub before any
+port activity is visible.
+
+This exact case was seen when conncting USB3 devices to a suspended
+Thunderbolt dock.
+
+USB3 specification defines a 100ms tU3WakeupRetryDelay, indicating
+USB3 devices expect to be resumed within 100ms after signaling wake.
+if not then device will resend the wake signal.
+
+Give the USB3 hubs twice this time (200ms) to detect any port
+changes after resume, before allowing hub to runtime suspend again.
+
+Cc: stable <stable@kernel.org>
+Fixes: 2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611112441.2267883-1-mathias.nyman@linux.intel.com
+[ replaced hub_get/hub_put wrapper functions with direct kref_get/kref_put calls ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/usb/core/hub.c |   33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 77cc1c4219e1..97b5ff9c5c3e 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10378,7 +10378,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -51,6 +51,12 @@
+ #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
+ #define USB_PING_RESPONSE_TIME		400	/* ns */
  
- static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
++/*
++ * Give SS hubs 200ms time after wake to train downstream links before
++ * assuming no port activity and allowing hub to runtime suspend back.
++ */
++#define USB_SS_PORT_U0_WAKE_TIME	200  /* ms */
++
+ /* Protect struct usb_device->state and ->children members
+  * Note: Both are also protected by ->dev.sem, except that ->state can
+  * change to USB_STATE_NOTATTACHED even when the semaphore isn't held. */
+@@ -1024,11 +1030,12 @@ int usb_remove_device(struct usb_device
+ 
+ enum hub_activation_type {
+ 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
+-	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
++	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
+ };
+ 
+ static void hub_init_func2(struct work_struct *ws);
+ static void hub_init_func3(struct work_struct *ws);
++static void hub_post_resume(struct work_struct *ws);
+ 
+ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
  {
--	ssize_t error, error2, error3, error4;
-+	ssize_t error, error2, error3, error4 = 0;
- 	size_t left = size;
+@@ -1051,6 +1058,13 @@ static void hub_activate(struct usb_hub
+ 			goto init2;
+ 		goto init3;
+ 	}
++
++	if (type == HUB_POST_RESUME) {
++		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
++		kref_put(&hub->kref, hub_release);
++		return;
++	}
++
+ 	kref_get(&hub->kref);
  
- 	error = generic_listxattr(dentry, list, left);
-@@ -10406,9 +10406,11 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- 		left -= error3;
+ 	/* The superspeed hub except for root hub has to use Hub Depth
+@@ -1299,6 +1313,16 @@ static void hub_activate(struct usb_hub
+ 		device_unlock(&hdev->dev);
  	}
  
--	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
--	if (error4 < 0)
--		return error4;
-+	if (!nfs_server_capable(d_inode(dentry), NFS_CAP_SECURITY_LABEL)) {
-+		error4 = security_inode_listsecurity(d_inode(dentry), list, left);
-+		if (error4 < 0)
-+			return error4;
++	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
++		/* give usb3 downstream links training time after hub resume */
++		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
++		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
++				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
++		return;
 +	}
++
+ 	kref_put(&hub->kref, hub_release);
+ }
  
- 	error += error2 + error3 + error4;
- 	if (size && error > size)
--- 
-2.39.5
-
+@@ -1317,6 +1341,13 @@ static void hub_init_func3(struct work_s
+ 	hub_activate(hub, HUB_INIT3);
+ }
+ 
++static void hub_post_resume(struct work_struct *ws)
++{
++	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
++
++	hub_activate(hub, HUB_POST_RESUME);
++}
++
+ enum hub_quiescing_type {
+ 	HUB_DISCONNECT, HUB_PRE_RESET, HUB_SUSPEND
+ };
 
 
 
