@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-172972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A179B35B1F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F5CB36059
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEB6317374F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3C65E0FC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8625421D00E;
-	Tue, 26 Aug 2025 11:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB91D5AC0;
+	Tue, 26 Aug 2025 12:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGwXqdF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmlmXAYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423F8283FDF;
-	Tue, 26 Aug 2025 11:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A8B187554;
+	Tue, 26 Aug 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207043; cv=none; b=Cpg5L2287jEA0cMUpw7vEnz8mAbB1jJxOVxQmN0QQyAywWwLH2u44dEMKEK2G9y1u3pEhyjXIPhRW2WVGbjHSIemVf/79icg4vdY+nqUcjin17ZOQB/x/NksBbSIhYN6sRVEMSrDXX3gKFq4fFIEHXir2NOWXWmOEgBkoEnuMy0=
+	t=1756212948; cv=none; b=KaMs06EZZ3iYZozYVQe9WAZryay8VhjzXdB8/wSZ1E2TI+ztm2mBs5C/GAXh/MxKBN2TYJXcpqi4N7qbmgffFGXamW8bkUfYZtrVDa9nzUfKwBesDuWD/0srzDMNYqGQ5U/1oprqcol7y3jDpEy3j7Ca+zJC6K8nia7QuGio56I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207043; c=relaxed/simple;
-	bh=/0KZpUa6Ri4a9ovjrO8CoehRaJWq1zPQQeHB/EBL5Pc=;
+	s=arc-20240116; t=1756212948; c=relaxed/simple;
+	bh=Q5/ePj+AwP+l9BogPF834PwAU2VqXP7pSYbXskGN+9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbqOyxTbGguVPdv2p0YMT+D7yy8Q3MHC9ZFDMY3Ni66NyIpdoM3tLd7gPcaikuAIA1pRsitpbA2K1l57exLqLpsz0OZ+dUw18Yn2pXNSaKbh0VRG+ftDl36T0Bc3hWz0UWJlMu9r2W94rv7hrfzM0QgawwgOutM/N1LtbYhofhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGwXqdF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61596C4CEF1;
-	Tue, 26 Aug 2025 11:17:22 +0000 (UTC)
+	 MIME-Version; b=C7LjXEFiMRzBIS3fTi4PcfoM+AT8I8CubmraCLFc81B3W9CqwlE2WLUamGqb9tbKvbxDWlqfgIntFS4KeKQwUtLhe4g41oEIFHemyBQW5FK3x/9HcgZx3HrRanw/xdqYVv8GsfZ6fZJNVZ/gwDv6/uTqm97T53meuy/2TghstzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmlmXAYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C4BC4CEF1;
+	Tue, 26 Aug 2025 12:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207042;
-	bh=/0KZpUa6Ri4a9ovjrO8CoehRaJWq1zPQQeHB/EBL5Pc=;
+	s=korg; t=1756212948;
+	bh=Q5/ePj+AwP+l9BogPF834PwAU2VqXP7pSYbXskGN+9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGwXqdF2D1o/avOUR5YLiGpAR0MYexVjWNsBf8NcoLMl5MFN6GWNBlBeFIzRfhxEm
-	 8q21GprXNhXyN9RipwWLjOrgr1GCE1ysMV/w1WVLoA2bjTZTTLf94KcHLBzsApt5iV
-	 rHKEFFIjiei2EJRjhEPwhZW67NfJguTLclznjNI4=
+	b=rmlmXAYUhHAkKzu39+jzz8BUcZBxVcPuSSE6dYvR8yfSiGK2Iw2J5UbeRmIHrEVTM
+	 CqGSI+IxzPlZwpwzDex7UII7hmxBg7dWNdcbknv9TxBcBhgCExRyaG7ll0Uo1IsFpU
+	 0W5Yu4kM/rtw3iiUVEO8xS3j0aMidr/D3c+tLxQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 029/457] crypto: octeontx2 - Fix address alignment issue on ucode loading
+	Chris Mason <clm@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 164/587] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
 Date: Tue, 26 Aug 2025 13:05:13 +0200
-Message-ID: <20250826110938.056733105@linuxfoundation.org>
+Message-ID: <20250826110957.116965115@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Chris Mason <clm@fb.com>
 
-commit b7b88b4939e71ef2aed8238976a2bbabcb63a790 upstream.
+[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
 
-octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
-and uses this memory for dma (does dma_map_single()). It assumes
-that kmalloc/kzalloc will return 128-byte aligned address. But
-kmalloc/kzalloc returns 8-byte aligned address after below changes:
-  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
-   smaller cache_line_size()"
+schbench (https://github.com/masoncl/schbench.git) is showing a
+regression from previous production kernels that bisected down to:
 
-Completion address should be 32-Byte alignment when loading
-microcode.
+sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
 
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: <stable@vger.kernel.org> # v6.5+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The schbench command line was:
+
+schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
+
+This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
+threads spread across the rest of the CPUs.  Neither the worker threads
+or the message threads do any work, they just wake each other up and go
+back to sleep as soon as possible.
+
+The end result is the first 4 CPUs are pegged waking up those 1024
+workers, and the rest of the CPUs are constantly banging in and out of
+idle.  If I take a v6.9 Linus kernel and revert that one commit,
+performance goes from 3.4M RPS to 5.4M RPS.
+
+schedstat shows there are ~100x  more new idle balance operations, and
+profiling shows the worker threads are spending ~20% of their CPU time
+on new idle balance.  schedstats also shows that almost all of these new
+idle balance attemps are failing to find busy groups.
+
+The fix used here is to crank up the cost of the newidle balance whenever it
+fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
+control, this also changes update_newidle_cost() to use
+sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
+
+Signed-off-by: Chris Mason <clm@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c |   35 ++++++++++++--------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ kernel/sched/fair.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-@@ -1491,12 +1491,13 @@ int otx2_cpt_discover_eng_capabilities(s
- 	union otx2_cpt_opcode opcode;
- 	union otx2_cpt_res_s *result;
- 	union otx2_cpt_inst_s inst;
-+	dma_addr_t result_baddr;
- 	dma_addr_t rptr_baddr;
- 	struct pci_dev *pdev;
--	u32 len, compl_rlen;
- 	int timeout = 10000;
-+	void *base, *rptr;
- 	int ret, etype;
--	void *rptr;
-+	u32 len;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6ce3028e6e85..1cf43e91ae9d 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -11697,8 +11697,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
++		 *
++		 * sched_balance_newidle() bumps the cost whenever newidle
++		 * balance fails, and we don't want things to grow out of
++		 * control.  Use the sysctl_sched_migration_cost as the upper
++		 * limit, plus a litle extra to avoid off by ones.
+ 		 */
+-		sd->max_newidle_lb_cost = cost;
++		sd->max_newidle_lb_cost =
++			min(cost, sysctl_sched_migration_cost + 200);
+ 		sd->last_decay_max_lb_cost = jiffies;
+ 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+ 		/*
+@@ -12384,10 +12390,17 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
  
- 	/*
- 	 * We don't get capabilities if it was already done
-@@ -1519,22 +1520,28 @@ int otx2_cpt_discover_eng_capabilities(s
- 	if (ret)
- 		goto delete_grps;
- 
--	compl_rlen = ALIGN(sizeof(union otx2_cpt_res_s), OTX2_CPT_DMA_MINALIGN);
--	len = compl_rlen + LOADFVC_RLEN;
-+	/* Allocate extra memory for "rptr" and "result" pointer alignment */
-+	len = LOADFVC_RLEN + ARCH_DMA_MINALIGN +
-+	       sizeof(union otx2_cpt_res_s) + OTX2_CPT_RES_ADDR_ALIGN;
- 
--	result = kzalloc(len, GFP_KERNEL);
--	if (!result) {
-+	base = kzalloc(len, GFP_KERNEL);
-+	if (!base) {
- 		ret = -ENOMEM;
- 		goto lf_cleanup;
- 	}
--	rptr_baddr = dma_map_single(&pdev->dev, (void *)result, len,
--				    DMA_BIDIRECTIONAL);
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
 +
-+	rptr = PTR_ALIGN(base, ARCH_DMA_MINALIGN);
-+	rptr_baddr = dma_map_single(&pdev->dev, rptr, len, DMA_BIDIRECTIONAL);
- 	if (dma_mapping_error(&pdev->dev, rptr_baddr)) {
- 		dev_err(&pdev->dev, "DMA mapping failed\n");
- 		ret = -EFAULT;
--		goto free_result;
-+		goto free_rptr;
- 	}
--	rptr = (u8 *)result + compl_rlen;
++			/*
++			 * Failing newidle means it is not effective;
++			 * bump the cost so we end up doing less of it.
++			 */
++			if (!pulled_task)
++				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
 +
-+	result = (union otx2_cpt_res_s *)PTR_ALIGN(rptr + LOADFVC_RLEN,
-+						   OTX2_CPT_RES_ADDR_ALIGN);
-+	result_baddr = ALIGN(rptr_baddr + LOADFVC_RLEN,
-+			     OTX2_CPT_RES_ADDR_ALIGN);
++			update_newidle_cost(sd, domain_cost);
+ 		}
  
- 	/* Fill in the command */
- 	opcode.s.major = LOADFVC_MAJOR_OP;
-@@ -1546,14 +1553,14 @@ int otx2_cpt_discover_eng_capabilities(s
- 	/* 64-bit swap for microcode data reads, not needed for addresses */
- 	cpu_to_be64s(&iq_cmd.cmd.u);
- 	iq_cmd.dptr = 0;
--	iq_cmd.rptr = rptr_baddr + compl_rlen;
-+	iq_cmd.rptr = rptr_baddr;
- 	iq_cmd.cptr.u = 0;
- 
- 	for (etype = 1; etype < OTX2_CPT_MAX_ENG_TYPES; etype++) {
- 		result->s.compcode = OTX2_CPT_COMPLETION_CODE_INIT;
- 		iq_cmd.cptr.s.grp = otx2_cpt_get_eng_grp(&cptpf->eng_grps,
- 							 etype);
--		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
-+		otx2_cpt_fill_inst(&inst, &iq_cmd, result_baddr);
- 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
- 		timeout = 10000;
- 
-@@ -1576,8 +1583,8 @@ int otx2_cpt_discover_eng_capabilities(s
- 
- error_no_response:
- 	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
--free_result:
--	kfree(result);
-+free_rptr:
-+	kfree(base);
- lf_cleanup:
- 	otx2_cptlf_shutdown(lfs);
- delete_grps:
+ 		/*
+-- 
+2.39.5
+
 
 
 
