@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6910B36C58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D213B366FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 058F2A04938
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79BF981219
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A31335E4EF;
-	Tue, 26 Aug 2025 14:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD611350D5A;
+	Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQjWi6tc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8746WCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EC35691E;
-	Tue, 26 Aug 2025 14:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B6834166B;
+	Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218733; cv=none; b=e9/9V2Mw0Rkxuqy3WqMb6VXP3jG0eVgzRNDi4/8cDpM0XfgPviMXRrPnqZycoFOrGymfV+rUIZCqczNtkuXGN/MMCb3wy2aiDB/vq4Wf+7kkGc6jBb1p1YYas4aCJ+H4i/BYiQWre8UzefeeuF6QTfjkIP85XJjfaEVFDgjOHGI=
+	t=1756216284; cv=none; b=Xpgyh38ECaLOic7C+AC4OSOKungThzj0X2g3FyyxApDjcRuawkkwboawxX0KUflZ/VcLG4JhLbMXdkJTG+mEkvLqrXfUrOcjkgFYQSj+Ye1qXWmmPG1OL+hXLaujokB43+/DD+k5QWwwmVNm+O3ugTKXxKDiYsFlzuODYta29WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218733; c=relaxed/simple;
-	bh=fypqpdXatTSWx5RexpY5Ek0FOq5X/tPlSJQbIk6Jtdk=;
+	s=arc-20240116; t=1756216284; c=relaxed/simple;
+	bh=Rj/8vhpKNN8grdMODSQI3b4tv/loXhY6MFomutPrxug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bsu+b8dTQji5TEAQcfZGSg7aEOCgnX6jiyu1BF41r3yVoUZNDVWEjGbRqZrv6rRhDiygogSL7BzD8nyybV6PgmK2/Pv0w8wFP3jyE0KfuSP2Q8vGnryJzVtNmy+z5xJZ6XFtYVsMIHY4Ebod63WcNk5dUajAAmMnedoAvSWpE+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQjWi6tc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE6BC4CEF1;
-	Tue, 26 Aug 2025 14:32:13 +0000 (UTC)
+	 MIME-Version; b=oZ9DPrZPuCHvUWSEClDaY+i/7uKDtS8WnOFOPO+OHC9jUpLImfCoddmNAGyf8jqAl0J2DuX7+kGCAXLF7kUm6cBran4d8hjy2Wevj/M1Ii7NrZ+xw0+e6kABZDOaMXh7vUaGJmLcBvUG6Tbg01Ydt4EWFhmpJetn5sG9XjtUPzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8746WCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17785C4CEF1;
+	Tue, 26 Aug 2025 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218733;
-	bh=fypqpdXatTSWx5RexpY5Ek0FOq5X/tPlSJQbIk6Jtdk=;
+	s=korg; t=1756216284;
+	bh=Rj/8vhpKNN8grdMODSQI3b4tv/loXhY6MFomutPrxug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQjWi6tcnsQ4NXwOpw51jLWujawhf2TDX2RuX8rSJ0B578QSdwkCu2MU7g3DhXzn9
-	 eTJjWvMgjkcD0UEDSQUidmLd8QoFJXjQux9/6HGeDIb32mdZofEe4056j7paIC7odD
-	 qFnJMKwAeg0BSt1n8D/NnJjkjz+K6PWtxbzDh/us=
+	b=r8746WCdlefbSUVHtSV874LPL64Hvl0xIE5sO98OZHxABVrTd7Y6McQdDmu671lui
+	 29SYE2UtAh+2X7rlbKrVHtUOrDRsdk1YvcW6faPVp8SDwEF8QPuFgsZxMncZ+XcytO
+	 B60Y2klyBFTP+1+5Qxbefkb9LdiiwCjIt/I5wha0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengbiao Xiong <xisme1998@gmail.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/403] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
+Subject: [PATCH 5.15 346/644] rcu: Protect ->defer_qs_iw_pending from data race
 Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826110909.752538935@linuxfoundation.org>
+Message-ID: <20250826110954.969880148@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengbiao Xiong <xisme1998@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
+[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
 
-When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
-the ccp device causes the following crash:
+On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
+invoked within an interrupts-disabled region of code [1], it will invoke
+rcu_read_unlock_special(), which uses an irq-work handler to force the
+system to notice when the RCU read-side critical section actually ends.
+That end won't happen until interrupts are enabled at the soonest.
 
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
+In some kernels, such as those booted with rcutree.use_softirq=y, the
+irq-work handler is used unconditionally.
 
-[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
-[  204.978026] #PF: supervisor write access in kernel mode
-[  204.979126] #PF: error_code(0x0002) - not-present page
-[  204.980226] PGD 0 P4D 0
-[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
-...
-[  204.997852] Call Trace:
-[  204.999074]  <TASK>
-[  205.000297]  start_creating+0x9f/0x1c0
-[  205.001533]  debugfs_create_dir+0x1f/0x170
-[  205.002769]  ? srso_return_thunk+0x5/0x5f
-[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
-[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
-[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
-[  205.007709]  sp_init+0x5f/0x80 [ccp]
-[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
-[  205.010165]  ? srso_return_thunk+0x5/0x5f
-[  205.011376]  local_pci_probe+0x4f/0xb0
-[  205.012584]  pci_device_probe+0xdb/0x230
-[  205.013810]  really_probe+0xed/0x380
-[  205.015024]  __driver_probe_device+0x7e/0x160
-[  205.016240]  device_driver_attach+0x2f/0x60
-[  205.017457]  bind_store+0x7c/0xb0
-[  205.018663]  drv_attr_store+0x28/0x40
-[  205.019868]  sysfs_kf_write+0x5f/0x70
-[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
-[  205.022267]  vfs_write+0x308/0x440
-[  205.023453]  ksys_write+0x6d/0xe0
-[  205.024616]  __x64_sys_write+0x1e/0x30
-[  205.025778]  x64_sys_call+0x16ba/0x2150
-[  205.026942]  do_syscall_64+0x56/0x1e0
-[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  205.029276] RIP: 0033:0x7fbc36f10104
-[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
+updated by the irq-work handler and is both read and updated by
+rcu_read_unlock_special().  This resulted in the following KCSAN splat:
 
-This patch sets ccp_debugfs_dir to NULL after destroying it in
-ccp5_debugfs_destroy, allowing the directory dentry to be
-recreated when rebinding the ccp device.
+------------------------------------------------------------------------
 
-Tested on AMD Ryzen 7 1700X.
+BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
 
-Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
-Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
+ rcu_read_unlock_special+0x175/0x260
+ __rcu_read_unlock+0x92/0xa0
+ rt_spin_unlock+0x9b/0xc0
+ __local_bh_enable+0x10d/0x170
+ __local_bh_enable_ip+0xfb/0x150
+ rcu_do_batch+0x595/0xc40
+ rcu_cpu_kthread+0x4e9/0x830
+ smpboot_thread_fn+0x24d/0x3b0
+ kthread+0x3bd/0x410
+ ret_from_fork+0x35/0x40
+ ret_from_fork_asm+0x1a/0x30
+
+write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
+ rcu_preempt_deferred_qs_handler+0x1e/0x30
+ irq_work_single+0xaf/0x160
+ run_irq_workd+0x91/0xc0
+ smpboot_thread_fn+0x24d/0x3b0
+ kthread+0x3bd/0x410
+ ret_from_fork+0x35/0x40
+ ret_from_fork_asm+0x1a/0x30
+
+no locks held by irq_work/8/88.
+irq event stamp: 200272
+hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
+hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
+softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+
+------------------------------------------------------------------------
+
+The problem is that irq-work handlers run with interrupts enabled, which
+means that rcu_preempt_deferred_qs_handler() could be interrupted,
+and that interrupt handler might contain an RCU read-side critical
+section, which might invoke rcu_read_unlock_special().  In the strict
+KCSAN mode of operation used by RCU, this constitutes a data race on
+the ->defer_qs_iw_pending field.
+
+This commit therefore disables interrupts across the portion of the
+rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
+field.  This suffices because this handler is not a fast path.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-debugfs.c | 3 +++
+ kernel/rcu/tree_plugin.h | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
-index a1055554b47a..dc26bc22c91d 100644
---- a/drivers/crypto/ccp/ccp-debugfs.c
-+++ b/drivers/crypto/ccp/ccp-debugfs.c
-@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
- 
- void ccp5_debugfs_destroy(void)
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 9e84d603e882..73483f0fcf6b 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -607,10 +607,13 @@ static notrace void rcu_preempt_deferred_qs(struct task_struct *t)
+  */
+ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
  {
-+	mutex_lock(&ccp_debugfs_lock);
- 	debugfs_remove_recursive(ccp_debugfs_dir);
-+	ccp_debugfs_dir = NULL;
-+	mutex_unlock(&ccp_debugfs_lock);
++	unsigned long flags;
+ 	struct rcu_data *rdp;
+ 
+ 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
++	local_irq_save(flags);
+ 	rdp->defer_qs_iw_pending = false;
++	local_irq_restore(flags);
  }
+ 
+ /*
 -- 
 2.39.5
 
