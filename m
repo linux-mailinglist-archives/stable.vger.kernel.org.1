@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-175624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D569B36991
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACC1B3636D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA0141C272C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA8843BB40F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E773570BA;
-	Tue, 26 Aug 2025 14:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD98A322C87;
+	Tue, 26 Aug 2025 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlk2jtlq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6yrKxf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EA62FE580;
-	Tue, 26 Aug 2025 14:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8DB187554;
+	Tue, 26 Aug 2025 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217537; cv=none; b=QWuMWT5QfjeYdfL9IqGLmceM9WbrI2Fbacbr3ykYOs4V3/HZCmdYWqEkF3qR6JEzLmvIT49RIr5DEG7orcHUzI3fCTyqDV1cnaqdANs4SPcvmiOWPJJEkBIGkjUHJUnEoW22QcXA7jD6RNejamcl8gm/Z8dqySVI14ycrouCDH4=
+	t=1756214440; cv=none; b=FketmDb7XtNJ2drEBBzwCcA+m3chjJ6Z0vP+RA2thy6AAZ5nfEPRUUe5m8WvbB6Dc8ml37PosGhqPblgf7wY0guam8E8gJoHw9w8KZv0JnT8j6QkGttPvfTKbfXcBHxT/61E14DoGMnGbEEb5PcFApB2TT/ASjcFmy0qzDV1QJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217537; c=relaxed/simple;
-	bh=cOlhzdzUAIrEnCIng8VRnGFpFtWix0jf2vMJh5xEaLU=;
+	s=arc-20240116; t=1756214440; c=relaxed/simple;
+	bh=DXqboIZKXZ42CGARzccnAhpFGIKrXnremqSDac6qvzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnEZPDqLuHrJp0gKbA1rc3CG8vUBd/mWaqN34IeENP256jbqH8711g9egTxNr4tucanCFs+vq99n7tFv1ave1nALmN4r6gPl8UGrVb5gKq+YP83jLvZM0YBkjTA79YpzWNl1nV1IIlYme1VQHEuGXcUw2A8cayfNCIxNrxgE7yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlk2jtlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6D7C4CEF1;
-	Tue, 26 Aug 2025 14:12:17 +0000 (UTC)
+	 MIME-Version; b=CISRNpy6nAk0DD5UxzlIIJwxYhCvaNz7E8l289Ni4qUQaWn9Iw5VSjz1DG0n94fvZTSB2cVPXypBXeLVCzsW+ymsHvecz6LAL2Gsf9XOQugd5ru/g8HM+jdIZjOqxNE8n34+8FjcaivXjDmJrR+wk9IikPC4tzeeMFynA5D8NGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6yrKxf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEE7C4CEF1;
+	Tue, 26 Aug 2025 13:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217537;
-	bh=cOlhzdzUAIrEnCIng8VRnGFpFtWix0jf2vMJh5xEaLU=;
+	s=korg; t=1756214440;
+	bh=DXqboIZKXZ42CGARzccnAhpFGIKrXnremqSDac6qvzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlk2jtlqRyPLtnUlqukCDi/5MocwrOUB8wDFUyB7p3Y/UuHslEy+L6sav/+jHzgBV
-	 KetvIVpV46bqadSmKpZDz93KwzSu5PtHtNK6O1tSd5NbiOdCtddn8BnK32KqqKZiin
-	 HTzWyODssk5T8CENzGClDBJyW1nOFsXCbP/S8ICg=
+	b=M6yrKxf9aBaWcF93PT0d833PeAtf0XJcEWXOwi4E1dA6C1FzHCPprHHX5E7ExB09Z
+	 8orgUZO6nc88P0kDfIVmgBMXC67N74dUBzhcdXOJbv+nIwRNG3oBeih4UyPDxcL/ah
+	 YSl9z8qOPU2GOsQycuuefT2TnQmGXOWdjeFIBowo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/523] smb: client: let recv_done() cleanup before notifying the callers.
+Subject: [PATCH 6.1 138/482] wifi: rtw89: Disable deep power saving for USB/SDIO
 Date: Tue, 26 Aug 2025 13:06:31 +0200
-Message-ID: <20250826110928.920859979@linuxfoundation.org>
+Message-ID: <20250826110934.229854994@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit bdd7afc6dca5e0ebbb75583484aa6ea9e03fbb13 ]
+[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
 
-We should call put_receive_buffer() before waking up the callers.
+Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
+is called in atomic context and accessing hardware registers results in
+"scheduling while atomic" errors.
 
-For the internal error case of response->type being unexpected,
-we now also call smbd_disconnect_rdma_connection() instead
-of not waking up the callers at all.
-
-Note that the SMBD_TRANSFER_DATA case still has problems,
-which will be addressed in the next commit in order to make
-it easier to review this one.
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smbdirect.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/cifs/smbdirect.c b/fs/cifs/smbdirect.c
-index 7d18b9268817..ae332f3771f6 100644
---- a/fs/cifs/smbdirect.c
-+++ b/fs/cifs/smbdirect.c
-@@ -454,7 +454,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
- 		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
- 			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(info);
- 		goto error;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 9e4a02a322ff..ff3a31bf3a87 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1721,6 +1721,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
-@@ -471,8 +470,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		info->full_packet_received = true;
- 		info->negotiate_done =
- 			process_negotiation_response(response, wc->byte_len);
-+		put_receive_buffer(info, response);
- 		complete(&info->negotiate_completion);
--		break;
-+		return;
- 
- 	/* SMBD data transfer packet */
- 	case SMBD_TRANSFER_DATA:
-@@ -529,14 +529,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		}
- 
- 		return;
--
--	default:
--		log_rdma_recv(ERR,
--			"unexpected response type=%d\n", response->type);
- 	}
- 
-+	/*
-+	 * This is an internal error!
-+	 */
-+	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
-+	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
- error:
- 	put_receive_buffer(info, response);
-+	smbd_disconnect_rdma_connection(info);
- }
- 
- static struct rdma_cm_id *smbd_create_id(
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
++		return RTW89_PS_MODE_NONE;
++
+ 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
+ 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
+ 		return RTW89_PS_MODE_NONE;
 -- 
 2.39.5
 
