@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-172987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C04B35B49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B13EB36318
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFC136253D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8852A58B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B71341674;
-	Tue, 26 Aug 2025 11:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23320231A55;
+	Tue, 26 Aug 2025 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7F4N8yf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuSBAzsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5578341671;
-	Tue, 26 Aug 2025 11:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D506B196C7C;
+	Tue, 26 Aug 2025 13:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207081; cv=none; b=UNubJqs5vRZBM883t5bhT4RDjmhxCvLnAry0VCEphNRZ3q5r/snX2RwGFSKle3laRXRKJjfsaTsWTK8pPxx7lGs/LEUZh6ofOGvHrzQUyz8Jh9wdbxI8pK14TdNKGnyeyVfH6KA+n+KDgk8VFQ0lX+OKCXNdCD1dkkJLz8y+p38=
+	t=1756214265; cv=none; b=D2uGi9w7zuf1UtpOzDbBUWTeRr4EZyAd2EILD1OQA/dl8Ku9QIPtZkxsoG7ZYSv+AcDGJla2/l/BH5w8Rxs2/7R2YUZG7kMbAHCd/oSuBUf948jQHz5WbrQkhsCNqQOnz0ppNmIKb9/HjYN7nYcMiI3++F7iuEmItqCP2ZYYn9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207081; c=relaxed/simple;
-	bh=OZyA6xghll8Qc2vBdP8t05UjlMwqkBUkPD7CzerJrcY=;
+	s=arc-20240116; t=1756214265; c=relaxed/simple;
+	bh=GOTfFHXAD8fo36C+M+zI7MUpFno2tSRGB4xP7K6rlZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBtBqoY6tOM0z29hvDhPNpNzceh+h0gUFSryV90fGVhNgzy+xiZAKBfg9VFWp5BaNPXfUD2YKrCKUIz17yVTt62d0D2+LmB67ttk9BlAk3wlvt0sm6Ya6AuC9Vtma/NRz/9qdOLGPpTUh6z/00XoNHLmpKeeSoPz5unMeM22OSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7F4N8yf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CEAC113CF;
-	Tue, 26 Aug 2025 11:18:00 +0000 (UTC)
+	 MIME-Version; b=Le1blbe7imMdNQ0fcf7GlzgVABO6x0EBmlJqNvsraDoLiAI1AMyQuyrS//pxsmyiwijwGcfojyyFMPv44PMp82+6aCRfemqnYTC1/aVlcVwQkMFTdUrXHbf9VrWjfEvlcArNANGmfIN+Niy+EEnsTb/+c6sYgflxGIeKsYnq55Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BuSBAzsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1C6C4CEF1;
+	Tue, 26 Aug 2025 13:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207080;
-	bh=OZyA6xghll8Qc2vBdP8t05UjlMwqkBUkPD7CzerJrcY=;
+	s=korg; t=1756214265;
+	bh=GOTfFHXAD8fo36C+M+zI7MUpFno2tSRGB4xP7K6rlZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7F4N8yfoMr5LDO4EhzqQwpK2bZd5/CbilmH4bsDOUxICqYtiqCjYlwXZWObo/DMF
-	 sv9ylFPyh/mNluryaBoOUbAtn0o9uKS0Kf5hlTFRM01DKKQ/fpG7Uo3i6ae25+Len5
-	 n+6E/Z21b3jrDkYjFytVwNZx3UQQRwNwZI0mlc+g=
+	b=BuSBAzsScH62H3DJvUA6p/udOvgYOiZ7Ivr9LaSNiWfneI2+M/JzqGSLNcdXpQ2+h
+	 TRgu5ejuhywY3s7q31AtUoMbdDsvUXf/DTvcCKx/CckyGaCawqXOrLhJIc07Uwc2mf
+	 5lWM1tzLVxaanhbq6BEDvWY6GGIIxRq7lm+iqD5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.16 042/457] ext4: use kmalloc_array() for array space allocation
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/482] gpio: wcd934x: check the return value of regmap_update_bits()
 Date: Tue, 26 Aug 2025 13:05:26 +0200
-Message-ID: <20250826110938.383825651@linuxfoundation.org>
+Message-ID: <20250826110932.638910460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 76dba1fe277f6befd6ef650e1946f626c547387a upstream.
+[ Upstream commit ff0f0d7c6587e38c308be9905e36f86e98fb9c1f ]
 
-Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
-allocation and overflow prevention.
+regmap_update_bits() can fail so check its return value in
+wcd_gpio_direction_output() for consistency with the rest of the code
+and propagate any errors.
 
-Cc: stable@kernel.org
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Link: https://patch.msgid.link/20250811125816.570142-1-liaoyuanhong@vivo.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250709-gpiochip-set-rv-gpio-remaining-v1-2-b8950f69618d@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/orphan.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-wcd934x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -589,8 +589,9 @@ int ext4_init_orphan_info(struct super_b
- 	}
- 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
- 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
--	oi->of_binfo = kmalloc(oi->of_blocks*sizeof(struct ext4_orphan_block),
--			       GFP_KERNEL);
-+	oi->of_binfo = kmalloc_array(oi->of_blocks,
-+				     sizeof(struct ext4_orphan_block),
-+				     GFP_KERNEL);
- 	if (!oi->of_binfo) {
- 		ret = -ENOMEM;
- 		goto out_put;
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index 97e6caedf1f3..c00968ce7a56 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -45,9 +45,12 @@ static int wcd_gpio_direction_output(struct gpio_chip *chip, unsigned int pin,
+ 				     int val)
+ {
+ 	struct wcd_gpio_data *data = gpiochip_get_data(chip);
++	int ret;
+ 
+-	regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
+-			   WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
++	ret = regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
++				 WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
++	if (ret)
++		return ret;
+ 
+ 	return regmap_update_bits(data->map, WCD_REG_VAL_CTL_OFFSET,
+ 				  WCD_PIN_MASK(pin),
+-- 
+2.39.5
+
 
 
 
