@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C915B35C47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D77B35DC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CDB9176E51
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD261BC126B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88962BE643;
-	Tue, 26 Aug 2025 11:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0445283FDF;
+	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQrDPEee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1il7GUXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84361239573;
-	Tue, 26 Aug 2025 11:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3EE199935;
+	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207624; cv=none; b=q74ILI5fLYX9Xcma5dJ54o9lYNQmQPkmDjaHjdvoxPvb/zVj6oJHpMxhEzUIgKASYgkfI3NU5FyF4KnI+jK+NvKfoGx2l8/RcBn8P7Ofy41XRIWaf8VmEkLU4SOpoAx7hHKu5O533fu5yMqUoZkktTxW50SLZ99/9VIZAoO5Fb0=
+	t=1756208448; cv=none; b=pkBNMZVjCr7XX2AdJL3amaTb02A015rhMuCQghYl8V2779EkoRGI6q3Wuocz7jRfPoL4By2o3qmXuguTDpPlNmUexwoRidl0Pb+jpx3BEP4aOKD4FGUZauCpIdhwMI17gzDSZOyw6B/i2mFMI3IPQfk3rgW3+ayweVrPmfG0UQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207624; c=relaxed/simple;
-	bh=IaVmGZe8xFTaBLtbP8/27tW2j2NZ3DEGHFf0/yasHoc=;
+	s=arc-20240116; t=1756208448; c=relaxed/simple;
+	bh=hGLCeozpeShmt/+XUBIdNd72DY2tOUg0JVPnkYeBdsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbF7ieYejjSTzzPpbkPk0G2uydEj+FePNMc0hpVLIcfCTu3mpp+0wIzqjNU74Et4+S7n8bGze8SOb8YL+7BVzjh8wNwLi6cMk3B6D6n5lY/eFnQlIc+EXMCFQMr2HpHW+WKSTjSrb66cs2w+/FYMQHxGdbI+Md5CeCNH4COOYUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQrDPEee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBA4C4CEF1;
-	Tue, 26 Aug 2025 11:27:03 +0000 (UTC)
+	 MIME-Version; b=hW/2EJeUjgGyGL/LT4VjmqUlTmerWJuo8UkMZlhu2hJcZS/lTB2A0AYebY+7xClG5abHeubc1PQjhl6N65U7d0x5GkasA59TQEyiT02NIP8FqQUEN2ypa7BeelgCV1qLDD2n3aYx/4bu+9MrJFmolT8uG9lLw7PkjL6yk2srQq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1il7GUXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC64C4CEF1;
+	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207624;
-	bh=IaVmGZe8xFTaBLtbP8/27tW2j2NZ3DEGHFf0/yasHoc=;
+	s=korg; t=1756208448;
+	bh=hGLCeozpeShmt/+XUBIdNd72DY2tOUg0JVPnkYeBdsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQrDPEeeECGYLWj7yLVhrkeXz/gEj5+Kz6+gTM6KttUN4jaNYXenQdwk17/MI6UXj
-	 xI9sRGH0cGKOjk6/BwnTiuyUMO2kIRyB0lEaCy2RvjsfCzJgoQfjvwou3EZHD1Ksac
-	 7ZlW7uNlG4kCk94v7xud5MZARK7tzuYt3Y/rhLAw=
+	b=1il7GUXrxxKdDcJhyy5ZyyCqsyfg0MZhxHi73jPDY1LrRyXed86bbJvDnzE2RleED
+	 GLytZa1oSAUXooxHBJ7ZFOFULoN6Fb3u9DJo+/FBGdCYChdtEZ0kz2fg7waRoPGOTM
+	 r0e6ZQxT5nG5vd3C9UeX3wskeej4hCZMVGldJYo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Herton R. Krzesinski" <herton@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Gavin Shan <gshan@redhat.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 247/457] mm/debug_vm_pgtable: clear page table entries at destroy_args()
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.12 116/322] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
 Date: Tue, 26 Aug 2025 13:08:51 +0200
-Message-ID: <20250826110943.473383635@linuxfoundation.org>
+Message-ID: <20250826110918.658873522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herton R. Krzesinski <herton@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit dde30854bddfb5d69f30022b53c5955a41088b33 upstream.
+commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
 
-The mm/debug_vm_pagetable test allocates manually page table entries for
-the tests it runs, using also its manually allocated mm_struct.  That in
-itself is ok, but when it exits, at destroy_args() it fails to clear those
-entries with the *_clear functions.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-The problem is that leaves stale entries.  If another process allocates an
-mm_struct with a pgd at the same address, it may end up running into the
-stale entry.  This is happening in practice on a debug kernel with
-CONFIG_DEBUG_VM_PGTABLE=y, for example this is the output with some extra
-debugging I added (it prints a warning trace if pgtables_bytes goes
-negative, in addition to the warning at check_mm() function):
+Clamp the value if the user provides a param that will result in an invalid
+fps.
 
-[    2.539353] debug_vm_pgtable: [get_random_vaddr         ]: random_vaddr is 0x7ea247140000
-[    2.539366] kmem_cache info
-[    2.539374] kmem_cachep 0x000000002ce82385 - freelist 0x0000000000000000 - offset 0x508
-[    2.539447] debug_vm_pgtable: [init_args                ]: args->mm is 0x000000002267cc9e
-(...)
-[    2.552800] WARNING: CPU: 5 PID: 116 at include/linux/mm.h:2841 free_pud_range+0x8bc/0x8d0
-[    2.552816] Modules linked in:
-[    2.552843] CPU: 5 UID: 0 PID: 116 Comm: modprobe Not tainted 6.12.0-105.debug_vm2.el10.ppc64le+debug #1 VOLUNTARY
-[    2.552859] Hardware name: IBM,9009-41A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW910.00 (VL910_062) hv:phyp pSeries
-[    2.552872] NIP:  c0000000007eef3c LR: c0000000007eef30 CTR: c0000000003d8c90
-[    2.552885] REGS: c0000000622e73b0 TRAP: 0700   Not tainted  (6.12.0-105.debug_vm2.el10.ppc64le+debug)
-[    2.552899] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002822  XER: 0000000a
-[    2.552954] CFAR: c0000000008f03f0 IRQMASK: 0
-[    2.552954] GPR00: c0000000007eef30 c0000000622e7650 c000000002b1ac00 0000000000000001
-[    2.552954] GPR04: 0000000000000008 0000000000000000 c0000000007eef30 ffffffffffffffff
-[    2.552954] GPR08: 00000000ffff00f5 0000000000000001 0000000000000048 0000000000004000
-[    2.552954] GPR12: 00000003fa440000 c000000017ffa300 c0000000051d9f80 ffffffffffffffdb
-[    2.552954] GPR16: 0000000000000000 0000000000000008 000000000000000a 60000000000000e0
-[    2.552954] GPR20: 4080000000000000 c0000000113af038 00007fffcf130000 0000700000000000
-[    2.552954] GPR24: c000000062a6a000 0000000000000001 8000000062a68000 0000000000000001
-[    2.552954] GPR28: 000000000000000a c000000062ebc600 0000000000002000 c000000062ebc760
-[    2.553170] NIP [c0000000007eef3c] free_pud_range+0x8bc/0x8d0
-[    2.553185] LR [c0000000007eef30] free_pud_range+0x8b0/0x8d0
-[    2.553199] Call Trace:
-[    2.553207] [c0000000622e7650] [c0000000007eef30] free_pud_range+0x8b0/0x8d0 (unreliable)
-[    2.553229] [c0000000622e7750] [c0000000007f40b4] free_pgd_range+0x284/0x3b0
-[    2.553248] [c0000000622e7800] [c0000000007f4630] free_pgtables+0x450/0x570
-[    2.553274] [c0000000622e78e0] [c0000000008161c0] exit_mmap+0x250/0x650
-[    2.553292] [c0000000622e7a30] [c0000000001b95b8] __mmput+0x98/0x290
-[    2.558344] [c0000000622e7a80] [c0000000001d1018] exit_mm+0x118/0x1b0
-[    2.558361] [c0000000622e7ac0] [c0000000001d141c] do_exit+0x2ec/0x870
-[    2.558376] [c0000000622e7b60] [c0000000001d1ca8] do_group_exit+0x88/0x150
-[    2.558391] [c0000000622e7bb0] [c0000000001d1db8] sys_exit_group+0x48/0x50
-[    2.558407] [c0000000622e7be0] [c00000000003d810] system_call_exception+0x1e0/0x4c0
-[    2.558423] [c0000000622e7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-(...)
-[    2.558892] ---[ end trace 0000000000000000 ]---
-[    2.559022] BUG: Bad rss-counter state mm:000000002267cc9e type:MM_ANONPAGES val:1
-[    2.559037] BUG: non-zero pgtables_bytes on freeing mm: -6144
-
-Here the modprobe process ended up with an allocated mm_struct from the
-mm_struct slab that was used before by the debug_vm_pgtable test.  That is
-not a problem, since the mm_struct is initialized again etc., however, if
-it ends up using the same pgd table, it bumps into the old stale entry
-when clearing/freeing the page table entries, so it tries to free an entry
-already gone (that one which was allocated by the debug_vm_pgtable test),
-which also explains the negative pgtables_bytes since it's accounting for
-not allocated entries in the current process.
-
-As far as I looked pgd_{alloc,free} etc.  does not clear entries, and
-clearing of the entries is explicitly done in the free_pgtables->
-free_pgd_range->free_p4d_range->free_pud_range->free_pmd_range->
-free_pte_range path.  However, the debug_vm_pgtable test does not call
-free_pgtables, since it allocates mm_struct and entries manually for its
-test and eg.  not goes through page faults.  So it also should clear
-manually the entries before exit at destroy_args().
-
-This problem was noticed on a reboot X number of times test being done on
-a powerpc host, with a debug kernel with CONFIG_DEBUG_VM_PGTABLE enabled.
-Depends on the system, but on a 100 times reboot loop the problem could
-manifest once or twice, if a process ends up getting the right mm->pgd
-entry with the stale entries used by mm/debug_vm_pagetable.  After using
-this patch, I couldn't reproduce/experience the problems anymore.  I was
-able to reproduce the problem as well on latest upstream kernel (6.16).
-
-I also modified destroy_args() to use mmput() instead of mmdrop(), there
-is no reason to hold mm_users reference and not release the mm_struct
-entirely, and in the output above with my debugging prints I already had
-patched it to use mmput, it did not fix the problem, but helped in the
-debugging as well.
-
-Link: https://lkml.kernel.org/r/20250731214051.4115182-1-herton@redhat.com
-Fixes: 3c9b84f044a9 ("mm/debug_vm_pgtable: introduce struct pgtable_debug_args")
-Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Cc: stable@vger.kernel.org
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/debug_vm_pgtable.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/core.h |    2 ++
+ drivers/media/platform/qcom/venus/vdec.c |    5 ++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -1041,29 +1041,34 @@ static void __init destroy_args(struct p
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -27,6 +27,8 @@
+ #define VIDC_VCODEC_CLKS_NUM_MAX	2
+ #define VIDC_RESETS_NUM_MAX		2
  
- 	/* Free page table entries */
- 	if (args->start_ptep) {
-+		pmd_clear(args->pmdp);
- 		pte_free(args->mm, args->start_ptep);
- 		mm_dec_nr_ptes(args->mm);
- 	}
++#define VENUS_MAX_FPS			240
++
+ extern int venus_fw_debug;
  
- 	if (args->start_pmdp) {
-+		pud_clear(args->pudp);
- 		pmd_free(args->mm, args->start_pmdp);
- 		mm_dec_nr_pmds(args->mm);
- 	}
+ struct freq_tbl {
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
  
- 	if (args->start_pudp) {
-+		p4d_clear(args->p4dp);
- 		pud_free(args->mm, args->start_pudp);
- 		mm_dec_nr_puds(args->mm);
- 	}
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
  
--	if (args->start_p4dp)
-+	if (args->start_p4dp) {
-+		pgd_clear(args->pgdp);
- 		p4d_free(args->mm, args->start_p4dp);
-+	}
- 
- 	/* Free vma and mm struct */
- 	if (args->vma)
- 		vm_area_free(args->vma);
- 
- 	if (args->mm)
--		mmdrop(args->mm);
-+		mmput(args->mm);
- }
- 
- static struct page * __init
+ 	inst->fps = fps;
+ 	inst->timeperframe = *timeperframe;
 
 
 
