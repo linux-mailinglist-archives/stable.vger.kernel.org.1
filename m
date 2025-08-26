@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59598B364B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA21FB35E96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A697F8E3930
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAF84165A62
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1933019A3;
-	Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88032798ED;
+	Tue, 26 Aug 2025 11:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upuDgo1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCziu2El"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455462FC870;
-	Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B5C749C;
+	Tue, 26 Aug 2025 11:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215144; cv=none; b=elJyaxEZRNBudO/s540z+YIjng9+YOqJc429jOrwTECHvBfbnJ311LXDhtz/Cq9mcihg4srg+UDEVlY8QEHfoCGGnipU4tjqbQEpFQ9xaSh9JJsWyrOSHizCChwjhmrOIFWMz/Xlb0ijj9y1CQoaDW0KkZMnh8te9eah/sI3oF0=
+	t=1756208848; cv=none; b=Rk0ZyinKrnKLCOPJGa9A+ZtwNssK132+W5l3gZGYO83S6txDeJFRUW5d9xnon42GEjXJdCY45eztZRdjvkv5GQ/tUtgSPq6kluThgl4FnyMB4lavmyZSrkQraIZlt0C0vPDfkSIXMowxSOaYoFQuKVkVuMoFkFNVWEa/RwRIwzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215144; c=relaxed/simple;
-	bh=vAtccH7llEtiWC4DzRymrE39bextzu/47VunGqwEPxQ=;
+	s=arc-20240116; t=1756208848; c=relaxed/simple;
+	bh=paf52OH2Daim0qSPq2P1rMvitksbgrYdiENoYU929yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tCZhmgfzuZmnl4qpdX6CKOYCi+7Ez/5J716kKSH1XWuPS/apSiDl6PsMb1j/R/WovouKHJsXK9kgF5c87ZDAOBnsFW1SJbsfHhGrMIF3bLiFmeeCgJbqTxu2mMx+J9p4uWINWduULm01N5qYVmBH7cV2OCdvEMkqigYt/3eTpFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upuDgo1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15F5C4CEF1;
-	Tue, 26 Aug 2025 13:32:23 +0000 (UTC)
+	 MIME-Version; b=jVsszOjPeQhCZQf6wIv/sSQMnCWVYNJGzHb1LZiBqzwKjHIlJZgRhFf9X4r6gEuANAuPkZRVp85p+rXYHxl5yB8jn3zxt2vB4YKody40kNVcRe68SHIJwxFu2Nt4pVI00onNNeg8lp8uiqYsBq/bIq6GVx+3EIZQKCq/btuzh6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCziu2El; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E64C4CEF1;
+	Tue, 26 Aug 2025 11:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215144;
-	bh=vAtccH7llEtiWC4DzRymrE39bextzu/47VunGqwEPxQ=;
+	s=korg; t=1756208848;
+	bh=paf52OH2Daim0qSPq2P1rMvitksbgrYdiENoYU929yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upuDgo1CLI4KvIG+Nfi7ueOBuzNUS7CnxmlWOfjUd7zWH+PTLiLsN+JdT2YQvJu42
-	 RJTy5JctJBlDO47cglMCXoX4xzDzygTKVmSNWjS7CxucN4He8M007yJy0gW/3KH6aD
-	 K+tED2jY/p+X/+QaHHBC8C9bL41kE4TsiJV4DvZQ=
+	b=WCziu2ElJf51Jf2xCLzCB2a9raVPca5lCZSRWJ1W3HfdKFNLOSPt/zfqHvJIdMqUu
+	 2aI8oQ3QPs5W+Cskf228iM8bOrYTjOdPv5dk2KISb7V2lH3Cfcxj+VBpUi3dUu07j3
+	 SGliXBWSblKLOhyG/6qKsweZXtUmwXCOxQh8ZwRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.1 403/482] drm/amd/display: Find first CRTC and its line time in dce110_fill_display_configs
+	Charlton Lin <charlton.lin@intel.com>,
+	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 241/322] drm/i915/icl+/tc: Convert AUX powered WARN to a debug message
 Date: Tue, 26 Aug 2025 13:10:56 +0200
-Message-ID: <20250826110940.785607180@linuxfoundation.org>
+Message-ID: <20250826110921.869262713@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 669f73a26f6112eedbadac53a2f2707ac6d0b9c8 upstream.
+[ Upstream commit d7fa5754e83cd36c4327eb2d806064e598a72ff6 ]
 
-dce110_fill_display_configs is shared between DCE 6-11, and
-finding the first CRTC and its line time is relevant to DCE 6 too.
-Move the code to find it from DCE 11 specific code.
+The BIOS can leave the AUX power well enabled on an output, even if this
+isn't required (on platforms where the AUX power is only needed for an
+AUX access). This was observed at least on PTL. To avoid the WARN which
+would be triggered by this during the HW readout, convert the WARN to a
+debug message.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4ab09785f8d5d03df052827af073d5c508ff5f63)
-Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250811080152.906216-6-imre.deak@intel.com
+(cherry picked from commit 6cb52cba474b2bec1a3018d3dbf75292059a29a1)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[ display->drm API => i915->drm ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   30 ++++++----
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/i915/display/intel_tc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -120,9 +120,12 @@ void dce110_fill_display_configs(
- 	const struct dc_state *context,
- 	struct dm_pp_display_configuration *pp_display_cfg)
- {
-+	struct dc *dc = context->clk_mgr->ctx->dc;
- 	int j;
- 	int num_cfgs = 0;
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -1416,7 +1416,8 @@ static void intel_tc_port_reset_mode(str
  
-+	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
-+
- 	for (j = 0; j < context->stream_count; j++) {
- 		int k;
- 
-@@ -164,6 +167,23 @@ void dce110_fill_display_configs(
- 		cfg->v_refresh /= stream->timing.h_total;
- 		cfg->v_refresh = (cfg->v_refresh + stream->timing.v_total / 2)
- 							/ stream->timing.v_total;
-+
-+		/* Find first CRTC index and calculate its line time.
-+		 * This is necessary for DPM on SI GPUs.
-+		 */
-+		if (cfg->pipe_idx < pp_display_cfg->crtc_index) {
-+			const struct dc_crtc_timing *timing =
-+				&context->streams[0]->timing;
-+
-+			pp_display_cfg->crtc_index = cfg->pipe_idx;
-+			pp_display_cfg->line_time_in_us =
-+				timing->h_total * 10000 / timing->pix_clk_100hz;
-+		}
-+	}
-+
-+	if (!num_cfgs) {
-+		pp_display_cfg->crtc_index = 0;
-+		pp_display_cfg->line_time_in_us = 0;
+ 		aux_domain = intel_aux_power_domain(dig_port);
+ 		aux_powered = intel_display_power_is_enabled(i915, aux_domain);
+-		drm_WARN_ON(&i915->drm, aux_powered);
++		drm_dbg_kms(&i915->drm, "Port %s: AUX powered %d\n",
++			    tc->port_name, aux_powered);
  	}
  
- 	pp_display_cfg->display_count = num_cfgs;
-@@ -232,16 +252,6 @@ void dce11_pplib_apply_display_requireme
- 
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
--	/* TODO: is this still applicable?*/
--	if (pp_display_cfg->display_count == 1) {
--		const struct dc_crtc_timing *timing =
--			&context->streams[0]->timing;
--
--		pp_display_cfg->crtc_index =
--			pp_display_cfg->disp_configs[0].pipe_idx;
--		pp_display_cfg->line_time_in_us = timing->h_total * 10000 / timing->pix_clk_100hz;
--	}
--
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
- 		dm_pp_apply_display_requirements(dc->ctx, pp_display_cfg);
- }
+ 	tc_phy_disconnect(tc);
 
 
 
