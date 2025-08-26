@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EB8B366B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BC0B3612D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8DD41BC4FF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00FE917D6A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CA034A315;
-	Tue, 26 Aug 2025 13:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8989E20DD51;
+	Tue, 26 Aug 2025 13:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JowNlQpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x56XsJJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751202FFDEB;
-	Tue, 26 Aug 2025 13:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3E1ADFFE;
+	Tue, 26 Aug 2025 13:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216287; cv=none; b=uj1/We0W3vwhpmKGk+RXp4eWpxkS3x3uOH7qw3Wh8g3kBJ9UK4LaEbnvhZUQoMQh1UgwQDDfdbeOxEmBC54/gzpBV4KmX/pqO0rhCHjvAg7RKPNsW5zi4tZTSoY28uX+7EoGsEgxpIjMIqJYauUJrMGhMWtuKNSUtehdcH+nYcM=
+	t=1756213412; cv=none; b=S53EqEgU5m4R949jgWDGBgTWd89P3b5b/9JJSsKsmW9BS/d3FG6Zhn5e4asgGUmKDSP74L5bAdz1vrzxNXfFnZ/61Xv7ExAqUPAj5UgNuxsOnR5UZ2x1RS7SRNhpXpDxlIdwtumEEu4NtYZV6XSVkCNtVu+FTaYkEgCfpVyMU94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216287; c=relaxed/simple;
-	bh=PI1La/dwpmchGvh8RJttEe+F8tkqmF0n8gfI3QpzVW0=;
+	s=arc-20240116; t=1756213412; c=relaxed/simple;
+	bh=cz3El37PXu5SkIkgmk8r/dcCEpMBlTlqdAjv/g98BqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8OHkLR6/BPhHpFD5H4e5BmcUbLRG37v6bFR6T1XJYPSf2KBoLWJXaynOokOWjPo90yOISMBTBZXxvcbfZTxsTNHB2pqzP2l6Vu2B5QW2jXkXGCeDWFipXgFr+atxVPaF/eMsBvWKiCIa1yGrbYYT8G4yY+O9kDyFU0CX/AIGTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JowNlQpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA17CC4CEF1;
-	Tue, 26 Aug 2025 13:51:26 +0000 (UTC)
+	 MIME-Version; b=jIobpoj+P+jmqmhSWMsKtwbEYmOZWp1JpOGV3ZoT7pRUUq28mjEgIVCNEgDMbGcfOWLBcU0QHos9nD8RELu2CGPfbRF8QH8tQvJq116MVxjB0Cgsvw6g7vwkEw+zSW0gq2FO8oBogiVoe+6yxLZSR8j64sjb/jaIJ5GYCrEgZjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x56XsJJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6B2C4CEF4;
+	Tue, 26 Aug 2025 13:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216287;
-	bh=PI1La/dwpmchGvh8RJttEe+F8tkqmF0n8gfI3QpzVW0=;
+	s=korg; t=1756213412;
+	bh=cz3El37PXu5SkIkgmk8r/dcCEpMBlTlqdAjv/g98BqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JowNlQpFlLNrdggBPhGhmirVh2+MT2dc7GW2GDxPMQU/chJ33oWB2gVnVMvJtqlZB
-	 zvfus7nI9w2JtEkkdQB14cIj+wES4QfUzlhAOC9u7DGWZGgcmj+W3dl8Eeq94ACotw
-	 Y5BA8kc8CT8MB3ZpFIo/DtnO7PFXtmlVTZn7jxmc=
+	b=x56XsJJmmWgXk0GXDUNQ4tQ7qeUTPUNIIlS7VqpHcbE6Mlfvp+mbAZMAtS2jvjZyZ
+	 r78xbHOe8CWb/HeXSRzyGkERAPGO0r7DM2/S4sALa6JnlViiSqrlt+h7FRNKWjhN4m
+	 pZ/WdweUB98vyOcXqtIXR4ChK8zHzEjwI1/bE+/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 355/644] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 297/587] cifs: reset iface weights when we cannot find a candidate
 Date: Tue, 26 Aug 2025 13:07:26 +0200
-Message-ID: <20250826110955.197290799@linuxfoundation.org>
+Message-ID: <20250826111000.482332644@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
+commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
 
-If the device configuration fails (if `dma_dev->device_config()`),
-`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
-leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
+We now do a weighted selection of server interfaces when allocating
+new channels. The weights are decided based on the speed advertised.
+The fulfilled weight for an interface is a counter that is used to
+track the interface selection. It should be reset back to zero once
+all interfaces fulfilling their weight.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In cifs_chan_update_iface, this reset logic was missing. As a result
+when the server interface list changes, the client may not be able
+to find a new candidate for other channels after all interfaces have
+been fulfilled.
+
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/smb/client/sess.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 04bf6ecf7d55..85e0fa7d902b 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
- 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -372,6 +372,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
+ 	struct sockaddr_storage ss;
++	int retry = 0;
  
- 	/* Make DMA channel work with LPB FIFO data register */
--	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
--		ret = -EINVAL;
--		goto err_dma_prep;
--	}
-+	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
-+		return -EINVAL;
+ 	spin_lock(&ses->chan_lock);
+ 	chan_index = cifs_ses_get_chan_index(ses, server);
+@@ -400,6 +401,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 		return;
+ 	}
  
- 	sg_init_table(&sg, 1);
++try_again:
+ 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
+ 				     iface_head);
+ 	iface_min_speed = last_iface->speed;
+@@ -437,6 +439,13 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	}
  
--- 
-2.39.5
-
+ 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
++		list_for_each_entry(iface, &ses->iface_list, iface_head)
++			iface->weight_fulfilled = 0;
++
++		/* see if it can be satisfied in second attempt */
++		if (!retry++)
++			goto try_again;
++
+ 		iface = NULL;
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
 
 
 
