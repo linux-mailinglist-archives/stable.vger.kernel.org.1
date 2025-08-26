@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85893B35C33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0887AB363FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE93B16FAFB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D0F8E1570
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647C82F619C;
-	Tue, 26 Aug 2025 11:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E90824169D;
+	Tue, 26 Aug 2025 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajEju7zC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QFGoXBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8512BE653;
-	Tue, 26 Aug 2025 11:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0465D23D7DD;
+	Tue, 26 Aug 2025 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207589; cv=none; b=XPsPAR4vT6gNW0BRrMNrnNUiR7M9N+kcsb6sdnmU2IQZ2e5guAGLnYDZCo6GkzwgE5xdPgCVk0e6hkcwMjYw+ZQHFVhlYMfXPJyFx/rNstxb1VBYlLG34Exhb7OeRUqPz5ER2+Dt+ff69+Oh4GQ7/Hr8yAoA2sfdJuQvUVrnpLU=
+	t=1756214793; cv=none; b=VhBvQg/w7JVgFSYfDHLDtb+1MdRtlE9FVTxOnLbqO+yE3Q85GvtC1UFmVbYxvfKJAZPSn1Wphm8fYrTHm5keOfpt7AyiaHug2ez7SAID3CF7v/3QQ1OiyynLJBcf7CrFe/NDROpya5uDfP7jBjBSZ5uNkztxRg4gqqaTWTYyU3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207589; c=relaxed/simple;
-	bh=8+JJez/RZK4EAPWjZd05Vnhl4eEnLFNb+4XUooc9xF4=;
+	s=arc-20240116; t=1756214793; c=relaxed/simple;
+	bh=uCzyHbZs13tx7Tz7HYrQmk3p6OP+3+yly9o8AFvtuCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mX1KzjNLxWU5s9CELtczgzRs9sctK/2iaWqma/ic2cWWAEKK1wLFVuJEQqT8Qz7oa5EK4d/QiU7Qr8R7cl+HZYyVRGJ3RKSCP2eHVKpSgTHH3SV83+06mc4EGPVe5std+TL+AHAawD7rCfFXwgMphZgXLAUcDXzTYId/dL1oyZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajEju7zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFD1C4CEF1;
-	Tue, 26 Aug 2025 11:26:28 +0000 (UTC)
+	 MIME-Version; b=GOGE7BFwXOkD9XoqahMf9ygjLxKyrwAHHbsOikpooW8NMrzeDTOkcFgzgXqB+KXIaHvN8ExI6sMCJnE8JtEI2YmyATWtNqlA7bq1DdrlRH0m/1fz3aqe0qfEOy01hW1o/BOgDBEAUYgCl8U6aUXWlY6Utewe2XlnZ8ZvOmCJtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QFGoXBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8324CC4CEF1;
+	Tue, 26 Aug 2025 13:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207589;
-	bh=8+JJez/RZK4EAPWjZd05Vnhl4eEnLFNb+4XUooc9xF4=;
+	s=korg; t=1756214792;
+	bh=uCzyHbZs13tx7Tz7HYrQmk3p6OP+3+yly9o8AFvtuCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajEju7zCdSCT+71rpQl9Clhe5O/3fSW5w6LXIgoJWfpw+tQZK/9zppVBilGh3MSYF
-	 942vn6oWHZ6TqCx+f1bmab4f7s0YUweAbvvyCSb/rN/dkHG3wp/XteOzWgI/Z/R3rX
-	 /c2q038FRM8t1/aZBltjWcbEWs/gMzFAMT7JG9aw=
+	b=2QFGoXBsvY6/eNZnZw7kzW4WGnV3lZfVikcAdiX/9aOoj96NupfeA2DHj85bvYlpB
+	 cjCt+J97lHm9AaVpFhzmR4HTtRL8MFkED9ACepCEbDBWcVQnAugeecFdTJTbznvDxX
+	 lxeQrXbZRq+MsdAHS6YwG3dOiWnXWvlAhlgPzQBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 240/457] memstick: Fix deadlock by moving removing flag earlier
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 271/482] usb: gadget: udc: renesas_usb3: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:08:44 +0200
-Message-ID: <20250826110943.306139408@linuxfoundation.org>
+Message-ID: <20250826110937.464620177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
+commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
 
-The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
-allocating card when removing host") sets host->removing in
-memstick_remove_host(),but still exists a critical time window where
-memstick_check can run after host->eject is set but before removing is set.
+Make sure to drop the reference to the companion device taken during
+probe when the driver is unbound.
 
-In the rtsx_usb_ms driver, the problematic sequence is:
-
-rtsx_usb_ms_drv_remove:          memstick_check:
-  host->eject = true
-  cancel_work_sync(handle_req)     if(!host->removing)
-  ...                              memstick_alloc_card()
-                                     memstick_set_rw_addr()
-                                       memstick_new_req()
-                                         rtsx_usb_ms_request()
-                                           if(!host->eject)
-                                           skip schedule_work
-                                       wait_for_completion()
-  memstick_remove_host:                [blocks indefinitely]
-    host->removing = true
-    flush_workqueue()
-    [block]
-
-1. rtsx_usb_ms_drv_remove sets host->eject = true
-2. cancel_work_sync(&host->handle_req) runs
-3. memstick_check work may be executed here <-- danger window
-4. memstick_remove_host sets removing = 1
-
-During this window (step 3), memstick_check calls memstick_alloc_card,
-which may indefinitely waiting for mrq_complete completion that will
-never occur because rtsx_usb_ms_request sees eject=true and skips
-scheduling work, memstick_set_rw_addr waits forever for completion.
-
-This causes a deadlock when memstick_remove_host tries to flush_workqueue,
-waiting for memstick_check to complete, while memstick_check is blocked
-waiting for mrq_complete completion.
-
-Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
-before any work cancellation. This ensures memstick_check will see the
-removing flag immediately and exit early, avoiding the deadlock.
-
-Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memstick/core/memstick.c    |    1 -
- drivers/memstick/host/rtsx_usb_ms.c |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/renesas_usb3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -555,7 +555,6 @@ EXPORT_SYMBOL(memstick_add_host);
-  */
- void memstick_remove_host(struct memstick_host *host)
- {
--	host->removing = 1;
- 	flush_workqueue(workqueue);
- 	mutex_lock(&host->lock);
- 	if (host->card)
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
-@@ -812,6 +812,7 @@ static void rtsx_usb_ms_drv_remove(struc
- 	int err;
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2594,6 +2594,7 @@ static int renesas_usb3_remove(struct pl
+ 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
  
- 	host->eject = true;
-+	msh->removing = true;
- 	cancel_work_sync(&host->handle_req);
- 	cancel_delayed_work_sync(&host->poll_card);
+ 	debugfs_remove_recursive(usb3->dentry);
++	put_device(usb3->host_dev);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
+ 	cancel_work_sync(&usb3->role_work);
 
 
 
