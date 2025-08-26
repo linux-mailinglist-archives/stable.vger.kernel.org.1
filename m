@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCA5B36718
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5932FB36AB5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A6098020E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D856558780C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366D03469EE;
-	Tue, 26 Aug 2025 13:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B373568FC;
+	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2vWF6ES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC4r4Z9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C2030146A;
-	Tue, 26 Aug 2025 13:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F76E356903;
+	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216122; cv=none; b=RXzj27jMmm6agzYgiPPtfMwnyAcQgS7ztwCE3GHd5SOPFYL1Be6onKajVThbLjcJJoNf6I/j5VkZnQxJNCtvPKyJD60INrGKVPIaIDld2pzF+FFymZGYKA9VB3jVkGUSKA0BO9a+reTtK6STwAchE5kejVoR7hlE/hCiJT6RJac=
+	t=1756218585; cv=none; b=SYOE5jdx3mxRWq5JBr0/4j96bAAOLxCb75QWE0SKtQAqo1KBmmpfNc/5PdFe0COvU4zhuf7YQ4e0Oh3wYzGKgYnjDGfoIscl88AnkoJ8ggikIFc6b8B3jS9r/ux1IqTL2Vp2zHMDXzGpH4Id0aOV+zOHFQpGUdxGGkYOvwUsVUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216122; c=relaxed/simple;
-	bh=ZnE8Q8T/M4a/wir1K4UcK0nh6adHAbYdvPnyCdYblCU=;
+	s=arc-20240116; t=1756218585; c=relaxed/simple;
+	bh=wPo7f0QesYrlhyBXK6O6qPhzir4nDNWoahpm2vmZwCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwRrYQVgrdPKt3YsshRw7wTvw0rKEXWHj+sKLmDtwauZHJknnFsC7GEIs7cgnhD1nNcAfUADmPL2sf5i7SvKgl6h5oauVlRZoUyQx6JMDS2kbBY3+WkzWlzYfhrXR08HL9RHBuxaZWr5JQ65V8I4PpncCSTnRAR1N7ry0aSp7ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2vWF6ES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB74C4CEF1;
-	Tue, 26 Aug 2025 13:48:41 +0000 (UTC)
+	 MIME-Version; b=nfZhVUf/4c3YmHSAltvFoD1TJEpWeF+KDP0N+DjrbH/bUPJyKq2XGkvhLrhk0DXIiYS85SWGqUg/2fId0M9mdbB2EcJ7wyzBTl47St7VuupiX4Mmxv03djCMEJOokGLROWhc3btvj8NHLdpUgZ7DDWyqHzDEyBnCE934q2DpfXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC4r4Z9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B6CC4CEF1;
+	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216121;
-	bh=ZnE8Q8T/M4a/wir1K4UcK0nh6adHAbYdvPnyCdYblCU=;
+	s=korg; t=1756218585;
+	bh=wPo7f0QesYrlhyBXK6O6qPhzir4nDNWoahpm2vmZwCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2vWF6ESjIqKg/Umeure30Lw6efBf3QegwDRpts/mNbZx7DFLDn2+1HwGHlskT5Ny
-	 62oaF0g4D3/UkHkkUuQN87jSDcB4va9HpfkcQAmRrpPRt35zNn/nyJWKhdbhPmkC9I
-	 FjJh5ToV7KPGinFBwOojNVuuvIo4ilmAoot9CxDE=
+	b=IC4r4Z9/htTAAmScJm6EZXZSp+gKnAb4C3TqeXXVaBMlJ4VWyMrPkhRM4+kSiUB2t
+	 homN9tHj22GyKek4z8vYKEeBu2oy94mo6NGEQNZFxl2qJErEwrZNqFoZpi2E4dtheo
+	 cCrEyHyXHPFBNS0vmkHKwl3YKAefkagwB1VKKU0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/644] fs/ntfs3: Add sanity check for file name
-Date: Tue, 26 Aug 2025 13:06:22 +0200
-Message-ID: <20250826110953.593437345@linuxfoundation.org>
+Subject: [PATCH 5.4 057/403] RDMA/core: Rate limit GID cache warning messages
+Date: Tue, 26 Aug 2025 13:06:23 +0200
+Message-ID: <20250826110907.443169335@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
+[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
 
-The length of the file name should be smaller than the directory entry size.
+The GID cache warning messages can flood the kernel log when there are
+multiple failed attempts to add GIDs. This can happen when creating many
+virtual interfaces without having enough space for their GIDs in the GID
+table.
 
-Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
+maintaining visibility of the issue.
+
+Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/core/cache.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index a4ab0164d150..c49e64ebbd0a 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
- 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
- 		return true;
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index 7affe6b4ae210..641e537a0069a 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -578,8 +578,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u8 port,
+ out_unlock:
+ 	mutex_unlock(&table->lock);
+ 	if (ret)
+-		pr_warn("%s: unable to add gid %pI6 error=%d\n",
+-			__func__, gid->raw, ret);
++		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
++				    __func__, gid->raw, ret);
+ 	return ret;
+ }
  
-+	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
-+		return true;
-+
- 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
- 				     PATH_MAX);
- 	if (name_len <= 0) {
 -- 
 2.39.5
 
