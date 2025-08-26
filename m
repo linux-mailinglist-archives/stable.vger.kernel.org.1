@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DBEB362C4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8D1B36016
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81D741BC0A1A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E3E1BA75F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3873A1B87E8;
-	Tue, 26 Aug 2025 13:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA27F202C46;
+	Tue, 26 Aug 2025 12:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUqG6yLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n01riOBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E942B8635D;
-	Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DC01E5718;
+	Tue, 26 Aug 2025 12:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214211; cv=none; b=UC1iHEU7bgKHgfi5/xa2d6K/uAogEIzqG8D/LvJ1J4N3qzN/tISGHQ/wUcvqNCv8rTroM/4KpljaqJbKaZiUgJud70B4t6LSGl8MMfW4/3vZe/1XTWEREK+4U0GV3TqVWHhXpQ4miDGXPiY/VyOoITdQsJmahkNhRsn7OQ2gkvc=
+	t=1756212822; cv=none; b=pITldc5F8Adx3ZUR0o5sMO1+fi1N/aPxElbaDLk/JceXiIelFHHblpd0Qjx4FknyhCHZZAuYdxnGxs+BdD7PY4wJ5nt2pR5/EvnvK22U/qhs1wfXrDK4NMRrzs4HMUh7BhikcMiBXUn1zud3O1vfTHI+QDRC55F9KrAkXGPq/jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214211; c=relaxed/simple;
-	bh=ZmB6kremGYbqbDLv77hAqtMw0sfeuNIZF29mYuRVvew=;
+	s=arc-20240116; t=1756212822; c=relaxed/simple;
+	bh=j4AL1wIda8cYkK/hhxQ7Kt8VIVcXS21ZPb7cFUsVTvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Snaj79Wr6ecaakwPrnIOkNWOHrceWS/WCipNWPckGdkFpud+C4SWOHT1GvccwHqR/uBq6/PKNX8M7QuvZnHRty7kYc1dCF9QLic3egSYxK7xTjzHL9U+s+5UJNXjEa1G66uKGOFaem38kkTp+h24ckOkt8h8K9QdodA06Okm5UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUqG6yLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DD7C113D0;
-	Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
+	 MIME-Version; b=qlgDWKuWmBUvcWXwpTC5gAB2mIz3CoO93mctjlnd6cKpQbi8dwDAJh69qUODMvGbxyn16PIyiUeOe3KuIjoQgE7//lRE9o1YbacFdeePAu/gMSFnoS562SBioD+hDMCDW6S5E3VIQ2D4LB00PW+HRsPHu7H60W6grDN+5jc0kQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n01riOBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66FEC4CEF1;
+	Tue, 26 Aug 2025 12:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214210;
-	bh=ZmB6kremGYbqbDLv77hAqtMw0sfeuNIZF29mYuRVvew=;
+	s=korg; t=1756212822;
+	bh=j4AL1wIda8cYkK/hhxQ7Kt8VIVcXS21ZPb7cFUsVTvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUqG6yLHtPWHIafg+7F/bS9QaPCEPjZOkikNZ7cuAk552y9NY7qjDMq/t+TyACmMH
-	 /tJ3AMDfqwBoacy6kz4TRclsGeZX98GC2a0st5dT/m+yYjTruiYUvUCoz4K0Amchsx
-	 DzR4sAl+PqYR/hY77pIcXX0Tbr41o33JEh9w6tdk=
+	b=n01riOBZ5xmN5f3DjSXQ1be6IVs+85nWCmh40myi1t0/pO3pOmCu5J1T3aykVZPHa
+	 YkHqc44i0soHhaiv9Vfb9/Y3ceaE2VAj+lj4GxSisZHtR5TMPep9ycv1AUkpgMBoLb
+	 tYzJVrDuLWCblaRrjfoaUz0QIU0cN4LM2huyT8eE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 010/482] netlink: avoid infinite retry looping in netlink_unicast()
-Date: Tue, 26 Aug 2025 13:04:23 +0200
-Message-ID: <20250826110931.037515461@linuxfoundation.org>
+	Eliav Farber <farbere@amazon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/587] pps: clients: gpio: fix interrupt handling order in remove path
+Date: Tue, 26 Aug 2025 13:04:24 +0200
+Message-ID: <20250826110955.887594304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Eliav Farber <farbere@amazon.com>
 
-commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
+[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
 
-netlink_attachskb() checks for the socket's read memory allocation
-constraints. Firstly, it has:
+The interrupt handler in pps_gpio_probe() is registered after calling
+pps_register_source() using devm_request_irq(). However, in the
+corresponding remove function, pps_unregister_source() is called before
+the IRQ is freed, since devm-managed resources are released after the
+remove function completes.
 
-  rmem < READ_ONCE(sk->sk_rcvbuf)
+This creates a potential race condition where an interrupt may occur
+after the PPS source is unregistered but before the handler is removed,
+possibly leading to a kernel panic.
 
-to check if the just increased rmem value fits into the socket's receive
-buffer. If not, it proceeds and tries to wait for the memory under:
+To prevent this, switch from devm-managed IRQ registration to manual
+management by using request_irq() and calling free_irq() explicitly in
+the remove path before unregistering the PPS source. This ensures the
+interrupt handler is safely removed before deactivating the PPS source.
 
-  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
-
-The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
-equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
-these conditions, nor manages to reschedule the task - and is called in
-retry loop for indefinite time which is caught as:
-
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
-  (t=26000 jiffies g=230833 q=259957)
-  NMI backtrace for cpu 0
-  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
-  Call Trace:
-  <IRQ>
-  dump_stack lib/dump_stack.c:120
-  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
-  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
-  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
-  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
-  update_process_times kernel/time/timer.c:1953
-  tick_sched_handle kernel/time/tick-sched.c:227
-  tick_sched_timer kernel/time/tick-sched.c:1399
-  __hrtimer_run_queues kernel/time/hrtimer.c:1652
-  hrtimer_interrupt kernel/time/hrtimer.c:1717
-  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
-  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
-  </IRQ>
-
-  netlink_attachskb net/netlink/af_netlink.c:1234
-  netlink_unicast net/netlink/af_netlink.c:1349
-  kauditd_send_queue kernel/audit.c:776
-  kauditd_thread kernel/audit.c:897
-  kthread kernel/kthread.c:328
-  ret_from_fork arch/x86/entry/entry_64.S:304
-
-Restore the original behavior of the check which commit in Fixes
-accidentally missed when restructuring the code.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pps/clients/pps-gpio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1217,7 +1217,7 @@ int netlink_attachskb(struct sock *sk, s
- 	nlk = nlk_sk(sk);
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
+index bf3b6f1aa984..41e1fdbcda16 100644
+--- a/drivers/pps/clients/pps-gpio.c
++++ b/drivers/pps/clients/pps-gpio.c
+@@ -206,8 +206,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
+ 	}
  
--	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
-+	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		return 0;
+ 	/* register IRQ interrupt handler */
+-	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
+-			get_irqf_trigger_flags(data), data->info.name, data);
++	ret = request_irq(data->irq, pps_gpio_irq_handler,
++			  get_irqf_trigger_flags(data), data->info.name, data);
+ 	if (ret) {
+ 		pps_unregister_source(data->pps);
+ 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
+@@ -224,6 +224,7 @@ static int pps_gpio_remove(struct platform_device *pdev)
+ {
+ 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
+ 
++	free_irq(data->irq, data);
+ 	pps_unregister_source(data->pps);
+ 	del_timer_sync(&data->echo_timer);
+ 	/* reset echo pin in any case */
+-- 
+2.39.5
+
 
 
 
