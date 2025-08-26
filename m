@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E7FB36B9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 369BFB35E2D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA9C1C4173C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AE7463538
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448E835E4EC;
-	Tue, 26 Aug 2025 14:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D8921D3C0;
+	Tue, 26 Aug 2025 11:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjCtX6NM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLUc9uMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED33C25DB0A;
-	Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F08393DD1;
+	Tue, 26 Aug 2025 11:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219019; cv=none; b=oneyNQkL3JFPY82UGSKmVwDuHTOzOP3TUcf/Ow3K8CszK7ihHOmNQx7VpAaOrOWawUb/t1k90M+Gcp8GEz1OjOVkxWzxL6NMNqc9WVrC84u/DIS7LxzY9Uk/dpgySD2oUfNkfRNjjXZRGipEe838O6v9LgPgHGGdlu9d6PJVHtk=
+	t=1756208417; cv=none; b=PqDXYwGAhU1xj3JDi2axuNP7kSUuTrDgb0lC4ki1q4pthpNLlV0IzES7mhlWFsA/jEDsaSLizpbV6bpqiVOWTwMHVN+Rxn+nROTBe2Xi53ccNTnap/tAHp00I4Y64k5zqmqIwezUf4XJiFcO0Us9jGDaOJC62agLMNHR//lGpxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219019; c=relaxed/simple;
-	bh=V00XOKQuvShrlOyg+HawaU64p5mVEkWMC/zBjhYkOFs=;
+	s=arc-20240116; t=1756208417; c=relaxed/simple;
+	bh=Bbqdwrivrgn8erSyYoPeI/vobkSyXA5MHDprmAlH22Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxJNZtycig5wgAd/xcU++8Qw0Ivj97Zu6HMPsPBZctxIYDaRlmjD5EGMyT9ab+jjy2IbR2N6umpQOHJgMnYXor1uzbM6lGbKqYJ29qFP4Nfbtv6a13qMp4y4YRtt5//KS+e4X7bYzqX12DUAkLEYM3q6zTB12AGlUxZs0OVAn7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjCtX6NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E86C4CEF1;
-	Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
+	 MIME-Version; b=pGZM93y9uQ+h1T4XN0PDJFOqvMQAJje6KJwcFSBbWnuSXo1/OOnJNUQP99lKIm/qInWAH17HPZoiN0vjmZv8n8AYXKMftgWbpb8Ekj5CLUOrxm+PCzQ8e1rvZ78/lchUk7HomJmVL3jtM6ZFoAf2DAWIH2ARiwEE9nfWb1Z8wNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLUc9uMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E19C4CEF1;
+	Tue, 26 Aug 2025 11:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219018;
-	bh=V00XOKQuvShrlOyg+HawaU64p5mVEkWMC/zBjhYkOFs=;
+	s=korg; t=1756208417;
+	bh=Bbqdwrivrgn8erSyYoPeI/vobkSyXA5MHDprmAlH22Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bjCtX6NMnWT4z56v8EMGPEZOVDJ+wdTo/lEwc7khGiNeDspYwvvTVnQP1M3OI9v1U
-	 8CJsvAeqtMnQmc24hNTqcvCofyxbMi1ChyDxORWKbO593VhBaIarbsHjlGybMqd6cd
-	 e+2fG+7cZZThb1UI6g0m4D0f1kjMUKwbCbOdhROM=
+	b=vLUc9uMeMXintaa46zkqIXwQXFz0jPSpJwEAkB8VUmPwjGx+foOicy+dwyK3n0xrb
+	 s5Gy2+mVKQWYCHfi6FSJOkrUkwZk56rzUzSMEbU6m07d8HvnC7G9AVEl/E+1G8252Z
+	 Xxte0g18fAmEAQBEUXKIoPI6922FlOWhGvaf26pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 190/403] ARM: tegra: Use I/O memcpy to write to IRAM
-Date: Tue, 26 Aug 2025 13:08:36 +0200
-Message-ID: <20250826110912.124599368@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 102/322] media: vivid: fix wrong pixel_array control size
+Date: Tue, 26 Aug 2025 13:08:37 +0200
+Message-ID: <20250826110918.235468695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
+commit 3e43442d4994c9e1e202c98129a87e330f7faaed upstream.
 
-Kasan crashes the kernel trying to check boundaries when using the
-normal memcpy.
+The pixel_array control size was calculated incorrectly:
+the dimensions were swapped (dims[0] should be the height), and the
+values should be the width or height divided by PIXEL_ARRAY_DIV
+and rounded up. So don't use roundup, but use DIV_ROUND_UP instead.
 
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug is harmless in the sense that nothing will break, except that
+it consumes way too much memory for this control.
+
+Fixes: 6bc7643d1b9c ("media: vivid: add pixel_array test control")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-tegra/reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/test-drivers/vivid/vivid-ctrls.c   |    3 ++-
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-index 76a65df42d10..dce0cb1fdd6f 100644
---- a/arch/arm/mach-tegra/reset.c
-+++ b/arch/arm/mach-tegra/reset.c
-@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
- 	BUG_ON(is_enabled);
- 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
+--- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
++++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+@@ -243,7 +243,8 @@ static const struct v4l2_ctrl_config viv
+ 	.min = 0x00,
+ 	.max = 0xff,
+ 	.step = 1,
+-	.dims = { 640 / PIXEL_ARRAY_DIV, 360 / PIXEL_ARRAY_DIV },
++	.dims = { DIV_ROUND_UP(360, PIXEL_ARRAY_DIV),
++		  DIV_ROUND_UP(640, PIXEL_ARRAY_DIV) },
+ };
  
--	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
-+	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
- 			tegra_cpu_reset_handler_size);
+ static const struct v4l2_ctrl_config vivid_ctrl_s32_array = {
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -453,8 +453,8 @@ void vivid_update_format_cap(struct vivi
+ 	if (keep_controls)
+ 		return;
  
- 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
--- 
-2.39.5
-
+-	dims[0] = roundup(dev->src_rect.width, PIXEL_ARRAY_DIV);
+-	dims[1] = roundup(dev->src_rect.height, PIXEL_ARRAY_DIV);
++	dims[0] = DIV_ROUND_UP(dev->src_rect.height, PIXEL_ARRAY_DIV);
++	dims[1] = DIV_ROUND_UP(dev->src_rect.width, PIXEL_ARRAY_DIV);
+ 	v4l2_ctrl_modify_dimensions(dev->pixel_array, dims);
+ }
+ 
 
 
 
