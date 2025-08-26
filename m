@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E001B35C3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF21B369C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C377B76CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709951C43993
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A663322752;
-	Tue, 26 Aug 2025 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CD835334D;
+	Tue, 26 Aug 2025 14:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/72DfNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMpoZvrY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170B82BF3E2;
-	Tue, 26 Aug 2025 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B8E350D5D;
+	Tue, 26 Aug 2025 14:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207781; cv=none; b=bgr2tWUiQrkAde1xIfZMrbwxGawa/2e9sIca2cLnvlUfKWf1AFfDccgUxYJe2OtvZ/yd4UKbW4aM6z2GNrSa+Cb3rpzBew4sS9YLusWRQTRsUqPDky0HsoGfgPWrf48xr2nUfBYSOVAEPpe91WFmxvZatnXPpANVUpMjC5FUdWQ=
+	t=1756218007; cv=none; b=mtn6rhW2UhMGu1d7FzzA0eD98KGMEYPoZzwhtg7G8+0jb/kHykIZEbmifNhzqaCPqJQWk5qDzW3J8JKKpJYyuyTR9/wWNZ1qzVtWvGy1u5TM6w0CMvFO9rPljbg9D9KEDEW8RRjhw6HVHG5agvlbjVIdJtCoLWW3Ho1huedgNfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207781; c=relaxed/simple;
-	bh=gw5Lyfs/MM0xavlkWdOP+HsFr2jUzJh/em441E86FFI=;
+	s=arc-20240116; t=1756218007; c=relaxed/simple;
+	bh=nphWbvN0NLsMHuOVuikvhsCzk+sp0iCGGginj5u3j9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScsAJ0EOlVNFkvpQmwpvCcd23WopFehBX1R97TxNOHGVjEZZgcZDWwdLX8lhYkH2iR5+SEwm3WcEkwYEOVEvbKDhTyJ79DQZCWJpFfpi0LDSQ0yRiD97Ov6YHYzOsepTHAru8m0eNoU3NK3c8EP1ayNXpVocbwhU7ke+96lxgLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/72DfNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA5EC4CEF1;
-	Tue, 26 Aug 2025 11:29:40 +0000 (UTC)
+	 MIME-Version; b=kVAOV04fuJHgX+F8gX61hqgms3BeKocoEFURFzS5eHtNeSJUBxt0mz6Ua4FCuw2irpgtmYIQXvvogqdHYLaI8tKVgo6mpPpoidCrHmrPThwV98pTIST0fHpslO2TvqNAsXKlZBS6a0/kpNluMqVt8QHm/nd+8ib/Z1zwyuRfUvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMpoZvrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128EAC4CEF1;
+	Tue, 26 Aug 2025 14:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207781;
-	bh=gw5Lyfs/MM0xavlkWdOP+HsFr2jUzJh/em441E86FFI=;
+	s=korg; t=1756218007;
+	bh=nphWbvN0NLsMHuOVuikvhsCzk+sp0iCGGginj5u3j9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/72DfNWTSkzFrC2ghMKigWOGrrpEDDk40yge0H/AUpxbtvinoCyXkP1PT1eWaCX5
-	 nPAi5ciRXqTUWAeGWmnLE+THGIcB3W1WT9UUpaYnOXZgG7g5T69hfphLE56I4lYp4t
-	 Yk3zHFTNuNJWGVe1NEkTFAsKgEEg2c50d2cR6ZNI=
+	b=iMpoZvrYziGtai0VMDI5rRby2VebZ2NDzzpewry4qn8ss8yYn00Foijiq+XTIatab
+	 4EVBvjiWy8N13u3uh2lvfEsUpzxFQdWfe5vXjV9fGHK33fDEwk/MKaKnTlinzkcmDq
+	 aw67kvPe4+5b2K44iVZ2r9po+FsR/egeU31PbNQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 284/457] fhandle: do_handle_open() should get FD with user flags
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 5.10 358/523] bus: mhi: host: Fix endianness of BHI vector table
 Date: Tue, 26 Aug 2025 13:09:28 +0200
-Message-ID: <20250826110944.397879379@linuxfoundation.org>
+Message-ID: <20250826110933.301029495@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-[ Upstream commit b5ca88927e353185b3d9ac4362d33e5aeb25771f ]
+commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
 
-In f07c7cc4684a, do_handle_open() was switched to use the automatic
-cleanup method for getting a FD. In that change it was also switched
-to pass O_CLOEXEC unconditionally to get_unused_fd_flags() instead
-of passing the user-specified flags.
+On big endian platform like PowerPC, the MHI bus (which is little endian)
+does not start properly. The following example shows the error messages by
+using QCN9274 WLAN device with ath12k driver:
 
-I don't see anything in that commit description that indicates this was
-intentional, so I am assuming it was an oversight.
+    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+    ath12k_pci 0001:01:00.0: MSI vectors: 1
+    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
+    ath12k_pci 0001:01:00.0: failed to start mhi: -110
+    ath12k_pci 0001:01:00.0: failed to power up :-110
+    ath12k_pci 0001:01:00.0: failed to create soc core: -110
+    ath12k_pci 0001:01:00.0: failed to init core: -110
+    ath12k_pci: probe of 0001:01:00.0 failed with error -110
 
-With this fix, the FD will again be opened with, or without, O_CLOEXEC
-according to what the user requested.
+The issue seems to be with the incorrect DMA address/size used for
+transferring the firmware image over BHI. So fix it by converting the DMA
+address and size of the BHI vector table to little endian format before
+sending them to the device.
 
-Fixes: f07c7cc4684a ("fhandle: simplify error handling")
-Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
-Link: https://lore.kernel.org/20250814235431.995876-4-tahbertschinger@gmail.com
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+[mani: added stable tag and reworded commit message]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fhandle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/mhi/host/boot.c     |    8 ++++----
+ drivers/bus/mhi/host/internal.h |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/fhandle.c b/fs/fhandle.c
-index 66ff60591d17..e21ec857f2ab 100644
---- a/fs/fhandle.c
-+++ b/fs/fhandle.c
-@@ -404,7 +404,7 @@ static long do_handle_open(int mountdirfd, struct file_handle __user *ufh,
- 	if (retval)
- 		return retval;
+--- a/drivers/bus/mhi/host/boot.c
++++ b/drivers/bus/mhi/host/boot.c
+@@ -30,8 +30,8 @@ void mhi_rddm_prepare(struct mhi_control
+ 	unsigned int i;
  
--	CLASS(get_unused_fd, fd)(O_CLOEXEC);
-+	CLASS(get_unused_fd, fd)(open_flag);
- 	if (fd < 0)
- 		return fd;
+ 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = mhi_buf->len;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(mhi_buf->len);
+ 	}
  
--- 
-2.50.1
-
+ 	dev_dbg(dev, "BHIe programming for RDDM\n");
+@@ -372,8 +372,8 @@ static void mhi_firmware_copy(struct mhi
+ 	while (remainder) {
+ 		to_cpy = min(remainder, mhi_buf->len);
+ 		memcpy(mhi_buf->buf, buf, to_cpy);
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = to_cpy;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(to_cpy);
+ 
+ 		buf += to_cpy;
+ 		remainder -= to_cpy;
+--- a/drivers/bus/mhi/host/internal.h
++++ b/drivers/bus/mhi/host/internal.h
+@@ -263,8 +263,8 @@ struct mhi_tre {
+ };
+ 
+ struct bhi_vec_entry {
+-	u64 dma_addr;
+-	u64 size;
++	__le64 dma_addr;
++	__le64 size;
+ };
+ 
+ enum mhi_cmd_type {
 
 
 
