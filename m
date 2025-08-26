@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675E7B36BE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C01B35CC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3040466D49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28DAC7C52C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FFB34F47D;
-	Tue, 26 Aug 2025 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9AD2BE65E;
+	Tue, 26 Aug 2025 11:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPNXxOFo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCXXHLH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B632FDC44;
-	Tue, 26 Aug 2025 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA4029B233;
+	Tue, 26 Aug 2025 11:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218759; cv=none; b=ewNQL0rHgS5gDmRhbZtb6jmgvU+0ofT4QXx5Ed/t7zccb6+yVtotQCalOpMuLJfD+PRLAEEy8Qc1sZBZP/znT5kJjCg2aDIqgnI52xlesb0cev1JY7+6WuyR2paE1xfGb+X/GFI2R2Yti5K+ixAajGcpkqeJn7EMRJLfokdPhIg=
+	t=1756208218; cv=none; b=CDeQBR8GIBuMKDDFepPYPHAByvOCMxkY0+yzRde7YDkTSEbuqc3i3NpZWEy1y9vbJmR8rtLUYUFyb0q4bnxpHiFZ8vVOw/HQJSjx4Xxq7XJyRwSi8P9XdjG4HGb/1e4x24Vo1rsvgojgTKtiD7R9O8RdP3raevNUfx10A7qUDCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218759; c=relaxed/simple;
-	bh=8wk8llX61pCpUN+jW9Fq1lhk4DefMDj2gs6EOyU2wCQ=;
+	s=arc-20240116; t=1756208218; c=relaxed/simple;
+	bh=7KhX+t56lxonE5aa9WDdhUbqIHXlvDviWmJyur8GYmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjdXaGgxhEiV7r7PBDmAwk9uFhypI9bkmXrDdbbCSfNaWIFcFbSJr89HhFp7SmHeUgVdAzTFhVUyhQDcjqr9qMZaKL0PT81t3kyxn/3yUVSN8n5od8xvxmUSjSQmEDTQEF2sYUTGC2qzajy47sq8Of6TOicMIU6lt49UCS6Ohco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPNXxOFo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351DEC4CEF1;
-	Tue, 26 Aug 2025 14:32:39 +0000 (UTC)
+	 MIME-Version; b=tX4DEuHMMSI3SdaeG2TNuZQmG5QtjQJOpkVaCI61sG3O0nn1Jtokp/KEs+QT1P52sYxKlOh/UBxUm23pSF6QRUVAHFCE2BB3iyDUxCMRuWBOOH+6eHi1eqhvpzcWZ/lucIKlixEGF5nKuXsfIAD4Ez63G3gnUKHSz290Ec1lIf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCXXHLH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1641CC4CEF1;
+	Tue, 26 Aug 2025 11:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218759;
-	bh=8wk8llX61pCpUN+jW9Fq1lhk4DefMDj2gs6EOyU2wCQ=;
+	s=korg; t=1756208218;
+	bh=7KhX+t56lxonE5aa9WDdhUbqIHXlvDviWmJyur8GYmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPNXxOFoTSV02u7HUpq/AA8ehrsvCm73nP+3NnoIj7kCdBvQgjoObNgDKSE+cNIrR
-	 72U9AKUVjqZQepKh4Y+TZdPNgY3pgU+t5yuV8VrYzPkuOqbVRa76hkwxkqO1RX+jAW
-	 jOL2vn3y0zDgexjun7ayvgcrSbhgw/IDfFoLlh6Q=
+	b=sCXXHLH2cB8zFyhP2XyQEi+6Kjiow0m9aHVVJhovcyyhqxAuitp8mvy/vRxARF+cl
+	 1TfOXYxc8U7dWRgmvDPr0U/32g0Nqlgfofg6eBmLb/FvFKuSLNPKAPkzePzYqDDmyo
+	 wi5xauAgaffVPs89yVHanwisZRavPNN1OHWj68xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 115/403] scsi: mvsas: Fix dma_unmap_sg() nents value
+	Ziyan Xu <ziyan@securitygossip.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 026/322] ksmbd: fix refcount leak causing resource not released
 Date: Tue, 26 Aug 2025 13:07:21 +0200
-Message-ID: <20250826110909.909402940@linuxfoundation.org>
+Message-ID: <20250826110915.947699642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ziyan Xu <ziyan@securitygossip.com>
 
-[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
+commit 89bb430f621124af39bb31763c4a8b504c9651e2 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+When ksmbd_conn_releasing(opinfo->conn) returns true,the refcount was not
+decremented properly, causing a refcount leak that prevents the count from
+reaching zero and the memory from being released.
 
-Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ziyan Xu <ziyan@securitygossip.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mvsas/mv_sas.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/oplock.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index 3e0b8ebe257f..68caeaf9e636 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -831,7 +831,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (n_elem)
--			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
-+			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
- 				     task->data_dir);
- prep_out:
- 	return rc;
-@@ -882,7 +882,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (slot->n_elem)
- 			dma_unmap_sg(mvi->dev, task->scatter,
--				     slot->n_elem, task->data_dir);
-+				     task->num_scatter, task->data_dir);
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1102,8 +1102,10 @@ void smb_send_parent_lease_break_noti(st
+ 			if (!atomic_inc_not_zero(&opinfo->refcount))
+ 				continue;
  
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SMP:
--- 
-2.39.5
-
+-			if (ksmbd_conn_releasing(opinfo->conn))
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				opinfo_put(opinfo);
+ 				continue;
++			}
+ 
+ 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+@@ -1139,8 +1141,11 @@ void smb_lazy_parent_lease_break_close(s
+ 			if (!atomic_inc_not_zero(&opinfo->refcount))
+ 				continue;
+ 
+-			if (ksmbd_conn_releasing(opinfo->conn))
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				opinfo_put(opinfo);
+ 				continue;
++			}
++
+ 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+ 		}
+@@ -1343,8 +1348,10 @@ void smb_break_all_levII_oplock(struct k
+ 		if (!atomic_inc_not_zero(&brk_op->refcount))
+ 			continue;
+ 
+-		if (ksmbd_conn_releasing(brk_op->conn))
++		if (ksmbd_conn_releasing(brk_op->conn)) {
++			opinfo_put(brk_op);
+ 			continue;
++		}
+ 
+ 		if (brk_op->is_lease && (brk_op->o_lease->state &
+ 		    (~(SMB2_LEASE_READ_CACHING_LE |
 
 
 
