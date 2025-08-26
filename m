@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913CEB36777
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD95B361B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004931C276B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9323ADCDB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA68E352075;
-	Tue, 26 Aug 2025 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC12B23026B;
+	Tue, 26 Aug 2025 13:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcbdGq6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsTAsfuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667DA21ABDC;
-	Tue, 26 Aug 2025 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FE6227E82;
+	Tue, 26 Aug 2025 13:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216598; cv=none; b=qUkp2CjzjFYDXzyyqhDpp1FehWRso9h9YcGWWqiEX7nQp/iadSO67Mj7c8ExbCUmgadI792pSkExVEwkq3nb08h12NKndAkG9IDSOlf6Ll0sL+CZZC9zhWd79QM+jX9N1vjCbxALqCxEfXN6z+7Eqg92YkPdWpZh7ijRp4kpRNk=
+	t=1756213617; cv=none; b=oS8w1cDDiRIIRd4v8eRoiylwzHjj0zLMlwELYBF9arMtcynMlvUSDS0BD8DbllG/D0o/Mw6UIJisPGftonjnvuKnHwml4trQ5unWcx5m9UCyB/mBAPVBUfX5Z0w5Al8ilkTvaiETY6hXi01DXiujykYRd/lWjirvFlfUb3PfSuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216598; c=relaxed/simple;
-	bh=9uvrxBrrqG1DoOX5HHJLl0IwgrhJ505GmtKPmpjzl5M=;
+	s=arc-20240116; t=1756213617; c=relaxed/simple;
+	bh=a2OTygTNzWHovHMGC0wX5Yi4C/duJ2j76HuH420FCHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caCsiZ2QvLaO+84fStlFqbMQWTo1+FtGB5jQ7gmnZ5l0+APTd3Su564C7IScG5bz6UeQi1nSVk4UfMmaPmRqyWq0EYexvjDvVtBcnh1MntfYkNPAEjOiV4fuWKxfX0EBKtCy/zo+TaQ+1v+oO5+q/xFIwOcdV5Zt2/nt19QU2YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcbdGq6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BECC4CEF1;
-	Tue, 26 Aug 2025 13:56:37 +0000 (UTC)
+	 MIME-Version; b=gvZVSBNJ0+S6CIyO2QXgZedqIYuHP4rgir0ICwO+nt6WOUhUg69xzUSMyo9lbqDdDjdReqP2g2SKkPMN/XGhkfYmCVWSAuY86HhPVoUS/0OK5iWkclP4AyzRBsvnYsIL5y00GjvixJZD5axfnHZ+hMqNULusXYwujTiToyn2dJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsTAsfuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A22C4CEF1;
+	Tue, 26 Aug 2025 13:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216598;
-	bh=9uvrxBrrqG1DoOX5HHJLl0IwgrhJ505GmtKPmpjzl5M=;
+	s=korg; t=1756213617;
+	bh=a2OTygTNzWHovHMGC0wX5Yi4C/duJ2j76HuH420FCHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IcbdGq6IA0W8yEEH3RYFnzvaa+/Mn0U5418mb2twUvmxXfEKKNolfGqtr9FNZh1TG
-	 d0tK5brFiz8lCVPk6YbOTRCF6f9l/Dos09TutfUfs3/LFQWDacL8Zb91sxZaH/cjyA
-	 HXC21gomjaIw0cTMtaciK5dKAIAxxVL9F2dBLrvE=
+	b=YsTAsfuk12a4DD6LnqysHea+TomRmgmNdYEAWoK2Zl7YwhisD0O1QzsRDK7ecEFcj
+	 IJC5FzSCsH1V0C903QhR5bwhj3WGrZVsTZNObSmlUd1wKTOT3SuNTWkIiYTdI2RONu
+	 hF9snOGW4dVcqZpGwupmg+/DC4akQMFaVRvTJUjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 440/644] ext4: fix largest free orders lists corruption on mb_optimize_scan switch
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 382/587] mtd: rawnand: fsmc: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:08:51 +0200
-Message-ID: <20250826110957.369729908@linuxfoundation.org>
+Message-ID: <20250826111002.621564232@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 7d345aa1fac4c2ec9584fbd6f389f2c2368671d5 upstream.
+commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
 
-The grp->bb_largest_free_order is updated regardless of whether
-mb_optimize_scan is enabled. This can lead to inconsistencies between
-grp->bb_largest_free_order and the actual s_mb_largest_free_orders list
-index when mb_optimize_scan is repeatedly enabled and disabled via remount.
+The DMA map functions can fail and should be tested for errors.
 
-For example, if mb_optimize_scan is initially enabled, largest free
-order is 3, and the group is in s_mb_largest_free_orders[3]. Then,
-mb_optimize_scan is disabled via remount, block allocations occur,
-updating largest free order to 2. Finally, mb_optimize_scan is re-enabled
-via remount, more block allocations update largest free order to 1.
-
-At this point, the group would be removed from s_mb_largest_free_orders[3]
-under the protection of s_mb_largest_free_orders_locks[2]. This lock
-mismatch can lead to list corruption.
-
-To fix this, whenever grp->bb_largest_free_order changes, we now always
-attempt to remove the group from its old order list. However, we only
-insert the group into the new order list if `mb_optimize_scan` is enabled.
-This approach helps prevent lock inconsistencies and ensures the data in
-the order lists remains reliable.
-
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250714130327.1830534-12-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   33 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1082,33 +1082,28 @@ static void
- mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	int i;
-+	int new, old = grp->bb_largest_free_order;
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -503,6 +503,8 @@ static int dma_xfer(struct fsmc_nand_dat
  
--	for (i = MB_NUM_ORDERS(sb) - 1; i >= 0; i--)
--		if (grp->bb_counters[i] > 0)
-+	for (new = MB_NUM_ORDERS(sb) - 1; new >= 0; new--)
-+		if (grp->bb_counters[new] > 0)
- 			break;
-+
- 	/* No need to move between order lists? */
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) ||
--	    i == grp->bb_largest_free_order) {
--		grp->bb_largest_free_order = i;
-+	if (new == old)
- 		return;
--	}
+ 	dma_dev = chan->device;
+ 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
++	if (dma_mapping_error(dma_dev->dev, dma_addr))
++		return -EINVAL;
  
--	if (grp->bb_largest_free_order >= 0) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+	if (old >= 0 && !list_empty(&grp->bb_largest_free_order_node)) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
- 		list_del_init(&grp->bb_largest_free_order_node);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
- 	}
--	grp->bb_largest_free_order = i;
--	if (grp->bb_largest_free_order >= 0 && grp->bb_free) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+
-+	grp->bb_largest_free_order = new;
-+	if (test_opt2(sb, MB_OPTIMIZE_SCAN) && new >= 0 && grp->bb_free) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[new]);
- 		list_add_tail(&grp->bb_largest_free_order_node,
--		      &sbi->s_mb_largest_free_orders[grp->bb_largest_free_order]);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+			      &sbi->s_mb_largest_free_orders[new]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[new]);
- 	}
- }
- 
+ 	if (direction == DMA_TO_DEVICE) {
+ 		dma_src = dma_addr;
 
 
 
