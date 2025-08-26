@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4AEB360C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42B7B365D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124701BA527D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FD437B6DA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70D0221264;
-	Tue, 26 Aug 2025 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0D7350D49;
+	Tue, 26 Aug 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ah9FBMe/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvhD+xcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAC01A5BBC;
-	Tue, 26 Aug 2025 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC46E350851;
+	Tue, 26 Aug 2025 13:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213192; cv=none; b=rFyMlQBL2OCg0vGjoiqVY9ZBTATerewZ50mKbFpCRYvFkaLxc+b87NrXrkGik7C4bRR1LXYR2tN8W9dYm0ijpYVM+x8TT82KgR+sWxPs4CWH6MfhiU9A5NCt+mAvxe89Jss6spIf4vPVtrqSJUg9z4B8t3KyJbn9GE5IHULWuK4=
+	t=1756216175; cv=none; b=gcPHab21OUGa3yS2R8CO/6a3vtAmd0smTwI6GZFRpSskVZ1xfON1zOXRxnBatyMafWipJrqP57tiYu71pH76pTGFJcn4wHklTQ/ZZ9oh7PbWULmSJhg/AZEbNwXFEaFCCfc6DvmH28kfkzRTNWAgtWkAeCmhVAJzV2atWykbvrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213192; c=relaxed/simple;
-	bh=q/xXOUejIXHFQqAzmmtRBWLgIHDAzgZGRJkowdSZ89I=;
+	s=arc-20240116; t=1756216175; c=relaxed/simple;
+	bh=mPh2YN8129UButDFr7HQe0Puho2ZDnarJPIQnCXfy+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHH2gzE0WoV3EP1sxP3mD9UJEOcKZB2gT6LaAsN2JkW2/1mnwm+3VnAlWJ8+5DOB8sf123up/rjD06qRQpiohZGL3cZYU5Ph12Ayed8HjceC7vuNH4r+ppZT0Z92y+NRyv68Rv3b6IIj2Wi5Gq1XYZTjm3GrlX6e8XUtp90idKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ah9FBMe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E26C4CEF1;
-	Tue, 26 Aug 2025 12:59:51 +0000 (UTC)
+	 MIME-Version; b=FVWankC/jSjSSt166oSNrsHzYEiryo5dEOqB1Glf+/2NhxvGTHpIO8NB87V4uYU4hwV5BKVmat2Ca7I7ZXQn/pQdH1lc58+nJc+beEEq/73kgF4NrSRbZiWXnamA0WWnXc1krKSLD7gMJKSqprZTCNCCY385GQRUExYZb/dRt1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvhD+xcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2F4C4CEF1;
+	Tue, 26 Aug 2025 13:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213192;
-	bh=q/xXOUejIXHFQqAzmmtRBWLgIHDAzgZGRJkowdSZ89I=;
+	s=korg; t=1756216173;
+	bh=mPh2YN8129UButDFr7HQe0Puho2ZDnarJPIQnCXfy+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ah9FBMe/Ees9lMbSP24tZINTAG+gjdH7gxTvT7H1HfObRg0P+1rWQfrHFXj1RFSlp
-	 ksWYyHmGmTBhs5ddL0xsD+XlRy2mIk1K+VezzAU6cn2uHSJKU95RybIkhsuKuRyHHS
-	 RGOYM7mpFv3EBx3OUW/QsR84P+EzHAABNrFdoU48=
+	b=GvhD+xcK7mAIFVdr0Kknr/OSu9SiBRuEqcsji+5QWoGhUkukQyyEHI3SZ8V+QSfiD
+	 YPS/NFffPkWmD6i8nRaP5FTyuwNPjwZiLKL5TBCUQR2IiVCwpEgPN+yllat8Bjq7cH
+	 R9ql5jWr4Bp3wWg1krqeU265cjTqwN9OTmAsSN4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Zhu Qiyu <qiyuzhu2@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/587] media: usb: hdpvr: disable zero-length read messages
-Date: Tue, 26 Aug 2025 13:06:43 +0200
-Message-ID: <20250826110959.393697594@linuxfoundation.org>
+Subject: [PATCH 5.15 313/644] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Date: Tue, 26 Aug 2025 13:06:44 +0200
+Message-ID: <20250826110954.141536303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Zhu Qiyu <qiyuzhu2@amd.com>
 
-[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
+[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduced non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
+something wrong is going on while it is not the case.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+According to the PRM Spec Section 4.1.2 [1], both static data buffer
+address and ACPI parameter buffer address may be NULL if they are not
+needed, so there is no need to print out the "Failed to find VA ... "
+in those cases.
+
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
+[ rjw: Edits in new comments, subject and changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-index 070559b01b01..54956a8ff15e 100644
---- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
-+++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
- 	.functionality = hdpvr_functionality,
- };
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 890c74c52beb..6290ed84c595 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
+ 	}
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks hdpvr_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
+ }
+ 
+@@ -142,13 +140,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Print a warning message if handler_addr is zero which is not expected to
++		 * ever happen.
++		 */
++		if (unlikely(!th->handler_addr))
++			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * According to the PRM specification, static_data_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
++			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->static_data_buffer_address);
+ 
+ 		th->acpi_param_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+ 
++		/*
++		 * According to the PRM specification, acpi_param_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
++			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->acpi_param_buffer_address);
 +
- static const struct i2c_adapter hdpvr_i2c_adapter_template = {
- 	.name   = "Hauppauge HD PVR I2C",
- 	.owner  = THIS_MODULE,
- 	.algo   = &hdpvr_algo,
-+	.quirks = &hdpvr_quirks,
- };
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
  
- static int hdpvr_activate_ir(struct hdpvr_device *dev)
+ 	return 0;
 -- 
 2.39.5
 
