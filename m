@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-173926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247FEB36075
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DD2B35B4C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17007C6221
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F3C81894B48
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEF41B87C9;
-	Tue, 26 Aug 2025 12:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A9D34A304;
+	Tue, 26 Aug 2025 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aReAeJPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdFVZWzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B01A0BD0;
-	Tue, 26 Aug 2025 12:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25173346A07;
+	Tue, 26 Aug 2025 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213029; cv=none; b=Z7ObgGEavd+8GfsnVFiZk7nCl9TqPdNrlwZo8nT/XfELiw3YFkbZoWSsmb2VjjmFnr2fr2bE18MIh9NCSvb+HUV2LLxGLR5dMdK2UObxSxZuGbITtX8/05OnKwr46I47RSrktadOVSvABgF0auppmg9pqJZRf5vJrHMLVHDI0V8=
+	t=1756207096; cv=none; b=baABdjtWfanX/8bkVKkIHBaOEWtBJSEtwBF330BCGZP4No0qs4jwfOqAHIesoDh3NhePSV+jxVvG+FFRe/XyFaE8Fnw9mcEKn5wOqpAeZGVcFttTxwhXuzOfdSKVQOhHf58CiD6J2H7376qpU9SET1nnAvtWi1ZZVgPWZLJgrcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213029; c=relaxed/simple;
-	bh=mIaazettDwWgxMxCqsOe++y8UNKGtTVtfSPMHDOZIdw=;
+	s=arc-20240116; t=1756207096; c=relaxed/simple;
+	bh=Y7AwznA5BMvQAxHYM2NsSWm1PH3p4s+aHTL24ME0qOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlFKuoeZWcACqyaqdTvjLP0JbqgljzNz6WyxynBwQ4V959Z8akc5w1UpO/e4C7v5W9Jodr6g8sZgHRZZn6eytj+iJtm47JSnbNcp63ypxINrfl7IGsNnk1pOjUECK+ZrDBcBJ9pd78ue7hkLNOX044CY2ESEfvt0d3feGxqnhnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aReAeJPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5219FC4CEF1;
-	Tue, 26 Aug 2025 12:57:09 +0000 (UTC)
+	 MIME-Version; b=Ui3ERWmM6BKL8j4KfqXFWAW97n2KmsiyJ4Q7GwUwSRkbTWUUYv7teSidLOIDzCQi62r5oTAh95Da6GsaW0978ovCuTF6KTZFz9ZLDeJ/BEHcVTSZuygTNQjHAxIeQ38oGGJw0OoYTtVC6piXZtLTaR6IGYrDsOGg5TIgzELCHjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdFVZWzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3E3C113CF;
+	Tue, 26 Aug 2025 11:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213029;
-	bh=mIaazettDwWgxMxCqsOe++y8UNKGtTVtfSPMHDOZIdw=;
+	s=korg; t=1756207096;
+	bh=Y7AwznA5BMvQAxHYM2NsSWm1PH3p4s+aHTL24ME0qOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aReAeJPI77koUk73Jd0+6GLVN9qC+4pLCeqeuSXiMqRczB3bv/8RRwTva4wlBctHX
-	 QlwpvebtvWbW305e2xo/Qy/ixk6apYeKcXi8zInCezMuNEfx/+KK4RBP8A1J/Ii3m6
-	 aXLSrszMhDFpXTySlWKpiCAkxZpJQCgjQ/6tOMAA=
+	b=AdFVZWzbB3UgBrY4i6jz0ESHryU2y3rEnpCBZxXBX9EG8iAEFK4KLm3aHPmCYTQLS
+	 OKZp9MIevUY3d/bBFkHYxHCqE8mBKCwSYrtjFgIpu8TJD73lT4fzCCxNr5Y89c18Y4
+	 o29Np7H/ncqb5uy7PlbkQXcCOovuw4E2AsR3iy1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/587] net: mctp: Prevent duplicate binds
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.16 019/457] netfs: Fix unbuffered write error handling
 Date: Tue, 26 Aug 2025 13:05:03 +0200
-Message-ID: <20250826110956.865295244@linuxfoundation.org>
+Message-ID: <20250826110937.803379923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +68,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
+commit a3de58b12ce074ec05b8741fa28d62ccb1070468 upstream.
 
-Disallow bind() calls that have the same arguments as existing bound
-sockets.  Previously multiple sockets could bind() to the same
-type/local address, with an arbitrary socket receiving matched messages.
+If all the subrequests in an unbuffered write stream fail, the subrequest
+collector doesn't update the stream->transferred value and it retains its
+initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
+take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
+in wreq->transferred - which is then returned from ->write_iter().
 
-This is only a partial fix, a future commit will define precedence order
-for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
-together.
+LONG_MAX was chosen as the initial value so that all the streams can be
+quickly assessed by taking the smallest value of all stream->transferred -
+but this only works if we've set any of them.
 
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding a flag to indicate whether the value in
+stream->transferred is valid and checking that when we integrate the
+values.  stream->transferred can then be initialised to zero.
+
+This was found by running the generic/750 xfstest against cifs with
+cache=none.  It splices data to the target file.  Once (if) it has used up
+all the available scratch space, the writes start failing with ENOSPC.
+This causes ->write_iter() to fail.  However, it was returning
+wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
+the amount transferred was non-zero) and iter_file_splice_write() would
+then try to clean up that amount of pipe bufferage - leading to an oops
+when it overran.  The kernel log showed:
+
+    CIFS: VFS: Send error in write = -28
+
+followed by:
+
+    BUG: kernel NULL pointer dereference, address: 0000000000000008
+
+with:
+
+    RIP: 0010:iter_file_splice_write+0x3a4/0x520
+    do_splice+0x197/0x4e0
+
+or:
+
+    RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
+    iter_file_splice_write (fs/splice.c:755)
+
+Also put a warning check into splice to announce if ->write_iter() returned
+that it had written more than it was asked to.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/915443.1755207950@warthog.procyon.org.uk
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ fs/netfs/read_collect.c  |    4 +++-
+ fs/netfs/write_collect.c |   10 ++++++++--
+ fs/netfs/write_issue.c   |    4 ++--
+ fs/splice.c              |    3 +++
+ include/linux/netfs.h    |    1 +
+ 5 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 8032cfba22d1..5f9592fb57ad 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 
- 	lock_sock(sk);
- 
--	/* TODO: allow rebind */
- 	if (sk_hashed(sk)) {
- 		rc = -EADDRINUSE;
- 		goto out_release;
-@@ -549,15 +548,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
- static int mctp_sk_hash(struct sock *sk)
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -281,8 +281,10 @@ reassess:
+ 		} else if (test_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags)) {
+ 			notes |= MADE_PROGRESS;
+ 		} else {
+-			if (!stream->failed)
++			if (!stream->failed) {
+ 				stream->transferred += transferred;
++				stream->transferred_valid = true;
++			}
+ 			if (front->transferred < front->len)
+ 				set_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags);
+ 			notes |= MADE_PROGRESS;
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -254,6 +254,7 @@ reassess_streams:
+ 			if (front->start + front->transferred > stream->collected_to) {
+ 				stream->collected_to = front->start + front->transferred;
+ 				stream->transferred = stream->collected_to - wreq->start;
++				stream->transferred_valid = true;
+ 				notes |= MADE_PROGRESS;
+ 			}
+ 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
+@@ -356,6 +357,7 @@ bool netfs_write_collection(struct netfs
  {
- 	struct net *net = sock_net(sk);
-+	struct sock *existing;
-+	struct mctp_sock *msk;
-+	int rc;
-+
-+	msk = container_of(sk, struct mctp_sock, sk);
+ 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
+ 	size_t transferred;
++	bool transferred_valid = false;
+ 	int s;
  
- 	/* Bind lookup runs under RCU, remain live during that. */
- 	sock_set_flag(sk, SOCK_RCU_FREE);
- 
- 	mutex_lock(&net->mctp.bind_lock);
-+
-+	/* Prevent duplicate binds. */
-+	sk_for_each(existing, &net->mctp.binds) {
-+		struct mctp_sock *mex =
-+			container_of(existing, struct mctp_sock, sk);
-+
-+		if (mex->bind_type == msk->bind_type &&
-+		    mex->bind_addr == msk->bind_addr &&
-+		    mex->bind_net == msk->bind_net) {
-+			rc = -EADDRINUSE;
-+			goto out;
+ 	_enter("R=%x", wreq->debug_id);
+@@ -376,12 +378,16 @@ bool netfs_write_collection(struct netfs
+ 			continue;
+ 		if (!list_empty(&stream->subrequests))
+ 			return false;
+-		if (stream->transferred < transferred)
++		if (stream->transferred_valid &&
++		    stream->transferred < transferred) {
+ 			transferred = stream->transferred;
++			transferred_valid = true;
 +		}
-+	}
-+
- 	sk_add_node_rcu(sk, &net->mctp.binds);
--	mutex_unlock(&net->mctp.bind_lock);
-+	rc = 0;
+ 	}
  
--	return 0;
-+out:
-+	mutex_unlock(&net->mctp.bind_lock);
-+	return rc;
- }
+ 	/* Okay, declare that all I/O is complete. */
+-	wreq->transferred = transferred;
++	if (transferred_valid)
++		wreq->transferred = transferred;
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
- static void mctp_sk_unhash(struct sock *sk)
--- 
-2.39.5
-
+ 	if (wreq->io_streams[1].active &&
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -118,12 +118,12 @@ struct netfs_io_request *netfs_create_wr
+ 	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
+ 	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
+ 	wreq->io_streams[0].collected_to	= start;
+-	wreq->io_streams[0].transferred		= LONG_MAX;
++	wreq->io_streams[0].transferred		= 0;
+ 
+ 	wreq->io_streams[1].stream_nr		= 1;
+ 	wreq->io_streams[1].source		= NETFS_WRITE_TO_CACHE;
+ 	wreq->io_streams[1].collected_to	= start;
+-	wreq->io_streams[1].transferred		= LONG_MAX;
++	wreq->io_streams[1].transferred		= 0;
+ 	if (fscache_resources_valid(&wreq->cache_resources)) {
+ 		wreq->io_streams[1].avail	= true;
+ 		wreq->io_streams[1].active	= true;
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -739,6 +739,9 @@ iter_file_splice_write(struct pipe_inode
+ 		sd.pos = kiocb.ki_pos;
+ 		if (ret <= 0)
+ 			break;
++		WARN_ONCE(ret > sd.total_len - left,
++			  "Splice Exceeded! ret=%zd tot=%zu left=%zu\n",
++			  ret, sd.total_len, left);
+ 
+ 		sd.num_spliced += ret;
+ 		sd.total_len -= ret;
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -150,6 +150,7 @@ struct netfs_io_stream {
+ 	bool			active;		/* T if stream is active */
+ 	bool			need_retry;	/* T if this stream needs retrying */
+ 	bool			failed;		/* T if this stream failed */
++	bool			transferred_valid; /* T is ->transferred is valid */
+ };
+ 
+ /*
 
 
 
