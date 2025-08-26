@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2DAB3671E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2ADB3693D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61CD59809B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 761D01C40CD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F2534AAF8;
-	Tue, 26 Aug 2025 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866BC3568FC;
+	Tue, 26 Aug 2025 14:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMxYk3OV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRnGdg13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC4345752;
-	Tue, 26 Aug 2025 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BF299A94;
+	Tue, 26 Aug 2025 14:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216198; cv=none; b=MgZ2CVzkhYWiECO7xjxP3BpDfhmYiQDxmYsZZ9d6hv80J49Veqsu0vPJaKm7m992Zk3P0kNGSiMf/wX7T6ol4xhFjpTCfYBONbO6YiPH2OY7vcKSM5yGp5fmMzBkG23glBohSBh/U092GjQOHSrB6wxRvHvCNZSQ5IHY/iOBKbs=
+	t=1756217669; cv=none; b=dsw/4UyllP7+qHexGRDjmb/ObLi45ZgqZW5LYCyQUnp5EAXLlAAUTxfHjGAfFvRjIo2RPgEYgR4g4xatydXELocdOd8y3WUTduCAq+WrJaVz8pHBQdL7v4gPkU4OrpX9npfRqbTetM0lYnSwp0uh89BAoq2qzkOihNGV8hlVsIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216198; c=relaxed/simple;
-	bh=4a/30+lOfNZZaizWGf+dqE6tsFGepd4LvBagDNFwED0=;
+	s=arc-20240116; t=1756217669; c=relaxed/simple;
+	bh=xBf2r3cZqZLQTw0+l1s0COfgz2tLDngl/7FsCdVj0vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3WDPZr3gOE4NnDlDWa8eauhvcHml1K9PDCNlBfUsr10I49Nkan+yAHOUQ6ioi5ZvMr70Sf3TwbFtwBhwPZ3eaTIszZoLC1o2ZPB3yKhpZgs2nZBcBALKfdTHvI24Oln5fLx16Soq5Fv3fVrOMwsnVV4XjFB/u1Rsij+wCnYJmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMxYk3OV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAF8C4CEF1;
-	Tue, 26 Aug 2025 13:49:57 +0000 (UTC)
+	 MIME-Version; b=DFkXGvVpiOMCV/OsT4FCQwsAnOUbg44FFElBvwDWN9RI4fx/wej0BAcqM1AwtITTu+S7++uF2Ms+g3gMmU5O5EZ716+rXnbOhAKBYd7uGGs11qQmOjiHPsZzG1hrp8OM6vjGwPghPRqfYs8TNZ+2utbIVNAger85qX+0TgsSA5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRnGdg13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF848C113CF;
+	Tue, 26 Aug 2025 14:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216197;
-	bh=4a/30+lOfNZZaizWGf+dqE6tsFGepd4LvBagDNFwED0=;
+	s=korg; t=1756217669;
+	bh=xBf2r3cZqZLQTw0+l1s0COfgz2tLDngl/7FsCdVj0vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMxYk3OVIxcjbsyoMy32Lz3kTFehZX6P4FAaLvWg4yyHGXvewlDpkLm3SMD8DEUMU
-	 XkPmcUCOJ5wVbeZ/9IqP5BThf7nAyHisfh4Wv6UkE/tioMGxqmW4q6jlBV8tZzyAT8
-	 a5K+cuhiMSSw2lE1skWa4qEWhZ6INqEgtQdzNssU=
+	b=LRnGdg13klg5SozK53OEwv5dgmfAI+6aGGH6fDBx5Tdi2PdLgpWIAY8FfDVNwGsMe
+	 3OfFjIZ/3KMxNn4/NVHFWf3CA7zDm7InXXJMAie6sIhPlRwKQTvtCbQ2f2zpG0SY9D
+	 QWwyJXgmIvWCmX5AIv1bi9it5v+QV47J1lraNuBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 321/644] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
-Date: Tue, 26 Aug 2025 13:06:52 +0200
-Message-ID: <20250826110954.339685724@linuxfoundation.org>
+	Jiayi Li <lijiayi@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 203/523] ACPI: processor: perflib: Fix initial _PPC limit application
+Date: Tue, 26 Aug 2025 13:06:53 +0200
+Message-ID: <20250826110929.453637438@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
+commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
 
-The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
-used in the BCM2712, AKA the RPi5. The RPi platforms
-have typically used the ARCH_BCM2835, and the PCIe
-support for this SoC can use this config which depends
-on these drivers so enable building them when just that
-arch option is enabled to ensure the platform works as
-expected.
+If the BIOS sets a _PPC frequency limit upfront, it will fail to take
+effect due to a call ordering issue.  Namely, freq_qos_update_request()
+is called before freq_qos_add_request() for the given request causing
+the constraint update to be ignored.  The call sequence in question is
+as follows:
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cpufreq_policy_online()
+  acpi_cpufreq_cpu_init()
+    acpi_processor_register_performance()
+      acpi_processor_get_performance_info()
+        acpi_processor_get_platform_limit()
+         freq_qos_update_request(&perflib_req) <- inactive QoS request
+  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
+                               CPUFREQ_CREATE_POLICY)
+    acpi_processor_notifier()
+      acpi_processor_ppc_init()
+        freq_qos_add_request(&perflib_req) <- QoS request activation
+
+Address this by adding an acpi_processor_get_platform_limit() call
+to acpi_processor_ppc_init(), after the perflib_req activation via
+freq_qos_add_request(), which causes the initial _PPC limit to be
+picked up as appropriate.  However, also ensure that the _PPC limit
+will not be picked up in the cases when the cpufreq driver does not
+call acpi_processor_register_performance() by adding a pr->performance
+check to the related_cpus loop in acpi_processor_ppc_init().
+
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
+[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
+[ rjw: Subject and changelog adjustments ]
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/reset/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/processor_perflib.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index b0056ae5d463..d1bc691b2900 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -51,8 +51,8 @@ config RESET_BERLIN
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -176,11 +176,14 @@ void acpi_processor_ppc_init(struct cpuf
+ {
+ 	unsigned int cpu;
  
- config RESET_BRCMSTB
- 	tristate "Broadcom STB reset controller"
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the reset controller driver for Broadcom STB SoCs using
- 	  a SUN_TOP_CTRL_SW_INIT style controller.
-@@ -60,11 +60,11 @@ config RESET_BRCMSTB
- config RESET_BRCMSTB_RESCAL
- 	bool "Broadcom STB RESCAL reset controller"
- 	depends on HAS_IOMEM
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
--	  BCM7216.
-+	  BCM7216 or the BCM2712.
++	if (ignore_ppc == 1)
++		return;
++
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
- config RESET_HSDK
- 	bool "Synopsys HSDK Reset Driver"
--- 
-2.39.5
-
+-		if (!pr)
++		if (!pr || !pr->performance)
+ 			continue;
+ 
+ 		/*
+@@ -196,6 +199,11 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
++
++		ret = acpi_processor_get_platform_limit(pr);
++		if (ret)
++			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
+ 	}
+ }
+ 
 
 
 
