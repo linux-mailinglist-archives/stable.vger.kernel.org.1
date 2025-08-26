@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-175924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA98B36AF9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6087EB36808
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B7D565422
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E5758114D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCFA35A29D;
-	Tue, 26 Aug 2025 14:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60060352085;
+	Tue, 26 Aug 2025 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRFYJZu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycJcf1hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884E7350851;
-	Tue, 26 Aug 2025 14:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8BF350D70;
+	Tue, 26 Aug 2025 14:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218325; cv=none; b=JrvJmoVJNAet1UeIE7DAcagOzq6SX7bozRUfnwldtWym1rsDmV+2vSIHcZT228qPcf7cscg6NmILUR3mPNNc5DmLZMx8nRdhyvNOBZ3zmMfCP5ObcGg8mcKq7u1WMQgj2zCSnYOUskFucpK54GD0mdzvlgrPr01epom3w8v5ack=
+	t=1756216946; cv=none; b=FdqV/WMGbaCqwF1kKh08ad7jrCGm9yN2H/sFgmM22pNtLi3lekTamCfoxDEcKTWrZVd2Z/khZCauWPqZRGiGXSBzaQLv5aoi3xv8FLissiaDSUuFAezz9eVDwut2Bf1rLwItlJRbXl1l79bHTqokUW5dyALKQz018UElx9SzKHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218325; c=relaxed/simple;
-	bh=8qq6vP4Xk/ZcFfT9DX24Mf0n1s59hiC+4n+yd0YHczs=;
+	s=arc-20240116; t=1756216946; c=relaxed/simple;
+	bh=Ejh3w/2OcGSpZ3GjbsfW8Xyfqgp9Zgsovc0mM0s7tcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADO8JyvxdecRsoYOJTPdAZrKIBYaQ245Y8qshsObKNKgdJCOmUp4qlE0PLi+DJQY90IJlZjYc+63Ao+gprlv6sKtcecNGfQ9cFV9gUnwsmbFeeiEkW+Q9zPNfF0XFZl6sn6dtqVmrF+fV2p1w3iazyWyw6/OQbWuYDDoG66xafk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRFYJZu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0BFC4CEF1;
-	Tue, 26 Aug 2025 14:25:24 +0000 (UTC)
+	 MIME-Version; b=c6NiLovlYih8z4iQjpvKBstdJx5CBqcWqDo7LSCi7zyNHj6OCzjMLDwBCyvvXNSgN2mhy33P3EMxzNjwZPOnfqpej8OsS+0vzXi0iy2VZEGeImipc5ROJ96hic24RKiDc2OW8sSiZlMlmdOc3crL+z8MJ6K5Xsh0oZr0xJFdTYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycJcf1hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A185C4CEF1;
+	Tue, 26 Aug 2025 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218325;
-	bh=8qq6vP4Xk/ZcFfT9DX24Mf0n1s59hiC+4n+yd0YHczs=;
+	s=korg; t=1756216945;
+	bh=Ejh3w/2OcGSpZ3GjbsfW8Xyfqgp9Zgsovc0mM0s7tcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRFYJZu05uSCN+RKjoDooACQppfenxPBjXtBnJnGtGhB14H9KUqC2j29j9GO1R8om
-	 zTQPl8ABjWC07O+AVg3ly+PiivcNHb+F0RyZ0FcQjZmWzL4J9Un4oOpyKipOEPr5BC
-	 HYB3gYSCL1VcXSm9b3aRWipODM7Tz1qWgIKdJmWE=
+	b=ycJcf1hpJ6krbGMIo6a3cC2+P0Nj96JrtRE5iJWz45phbIYDQoHXZ93aqT7fZ7J+U
+	 a9VXXUhfiPE9uPVC2IzkUcW1vHOjo0DVnGENWbRqpqqJQ6D9qp8dMa1m7XP17yyA2p
+	 yVDQmrea170GHAfthZJBBS9psMTc9tIU179PjGaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Marco Elver <elver@google.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 480/523] asm-generic: Add memory barrier dma_mb()
+	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 599/644] media: venus: protect against spurious interrupts during probe
 Date: Tue, 26 Aug 2025 13:11:30 +0200
-Message-ID: <20250826110936.285019996@linuxfoundation.org>
+Message-ID: <20250826111001.388287244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
 
-[ Upstream commit ed59dfd9509d172e4920994ed9cbebf93b0050cc ]
+[ Upstream commit 3200144a2fa4209dc084a19941b9b203b43580f0 ]
 
-The memory barrier dma_mb() is introduced by commit a76a37777f2c
-("iommu/arm-smmu-v3: Ensure queue is read after updating prod pointer"),
-which is used to ensure that prior (both reads and writes) accesses
-to memory by a CPU are ordered w.r.t. a subsequent MMIO write.
+Make sure the interrupt handler is initialized before the interrupt is
+registered.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de> # for asm-generic
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/20220523113126.171714-2-wangkefeng.wang@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: aa6956150f82 ("wifi: ath11k: fix dest ring-buffer corruption when ring is full")
+If the IRQ is registered before hfi_create(), it's possible that an
+interrupt fires before the handler setup is complete, leading to a NULL
+dereference.
+
+This error condition has been observed during system boot on Rb3Gen2.
+
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/memory-barriers.txt |   11 ++++++-----
- include/asm-generic/barrier.h     |    8 ++++++++
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -1894,6 +1894,7 @@ There are some more advanced barrier fun
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -332,13 +332,13 @@ static int venus_probe(struct platform_d
+ 	mutex_init(&core->lock);
+ 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
  
-  (*) dma_wmb();
-  (*) dma_rmb();
-+ (*) dma_mb();
+-	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-					"venus", core);
++	ret = hfi_create(core, &venus_core_ops);
+ 	if (ret)
+ 		goto err_core_put;
  
-      These are for use with consistent memory to guarantee the ordering
-      of writes or reads of shared memory accessible to both the CPU and a
-@@ -1925,11 +1926,11 @@ There are some more advanced barrier fun
-      The dma_rmb() allows us guarantee the device has released ownership
-      before we read the data from the descriptor, and the dma_wmb() allows
-      us to guarantee the data is written to the descriptor before the device
--     can see it now has ownership.  Note that, when using writel(), a prior
--     wmb() is not needed to guarantee that the cache coherent memory writes
--     have completed before writing to the MMIO region.  The cheaper
--     writel_relaxed() does not provide this guarantee and must not be used
--     here.
-+     can see it now has ownership.  The dma_mb() implies both a dma_rmb() and
-+     a dma_wmb().  Note that, when using writel(), a prior wmb() is not needed
-+     to guarantee that the cache coherent memory writes have completed before
-+     writing to the MMIO region.  The cheaper writel_relaxed() does not provide
-+     this guarantee and must not be used here.
+-	ret = hfi_create(core, &venus_core_ops);
++	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"venus", core);
+ 	if (ret)
+ 		goto err_core_put;
  
-      See the subsection "Kernel I/O barrier effects" for more information on
-      relaxed I/O accessors and the Documentation/core-api/dma-api.rst file for
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -37,6 +37,10 @@
- #define wmb()	do { kcsan_wmb(); __wmb(); } while (0)
- #endif
- 
-+#ifdef __dma_mb
-+#define dma_mb()	do { kcsan_mb(); __dma_mb(); } while (0)
-+#endif
-+
- #ifdef __dma_rmb
- #define dma_rmb()	do { kcsan_rmb(); __dma_rmb(); } while (0)
- #endif
-@@ -64,6 +68,10 @@
- #define wmb()	mb()
- #endif
- 
-+#ifndef dma_mb
-+#define dma_mb()	mb()
-+#endif
-+
- #ifndef dma_rmb
- #define dma_rmb()	rmb()
- #endif
 
 
 
