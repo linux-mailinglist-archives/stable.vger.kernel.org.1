@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9422AB362C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F0B3694A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C499B188F2BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A021C26AC5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F238341672;
-	Tue, 26 Aug 2025 13:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB1C35A2B9;
+	Tue, 26 Aug 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFxJJnFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wo+Q6xdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4065E2FD1D5;
-	Tue, 26 Aug 2025 13:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024235207F;
+	Tue, 26 Aug 2025 14:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214216; cv=none; b=hne8JlafKTfVwTFa1alxlGrAbu6FmGd1AVEavwbe7GP+JmK1xVqZhmQ9Wt3jku7dvYUF5j/Slh5iyjK0TiNK3jdYmcgz5+KYidzrhHb8UiEOs8DkRbG9SNwpWL91Ut5zaOhkuJOcu0kzZ/Vchrh4j7+V/wwpFsOmHMl+wqOuFBo=
+	t=1756217427; cv=none; b=s8twwfKZEOCENqT+236dsqjsMRbjVefYbNidD2ECidsCSAvDc6QNV9zvvU+xxu8DOzp1C0sWznsqCJIb9Qs34f6QjSHzR98G3KT7hfOpmyb2bJWuu9H0XpNJL3iCTVuQ8/2onP7jkf+kSl/DF7NTU+JHFPY+xN8X82yJit1QoPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214216; c=relaxed/simple;
-	bh=BLb2IWZl/yJ9CNTawHe4gwadTH7qlXPOF8dVKaGhb4E=;
+	s=arc-20240116; t=1756217427; c=relaxed/simple;
+	bh=y89USmqf2lXDkYj2wx++ahw/rvul+sgxmagmmtowOdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTW9Q2cXElfcAcfnTGbxIxDPX6AzNnfxW2GECcocMTi3XRI5nz3AWFGK27HkscoYU0REyoG1lSx8bfuPss9F7iB6t3c+Y0KH2RenrtdTcDbbDM6pMAH3buSLJKdpBh+YsXx4kYTrjYulZdzTuhzsJgRSdHaytabYXLlaB8cbM2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFxJJnFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E27C4CEF1;
-	Tue, 26 Aug 2025 13:16:55 +0000 (UTC)
+	 MIME-Version; b=CjhmrOktmTn4I8LAxbvAFf0zqDu14sMnsJJw6dE3eWMTJSCokAgq4CNBWyusRvEYqqRh0WlnmIAKzijbVIGGhiufodZAo4/G2MyQRL/DjYnl3rQ9g/wXplrVeXikVlwdJjkyrU0W1Hm96IvUUhCqsL3yLZadWUOkg+F7HbQeV4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wo+Q6xdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A176C116B1;
+	Tue, 26 Aug 2025 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214216;
-	bh=BLb2IWZl/yJ9CNTawHe4gwadTH7qlXPOF8dVKaGhb4E=;
+	s=korg; t=1756217427;
+	bh=y89USmqf2lXDkYj2wx++ahw/rvul+sgxmagmmtowOdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFxJJnFcYgEWS3FP9syT9U6EpjlcvzNCrNK3HlW1szFcIUEet5QLz1XO0b4WPGQTE
-	 s7P/hvywjxlxKBfmNB7oiTIDuaUQctr9YliVkKTeoqzjem0ssgEKaaIePcCiZrT0Ck
-	 w92aa2tyWx/A43tRMWRFpAfhvsHCPn/7DFlPCkqQ=
+	b=Wo+Q6xdVqyjZtCzxOyI0FS08fczE4HbB3lcGRtHSahYIEvsSSIncIo8KslLOZjHp/
+	 IWbHIc8gDzB4L8H/OuOahx6c2pvi03AnhE2+9A2Dup/Wz7g0O2qED7PP6ccZG1Rf/S
+	 png2Az2+dzS5vQIsAQuPvA7VOX9WVtzpPwL5rZs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/482] udf: Verify partition map count
+Subject: [PATCH 5.10 098/523] wifi: rtl818x: Kill URBs before clearing tx status queue
 Date: Tue, 26 Aug 2025 13:05:08 +0200
-Message-ID: <20250826110932.182957431@linuxfoundation.org>
+Message-ID: <20250826110926.957575121@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
+[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
 
-Verify that number of partition maps isn't insanely high which can lead
-to large allocation in udf_sb_alloc_partition_maps(). All partition maps
-have to fit in the LVD which is in a single block.
+In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
+b_tx_status.queue. This change prevents callbacks from using already freed
+skb due to anchor was not killed before freeing such skb.
 
-Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+ BUG: kernel NULL pointer dereference, address: 0000000000000080
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
+ Call Trace:
+  <IRQ>
+  rtl8187_tx_cb+0x116/0x150 [rtl8187]
+  __usb_hcd_giveback_urb+0x9d/0x120
+  usb_giveback_urb_bh+0xbb/0x140
+  process_one_work+0x19b/0x3c0
+  bh_worker+0x1a7/0x210
+  tasklet_action+0x10/0x30
+  handle_softirqs+0xf0/0x340
+  __irq_exit_rcu+0xcd/0xf0
+  common_interrupt+0x85/0xa0
+  </IRQ>
+
+Tested on RTL8187BvE device.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index fa790be4f19f..a186d2418b50 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1410,7 +1410,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 	struct genericPartitionMap *gpm;
- 	uint16_t ident;
- 	struct buffer_head *bh;
--	unsigned int table_len;
-+	unsigned int table_len, part_map_count;
- 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+index eb68b2d3caa1..c9df185dc3f4 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev)
+ 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
+ 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
  
- 	bh = udf_read_tagged(sb, block, block, &ident);
-@@ -1431,7 +1431,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 					   "logical volume");
- 	if (ret)
- 		goto out_bh;
--	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
++	usb_kill_anchored_urbs(&priv->anchored);
 +
-+	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
-+	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
-+		udf_err(sb, "error loading logical volume descriptor: "
-+			"Too many partition maps (%u > %u)\n", part_map_count,
-+			table_len / (unsigned)sizeof(struct genericPartitionMap1));
-+		ret = -EIO;
-+		goto out_bh;
-+	}
-+	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
- 	if (ret)
- 		goto out_bh;
+ 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
+ 		dev_kfree_skb_any(skb);
  
+-	usb_kill_anchored_urbs(&priv->anchored);
+ 	mutex_unlock(&priv->conf_mutex);
+ 
+ 	if (!priv->is_rtl8187b)
 -- 
 2.39.5
 
