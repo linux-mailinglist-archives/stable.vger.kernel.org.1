@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E8EB360F3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A6DB369C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 703FC2A2326
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D18E1C41324
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EBF1ADFFE;
-	Tue, 26 Aug 2025 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B507234DCDA;
+	Tue, 26 Aug 2025 14:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1cwOY07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TebL0818"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D11494D9;
-	Tue, 26 Aug 2025 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F7D2A1BF;
+	Tue, 26 Aug 2025 14:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213328; cv=none; b=aW0iisk7SJhEG1gIxrZ3oRkWLXd83SWQoWLk3baroIIYKqN91U5dGbtX96rA6pLr3VhGeSEy2bLQwsTiw4Y1nxqLBIwc/oAN/A+hZ+FcOsPGDEFMdrSMv4f3wrAWpy5vfTnSq+iFpWIOuIAlZvRH05U1912s7qy5J2a6k2oYBuQ=
+	t=1756217709; cv=none; b=ENzT81GVo/J4r4CQgDci9FXwwIQnuqlsqr92LwJjHbvAYfIkh53GfuTwCO5mkhB8GR8U0bkkWCDsYNgvs6RFT3qxKtWKSKdnNhDolILHYSl1CKxv/ohOmYxhTaspxeP0YQEUUN/6uTlIZw6YgW+pj+ufTLTRj3EJ5FIKs4sxlq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213328; c=relaxed/simple;
-	bh=SiUtgdf1+9CcT8KPzea7mDUXYygqb935iwpIGD5pj0g=;
+	s=arc-20240116; t=1756217709; c=relaxed/simple;
+	bh=ambn1atNnR4yWBbgz0lyPUfP/9sNTEdAoiAfOb4LTbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhIEn9BfHdAa/858u0EEahty7rFzPlpW2huWegUMzu6glig+5VsHak3NAHkaRTqxqPUROqIVLi87LafSB4sY9S/wEuML50TOKUjsw45oQKiavW1TDtdkTAlzSZg1tcFurtm+omFJC7ZWCLOgOL0i19ass4HoxDjt5iI3Rk8QvVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1cwOY07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD406C4CEF1;
-	Tue, 26 Aug 2025 13:02:07 +0000 (UTC)
+	 MIME-Version; b=uXvmh9rzQ/DAv6/EguaxHOFzytVEJkJtFAQG/fG25V3KF2KzcOFpyb5GwxvHHTExOcttiFzsemznaOVVgbjSmCAqFOma81OzDJqI5kGMjG4GXHAS+VDH4il6WqBWUNwtuQPRplaMoATknEhZLAKa2xGwdfQioAnbzzi09QZE5PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TebL0818; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF4C113CF;
+	Tue, 26 Aug 2025 14:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213328;
-	bh=SiUtgdf1+9CcT8KPzea7mDUXYygqb935iwpIGD5pj0g=;
+	s=korg; t=1756217709;
+	bh=ambn1atNnR4yWBbgz0lyPUfP/9sNTEdAoiAfOb4LTbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1cwOY076qJ/stt4RqB7UAuku1UFEE8ZRBOCKALi/OZkQmVXucSqVIjLq3HTxg7Nw
-	 NOyYR3+z0Znrvdc6GVnFqDMuyfw2VCyw7ytbKqGM4uRFJR1JcYson/caNa5lLI8hEG
-	 d3YICwxvOtXuPrfjP2gNPpCeICY1jSzFkgw8l2qo=
+	b=TebL0818poSHhu0Ewq1b7GsITRcw59al2ncgzBMUOqGm0LkcO9Kw4xSQ2lDhGlGlP
+	 moa66WOq+u/xNQoHRQQBpQvVMRy59CqPwzhQ01GTQKnQnNPf3+9V9NshGFGv2mplW5
+	 /oEqNyQd3Pr32Andlz2o5iPUPriCLuBCBd8fZfN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.6 307/587] thunderbolt: Fix copy+paste error in match_service_id()
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 246/523] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
 Date: Tue, 26 Aug 2025 13:07:36 +0200
-Message-ID: <20250826111000.729785508@linuxfoundation.org>
+Message-ID: <20250826110930.503253411@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
+[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
 
-The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
-intended to be TBSVC_MATCH_PROTOCOL_REVISION.
+code mistakenly used a hardcoded index (codec[1]) instead of
+iterating, over the codec array using the loop variable i.
+Use codec[i] instead of codec[1] to match the loop iteration.
 
-Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/domain.c |    2 +-
+ sound/pci/intel8x0.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/domain.c
-+++ b/drivers/thunderbolt/domain.c
-@@ -36,7 +36,7 @@ static bool match_service_id(const struc
- 			return false;
- 	}
- 
--	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
-+	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
- 		if (id->protocol_revision != svc->prtcrevs)
- 			return false;
- 	}
+diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
+index 3707dc27324d..324d9df7f111 100644
+--- a/sound/pci/intel8x0.c
++++ b/sound/pci/intel8x0.c
+@@ -2270,7 +2270,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
+ 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
+ 			for (i = 1; i < 4; i++) {
+ 				if (pcm->r[0].codec[i]) {
+-					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
++					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
+ 					break;
+ 				}
+ 			}
+-- 
+2.39.5
+
 
 
 
