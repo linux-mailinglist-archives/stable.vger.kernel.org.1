@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50957B365A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81862B368A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1FE565B51
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFAFE3BEF35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91371DE4CD;
-	Tue, 26 Aug 2025 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F6F34A325;
+	Tue, 26 Aug 2025 14:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1hd3WEG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdGpbdA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B6E1ADFFE;
-	Tue, 26 Aug 2025 13:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309E81ADFFE;
+	Tue, 26 Aug 2025 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215321; cv=none; b=WuvoKox/mOwbiLZnuvAJNvx+N8X+lwBraicyHpgmZ7JL0ZFiHEcozXsv564PRKsfchTeZ+zmKW4NuomOJeApV/FfIi1rH6z7TfMIyTvOktjZFsiMbBWcLZqh1wC5tS1dDxTGrA6vWtVwaHVXq+LEaEXrbV7Rpu6HWL6LSOt7OQw=
+	t=1756216980; cv=none; b=iceQ7Iyug6lVm2uEDwQXpkSgNKIGlliMWELbr7Cwp1mrnwC71HXHAawHyak0ZEmEK0asUr+TD+s+xtGDjs+XOdCxRIjjDB44LOV4MZ0Xxr1zuKO0tOie/VktNlFpCTXTveNFfDuJHqaGFeC2VxzHvgQ6OGCZkR+5+NIAf4sgyWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215321; c=relaxed/simple;
-	bh=RLtriJ9jytw6MajdEy5o4q8pGMltgGK6RlvKFjnrsgw=;
+	s=arc-20240116; t=1756216980; c=relaxed/simple;
+	bh=zOEW84rhogKyqnZrtlAVH+n6loJKyMbEq1qTOd8WRs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqEyogSpkLJ6kC4tZGV8uGBMd5dLMu8iDGiDIpj5vsamPZyW49Rq6q4HUNhmIfRpfKaAiQiy2wIq9BHfIppUQeZ2rM6PwjBiLh7ZJPPTLOROloqLBp5k8Dhqfy3qMjaoFkK8m3L+xIZG/1RfdcGhiVq8GTPZvON+YvNHjf5xmn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1hd3WEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9786FC4CEF1;
-	Tue, 26 Aug 2025 13:35:19 +0000 (UTC)
+	 MIME-Version; b=BxU7KNoWwphXkj87JwrmJnvPfFef9dIVe4Kv8Z/OtahHzjOsIIFXwJLxYjdrbjjik+JELkY4R5cse9pU1bLsG8FHogy7WAoPGSHWSMVkaTC8uqTQJw+nPZvFM+PPCKAsR1/l+flfte4QGoIAH3XMpt7ZoV+oGtT0AORxBNVw4Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdGpbdA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F383C4CEF1;
+	Tue, 26 Aug 2025 14:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215319;
-	bh=RLtriJ9jytw6MajdEy5o4q8pGMltgGK6RlvKFjnrsgw=;
+	s=korg; t=1756216979;
+	bh=zOEW84rhogKyqnZrtlAVH+n6loJKyMbEq1qTOd8WRs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1hd3WEGPRvLi/ypwO6dtRCo9rTsKs1bijIfbUCSuRXKCtpiaERs3Xqjc9vmNyufr
-	 akAI2WbMdnwF1ghZxjStAUhEXpZwmlG1diSYJclO5786vFk2qs+BVCbJIhgVlcf/kH
-	 uHJbqQFbPQYOjQ23+eboQkO6UOiG3sNnFHaGqESs=
+	b=WdGpbdA1cjTK6tpWTRAOns6pVk1H57N09SI7GNmcHDC1peWABuKFVPtvTtfFMubpb
+	 vnLejeCLH7vJmF3CB3bVvQqjE8Xfp5/DOMSQq2CFf8RZmqcrtmHARo+8zb1ifFGp0c
+	 fsyrPq74sc+SVxZtiITcEtFRjGEEeGTvZcyiJ1lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianxiang Peng <txpeng@tencent.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Hui Li <caelli@tencent.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 452/482] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 614/644] iio: imu: inv_icm42600: change invalid data error to -EBUSY
 Date: Tue, 26 Aug 2025 13:11:45 +0200
-Message-ID: <20250826110941.996125968@linuxfoundation.org>
+Message-ID: <20250826111001.767873813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianxiang Peng <txpeng@tencent.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
+[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
 
-Since
+Temperature sensor returns the temperature of the mechanical parts
+of the chip. If both accel and gyro are off, the temperature sensor is
+also automatically turned off and returns invalid data.
 
-  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+In this case, returning -EBUSY error code is better then -EINVAL and
+indicates userspace that it needs to retry reading temperature in
+another context.
 
-resctrl_cpu_detect() has been moved from common CPU initialization code to
-the vendor-specific BSP init helper, while Hygon didn't put that call in their
-code.
-
-This triggers a division by zero fault during early booting stage on our
-machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
-to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
-
-Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Hui Li <caelli@tencent.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/hygon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -14,6 +14,7 @@
- #include <asm/cacheinfo.h>
- #include <asm/spec-ctrl.h>
- #include <asm/delay.h>
-+#include <asm/resctrl.h>
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
+ 		goto exit;
  
- #include "cpu.h"
+ 	*temp = (int16_t)be16_to_cpup(raw);
++	/*
++	 * Temperature data is invalid if both accel and gyro are off.
++	 * Return -EBUSY in this case.
++	 */
+ 	if (*temp == INV_ICM42600_DATA_INVALID)
+-		ret = -EINVAL;
++		ret = -EBUSY;
  
-@@ -239,6 +240,8 @@ static void bsp_init_hygon(struct cpuinf
- 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
- 		}
- 	}
-+
-+	resctrl_cpu_detect(c);
- }
- 
- static void early_init_hygon(struct cpuinfo_x86 *c)
+ exit:
+ 	mutex_unlock(&st->lock);
 
 
 
