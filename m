@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52B9B36C1E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC890B3697E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 579EC1C43A21
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553435829A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A633A35209A;
-	Tue, 26 Aug 2025 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21299352096;
+	Tue, 26 Aug 2025 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6uPT9LR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opNaptlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6430C352067;
-	Tue, 26 Aug 2025 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D277034DCF6;
+	Tue, 26 Aug 2025 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218840; cv=none; b=gNXUVxtQ5mZ3JVTe3mGKSnyW3O/EQ89UkfJjpcNHp697WsYQ+vp/no3b/v1WadIkkM9ulnGOrFS5MkIaH5KBcqe1HylvTPKFQ3PdnZBZ4UqUHaCj9EeUmbqJogt/Ww5AwfazbUrLK9/Q10UndpYH9Ur1/bJYKIsMJuSAgo5e1nU=
+	t=1756217771; cv=none; b=V08yIHrh4I/ruXh7Fw4UYB7JnJsvCK+ipc+Iq443zsQUkbWjnMG5ws3AYXKB0xr+bYJc+WtDbwKw4C6OgPin74uSbh1IuavwzM+tiluK3gWqQyCcULcXH5nN/U3g5KyhiODopNJYaAJLKmLyTeVlTpLjZa8Om2BwL2DNHf3mZrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218840; c=relaxed/simple;
-	bh=HKMsJgz77xye6ZB5JVGfODPSDFMJo/iVp9CkzUYXYSk=;
+	s=arc-20240116; t=1756217771; c=relaxed/simple;
+	bh=N3rYMGbZJgaQRJiy9Ur1ogL9RrzEdCmypuX7QGsXaHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qje74nwXcdYlGyEWpalMNe7+rdejCk+aFZtMO72RDUrOQrcZLPC9ZtsLm4OXsjCHeIJQqaDq1QjNGehSIb+nZDyjSvfz/TBffSzoecP6cq2UaRRokeGX34on0IDi+YS2hZ5hPWA8dXwy3S1Vc+oCZNkorVCBDRvR9jD39y+NRuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6uPT9LR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC55C4CEF1;
-	Tue, 26 Aug 2025 14:33:59 +0000 (UTC)
+	 MIME-Version; b=LPZz+SMdEQfaJDspc1lAI23zKOoPa2ks0TubcYJhXkElPwk13nnSDwhmwmvJvt5PoYXjn3NqGPMJkUF5sc9pgGXKCE8wtiPhFCVCexgOTnGxNqpI2XTT7pYd+jWhAzBpIY8ZBx3i3aklNEXswrPrlKeNkSzRgjDS9TsGehBr7t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opNaptlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66036C4CEF1;
+	Tue, 26 Aug 2025 14:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218840;
-	bh=HKMsJgz77xye6ZB5JVGfODPSDFMJo/iVp9CkzUYXYSk=;
+	s=korg; t=1756217771;
+	bh=N3rYMGbZJgaQRJiy9Ur1ogL9RrzEdCmypuX7QGsXaHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6uPT9LRFFJEH6je89b/E8lRgnx1UtJxIByFoUMvoKIlmlCYjhf1IH7jEeRIPrC6H
-	 uv46Z55VFmEoIBGKBkkjy9rUR7aT5XMa0QcDq9y0AemyXRfmHwveEGx0WztfkjDTNA
-	 baprSXHw4UjRCyu8wSfnBtAlnG4Gbx6+Sh3tB9U0=
+	b=opNaptluJ2nVZsLhF1LsQrGD2T6k3uRHSHZJFkrRRnOWkBLL92aCdDt/iUCvTJ0Js
+	 diNQRGsV+RXeiQXET+ot0zvpqDuBKRZDnooBRDWi4wx3py1biBTK9tmOxslhvObXj1
+	 pshX19oKP7g9fSUd81hIE/svlO0EIHE5J6khuB/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	tuhaowen <tuhaowen@uniontech.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 122/403] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
+Subject: [PATCH 5.10 238/523] PM: sleep: console: Fix the black screen issue
 Date: Tue, 26 Aug 2025 13:07:28 +0200
-Message-ID: <20250826110910.106116690@linuxfoundation.org>
+Message-ID: <20250826110930.315448011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: tuhaowen <tuhaowen@uniontech.com>
 
-[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
+[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
 
-The DMA map functions can fail and should be tested for errors.
+When the computer enters sleep status without a monitor
+connected, the system switches the console to the virtual
+terminal tty63(SUSPEND_CONSOLE).
 
-In case of error, unmap the already mapped regions.
+If a monitor is subsequently connected before waking up,
+the system skips the required VT restoration process
+during wake-up, leaving the console on tty63 instead of
+switching back to tty1.
 
-Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+To fix this issue, a global flag vt_switch_done is introduced
+to record whether the system has successfully switched to
+the suspend console via vt_move_to_console() during suspend.
+
+If the switch was completed, vt_switch_done is set to 1.
+Later during resume, this flag is checked to ensure that
+the original console is restored properly by calling
+vt_move_to_console(orig_fgconsole, 0).
+
+This prevents scenarios where the resume logic skips console
+restoration due to incorrect detection of the console state,
+especially when a monitor is reconnected before waking up.
+
+Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
+Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ kernel/power/console.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index e96032096042..827a1a9907b6 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	 */
- 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
-+		return ERR_PTR(-ENOMEM);
-+
- 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
-+		ret = -ENOMEM;
-+		goto err_unmap_src;
-+	}
-+
+diff --git a/kernel/power/console.c b/kernel/power/console.c
+index fcdf0e14a47d..19c48aa5355d 100644
+--- a/kernel/power/console.c
++++ b/kernel/power/console.c
+@@ -16,6 +16,7 @@
+ #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
  
- 	/* allocate coherent memory for hardware descriptors
- 	 * note: writecombine gives slightly better performance, but
-@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	mv_chan->dma_desc_pool_virt =
- 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
- 		       GFP_KERNEL);
--	if (!mv_chan->dma_desc_pool_virt)
--		return ERR_PTR(-ENOMEM);
-+	if (!mv_chan->dma_desc_pool_virt) {
-+		ret = -ENOMEM;
-+		goto err_unmap_dst;
-+	}
+ static int orig_fgconsole, orig_kmsg;
++static bool vt_switch_done;
  
- 	/* discover transaction capabilites from the platform data */
- 	dma_dev->cap_mask = cap_mask;
-@@ -1156,6 +1166,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_dma:
- 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
-+err_unmap_dst:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+err_unmap_src:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
+ static DEFINE_MUTEX(vt_switch_mutex);
+ 
+@@ -136,17 +137,21 @@ void pm_prepare_console(void)
+ 	if (orig_fgconsole < 0)
+ 		return;
+ 
++	vt_switch_done = true;
 +
- 	return ERR_PTR(ret);
+ 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
+ 	return;
  }
  
+ void pm_restore_console(void)
+ {
+-	if (!pm_vt_switch())
++	if (!pm_vt_switch() && !vt_switch_done)
+ 		return;
+ 
+ 	if (orig_fgconsole >= 0) {
+ 		vt_move_to_console(orig_fgconsole, 0);
+ 		vt_kmsg_redirect(orig_kmsg);
+ 	}
++
++	vt_switch_done = false;
+ }
 -- 
 2.39.5
 
