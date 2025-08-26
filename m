@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDC3B364DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F78B35FFC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1808E7BA886
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5F6178301
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2D7221290;
-	Tue, 26 Aug 2025 13:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF5F23C4E3;
+	Tue, 26 Aug 2025 12:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T87CKX0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKxDHyRR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E152512C8;
-	Tue, 26 Aug 2025 13:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA7142AA4;
+	Tue, 26 Aug 2025 12:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215736; cv=none; b=RGNFVHZgiGMHurr05+w11B1cfL9FCh9x8G6w1CA8hh4IHzyoWizB/6OEV3bogylcnFACzty66UOZX9dvoFjIfTyRqrseOSjNP1Bt4FQdQJmY4Ru/wL1wY5rTSlBXZ9LOGzfVQKKt3J9EraZDUKpBCfSA6dTRg1GUJ6EQ3pmYt9k=
+	t=1756212770; cv=none; b=YdAi6UNPnY8Ve/hiRINkGLaHh7zaVE+j+Pxd4Vm3ZUiSHXPJR0E0AiJSzCD+DWds2ak9smCjo+V5Eof+aOoYPse/txsWrsMyEIAWbvBEEFWytQLEoBZIy5xRlYO2QaIxbnLySox7nB/XoA4+ywJG0QHI2JI3RkxULOgIPg5pNI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215736; c=relaxed/simple;
-	bh=Hi+vvTiAVofFuVj/DIM/1CATRKpmvnZPOizAYi8ugzw=;
+	s=arc-20240116; t=1756212770; c=relaxed/simple;
+	bh=B+9ssAjLwA2a95MgsFkwLuwaR+TP+stVPbU3bxA8puw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0ReYoKHZiTaTvkzs/Hc2SlQhiE5kCif/MxxTH+8wCSD4mnph1N/DOkjUROfjJwVBLdaTsytsws16qhPYTbkE7mWw8zdA72/Exty4zG4F8iVwtOtQ3ro9vgYSVtwVN4kwwf+kCvOBrxLGsW2pry6odbCnFdXNNpAj0jtQ00N3LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T87CKX0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9E7C113CF;
-	Tue, 26 Aug 2025 13:42:16 +0000 (UTC)
+	 MIME-Version; b=HwawGrh2eR9v6Fd2l9ZgwfVaVwBBnaFuyb6vLymxp3TZTCazHUNRvbp6C8KChsjA1cDkXkqFp/4uSNdOR+14xnyu/vjud14/bHLjZZLa3jBkVAtWNNJeGr/4Ip1LQtN2nWcBQhyw/p5F/MqxyT5aLavcX2fuwWS71nxzkqpB5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKxDHyRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8391EC116D0;
+	Tue, 26 Aug 2025 12:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215736;
-	bh=Hi+vvTiAVofFuVj/DIM/1CATRKpmvnZPOizAYi8ugzw=;
+	s=korg; t=1756212769;
+	bh=B+9ssAjLwA2a95MgsFkwLuwaR+TP+stVPbU3bxA8puw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T87CKX0yDdwJnbQKL7tmP0AdJMkxnuWyIlY5wcGoAce1D40OcfHwM2JEwRUF/HEIb
-	 KAsVIMMOnz6T0XKNoaI/YKwD5nPogS/+yG5HhqJ0xDDj1xr5ccCcL9FxXyqwkz8EUD
-	 o35ycfkH60KzE+6EbXISgkxEjy7iAQApEHoChAfs=
+	b=aKxDHyRR0JhEkWOZGgV77eR9aFBi573xEYv1GvfkOjKxR68v2lGqNFwQWlKA4o75m
+	 Mx7xJbd9hhSor+ocA/zi1q+0ANjWwhU0H+92yYTcGv6qLfJxDL/uWNdhgx8Xy22Zyh
+	 WfBA6tgugFp6MkpQOM9hgtB5WgsiPjvaE4MRu7ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/644] m68k: Dont unregister boot console needlessly
+Subject: [PATCH 6.6 088/587] usb: xhci: Avoid showing warnings for dying controller
 Date: Tue, 26 Aug 2025 13:03:57 +0200
-Message-ID: <20250826110950.107153836@linuxfoundation.org>
+Message-ID: <20250826110955.171278674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
+[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
 
-When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
-generate console output. That will continue to work even after
-debug_cons_nputs() becomes unavailable so there's no need to
-unregister the boot console.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed, and when the device stops responding a flag is also
+added to indicate it's dying.
 
-Take the opportunity to remove a repeated MACH_IS_* test. Use the
-actual .write method (instead of a wrapper) and test that pointer
-instead. This means adding an unused parameter to debug_cons_nputs() for
-consistency with the struct console API.
+When that flag is set don't bother to show warnings about a missing
+controller.
 
-early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
-head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
-depend on the latter, to obviate some ifdef conditionals.
-
-Cc: Daniel Palmer <daniel@0x0f.com>
-Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/Kconfig.debug         |  2 +-
- arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
- arch/m68k/kernel/head.S         |  8 +++----
- 3 files changed, 19 insertions(+), 33 deletions(-)
+ drivers/usb/host/xhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
-index 11b306bdd788..5a3713170a61 100644
---- a/arch/m68k/Kconfig.debug
-+++ b/arch/m68k/Kconfig.debug
-@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index ce38cd2435c8..f5e170fe5f79 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -119,7 +119,8 @@ int xhci_halt(struct xhci_hcd *xhci)
+ 	ret = xhci_handshake(&xhci->op_regs->status,
+ 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
+ 	if (ret) {
+-		xhci_warn(xhci, "Host halt failed, %d\n", ret);
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host halt failed, %d\n", ret);
+ 		return ret;
+ 	}
  
- config EARLY_PRINTK
- 	bool "Early printk"
--	depends on !(SUN3 || M68000 || COLDFIRE)
-+	depends on MMU_MOTOROLA
- 	help
- 	  Write kernel log output directly to a serial port.
- 	  Where implemented, output goes to the framebuffer as well.
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index f11ef9f1f56f..521cbb8a150c 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -16,25 +16,10 @@
- #include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
+@@ -178,7 +179,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	state = readl(&xhci->op_regs->status);
  
--asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
--
--static void __ref debug_cons_write(struct console *c,
--				   const char *s, unsigned n)
--{
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME147)
--		mvme147_scc_write(c, s, n);
--	else if (MACH_IS_MVME16x)
--		mvme16x_cons_write(c, s, n);
--	else
--		debug_cons_nputs(s, n);
--#endif
--}
-+asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
+ 	if (state == ~(u32)0) {
+-		xhci_warn(xhci, "Host not accessible, reset failed.\n");
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host not accessible, reset failed.\n");
+ 		return -ENODEV;
+ 	}
  
- static struct console early_console_instance = {
- 	.name  = "debug",
--	.write = debug_cons_write,
- 	.flags = CON_PRINTBUFFER | CON_BOOT,
- 	.index = -1
- };
-@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
- 	if (early_console || buf)
- 		return 0;
- 
-+	if (MACH_IS_MVME147)
-+		early_console_instance.write = mvme147_scc_write;
-+	else if (MACH_IS_MVME16x)
-+		early_console_instance.write = mvme16x_cons_write;
-+	else
-+		early_console_instance.write = debug_cons_nputs;
- 	early_console = &early_console_instance;
- 	register_console(early_console);
- 
-@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
- }
- early_param("earlyprintk", setup_early_printk);
- 
--/*
-- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
-- * after init sections are discarded (for platforms that use it).
-- */
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--
- static int __init unregister_early_console(void)
- {
--	if (!early_console || MACH_IS_MVME16x)
--		return 0;
-+	/*
-+	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
-+	 * called after init sections are discarded (for platforms that use it).
-+	 */
-+	if (early_console && early_console->write == debug_cons_nputs)
-+		return unregister_console(early_console);
- 
--	return unregister_console(early_console);
-+	return 0;
- }
- late_initcall(unregister_early_console);
--
--#endif
-diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-index 493c95db0e51..2d40e0f34de5 100644
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3242,8 +3242,8 @@ func_return	putn
-  *	turns around and calls the internal routines.  This routine
-  *	is used by the boot console.
-  *
-- *	The calling parameters are:
-- *		void debug_cons_nputs(const char *str, unsigned length)
-+ *	The function signature is -
-+ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
-  *
-  *	This routine does NOT understand variable arguments only
-  *	simple strings!
-@@ -3252,8 +3252,8 @@ ENTRY(debug_cons_nputs)
- 	moveml	%d0/%d1/%a0,%sp@-
- 	movew	%sr,%sp@-
- 	ori	#0x0700,%sr
--	movel	%sp@(18),%a0		/* fetch parameter */
--	movel	%sp@(22),%d1		/* fetch parameter */
-+	movel	%sp@(22),%a0		/* char *s */
-+	movel	%sp@(26),%d1		/* unsigned int n */
- 	jra	2f
- 1:
- #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
