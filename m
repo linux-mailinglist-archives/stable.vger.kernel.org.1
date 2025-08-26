@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B8FB36457
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9436FB3677F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D41F1BA4699
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034562A82C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB1D321457;
-	Tue, 26 Aug 2025 13:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E69350D48;
+	Tue, 26 Aug 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaE9pkbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0edMyPhr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B5F33A010;
-	Tue, 26 Aug 2025 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E15345758;
+	Tue, 26 Aug 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214993; cv=none; b=AimjnmbDKenA2J9+aJHnsD24o74CqB2o3PZpUUaDxEWAQiKdW+euKAZnGFcNILUtphe+1Cjrzj6OioaAQgth0z6FQEhOPR2+pQ8Eagn3USE82/jl5OA0dU0IUCJof9xCSdZ7PNwd33aLw8LeMtb+0/OqMnhivjR5KyjEgqMspBU=
+	t=1756216622; cv=none; b=M/IR1jVx6M472jj+1KRV9T/OUgOurrZz1mKBXbp1ve0g/388TrKXA2LFOFmBbdfkhTz2/DC+BxvZNHa4hgOxWtfWphDwg47zbM9LN6WdnmpZEpesUYaXQra7teLPAkal6Qdd8lFJHEvzq604ubH3a9IpHPqkJFYUvYBwZ7W1oEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214993; c=relaxed/simple;
-	bh=JeXRW9IHqmQ5IPSBqAWXSyLaWrDIcQ4dcSEG5rS/+xY=;
+	s=arc-20240116; t=1756216622; c=relaxed/simple;
+	bh=30DaLl62I0gFkyGgmZ0a0phDh74LVRZNkdprM8nR9QY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmfTh6xkCL+8f7ZCWBtFggmE/m7+VF523gHN8YfhCa6FIxlJDl/5EgWu0k/3ZNZHFJ2qDBBBrHBHZl5gfjnGfMwB1B1K/L5nQkdF2Fx4GclmZI3z0wFcSbIci6iZnwGhMmbFQwVj+0ew6ODoeErG0U5+lNKUQcCjcFRrLZPNUAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaE9pkbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F6DC16AAE;
-	Tue, 26 Aug 2025 13:29:52 +0000 (UTC)
+	 MIME-Version; b=eWl7LT9xbe7OrJQkT84eZOgSknRt77LjGbtGrAUhagb63nGYZL/Qt78L5zfw9KoBnM28nLb3fVBxaUC7m4u6XN/oAbyI20bww76a1hLxFhJ8sN2BVJ00oTObYmkD4jaFriTW1i/kZDX2p38nMZA9SkMFKW7nJgS/h6Q3uEt2ni8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0edMyPhr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F4C113D0;
+	Tue, 26 Aug 2025 13:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214992;
-	bh=JeXRW9IHqmQ5IPSBqAWXSyLaWrDIcQ4dcSEG5rS/+xY=;
+	s=korg; t=1756216622;
+	bh=30DaLl62I0gFkyGgmZ0a0phDh74LVRZNkdprM8nR9QY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaE9pkbAzKrNypXvTih/PMd9J1ihYEDvRNAZPCZrgXJduAz7cK7xEXPZIDfz/q2nM
-	 rfph7tZ99i1ycAIDDoRrf0Hu4SKFEBkfO+VCXtpLILfPTOh9+TCUaWJbnXMT+xbcV1
-	 zZdY5xdkzmzWEYjscLf4mXph9ZACmnt9ZU97GnSI=
+	b=0edMyPhrGDae+31YdyLz786xZdHe3cJqk4e9dA7dC0MHAqobbjsLJe6KieSvVKZ0U
+	 tvM46bJQMuVUsuS4qMdYeZyzQME+fE3Or3QaoNncRmuHhzMD3aCyC5yUCthzIKmwhq
+	 IZH6wiESho6BI2w0aDMowGs0NpihXc2QyymDfnz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 319/482] media: gspca: Add bounds checking to firmware parser
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 481/644] mtd: rawnand: fsmc: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:09:32 +0200
-Message-ID: <20250826110938.688634714@linuxfoundation.org>
+Message-ID: <20250826110958.405395034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
+commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
 
-This sd_init() function reads the firmware.  The firmware data holds a
-series of records and the function reads each record and sends the data
-to the device.  The request_ihex_firmware() function
-calls ihex_validate_fw() which ensures that the total length of all the
-records won't read out of bounds of the fw->data[].
+The DMA map functions can fail and should be tested for errors.
 
-However, a potential issue is if there is a single very large
-record (larger than PAGE_SIZE) and that would result in memory
-corruption.  Generally we trust the firmware, but it's always better to
-double check.
-
-Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
+Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/vicam.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/usb/gspca/vicam.c
-+++ b/drivers/media/usb/gspca/vicam.c
-@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
- 	const struct ihex_binrec *rec;
- 	const struct firmware *fw;
- 	u8 *firmware_buf;
-+	int len;
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -503,6 +503,8 @@ static int dma_xfer(struct fsmc_nand_dat
  
- 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
- 				    &gspca_dev->dev->dev);
-@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
- 		goto exit;
- 	}
- 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
--		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
-+		len = be16_to_cpu(rec->len);
-+		if (len > PAGE_SIZE) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		memcpy(firmware_buf, rec->data, len);
- 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
--					be16_to_cpu(rec->len));
-+					len);
- 		if (ret < 0)
- 			break;
- 	}
+ 	dma_dev = chan->device;
+ 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
++	if (dma_mapping_error(dma_dev->dev, dma_addr))
++		return -EINVAL;
+ 
+ 	if (direction == DMA_TO_DEVICE) {
+ 		dma_src = dma_addr;
 
 
 
