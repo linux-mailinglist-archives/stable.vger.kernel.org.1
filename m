@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D213B366FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154F7B36B02
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79BF981219
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CADE5A07F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD611350D5A;
-	Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA3635AAA3;
+	Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8746WCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0h8k0P8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B6834166B;
-	Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4CF356903;
+	Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216284; cv=none; b=Xpgyh38ECaLOic7C+AC4OSOKungThzj0X2g3FyyxApDjcRuawkkwboawxX0KUflZ/VcLG4JhLbMXdkJTG+mEkvLqrXfUrOcjkgFYQSj+Ye1qXWmmPG1OL+hXLaujokB43+/DD+k5QWwwmVNm+O3ugTKXxKDiYsFlzuODYta29WA=
+	t=1756218736; cv=none; b=Gu3euAe1eEOKzjZAsrPLalVu+sNPqNuWCuksIsR6aoiAPAwFkVaCcdiRed8HHK/biMhLzYkWEG62YB7FSEVbMMUe5qn+pXZODkUeRgJNKCWBl0ZWnWmxgjStL+rBgs4uVezDK6U09HryZzhCTi7xF5M7JXxeRRyETqj870sY6G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216284; c=relaxed/simple;
-	bh=Rj/8vhpKNN8grdMODSQI3b4tv/loXhY6MFomutPrxug=;
+	s=arc-20240116; t=1756218736; c=relaxed/simple;
+	bh=sKZrVs4grnqZ8pjMIRhIag673saw3A/Y/BoxoR5oXng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZ9DPrZPuCHvUWSEClDaY+i/7uKDtS8WnOFOPO+OHC9jUpLImfCoddmNAGyf8jqAl0J2DuX7+kGCAXLF7kUm6cBran4d8hjy2Wevj/M1Ii7NrZ+xw0+e6kABZDOaMXh7vUaGJmLcBvUG6Tbg01Ydt4EWFhmpJetn5sG9XjtUPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8746WCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17785C4CEF1;
-	Tue, 26 Aug 2025 13:51:23 +0000 (UTC)
+	 MIME-Version; b=oJzie+fFgB2K/kuqWLVH8mBaPybrXZPjaXlWGCwpe4X0AryV6cDJTGW2dknJ1PCa36WwOWgU8EcqMrIYFi9VNi1Sp0CKjku+wjfr8oREbnfr0XEUWyB6c+1McrrXsxA+px8NB6d4zEJ3Oys5hfz1Mtc9U9SdVFJC3UyGsd6HEec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0h8k0P8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E321DC4CEF1;
+	Tue, 26 Aug 2025 14:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216284;
-	bh=Rj/8vhpKNN8grdMODSQI3b4tv/loXhY6MFomutPrxug=;
+	s=korg; t=1756218736;
+	bh=sKZrVs4grnqZ8pjMIRhIag673saw3A/Y/BoxoR5oXng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8746WCdlefbSUVHtSV874LPL64Hvl0xIE5sO98OZHxABVrTd7Y6McQdDmu671lui
-	 29SYE2UtAh+2X7rlbKrVHtUOrDRsdk1YvcW6faPVp8SDwEF8QPuFgsZxMncZ+XcytO
-	 B60Y2klyBFTP+1+5Qxbefkb9LdiiwCjIt/I5wha0=
+	b=0h8k0P8tKje9YHUoyfeHZ1JJaCj9ULSwQdTGXtpym3BXv/0p9CsoWySAlETVOp8pP
+	 meLA3aXftfHhwdcJ825oFUcv4OB67ko3akO47poOnazTzVzVeoY+GmdlCoF2NJHtZa
+	 kwvj67N47QhNwrdtk2K9RmxFjo3eir1PeAR5bbTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 346/644] rcu: Protect ->defer_qs_iw_pending from data race
-Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826110954.969880148@linuxfoundation.org>
+Subject: [PATCH 5.4 112/403] perf tests bp_account: Fix leaked file descriptor
+Date: Tue, 26 Aug 2025 13:07:18 +0200
+Message-ID: <20250826110909.813273170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
+[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
 
-On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
-invoked within an interrupts-disabled region of code [1], it will invoke
-rcu_read_unlock_special(), which uses an irq-work handler to force the
-system to notice when the RCU read-side critical section actually ends.
-That end won't happen until interrupts are enabled at the soonest.
+Since the commit e9846f5ead26 ("perf test: In forked mode add check that
+fds aren't leaked"), the test "Breakpoint accounting" reports the error:
 
-In some kernels, such as those booted with rcutree.use_softirq=y, the
-irq-work handler is used unconditionally.
+  # perf test -vvv "Breakpoint accounting"
+  20: Breakpoint accounting:
+  --- start ---
+  test child forked, pid 373
+  failed opening event 0
+  failed opening event 0
+  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
+  wp 0 created
+  wp 1 created
+  wp 2 created
+  wp 3 created
+  wp 0 modified to bp
+  wp max created
+  ---- end(0) ----
+  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
 
-The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
-updated by the irq-work handler and is both read and updated by
-rcu_read_unlock_special().  This resulted in the following KCSAN splat:
+A watchpoint's file descriptor was not properly released. This patch
+fixes the leak.
 
-------------------------------------------------------------------------
-
-BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
-
-read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
- rcu_read_unlock_special+0x175/0x260
- __rcu_read_unlock+0x92/0xa0
- rt_spin_unlock+0x9b/0xc0
- __local_bh_enable+0x10d/0x170
- __local_bh_enable_ip+0xfb/0x150
- rcu_do_batch+0x595/0xc40
- rcu_cpu_kthread+0x4e9/0x830
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
- rcu_preempt_deferred_qs_handler+0x1e/0x30
- irq_work_single+0xaf/0x160
- run_irq_workd+0x91/0xc0
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-no locks held by irq_work/8/88.
-irq event stamp: 200272
-hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
-hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
-softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-
-------------------------------------------------------------------------
-
-The problem is that irq-work handlers run with interrupts enabled, which
-means that rcu_preempt_deferred_qs_handler() could be interrupted,
-and that interrupt handler might contain an RCU read-side critical
-section, which might invoke rcu_read_unlock_special().  In the strict
-KCSAN mode of operation used by RCU, this constitutes a data race on
-the ->defer_qs_iw_pending field.
-
-This commit therefore disables interrupts across the portion of the
-rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
-field.  This suffices because this handler is not a fast path.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
+Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/tests/bp_account.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 9e84d603e882..73483f0fcf6b 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -607,10 +607,13 @@ static notrace void rcu_preempt_deferred_qs(struct task_struct *t)
-  */
- static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- {
-+	unsigned long flags;
- 	struct rcu_data *rdp;
+diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
+index 55a9de311d7b..e1ff0faa0149 100644
+--- a/tools/perf/tests/bp_account.c
++++ b/tools/perf/tests/bp_account.c
+@@ -93,6 +93,7 @@ static int bp_accounting(int wp_cnt, int share)
+ 		fd_wp = wp_event((void *)&the_var, &attr_new);
+ 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
+ 		pr_debug("wp max created\n");
++		close(fd_wp);
+ 	}
  
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
-+	local_irq_save(flags);
- 	rdp->defer_qs_iw_pending = false;
-+	local_irq_restore(flags);
- }
- 
- /*
+ 	for (i = 0; i < wp_cnt; i++)
 -- 
 2.39.5
 
