@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED71EB362D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB802B365F3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6288A3588
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D718E5C08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2208834A304;
-	Tue, 26 Aug 2025 13:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059E42FDC5C;
+	Tue, 26 Aug 2025 13:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZecnQxG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQEkJwaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1077346A1B;
-	Tue, 26 Aug 2025 13:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3234307AF5;
+	Tue, 26 Aug 2025 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214110; cv=none; b=q1+JxzcviDnoBVHiWLQcT7q3K/sEU4QMNyP0KV5uRTDBppe4HtNxQI3hLQTD9OX43tBbgvt1RXBi1eUG6jDAb/MfazzJKdeG7G3q+0PlhiVt05eMV0QzISNj36v0rvx+D9uHPa1VMbW2dKnk1/+8w/NdX/AH+szeKLmF7Lvudbg=
+	t=1756215794; cv=none; b=p6mzKfBM2fmZSxeeCLw3EvvleiywbMFLDL3y5AoR+rlomXO+tkve/mWLXY8WEUAGIg8rKi92vlZzk3TT1Oq7pJaQYEvZ4aaEg7ulNoVP6byq5Mym/I7P62khzw+rKfthLoEh1AJwo4IZVTRMZvSTcRosPFrlV4RyuusXbZQoQZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214110; c=relaxed/simple;
-	bh=IGNLrsp4dffsed9+ngzkl5CQe5NuKMmGxznBeQ62Seo=;
+	s=arc-20240116; t=1756215794; c=relaxed/simple;
+	bh=adWvh7z/oHGo7ZjChrGXjuZhskpRyQmiGT+vHd+tqMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHMLFRComPQ2I4GKgCptF8fOUYYMoIouH4J8k3Hwamfxnbr9KcsqdHhrSKf9EJ+r1CSjn1DcdACXDa208EJFrx1r1qLXFTBeAIn2+FhRM+ta2FzYj1An+RwzTtzax1Xol83/HNoIjhWZN6+sWsbvcNa6xE9xkUVps61ehFgrH64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZecnQxG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2051EC4CEF1;
-	Tue, 26 Aug 2025 13:15:09 +0000 (UTC)
+	 MIME-Version; b=O/hM8TqYEJyMA9tfbWoFd8+h61/y7c/K95YXzycQvc3VJ9ff29i9hlGLJWScXDuCAuPI0/687N0cW+pJbXi9veOBxUzLFZPUvP3cySkmNgmgxjoNSR3t8Wu2zERAhEEI8qQZvYFi4IYlb3uWpO8m/0pBmAhTz04nzNUMh1CvAyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQEkJwaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065FEC4CEF1;
+	Tue, 26 Aug 2025 13:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214110;
-	bh=IGNLrsp4dffsed9+ngzkl5CQe5NuKMmGxznBeQ62Seo=;
+	s=korg; t=1756215794;
+	bh=adWvh7z/oHGo7ZjChrGXjuZhskpRyQmiGT+vHd+tqMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZecnQxG5tUSJYyDomMzMOI1/uOjAlY5HELa8Bosc0OWwHRFO/I+j8EP91SeWf2nLm
-	 8qgtnMhKIgzNULwNaC64ZXOGpPVirE+4HSXC4C+d1MwAfWSsWKtz6sqRcmXYk5L3ia
-	 mG8B9bYvXgcio10cHbcfCZPVMKSSy+fiS6QrviWY=
+	b=UQEkJwaGCKB6raSJxTkqr86xAHinQzq1mElH/NWFyz11k22KJsv2nyaVByie3XYYs
+	 kJ2l8qURhbK/ltCPGIe3XFgBXviO8UQygPuXcv3dB6JCcFd8ihIEP8868ZOCxT3AI8
+	 8fOu9TiKHrJJfCA57IBpcrV7/yZ0TsMrEjuEkLto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 007/482] smb: client: remove redundant lstrp update in negotiate protocol
+	James Cowgill <james.cowgill@blaize.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 169/644] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
 Date: Tue, 26 Aug 2025 13:04:20 +0200
-Message-ID: <20250826110930.963404167@linuxfoundation.org>
+Message-ID: <20250826110950.666747677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: James Cowgill <james.cowgill@blaize.com>
 
-commit e19d8dd694d261ac26adb2a26121a37c107c81ad upstream.
+[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
 
-Commit 34331d7beed7 ("smb: client: fix first command failure during
-re-negotiation") addressed a race condition by updating lstrp before
-entering negotiate state. However, this approach may have some unintended
-side effects.
+The `separate_colour_plane_flag` element is only present in the SPS if
+`chroma_format_idc == 3`, so the corresponding flag should be disabled
+whenever that is not the case and not just on profiles where
+`chroma_format_idc` is not present.
 
-The lstrp field is documented as "when we got last response from this
-server", and updating it before actually receiving a server response
-could potentially affect other mechanisms that rely on this timestamp.
-For example, the SMB echo detection logic also uses lstrp as a reference
-point. In scenarios with frequent user operations during reconnect states,
-the repeated calls to cifs_negotiate_protocol() might continuously
-update lstrp, which could interfere with the echo detection timing.
-
-Additionally, commit 266b5d02e14f ("smb: client: fix race condition in
-negotiate timeout by using more precise timing") introduced a dedicated
-neg_start field specifically for tracking negotiate start time. This
-provides a more precise solution for the original race condition while
-preserving the intended semantics of lstrp.
-
-Since the race condition is now properly handled by the neg_start
-mechanism, the lstrp update in cifs_negotiate_protocol() is no longer
-necessary and can be safely removed.
-
-Fixes: 266b5d02e14f ("smb: client: fix race condition in negotiate timeout by using more precise timing")
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4217,7 +4217,6 @@ retry:
- 		return 0;
- 	}
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index 3798a57bbbd4..19e769420b9b 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -431,12 +431,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
  
--	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
- 	server->neg_start = jiffies;
- 	spin_unlock(&server->srv_lock);
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
+-
+-			if (p_h264_sps->chroma_format_idc < 3)
+-				p_h264_sps->flags &=
+-					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+ 		}
+ 
++		if (p_h264_sps->chroma_format_idc < 3)
++			p_h264_sps->flags &=
++				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
++
+ 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
+-- 
+2.39.5
+
 
 
 
