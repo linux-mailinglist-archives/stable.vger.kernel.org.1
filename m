@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642CAB365BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0DB35FF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487398A619D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AC664635B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE42722DFA7;
-	Tue, 26 Aug 2025 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2172A216E32;
+	Tue, 26 Aug 2025 12:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxNjCr9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVtLPgtn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91BD227EA8;
-	Tue, 26 Aug 2025 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F67081F;
+	Tue, 26 Aug 2025 12:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215660; cv=none; b=X64mxvfgPqkEaJCj9v9xRav/X+yzfFEiIB7T+hxD5B5RqONcUyklvT+yYakGit+Vo5/qFO9PDLgszi7V5o9uQhydASH0JfFv7NGfQe18IBR6wPy21YXqAQ9o97SnZdWVKJH2T++ElimWDjncEP+Qciytv4RRuy3jQCeBeUfEFqI=
+	t=1756212756; cv=none; b=Jqy4BnvVZ6SbreZ4fgknsk/G/M4+iU6ys/5eU0H8iTscQJ5dTrS5jYaEPOhMALMwqKd04ZRF5/G2oIRNxNkaQ6RTTZbbNibGQH3iCZd92ZkAEyFHWXfgjDx2mblMfq5PtE8b4E4WboI6ph57aCldrRmkT0YSeYt99l0biYnIDJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215660; c=relaxed/simple;
-	bh=hgK6bz0Mw60fIA1skNvXLRkpsEBxGE1IoTDr680RKyY=;
+	s=arc-20240116; t=1756212756; c=relaxed/simple;
+	bh=QffHjhWXkbFu/TBSzgBFHDQkP1xdBdQ5Ran635j90Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUt6U+Wn9q7j3qJfILQK5WS1E30heDJbHY8A5aS9DEGQBtWOMvKJbVhIoeO7eMlgAXwyIZFtS7tSjxu2G+z7p966tqhGM7/lJav3sCdV6DxXRihnhFxDgljbFRh2l1/lN8GdtHD7bshucjjy94+KMZi1nT9nfe3cy8LR9hMbj6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxNjCr9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40282C4CEF1;
-	Tue, 26 Aug 2025 13:41:00 +0000 (UTC)
+	 MIME-Version; b=A5sQIzokBUD/3BVFkYfGbjgI+3P3cnCuYf2nWD8Amed83S4tMtldB0fZG5zUxx8Z7/gsR7a16pN2K0Yddi43mLs1dnCIwZ8dQCMyLqPMlSjw80MZaf/BiA6RwJOo2BR+GTfv4/qPIGntQH1EJjKnrrKLDKHV+da+ZFSAZgTVSOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVtLPgtn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623FAC4CEF1;
+	Tue, 26 Aug 2025 12:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215660;
-	bh=hgK6bz0Mw60fIA1skNvXLRkpsEBxGE1IoTDr680RKyY=;
+	s=korg; t=1756212756;
+	bh=QffHjhWXkbFu/TBSzgBFHDQkP1xdBdQ5Ran635j90Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxNjCr9hl4IScwgBUIi55Mb3yplyNeG4nfi43gr2y2Zgc0EpjJEjFa8KfrjGH9sJW
-	 hJ1VR7Eh0Bfh2c0VXFoik69Ay7rmpDff5VXh2l0erNEASCfjy51OxN2cWwjs7f7inw
-	 e5ZL5M2rH1mg6NZLLCjxb6lYKOcNLyWLcuIPf2I8=
+	b=WVtLPgtnMUJ1xWxnARfeNsX1mld8NENDZCaJ8dt+6PEHe/nFZRBYZ+/HGWeLwoBzx
+	 /C8asrpgb1YubAMWJEYs4cepcEsNvfaPpyFF4KwIX/7646F/E6TvZm/bAgceqtMN5G
+	 J2UFbxPObZzhXHhjjt/bc0PN3yuSLfqDnEOxhuC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 117/644] ARM: dts: vfxxx: Correctly use two tuples for timer address
-Date: Tue, 26 Aug 2025 13:03:28 +0200
-Message-ID: <20250826110949.423919641@linuxfoundation.org>
+Subject: [PATCH 6.6 060/587] ptp: prevent possible ABBA deadlock in ptp_clock_freerun()
+Date: Tue, 26 Aug 2025 13:03:29 +0200
+Message-ID: <20250826110954.463345177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
+[ Upstream commit 2efe41234dbd0a83fdb7cd38226c2f70039a2cd3 ]
 
-Address and size-cells are 1 and the ftm timer node takes two address
-spaces in "reg" property, so this should be in two <> tuples.  Change
-has no functional impact, but original code is confusing/less readable.
+syzbot reported the following ABBA deadlock:
 
-Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+       CPU0                           CPU1
+       ----                           ----
+  n_vclocks_store()
+    lock(&ptp->n_vclocks_mux) [1]
+        (physical clock)
+                                     pc_clock_adjtime()
+                                       lock(&clk->rwsem) [2]
+                                        (physical clock)
+                                       ...
+                                       ptp_clock_freerun()
+                                         ptp_vclock_in_use()
+                                           lock(&ptp->n_vclocks_mux) [3]
+                                              (physical clock)
+    ptp_clock_unregister()
+      posix_clock_unregister()
+        lock(&clk->rwsem) [4]
+          (virtual clock)
+
+Since ptp virtual clock is registered only under ptp physical clock, both
+ptp_clock and posix_clock must be physical clocks for ptp_vclock_in_use()
+to lock &ptp->n_vclocks_mux and check ptp->n_vclocks.
+
+However, when unregistering vclocks in n_vclocks_store(), the locking
+ptp->n_vclocks_mux is a physical clock lock, but clk->rwsem of
+ptp_clock_unregister() called through device_for_each_child_reverse()
+is a virtual clock lock.
+
+Therefore, clk->rwsem used in CPU0 and clk->rwsem used in CPU1 are
+different locks, but in lockdep, a false positive occurs because the
+possibility of deadlock is determined through lock-class.
+
+To solve this, lock subclass annotation must be added to the posix_clock
+rwsem of the vclock.
+
+Reported-by: syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7cfb66a237c4a5fb22ad
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250728062649.469882-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vfxxx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_private.h | 5 +++++
+ drivers/ptp/ptp_vclock.c  | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
-index d53f9c9db8bf..eb7973fb4713 100644
---- a/arch/arm/boot/dts/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/vfxxx.dtsi
-@@ -617,7 +617,7 @@ usbmisc1: usb@400b4800 {
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index a54124269c2f..3fbd1d68a9bc 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -20,6 +20,11 @@
+ #define PTP_BUF_TIMESTAMPS 30
+ #define PTP_DEFAULT_MAX_VCLOCKS 20
  
- 			ftm: ftm@400b8000 {
- 				compatible = "fsl,ftm-timer";
--				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
-+				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
- 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
- 				clock-names = "ftm-evt", "ftm-src",
- 					"ftm-evt-counter-en", "ftm-src-counter-en";
++enum {
++	PTP_LOCK_PHYSICAL = 0,
++	PTP_LOCK_VIRTUAL,
++};
++
+ struct timestamp_event_queue {
+ 	struct ptp_extts_event buf[PTP_MAX_TIMESTAMPS];
+ 	int head;
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index dcf752c9e045..7d08ff3b30fc 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -154,6 +154,11 @@ static long ptp_vclock_refresh(struct ptp_clock_info *ptp)
+ 	return PTP_VCLOCK_REFRESH_INTERVAL;
+ }
+ 
++static void ptp_vclock_set_subclass(struct ptp_clock *ptp)
++{
++	lockdep_set_subclass(&ptp->clock.rwsem, PTP_LOCK_VIRTUAL);
++}
++
+ static const struct ptp_clock_info ptp_vclock_info = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "ptp virtual clock",
+@@ -213,6 +218,8 @@ struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock)
+ 		return NULL;
+ 	}
+ 
++	ptp_vclock_set_subclass(vclock->clock);
++
+ 	timecounter_init(&vclock->tc, &vclock->cc, 0);
+ 	ptp_schedule_worker(vclock->clock, PTP_VCLOCK_REFRESH_INTERVAL);
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
