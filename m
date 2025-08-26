@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AE5B361F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090E0B367DC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBDD6188D6CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB455809AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50E423026B;
-	Tue, 26 Aug 2025 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C633D350D75;
+	Tue, 26 Aug 2025 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAJMrNQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1/BLPkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709531C4609;
-	Tue, 26 Aug 2025 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CDB3314DF;
+	Tue, 26 Aug 2025 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213859; cv=none; b=fcWLVC7KXUX33zIkkMf/Ki6a5QfdZS5eq6i2GT2ajxUv4Tl1PLWjs4bHlU9mdMKAiJHvGEnFoMWbOcSIol45tsi+kJrbe6bzIoTjdYcVsiVUU2jvQvtOuFr3HAY3HBU05FlOGiI16fmUIvFcgnbmzpKuCJ9rOvc2lC8KdMzeA/A=
+	t=1756216850; cv=none; b=nPo1WghzDK27bWcb7LRQM2wWwm60l5gF9hZHFSGVGYAAayPnYKHshKCIlWu5Fa0DuvU5+sX+T4WZPL79omKaZSFcMtFEV4mxzkCGeFTHrbkDx+HLscBEzhmXTKwjsJ5Uwn3OhtEl/Gt/yJXkXMi22UlZqLrloFU+cuevj8Mc13U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213859; c=relaxed/simple;
-	bh=KOJfHWuDx3cmHxdt4+va6sDzU4f/KSi/nIrsQYy0+RI=;
+	s=arc-20240116; t=1756216850; c=relaxed/simple;
+	bh=cX69JnvKQWbvuJ2JfwM8unpzn33zr1fpG9nQY5+l+jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jU0U3mwxqlPSoUhyrxmtZarkjo1TSOloN4tTr/bLoMQXXNdXCOoMETdQ5a/PNTJ0vdeDMwusVkXC/2wK4ZLFeK/4x6eshZPJeATeYe1nNYJRg2odtCZ6TX0PBalYUUosy4mb9hKB2LpXY95xxBQN2Y4btJdC4p/HFr7gqu4cb9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAJMrNQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027B5C4CEF1;
-	Tue, 26 Aug 2025 13:10:58 +0000 (UTC)
+	 MIME-Version; b=jq1/URLMjZT2Hl2Hj3fG04lAW+Jd+qmLYP9ePzSzjYqgEETbvBwnCw5EepZOCnTUgfgxZ03M258OgyEVUUh1VaiQoFTNcmlW7j00WdTQV3BHPm4K2XpauJNti0JDG4N2y06uuOettuyyMzLb9SX6eKpgTQUeEY7TPF0gwh+aw9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1/BLPkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12848C4CEF1;
+	Tue, 26 Aug 2025 14:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213859;
-	bh=KOJfHWuDx3cmHxdt4+va6sDzU4f/KSi/nIrsQYy0+RI=;
+	s=korg; t=1756216850;
+	bh=cX69JnvKQWbvuJ2JfwM8unpzn33zr1fpG9nQY5+l+jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAJMrNQl76oekNKTVn7ZOZWPFJWpi09/3ctyG8Ae36M2AT5YP0q+2+2LOD8V+OtJB
-	 VIWb5dcIzjIWIMGu4d9Y93rBT4/5V60QbG/UCglpAM4/dGwmZ+/rrHrKRCXlVWV6Z+
-	 sd1jt4ctXHWbg71uHa34UPBpFHbkxuuNh9P2IG/s=
+	b=H1/BLPkzZ9u8iw2hwzALhbIwSJCeOeJDnhp9eKr/eeXDMrGGsXRb6xMEc9KQwqCjv
+	 mtaKePd5f12Z+Ls9NZUXU6DR+xxbYg+NNCHvJOLWcKczhAkRWvNaYfBrnA7n/7ffwa
+	 lDZLMmoFkH9HusPBZ6gq+NxcL9mJzOUZsdhfyP7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 506/587] mptcp: disable add_addr retransmission when timeout is 0
-Date: Tue, 26 Aug 2025 13:10:55 +0200
-Message-ID: <20250826111005.858652260@linuxfoundation.org>
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 565/644] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
+Date: Tue, 26 Aug 2025 13:10:56 +0200
+Message-ID: <20250826111000.532963533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit f5ce0714623cffd00bf2a83e890d09c609b7f50a upstream.
+commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+In preparation to fix replay timer timeout, rename the
+gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
-
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Before commit e4c28e3d5c09 ("mptcp: pm: move generic PM helpers to
-  pm.c"), mptcp_pm_alloc_anno_list() was in pm_netlink.c. The same patch
-  can be applied there without conflicts. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/mptcp-sysctl.rst |    2 ++
- net/mptcp/pm_netlink.c                    |   13 ++++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
- 
-+	Do not retransmit if set to 0.
-+
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
- 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -294,6 +294,7 @@ static void mptcp_pm_add_timer(struct ti
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
- 
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -311,6 +312,10 @@ static void mptcp_pm_add_timer(struct ti
- 		goto out;
- 	}
- 
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -322,7 +327,7 @@ static void mptcp_pm_add_timer(struct ti
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -364,6 +369,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -388,8 +394,9 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
- reset_timer:
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -860,7 +860,7 @@ static void sdhci_gl9763e_reset(struct s
+ 	sdhci_reset(host, mask);
  }
+ 
+-static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
++static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+ 	u32 value;
+@@ -918,7 +918,7 @@ static int gli_probe_slot_gl9763e(struct
+ 	gli_pcie_enable_msi(slot);
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 					gl9763e_hs400_enhanced_strobe;
+-	gli_set_gl9763e(slot);
++	gl9763e_hw_setting(slot);
+ 	sdhci_enable_v4_mode(host);
+ 
+ 	return 0;
 
 
 
