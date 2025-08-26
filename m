@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-173225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62329B35BF4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497B8B3667C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B377C4429
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F11C6B60CE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207883093BA;
-	Tue, 26 Aug 2025 11:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3146C350831;
+	Tue, 26 Aug 2025 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGKGUAax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHJrJIXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE8341653;
-	Tue, 26 Aug 2025 11:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36B3374C4;
+	Tue, 26 Aug 2025 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207693; cv=none; b=FCepdZfzRmexd0BkLRm71wTQ8gCVB4pCBAEPneGvGQGqRh89F9SpYCBO2C4MkglNZhpWckNUITmXevYYP5O82zMOb8HAmoEuG/DYHR36Ch9vGSd0jOyJDibA/5UQgqahVF8g2Aj79wth5fRLoZBi1P33yFaKfjESv4D/CbS+qxI=
+	t=1756216523; cv=none; b=REbQqYIHwDg+1ZrPOJpb3nl1awXWFrpgOeOktjhY5+S3JdoVFnaQLtaTlMmb1CsHR5iWnOq+2GTbAkl4S9x0DBviC7XUJ6ts6MCUueu5h6JBIeW/CAMC7q21wdSbZZ2I9JI5IgjA30RX2/emfYlSJHlNikSg+8/nVEfFvvHkHJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207693; c=relaxed/simple;
-	bh=HsKSYa2IszX4xu0PJmmvjvX+Xd28MMFwiJivlu65VPU=;
+	s=arc-20240116; t=1756216523; c=relaxed/simple;
+	bh=VRxjKrnMPL6BYF47KaFZgCGgiGAjPYtT2csXVc+I+sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S84DI9sXHyvV3TGF2kh6R7gX7WgvJNouseNlT26qTVJxuFCidx1lsA7n+dhnJSmAXjCpwJ1nRH5ETjqBs4SP0Y0GwchHXiOPsbe505jykQLJjfRx/Ymd7cd5cZ00dDdh+ZTgpWY5xGbTcZvlJz2y+0eiIy4Hydr3NCt1ApwvywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGKGUAax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED112C19422;
-	Tue, 26 Aug 2025 11:28:12 +0000 (UTC)
+	 MIME-Version; b=W114i1g1+B+tfaXjtim9fHskjRxFagCEIfek+l5pymJpjMvL3aDWfLwBQ7q3y1ObtKpbuKEK8oOW088JpBI9oYhmRhQFQKWFqJumNsfO8tsqcGAb2BIFU1MqWwyF/+QZx8DQG+iW7CEjoT2g3TNEvZ3G7mEaSSyzf3s6rgto6w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHJrJIXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A37C116B1;
+	Tue, 26 Aug 2025 13:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207693;
-	bh=HsKSYa2IszX4xu0PJmmvjvX+Xd28MMFwiJivlu65VPU=;
+	s=korg; t=1756216522;
+	bh=VRxjKrnMPL6BYF47KaFZgCGgiGAjPYtT2csXVc+I+sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGKGUAax6NGyj4udUigmPO6kj+7TuQcKUOLDbZ+1B5/vVa4wi+dL3YTXC6jRl890Y
-	 /KhGHULCaEaS5m8xhOxR3MKoxyXSnFAp10JQIOEnEds9S6i9PR4MGAWFrKGL8tSgtm
-	 HnsXiqCcMgTxIwcgvrS+XhvLYwMqzFUKBSHqQS1M=
+	b=QHJrJIXz1UYaoZqNk/AEdrRecLmysX4NygC4OL6/YJ13OnbCFHCzGWnGOuvsXEtdp
+	 UeALHTNF0ew0elTSGkoO3ndonwCf6rjZzO7DM0sAnmAEEcYmFelnn8hq0LnoZI8G34
+	 4DcYRSOhw5Kqw73jg+ozJJLC4hLJx4qfhNpdbwRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.16 250/457] ALSA: hda: tas2781: Fix wrong reference of tasdevice_priv
+	stable <stable@kernel.org>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 443/644] usb: typec: ucsi: Update power_supply on power role change
 Date: Tue, 26 Aug 2025 13:08:54 +0200
-Message-ID: <20250826110943.542692322@linuxfoundation.org>
+Message-ID: <20250826110957.445717797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit 3f4422e7c9436abf81a00270be7e4d6d3760ec0e upstream.
+commit 7616f006db07017ef5d4ae410fca99279aaca7aa upstream.
 
-During the conversion to unify the calibration data management, the
-reference to tasdevice_priv was wrongly set to h->hda_priv instead of
-h->priv.  This resulted in memory corruption and crashes eventually.
-Unfortunately it's a void pointer, hence the compiler couldn't know
-that it's wrong.
+The current power direction of an USB-C port also influences the
+power_supply's online status, so a power role change should also update
+the power_supply.
 
-Fixes: 4fe238513407 ("ALSA: hda/tas2781: Move and unified the calibrated-data getting function for SPI and I2C into the tas2781_hda lib")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1248270
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250820051902.4523-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes an issue on some systems where plugging in a normal USB device in
+for the first time after a reboot will cause upower to erroneously
+consider the system to be connected to AC power.
+
+Cc: stable <stable@kernel.org>
+Fixes: 0e6371fbfba3 ("usb: typec: ucsi: Report power supply changes")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250721-fix-ucsi-pwr-dir-notify-v1-1-e53d5340cb38@qtmlabs.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -287,7 +287,7 @@ static int tas2563_save_calibration(stru
- 	efi_char16_t efi_name[TAS2563_CAL_VAR_NAME_MAX];
- 	unsigned long max_size = TAS2563_CAL_DATA_SIZE;
- 	unsigned char var8[TAS2563_CAL_VAR_NAME_MAX];
--	struct tasdevice_priv *p = h->hda_priv;
-+	struct tasdevice_priv *p = h->priv;
- 	struct calidata *cd = &p->cali_data;
- 	struct cali_reg *r = &cd->cali_reg_array;
- 	unsigned int offset = 0;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -793,6 +793,7 @@ static void ucsi_handle_connector_change
+ 
+ 	if (con->status.change & UCSI_CONSTAT_CONNECT_CHANGE) {
+ 		typec_set_pwr_role(con->port, role);
++		ucsi_port_psy_changed(con);
+ 
+ 		switch (UCSI_CONSTAT_PARTNER_TYPE(con->status.flags)) {
+ 		case UCSI_CONSTAT_PARTNER_TYPE_UFP:
 
 
 
