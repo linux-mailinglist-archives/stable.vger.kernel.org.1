@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-174721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E27B3648C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1824DB35E42
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19351C21B57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84ECB1B60F8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4EB2FDC5C;
-	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE9C322C80;
+	Tue, 26 Aug 2025 11:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXzPEmBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/t/bLyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978F61E502;
-	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC2D29BDB8;
+	Tue, 26 Aug 2025 11:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215141; cv=none; b=Pr/k3G6xRGxa+MCVachMYnoue6FDXk13JQWtsaw/RXczSgy9mD9IFAOWuxTdIV+KKYCNfVe3kLGLjAKWJCVFgwcaRdrMyraQcRxA4GlQuoOF5xgg7wOYePxJroPHk+ZEliSgU5kZNkpsO/uXb91tTtICRKN5vj122JCOb+NEH4k=
+	t=1756208729; cv=none; b=mthY2jAzMi9jnsVHPwOGozrWvOIAnWx6A37Lj24F1OukAwZB2rHY4ENdW3z+7Mrhda4KLTLc6+i9KO9e+klZyaKLNkh5DGiFUnEQZjg0wxD79sOHi8r0jzUJ52jDMsD2VGmDRd8yhR9tqn6fwIk6g2fR8cASnzmlucFBQIu2m9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215141; c=relaxed/simple;
-	bh=YosTZs+prh/NV4AOH4NstFwRUxfK5qC2JCt2AEUtDsk=;
+	s=arc-20240116; t=1756208729; c=relaxed/simple;
+	bh=NPUmFmSg2E5X61Zm3dN/yrHcuIfoJZL66XHpMJ9fLA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjbQIZ4RyiZRRh2i9aZd0ngnNcXyjmPu4WJ+p50QuXVNatLdkI+GM/7qZDUlYcw5GLIxtIvYqfwQuCtcZ6ieBxIqBxlmKBjfC+sjAtFUF8KrXQZV7rVcJ0Gq924BhIED1q86uSxcyl6k0UCAS04h3kFWhNsmV2x08FAJiGu/7ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXzPEmBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0528DC4CEF1;
-	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
+	 MIME-Version; b=F1eLrYipP3r3VMuvjIRU6e5PAK6JL99DmnjiSAGMA26KjHkLaN879KLBBX/RZOcPPnadH8OC2/EQjfSfJVE0h0kCJfDKO8ZA1xLfsqJnHMmyeIMXPdC7brFpF4pAWxzpeXQ7i6/BYRTRroVY4rmHZAyzE7CK3b3n7fGkz2L55ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/t/bLyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB52C4CEF1;
+	Tue, 26 Aug 2025 11:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215141;
-	bh=YosTZs+prh/NV4AOH4NstFwRUxfK5qC2JCt2AEUtDsk=;
+	s=korg; t=1756208728;
+	bh=NPUmFmSg2E5X61Zm3dN/yrHcuIfoJZL66XHpMJ9fLA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXzPEmBUIRVSxJ7AR34Ibq5+1Jvb3KTaBFmC2HH3vMs3WygitJVEUFj2YF+ZRlIx8
-	 NgJA8n4vXsEhQZbuC75nSBKgPGRKLgkKwB0AnaxM6OLkq/4j+X4oN8Ga3XGjNbyPL6
-	 LKr6NlZdBfm1CsP4euzIyJPD/o1W2mDDwfUGLC6A=
+	b=x/t/bLyYU4+d/Dn4YF4Ly4Eowr1bapkhKHZbNcSM2/IC7iJAPMT6I2Yh9E69x53UV
+	 4fYh0xVAfdqgyWNfSmwSiqI/BsdsyqJXgePjaYu1xFlzI3USrW2+LQsSblafDxpwvg
+	 cGUWidMCJpYDbT+48oVIMf0wwz1WeE2+j8pWUXQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 6.1 385/482] mm: update memfd seal write check to include F_SEAL_WRITE
+	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 223/322] comedi: pcl726: Prevent invalid irq number
 Date: Tue, 26 Aug 2025 13:10:38 +0200
-Message-ID: <20250826110940.340396010@linuxfoundation.org>
+Message-ID: <20250826110921.398440080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
+commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
 
-The seal_check_future_write() function is called by shmem_mmap() or
-hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
-sealed this way.
+The reproducer passed in an irq number(0x80008000) that was too large,
+which triggered the oob.
 
-The F_SEAL_WRITE flag is not checked here, as that is handled via the
-mapping->i_mmap_writable mechanism and so any attempt at a mapping would
-fail before this could be run.
+Added an interrupt number check to prevent users from passing in an irq
+number that was too large.
 
-However we intend to change this, meaning this check can be performed for
-F_SEAL_WRITE mappings also.
+If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
+because it shifts a 1-bit into the sign bit (which is UB in C).
+Possible solutions include reducing the upper bound on the
+`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
 
-The logic here is equally applicable to both flags, so update this
-function to accommodate both and rename it accordingly.
+The old code would just not attempt to request the IRQ if the
+`options[1]` value were invalid.  And it would still configure the
+device without interrupts even if the call to `request_irq` returned an
+error.  So it would be better to combine this test with the test below.
 
-Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
+Cc: stable <stable@kernel.org> # 5.13+
+Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
+Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- include/linux/mm.h   |   15 ++++++++-------
- mm/shmem.c           |    2 +-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/comedi/drivers/pcl726.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -136,7 +136,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
- 	vma->vm_ops = &hugetlb_vm_ops;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3526,25 +3526,26 @@ static inline void mem_dump_obj(void *ob
- #endif
- 
- /**
-- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
-+ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-+ *                    handle them.
-  * @seals: the seals to check
-  * @vma: the vma to operate on
-  *
-- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
-- * the vma flags.  Return 0 if check pass, or <0 for errors.
-+ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
-+ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
-  */
--static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
-+static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & F_SEAL_FUTURE_WRITE) {
-+	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
- 		/*
- 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * "future write" seal active.
-+		 * write seals are active.
- 		 */
- 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
- 			return -EPERM;
- 
- 		/*
--		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
-+		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
- 		 * MAP_SHARED and read-only, take care to not allow mprotect to
- 		 * revert protections on such mappings. Do this only for shared
- 		 * mappings. For private mappings, don't need to mask
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2302,7 +2302,7 @@ static int shmem_mmap(struct file *file,
- 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
- 	int ret;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
+--- a/drivers/comedi/drivers/pcl726.c
++++ b/drivers/comedi/drivers/pcl726.c
+@@ -328,7 +328,8 @@ static int pcl726_attach(struct comedi_d
+ 	 * Hook up the external trigger source interrupt only if the
+ 	 * user config option is valid and the board supports interrupts.
+ 	 */
+-	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (board->irq_mask & (1U << it->options[1]))) {
+ 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
