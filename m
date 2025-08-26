@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584A6B36105
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08142B36B30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CBD81BA7615
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68C1B9882A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7BC8635D;
-	Tue, 26 Aug 2025 13:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17A235CEBD;
+	Tue, 26 Aug 2025 14:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSeKuAiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuIBRxde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF9E18DB2A;
-	Tue, 26 Aug 2025 13:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D2535CEB4;
+	Tue, 26 Aug 2025 14:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213383; cv=none; b=T1s6X0GfxjuEf0Z/5mzc/DaNWYMrac0IIg0BD4fiVXcr8/4DcsFn/xQWA9TGDxBUKliZrzlzvgsfFFH0T++IZSgG72sAV7cuPSM3mFYsLbKguPo2Jo2uf3UAypyJm11BWbTDSYnoF/1K7e41hk+XmA3TwFBFhHmeWbU9o+h//Gg=
+	t=1756218848; cv=none; b=EQRy1pQ1jplhDsYIYMM97apxHcbRI6kxvbsB8tAfZUZiq/vty+wAfm/Y/+JilCl0co3cL5bWJow8cTU8iynObsv5JV0Se9kNIUdB0CgDFke8ag3z7w3AkgymOIeISMIJcDjXEsyVqBdt8SiK6X3tgK73139kEbpxYMUev9ig24Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213383; c=relaxed/simple;
-	bh=w6lHJWjJQQgJc0ll+sYh9WT8lZ4GP5grKmWM/Dle+6g=;
+	s=arc-20240116; t=1756218848; c=relaxed/simple;
+	bh=ZcVnp1h+CfNOAgmF1NODjQdWr5ysbP3R2IeIhx3+Wks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyBJPRVexoOkrBYGRO/ehVqVzlucWzaDLVu02XsQkeNwkHgNvaCqnw3lIoT/csNF7t8iPQ/xMh5GS8/Wt6M+aqjD6i+B6NwCRNq+hIO0q3mrnr3auTArRRFzgXLqHKsotLBpFGNIbJe8F/gDMev+KA/p2AZud3lkBMj5CcbydL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSeKuAiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D5AC4CEF1;
-	Tue, 26 Aug 2025 13:03:02 +0000 (UTC)
+	 MIME-Version; b=YVU/ljWwayC3wGK2t7brogBm7wkwB5gmoi3MN9Xo0sO83uY3vlFd0RNwP5sNtAz8EADqLGN4pnXvgmKz1TNeHS2MzVOIRzMyAOhf4RSEVoK2IEIRXXsb1x0oRDxkcc5dYtzvCe+LevlgQc1+/T9NorYxLSPe4xH7TcxJaQ2GecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuIBRxde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7700C19423;
+	Tue, 26 Aug 2025 14:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213383;
-	bh=w6lHJWjJQQgJc0ll+sYh9WT8lZ4GP5grKmWM/Dle+6g=;
+	s=korg; t=1756218848;
+	bh=ZcVnp1h+CfNOAgmF1NODjQdWr5ysbP3R2IeIhx3+Wks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSeKuAiLjsj3Dc5s22WXISaXGiKth12Av7Szv90XpXHn5rKPo8t7Ex3Wk0g75zN/4
-	 fKz0sEF77yBmTLKYFYqiXDsgVyzVqUTXXvwMgVATY6JBO/wSKBxU8VLYUmf2ff4nVr
-	 7xHkp9xwIaZ4iaO/NZeYDTzlFys7NFIuw0TvU4Ko=
+	b=QuIBRxdeNTI8r/9Dpzt42TL/+Q7mIe2tQDjmG/hqrHe3mKFrhvovb+/CH05pfIQ7Z
+	 P4twDYrsX9HlbM5FcpxUYNLg8GPYBNegxG7cQsnd1X9a5asVCD7BlyBqMStaFre1yt
+	 VoCi2Dx179YOw3w2tDRg8uMZY2h4q0MC7KLXJP9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 326/587] HID: magicmouse: avoid setting up battery timer when not needed
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 5.4 149/403] perf/core: Exit early on perf_mmap() fail
 Date: Tue, 26 Aug 2025 13:07:55 +0200
-Message-ID: <20250826111001.208823155@linuxfoundation.org>
+Message-ID: <20250826110910.980812700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 9bdc30e35cbc1aa78ccf01040354209f1e11ca22 upstream.
+commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
 
-Currently, the battery timer is set up for all devices using
-hid-magicmouse, irrespective of whether they actually need it or not.
+When perf_mmap() fails to allocate a buffer, it still invokes the
+event_mapped() callback of the related event. On X86 this might increase
+the perf_rdpmc_allowed reference counter. But nothing undoes this as
+perf_mmap_close() is never called in this case, which causes another
+reference count leak.
 
-The current implementation requires the battery timer for Magic Mouse 2
-and Magic Trackpad 2 when connected via USB only. Add checks to ensure
-that the battery timer is only set up when they are connected via USB.
+Return early on failure to prevent that.
 
-Fixes: 0b91b4e4dae6 ("HID: magicmouse: Report battery level over USB")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
+ kernel/events/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
----
- drivers/hid/hid-magicmouse.c |   58 ++++++++++++++++++++++++++++---------------
- 1 file changed, 38 insertions(+), 20 deletions(-)
-
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -772,16 +772,30 @@ static void magicmouse_enable_mt_work(st
- 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
- }
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6003,6 +6003,9 @@ unlock:
+ aux_unlock:
+ 	mutex_unlock(&event->mmap_mutex);
  
-+static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICMOUSE2;
-+}
++	if (ret)
++		return ret;
 +
-+static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	       product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC;
-+}
-+
- static int magicmouse_fetch_battery(struct hid_device *hdev)
- {
- #ifdef CONFIG_HID_BATTERY_STRENGTH
- 	struct hid_report_enum *report_enum;
- 	struct hid_report *report;
- 
--	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
--	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
-+	if (!hdev->battery ||
-+	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
-+	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
- 		return -1;
- 
- 	report_enum = &hdev->report_enum[hdev->battery_report_type];
-@@ -843,16 +857,17 @@ static int magicmouse_probe(struct hid_d
- 		return ret;
- 	}
- 
--	timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
--	mod_timer(&msc->battery_timer,
--		  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
--	magicmouse_fetch_battery(hdev);
--
--	if (id->vendor == USB_VENDOR_ID_APPLE &&
--	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
--	      hdev->type != HID_TYPE_USBMOUSE)))
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product)) {
-+		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
-+		mod_timer(&msc->battery_timer,
-+			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
-+		magicmouse_fetch_battery(hdev);
-+	}
-+
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    (is_usb_magictrackpad2(id->vendor, id->product) &&
-+	     hdev->type != HID_TYPE_USBMOUSE))
- 		return 0;
- 
- 	if (!msc->input) {
-@@ -908,7 +923,10 @@ static int magicmouse_probe(struct hid_d
- 
- 	return 0;
- err_stop_hw:
--	del_timer_sync(&msc->battery_timer);
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product))
-+		del_timer_sync(&msc->battery_timer);
-+
- 	hid_hw_stop(hdev);
- 	return ret;
- }
-@@ -919,7 +937,9 @@ static void magicmouse_remove(struct hid
- 
- 	if (msc) {
- 		cancel_delayed_work_sync(&msc->work);
--		del_timer_sync(&msc->battery_timer);
-+		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
-+			del_timer_sync(&msc->battery_timer);
- 	}
- 
- 	hid_hw_stop(hdev);
-@@ -936,10 +956,8 @@ static __u8 *magicmouse_report_fixup(str
- 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
- 	 *   0x09, 0x02,       // Usage (Mouse)                       2
- 	 */
--	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
--	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
-+	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
- 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
+ 	/*
+ 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+ 	 * vma.
 
 
 
