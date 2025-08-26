@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E85B36076
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741C0B36347
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D6F4464693
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D0441BC554B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1C1E5B62;
-	Tue, 26 Aug 2025 12:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE882FD1D5;
+	Tue, 26 Aug 2025 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWWKEOOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqNEeVW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C810E1C860B;
-	Tue, 26 Aug 2025 12:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF431B87E8;
+	Tue, 26 Aug 2025 13:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213100; cv=none; b=YhunbsQYIR5FB+TEmUe+QNPbJkr8kUPYJIjGA7S6WozPqF7HXutu/s5DtNXMjJvwiDzvnJwByLWGGrwv6+8VnRwXHx6LhmutPq8wji7jtvf8ygy54nFSygfbSe/PYZnXiusdy0Ax3eYQypRq0iI+DK363qv1UHSXr4XdFUDgVpA=
+	t=1756214466; cv=none; b=ihNlz+oU4KIozHbCvyOXC0iB/lJjxJJoC9YqzQfWYHgUkcjdJOPlT0P+Q9iRhQX4yWIhH7m3/XrcR2aKoHq8pUu+V47AsDFf8ZoCPZzScpB/1nYHl34mT8u/nOo6otdtT4SUZ9b5bZP+dYSWJAfplrZCwaOiPtV/PXDwV0HXBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213100; c=relaxed/simple;
-	bh=4UXw2U71UI+FonbDFqh+1N8FTq9+j3TPFARwWz4ynDQ=;
+	s=arc-20240116; t=1756214466; c=relaxed/simple;
+	bh=rFb3FH7On7JnbNWuS1YlUgwotbGDRU0PslsD/lnRfGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cv4sBg5JyRJe0crSjkcjypNQqlJ9UVcLB2i3wsYbF0ACAQhtoTApeZ0l+SE5TIqbCAO50DMX4cJaxKkcxr1bekoWJ7i1Ccnud/NEF7OuNPf73cnAeS6BGLktZgVaO6zRImVw6Wt9A0BRAbb94Z/ndJJMi+eXlvzOHE3Il8cjbo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWWKEOOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ED9C4CEF1;
-	Tue, 26 Aug 2025 12:58:20 +0000 (UTC)
+	 MIME-Version; b=aONXcKk94M9KJwKw2UjEqbahFtIq6TixGyl2V5YZECJoEgGMBZE8in1iBhyQNrACutevkJ1H9dgfNcYwIftM7ekfIg1RWCCm2a0CPhoiNUJNqGDQAu6AmhuDevVDxzXx6+G9DXiydQEN8QSckHaPuD2zoum2WT0KYoNNxbkmgdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqNEeVW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53876C4CEF1;
+	Tue, 26 Aug 2025 13:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213100;
-	bh=4UXw2U71UI+FonbDFqh+1N8FTq9+j3TPFARwWz4ynDQ=;
+	s=korg; t=1756214466;
+	bh=rFb3FH7On7JnbNWuS1YlUgwotbGDRU0PslsD/lnRfGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWWKEOObtnk+h2Z/DneSSITeSMpgeoNaVtqsTuZyY7e33zTGz2p+ojoWkwC5/DpL4
-	 S+lYvSdWsncOb52ZVuqkX5Ee6ntUI9ODeK6KBQ06TpiVQJP5XqoJZr9jBxW4kI3cBn
-	 vQfM9d5mDmM9VK/HWAAfcH7/W6O0ABhtLaOk9NoM=
+	b=JqNEeVW/TXQUAcibCp2p3SYMyiqROhWEvZT+QB4UcDXl6xq0s6bQ5J0iQ40TyQxeb
+	 tdrSQNHGrIm+3lPzKoAaYykvLWIQj0AZmO+0S54CW2uyX2Hh1R14+rWwfYF16X127a
+	 bkdzmX/VLqNQBUpCY+4JgluPZquogsNYSO48cm9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/587] cifs: Fix calling CIFSFindFirst() for root path without msearch
-Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110958.534594839@linuxfoundation.org>
+Subject: [PATCH 6.1 117/482] s390/time: Use monotonic clock in get_cycles()
+Date: Tue, 26 Aug 2025 13:06:10 +0200
+Message-ID: <20250826110933.715293152@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-To query root path (without msearch wildcard) it is needed to
-send pattern '\' instead of '' (empty string).
+Otherwise the code might not work correctly when the clock
+is changed.
 
-This allows to use CIFSFindFirst() to query information about root path
-which is being used in followup changes.
-
-This change fixes the stat() syscall called on the root path on the mount.
-It is because stat() syscall uses the cifs_query_path_info() function and
-it can fallback to the CIFSFindFirst() usage with msearch=false.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 81d425f571e2..91f4e50af1e9 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -3984,6 +3984,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = 0;
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			pSMB->FileName[2] = 0;
-+			pSMB->FileName[3] = 0;
-+			name_len = 4;
- 		}
- 	} else {
- 		name_len = copy_path_name(pSMB->FileName, searchName);
-@@ -3995,6 +4001,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = '*';
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			name_len = 2;
- 		}
- 	}
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index ce878e85b6e4..d0255aa5b36e 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -192,13 +192,6 @@ static inline unsigned long get_tod_clock_fast(void)
+ 	asm volatile("stckf %0" : "=Q" (clk) : : "cc");
+ 	return clk;
+ }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
  
+@@ -221,6 +214,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
+ 	return tod;
+ }
+ 
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
++
+ /**
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
 -- 
 2.39.5
 
