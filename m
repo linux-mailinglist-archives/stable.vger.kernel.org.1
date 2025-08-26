@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E638B35CD2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D8CB36C04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA51C36837E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB5CC2A80C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6020B338F2B;
-	Tue, 26 Aug 2025 11:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF0235CEA0;
+	Tue, 26 Aug 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCUcNFPg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XeOn494"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1893C30F55C;
-	Tue, 26 Aug 2025 11:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF84481CD;
+	Tue, 26 Aug 2025 14:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207748; cv=none; b=ZiBx1K6SU1Tv5tDrWD8sETZf9JMaJtD+wpuYTsNTBuegbonCGIFJbmC4uSm7VnFvBe9rUmjfDEfnH1ZKY1S33jn9U13Uqn27ctFgZvk6WEelmNsZ0Yqob+G1yPEJJEpOJ+DTkiISzxkJzQ5Qmwr4ER4tyN+nethV7zbPxwsb4Os=
+	t=1756219197; cv=none; b=WDQ1VfwHY0t9Ha4wPNrFEi29x8w0yWaLjkE9vH8X10cBJhEwF0emMiEFQkjMpmF6XHKAZd6aIjFpVldZgcfpTKYh/iRnHsQ/qOtZW4/O5UeKOOhNr1bawRZGKnP/O2VPp91VtQFExnn721JYHtg1uvKZ8YjcDHKFu5NEPsxkxI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207748; c=relaxed/simple;
-	bh=3Y4tSHO90pFpJ04qAMElXA++ObEcTvhyfGblepnp30c=;
+	s=arc-20240116; t=1756219197; c=relaxed/simple;
+	bh=Y1G2q7sW49XfomyCLMrGAQlqd2mX7G2XGmXDES03i0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRndIK+knrrnI8m+woPolEn5gZ349fVAjuYEvHVokkx2sPcLzcsxbIvVVBpCYZlNe2spjLnygP2YwUnNGBs+sv3AgZDPJwJHX389qzn8fNTErbQCE8DPLSGUF0S8EX8T0C0k+pEFFqNEokNH3hVy027sNUVQJnCxQESz8kBACD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCUcNFPg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C101C4CEF1;
-	Tue, 26 Aug 2025 11:29:07 +0000 (UTC)
+	 MIME-Version; b=oio6A1VT/731q7arhNLTcuFZdBqcFFPBIuTGAuOcXIHPm7FadLw8kxh9F/J0PgehjvW4QFWNmPB2ixtV0ppENxd8gYNYYYDddigSkAWBl33jxJOyR+u5HOJ6/dkzVoGd2PdPq5z9U+zJZ1zbp3KzgI8872fNcr9y+Twr+7693Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XeOn494; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B578DC4CEF1;
+	Tue, 26 Aug 2025 14:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207748;
-	bh=3Y4tSHO90pFpJ04qAMElXA++ObEcTvhyfGblepnp30c=;
+	s=korg; t=1756219196;
+	bh=Y1G2q7sW49XfomyCLMrGAQlqd2mX7G2XGmXDES03i0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCUcNFPg3htRfnaNAbkRC3OvQkHuJUVuy6uaWGuQSXjzKjeL+M/nk8ae+Z15ad8yQ
-	 y7Cq3ECH9VBYNDLDVpr8Nxx65SpPRm5eO0ZhuH/gfGTlinVAgFwYzTb5TUNd6kCab9
-	 nRsv15UDN3DXp8Pf/uPnBir5rB12sMB/j9Zen3uA=
+	b=0XeOn4945SoUEgP/W5BbhRnYlra8Wnp6tjVOqlMk2NMinDTpKznu2sJ7v+EWKcDsg
+	 AR1/ToxfE7MePsXvsF2Uc85Mqqx9e7O95pGci2lkrnVtCIpbWS9+tw+/d3G4JrULd5
+	 XhbVXzKBgUXBhn0MwuAwWrUn08Py9IpPMtxfm5HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 301/457] iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 259/403] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
 Date: Tue, 26 Aug 2025 13:09:45 +0200
-Message-ID: <20250826110944.811497046@linuxfoundation.org>
+Message-ID: <20250826110913.974007422@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 43c0f6456f801181a80b73d95def0e0fd134e1cc upstream.
+[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
 
-`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
-Check its return value using `IS_ERR()` and propagate the error if
-necessary.
+sas_user_scan() did not fully process wildcard channel scans
+(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
+present. Only channel 0 would be scanned via user_scan(), while the
+remaining channels were skipped, potentially missing devices.
 
-Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to
+shost->max_channel) via scsi_scan_host_selected().  This ensures complete
+wildcard scanning without affecting transport-specific scanning behavior.
+
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_scan.c          |  2 +-
+ drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -3216,11 +3216,12 @@ int bmp280_common_probe(struct device *d
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index d236322ced30..175cc535fc96 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1686,7 +1686,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
  
- 	/* Bring chip out of reset if there is an assigned GPIO line */
- 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpiod))
-+		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
+ 	return 0;
+ }
+-
++EXPORT_SYMBOL(scsi_scan_host_selected);
+ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
+ {
+ 	struct scsi_device *sdev;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 182fd25c7c43..0da3f7f1d03e 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -41,6 +41,8 @@
+ #include <scsi/scsi_transport_sas.h>
+ 
+ #include "scsi_sas_internal.h"
++#include "scsi_priv.h"
 +
- 	/* Deassert the signal */
--	if (gpiod) {
--		dev_info(dev, "release reset\n");
--		gpiod_set_value(gpiod, 0);
--	}
-+	dev_info(dev, "release reset\n");
-+	gpiod_set_value(gpiod, 0);
+ struct sas_host_attrs {
+ 	struct list_head rphy_list;
+ 	struct mutex lock;
+@@ -1648,32 +1650,66 @@ int scsi_is_sas_rphy(const struct device *dev)
+ }
+ EXPORT_SYMBOL(scsi_is_sas_rphy);
  
- 	data->regmap = regmap;
+-
+-/*
+- * SCSI scan helper
+- */
+-
+-static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+-		uint id, u64 lun)
++static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
+ {
+ 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
+ 	struct sas_rphy *rphy;
  
+-	mutex_lock(&sas_host->lock);
+ 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
+ 		if (rphy->identify.device_type != SAS_END_DEVICE ||
+ 		    rphy->scsi_target_id == -1)
+ 			continue;
+ 
+-		if ((channel == SCAN_WILD_CARD || channel == 0) &&
+-		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
++		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
+ 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
+ 					 lun, SCSI_SCAN_MANUAL);
+ 		}
+ 	}
+-	mutex_unlock(&sas_host->lock);
++}
+ 
+-	return 0;
++/*
++ * SCSI scan helper
++ */
++
++static int sas_user_scan(struct Scsi_Host *shost, uint channel,
++		uint id, u64 lun)
++{
++	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
++	int res = 0;
++	int i;
++
++	switch (channel) {
++	case 0:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++		break;
++
++	case SCAN_WILD_CARD:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++
++		for (i = 1; i <= shost->max_channel; i++) {
++			res = scsi_scan_host_selected(shost, i, id, lun,
++						      SCSI_SCAN_MANUAL);
++			if (res)
++				goto exit_scan;
++		}
++		break;
++
++	default:
++		if (channel < shost->max_channel) {
++			res = scsi_scan_host_selected(shost, channel, id, lun,
++						      SCSI_SCAN_MANUAL);
++		} else {
++			res = -EINVAL;
++		}
++		break;
++	}
++
++exit_scan:
++	return res;
+ }
+ 
+ 
+-- 
+2.39.5
+
 
 
 
