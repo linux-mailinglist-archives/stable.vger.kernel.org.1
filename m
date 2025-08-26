@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2427B36087
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE75B36B11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9821BA6B2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79B8A1C45347
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112311E32D7;
-	Tue, 26 Aug 2025 12:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F38353373;
+	Tue, 26 Aug 2025 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqyTICeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2KUsB5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B736F1A00F0;
-	Tue, 26 Aug 2025 12:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221BA2FC89C;
+	Tue, 26 Aug 2025 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213092; cv=none; b=aR7XedY6FK3d601bqntK2js1GXY43/svVhyv0MtfNe6xW2010dQJTA31kx4o4Gi7j9Mqzrq9Rnw/4H84BBvW7U+P/JB3H8jbKsyYX5Dizt8KG6ofAC+0uZ7O1MfxZ3dk+y7mY0/x/KExNHs2ju1Ukc7IVNXJx2i36FQnivjBsiI=
+	t=1756218544; cv=none; b=h4eAlTYPcMaMBV1xgkw1mA99xlN5q7knlqiY8hbrjWr1zzPdIvlluH491gboT/AkA9qoEnTa31f70qcMtm3XTyiK+voX7Fqy1zwWVaTQkXcFcN4VTD2yLnj9OaMoM6VXsqnKzNcckenf5ISM6uuWm/vue1H5sqCQZz1T9Lo3OZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213092; c=relaxed/simple;
-	bh=ZTwYLTuIitjcUzGMRoThauQJC2skZwhrmq0DIxd8EtU=;
+	s=arc-20240116; t=1756218544; c=relaxed/simple;
+	bh=3CDN/iTDGdSb7mnlWXzyoa6/xzmhg7zjEXr++NvRqQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mH2+bx12f9J6m5zUHU+bfPbBZ5v7uJsdlGjgPIJ0ID+eVo1XuUZOY7NRcv65PZUiijAvkl6EYJPjtPvFD0yP1YGNLBxE6EXPKoPqWJlofaWf6Z5jdLI3+zkOR/RduPCXdoYrUUor9PwxWVxaTvbJaVqAZbqZJF5n4HYlyAJgzJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqyTICeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B74FC4CEF4;
-	Tue, 26 Aug 2025 12:58:12 +0000 (UTC)
+	 MIME-Version; b=j3skOVfxe5fBqO6qoXt7I1lpHSBuOYjKxVHqA5BVr7mniowxyFsV/Q5kiIoJuTM9ivOQ0XeuzkfKVkW1mbFo0tejtLHI7nFdE3xFMjjVT4Fi356QpwK8WEVYawVmzkyKWrDYCpZT4Ao7+0hPQ3OBketH9xv3g52/kjs9xKGjN+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2KUsB5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDA5C4CEF1;
+	Tue, 26 Aug 2025 14:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213092;
-	bh=ZTwYLTuIitjcUzGMRoThauQJC2skZwhrmq0DIxd8EtU=;
+	s=korg; t=1756218544;
+	bh=3CDN/iTDGdSb7mnlWXzyoa6/xzmhg7zjEXr++NvRqQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqyTICeuwr7oOaBDameDKji4nqUHP5PIo1uCIBLdH0x0z3Pr1P24ybWBn+vn6g5vw
-	 nOILLGjiaVqMxWMoDaA0wXZuo/5ya9gTn9u97cM+9LxPDPWbxdCMTqHflfhwxZ34PK
-	 8mwwTXq5sbKUDY8MpPTU6e48QD5BzFrygT/QDMFc=
+	b=J2KUsB5eXCDcSqXIaItXvp0JjWKq1vaJkQ48CeLd/rh7zPMg2SjpBMyaDVBDRpJkx
+	 MW2j8WBc6DSGZpLLP6vhXJ3D94z01l111HwZLke9oWeKjnAhL1lmQzaTFzKMAQbTQu
+	 cKdRiO6iu6hziTSUlfIEWROz1PIFHbpNPMukFSm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
+	Drew Hamilton <drew.hamilton@zetier.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 217/587] drm/amd/display: Only finalize atomic_obj if it was initialized
+Subject: [PATCH 5.4 040/403] usb: musb: fix gadget state on disconnect
 Date: Tue, 26 Aug 2025 13:06:06 +0200
-Message-ID: <20250826110958.456237179@linuxfoundation.org>
+Message-ID: <20250826110906.923920683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Drew Hamilton <drew.hamilton@zetier.com>
 
-[ Upstream commit b174084b3fe15ad1acc69530e673c1535d2e4f85 ]
+commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
 
-[Why]
-If amdgpu_dm failed to initalize before amdgpu_dm_initialize_drm_device()
-completed then freeing atomic_obj will lead to list corruption.
+When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
+echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
+/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
 
-[How]
-Check if atomic_obj state is initialized before trying to free.
+Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
+to fix both cases.
+
+Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
+Cc: stable@vger.kernel.org
+Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
+Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
+[ replaced musb_set_state() call with direct otg state assignment ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/musb/musb_gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d4edddaa23dd..10c607d84b43 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4620,7 +4620,8 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+--- a/drivers/usb/musb/musb_gadget.c
++++ b/drivers/usb/musb/musb_gadget.c
+@@ -1910,6 +1910,7 @@ static int musb_gadget_stop(struct usb_g
+ 	 * gadget driver here and have everything work;
+ 	 * that currently misbehaves.
+ 	 */
++	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
  
- static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm)
- {
--	drm_atomic_private_obj_fini(&dm->atomic_obj);
-+	if (dm->atomic_obj.state)
-+		drm_atomic_private_obj_fini(&dm->atomic_obj);
- }
- 
- /******************************************************************************
--- 
-2.39.5
-
+ 	/* Force check of devctl register for PM runtime */
+ 	schedule_delayed_work(&musb->irq_work, 0);
+@@ -2018,6 +2019,7 @@ void musb_g_disconnect(struct musb *musb
+ 	case OTG_STATE_B_PERIPHERAL:
+ 	case OTG_STATE_B_IDLE:
+ 		musb->xceiv->otg->state = OTG_STATE_B_IDLE;
++		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
+ 		break;
+ 	case OTG_STATE_B_SRP_INIT:
+ 		break;
 
 
 
