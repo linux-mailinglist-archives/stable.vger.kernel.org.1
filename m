@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E93B36433
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9079AB35D64
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F114C2A1A06
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6805A1BA7B56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9C8635D;
-	Tue, 26 Aug 2025 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1B22BE7DD;
+	Tue, 26 Aug 2025 11:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWJnrVH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4nKBqC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C5823A984;
-	Tue, 26 Aug 2025 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DF01FECAB;
+	Tue, 26 Aug 2025 11:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214588; cv=none; b=kcPJ7s7nni0Rmx+4AVS/RgVs8Qo9mj/zTohCImGqaRCK6swuI2k/cT9qEuJN2rMHTBwuwNBGNw4Oq2Z0qZBmDUSI6sHUhgh3TL6Td/LM6ezmvHgwubr3/0/GmloAnPKya02WvrufakTHX+lc22VLBr7ErB/a426BXn/3dWe2xsQ=
+	t=1756208238; cv=none; b=MXLmcZZPg6wczifq2qXSsxG1FWbuuFrnguu+9tg8mtltVIxOAaiAoua6DPzh3OOXhF4VKjywBQZ23q5pSeTOxBrs/BQ3gEkZzUT8BVVxlYbsl3yB5EiISTpASpbJbHTp/1X+4y6LbnpeMz3a6ynyLRtcaBrgWxDQFdmvN+fuKyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214588; c=relaxed/simple;
-	bh=ocVf39T4WNVtNjzeylVM7yEr7gaXgAo1TYhZbaOWIkw=;
+	s=arc-20240116; t=1756208238; c=relaxed/simple;
+	bh=Ck+HW+HP0ucWGm9GrrJhQWgmGaH+WHEmbv8W4vczGXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnSv5ufQ5wRmLYmqj++q/8Ka8f/phJHqMp1YEBAAuGS/L/H33QuFVRhkmzlB7DrLM7rxlmAug8kWuBmvIjnDZAvOSnlNISAHIu7c3jf0QtH/fRFnMdclPDbJwkXStQe1cAs0SAWlqtiOuYXSbr88uV/XsnEM/vxjyfFzxvZo124=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWJnrVH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D387CC4CEF1;
-	Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
+	 MIME-Version; b=W6F9gefX1zyCFfXIxm62FEY8NEmL4645v3rDU8l1bFawAyf63usoz4FeZiOPRfn38CGONEYjowgP5/e+V5/P7n94K7tzOS4r6T/NRLgpTV3pcn0pjoDV2y+bMvgo/unLhOq1P8ZJYc7J5yvslQMIGRNi9GB5VfOuVV5LdQ/TfQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4nKBqC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B14C4CEF1;
+	Tue, 26 Aug 2025 11:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214588;
-	bh=ocVf39T4WNVtNjzeylVM7yEr7gaXgAo1TYhZbaOWIkw=;
+	s=korg; t=1756208238;
+	bh=Ck+HW+HP0ucWGm9GrrJhQWgmGaH+WHEmbv8W4vczGXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWJnrVH2lTumtRPIy8/ir3UouJaP7yPrDNwcA1hh7oZpHh8xvj9uSqV7m3ONRu6nW
-	 KXdmjZIIwhRGH662ZXoUHRZDAPvmBnZNq3dpogAcCTD/+0Gqiz7DI2UgMT8CdxS0gs
-	 yo5WNyrLdD+ZbxM8tCwtYRrsSWAlmOkcz6G8WBqo=
+	b=r4nKBqC7gzj1kHp08YXvOdTfaFHl2270AbBj8f44v1XhfMwqmL4rplvppJeEQj89M
+	 9cmv0418UruAB9En5dTPgzFrxTx+wPj6PaGohLchnLsrv7G8e/0sSvub714neNt8BK
+	 4ybM9H3X6wf8rdudfmXThE2YbW78LKJWeRXMOadc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/482] RDMA/core: reduce stack using in nldev_stat_get_doit()
+	stable@kernel.org,
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 033/322] ext4: use kmalloc_array() for array space allocation
 Date: Tue, 26 Aug 2025 13:07:28 +0200
-Message-ID: <20250826110935.616796749@linuxfoundation.org>
+Message-ID: <20250826110916.158720106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+commit 76dba1fe277f6befd6ef650e1946f626c547387a upstream.
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
+allocation and overflow prevention.
 
-The result is a function with an overly large stack frame and a warning:
-
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
-
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Link: https://patch.msgid.link/20250811125816.570142-1-liaoyuanhong@vivo.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ fs/ext4/orphan.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 1adf20198afd..7e08ce963125 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1400,10 +1400,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
- 
- };
- 
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
- {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -2129,10 +2130,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
- 
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
- {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -2222,8 +2223,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
- 
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
- 
- {
- 	static enum rdma_nl_counter_mode mode;
--- 
-2.39.5
-
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -590,8 +590,9 @@ int ext4_init_orphan_info(struct super_b
+ 	}
+ 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
+ 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
+-	oi->of_binfo = kmalloc(oi->of_blocks*sizeof(struct ext4_orphan_block),
+-			       GFP_KERNEL);
++	oi->of_binfo = kmalloc_array(oi->of_blocks,
++				     sizeof(struct ext4_orphan_block),
++				     GFP_KERNEL);
+ 	if (!oi->of_binfo) {
+ 		ret = -ENOMEM;
+ 		goto out_put;
 
 
 
