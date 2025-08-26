@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B033B35FD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6363DB36872
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83A287B5590
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEF846663E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55E520DD42;
-	Tue, 26 Aug 2025 12:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7010A31985C;
+	Tue, 26 Aug 2025 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utpTP2RW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN/WHlXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676B338DEC;
-	Tue, 26 Aug 2025 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C67221D3F2;
+	Tue, 26 Aug 2025 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212817; cv=none; b=J5Hp6WGggAJo9PNGoFH+vMTq4NeD8lah+1Dq8rObitbhjpH6oJKmMhv7LQMLkTnvj/O15ckKYw7z5riU16LAG/nS8fRrb79/eUiZZ5DGCMCjHr/JSK1cdwhgo9g9i6oLgzospgnAgBH1xTvNliTPs1VrRrYvI/xcP3t9ozE+28c=
+	t=1756217200; cv=none; b=CUZu1bNw/9ZATiY0GpHKbGBs/JihrfbKsRaXdHc54lDAD1lNFWHILUd7DLOs2Iuo/jAeUZbwO6qgZz26sCOzm0QtvfWbJi9EvPbwsyosdoIMwEfQVEzlAQVdIxQIoniUJUBSOaLsEbHxOTEcuVfuc+MuiqHnIRnLDE2WaYw9YJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212817; c=relaxed/simple;
-	bh=qnYYM5F80T6awB04uZnMP8+npbqv4RUL38Wobzl1xkg=;
+	s=arc-20240116; t=1756217200; c=relaxed/simple;
+	bh=D82G4aV9diF+wH428zQNlfpXg0MqS1aF5yFDZlH+8BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBpxDehKG7IoFJWLrmjJo7thiq5Ed7pAr5cP3dKRHz3Gd1KxA6PfSU8JgI91/k/ak8xewyMY2kwOu5ydP6tCP6j6QKaSpmWr1JtYpZ9f22lrue6HvP9jlj2fuHOU93BUK1iXeQa5C2mcvlsWJsaalpjsqALKhchtywma49CKdVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utpTP2RW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740BAC4CEF1;
-	Tue, 26 Aug 2025 12:53:36 +0000 (UTC)
+	 MIME-Version; b=JazisVT/9ljmrqp7DLzodjCy3/r6hgF6CkTk8vztDlIBn6+CCbim73vKldsXrdJFNZkO59eM3eeFlsCjSGWBGjrWJk7gLTV96UlzaapeMEdAg/8QaEZIvWRCnyZzugB58I4aklaNyovECw+Ttf3F/4nCsxR6SRx4VPSFnTEJr60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN/WHlXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C96C4CEF1;
+	Tue, 26 Aug 2025 14:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212816;
-	bh=qnYYM5F80T6awB04uZnMP8+npbqv4RUL38Wobzl1xkg=;
+	s=korg; t=1756217197;
+	bh=D82G4aV9diF+wH428zQNlfpXg0MqS1aF5yFDZlH+8BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utpTP2RW6kvJkpvOwowVbHE/FRGr8jJS5vBuMbk4qsQClewXWS5JUq1iDGwPX7Xsl
-	 SjiJ39nE1qaGD5kcT0TcEtRarsHzfsWPpgFcshp+xgiO+H0IcPuDSq1ZaX0LGz8iFs
-	 R1cllbqoBPT/+TgNNYHMOGvQRlL6Ucip6/KLnLCE=
+	b=vN/WHlXejPFMFiuConSYK1E/q5hUSgBqOn6OkTUzkMFazd+Lg8ci7nFC+qk2pX8sJ
+	 I9uwGm0r4I/NkjYhFpbLOsW9POnzPcIJH9q6xon9A1GtOVcFMCpdrEYyrH22xWQ3ay
+	 53FiPgU+a7F2b6c2fywiEKk0JRP7x1H/DF0cDUog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/587] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 052/523] mm/vmalloc: leave lazy MMU mode on PTE mapping error
 Date: Tue, 26 Aug 2025 13:04:22 +0200
-Message-ID: <20250826110955.816956225@linuxfoundation.org>
+Message-ID: <20250826110925.879663643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
+commit fea18c686320a53fce7ad62a87a3e1d10ad02f31 upstream.
 
-Many mobile phones feature multi-card tray designs, where the same
-tray is used for both SD and SIM cards. If the SD card is placed
-at the outermost location in the tray, the SIM card may come in
-contact with SD card power-supply while removing the tray, possibly
-resulting in SIM damage.
+vmap_pages_pte_range() enters the lazy MMU mode, but fails to leave it in
+case an error is encountered.
 
-To prevent that, make sure the SD card is really inserted by reading
-the Card Detect pin state. If it's not, turn off the power in
-sdhci_msm_check_power_status() and also set the BUS_FAIL power state
-on the controller as part of pwr_irq handling for BUS_ON request.
-
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250623075721.2817094-1-agordeev@linux.ibm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202506132017.T1l1l6ME-lkp@intel.com/
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ mm/vmalloc.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 82808cc373f6..c2144a3efb30 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -1564,6 +1564,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -193,6 +193,7 @@ static int vmap_pte_range(pmd_t *pmd, un
+ 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+ 		pgtbl_mod_mask *mask)
  {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	struct mmc_host *mmc = host->mmc;
- 	bool done = false;
- 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
- 	const struct sdhci_msm_offset *msm_offset =
-@@ -1621,6 +1622,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
- 				 "%s: pwr_irq for req: (%d) timed out\n",
- 				 mmc_hostname(host->mmc), req_type);
- 	}
-+
-+	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+		host->pwr = 0;
-+	}
-+
- 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
- 			__func__, req_type);
- }
-@@ -1679,6 +1686,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
- 		udelay(10);
- 	}
++	int err = 0;
+ 	pte_t *pte;
  
-+	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
-+	    !mmc->ops->get_cd(mmc)) {
-+		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
-+				msm_offset->core_pwrctl_ctl);
-+		return;
-+	}
+ 	/*
+@@ -206,15 +207,20 @@ static int vmap_pte_range(pmd_t *pmd, un
+ 	do {
+ 		struct page *page = pages[*nr];
+ 
+-		if (WARN_ON(!pte_none(*pte)))
+-			return -EBUSY;
+-		if (WARN_ON(!page))
+-			return -ENOMEM;
++		if (WARN_ON(!pte_none(*pte))) {
++			err = -EBUSY;
++			break;
++		}
++		if (WARN_ON(!page)) {
++			err = -ENOMEM;
++			break;
++		}
+ 		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+ 		(*nr)++;
+ 	} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	*mask |= PGTBL_PTE_MODIFIED;
+-	return 0;
 +
- 	/* Handle BUS ON/OFF*/
- 	if (irq_status & CORE_PWRCTL_BUS_ON) {
- 		pwr_state = REQ_BUS_ON;
--- 
-2.39.5
-
++	return err;
+ }
+ 
+ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
 
 
 
