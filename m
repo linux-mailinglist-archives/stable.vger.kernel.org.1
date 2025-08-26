@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-172966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83523B35B1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BBEB3660D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36CC016F0F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D778E6ABF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32D9296BDF;
-	Tue, 26 Aug 2025 11:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589AC34AAFE;
+	Tue, 26 Aug 2025 13:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVUDvuP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8zUgNQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1B52264A3;
-	Tue, 26 Aug 2025 11:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1761A341AD4;
+	Tue, 26 Aug 2025 13:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207027; cv=none; b=j41xsz7sNHip52GoExNFDAVT4fgaXO8I1aORDiijtl/vV7tJVkG8sEF8qp6GwskyMMiHUk2dra4wKNEe9gSCoeljPbmQA8I1C5ktEDWzI4FUkUyKE9M4WoRqQG2912ZpO6RtqkNA4Djcp+kF2jACxJkDG8ihTp1nN3h5JEY6cJg=
+	t=1756215922; cv=none; b=UPwJUnJVp1Xq6DipnHEf8JbLICfYvIT+hCTeD0UCCWYxI9FRTMTO6C/BRBfDBNcJopTECnEpVtXpkW2M8EiJv6vznXeN8o1PcV46dgE9X+1LdeeKA6P0bN/CUVf0Xb2sjw2zIP+A01CfPiPN/x9K4oDyk7bGnGG6MDiE0oCHMkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207027; c=relaxed/simple;
-	bh=la/aBSxLSuMfMhQUsjRlNpAamnEc2itkcDnprhlnQQA=;
+	s=arc-20240116; t=1756215922; c=relaxed/simple;
+	bh=GaB9JMa0p2VWjaswGMORiNx7qUlTZXKmQW47FbaibP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdufqxN4qu1emg0F4nkF7S9yHihQEIMqQagsRzDu4nidFBNyXGa0xb9TZalRryzT8wjaMGc+kqcRwSURIFCZmi5jdb3LPKaCQLWcG3oEZEFIuvXl0xQkYd0+SG/M79urNFRvTfnA680Df4i/AL+8kok3lNhQWCCG06XwQg3kmJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVUDvuP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF89DC4CEF1;
-	Tue, 26 Aug 2025 11:17:06 +0000 (UTC)
+	 MIME-Version; b=hxMbauelFyDc47V3geCMopvMKUsO9MTN22ap/o2PQAZvi0yihZIsE3nU4DNW1E44xT7CfM/no/oSQFiuXTHXnkRtfNwioIztgwl8JwxlE7T0X8Qno5lzVYZZfa8kXToLzBaKI1tK8n5Vd5EcbrtuNHRfKst2kECEDz3yNZXyoRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8zUgNQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31A3C4CEF1;
+	Tue, 26 Aug 2025 13:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207027;
-	bh=la/aBSxLSuMfMhQUsjRlNpAamnEc2itkcDnprhlnQQA=;
+	s=korg; t=1756215922;
+	bh=GaB9JMa0p2VWjaswGMORiNx7qUlTZXKmQW47FbaibP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVUDvuP783wFw7Iox29F4/qQ76ViKUz9l2GoegjODlC4GN+FQPGwcpRVUuiCCKYXE
-	 ukjzW7LSdVOBMdqhj5OllAmcmmH4fUH8yoaHQlx2ijb//+jF0FbHZzU3dEz8kE+7pF
-	 Va4iDFokb1z8T1FxKgq96Ir4v0hnMcG/goIVKt8Q=
+	b=z8zUgNQRQo1qL1IxJ9Og+0kMAbhPRR3LtMYM6vZawhsdaEackbrvd1IE5FclKIRlO
+	 /88P4bnb5Nkv7gUUxwhExrpzZJrJjoFO8uBV6XlW/3sIuQJLOK8IbS9p1x1/uHI94J
+	 OlJiFwvMUbbG8Sa0P+LZo0qpJWyjLZ1cmNliQQWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 023/457] crypto: qat - lower priority for skcipher and aead algorithms
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 216/644] f2fs: fix to avoid out-of-boundary access in devs.path
 Date: Tue, 26 Aug 2025 13:05:07 +0200
-Message-ID: <20250826110937.904144108@linuxfoundation.org>
+Message-ID: <20250826110951.782704917@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 8024774190a5ef2af2c5846f60a50b23e0980a32 upstream.
+[ Upstream commit 5661998536af52848cc4d52a377e90368196edea ]
 
-Most kernel applications utilizing the crypto API operate synchronously
-and on small buffer sizes, therefore do not benefit from QAT acceleration.
+- touch /mnt/f2fs/012345678901234567890123456789012345678901234567890123
+- truncate -s $((1024*1024*1024)) \
+  /mnt/f2fs/012345678901234567890123456789012345678901234567890123
+- touch /mnt/f2fs/file
+- truncate -s $((1024*1024*1024)) /mnt/f2fs/file
+- mkfs.f2fs /mnt/f2fs/012345678901234567890123456789012345678901234567890123 \
+  -c /mnt/f2fs/file
+- mount /mnt/f2fs/012345678901234567890123456789012345678901234567890123 \
+  /mnt/f2fs/loop
 
-Reduce the priority of QAT implementations for both skcipher and aead
-algorithms, allowing more suitable alternatives to be selected by default.
+[16937.192225] F2FS-fs (loop0): Mount Device [ 0]: /mnt/f2fs/012345678901234567890123456789012345678901234567890123\xff\x01,      511,        0 -    3ffff
+[16937.192268] F2FS-fs (loop0): Failed to find devices
 
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
-Cc: stable@vger.kernel.org
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If device path length equals to MAX_PATH_LEN, sbi->devs.path[] may
+not end up w/ null character due to path array is fully filled, So
+accidently, fields locate after path[] may be treated as part of
+device path, result in parsing wrong device path.
+
+struct f2fs_dev_info {
+...
+	char path[MAX_PATH_LEN];
+...
+};
+
+Let's add one byte space for sbi->devs.path[] to store null
+character of device path string.
+
+Fixes: 3c62be17d4f5 ("f2fs: support multiple devices")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_algs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/f2fs/f2fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
-@@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha1),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha256),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha512),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
- static struct skcipher_alg qat_skciphers[] = { {
- 	.base.cra_name = "cbc(aes)",
- 	.base.cra_driver_name = "qat_aes_cbc",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "ctr(aes)",
- 	.base.cra_driver_name = "qat_aes_ctr",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = 1,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "xts(aes)",
- 	.base.cra_driver_name = "qat_aes_xts",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
- 			  CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 28db323dd400..5475d017ad1e 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1209,7 +1209,7 @@ struct f2fs_bio_info {
+ #define RDEV(i)				(raw_super->devs[i])
+ struct f2fs_dev_info {
+ 	struct block_device *bdev;
+-	char path[MAX_PATH_LEN];
++	char path[MAX_PATH_LEN + 1];
+ 	unsigned int total_segments;
+ 	block_t start_blk;
+ 	block_t end_blk;
+-- 
+2.39.5
+
 
 
 
