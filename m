@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2364B35CB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D40B36879
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1CB3189A0B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 449B78E5FC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8BB3376BD;
-	Tue, 26 Aug 2025 11:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E1313B2A4;
+	Tue, 26 Aug 2025 13:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy47P+oy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q75EQcq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961693375D9;
-	Tue, 26 Aug 2025 11:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026A30146A;
+	Tue, 26 Aug 2025 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207753; cv=none; b=qyRgO8mo5xmzWZUHxznRUfUkuAxJB85JWE3gPVrA/Q/w9PMV+ek2F8uGYCj9Os6zSoZatkOR2dA6kUncJ8dsEPvrIkVLNKVJg6RLpp02chxN3Mngsu9tUyAEPz7bk/p3DtsOQoKf8cmW4dGOdOjNqCy7ghAUbO8Gmr4409/qYjE=
+	t=1756216666; cv=none; b=J1j9fOvO1YMIQ4+U+i7IhGNkBHASfok85cMw+ik9pJYzMdCN76u/TTz08KSujWr4kukcm59wD98KK77i53NyvX5+2sMyb7aO2vX7/EUqDHp3yigK4fqetoA8VyjZN26wxon93KV9qV7qcciOZADo9J/cn/jyFCRFSldNK4g2GzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207753; c=relaxed/simple;
-	bh=8wkEq0amkOD9Bix6ko+SYiMVzNTx20ikrNPeU1JibGk=;
+	s=arc-20240116; t=1756216666; c=relaxed/simple;
+	bh=QPm1apT2R44XuOdlqLiu0JEpl7NzQD2tb6fuL2rCzCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VH9x1n3J1PXv6mlqN15xma8j+reX5cmu18M12hjpHWgxLi1pQHg+Cr//ufyAKjFdEhrtDQlxe96aAu0OrZySR4frzCMU4K0mNrpCQ95k31QS+4xWKuOS74mLBkWQww8+srwM5115Yg+wzlP4GYAR+pjLrbyHQi2aHtUl6Jzc/sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy47P+oy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAFBC4CEF1;
-	Tue, 26 Aug 2025 11:29:12 +0000 (UTC)
+	 MIME-Version; b=KmR73XcLbc1W5SSlWyqL8HI1UaBJLKKS6RpEkgVJt99GXdzMDtLz5QIW99ef+RmtUN/v4T0vgxW2ouez6gljmj7XH3xY/eRjZlHCEMTbfShDDQnypT+ywdoNikCVKDid+sHGX5KIPCB64Cx+VEcGatarhDse2r04It5+I91sUjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q75EQcq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEF7C4CEF1;
+	Tue, 26 Aug 2025 13:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207753;
-	bh=8wkEq0amkOD9Bix6ko+SYiMVzNTx20ikrNPeU1JibGk=;
+	s=korg; t=1756216666;
+	bh=QPm1apT2R44XuOdlqLiu0JEpl7NzQD2tb6fuL2rCzCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vy47P+oyXut8xvphuS75ZqqoMUiMfdSa/GNZHJb8Mblp8VrLAK6ltjvRnX8hjevlL
-	 4t3dR9l97bdvxtx/2ucOFeFs/2eu5Ds/jkYC3Om0yDDJISDCIjCP3qby8U4zKAUCel
-	 0zajMcBxaIP6kCOI7dFYIUOC95ZSh6Ep500ejnL8=
+	b=Q75EQcq4b/x2wSQXYEXrVD+GMsbkaa8+aEAlKMbdeqF3PuoWdIveon0YkRWf6tiPY
+	 tCvK7lWl0oHG+nsZrMvdd8Bp993Isfkc856SXyZbUrrj75xnBYgyVytSkYLOgYcL+x
+	 MfHQb0PY56CrXz518WF0O4/qcnoJ++dTZnixFDD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 303/457] iio: adc: bd79124: Add GPIOLIB dependency
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 5.15 496/644] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
 Date: Tue, 26 Aug 2025 13:09:47 +0200
-Message-ID: <20250826110944.860462481@linuxfoundation.org>
+Message-ID: <20250826110958.785724377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 8a6ededaad2d2dcaac8e545bffee1073dca9db95 upstream.
+commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
 
-The bd79124 has ADC inputs which can be muxed to be GPIOs. The driver
-supports this by registering a GPIO-chip for channels which aren't used
-as ADC.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-The Kconfig entry does not handle the dependency to GPIOLIB, which
-causes errors:
+Clamp the param if the user provides a value that will result in an invalid
+fps.
 
-ERROR: modpost: "devm_gpiochip_add_data_with_key" [drivers/iio/adc/rohm-bd79124.ko] undefined!
-ERROR: modpost: "gpiochip_get_data" [drivers/iio/adc/rohm-bd79124.ko] undefined!
-
-at linking phase if GPIOLIB is not configured to be used.
-
-Fix this by adding dependency to the GPIOLIB.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508131533.5sSkq80B-lkp@intel.com/
-Fixes: 3f57a3b9ab74 ("iio: adc: Support ROHM BD79124 ADC")
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/venc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1257,7 +1257,7 @@ config RN5T618_ADC
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -408,11 +408,10 @@ static int venc_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
  
- config ROHM_BD79124
- 	tristate "Rohm BD79124 ADC driver"
--	depends on I2C
-+	depends on I2C && GPIOLIB
- 	select REGMAP_I2C
- 	select IIO_ADC_HELPER
- 	help
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
 
