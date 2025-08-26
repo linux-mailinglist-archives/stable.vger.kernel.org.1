@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53DAB36354
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79826B35BBC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690122A7E3A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E554D202115
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720E328314A;
-	Tue, 26 Aug 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148A1306D35;
+	Tue, 26 Aug 2025 11:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm8SsejF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buBOYpjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5C01EF39E;
-	Tue, 26 Aug 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ED71A256B;
+	Tue, 26 Aug 2025 11:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214373; cv=none; b=UZyJB2Gd84fR0hDMvepoxrWhQwu6tD/0n5qx88QdMXYd4LN6AIo8BU77ai8drLdZ9e6S1+fsOMZfSxv8u7A3gRLCIP+OgKQ0rwcfTEvyKdKM4+CwK+jkVmA2nZ64qUDKgaENdpJsMfzY31e1v9Etpd/DMy/y6CwfrMIKyuutd98=
+	t=1756207249; cv=none; b=kt+v6nzkHG8X3vSGrfKkCpG7jRGPGg5xeFk1SHIltDtuGQQrQSo/F4ZDHYxDJVnX2ZQWP2T1lSZOnF9nva1KnJOF2G+2hNZOh7HeSK5SDnxwQM+273A2GoC04P3a1sIJZERKUUccujbuJX20svaLtksrzUbWWm1jNT4r7v2Y93g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214373; c=relaxed/simple;
-	bh=ZToNr4ufEQO4YuI2zW0G0Icwtj2qCxodKuII3K3wReY=;
+	s=arc-20240116; t=1756207249; c=relaxed/simple;
+	bh=twDPxmWhJ9tRqnnTlWHyFmJKjtJ1gYD+Up/aLdrXds4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qiq3nZKQY4TXoPBQVzbon3OmJtMzMosoigNQwuILqRwIqNgBeU+2TI/1vbTJxIChjyvfPHtd86oE6EnLG8aTMCJAk2CzGfLc9ql+B7/xJ3Rs6+edMUXPgxi23HySZMcRAgrnGXR675IMMzYAUbCe5yHR5YUFGcp5NA0UR6+nrho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm8SsejF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892FBC4CEF1;
-	Tue, 26 Aug 2025 13:19:32 +0000 (UTC)
+	 MIME-Version; b=qXlQ4shBZq70MFe5REswzkMYIAq86hrmmAk3b9YmK4YDRyconeMCprzH8eOpomaGm06SnqoH2vPmbIAQwO9mUF9Rz5UaurF7JJkcbVyCpCASi4kuEqV55jxWJ6dy4JKPqW7FqC8VmkBKihbdCqhZdiO9FQGG44YLcA+/IgrEM0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buBOYpjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574D6C4CEF1;
+	Tue, 26 Aug 2025 11:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214373;
-	bh=ZToNr4ufEQO4YuI2zW0G0Icwtj2qCxodKuII3K3wReY=;
+	s=korg; t=1756207249;
+	bh=twDPxmWhJ9tRqnnTlWHyFmJKjtJ1gYD+Up/aLdrXds4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rm8SsejFvl6+JDjB+k3bDiLD5aI/QMUfe0Ll/YoPx9FhesMES5NOf+uO/EfvVhuT/
-	 Et3Pqx8vxt8tn4QTRd0DkHGKaiW3iCHpU6XGuEf6d2MQ2iR50Xu07fMD0y19xzgzt6
-	 996GF4tvYyKBqUFoJrQT8XBydcUk+Csbxix2Fc9o=
+	b=buBOYpjoVAUjjCAQUOSVxB2N9aP/k5dKwgpgiOa3pGVKB85ZutHPqp+qCiJQyQx9q
+	 Fo4c3D6+jTLlm7SiRhLGkCYhGPZswafWYJDlcPb2BHfv7KDoSqjWSDEgiDuZe52dB3
+	 IPG7Bjd1Cg7+q3mpLzPa3IBrMOT1nbV/FOOsSxgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Xinxin Wan <xinxin.wan@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/482] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.16 081/457] wifi: ath12k: fix dest ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:06:05 +0200
-Message-ID: <20250826110933.595989456@linuxfoundation.org>
+Message-ID: <20250826110939.378421984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinxin Wan <xinxin.wan@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
+commit 8157ce533a60521f21d466eb4de45d9735b19484 upstream.
 
-To be more resilient to codec-detection failures when the hardware
-powers on slowly, add retry mechanism to the device verification check.
-Similar pattern is found throughout a number of Realtek codecs. Our
-tests show that 60ms delay is sufficient to address readiness issues on
-rt5640 chip.
+Add the missing memory barrier to make sure that destination ring
+descriptors are read after the head pointers to avoid using stale data
+on weakly ordered architectures like aarch64.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The barrier is added to the ath12k_hal_srng_access_begin() helper for
+symmetry with follow-on fixes for source ring buffer corruption which
+will add barriers to ath12k_hal_srng_access_end().
+
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250617084402.14475-2-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath12k/ce.c  |    3 ---
+ drivers/net/wireless/ath/ath12k/hal.c |   17 ++++++++++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 37ea4d854cb5..3185bf13dc42 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -3026,6 +3026,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -433,9 +433,6 @@ static int ath12k_ce_completed_recv_next
+ 		goto err;
  	}
  
- 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	if (val != RT5640_DEVICE_ID) {
-+		usleep_range(60000, 100000);
-+		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	}
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+ 
+ 	*skb = pipe->dest_ring->skb[sw_index];
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -2143,13 +2143,24 @@ void *ath12k_hal_srng_src_get_next_reape
+ 
+ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+ {
++	u32 hp;
 +
- 	if (val != RT5640_DEVICE_ID) {
- 		dev_err(&i2c->dev,
- 			"Device with ID register %#x is not rt5640/39\n", val);
--- 
-2.39.5
-
+ 	lockdep_assert_held(&srng->lock);
+ 
+-	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
++	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+-	else
+-		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++	} else {
++		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++
++		if (hp != srng->u.dst_ring.cached_hp) {
++			srng->u.dst_ring.cached_hp = hp;
++			/* Make sure descriptor is read after the head
++			 * pointer.
++			 */
++			dma_rmb();
++		}
++	}
+ }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
 
 
 
