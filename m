@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-174075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47AAB360DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AA7B36BF1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C56E7B7949
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42A11C46890
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637A823026B;
-	Tue, 26 Aug 2025 13:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792EB35A29B;
+	Tue, 26 Aug 2025 14:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMN2ophb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHqsjkZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEE3238149;
-	Tue, 26 Aug 2025 13:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365EA34DCD2;
+	Tue, 26 Aug 2025 14:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213425; cv=none; b=s4oYc9JVd49WtRF0zPQncPhj17fGbQ8QVYaR9Txvzj3FXXrgCcwOo3ngVEzuR1eyyUSXI8W6OkuFmmRoB0BnUB+telBDQMSie/49IMXBqT3fBs7i90R0OeNVbImtg7ZDcUCUHsPuNbg73rUnPsdVXfTBSDXzepK6icy56EPrvLE=
+	t=1756218874; cv=none; b=AG+j7YaT0RmjGom9wfMrn28RmQq9W9ThvlF0QDhu8nPnrik/dEHJX3Pw7czrj9J8B0DZbH8iT7uKnHH6Fo6vQ9TXUzs192T45F5aAaa5grau/00aM+wSaL4+RwHBau8pYgjVX7QCVxvsyMInrfFDtyZU06HlbjiGooaEYs5vjno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213425; c=relaxed/simple;
-	bh=siJUL7WAFIz5Z0CvdRdrJo1OgcWaTR6xfKg+0wg+iRU=;
+	s=arc-20240116; t=1756218874; c=relaxed/simple;
+	bh=kBiADs6ypt3UL+HKpzOh8oEdD76p4qT2RdMzZwsktvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xy13k7IoDK24WkyoLKZx69iUC6O0dnh9STV0KPyOQer++dMIyRBhOUHRPQ+HfdOwJhRjSu9GP6kdpbsHkFD0Rsd1t4SxNj7w14ttEwRL50D9ug1aHJtMgscM75AdMzV5GB1BzgxH5pwqnHPLmt5gLxs+cBOtYsHlELA3vs5bsy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMN2ophb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2D1C16AAE;
-	Tue, 26 Aug 2025 13:03:44 +0000 (UTC)
+	 MIME-Version; b=oDWjZ0FGIEghKBZGGUvCDaNYAoCfh3kac3YUafE0s3BEh0kIlPrvSGEl2Un3WI2in5Ye8IFPwaOSGp4CZjcxcVlTahvKvABw5K5Y2z5n1oHhOPvhh8fA1p2ovTZl1ntElQ/4cjIz494nFI/mlOwQEv69Il1mydUBz6SOSwWjdX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHqsjkZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE93AC4CEF1;
+	Tue, 26 Aug 2025 14:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213425;
-	bh=siJUL7WAFIz5Z0CvdRdrJo1OgcWaTR6xfKg+0wg+iRU=;
+	s=korg; t=1756218874;
+	bh=kBiADs6ypt3UL+HKpzOh8oEdD76p4qT2RdMzZwsktvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMN2ophba8LL0wIXLHq9dy2Qifgc+JCxKfJZApAc9iQz7jNlrZWCipMXO3R3kVLaa
-	 /pjTPqx66NSRq2TMkKOQkYNbKdc2bq0mF4ncjwHieIJW13wPyKH/pKl/5sP1crhRIM
-	 1r2CE0pxZLFsmyVEZZtMPi6uNQ1W2oOyZJMlUdSc=
+	b=vHqsjkZHVmw3+5e5Q+BWSubZqyekYzi1ZW9hwsd1S76s+Q0dxvWdWGFM9wNdCu7Oa
+	 vJL3O0Pwv4BAZEn55ArqMMZ0lE8sSYkg2tZYAaXBvcRdxwsX1J/fZrHHPRWIlWG6rd
+	 /DSyD9kEaDclqhEU7GC7X5v5Wa4W3BxiR53ErDe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jari Ruusu <jariruusu@protonmail.com>,
-	Yi Yang <yiyang13@huawei.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 344/587] Revert "vgacon: Add check for vc_origin address range in vgacon_scroll()"
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 167/403] ACPI: processor: perflib: Move problematic pr->performance check
 Date: Tue, 26 Aug 2025 13:08:13 +0200
-Message-ID: <20250826111001.665435940@linuxfoundation.org>
+Message-ID: <20250826110911.502037228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit e4fc307d8e24f122402907ebf585248cad52841d upstream.
+commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
 
-This reverts commit 864f9963ec6b4b76d104d595ba28110b87158003.
+Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
+application") added a pr->performance check that prevents the frequency
+QoS request from being added when the given processor has no performance
+object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
+to trigger on an attempt to take the given CPU offline later because the
+frequency QoS object has not been added for it due to the missing
+performance object.
 
-The patch is wrong as it checks vc_origin against vc_screenbuf,
-while in text mode it should compare against vga_vram_base.
+Address this by moving the pr->performance check before calling
+acpi_processor_get_platform_limit() so it only prevents a limit from
+being set for the CPU if the performance object is not present.  This
+way, the frequency QoS request is added as it was before the above
+commit and it is present all the time along with the CPU's cpufreq
+policy regardless of whether or not the CPU is online.
 
-As such it broke VGA text scrolling, which can be reproduced like this:
-(1) boot a kernel that is configured to use text mode VGA-console
-(2) type commands:  ls -l /usr/bin | less -S
-(3) scroll up/down with cursor-down/up keys
-
-Reported-by: Jari Ruusu <jariruusu@protonmail.com>
-Cc: stable@vger.kernel.org
-Cc: Yi Yang <yiyang13@huawei.com>
-Cc: GONG Ruiqi <gongruiqi1@huawei.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
+Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/console/vgacon.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/processor_perflib.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -1139,7 +1139,7 @@ static bool vgacon_scroll(struct vc_data
- 				     c->vc_screenbuf_size - delta);
- 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
- 			vga_rolled_over = 0;
--		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
-+		} else
- 			c->vc_origin -= delta;
- 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
- 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -183,7 +183,7 @@ void acpi_processor_ppc_init(struct cpuf
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
+ 
+-		if (!pr || !pr->performance)
++		if (!pr)
+ 			continue;
+ 
+ 		/*
+@@ -200,6 +200,9 @@ void acpi_processor_ppc_init(struct cpuf
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
+ 
++		if (!pr->performance)
++			continue;
++
+ 		ret = acpi_processor_get_platform_limit(pr);
+ 		if (ret)
+ 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
 
 
 
