@@ -1,142 +1,137 @@
-Return-Path: <stable+bounces-173732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D4AB35EC6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4BAB35EE0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2158116E075
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486833AAC3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BB3307484;
-	Tue, 26 Aug 2025 12:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658B23090E8;
+	Tue, 26 Aug 2025 12:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F3+pRQgF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DtuuOliK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4103426B747
-	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 12:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9974D2798ED;
+	Tue, 26 Aug 2025 12:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756209979; cv=none; b=t20TVROXv/7nStFaNBJ89+G9z3weW+xXJchkKqvXXH0s5b8Vz14IfOYOrzKp4BFJ/vMVC8aSohvXsrBVmziSxbdVfAIOHuUqi/Fr1ONpozCmdSfHR8xvrCcDZtDYsNfWWH+MullntPYren19JOcLf3gNW1cPgwL0yrVNfh6DXT8=
+	t=1756210300; cv=none; b=S75qCEBbePhyQeImcbLkZv/P+dEa5+iFcesd7xT/Ta48CWiS2VmV0PjRtvGv2efkAFvyAQZ9rDO+XcG9tNVW/F+KQ41sIougObsgvZBRcqObN9jvBkyP5GiJ+IVwK8MfrL0kzN093cXgaXOhR9JbI5G64n3L5veKVlOpfqHExeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756209979; c=relaxed/simple;
-	bh=bSRRUAqhvp44h3dVi1WARRkNFMByO0ADl300jk30jNI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tsvFPAD1JSs5pWlUGjFdQHG8jU4qQYB4RVUyBILOx8L63wK2PqoB+hlL8SlG5nSmtV6sToq0Ke9uUDb6Sp3gwd76U7h9WY+Kj/Qk9qL0HcL2AzArdP4YwKutmcqCe7kZQD3jnQu/utGgqp/wdcSDIfiEm9w8O8T4ZpcmbHy8nEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F3+pRQgF; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb73394b4so782306866b.0
-        for <stable@vger.kernel.org>; Tue, 26 Aug 2025 05:06:16 -0700 (PDT)
+	s=arc-20240116; t=1756210300; c=relaxed/simple;
+	bh=RhEbsQKmIX/lirH/uUzChufR/shylRIDYLkxgKJenr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8dkTfjYtYYoXkBd0OoSQ5WMlNnrshM9L9UrV8RN7TFg5R89aMxvHxfvRcDJwVPdrHINh4jM3H4h82ZXXilhu+W0/CcXAayWaXFRqcj4658jPcaK3nOKwnkJLpQvolBo5ADLMWt9ZAtzIjSZ18HX7ATPjGq6vwArnS/eaAn9Zwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DtuuOliK; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3c98b309804so1677204f8f.1;
+        Tue, 26 Aug 2025 05:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756209975; x=1756814775; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lxFjkTB2P79PoUaLxLAUp+gv0c2aOYdZxNYZuNh3BDw=;
-        b=F3+pRQgFkpzCCYJ7wQ3Odb12m1NnauCMjLfwz3R88V/o068VVmnJwLdcbZ3TKgeER0
-         j4QTlKzDI/eTaobO9531MJDSjHATCSqZoKUNfMxJgx8LfagE5YZ/jn1YgplEKVLBrGay
-         rot0DUgC//tgLU2brQm4i4q/pJdWaY4QfY+HFsVHwYdFeWLA43wdAqrf7tJnIXlaY1Xh
-         Y5udcfd7K7KIJqtQ1tq3paHmiQMqgynhay41Gv29Le5E6dbXGdsgZVMa9k1hzQ5CZJRr
-         mVaD4QVyNi2mJWXfu7WxrOutA+HTEPGLsueBVlkCbNWpnS1K3Lk4AyZ7ngDRCod0LP08
-         x+SQ==
+        d=gmail.com; s=20230601; t=1756210296; x=1756815096; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bgo2eJak2Be9BA5zOK9ll3HUyMbKDaGl7xMwm/BsZe0=;
+        b=DtuuOliKuY+8CUlHQ1yZiJ+WNTG9gNRXTUh3IC7oZK4EMOVmcxhEXYFnrdjUcf8mLN
+         QPtkt7U16qCOX/8Ycb3tVnHKsbp0iekFl/j5CRZo07JHhs43q8W38peheiMm8BKTcRka
+         avSZhkGD/EIdymf17UBub+VMu2CSQGaeX4cIFYFbiLDNJ3iOqwoP2BP0zMXu49bvE3cf
+         m/fIctlvimbgGnICPgseJsKw6CwL7aaWQnJDxUtlPFB8as9JTdiMT9GEABF2FVjt1yUk
+         LklbHs0WUkiEzG6yBSVwOoAzq2mflBE0FECInOopWx8vFrEwSUA8aNEWrHSbrP8rcNQS
+         19vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756209975; x=1756814775;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lxFjkTB2P79PoUaLxLAUp+gv0c2aOYdZxNYZuNh3BDw=;
-        b=mD8iRbJfuKFOSFn0LZ0gRAbcmPdxENhOrtRTAMQ5WcuiWNMTDvz0jK/aA9VGWjz4BR
-         OrhUp31bqs5kTPV0Xh6PMcY7fTVh5hV8T/7MwiSU2wbViqY2gVcm2JQEhtun+bwW173C
-         PAtaKtclDRTkdWPvdWQanp10Sigu+vBYJYCbyubWKI0IQhU5l23emKYZ/BHLjltM5Vhf
-         fE55jD49ZbQ8irmdhcSdpDhiWYch2j2as2aQkLSbHX7ZEqZQ01jrlJglzAjEY6gqmbAG
-         LGsH2n9qpfxs7mSK10WNptpe/MZhlKW5aOhexk8Xs1ERD8/t9cqIegJgEwkudfAsSf+U
-         QVBg==
-X-Forwarded-Encrypted: i=1; AJvYcCWO6CcikzqlL7RWV3XI6HNzpVIOgHu1fOdhNHALc2vLL1SXWV9J1SlXYMoNI1w2ELOAH18ItQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwZ4CPw6xioPobfjUEZzxeCpRVs5u7BIqBZ9tyRTyiKFnnaWl0
-	72i1+k1OJf/dIP2uBgFcqo/j+P6ZcWdxW9JdJR5zNDlnOCluuVlSnbPhdt5LI8Ve4UJwtEvw310
-	RPLDd021UrZvBLOUnHFPR1dp3w4B5aCw1rofFaoNZJg==
-X-Gm-Gg: ASbGncvrp4SPZKB2nTgVhy4cy1kGxbZJoDhu4PWtmYuV8cmge7iQ6XuKfdRG0jKx5zG
-	tUl+dsgU4sFtnTVJB2OVi7Lglg/BqzCOlO0fvbw989ZKdlszht683p/TWB0sYY68UcNKK2GBCMM
-	k8JVonTHYL4umGtEUExRfFBsZ0pRxgmePlc9gZQuyV2uBnP32XVUB7U2/cGB/gvHzUvE67gaxj0
-	Fuba48qmm7zljTJo1xE42jphn9wTDH2CqX2G+s=
-X-Google-Smtp-Source: AGHT+IHCPPogA5I5xYJjZ3AF2Jj1OEbjkizkVIqqQo3oG7dsb9k66ChvqgzLqUtgok2+xdd2moMuf4gTw379MNCuFxA=
-X-Received: by 2002:a17:907:3f0f:b0:ae0:b3be:f214 with SMTP id
- a640c23a62f3a-afe28ec592dmr1369727666b.9.1756209975430; Tue, 26 Aug 2025
- 05:06:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756210296; x=1756815096;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bgo2eJak2Be9BA5zOK9ll3HUyMbKDaGl7xMwm/BsZe0=;
+        b=sbB12946ZaX87jev6iGdSwvkhsGLG4f7HwFE0KV1+2VwgLtWf7Mvj/mg+ubPTeJr+O
+         8JHXcDEXTnrqLUMkQBQm58StUWqWTJyMULObbcq7Z3KfGhh9msDrBVinLRm2cAJT6csy
+         tH+gRaYC+bm19my/Zjr5WQxoWQ2ktVm7ITKoXiFezns9QIrPSVhh/1quDUNXLXlTDDPF
+         vyEsWU6GnNml/fEfe2eUCxS++hdKU+R6sgYLyH7mfASWLYPD3dOJL0b2bHGAqrPKzg7K
+         F6Xbp1O+TqZ5NYLLrWkQoAiZPjwNCxV9zVydHu0W+0IDF3x0pGKh6mnGbXk9Gk6ImEjA
+         AJzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgtZWCRTZ7s4Jnl9mtu0PKgNuXp9JFuPBCwbh/7Ioq7v1100mbhtBiw1BETe3aQeP5wJeb3dl4@vger.kernel.org, AJvYcCXWt/cY6VfbPUVo2vFm9XDuTV0H9cdOp5zFmqejhzNs1qqbbG11hkBAA1m7CYLiQY/eKBrRUZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6bT3oIpy0n1ptwtSmIkGw4bQTwvv3pJouxvX0FzKyVOoceA4T
+	EK0H/t4raA94MIyE8YeiBCqpiPdqBzze/qwjpV86wlt2feZQBKXwI+Fq5OCBonnO
+X-Gm-Gg: ASbGncsi+uUj5gUHtdLmNh8EtjG84d6KxlrNsa+rMjGX8UJaiuGHPz8SlEwjYzX1cob
+	ufeDH1J/ioRfFKowimq7A4ii2Ox7nQ0tY7/m6CSVwpgnRN0myz4ofaW28DUMzvxHHf61gFhJNka
+	MbTw1H1xMh/H4KYQ5H+Iyj5RRsfr6OMxDXrbtvA0sgsOg2r7u3QBOqYZSvAd6pMi569Eh7lmd/t
+	qplIbJlSrvfkGfHDsFeDptndNp4xLw1DVMK9sg6NrjKGHuUGrSPsoHR1YQfA4Lg8DzbSpGVUT3b
+	cmb0Q96EpCGbVS0B3nmoQ07Gedam14vEOm/l0R5yw6jQMtMAV3V3nXXzd/Efc7uBCeHcZ144MM2
+	78C9fEX71IdBGzsPwxEV8tUThQEYCNlLBk/Q=
+X-Google-Smtp-Source: AGHT+IFyt1noHdTU+Lxyu4hFFrhdSpjqHvjbZWL24i076P4M6ZzzL90XYNqTJ7uxCxOxl+awWvRnUA==
+X-Received: by 2002:a05:6000:24c9:b0:3b7:93d3:f478 with SMTP id ffacd0b85a97d-3c5dce01212mr12959641f8f.51.1756210295606;
+        Tue, 26 Aug 2025 05:11:35 -0700 (PDT)
+Received: from localhost.localdomain ([45.128.133.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c711211e87sm15670520f8f.44.2025.08.26.05.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Aug 2025 05:11:35 -0700 (PDT)
+Date: Tue, 26 Aug 2025 14:11:26 +0200
+From: Oscar Maes <oscmaes92@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: bacs@librecast.net, brett@librecast.net, davem@davemloft.net,
+	dsahern@kernel.org, netdev@vger.kernel.org,
+	regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: ipv4: fix regression in local-broadcast
+ routes
+Message-ID: <20250826121126-oscmaes92@gmail.com>
+References: <20250825060229-oscmaes92@gmail.com>
+ <20250825060918.4799-1-oscmaes92@gmail.com>
+ <20250825155630.5848c357@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818124458.334548733@linuxfoundation.org> <CA+G9fYt5sknJ3jbebYZrqMRhbcLZKLCvTDHfg5feNnOpj-j9Wg@mail.gmail.com>
- <CA+G9fYt6SAsPo6TvfgtnDWHPHO2q7xfppGbCaW0JxpL50zqWew@mail.gmail.com>
- <CACMJSeu_DTVK=XtvaSD3Fj3aTXBJ5d-MpQMuysJYEFBNwznDqQ@mail.gmail.com> <2025081931-chump-uncurled-656b@gregkh>
-In-Reply-To: <2025081931-chump-uncurled-656b@gregkh>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Tue, 26 Aug 2025 14:06:04 +0200
-X-Gm-Features: Ac12FXzW7NUCjgYWSamJwSOH-347hP9Z3Gi-swjOizdLDz6f5VXnlkQBVvbGglE
-Message-ID: <CACMJSesMDcUM+bvmT76m2s05a+-T7NxGQwe72yS03zkEJ-KzCw@mail.gmail.com>
-Subject: Re: [PATCH 6.15 000/515] 6.15.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
-	Ben Copeland <benjamin.copeland@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Bjorn Andersson <andersson@kernel.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, srinivas.kandagatla@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825155630.5848c357@kernel.org>
 
-On Tue, 19 Aug 2025 at 13:52, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Aug 19, 2025 at 01:30:46PM +0200, Bartosz Golaszewski wrote:
-> > On Tue, 19 Aug 2025 at 12:02, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > >
-> > > On Tue, 19 Aug 2025 at 00:18, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > >
-> > > >
-> > > > Boot regression: stable-rc 6.15.11-rc1 arm64 Qualcomm Dragonboard 410c
-> > > > Unable to handle kernel NULL pointer dereference
-> > > > qcom_scm_shm_bridge_enable
-> > >
-> > > I have reverted the following patch and the regression got fixed.
-> > >
-> > > firmware: qcom: scm: initialize tzmem before marking SCM as available
-> > >     [ Upstream commit 87be3e7a2d0030cda6314d2ec96b37991f636ccd ]
-> > >
-> >
-> > Hi! I'm on vacation, I will look into this next week. I expect there
-> > to be a fix on top of this commit.
->
-> Ok, I'll go and drop this one from the queues now, thanks.
->
-> greg k-h
+On Mon, Aug 25, 2025 at 03:56:30PM -0700, Jakub Kicinski wrote:
+> On Mon, 25 Aug 2025 08:09:17 +0200 Oscar Maes wrote:
+> > Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+> > introduced a regression where local-broadcast packets would have their
+> > gateway set in __mkroute_output, which was caused by fi = NULL being
+> > removed.
+> > 
+> > Fix this by resetting the fib_info for local-broadcast packets.
+> 
+> Meaning that 9e30ecf23b1b would still change behavior for the subnet
+> broadcast address?
+> 
 
-Hi!
+Yes. This is OK because subnet broadcast addresses have separate entries
+in the local fib table.
 
-The issue was caused by only picking up commit 7ab36b51c6bee
-("firmware: qcom: scm: request the waitqueue irq *after* initializing
-SCM") into stable, while the following four must be applied instead:
-
-23972da96e1ee ("firmware: qcom: scm: remove unused arguments from SHM
-bridge routines")
-dc3f4e75c54c1 ("firmware: qcom: scm: take struct device as argument in
-SHM bridge enable")
-87be3e7a2d003 ("firmware: qcom: scm: initialize tzmem before marking
-SCM as available")
-7ab36b51c6bee ("firmware: qcom: scm: request the waitqueue irq *after*
-initializing SCM")
-
-Bartosz
+> > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> > index f639a2ae881a..98d237e3ec04 100644
+> > --- a/net/ipv4/route.c
+> > +++ b/net/ipv4/route.c
+> > @@ -2575,9 +2575,12 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+> >  		    !netif_is_l3_master(dev_out))
+> >  			return ERR_PTR(-EINVAL);
+> >  
+> > -	if (ipv4_is_lbcast(fl4->daddr))
+> > +	if (ipv4_is_lbcast(fl4->daddr)) {
+> >  		type = RTN_BROADCAST;
+> > -	else if (ipv4_is_multicast(fl4->daddr))
+> > +
+> > +		/* reset fi to prevent gateway resolution */
+> > +		fi = NULL;
+> > +	} else if (ipv4_is_multicast(fl4->daddr))
+> >  		type = RTN_MULTICAST;
+> >  	else if (ipv4_is_zeronet(fl4->daddr))
+> >  		return ERR_PTR(-EINVAL);
+> 
+> nit: please add curly braces around all branches of this if / else if /
+> else ladder, per kernel coding style guide.
+> -- 
+> pw-bot: cr
 
