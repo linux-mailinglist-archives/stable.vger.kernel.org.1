@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740B2B35BC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08857B36BA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36D6203D94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886601C44C78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42792304980;
-	Tue, 26 Aug 2025 11:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C912E35082F;
+	Tue, 26 Aug 2025 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBUGgGDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvHmneYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7501A256B;
-	Tue, 26 Aug 2025 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E422A1BF;
+	Tue, 26 Aug 2025 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207260; cv=none; b=hiTK5hdwcaZd6Prnc8ncPmuCJd4RMLStL6DM3ykFsqsWS1HrGE21C/VsW3kpqXgisqZ4sWKrQOwwKU7B0YQa1aZKSJAv4YW+zXVFsHaID9siPyfg5hhM2WNreiaMgkuWhoCb1+sZnqTUmYafOxV5blVRNXKn3Pnm6RahdbcpZwE=
+	t=1756218620; cv=none; b=jBnDgw15QswGx7aZS5Po8bg61BB8BjTnYxYSWPygbp3mU+Weddh2WkVauaivlSdN+6P3iJixNcEQm3NgsLLRi6w50DmGmu2wRrCLXdT2oJDJrc9vyzU17dtiMh0HQiGmfMl2N01Pze0ryL29f2+BQOvl2C0ArX8/73N2oa2ivJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207260; c=relaxed/simple;
-	bh=Yengc2kCNMp9kKw3jr6632BSvIqV9f97hvaWax8NTEY=;
+	s=arc-20240116; t=1756218620; c=relaxed/simple;
+	bh=usYs1/DGh60cPwPczKl53Hg/u05vM71rYrkWJAWlPBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvRii25aoaWSuU8H7MBzjfe0nYYKTWUuoLM7Mls1slBqsBE27O69Zs1zfzt3CMw5bLB2A0OhIRp4Sa5ekuOuvJp/T9+JU04v5vENcMzZK9HhjZFWILpL4puWWUBHI+PfvmOuL4vQM5M00WvWx0Ka+nhaUBzDpLhe3qpTR3IWJ2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBUGgGDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C41CC4CEF1;
-	Tue, 26 Aug 2025 11:20:59 +0000 (UTC)
+	 MIME-Version; b=TYGiMz/rHvxJ1Nkuv0tSwpysCD9eYRhXP7qn0u3lIubit4bBkogJAIjC0+cUEl758ifWebR9K0SQiiPUSDeTQg2mEvhNFIbMT6qZimH7fCDju19nu8ZJUoZaSJjvT0/MrIwwtrhcYRfMKZq6Yyi0uEZdsYL4p3dm2+HFNd7fG9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvHmneYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DE4C4CEF1;
+	Tue, 26 Aug 2025 14:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207259;
-	bh=Yengc2kCNMp9kKw3jr6632BSvIqV9f97hvaWax8NTEY=;
+	s=korg; t=1756218620;
+	bh=usYs1/DGh60cPwPczKl53Hg/u05vM71rYrkWJAWlPBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBUGgGDeSd65dI3iZz/lketygQhARPeGmHwt5S+BvJX/6yKMhDeI+mjkfRIDVVV8V
-	 HVHGX6glWfJDsHvCOMEQg8DampLQsadpRtIBgoq8SnDqIQap/EeNbHjREyGTDM8Xqq
-	 rxSfCIBiLr2ioaAPK1IxBJzxxBhafAlceQ0qvzoU=
+	b=fvHmneYTh8iZWF8/Fm6FbHOfqgUav/HYtQAiY+SR1E6SCmuiXLBZsCeuAHrxRjrJi
+	 cD3eDsr3/MaV3j9HNRK61dNzfSjNWjzY0wzfXaFMXkx6FwDCn7UxI1/Vs1lHCsKjkY
+	 I4t1X58f4H+7kTGSbj5eDOU1LTHXX9+EWESnRj4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.16 111/457] f2fs: fix to avoid out-of-boundary access in dnode page
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 069/403] usb: phy: mxs: disconnect line when USB charger is attached
 Date: Tue, 26 Aug 2025 13:06:35 +0200
-Message-ID: <20250826110940.114722027@linuxfoundation.org>
+Message-ID: <20250826110908.084020709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 upstream.
+[ Upstream commit 87ed257acb0934e08644568df6495988631afd4c ]
 
-As Jiaming Zhang reported:
+For mxs PHY, if there is a vbus but the bus is not enumerated, we need
+to force the dp/dm as SE0 from the controller side. If not, there is
+possible USB wakeup due to unstable dp/dm, since there is possible no
+pull on dp/dm, such as there is a USB charger on the port.
 
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x17e/0x800 mm/kasan/report.c:480
- kasan_report+0x147/0x180 mm/kasan/report.c:593
- data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
- f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
- f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
- f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
- prepare_write_begin fs/f2fs/data.c:3395 [inline]
- f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
- generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
- f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
- f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x546/0xa90 fs/read_write.c:686
- ksys_write+0x149/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The root cause is in the corrupted image, there is a dnode has the same
-node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
-access block address in dnode at offset 934, however it parses the dnode
-as inode node, so that get_dnode_addr() returns 360, then it tries to
-access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
-
-To fix this issue, let's add sanity check for node id of all direct nodes
-during f2fs_get_dnode_of_data().
-
-Cc: stable@kernel.org
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627110353.1879477-3-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/phy/phy-mxs-usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -816,6 +816,16 @@ int f2fs_get_dnode_of_data(struct dnode_
- 	for (i = 1; i <= level; i++) {
- 		bool done = false;
+diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
+index 6dfecbd47d7a..7c81ccaaf2e9 100644
+--- a/drivers/usb/phy/phy-mxs-usb.c
++++ b/drivers/usb/phy/phy-mxs-usb.c
+@@ -394,6 +394,7 @@ static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
+ static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ {
+ 	bool vbus_is_on = false;
++	enum usb_phy_events last_event = mxs_phy->phy.last_event;
  
-+		if (nids[i] && nids[i] == dn->inode->i_ino) {
-+			err = -EFSCORRUPTED;
-+			f2fs_err_ratelimited(sbi,
-+				"inode mapping table is corrupted, run fsck to fix it, "
-+				"ino:%lu, nid:%u, level:%d, offset:%d",
-+				dn->inode->i_ino, nids[i], level, offset[level]);
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+			goto release_pages;
-+		}
-+
- 		if (!nids[i] && mode == ALLOC_NODE) {
- 			/* alloc new node */
- 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
+ 	/* If the SoCs don't need to disconnect line without vbus, quit */
+ 	if (!(mxs_phy->data->flags & MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS))
+@@ -405,7 +406,8 @@ static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ 
+ 	vbus_is_on = mxs_phy_get_vbus_status(mxs_phy);
+ 
+-	if (on && !vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
++	if (on && ((!vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
++		|| (last_event == USB_EVENT_VBUS)))
+ 		__mxs_phy_disconnect_line(mxs_phy, true);
+ 	else
+ 		__mxs_phy_disconnect_line(mxs_phy, false);
+-- 
+2.39.5
+
 
 
 
