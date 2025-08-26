@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3C6B35D54
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8345DB362A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D3A93627AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 098B5174224
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF7A341672;
-	Tue, 26 Aug 2025 11:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4833376BD;
+	Tue, 26 Aug 2025 13:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncFriAOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg0WPw/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB13322C98;
-	Tue, 26 Aug 2025 11:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8C23376A5;
+	Tue, 26 Aug 2025 13:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208020; cv=none; b=n6P8Q0B9D/B/raYHPv5RmyOB8W/fQAb8r1d/BjhRFvVwvtt/dlAK6ykZTOCISX4F2u7hyvQYGze2XxQVunCAXS6yi+XXLfEvSBjLy/BkWjdfW7Qnd7/sMbNpHU/yfrR/Ubx/8iGNmgOCKmDZfFFcyn22pSLxL2qmJCPnc9nhkkg=
+	t=1756213957; cv=none; b=XKliEVnt6i4Q3cnCFEHRJlSNQE+KuRlBksQB1OaBiM16z/PMreZQ0a93cQLx9zgpy/hJeh4SrfK5j6lMwHcvatVVo+05CmwIJda6ZE1oOOJDBlL9KCJ8qC8bkX92aI/w5ZS+eQRVawUyftivtRgjh0VkoRy7BVzrNO77C3qKszU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208020; c=relaxed/simple;
-	bh=aehnlr5UcQLrwJRYXfiW038dSBvpStuAtRiRITRGt0w=;
+	s=arc-20240116; t=1756213957; c=relaxed/simple;
+	bh=ncrm5XD4J8G1nxkrmU5bviJX2SIyRmDoel0eZlUS0yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBMQ60tasFz0vBkVf94cDzz5JzxQFW9vCSR4/DvQtPMzjXu328dq58/0jUr/gTzx5QYmzaHgXOmIj7a9wJpDyv2nxrpi8puhQT0ofblIy+kEWTc/ovCjnyLEAK4kbEYMPf19H0Tr+TxY8CC+KQHEStEa0PKPZ0jPH8B9atBaVtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncFriAOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E2FC4CEF1;
-	Tue, 26 Aug 2025 11:33:40 +0000 (UTC)
+	 MIME-Version; b=rGmAQFZ2/hgx52y20r5X4/S1UX845Tnajm1PcXwbriA4bVRafMilHUJ30fe/LmJtbZh6/V07EmLBMpuky/v/G9WuqJWxpnfnAP5d5e2sbvtRtxXassBZp+fd6w08F7XmUvgm6gRqY2Zmq7MgfIq5mQWKSKq1epbfl3Pdw28ZhSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg0WPw/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71FCC4CEF1;
+	Tue, 26 Aug 2025 13:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208020;
-	bh=aehnlr5UcQLrwJRYXfiW038dSBvpStuAtRiRITRGt0w=;
+	s=korg; t=1756213957;
+	bh=ncrm5XD4J8G1nxkrmU5bviJX2SIyRmDoel0eZlUS0yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncFriAOJaI614wzM3DF2LfS6zo+doqFpbLQkY7UHqbmUuADifMI3DzGkKqPNDXZH2
-	 Tw17aB7D8vcPbRc3+hOQCPUaIFTcT6eUYLnhqnUWEjErZxJWONTcyoKKA1cuvd1EMG
-	 ml6bJOmxxWy21e+V8QYk9cx7hMCnAMsoYPD5nLGI=
+	b=Rg0WPw/seA2a01VEPYE4TQGbrblFn5v5j1qEcKxzi+w9I+2lE/7vqnrwIUPninH/J
+	 UwuOywpnj5NaQ6//3KOUUvWE5zM5KHxm0jdhKj4HnrzimaHgzVaDFIgLVVW6YNAM90
+	 wDMhOi9vCGlZaluVI99ZUSDdculzQ3qqhc/77tAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 407/457] net: ti: icssg-prueth: Fix HSR and switch offload Enablement during firwmare reload.
+Subject: [PATCH 6.6 542/587] iio: imu: inv_icm42600: Convert to uXX and sXX integer types
 Date: Tue, 26 Aug 2025 13:11:31 +0200
-Message-ID: <20250826110947.353789304@linuxfoundation.org>
+Message-ID: <20250826111006.805933936@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +63,425 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 01792bc3e5bdafa171dd83c7073f00e7de93a653 ]
+[ Upstream commit a4135386fa49c2a170b89296da12c4a3be2089d9 ]
 
-To enable HSR / Switch offload, certain configurations are needed.
-Currently they are done inside icssg_change_mode(). This function only
-gets called if we move from one mode to another without bringing the
-links up / down.
+The driver code is full of intXX_t and uintXX_t types which is
+not the pattern we use in the IIO subsystem. Switch the driver
+to use kernel internal types for that. No functional changes.
 
-Once in HSR / Switch mode, if we bring the links down and bring it back
-up again. The callback sequence is,
-
-- emac_ndo_stop()
-	Firmwares are stopped
-- emac_ndo_open()
-	Firmwares are loaded
-
-In this path icssg_change_mode() doesn't get called and as a result the
-configurations needed for HSR / Switch is not done.
-
-To fix this, put all these configurations in a separate function
-icssg_enable_fw_offload() and call this from both icssg_change_mode()
-and emac_ndo_open()
-
-Fixes: 56375086d093 ("net: ti: icssg-prueth: Enable HSR Tx duplication, Tx Tag and Rx Tag offload")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Link: https://patch.msgid.link/20250814105106.1491871-1-danishanwar@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20250616090423.575736-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: dfdc31e7ccf3 ("iio: imu: inv_icm42600: change invalid data error to -EBUSY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 72 +++++++++++---------
- 1 file changed, 41 insertions(+), 31 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |    8 ++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  |   26 +++++++--------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   22 ++++++------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h |   10 ++---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |    6 +--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   |   36 ++++++++++-----------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c   |    6 +--
+ 7 files changed, 57 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 008d77727400..f436d7cf565a 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -240,6 +240,44 @@ static void prueth_emac_stop(struct prueth *prueth)
- 	}
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+@@ -142,11 +142,11 @@ struct inv_icm42600_state {
+ 	struct inv_icm42600_suspended suspended;
+ 	struct iio_dev *indio_gyro;
+ 	struct iio_dev *indio_accel;
+-	uint8_t buffer[2] __aligned(IIO_DMA_MINALIGN);
++	u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
+ 	struct inv_icm42600_fifo fifo;
+ 	struct {
+-		int64_t gyro;
+-		int64_t accel;
++		s64 gyro;
++		s64 accel;
+ 	} timestamp;
+ };
+ 
+@@ -369,7 +369,7 @@ const struct iio_mount_matrix *
+ inv_icm42600_get_mount_matrix(const struct iio_dev *indio_dev,
+ 			      const struct iio_chan_spec *chan);
+ 
+-uint32_t inv_icm42600_odr_to_period(enum inv_icm42600_odr odr);
++u32 inv_icm42600_odr_to_period(enum inv_icm42600_odr odr);
+ 
+ int inv_icm42600_set_accel_conf(struct inv_icm42600_state *st,
+ 				struct inv_icm42600_sensor_conf *conf,
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -77,7 +77,7 @@ static const struct iio_chan_spec inv_ic
+  */
+ struct inv_icm42600_accel_buffer {
+ 	struct inv_icm42600_fifo_sensor_data accel;
+-	int16_t temp;
++	s16 temp;
+ 	aligned_s64 timestamp;
+ };
+ 
+@@ -142,7 +142,7 @@ out_unlock:
+ 
+ static int inv_icm42600_accel_read_sensor(struct inv_icm42600_state *st,
+ 					  struct iio_chan_spec const *chan,
+-					  int16_t *val)
++					  s16 *val)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+@@ -182,7 +182,7 @@ static int inv_icm42600_accel_read_senso
+ 	if (ret)
+ 		goto exit;
+ 
+-	*val = (int16_t)be16_to_cpup(data);
++	*val = (s16)be16_to_cpup(data);
+ 	if (*val == INV_ICM42600_DATA_INVALID)
+ 		ret = -EINVAL;
+ exit:
+@@ -359,11 +359,11 @@ static int inv_icm42600_accel_read_offse
+ 					  int *val, int *val2)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+-	int64_t val64;
+-	int32_t bias;
++	s64 val64;
++	s32 bias;
+ 	unsigned int reg;
+-	int16_t offset;
+-	uint8_t data[2];
++	s16 offset;
++	u8 data[2];
+ 	int ret;
+ 
+ 	if (chan->type != IIO_ACCEL)
+@@ -417,7 +417,7 @@ static int inv_icm42600_accel_read_offse
+ 	 * result in micro (1000000)
+ 	 * (offset * 5 * 9.806650 * 1000000) / 10000
+ 	 */
+-	val64 = (int64_t)offset * 5LL * 9806650LL;
++	val64 = (s64)offset * 5LL * 9806650LL;
+ 	/* for rounding, add + or - divisor (10000) divided by 2 */
+ 	if (val64 >= 0)
+ 		val64 += 10000LL / 2LL;
+@@ -435,10 +435,10 @@ static int inv_icm42600_accel_write_offs
+ 					   int val, int val2)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+-	int64_t val64;
+-	int32_t min, max;
++	s64 val64;
++	s32 min, max;
+ 	unsigned int reg, regval;
+-	int16_t offset;
++	s16 offset;
+ 	int ret;
+ 
+ 	if (chan->type != IIO_ACCEL)
+@@ -463,7 +463,7 @@ static int inv_icm42600_accel_write_offs
+ 	      inv_icm42600_accel_calibbias[1];
+ 	max = inv_icm42600_accel_calibbias[4] * 1000000L +
+ 	      inv_icm42600_accel_calibbias[5];
+-	val64 = (int64_t)val * 1000000LL + (int64_t)val2;
++	val64 = (s64)val * 1000000LL + (s64)val2;
+ 	if (val64 < min || val64 > max)
+ 		return -EINVAL;
+ 
+@@ -538,7 +538,7 @@ static int inv_icm42600_accel_read_raw(s
+ 				       int *val, int *val2, long mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	int16_t data;
++	s16 data;
+ 	int ret;
+ 
+ 	switch (chan->type) {
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -26,28 +26,28 @@
+ #define INV_ICM42600_FIFO_HEADER_ODR_GYRO	BIT(0)
+ 
+ struct inv_icm42600_fifo_1sensor_packet {
+-	uint8_t header;
++	u8 header;
+ 	struct inv_icm42600_fifo_sensor_data data;
+-	int8_t temp;
++	s8 temp;
+ } __packed;
+ #define INV_ICM42600_FIFO_1SENSOR_PACKET_SIZE		8
+ 
+ struct inv_icm42600_fifo_2sensors_packet {
+-	uint8_t header;
++	u8 header;
+ 	struct inv_icm42600_fifo_sensor_data accel;
+ 	struct inv_icm42600_fifo_sensor_data gyro;
+-	int8_t temp;
++	s8 temp;
+ 	__be16 timestamp;
+ } __packed;
+ #define INV_ICM42600_FIFO_2SENSORS_PACKET_SIZE		16
+ 
+ ssize_t inv_icm42600_fifo_decode_packet(const void *packet, const void **accel,
+-					const void **gyro, const int8_t **temp,
++					const void **gyro, const s8 **temp,
+ 					const void **timestamp, unsigned int *odr)
+ {
+ 	const struct inv_icm42600_fifo_1sensor_packet *pack1 = packet;
+ 	const struct inv_icm42600_fifo_2sensors_packet *pack2 = packet;
+-	uint8_t header = *((const uint8_t *)packet);
++	u8 header = *((const u8 *)packet);
+ 
+ 	/* FIFO empty */
+ 	if (header & INV_ICM42600_FIFO_HEADER_MSG) {
+@@ -100,7 +100,7 @@ ssize_t inv_icm42600_fifo_decode_packet(
+ 
+ void inv_icm42600_buffer_update_fifo_period(struct inv_icm42600_state *st)
+ {
+-	uint32_t period_gyro, period_accel, period;
++	u32 period_gyro, period_accel, period;
+ 
+ 	if (st->fifo.en & INV_ICM42600_SENSOR_GYRO)
+ 		period_gyro = inv_icm42600_odr_to_period(st->conf.gyro.odr);
+@@ -204,8 +204,8 @@ int inv_icm42600_buffer_update_watermark
+ {
+ 	size_t packet_size, wm_size;
+ 	unsigned int wm_gyro, wm_accel, watermark;
+-	uint32_t period_gyro, period_accel, period;
+-	uint32_t latency_gyro, latency_accel, latency;
++	u32 period_gyro, period_accel, period;
++	u32 latency_gyro, latency_accel, latency;
+ 	bool restore;
+ 	__le16 raw_wm;
+ 	int ret;
+@@ -451,7 +451,7 @@ int inv_icm42600_buffer_fifo_read(struct
+ 	__be16 *raw_fifo_count;
+ 	ssize_t i, size;
+ 	const void *accel, *gyro, *timestamp;
+-	const int8_t *temp;
++	const s8 *temp;
+ 	unsigned int odr;
+ 	int ret;
+ 
+@@ -538,7 +538,7 @@ int inv_icm42600_buffer_hwfifo_flush(str
+ 				     unsigned int count)
+ {
+ 	struct inv_sensors_timestamp *ts;
+-	int64_t gyro_ts, accel_ts;
++	s64 gyro_ts, accel_ts;
+ 	int ret;
+ 
+ 	gyro_ts = iio_get_time_ns(st->indio_gyro);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
+@@ -28,7 +28,7 @@ struct inv_icm42600_state;
+ struct inv_icm42600_fifo {
+ 	unsigned int on;
+ 	unsigned int en;
+-	uint32_t period;
++	u32 period;
+ 	struct {
+ 		unsigned int gyro;
+ 		unsigned int accel;
+@@ -39,7 +39,7 @@ struct inv_icm42600_fifo {
+ 		size_t accel;
+ 		size_t total;
+ 	} nb;
+-	uint8_t data[2080] __aligned(IIO_DMA_MINALIGN);
++	u8 data[2080] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ /* FIFO data packet */
+@@ -50,7 +50,7 @@ struct inv_icm42600_fifo_sensor_data {
+ } __packed;
+ #define INV_ICM42600_FIFO_DATA_INVALID		-32768
+ 
+-static inline int16_t inv_icm42600_fifo_get_sensor_data(__be16 d)
++static inline s16 inv_icm42600_fifo_get_sensor_data(__be16 d)
+ {
+ 	return be16_to_cpu(d);
+ }
+@@ -58,7 +58,7 @@ static inline int16_t inv_icm42600_fifo_
+ static inline bool
+ inv_icm42600_fifo_is_data_valid(const struct inv_icm42600_fifo_sensor_data *s)
+ {
+-	int16_t x, y, z;
++	s16 x, y, z;
+ 
+ 	x = inv_icm42600_fifo_get_sensor_data(s->x);
+ 	y = inv_icm42600_fifo_get_sensor_data(s->y);
+@@ -73,7 +73,7 @@ inv_icm42600_fifo_is_data_valid(const st
  }
  
-+static void icssg_enable_fw_offload(struct prueth *prueth)
-+{
-+	struct prueth_emac *emac;
-+	int mac;
-+
-+	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
-+		emac = prueth->emac[mac];
-+		if (prueth->is_hsr_offload_mode) {
-+			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
-+				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
-+			else
-+				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
-+		}
-+
-+		if (prueth->is_switch_mode || prueth->is_hsr_offload_mode) {
-+			if (netif_running(emac->ndev)) {
-+				icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
-+						  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_BLOCK,
-+						  true);
-+				icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
-+						  BIT(emac->port_id) | DEFAULT_PORT_MASK,
-+						  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
-+						  true);
-+				if (prueth->is_hsr_offload_mode)
-+					icssg_vtbl_modify(emac, DEFAULT_VID,
-+							  DEFAULT_PORT_MASK,
-+							  DEFAULT_UNTAG_MASK, true);
-+				icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
-+				if (prueth->is_switch_mode)
-+					icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
-+			}
-+		}
-+	}
-+}
-+
- static int prueth_emac_common_start(struct prueth *prueth)
- {
- 	struct prueth_emac *emac;
-@@ -790,6 +828,7 @@ static int emac_ndo_open(struct net_device *ndev)
- 		ret = prueth_emac_common_start(prueth);
- 		if (ret)
- 			goto free_rx_irq;
-+		icssg_enable_fw_offload(prueth);
- 	}
+ ssize_t inv_icm42600_fifo_decode_packet(const void *packet, const void **accel,
+-					const void **gyro, const int8_t **temp,
++					const void **gyro, const s8 **temp,
+ 					const void **timestamp, unsigned int *odr);
  
- 	flow_cfg = emac->dram.va + ICSSG_CONFIG_OFFSET + PSI_L_REGULAR_FLOW_ID_BASE_OFFSET;
-@@ -1397,8 +1436,7 @@ static int prueth_emac_restart(struct prueth *prueth)
+ extern const struct iio_buffer_setup_ops inv_icm42600_buffer_ops;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -56,7 +56,7 @@ const struct regmap_config inv_icm42600_
+ EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, IIO_ICM42600);
  
- static void icssg_change_mode(struct prueth *prueth)
- {
--	struct prueth_emac *emac;
--	int mac, ret;
-+	int ret;
- 
- 	ret = prueth_emac_restart(prueth);
- 	if (ret) {
-@@ -1406,35 +1444,7 @@ static void icssg_change_mode(struct prueth *prueth)
- 		return;
- 	}
- 
--	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
--		emac = prueth->emac[mac];
--		if (prueth->is_hsr_offload_mode) {
--			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
--				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
--			else
--				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
--		}
--
--		if (netif_running(emac->ndev)) {
--			icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
--					  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_BLOCK,
--					  true);
--			icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
--					  BIT(emac->port_id) | DEFAULT_PORT_MASK,
--					  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
--					  true);
--			if (prueth->is_hsr_offload_mode)
--				icssg_vtbl_modify(emac, DEFAULT_VID,
--						  DEFAULT_PORT_MASK,
--						  DEFAULT_UNTAG_MASK, true);
--			icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
--			if (prueth->is_switch_mode)
--				icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
--		}
--	}
-+	icssg_enable_fw_offload(prueth);
+ struct inv_icm42600_hw {
+-	uint8_t whoami;
++	u8 whoami;
+ 	const char *name;
+ 	const struct inv_icm42600_conf *conf;
+ };
+@@ -115,9 +115,9 @@ inv_icm42600_get_mount_matrix(const stru
+ 	return &st->orientation;
  }
  
- static int prueth_netdevice_port_link(struct net_device *ndev,
--- 
-2.50.1
-
+-uint32_t inv_icm42600_odr_to_period(enum inv_icm42600_odr odr)
++u32 inv_icm42600_odr_to_period(enum inv_icm42600_odr odr)
+ {
+-	static uint32_t odr_periods[INV_ICM42600_ODR_NB] = {
++	static u32 odr_periods[INV_ICM42600_ODR_NB] = {
+ 		/* reserved values */
+ 		0, 0, 0,
+ 		/* 8kHz */
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -77,7 +77,7 @@ static const struct iio_chan_spec inv_ic
+  */
+ struct inv_icm42600_gyro_buffer {
+ 	struct inv_icm42600_fifo_sensor_data gyro;
+-	int16_t temp;
++	s16 temp;
+ 	aligned_s64 timestamp;
+ };
+ 
+@@ -142,7 +142,7 @@ out_unlock:
+ 
+ static int inv_icm42600_gyro_read_sensor(struct inv_icm42600_state *st,
+ 					 struct iio_chan_spec const *chan,
+-					 int16_t *val)
++					 s16 *val)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+@@ -182,7 +182,7 @@ static int inv_icm42600_gyro_read_sensor
+ 	if (ret)
+ 		goto exit;
+ 
+-	*val = (int16_t)be16_to_cpup(data);
++	*val = (s16)be16_to_cpup(data);
+ 	if (*val == INV_ICM42600_DATA_INVALID)
+ 		ret = -EINVAL;
+ exit:
+@@ -371,11 +371,11 @@ static int inv_icm42600_gyro_read_offset
+ 					 int *val, int *val2)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+-	int64_t val64;
+-	int32_t bias;
++	s64 val64;
++	s32 bias;
+ 	unsigned int reg;
+-	int16_t offset;
+-	uint8_t data[2];
++	s16 offset;
++	u8 data[2];
+ 	int ret;
+ 
+ 	if (chan->type != IIO_ANGL_VEL)
+@@ -429,7 +429,7 @@ static int inv_icm42600_gyro_read_offset
+ 	 * result in nano (1000000000)
+ 	 * (offset * 64 * Pi * 1000000000) / (2048 * 180)
+ 	 */
+-	val64 = (int64_t)offset * 64LL * 3141592653LL;
++	val64 = (s64)offset * 64LL * 3141592653LL;
+ 	/* for rounding, add + or - divisor (2048 * 180) divided by 2 */
+ 	if (val64 >= 0)
+ 		val64 += 2048 * 180 / 2;
+@@ -447,9 +447,9 @@ static int inv_icm42600_gyro_write_offse
+ 					  int val, int val2)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+-	int64_t val64, min, max;
++	s64 val64, min, max;
+ 	unsigned int reg, regval;
+-	int16_t offset;
++	s16 offset;
+ 	int ret;
+ 
+ 	if (chan->type != IIO_ANGL_VEL)
+@@ -470,11 +470,11 @@ static int inv_icm42600_gyro_write_offse
+ 	}
+ 
+ 	/* inv_icm42600_gyro_calibbias: min - step - max in nano */
+-	min = (int64_t)inv_icm42600_gyro_calibbias[0] * 1000000000LL +
+-	      (int64_t)inv_icm42600_gyro_calibbias[1];
+-	max = (int64_t)inv_icm42600_gyro_calibbias[4] * 1000000000LL +
+-	      (int64_t)inv_icm42600_gyro_calibbias[5];
+-	val64 = (int64_t)val * 1000000000LL + (int64_t)val2;
++	min = (s64)inv_icm42600_gyro_calibbias[0] * 1000000000LL +
++	      (s64)inv_icm42600_gyro_calibbias[1];
++	max = (s64)inv_icm42600_gyro_calibbias[4] * 1000000000LL +
++	      (s64)inv_icm42600_gyro_calibbias[5];
++	val64 = (s64)val * 1000000000LL + (s64)val2;
+ 	if (val64 < min || val64 > max)
+ 		return -EINVAL;
+ 
+@@ -549,7 +549,7 @@ static int inv_icm42600_gyro_read_raw(st
+ 				      int *val, int *val2, long mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	int16_t data;
++	s16 data;
+ 	int ret;
+ 
+ 	switch (chan->type) {
+@@ -764,9 +764,9 @@ int inv_icm42600_gyro_parse_fifo(struct
+ 	ssize_t i, size;
+ 	unsigned int no;
+ 	const void *accel, *gyro, *timestamp;
+-	const int8_t *temp;
++	const s8 *temp;
+ 	unsigned int odr;
+-	int64_t ts_val;
++	s64 ts_val;
+ 	/* buffer is copied to userspace, zeroing it to avoid any data leak */
+ 	struct inv_icm42600_gyro_buffer buffer = { };
+ 
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -13,7 +13,7 @@
+ #include "inv_icm42600.h"
+ #include "inv_icm42600_temp.h"
+ 
+-static int inv_icm42600_temp_read(struct inv_icm42600_state *st, int16_t *temp)
++static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+ 	__be16 *raw;
+@@ -31,7 +31,7 @@ static int inv_icm42600_temp_read(struct
+ 	if (ret)
+ 		goto exit;
+ 
+-	*temp = (int16_t)be16_to_cpup(raw);
++	*temp = (s16)be16_to_cpup(raw);
+ 	if (*temp == INV_ICM42600_DATA_INVALID)
+ 		ret = -EINVAL;
+ 
+@@ -48,7 +48,7 @@ int inv_icm42600_temp_read_raw(struct ii
+ 			       int *val, int *val2, long mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	int16_t temp;
++	s16 temp;
+ 	int ret;
+ 
+ 	if (chan->type != IIO_TEMP)
 
 
 
