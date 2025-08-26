@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79EDAB35D91
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C45FB3674E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0C51BC03EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FCCC8E71CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CC32BE653;
-	Tue, 26 Aug 2025 11:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B7B350855;
+	Tue, 26 Aug 2025 13:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPZDDnAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jrq3vl3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F8729BDBA;
-	Tue, 26 Aug 2025 11:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B85350D4E;
+	Tue, 26 Aug 2025 13:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208325; cv=none; b=p6FsadVz8RfYWzjPP/phTn29gvfpOaPD/MBMyLB7zQaYptDiQU2lnZoYRoVbXnaUaoxEjGx/77hPfhjPR5a0y7swLHiVZnKlTntPUMKrWBu/BlHM3CnxxxvCpuIyOMqC7sn2dM44FwHrFe8MNXu3M7mc/owXc8sLzcHnBa04FlU=
+	t=1756216389; cv=none; b=Dp0Pe7XHOp9teAk0AlOh3QJeiAdYi8tw/b0F4XpBdBqZekNnrUHDtHjwgfuUNwtGzicWuLBpa0zV6h7+rPVXYnS8u4ezbz3BUi6nIYpMPLeermzU/7cbnwp2ZERLX4V7Vvaiy6/UyAvPkBZkoK+43B/erf1bi1lWhVBgM6e8CwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208325; c=relaxed/simple;
-	bh=1xs/XPVGw6JESVuyUbpmEkAz45zpOJjx77VYW19qa7Y=;
+	s=arc-20240116; t=1756216389; c=relaxed/simple;
+	bh=F+u1btq8G2I7jLH6T7jVUUtROoX4IT5WEisffTnTaf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ohwGSiNuDGipJkAqkVPalVJqkRNAukLbOwhWJmITU0g3vywTDf570cB+/ENT1T7oZHeW4KlFCo4B/OPkyP67pJR2J+NHncsxJzpnpqGWb2VKCrvDOuVmLA9IAHqIm2bpZ0nvxIOeKyzr82khQPT8LvgIgs5hXLpvRvp5BafBmjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPZDDnAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50F8C4CEF1;
-	Tue, 26 Aug 2025 11:38:44 +0000 (UTC)
+	 MIME-Version; b=V5UdmSC2HE7WTdf9QyzdZpjRYigFyWD2N4t2n1u0t5b5AdqXxobs4UOPRo1rPxSEO7n8unClePzwFf75eXs/NhmhMuSfdoXcqUiEHgnEsaSWPF6Esl4lE+WOiwmO3Zc/jQw79x+gthC2DDPbsgOMHlmga0u0qVnfSlZaFrQ2lf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jrq3vl3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF220C4CEF1;
+	Tue, 26 Aug 2025 13:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208325;
-	bh=1xs/XPVGw6JESVuyUbpmEkAz45zpOJjx77VYW19qa7Y=;
+	s=korg; t=1756216389;
+	bh=F+u1btq8G2I7jLH6T7jVUUtROoX4IT5WEisffTnTaf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPZDDnAd9fLY9zY+ExDOBmTK0cit8qgtxQr7zRDvmyLBjXHheRHftar6M5EuZf2gS
-	 I+igVGf2jU581SBzocThkwUPfp8WnGd0jU/YgWRjMKX/ZHbkiV39zYnV/EfQiGsX0n
-	 STkDMrYuTiFlOOShFnq8O+VjgHgqLQvw3+3R6u94=
+	b=Jrq3vl3Wef5hTfKLh3F1kzOlPAYUsdyTLlDIQoDm1b0l4KBpUXPdE7zy4KbW0yhn1
+	 52tCd4U5q7mMDV2k43fVJc3xC+aLpBOVCsUudNSkAAX4rxmaHaPMjkyR+m05IEU9I9
+	 YM46TeeoAQyRqWxutgmJbSF47jIRuL5H6j1tG5w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 067/322] pwm: mediatek: Fix duty and period setting
+	Ziyan Fu <fuzy5@lenovo.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 391/644] watchdog: iTCO_wdt: Report error if timeout configuration fails
 Date: Tue, 26 Aug 2025 13:08:02 +0200
-Message-ID: <20250826110917.221741402@linuxfoundation.org>
+Message-ID: <20250826110956.132854940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Ziyan Fu <fuzy5@lenovo.com>
 
-commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
+[ Upstream commit 40efc43eb7ffb5a4e2f998c13b8cfb555e671b92 ]
 
-The period generated by the hardware is
+The driver probes with the invalid timeout value when
+'iTCO_wdt_set_timeout()' fails, as its return value is not checked. In
+this case, when executing "wdctl", we may get:
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
+Device:        /dev/watchdog0
+Timeout:       30 seconds
+Timeleft:      613 seconds
 
-according to my tests with a signal analyser and also the documentation.
+The timeout value is the value of "heartbeat" or "WATCHDOG_TIMEOUT", and
+the timeleft value is calculated from the register value we actually read
+(0xffff) by masking with 0x3ff and converting ticks to seconds (* 6 / 10).
 
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
+Add error handling to return the failure code if 'iTCO_wdt_set_timeout()'
+fails, ensuring the driver probe fails and prevents invalid operation.
 
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ziyan Fu <fuzy5@lenovo.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250704073518.7838-1-13281011316@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/watchdog/iTCO_wdt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -164,7 +164,10 @@ static int pwm_mediatek_config(struct pw
- 	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -187,9 +190,16 @@ static int pwm_mediatek_config(struct pw
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 3cebb83b3e67..02bcbfe8f8c9 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -605,7 +605,11 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 	/* Check that the heartbeat value is within it's range;
+ 	   if not reset to the default */
+ 	if (iTCO_wdt_set_timeout(&p->wddev, heartbeat)) {
+-		iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		ret = iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		if (ret != 0) {
++			dev_err(dev, "Failed to set watchdog timeout (%d)\n", WATCHDOG_TIMEOUT);
++			return ret;
++		}
+ 		dev_info(dev, "timeout value out of range, using %d\n",
+ 			WATCHDOG_TIMEOUT);
  	}
- 
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
-+
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
- 
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -218,11 +228,8 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
- 
- 	return err;
- }
+-- 
+2.39.5
+
 
 
 
