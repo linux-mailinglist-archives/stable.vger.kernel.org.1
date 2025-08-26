@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DD6B364F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E411B35FE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 115214E0487
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1551BA5967
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F282FC870;
-	Tue, 26 Aug 2025 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54111A00F0;
+	Tue, 26 Aug 2025 12:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne04aN/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj3bAGOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49482264B8;
-	Tue, 26 Aug 2025 13:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73474191F98;
+	Tue, 26 Aug 2025 12:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215783; cv=none; b=noJGuhGRpB0v2gL8Z3GRTfv0f/m5k03OtcAYZzy+EIoEPfHC8u3rVmI1pIX8J7ujZeGkjOSoiuH5cAQkvRJATJT2r+4iOXI9rP1Njr/Her5VOCeHqnI/mH9gsst6pjs0y52L2a/52qB7syThw7JNKi8Z6BYYH6ENsTHnIT2mqUY=
+	t=1756212720; cv=none; b=lteUqpb5gMJE7PtPbjbjDvyX28d2LT2x0GGYurlQQwts339pa1ewDqlDIPpJy7EE63dxGfGP7gyVrKxOmvWZ73V5MkbAxRkIWLSC5loqRNJVSsARjvCG6thgKq8teOmgCAqWTHOjgrJuJ6Fpjoa5ytjzUUvX76B2zP5Jg0LAyNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215783; c=relaxed/simple;
-	bh=eAt1xIP/+IeezbEa+wVYFAm9EF+AXp8N3fMIhIE5xKw=;
+	s=arc-20240116; t=1756212720; c=relaxed/simple;
+	bh=YanGN13DcQip7C3YjbaMPN9Zwv3Sy9nAHJ9BxImq2Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/nKL3abLjkLaieUU/zy+5QddCT3slmdExVdJKwcAEvzCbJyA6T59apksy6/MFbGu7Bp0ImvRkBAhOluiISObzU1K3A55q/V6K/zs9vglLORNunAIdqW9RJNpTrE2bmkXbcoNHoa/goYBSq12vUGoiO8Eo+x3AUVIZQ/aNeC+ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ne04aN/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5956BC113CF;
-	Tue, 26 Aug 2025 13:43:03 +0000 (UTC)
+	 MIME-Version; b=sdhpRt4tVKvhGQ1na9XOCDW0YKR+0mgGo0nC3mzX3K1TVEwvojhRSuqPigb5TweFw2A1BCjn0HsuXFPvX95UwfrKWN26ggnsUd5dAEPmPC//Aogf/vIHx2IThe7gMWiV12dPj3Lz/ggEYYEEsOHDuw/jT/D1kO8bEsgmylkuOHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj3bAGOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E70AC4CEF1;
+	Tue, 26 Aug 2025 12:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215783;
-	bh=eAt1xIP/+IeezbEa+wVYFAm9EF+AXp8N3fMIhIE5xKw=;
+	s=korg; t=1756212720;
+	bh=YanGN13DcQip7C3YjbaMPN9Zwv3Sy9nAHJ9BxImq2Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ne04aN/D0cGfoZzfeFsBPJNBMS/Hs3hv16e7ma3vQSov4y5MIycrZNbBmjtlbTj/T
-	 TJC7EA/XDXHkBKb8iqZVb4xcf7Gv+9Npkrs0BVoeSHbEo6xEZqaPkp5DB6WrPlpRtM
-	 UmV9IrV+2tdWrP5jXMdBRyI9mzLTZFYH4XPUWwVI=
+	b=bj3bAGOoRj+2/cYZGPS7zcm17A4EGFOcbEaIFd1++Liip/SK/dPkHZUf6Y/VlZUcw
+	 vOSab18qmDgce3WfpINonQZX/H5js6i/Kem3GeT1X67F8okj4qQlNgcT8Q1cXJqoxx
+	 +9i8CvX9dV/kKZivATMfhB85OHdMSQfgG7C7WQjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/644] selftests/tracing: Fix false failure of subsystem event test
+Subject: [PATCH 6.6 076/587] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Tue, 26 Aug 2025 13:03:45 +0200
-Message-ID: <20250826110949.826864115@linuxfoundation.org>
+Message-ID: <20250826110954.868333952@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-The subsystem event test enables all "sched" events and makes sure there's
-at least 3 different events in the output. It used to cat the entire trace
-file to | wc -l, but on slow machines, that could last a very long time.
-To solve that, it was changed to just read the first 100 lines of the
-trace file. This can cause false failures as some events repeat so often,
-that the 100 lines that are examined could possibly be of only one event.
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-Instead, create an awk script that looks for 3 different events and will
-exit out after it finds them. This will find the 3 events the test looks
-for (eventually if it works), and still exit out after the test is
-satisfied and not cause slower machines to run forever.
-
-Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
-Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-index b7c8f29c09a9..65916bb55dfb 100644
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -14,11 +14,35 @@ fail() { #msg
-     exit_fail
- }
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index be72030a500d..9e0a820d6961 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -817,6 +817,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
  
-+# As reading trace can last forever, simply look for 3 different
-+# events then exit out of reading the file. If there's not 3 different
-+# events, then the test has failed.
-+check_unique() {
-+    cat trace | grep -v '^#' | awk '
-+	BEGIN { cnt = 0; }
-+	{
-+	    for (i = 0; i < cnt; i++) {
-+		if (event[i] == $5) {
-+		    break;
-+		}
-+	    }
-+	    if (i == cnt) {
-+		event[cnt++] = $5;
-+		if (cnt > 2) {
-+		    exit;
-+		}
-+	    }
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
 +	}
-+	END {
-+	    printf "%d", cnt;
-+	}'
-+}
 +
- echo 'sched:*' > set_event
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->horkage & ATA_HORKAGE_NOLPM) {
 -- 
 2.39.5
 
