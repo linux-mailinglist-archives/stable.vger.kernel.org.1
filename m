@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC4CB36A5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9028CB36323
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AFFA03151
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F4D98A636A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943D3350843;
-	Tue, 26 Aug 2025 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1128D318143;
+	Tue, 26 Aug 2025 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxHQ9Btz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtxN8g2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5101434F47D;
-	Tue, 26 Aug 2025 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ADC26FDBF;
+	Tue, 26 Aug 2025 13:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218473; cv=none; b=fJejEfDM7+1/QOrBN/tdbQERCHu+8HvbfevL12uVAVGJwlzZbEOehuEIu/vhxPktj1di0KjpxMfjYHFd9COHJa6VTMCP6HrLwnqbQpmyvTEyzg8bFjSn2UwAIYfU4dpaDfQsYLBUIeKivnsx8xCodSFuuDvRtND40eOlEA7NFRc=
+	t=1756214302; cv=none; b=Ab7SA8Aow7cZrViVIOv1Jup7ii1QQlKS9iUd8j0U6Qd3LbCkPLhROniNksaxbSpbF1TfaAcrDINCmeG5fm4q8Sx7ce6Qt5u5+zUAWC2i5VsDsZ0D88UzEVicBGN6TbjV2HGO2MNMVxmT44/SoCdYnDhgRTHocgJosUkckCX0XNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218473; c=relaxed/simple;
-	bh=KovAFvefE7/JQG3c4s1Gne+JdIglarhCdRPwwanIbCM=;
+	s=arc-20240116; t=1756214302; c=relaxed/simple;
+	bh=keb5UXWHXk7mHRAZ3l4uookjXPztH02KErlX8jR/wlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJZbH8Ah0QquPtJnXxKLicRP9gUMPSsvvrYSpcwppjeMpvuQvYsB32wnT7NVMZYn4JihpXG2yyThIY3Xe3amdAHUKaH/gGvEsOCe2SmENJuosnrt3Ygfn0FvrA/OaTUXnC0QXdCL1/qYgmKJY2gWpq7UivSlCQNDim2WO8dUF40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxHQ9Btz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D874BC4CEF1;
-	Tue, 26 Aug 2025 14:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NjGH7gCaKGPNeHWoFrf9Ywa0Rc+X3E8YQbIl+8+ouFHwo3ruEZZemxYkYX8TZ7KO1KgJtTq/2wNwYBadQdYXrjXqXDwwyOVYnGxj1S7pTJrxqa48HMzA76GvBFoiNNlfIsLQcwi8lQx5E463X8OTBoKpSuX+h4nmEcQprjH94Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtxN8g2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AEDC4CEF1;
+	Tue, 26 Aug 2025 13:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218473;
-	bh=KovAFvefE7/JQG3c4s1Gne+JdIglarhCdRPwwanIbCM=;
+	s=korg; t=1756214302;
+	bh=keb5UXWHXk7mHRAZ3l4uookjXPztH02KErlX8jR/wlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxHQ9BtzH+GFiLWonDHwTxgdUCxBsTz2gSMbSpQX5cd5UqLtF6VassLaTTSuN4lva
-	 g6Wx07GKR74Zo3/iGo9sIMKLmhdB7M2z8l76W5oFnxENDbScOlhY+nkmZaalQhgrEK
-	 Z9rtMFrdiLgwq1YaqE6eJ3vKZI45Vl+y0LQC6iqM=
+	b=VtxN8g2JL+6+cmrdbQLLanz8f4uKBmqqKwoutKqxzeOHc19NOIYi/Gxg0WvL89Bxd
+	 N68d31R0nr7dLppjC8Q40CAeKX4lERwIpbLPNcVQo11HDWC3I5yI1c65xiBWepZ20Y
+	 EGgg5deHIdpGjxnuT5Sd4//ChqPeuPl0FQao8EHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 006/403] Input: xpad - set correct controller type for Acer NGR200
-Date: Tue, 26 Aug 2025 13:05:32 +0200
-Message-ID: <20250826110905.810000216@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/482] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Date: Tue, 26 Aug 2025 13:05:33 +0200
+Message-ID: <20250826110932.808692690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit bcce05041b21888f10b80ea903dcfe51a25c586e upstream.
+[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
 
-The controller should have been set as XTYPE_XBOX360 and not XTYPE_XBOX.
-Also the entry is in the wrong place. Fix it.
+Nolibc assumes that the kernel ABI is using a time values that are as
+large as a long integer. For most ABIs this holds true.
+But for x32 this is not correct, as it uses 32bit longs but 64bit times.
 
-Reported-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250708033126.26216-2-niltonperimneto@gmail.com
-Fixes: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
+and time_t being the same type. While timespec::tv_sec comes from the
+kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
+
+Switch to the __kernel_old_time_t to always get the correct type.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
+Acked-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/nolibc/std.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -142,12 +142,12 @@ static const struct xpad_device {
- 	{ 0x046d, 0xca88, "Logitech Compact Controller for Xbox", 0, XTYPE_XBOX },
- 	{ 0x046d, 0xca8a, "Logitech Precision Vibration Feedback Wheel", 0, XTYPE_XBOX },
- 	{ 0x046d, 0xcaa3, "Logitech DriveFx Racing Wheel", 0, XTYPE_XBOX360 },
-+	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX360 },
- 	{ 0x056e, 0x2004, "Elecom JC-U3613M", 0, XTYPE_XBOX360 },
- 	{ 0x05fd, 0x1007, "Mad Catz Controller (unverified)", 0, XTYPE_XBOX },
- 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
- 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
--	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
- 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
- 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index 1747ae125392..a0ea830e1ba1 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -33,6 +33,8 @@ typedef unsigned long     uintptr_t;
+ typedef   signed long      intptr_t;
+ typedef   signed long     ptrdiff_t;
+ 
++#include <linux/types.h>
++
+ /* those are commonly provided by sys/types.h */
+ typedef unsigned int          dev_t;
+ typedef unsigned long         ino_t;
+@@ -44,6 +46,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef   signed long        time_t;
++typedef __kernel_old_time_t  time_t;
+ 
+ #endif /* _NOLIBC_STD_H */
+-- 
+2.39.5
+
 
 
 
