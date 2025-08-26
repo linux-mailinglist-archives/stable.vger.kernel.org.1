@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C838B35E69
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A89CB35CF1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2714E363244
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3A717261C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D873093AB;
-	Tue, 26 Aug 2025 11:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFE3340D9C;
+	Tue, 26 Aug 2025 11:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9q+rc4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtjXR+J0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F43C18DF9D;
-	Tue, 26 Aug 2025 11:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD8033EB1D;
+	Tue, 26 Aug 2025 11:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208655; cv=none; b=Syv8JA4fjOvrdLhOvmbN50pChVGITXY/t/vUNndUVFmXvbGbcUZ/5H3Y8XxKLW3oLLOs3LRW0iZqdp9BhI1rrAYkJbGA5ck73554X7LorRq81wimWz+ZasRd5V8dAssLyW+p3t9rAT0ZiV+iYPkoq/ghllNBG8D8IsztuJtXAxY=
+	t=1756207807; cv=none; b=YoDOr2TjF5IbNaRP8ZRmNkbvYs+lkH3iZAFpd9sku5ZG4l+tWqKCcXMYV7BKww6UW9IEL6MtLpFrI/jBJV23nH1RXlvPAu4j1vRXGMiL0rxvtdXNejXtH5ukfZMshE92Jr479zCOqnk+W/bVUlYMy585G0zSqiuxSfpoyCL+KjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208655; c=relaxed/simple;
-	bh=sbpPqLWeAG6c5rU9SW0Nn2BI8QD4mcxjz83i5CA/7Zk=;
+	s=arc-20240116; t=1756207807; c=relaxed/simple;
+	bh=xAb8dyxvbjvhsnI/NnFKlic1kbLrVryN6EdkBnfYkR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDAz8v/ACuzZFqw8Vrac/ZKdpFALSIbRy2mbEIaBCcaxworw7eQe+xSpCFTI+eWxmLl0zQtKQjqcm4eqMs95rx2S1Ah1h9z0I1yDEr7tqjkmgH067xLOIqCF07x/sOlndikUAWtgb9F9VTfUYi73Y8o7djRpqlMSb8L9fJXbYEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9q+rc4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D4BC4CEF1;
-	Tue, 26 Aug 2025 11:44:15 +0000 (UTC)
+	 MIME-Version; b=rpcBvq1e9m0D+wFNtOuTNr7eCLfNWocEOR9IsOLWhfP/D5XkkeZet+DHFzyQn4954WIqvUvhnO7oiZ++67b0hQ/AHrURL25BRvlfaH9Sfri6XaKIIJxkg2UN6lA/tMkyIawC3nH3LC8tyHSl5u63rDvx41whd4/gojGGDKhGT2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtjXR+J0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B58C4CEF1;
+	Tue, 26 Aug 2025 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208655;
-	bh=sbpPqLWeAG6c5rU9SW0Nn2BI8QD4mcxjz83i5CA/7Zk=;
+	s=korg; t=1756207807;
+	bh=xAb8dyxvbjvhsnI/NnFKlic1kbLrVryN6EdkBnfYkR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9q+rc4IQD8xtLtaoz5CoS7vRgaKIVnaVCqoSFxLARjuUX/zB9WfwpymkE34nPaEV
-	 gBOsIZ5taHaaUwJh+c4kczU0SozvvptUJqZyvntyKx6CIdG3dtBsGgylTVbPAfOU/s
-	 bc2m2VCw3SG3io8bDeGDomy0dmeBKz5tw+rmBZH4=
+	b=OtjXR+J03pOa7e+9Wm8PaELOr4DJfWqo5IxFVEE21dnATPVnpcy1USK1ps/UbiPY2
+	 bpqhoS2bVnUQSOSueKOLe5Msj66FpPFUzGfOuGbrK8SekvPDLLrK81AaDynLt+oeTe
+	 3fm8L1DGa3+N7V+GRmNQiXU7R/N/y4j2Nu2FfOUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 194/322] PCI: imx6: Add IMX8MQ_EP third 64-bit BAR in epc_features
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.16 325/457] usb: dwc3: pci: add support for the Intel Wildcat Lake
 Date: Tue, 26 Aug 2025 13:10:09 +0200
-Message-ID: <20250826110920.656632596@linuxfoundation.org>
+Message-ID: <20250826110945.380651964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit c523fa63ac1d452abeeb4e699560ec3365037f32 ]
+commit 86f390ba59cd8d5755bafe2b163c3e6b89d6bbd9 upstream.
 
-IMX8MQ_EP has three 64-bit BAR0/2/4 capable and programmable BARs. For
-IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4) instead
-of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+This patch adds the necessary PCI ID for Intel Wildcat Lake
+devices.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[bhelgaas: add details in subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250708091003.2582846-2-hongxing.zhu@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250812131101.2930199-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1676,7 +1676,7 @@ static const struct imx_pcie_drvdata drv
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.mode_off[1] = IOMUXC_GPR12,
- 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
--		.epc_features = &imx8m_pcie_epc_features,
-+		.epc_features = &imx8q_pcie_epc_features,
- 		.init_phy = imx8mq_pcie_init_phy,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
- 	},
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -41,6 +41,7 @@
+ #define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
+ #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
+ #define PCI_DEVICE_ID_INTEL_JSP			0x4dee
++#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
+ #define PCI_DEVICE_ID_INTEL_ADL			0x460e
+ #define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
+ #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
+@@ -431,6 +432,7 @@ static const struct pci_device_id dwc3_p
+ 	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
 
 
 
