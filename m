@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BEAB36ADD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5A7B35C34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEA687B5940
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26FF93B4BFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8E635FC02;
-	Tue, 26 Aug 2025 14:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FB02BE643;
+	Tue, 26 Aug 2025 11:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jn8+4+xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atBaEe5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09DC3568E0;
-	Tue, 26 Aug 2025 14:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F412EE296;
+	Tue, 26 Aug 2025 11:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219068; cv=none; b=dtrBii6usc65KGiFzl2GAPbz2Iwle20L6Z3adSeLjvon8lHkfSWzaRug3LL/wAh3u+/kBhJwLpJFR2NqDLXGtMK6MG7rEscrNAn6ZpXvEn/heMtMjquT5DpCjfBDkUugh+d+Mv5LZIKKjZX3U9v1BhyrWBueBpkk1Hn0W5b4wqU=
+	t=1756207743; cv=none; b=FUGG8+HP0UwJ0n9wPVdxnOi801MfKwzd3OOULV7x1bnIByIAuG2Rysz50fYGYgwy7jSXYxdqR4j0RS1XtGTDmgvimpLsI6zC8Vey4SwvdMev2V6ZjYwwLzlT0KBREkdbVFpA5as/a2G4cVq91YHoUjt3gl3YmS4e2XJkG2qy4MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219068; c=relaxed/simple;
-	bh=TqhwU8nQGzgG6K4ipZ8Yomhp+l0fJ/8QetLzD3kpNPU=;
+	s=arc-20240116; t=1756207743; c=relaxed/simple;
+	bh=eW5NcjwySMxWCfGZB8lbt6mzMWDn4XxexbFxEsrDhlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsbrI8KcteyaAERQ+HXe9sntXnPH3Yyhl1itgEnwp4RGDO/z4rvYLeb2vM82ItwVoTyDxkrtoE4ww8foNJ6Z4Nwuv2sIv42hCyAveLPDKKWgRI88hCP5XP4An9Y9JVaKV5K9gZdzUSmW9cI7tpf5qb166buz3tWHuTiGecRvem0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jn8+4+xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEF9C4CEF1;
-	Tue, 26 Aug 2025 14:37:47 +0000 (UTC)
+	 MIME-Version; b=XWecOzIPsl1zND9OHdn+icFvWkfR2ehLhj5w/NxnMkGIWkEAFvh5l5UQ69FGYNcTMUWeBFtO7S2eDBhHZrxthbvXyb9BnC4pBEXGXYYS7kBJIRYJ6r2hUvhdjonas60DvRknRkKaI5uwI4ABuRQeCOb2ek6HcQh/M68tVvTWJcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atBaEe5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50333C4CEF1;
+	Tue, 26 Aug 2025 11:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219068;
-	bh=TqhwU8nQGzgG6K4ipZ8Yomhp+l0fJ/8QetLzD3kpNPU=;
+	s=korg; t=1756207742;
+	bh=eW5NcjwySMxWCfGZB8lbt6mzMWDn4XxexbFxEsrDhlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jn8+4+xsTkomExRxTEVjxcgcXhwdAzayel0o+9I/zijJfWisj0jGfzRgSiVCCzTG7
-	 /ggNDbc/8/RGRD9uQX1uKf2zhEm/xEPGdwpenD7wJMGulOoWOoc1DWDQB1CMZ33kUY
-	 DQLmwOO4dJr/MecvysS5TA28MEbl6Ue3FndSg1xU=
+	b=atBaEe5BMwM5Q/FzGSMu4/6wZ4G9KtxgQKcverEfnsaIKLBWS2pHzi6zZd+vK2Yog
+	 +XIYsIddz9o3//OPlkEjraHUzxE+KSFR+KzVthp7s5UJUeH7VTz94VuFFszhitCrTy
+	 8zFAWjvCQlzzQl9NjRsK3UJ+VmE2vfYXf3T1OH2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Yuntao Wang <yuntao.wang@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 240/403] jfs: Regular file corruption check
+Subject: [PATCH 6.16 282/457] fs: fix incorrect lflags value in the move_mount syscall
 Date: Tue, 26 Aug 2025 13:09:26 +0200
-Message-ID: <20250826110913.462403009@linuxfoundation.org>
+Message-ID: <20250826110944.347678980@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+[ Upstream commit 593d9e4c3d634c370f226f55453c376bf43b3684 ]
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+The lflags value used to look up from_path was overwritten by the one used
+to look up to_path.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+In other words, from_path was looked up with the wrong lflags value. Fix it.
+
+Fixes: f9fde814de37 ("fs: support getname_maybe_null() in move_mount()")
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://lore.kernel.org/20250811052426.129188-1-yuntao.wang@linux.dev
+[Christian Brauner <brauner@kernel.org>: massage patch]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/namespace.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 930d2701f206..44872daeca01 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index ea724ad3d113..49d016711469 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4657,20 +4657,10 @@ SYSCALL_DEFINE5(move_mount,
+ 	if (flags & MOVE_MOUNT_SET_GROUP)	mflags |= MNT_TREE_PROPAGATION;
+ 	if (flags & MOVE_MOUNT_BENEATH)		mflags |= MNT_TREE_BENEATH;
  
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
+-	lflags = 0;
+-	if (flags & MOVE_MOUNT_F_SYMLINKS)	lflags |= LOOKUP_FOLLOW;
+-	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)	lflags |= LOOKUP_AUTOMOUNT;
+ 	uflags = 0;
+-	if (flags & MOVE_MOUNT_F_EMPTY_PATH)	uflags = AT_EMPTY_PATH;
+-	from_name = getname_maybe_null(from_pathname, uflags);
+-	if (IS_ERR(from_name))
+-		return PTR_ERR(from_name);
++	if (flags & MOVE_MOUNT_T_EMPTY_PATH)
++		uflags = AT_EMPTY_PATH;
+ 
+-	lflags = 0;
+-	if (flags & MOVE_MOUNT_T_SYMLINKS)	lflags |= LOOKUP_FOLLOW;
+-	if (flags & MOVE_MOUNT_T_AUTOMOUNTS)	lflags |= LOOKUP_AUTOMOUNT;
+-	uflags = 0;
+-	if (flags & MOVE_MOUNT_T_EMPTY_PATH)	uflags = AT_EMPTY_PATH;
+ 	to_name = getname_maybe_null(to_pathname, uflags);
+ 	if (IS_ERR(to_name))
+ 		return PTR_ERR(to_name);
+@@ -4683,11 +4673,24 @@ SYSCALL_DEFINE5(move_mount,
+ 		to_path = fd_file(f_to)->f_path;
+ 		path_get(&to_path);
+ 	} else {
++		lflags = 0;
++		if (flags & MOVE_MOUNT_T_SYMLINKS)
++			lflags |= LOOKUP_FOLLOW;
++		if (flags & MOVE_MOUNT_T_AUTOMOUNTS)
++			lflags |= LOOKUP_AUTOMOUNT;
+ 		ret = filename_lookup(to_dfd, to_name, lflags, &to_path, NULL);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
++	uflags = 0;
++	if (flags & MOVE_MOUNT_F_EMPTY_PATH)
++		uflags = AT_EMPTY_PATH;
 +
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
++	from_name = getname_maybe_null(from_pathname, uflags);
++	if (IS_ERR(from_name))
++		return PTR_ERR(from_name);
++
+ 	if (!from_name && from_dfd >= 0) {
+ 		CLASS(fd_raw, f_from)(from_dfd);
+ 		if (fd_empty(f_from))
+@@ -4696,6 +4699,11 @@ SYSCALL_DEFINE5(move_mount,
+ 		return vfs_move_mount(&fd_file(f_from)->f_path, &to_path, mflags);
+ 	}
  
++	lflags = 0;
++	if (flags & MOVE_MOUNT_F_SYMLINKS)
++		lflags |= LOOKUP_FOLLOW;
++	if (flags & MOVE_MOUNT_F_AUTOMOUNTS)
++		lflags |= LOOKUP_AUTOMOUNT;
+ 	ret = filename_lookup(from_dfd, from_name, lflags, &from_path, NULL);
+ 	if (ret)
+ 		return ret;
 -- 
-2.39.5
+2.50.1
 
 
 
