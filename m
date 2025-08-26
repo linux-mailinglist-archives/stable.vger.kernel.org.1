@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E654B360F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC8EB369E2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4B11BA6BE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EF891C2750B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C8518F2FC;
-	Tue, 26 Aug 2025 13:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A232134DCE8;
+	Tue, 26 Aug 2025 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBavY+ON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHLQKo2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BB5FBF0;
-	Tue, 26 Aug 2025 13:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6115E1494D9;
+	Tue, 26 Aug 2025 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213338; cv=none; b=C6GxFHgRQDzUgmkhY+GcDLfGmBGobXKQzzGr0qWx94m49g/XDhBKSLHicS72oVF+GySI81JvtnaGfGLkD6XnE5crTz/htWLwC0+/cqQYwClnlYkCvSqMQwKXIhQthK3eST1qr6aswTwYaUKtKeWigzIk9vPsELGzr4QDdBrzum0=
+	t=1756217717; cv=none; b=LpmvCf9Q9kz4L/VUFCJJgoFnbsWcoUDMRPfdTSUyN/EOQGhMrZArMTLP8vUnK7jeVFUC5rp07JnAZjFV15Lb3AbAWvMD3tblHPnc3cxx4dquutBEQ3nQUv7SAi2yA5PlO2S6V98NwDXgj8+YOZuyFdMunOxj7/xJ4wFoCVyDLrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213338; c=relaxed/simple;
-	bh=i+Jj41Zw3aiakUL0piURaAgY7gQF9Igq7vFwecT70r0=;
+	s=arc-20240116; t=1756217717; c=relaxed/simple;
+	bh=lFQZl/DbLAZQzYU7HVrKAugkQAk2tjGI/+i8Ow2Lqfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGR70yxZYIbK9/qw+2O1+uOMZ31HFGGV/6hsC6gCoNyRpwydweOglsSpRTiMPNEf7DcOeGe1MCndWt9ZfzARTlBpQyEEkVqpCCQkphMSIkPIglnmvVPV3g56QexbGe+dnFdjIwECdvlOkiwW5AYW5LBQxrC7ICXe9n9DhMivp88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBavY+ON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FA2C4CEF1;
-	Tue, 26 Aug 2025 13:02:17 +0000 (UTC)
+	 MIME-Version; b=jlYSJ8b4R8nqCV9rBnfaPJPGReCyaPGHoJ6KHDzGb/efaXEXcpshncjLZhF4OGZSxLfHnEYV+HZBkd7gbS+r2pp+4clGbEqd/WQipGgwWeaiVQVzq5mAP63OxEREL8J75Bvn3b4ZGPVYt4EmcOKeU9BEMs1wmCh4EirupdM8EWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHLQKo2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE19BC4CEF1;
+	Tue, 26 Aug 2025 14:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213338;
-	bh=i+Jj41Zw3aiakUL0piURaAgY7gQF9Igq7vFwecT70r0=;
+	s=korg; t=1756217717;
+	bh=lFQZl/DbLAZQzYU7HVrKAugkQAk2tjGI/+i8Ow2Lqfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBavY+ONjp0RFX0cz9KMoV0Ty06tl+CqK9OdPHxq/9Szuo+2fOQVyci/+h3YFretk
-	 K08PnQdaayKi/8YYeTipLQ30s47Wq1qdTJSl3pJK2VD/+Y77edhwYZbIlkrzPJMgX4
-	 ucwHcjeHzH3Z2g6BCBryWZoPNOF9sHp2kEjoGBJU=
+	b=OHLQKo2/5OeUxlkRTPHQJR/mkSDPqZNum4BosXuRG33r+bcVxNNgspqq8K0hXKQsh
+	 bajdfQjerPPYmCcRCen3Hb1BpKSFUcS+L8x7tmlo59kKbuham+f+rhl1FSg/BhBUGA
+	 dnjbA/Ib9BVawu/TbmU/qwmML6MoEKw/Vng7c/oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 310/587] btrfs: abort transaction during log replay if walk_log_tree() failed
+	Oliver Neukum <oneukum@suse.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 249/523] usb: core: usb_submit_urb: downgrade type check
 Date: Tue, 26 Aug 2025 13:07:39 +0200
-Message-ID: <20250826111000.804363056@linuxfoundation.org>
+Message-ID: <20250826110930.575135680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 2a5898c4aac67494c2f0f7fe38373c95c371c930 upstream.
+[ Upstream commit 503bbde34cc3dd2acd231f277ba70c3f9ed22e59 ]
 
-If we failed walking a log tree during replay, we have a missing
-transaction abort to prevent committing a transaction where we didn't
-fully replay all the changes from a log tree and therefore can leave the
-respective subvolume tree in some inconsistent state. So add the missing
-transaction abort.
+Checking for the endpoint type is no reason for a WARN, as that can
+cause a reboot. A driver not checking the endpoint type must not cause a
+reboot, as there is just no point in this.  We cannot prevent a device
+from doing something incorrect as a reaction to a transfer. Hence
+warning for a mere assumption being wrong is not sensible.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250612122149.2559724-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/core/urb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -7300,11 +7300,14 @@ again:
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 9c285026f827..c41b25bc585c 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -490,7 +490,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
  
- 		wc.replay_dest->log_root = log;
- 		ret = btrfs_record_root_in_trans(trans, wc.replay_dest);
--		if (ret)
-+		if (ret) {
- 			/* The loop needs to continue due to the root refs */
- 			btrfs_abort_transaction(trans, ret);
--		else
-+		} else {
- 			ret = walk_log_tree(trans, log, &wc);
-+			if (ret)
-+				btrfs_abort_transaction(trans, ret);
-+		}
+ 	/* Check that the pipe's type matches the endpoint's type */
+ 	if (usb_pipe_type_check(urb->dev, urb->pipe))
+-		dev_WARN(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
++		dev_warn_once(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
+ 			usb_pipetype(urb->pipe), pipetypes[xfertype]);
  
- 		if (!ret && wc.stage == LOG_WALK_REPLAY_ALL) {
- 			ret = fixup_inode_link_counts(trans, wc.replay_dest,
+ 	/* Check against a simple/standard policy */
+-- 
+2.39.5
+
 
 
 
