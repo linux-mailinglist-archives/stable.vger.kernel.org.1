@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E256CB35FE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE1EB36921
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1A64642E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74BB38A5F11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F731ACEDE;
-	Tue, 26 Aug 2025 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0335082F;
+	Tue, 26 Aug 2025 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKCFHoG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj86FThV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C97FC1D;
-	Tue, 26 Aug 2025 12:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C73350820;
+	Tue, 26 Aug 2025 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212736; cv=none; b=J1Axwwbfqs2eEvcBr4KRuTydceJ+HIJ/4mVfYd95aaLmYpEDnZlo29GkGJhf2EfQPbWzxfite6y3b9lGXJ5nWRC14d+RmHCjhb9cgSOC63i88ZwhGQXSN3U9jyfos9ZUYiuIKCbEyO8ENQy2q0QCbWi5ZP0+FHy0d7ccjH4awMQ=
+	t=1756217112; cv=none; b=cqGLqZCJjpjwo4qy1MecnHkAY9miYzqpYsrdCBVVo8rzRGcYsSc8c8th5J2Ybw6WawcKkGJFBBjNk2EqeCo8ECNnjEuRecUVpXPMdxAMZssR6WQVbVdXwrJXm1Z3gtYhzctlQVmA7ebxxx0GWvKHopOjj+8ypfSipm9XZ0EMnZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212736; c=relaxed/simple;
-	bh=4j7X8lo9HrDMzruo24zrsk2mR5J8ardP1WnmvDz+dK0=;
+	s=arc-20240116; t=1756217112; c=relaxed/simple;
+	bh=SQRcgDLaWagm4fGPYkaEVFGZhcdnEaUUvPPzMRaWd6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q93vKqlYx/l/rNsmNpWJAoQcYzMZJesplwulBeNl1UTwF1+d4ypH3fp49b6BPARZ42ULQnGykIONGNv2Cqb8jJ9Yx6NK4/7UBYQzzVWEDXYlhulfPCjpxULItUmWoSce9sMxEIDLPGDZOmPOIJ/mHN9TspYEzZe0Wolek/Nm6LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKCFHoG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CF7C4CEF1;
-	Tue, 26 Aug 2025 12:52:15 +0000 (UTC)
+	 MIME-Version; b=bR+VAgoIPruqg2mdlOk+ydNpCx3n0VQoM2dIWAE3OjDINiYjIcL7+XeIHSJc6zSB3NAR7UPxbSMNA+HjsqLUg20xtqhDK8Ye6b2XJ2cFmFJyhItP6QAzOSdjIaiut6jopSRUJ8Dsi/kb8BtFEg+HswIlpD5OUclT0z2Vb2mPr5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj86FThV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1041C4CEF1;
+	Tue, 26 Aug 2025 14:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212735;
-	bh=4j7X8lo9HrDMzruo24zrsk2mR5J8ardP1WnmvDz+dK0=;
+	s=korg; t=1756217112;
+	bh=SQRcgDLaWagm4fGPYkaEVFGZhcdnEaUUvPPzMRaWd6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKCFHoG8VGb3WACG3dqXBaPMlZhS00BRug2S+1DlFwttT6DmSrLa3sd7rkcdOHIs5
-	 FRTi6IPeAAwfCLdxmVza2kNIMz7d0qgcn5fJ8IFpsVZ5jw/ZY5Z3kGpdN2dKWF5Btc
-	 AezYifg1OEHglLuvlHGNftQ8GV7pPNev379s7d/A=
+	b=yj86FThV7uSbNWrC9A4yXsoAMszT2tt6oH7UnE/m5Ic+En2Af/H0FtP0RWI+q3YhA
+	 fNuWfDW+SQLsbjQVuAvs6GaA9RNnJBOWUCzLWCnd7gi2D7dB195e18K9RdOSRfPpBH
+	 ZAjpfZiN9ZVvzjjAxO3vAcotUCj49B9P8uM96WME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/587] tracefs: Add d_delete to remove negative dentries
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 021/523] mmc: sdhci_am654: Workaround for Errata i2312
 Date: Tue, 26 Aug 2025 13:03:51 +0200
-Message-ID: <20250826110955.020818672@linuxfoundation.org>
+Message-ID: <20250826110925.115855059@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit d9b13cdad80dc11d74408cf201939a946e9303a6 ]
+commit 6d0b1c01847fedd7c85a5cdf59b8cfc7d14512e6 upstream.
 
-If a lookup in tracefs is done on a file that does not exist, it leaves a
-dentry hanging around until memory pressure removes it. But eventfs
-dentries should hang around as when their ref count goes to zero, it
-requires more work to recreate it. For the rest of the tracefs dentries,
-they hang around as their dentry is used as a descriptor for the tracing
-system. But if a file lookup happens for a file in tracefs that does not
-exist, it should be deleted.
+Errata i2312 [0] for K3 silicon mentions the maximum obtainable
+timeout through MMC host controller is 700ms. And for commands taking
+longer than 700ms, hardware timeout should be disabled and software
+timeout should be used.
 
-Add a .d_delete callback that checks if dentry->fsdata is set or not. Only
-eventfs dentries set fsdata so if it has content it should not be deleted
-and should hang around in the cache.
+The workaround for Errata i2312 can be achieved by adding
+SDHCI_QUIRK2_DISABLE_HW_TIMEOUT quirk in sdhci_am654.
 
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[0] https://www.ti.com/lit/pdf/sprz487
+
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250626231452.3460987-1-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/mmc/host/sdhci_am654.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 7d389dd5ed51..6b70965063d7 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -483,9 +483,20 @@ static int tracefs_d_revalidate(struct dentry *dentry, unsigned int flags)
- 	return !(ei && ei->is_freed);
- }
- 
-+static int tracefs_d_delete(const struct dentry *dentry)
-+{
-+	/*
-+	 * We want to keep eventfs dentries around but not tracefs
-+	 * ones. eventfs dentries have content in d_fsdata.
-+	 * Use d_fsdata to determine if it's a eventfs dentry or not.
-+	 */
-+	return dentry->d_fsdata == NULL;
-+}
-+
- static const struct dentry_operations tracefs_dentry_operations = {
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
-+	.d_delete = tracefs_d_delete,
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -558,7 +558,8 @@ static struct sdhci_ops sdhci_am654_ops
+ static const struct sdhci_pltfm_data sdhci_am654_pdata = {
+ 	.ops = &sdhci_am654_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
  };
  
- static int trace_fill_super(struct super_block *sb, void *data, int silent)
--- 
-2.39.5
-
+ static const struct sdhci_am654_driver_data sdhci_am654_sr1_drvdata = {
+@@ -588,7 +589,8 @@ static struct sdhci_ops sdhci_j721e_8bit
+ static const struct sdhci_pltfm_data sdhci_j721e_8bit_pdata = {
+ 	.ops = &sdhci_j721e_8bit_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
+ };
+ 
+ static const struct sdhci_am654_driver_data sdhci_j721e_8bit_drvdata = {
+@@ -612,7 +614,8 @@ static struct sdhci_ops sdhci_j721e_4bit
+ static const struct sdhci_pltfm_data sdhci_j721e_4bit_pdata = {
+ 	.ops = &sdhci_j721e_4bit_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
+ };
+ 
+ static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
 
 
 
