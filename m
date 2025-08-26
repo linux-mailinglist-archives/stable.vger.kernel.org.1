@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7A1B36CB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 792A8B363A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB74988058
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 006168E06CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02DB353360;
-	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58011C84B8;
+	Tue, 26 Aug 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrhRwiIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrsa3YIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF7C2135B8;
-	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922F3343D87;
+	Tue, 26 Aug 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218694; cv=none; b=CMPjQS7Uusd94lDlnJeH8ATKJHzhTd9RfGdZKWtMa5TaRf/4FQjEtnAG5ZQBr9XZFxybFq2n+E7JJAV91ewzJfB6Co/FCjhC22WWYBUcNiKWh1FjfjekBTyuaTIz/FmsFtvbFUeHMsLMjNKvApqT/3nxIg3VUmMcoeDzurUzs94=
+	t=1756214527; cv=none; b=ooFxMK2tyYq1ZwKAKJdp9awlmiOXUAVeP2KOj3s2nQuhvXkTDxho23FMx5QbyL19iQZvnvVhrpSYqFRSpuE2WAuN082JdUYtwvFZpOcQe7l4qrJectNxRWrIgy0hqbA5wbMBolZ+IaOjX2xuNDodAI6ZbXp8PySnMznAlR0CxhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218694; c=relaxed/simple;
-	bh=pFGHkjGbVWF30TV3A8KNkXMisIM6Cy9wqO4vT+H0Mps=;
+	s=arc-20240116; t=1756214527; c=relaxed/simple;
+	bh=fbMzBAlmhXAnp8vIjGVKjxiJKZwMi2di+H6QtGLFAsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROali9AVSzZEF6WH9bbrtEXF0ZVpi4ONKlfynAl0whdMi+02/E6PhiG06C9UcvtbwEGI2UiVnwZQbmr3HSe1fZOityd8AxcCJGeK1dI4pP3TKp2tf0ahA5OnHlVpDB6yfETWBiw2vQdPnYmpMoRHFSoYBzE1JA5L3KbkF4nDmzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrhRwiIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B52C4CEF1;
-	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
+	 MIME-Version; b=dlm/O+2px3SQN1SKpiBvnhfQ6qoknxLdeIcbSivnblZzf5DBRrF5wE9qMeZbIFzNSoehgV1qnt74ai7xhNX3NrlezstcdROwy0c34nxL+ieXwcVHzHpSt6GPSFlX0d5JXhPRc1Qa+CNAOzAoNK7EFQaQbnrU5v+64fXXX1FPv1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrsa3YIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC68C113CF;
+	Tue, 26 Aug 2025 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218694;
-	bh=pFGHkjGbVWF30TV3A8KNkXMisIM6Cy9wqO4vT+H0Mps=;
+	s=korg; t=1756214527;
+	bh=fbMzBAlmhXAnp8vIjGVKjxiJKZwMi2di+H6QtGLFAsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrhRwiILC3KgDcGvL8vuPBCW0WxNl8cqG3V+gTBD3NnUY7XLuGBKQKV7j2Hb/Ba+C
-	 TVSdfcVLfP0Kte5L/c7VRr5WXvSeXnPZXY2G8uh7vXijvK+3EejnHMIHSlgywBR6Zu
-	 nLoY2KPHgrbtc4st3IGCD3WkKzDd4tiX7yCq36xQ=
+	b=lrsa3YICiyef9oepaQcFcub8qmJM5ZsKegI+5Un5/MxwMB/pO2xPdadk9jKrrrZOC
+	 /ia2mC+e7CpYt32k23YvHCY5J2I2yEJq2a+qw6RSc+16BujiTMHH+NzY6a2UcwtqrH
+	 HRClVmtamXJ+8oTZShAJcSXdjSDyyBejbD1vo8lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 098/403] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.1 171/482] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
 Date: Tue, 26 Aug 2025 13:07:04 +0200
-Message-ID: <20250826110909.381604948@linuxfoundation.org>
+Message-ID: <20250826110935.033386162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
+[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
 
-This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
-skb's control block key in ieee80211_tx_dequeue()"").
+When allocating receive buffers for the vsock virtio RX virtqueue, an
+SKB is allocated with a 4140 data payload (the 44-byte packet header +
+VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
+overhead, the resulting 8KiB allocation thanks to the rounding in
+kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
+higher-order page allocation on systems with 4KiB pages just for the
+sake of a few hundred bytes of packet data.
 
-This commit broke TX with 802.11 encapsulation HW offloading, now that
-this is fixed, reapply it.
+Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
+better memory utilisation and removing the need to allocate higher-order
+pages entirely.
 
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-5-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/virtio_vsock.h     | 7 ++++++-
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 461cff7b94ad..f8d72f3e4def 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3661,6 +3661,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index 3f9c16611306..689e9fc50e1b 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -110,7 +110,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
+ 	return (size_t)(skb_end_pointer(skb) - skb->head);
+ }
+ 
+-#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
++/* Dimension the RX SKB so that the entire thing fits exactly into
++ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
++ * rounding up to the next page order and also means that we
++ * don't leave higher-order pages sitting around in the RX queue.
++ */
++#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
+ #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
+ #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
+ 
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 5434c9f11d28..e2cd69c127f9 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -221,7 +221,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ 
+ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
+ {
+-	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
++	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
+ 	struct scatterlist pkt, *p;
+ 	struct virtqueue *vq;
+ 	struct sk_buff *skb;
 -- 
 2.39.5
 
