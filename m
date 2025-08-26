@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B178BB35BA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B339B363BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741DD1BA3672
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D661466A96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518832C15A8;
-	Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C8E23D28F;
+	Tue, 26 Aug 2025 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8XLfO2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bq+u8vcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC32248A5;
-	Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1C222DFA7;
+	Tue, 26 Aug 2025 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207344; cv=none; b=JXRZfZdO1omJiwu/VjA71v48uB7p4VWAgw46mz2FOjRAYFi/yjlJjoQl8wjxCLjXgSixr8x12cEhcJ8asZfXF01vmmxMANyQ5ihF3IHZY0TrdNsL6nlcj7pXElWLDAivMp7XUHkBXrb59R43PbB+k5xQ33t9lmfLiVi9deYQGSM=
+	t=1756214538; cv=none; b=IraEkIk1h6tvW/zTWpqliNl2Ax3RT64X2xN3oMZAOlo8OUxenk0aZuhP2yb/utAf1YKR7gw5TtS38GxOsp57V7dSvbmRSL46aokQcHKf/qdfJ/XqEnj7kUCb61tq+DCXgxZPkL53ihN5hS0cg7cbBH3Y6HxgjCjlAX8anRLkF8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207344; c=relaxed/simple;
-	bh=B/Gy2YAFB2URsjcnbKjjMKYncQQrINlX8E7lqNlJoaQ=;
+	s=arc-20240116; t=1756214538; c=relaxed/simple;
+	bh=jUsjQ4RQERNKfyyWNDzLTKiLsRDFQYHcWcST9OQtZzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCE6pYo1Codxjy7F0iYtbjKMCKfq8ZtLO7oqdno7u3/XEjIsGdWmq8V4OIjPTlUHA8MPXC8RRKJRsxFM7Eo6gwC2d1IfVKs5vao2pYbtFuIctLNIuZKRwKSRzCCX2hK1lthCOXoWVIxrHT9TmniVlNRi7lxQwfK7vuIPh20CG8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8XLfO2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DEAC4CEF1;
-	Tue, 26 Aug 2025 11:22:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d1dVOT8Ti6t9xpk//4hoF5ndGQ04Hd1ZUXPaIpYmlBFOx9ptsBt3qrxX6Ptz1bBExMI4xSrbBxZmOHnStbBkXhgvy/3O/Gk2VKy1I1iJse7ByLpxqEVVz8R+emb6DgurD7v6yLad+QN3FvP0kFPxPTqRU5ss9/FXz5G3we/aU/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bq+u8vcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D15BC113D0;
+	Tue, 26 Aug 2025 13:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207343;
-	bh=B/Gy2YAFB2URsjcnbKjjMKYncQQrINlX8E7lqNlJoaQ=;
+	s=korg; t=1756214538;
+	bh=jUsjQ4RQERNKfyyWNDzLTKiLsRDFQYHcWcST9OQtZzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8XLfO2txRWBhPn0O+BqV9uy92HK/hXLZpoN1qGb6lo/SZZ/oslObMfsVauq3SR5F
-	 WDeg7jEklP5LCAhPiQ6jM1HWInSbd9dBSXF3ByDJUOCvBHH2xzvXa7YjAId2/GuwQD
-	 /kd4VUBH+s1Q3/C2uet5KfyhzxoQfbJ4sOwYZKyc=
+	b=bq+u8vcAkl/2g7AEsENEWhJIII1AF0mYm1ta41pzhzGcUN1Jsua3JUYwJ6tvHS0BZ
+	 dAgBxSYfBQHSAHVTLkjHO/ZFmhAp3WNdM+LQV1sTJXyU8toxmM5kjhQeYqSpMqe3WQ
+	 X0iu4502IyDA66g6OTxG2K7QNiPvYm3XxWZaWY0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 144/457] media: qcom: camss: cleanup media device allocated resource on error path
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 175/482] cifs: Fix calling CIFSFindFirst() for root path without msearch
 Date: Tue, 26 Aug 2025 13:07:08 +0200
-Message-ID: <20250826110940.933001536@linuxfoundation.org>
+Message-ID: <20250826110935.132269024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Pali Rohár <pali@kernel.org>
 
-commit 69080ec3d0daba8a894025476c98ab16b5a505a4 upstream.
+[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+To query root path (without msearch wildcard) it is needed to
+send pattern '\' instead of '' (empty string).
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
+This allows to use CIFSFindFirst() to query information about root path
+which is being used in followup changes.
 
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change fixes the stat() syscall called on the root path on the mount.
+It is because stat() syscall uses the cifs_query_path_info() function and
+it can fallback to the CIFSFindFirst() usage with msearch=false.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/cifssmb.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -3625,7 +3625,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_genpd_cleanup;
-+		goto err_media_device_cleanup;
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 0c6ade196894..49d772683004 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -3933,6 +3933,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
+ 			pSMB->FileName[name_len] = 0;
+ 			pSMB->FileName[name_len+1] = 0;
+ 			name_len += 2;
++		} else if (!searchName[0]) {
++			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
++			pSMB->FileName[1] = 0;
++			pSMB->FileName[2] = 0;
++			pSMB->FileName[3] = 0;
++			name_len = 4;
+ 		}
+ 	} else {
+ 		name_len = copy_path_name(pSMB->FileName, searchName);
+@@ -3944,6 +3950,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
+ 			pSMB->FileName[name_len] = '*';
+ 			pSMB->FileName[name_len+1] = 0;
+ 			name_len += 2;
++		} else if (!searchName[0]) {
++			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
++			pSMB->FileName[1] = 0;
++			name_len = 2;
+ 		}
  	}
  
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
-@@ -3680,6 +3680,8 @@ err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
- 	pm_runtime_disable(dev);
-+err_media_device_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
- 
+-- 
+2.39.5
+
 
 
 
