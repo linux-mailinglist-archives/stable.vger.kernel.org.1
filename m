@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC14DB360AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1388EB36BC6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9448C3BD604
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 061201C44734
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D916A1F1538;
-	Tue, 26 Aug 2025 12:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E63435AAAD;
+	Tue, 26 Aug 2025 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdpBjleK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkF4VrjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A1B1C860B;
-	Tue, 26 Aug 2025 12:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3982C35AAA3;
+	Tue, 26 Aug 2025 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213132; cv=none; b=QXybZd+7fnwM6nVyn8wN/dwiHp7BEZdss6LcHfYDMEgiyFTmj1p5n/rFQKouOgaIVzIaBhGhSaCPiMaVxAUBGJwUexrZhJ2NRNLio2Aa9cKmNkQmp2ANFOtBNC75RduMag17lepuEGl+UxE4hi6H6s7au/Kd0BofwDARKGN2X2g=
+	t=1756218588; cv=none; b=AmEFLS1ZNf5UwZlEpZAph3yM19ZyjwcLel51heKL7qf6bHSfbENnSA3XDR5HHCKC2Wf13cXSPqg6R79BmrtaIP3nRRYMPTeivaPaFbiKgvPuA79wLwSf//8UNH/OOvKVi0rNIrI1BEo8y1KRRCgizmROHXpmi9Ec88LJFmJDIuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213132; c=relaxed/simple;
-	bh=FJ0axlwM966oBZQhpwT2TmO/35Dzqxq5O6TpY49YVC8=;
+	s=arc-20240116; t=1756218588; c=relaxed/simple;
+	bh=SETGI2Q6wFyIZQCgPAhJ5r0T9JPyu6CeVMiX/jaP7M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GA8C66jHMINd47WoMiBFRlwrO2WdQFILISUpvJ4mcxEqPnZy9n5qs8cICcOCnOAGkqy2k8hhvG1r+UZx938GuTrM23WLabrU5560nuIB3YmSUjjz2dc+y2TCkdREe5Sad3f6oVfyFFWWY49bdPoOPUbEWL80Fr9AIaaLp/YRH6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdpBjleK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26323C4CEF1;
-	Tue, 26 Aug 2025 12:58:51 +0000 (UTC)
+	 MIME-Version; b=KBXtmSyNiUDPyH45VtXWk2GSUgdGuSN8qpDIVYh/NiFNgtlgivgxfgXsQ9hUlF+Ypt+JhJZTa1XEY43xzsdXGOmtgFUSa6kg6e0UN3gL6o2iHX4yVHczBIvysVqU5jcxtvH8ZeoBwYfQ9G3sq2gKBia3d9ByAY5/VFmhOzYN3aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkF4VrjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C013FC4CEF1;
+	Tue, 26 Aug 2025 14:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213132;
-	bh=FJ0axlwM966oBZQhpwT2TmO/35Dzqxq5O6TpY49YVC8=;
+	s=korg; t=1756218588;
+	bh=SETGI2Q6wFyIZQCgPAhJ5r0T9JPyu6CeVMiX/jaP7M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdpBjleKjLZOr/75u1KRZLoJg5h2mmMdOUu5EM6nXYxJc9Lb0U5LzwYOjCun7/Y9O
-	 SS5K3U2d3qfK//sjv+jD+JY7iI46T+K3xE7YhPNlH0eNdfZJsTApRUoEnS8L9igggn
-	 CvE3GgGjnUXkhoV6TjsQnSGvgvxrA2J8ncveA/BY=
+	b=DkF4VrjWN857usUVq8XWCUTb+rQCvdTVPyAM34KXOp98q6AaEn/Ei8n3LP4wSTa6k
+	 CA3TxmJW9WPBPC8n64c/DFn5SIUw+ZkQvjt7YMuglkdUbDiDp02JuCwTrEd3qpo78P
+	 uttyGdQIhmALWJ+3dkMJEt4310QjlJStAms8K1Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jackysliu <1972843537@qq.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/587] scsi: bfa: Double-free fix
-Date: Tue, 26 Aug 2025 13:06:23 +0200
-Message-ID: <20250826110958.885962637@linuxfoundation.org>
+Subject: [PATCH 5.4 058/403] net: appletalk: fix kerneldoc warnings
+Date: Tue, 26 Aug 2025 13:06:24 +0200
+Message-ID: <20250826110907.471055008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: jackysliu <1972843537@qq.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit add4c4850363d7c1b72e8fce9ccb21fdd2cf5dc9 ]
+[ Upstream commit 709565ae14aa2670d6b480be46720856e804af41 ]
 
-When the bfad_im_probe() function fails during initialization, the memory
-pointed to by bfad->im is freed without setting bfad->im to NULL.
+net/appletalk/aarp.c:68: warning: Function parameter or member 'dev' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'expires_at' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'hwaddr' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'last_sent' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'next' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'packet_queue' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'status' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'target_addr' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'xmit_count' not described in 'aarp_entry'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'dev' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'orig_dev' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'pt' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'skb' not described in 'atalk_rcv'
 
-Subsequently, during driver uninstallation, when the state machine enters
-the bfad_sm_stopping state and calls the bfad_im_probe_undo() function,
-it attempts to free the memory pointed to by bfad->im again, thereby
-triggering a double-free vulnerability.
-
-Set bfad->im to NULL if probing fails.
-
-Signed-off-by: jackysliu <1972843537@qq.com>
-Link: https://lore.kernel.org/r/tencent_3BB950D6D2D470976F55FC879206DE0B9A09@qq.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20201028005527.930388-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c4a92d07b08 ("net: appletalk: Fix use-after-free in AARP proxy probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bfa/bfad_im.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/appletalk/aarp.c | 18 +++++++++---------
+ net/appletalk/ddp.c  |  7 ++++---
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
-index a9d3d8562d3c..0ec76d1cb6fb 100644
---- a/drivers/scsi/bfa/bfad_im.c
-+++ b/drivers/scsi/bfa/bfad_im.c
-@@ -706,6 +706,7 @@ bfad_im_probe(struct bfad_s *bfad)
+diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
+index 45f584171de79..be18af481d7d5 100644
+--- a/net/appletalk/aarp.c
++++ b/net/appletalk/aarp.c
+@@ -44,15 +44,15 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
+ /* Lists of aarp entries */
+ /**
+  *	struct aarp_entry - AARP entry
+- *	@last_sent - Last time we xmitted the aarp request
+- *	@packet_queue - Queue of frames wait for resolution
+- *	@status - Used for proxy AARP
+- *	expires_at - Entry expiry time
+- *	target_addr - DDP Address
+- *	dev - Device to use
+- *	hwaddr - Physical i/f address of target/router
+- *	xmit_count - When this hits 10 we give up
+- *	next - Next entry in chain
++ *	@last_sent: Last time we xmitted the aarp request
++ *	@packet_queue: Queue of frames wait for resolution
++ *	@status: Used for proxy AARP
++ *	@expires_at: Entry expiry time
++ *	@target_addr: DDP Address
++ *	@dev:  Device to use
++ *	@hwaddr:  Physical i/f address of target/router
++ *	@xmit_count:  When this hits 10 we give up
++ *	@next: Next entry in chain
+  */
+ struct aarp_entry {
+ 	/* These first two are only used for unresolved entries */
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index 46ca0f1354fde..01170c4e9c6dd 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1400,9 +1400,10 @@ static int atalk_route_packet(struct sk_buff *skb, struct net_device *dev,
  
- 	if (bfad_thread_workq(bfad) != BFA_STATUS_OK) {
- 		kfree(im);
-+		bfad->im = NULL;
- 		return BFA_STATUS_FAILED;
- 	}
- 
+ /**
+  *	atalk_rcv - Receive a packet (in skb) from device dev
+- *	@skb - packet received
+- *	@dev - network device where the packet comes from
+- *	@pt - packet type
++ *	@skb: packet received
++ *	@dev: network device where the packet comes from
++ *	@pt: packet type
++ *	@orig_dev: the original receive net device
+  *
+  *	Receive a packet (in skb) from device dev. This has come from the SNAP
+  *	decoder, and on entry skb->transport_header is the DDP header, skb->len
 -- 
 2.39.5
 
