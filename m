@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6652BB364D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2292B36D31
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B335D189C2BF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDDDDA076F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9531EF39E;
-	Tue, 26 Aug 2025 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88473570AD;
+	Tue, 26 Aug 2025 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ip+WN9Zp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWENf4jz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E6611187;
-	Tue, 26 Aug 2025 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562430AAD8;
+	Tue, 26 Aug 2025 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215236; cv=none; b=T2EZWUTLxfnlg+T2WkJuKNFwT0rfFapK8Bw0cHJ2XGoGtMQgOPRJ2sVwgKjHK4cXJv6Z8U0XmFtbcnvC+Z/bAff+rZBmuQrk9IKcZ7an5zz9ocuIGSlF46Lb/U7wrqeIsg5TPgycAEAkXE6lXeuSGFxm1/i+4oFeitLc3x4mnYQ=
+	t=1756219393; cv=none; b=NsikhYPcmEQwj4Odf+9TG0BGvJpjvKVFqW0Xf/WV9ZpGUrtMYtMxd5wwlGNweW7Qeq3BxbX6jXY8OSa2PySAj2gyeBkXnT1jNyH/ITVw2HgvClz5vkSlkvChx2Rw/sBxkUPCQgSFM7FMNRTNtq0qa09HLSMnHnVUw3gjJKhDXxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215236; c=relaxed/simple;
-	bh=Tuwrt7BRJP7iSF8WzUp25jq7s1uYXZARM3unCb5W3aQ=;
+	s=arc-20240116; t=1756219393; c=relaxed/simple;
+	bh=1pa9I2bMXkc4x44w6jsLWMTySUpJSIQ73yq4kARxMXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cB5f+tm/jKdZzM1n+24mYHs/HRG+8xsCwYlX+JQrPMbH3ukF5gMD3SyiJoUTqrHvmztI2yIUNLBrN0o2HrDirB3wUA8tOImWFSSFCIJC8b0RGY7pXQ6EXqSiRWI5cNS1HbDa78PA0gqpjMUgiTq9o8DRXIS1tzbq+MHi45/yBZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ip+WN9Zp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B424C4CEF1;
-	Tue, 26 Aug 2025 13:33:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aFNvY9n0p734HNt3gBxUPOofK5EnNdyQkuSQJ/iEv34C2LZ+D4r5lBYACUV6bV7A146Jm0YznTAnj1Gjs6nzOV5iIML5CHrjC3XyObMjklX8DURtYomXdd0/5ElCI4Maogri7zrr4Xs+8odC/8p9h8SPDJHk1THWyB+fhyD2zO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWENf4jz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26413C4CEF1;
+	Tue, 26 Aug 2025 14:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215236;
-	bh=Tuwrt7BRJP7iSF8WzUp25jq7s1uYXZARM3unCb5W3aQ=;
+	s=korg; t=1756219393;
+	bh=1pa9I2bMXkc4x44w6jsLWMTySUpJSIQ73yq4kARxMXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ip+WN9Zp4BnlzMpUBepfsg9koQWYDe/jp2qPK7awA39wQx5KdfnuxuYlyo9r9Gen4
-	 ZVEABsHuZse+czgebdFZ2PDFd3FDdN9Pyj5am1yfewvQWCO15E4k05JgYW6j3lzIzU
-	 7i2bkaOYbg2St8VIx15NQU+jZrjYCquNPOfBBSN0=
+	b=gWENf4jzbol1i0jUlJKqEOV5BLZdK03KVoGy0/7prTfX1+/C1E6cgU1EnO9q6cld7
+	 u/eRuf74Ukb9oTi4Kq/I1SZdnJCHehLbETybzZtrqRgcf+HrOVpzSax2ctaUO/2zON
+	 NySnM8SIaK+41yhHkske1T/eDGl3kJm2MlODNgSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 438/482] mmc: sdhci-pci-gli: Add a new function to simplify the code
+Subject: [PATCH 5.4 365/403] pwm: mediatek: Implement .apply() callback
 Date: Tue, 26 Aug 2025 13:11:31 +0200
-Message-ID: <20250826110941.651582592@linuxfoundation.org>
+Message-ID: <20250826110917.086193387@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 ]
+[ Upstream commit 758de66f4bd2cac2b1d71db917c65c3d611d4e74 ]
 
-In preparation to fix replay timer timeout, add
-sdhci_gli_mask_replay_timer_timeout() function
-to simplify some of the code, allowing it to be re-used.
+To eventually get rid of all legacy drivers convert this driver to the
+modern world implementing .apply().
+This just pushed a variant of pwm_apply_legacy() into the driver that was
+slightly simplified because the driver doesn't provide a .set_polarity()
+callback.
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 340be332e420 ("mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/pwm/pwm-mediatek.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -156,6 +156,20 @@
- #define GLI_MAX_TUNING_LOOP 40
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -210,10 +210,33 @@ static void pwm_mediatek_disable(struct
+ 	pwm_mediatek_clk_disable(chip, pwm);
+ }
  
- /* Genesys Logic chipset */
-+static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
++			      const struct pwm_state *state)
 +{
-+	int aer;
-+	u32 value;
++	int err;
 +
-+	/* mask the replay timer timeout of AER */
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	if (state->polarity != PWM_POLARITY_NORMAL)
++		return -EINVAL;
++
++	if (!state->enabled) {
++		if (pwm->state.enabled)
++			pwm_mediatek_disable(chip, pwm);
++
++		return 0;
 +	}
++
++	err = pwm_mediatek_config(pwm->chip, pwm, state->duty_cycle, state->period);
++	if (err)
++		return err;
++
++	if (!pwm->state.enabled)
++		err = pwm_mediatek_enable(chip, pwm);
++
++	return err;
 +}
 +
- static inline void gl9750_wt_on(struct sdhci_host *host)
- {
- 	u32 wt_value;
+ static const struct pwm_ops pwm_mediatek_ops = {
+-	.config = pwm_mediatek_config,
+-	.enable = pwm_mediatek_enable,
+-	.disable = pwm_mediatek_disable,
++	.apply = pwm_mediatek_apply,
+ 	.owner = THIS_MODULE,
+ };
+ 
 
 
 
