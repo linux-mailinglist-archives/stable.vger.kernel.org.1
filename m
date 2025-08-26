@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-172995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D166B35B30
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AA3B3603D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48CC07BC402
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9841BA5E32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36923277A2;
-	Tue, 26 Aug 2025 11:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5864186E40;
+	Tue, 26 Aug 2025 12:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul7lMGQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULhvv9yL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E406322524;
-	Tue, 26 Aug 2025 11:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D351A23BE;
+	Tue, 26 Aug 2025 12:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207101; cv=none; b=WoAfZRK+8iMoFM0BtijA4xjd+rpQqZ2pKW9rbQUU+caABxg8WSYPopzBMTDhe2m6Al5oXLV66r39/LvOSDnyeLGGXKyZ+A/VtiAn5LrfnUahudqio4zhrNCRwJui4GShlO/iY7ACf7G1a/BVsmOE2heN+K0HukjKXyHDtQ6364c=
+	t=1756212904; cv=none; b=hhQdkHCxwvvkNSS3J3P43Xir5cr46K8yqIJSrrTHR0iuc5qtD1ju9NbHSqZ9bWO2cN7Rfg2Mtdp4Ef4QeQEWKAo5vH7xKbquLU58pwvfrCEeNfjScogyctTZrZFns8zpFtXmkElMJwIUc6tTWQNkXVPjD/nrbd/w8miyrEC/Csc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207101; c=relaxed/simple;
-	bh=yhFRPgUtTOVwfYitBtgSPYU/A3PhBbHsfvqLEqVtWL8=;
+	s=arc-20240116; t=1756212904; c=relaxed/simple;
+	bh=mGgpwntjMm2tbqvmXwuc9aNe43sVpfkpNnJJppVav/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3QT1Qmy8wcQGS1vO2XjBkgXi8GDYnykkMARLXbYTlVmzO+gNNPGP3HC3FD9fSDjCSN/nw/fIrx+i99jG9fZDAPXWKUZzfWghSHeVtvqFxb9KJ5BjXDZpwFVQCmZExBWM8b+6CWMMjQopFo8N2zeffVKy11YuNkr0LN048yyyHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul7lMGQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E301FC4CEF1;
-	Tue, 26 Aug 2025 11:18:20 +0000 (UTC)
+	 MIME-Version; b=VfwlgzR6ER0uPVTlpOP8FcnY3y78sncHrYb6q08ZwwJborNUx/vKBr+lPTmA+TQUN7KneELaQ5U0+AzjnEJyWaZbiG4/fsk0U24V3vVlGYgQ3LqEtTvGfSU63l+7ehZFP4ZU2RxgCUQceREP8un2ZFCAuA1pZF4ML0Ye5cQc0es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULhvv9yL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF24C4CEF1;
+	Tue, 26 Aug 2025 12:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207101;
-	bh=yhFRPgUtTOVwfYitBtgSPYU/A3PhBbHsfvqLEqVtWL8=;
+	s=korg; t=1756212904;
+	bh=mGgpwntjMm2tbqvmXwuc9aNe43sVpfkpNnJJppVav/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ul7lMGQVpnpdEjFiKlIBRLvWt3WOW1NttdEtE/b5dhug4sUTfcOaOpXuB/xMEjiZH
-	 yZws39oDrH3hBkD8IIdlLwXP3q+dyAzbIQTaNfQXVNfvDETmAk3lwjIgJSdFxHsPck
-	 xURTvI1R7mK9vSnqpi63YC9Tb5MA/IqFBujZ1ISk=
+	b=ULhvv9yLXPCuyouR98XYy/8VccaUnMts04bFSEcTttKg0k0oksw143OjHewVvjKoI
+	 8qo5gL6xAL5eDtDI4utH1gt+USHIITbqmDKr/MijR5XK7ihs3Uqbn4+EncPBEj0fkC
+	 WSL4C/8GtUaABQ6u02COSpzs8E62cvf+2x18rYJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.16 011/457] usb: gadget: udc: renesas_usb3: fix device leak at unbind
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/587] s390/time: Use monotonic clock in get_cycles()
 Date: Tue, 26 Aug 2025 13:04:55 +0200
-Message-ID: <20250826110937.592838655@linuxfoundation.org>
+Message-ID: <20250826110956.666442676@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+Otherwise the code might not work correctly when the clock
+is changed.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2657,6 +2657,7 @@ static void renesas_usb3_remove(struct p
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index 4d646659a5f5..f7a44af12c2f 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -192,13 +192,6 @@ static inline unsigned long get_tod_clock_fast(void)
+ 	asm volatile("stckf %0" : "=Q" (clk) : : "cc");
+ 	return clk;
+ }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+@@ -226,6 +219,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
+ 	return tod;
+ }
  
- 	cancel_work_sync(&usb3->role_work);
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
++
+ /**
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
+-- 
+2.39.5
+
 
 
 
