@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-175549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB919B3688B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5CEB3686A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C5A5820DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4663581AA1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93A734A32E;
-	Tue, 26 Aug 2025 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8207352089;
+	Tue, 26 Aug 2025 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRWSTGsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/1Ij69K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DCF223335;
-	Tue, 26 Aug 2025 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE64352078;
+	Tue, 26 Aug 2025 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217337; cv=none; b=nM9tMOkEinvVaIqgokKSAP9JDFZ9kDavjLTXGAIv8zMPsltbM622+qKTquSqBj/4VvHuQRdW456UXgq1xBHVgo27cYxvlf+ZlXkz7qd11tiQ6y5yqoCHOtnPmm5uhWIvrmhjyqXw8UyKQNJ2q5qOAz3Yq18otmQ1ABGOA55VEcQ=
+	t=1756217250; cv=none; b=VLeYwniT9NqZGB9YJM85+VxXmU61SfecZ5edlbDXeezYn677YKk+2Rjtr4ifQABpT84Q3D17uwsebOR7HWC4aV2bCPVx7cRBOW2M1qkWGM4VVzUVW1yOqdx8Vq7grhipZmrERFb5GYjaxRblFgp8u561qHjpsJfYYhtqstqAlM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217337; c=relaxed/simple;
-	bh=kgrqdfcQZJ15uygipZhogQfcW0TZdtF7WbFl4EIiVyE=;
+	s=arc-20240116; t=1756217250; c=relaxed/simple;
+	bh=VSK6K8/53q29rLYcmf0WpUDAxF7bg43PtyqwFGadCYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcAXEfO+sAFRrB7PFZ1/i/TFrP28zSwL4zP6JTeAWuRQUR8nM0214xfqxNmNQIQJrgVhq3UXKm+d8v3luCP1nYTGJrO7LABjMQUFNntjPd1fdS7MLW8jRhs6rHXD1S8Xmd7r/sakKPRv/HdMCrca2XE3V/sApR4lfCdOkh6Hi7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRWSTGsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DA8C4CEF1;
-	Tue, 26 Aug 2025 14:08:56 +0000 (UTC)
+	 MIME-Version; b=YQXBsnFufAcPfvFBsSgjAqkvDTrkS5R+UB2ImKX5wDUGN0SA47EuRPBbgEVwqGJoLM60KmqZso+C5qCPw5fL27lzd+gFqaDrgEul0396OZ50KbybesI5vwQctaMmWD9Ej4RO5hO2DTnyYfZ1uaQuANS0ZrE1HXFagJsW0wgQq7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/1Ij69K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C791EC4CEF1;
+	Tue, 26 Aug 2025 14:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217337;
-	bh=kgrqdfcQZJ15uygipZhogQfcW0TZdtF7WbFl4EIiVyE=;
+	s=korg; t=1756217250;
+	bh=VSK6K8/53q29rLYcmf0WpUDAxF7bg43PtyqwFGadCYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRWSTGsXPvEfJr9RUezDau45KJbcf4hK9tEWw7jS6/xgYZXiyaQR41L33DSiX1W0k
-	 mnCcT8iS+k2jYx1Gh4/LiICqSl4taDqJ8aa194AbQtIclq6mSbtZ5/ZOiBOnmY5Opt
-	 wiFzfPPoe4C5bVrkeSUtA2Pib1PvanY6TsE1BoRw=
+	b=f/1Ij69KIp3T+UfcIY1rYC1UAPCIFSmmFw+Jyo+xePimnmGm/+wwF2+AIfAxKPG1w
+	 76kl0InlWpsrZypLUeeuClPPHvYlBfQeCPZJPpDi1SyWUc4aH1PLCvyCxAqnr4RqMO
+	 V0a8KjxMlS6BoLiM9R+HNnYVUI3uqEcnY3UWflQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 064/523] i2c: qup: jump out of the loop in case of timeout
-Date: Tue, 26 Aug 2025 13:04:34 +0200
-Message-ID: <20250826110926.159249308@linuxfoundation.org>
+	Dawid Rezler <dawidrezler.patches@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 065/523] ALSA: hda/realtek - Add mute LED support for HP Pavilion 15-eg0xxx
+Date: Tue, 26 Aug 2025 13:04:35 +0200
+Message-ID: <20250826110926.182911031@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
 References: <20250826110924.562212281@linuxfoundation.org>
@@ -65,43 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Dawid Rezler <dawidrezler.patches@gmail.com>
 
-commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
+commit 9744ede7099e8a69c04aa23fbea44c15bc390c04 upstream.
 
-Original logic only sets the return value but doesn't jump out of the
-loop if the bus is kept active by a client. This is not expected. A
-malicious or buggy i2c client can hang the kernel in this case and
-should be avoided. This is observed during a long time test with a
-PCA953x GPIO extender.
+The mute LED on the HP Pavilion Laptop 15-eg0xxx,
+which uses the ALC287 codec, didn't work.
+This patch fixes the issue by enabling the ALC287_FIXUP_HP_GPIO_LED quirk.
 
-Fix it by changing the logic to not only sets the return value, but also
-jumps out of the loop and return to the caller with -ETIMEDOUT.
+Tested on a physical device, the LED now works as intended.
 
-Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: <stable@vger.kernel.org> # v4.17+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
+Signed-off-by: Dawid Rezler <dawidrezler.patches@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250720154907.80815-2-dawidrezler.patches@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qup.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
- 		if (!(status & I2C_STATUS_BUS_ACTIVE))
- 			break;
- 
--		if (time_after(jiffies, timeout))
-+		if (time_after(jiffies, timeout)) {
- 			ret = -ETIMEDOUT;
-+			break;
-+		}
- 
- 		usleep_range(len, len * 2);
- 	}
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9287,6 +9287,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
