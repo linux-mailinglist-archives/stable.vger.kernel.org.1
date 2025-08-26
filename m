@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11D6B365C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5844B35FDA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE0A8E1AF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFE6E1BA637A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCE92F60C1;
-	Tue, 26 Aug 2025 13:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C39D224B14;
+	Tue, 26 Aug 2025 12:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9tlZ5w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2SwmBem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9372D0621;
-	Tue, 26 Aug 2025 13:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E9422DFB8;
+	Tue, 26 Aug 2025 12:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215770; cv=none; b=UYB7y4mz11aMTrVZLg+0JfkGbmN3Y9JJzMR4U+tFduPRZTNH7ghS1/Q15X28PbfWWlOHTodm1FBC64vb/W8Kc82hGWbRzTNRoGGFe52y8a9LNaB6S2ecv4LNfmk3K6XkHeHmp40SwoF0szawflPfVw4J4z7f7DPXNGB9d2YBykM=
+	t=1756212704; cv=none; b=RQSM4wfW+nOutJu/lV/vymTR+R/sr0szD7QGE9262Mzigy7RdmEOG17aDOK6sRqUG4HQ/VETG5iREx6D/KP3LuR8Bo4dlvKHV5i4TS78GX/GsiW2/1W8HrYL0GVoe+2/GSIlJg2JVNpWcOwEmFQVWKUwnMt1LUagwWTwwtc+hjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215770; c=relaxed/simple;
-	bh=P81NQE8H2QXTth/YMFq6WzFaL1SwZDOChDRW7Vo/THo=;
+	s=arc-20240116; t=1756212704; c=relaxed/simple;
+	bh=e8qXNcBzdnwZdwIimAfPE1ndY9WakBVi+pno2SXZFnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SymgFPNxF245qQGe1gbL9fZxmHKxa059N7Qyq84daHiJL8ojbjLF1XQoPA13cQ78nWQbgMWvMYxrXdPyS89cQ3tKDwgsUxRU++NQdzmmTXjQOdnDESGsYdPjupIJ2R2akqZnbhHj2TaymPtE+wRSLPqZ6LA2l2bhx15LueCo81k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9tlZ5w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDEEC4CEF1;
-	Tue, 26 Aug 2025 13:42:50 +0000 (UTC)
+	 MIME-Version; b=if4xyviUENkabvYOAfBrD9RLD2rlIhesMbALuukk6gqkFWoXIrlkD/ett808hLZ0GfuKHmanO/ORSEeDKxdp+aNeUiAGgPwb9R2vYQTtndk0E+ctTiW59LuJcOQxOnHhNuwzBCNFS9NYR1VxDuXIMcm79w3SU786jkd4IPnpws4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2SwmBem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD729C4CEF1;
+	Tue, 26 Aug 2025 12:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215770;
-	bh=P81NQE8H2QXTth/YMFq6WzFaL1SwZDOChDRW7Vo/THo=;
+	s=korg; t=1756212704;
+	bh=e8qXNcBzdnwZdwIimAfPE1ndY9WakBVi+pno2SXZFnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9tlZ5w+GBinmGgiYWcIAbJ3qqMBYVuGT6LmRZMoCRNxbtyXuK+xxFShOvowFiq0b
-	 jvZ6ivZCUBaohZTek8KV1oTkf5emP+UPOcH8qtJXqjCnRsCk71WPri84m7qW9z1SFi
-	 ey4oLqkt8wVrvKqP083bReK+ED6ZRrf2lcYns2EE=
+	b=q2SwmBemIxZ+vsroDdcR2mMY7uR42+eAH38qI8r8QpkFcnatVmPCbMn0CoJhG6GX7
+	 5gzECthhdmWe6YKshM0GJbFAkQ0s5d+myd/ZAgZucsN+CUvPb1ek2E/U9osH0jWpfz
+	 7y7FJnrgzXQ7l03istaw4TRfBBgqgyth5Pn2HKLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/644] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
+Subject: [PATCH 6.6 071/587] loop: Avoid updating block size under exclusive owner
 Date: Tue, 26 Aug 2025 13:03:40 +0200
-Message-ID: <20250826110949.708033157@linuxfoundation.org>
+Message-ID: <20250826110954.741061048@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
+[ Upstream commit 7e49538288e523427beedd26993d446afef1a6fb ]
 
-In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
-accordance with the target frequency to ensure delivering adequate
-performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
-indication that the desired performance level is actually equal to the
-floor one.  This may cause it to choose a performance point way above
-the desired level.
+Syzbot came up with a reproducer where a loop device block size is
+changed underneath a mounted filesystem. This causes a mismatch between
+the block device block size and the block size stored in the superblock
+causing confusion in various places such as fs/buffer.c. The particular
+issue triggered by syzbot was a warning in __getblk_slow() due to
+requested buffer size not matching block device block size.
 
-Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
-actually sets HWP_DESIRED_PERF in accordance with the target performance
-value.
+Fix the problem by getting exclusive hold of the loop device to change
+its block size. This fails if somebody (such as filesystem) has already
+an exclusive ownership of the block device and thus prevents modifying
+the loop device under some exclusive owner which doesn't expect it.
 
-Address this by adjusting intel_cpufreq_update_pstate() to pass
-target_pstate as both the minimum and the desired performance levels
-to intel_cpufreq_hwp_update().
-
-Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+Reported-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20250711163202.19623-2-jack@suse.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/loop.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 4de71e772f51..9d7a4ef21077 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2703,8 +2703,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
- 		int max_pstate = policy->strict_target ?
- 					target_pstate : cpu->max_perf_ratio;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 455e2a2b149f..ed004e1610dd 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1472,19 +1472,36 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
+ 	return error;
+ }
  
--		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
--					 fast_switch);
-+		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
-+					 target_pstate, fast_switch);
- 	} else if (target_pstate != old_pstate) {
- 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
+-static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
++static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
++			       struct block_device *bdev, unsigned long arg)
+ {
+ 	int err = 0;
+ 
+-	if (lo->lo_state != Lo_bound)
+-		return -ENXIO;
++	/*
++	 * If we don't hold exclusive handle for the device, upgrade to it
++	 * here to avoid changing device under exclusive owner.
++	 */
++	if (!(mode & BLK_OPEN_EXCL)) {
++		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
++		if (err)
++			return err;
++	}
++
++	err = mutex_lock_killable(&lo->lo_mutex);
++	if (err)
++		goto abort_claim;
++
++	if (lo->lo_state != Lo_bound) {
++		err = -ENXIO;
++		goto unlock;
++	}
+ 
+ 	err = blk_validate_block_size(arg);
+ 	if (err)
+ 		return err;
+ 
+ 	if (lo->lo_queue->limits.logical_block_size == arg)
+-		return 0;
++		goto unlock;
+ 
+ 	sync_blockdev(lo->lo_device);
+ 	invalidate_bdev(lo->lo_device);
+@@ -1496,6 +1513,11 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue);
+ 
++unlock:
++	mutex_unlock(&lo->lo_mutex);
++abort_claim:
++	if (!(mode & BLK_OPEN_EXCL))
++		bd_abort_claiming(bdev, loop_set_block_size);
+ 	return err;
+ }
+ 
+@@ -1514,9 +1536,6 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
+ 	case LOOP_SET_DIRECT_IO:
+ 		err = loop_set_dio(lo, arg);
+ 		break;
+-	case LOOP_SET_BLOCK_SIZE:
+-		err = loop_set_block_size(lo, arg);
+-		break;
+ 	default:
+ 		err = -EINVAL;
  	}
+@@ -1571,9 +1590,12 @@ static int lo_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 		break;
+ 	case LOOP_GET_STATUS64:
+ 		return loop_get_status64(lo, argp);
++	case LOOP_SET_BLOCK_SIZE:
++		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
++			return -EPERM;
++		return loop_set_block_size(lo, mode, bdev, arg);
+ 	case LOOP_SET_CAPACITY:
+ 	case LOOP_SET_DIRECT_IO:
+-	case LOOP_SET_BLOCK_SIZE:
+ 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+ 		fallthrough;
 -- 
 2.39.5
 
