@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3787B3655C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DA0B35FED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7FA189C261
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DA734644C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A38D2139C9;
-	Tue, 26 Aug 2025 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D620B214813;
+	Tue, 26 Aug 2025 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T55XEtfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgj0F25k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CB92F84F;
-	Tue, 26 Aug 2025 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9179A1DE4F6;
+	Tue, 26 Aug 2025 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215658; cv=none; b=BuNhxo2taDuXpEDhwUmhklulyAF3MHxz7zkk/f8uv0TtQqkJ086lYxT9fPTj8uoRPoYqk+kpJkZpMmoL2rAN0/AFWZF1D3Qxk7S+Yk+w58zGcPg+JvaQYMJ3A6V2cvRj1EBW3ll2tbF/LipV3xaUdv1xDqp5oW6/JU4BntYFMzc=
+	t=1756212754; cv=none; b=jk8nMSQw3EcrONPWY0Wh4fCm7fVQuPdTFpPHQIFD63F3nnJqtaKEy8EH5hZdKyms5g+GJ7mxbxrEPdp2/cksEPDGwyrWQo6j5cKxL4nHSQlCvh+CE5kp6VPxcI3oSRPlnURKENlHKP8yXoRMjRFjLjxZ0ND35FjLZttIL7DyhxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215658; c=relaxed/simple;
-	bh=safEChWgYbeNIDfUTNvXwufdxFsNP7iC0Frg6rQDm/8=;
+	s=arc-20240116; t=1756212754; c=relaxed/simple;
+	bh=qeTXM6Y8KmEy1+C/XPCowUs/o6TZL6JOIVoaA1Je0JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=teZqRRCWYlSnp9v5iKvXUBSEWJW2oPfagVSv7VAIC353rn68M9HeBcfoJGmUzJ/N1ReXBuHcFUbaXSIu4TuxgpkxzrHi1Y73ihq7vX0kK8agCx2Q0EZFUdxuD80KXkbPOIxt7hZYmmRv1agJ7TXoeJ6LIKL+b9pibZ7h6OCLDV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T55XEtfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2AAC4CEF1;
-	Tue, 26 Aug 2025 13:40:57 +0000 (UTC)
+	 MIME-Version; b=lSqfv+EzgfWUV6viKncs9FuTFTFrpNzdkv2cIuf8pS5gbb/Hfog3YOyHuelzM4zpXlKJgx/3Aw1MLHcG/RVyVQVMHSLwS65XMM9jJbBvBPGd/XVoMXBGDkQZneRHC5fSuQZ/8sEdRXHr/WqWCQI69pIFpO9/KGMjZJ9d/QDLdFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgj0F25k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58A0C4CEF1;
+	Tue, 26 Aug 2025 12:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215658;
-	bh=safEChWgYbeNIDfUTNvXwufdxFsNP7iC0Frg6rQDm/8=;
+	s=korg; t=1756212754;
+	bh=qeTXM6Y8KmEy1+C/XPCowUs/o6TZL6JOIVoaA1Je0JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T55XEtfYSLQ053dENdkBhQZ0QgwBXPupszw9eQxVMozorTsbkbhTbGCNVdioJrzQf
-	 rtDWxEex/ePshPDHZVl8DL9j9SV6UmPUOa3WrzF1tXA3j/r57hIHgQn/B+RNBlW0HL
-	 oecW5xEkqZqsAKwnbziy0wxTK0FZ/b+hrBp/19CY=
+	b=xgj0F25k5spnPcpi2KF2nf7WUdkhAO29oHifKprPVhZhgFFVTMAq+985kpSdRdpjH
+	 necopQJOADp17yGzm3PwJEvcW+wAqa/Uc+sIdIbQFELF5Cplf8CmkEgTGUh10iSrQw
+	 EutWTC+u40XsadSFyjAZvlciEzYLwxV3epwEzBQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/644] selftests: Fix errno checking in syscall_user_dispatch test
-Date: Tue, 26 Aug 2025 13:03:27 +0200
-Message-ID: <20250826110949.400529443@linuxfoundation.org>
+Subject: [PATCH 6.6 059/587] cpuidle: governors: menu: Avoid using invalid recent intervals data
+Date: Tue, 26 Aug 2025 13:03:28 +0200
+Message-ID: <20250826110954.438001971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Vyukov <dvyukov@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit b89732c8c8357487185f260a723a060b3476144e ]
+[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
 
-Successful syscalls don't change errno, so checking errno is wrong
-to ensure that a syscall has failed. For example for the following
-sequence:
+Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
+discarding useful information") caused the number of wakeup interrupts
+to increase on an idle system [1], which was not expected to happen
+after merely allowing shallower idle states to be selected by the
+governor in some cases.
 
-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
-	EXPECT_EQ(EINVAL, errno);
-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
-	EXPECT_EQ(EINVAL, errno);
+However, on the system in question, all of the idle states deeper than
+WFI are rejected by the driver due to a firmware issue [2].  This causes
+the governor to only consider the recent interval duriation data
+corresponding to attempts to enter WFI that are successful and the
+recent invervals table is filled with values lower than the scheduler
+tick period.  Consequently, the governor predicts an idle duration
+below the scheduler tick period length and avoids stopping the tick
+more often which leads to the observed symptom.
 
-only the first syscall may fail and set errno, but the second may succeed
-and keep errno intact, and the check will falsely pass.
-Or if errno happened to be EINVAL before, even the first check may falsely
-pass.
+Address it by modifying the governor to update the recent intervals
+table also when entering the previously selected idle state fails, so
+it knows that the short idle intervals might have been the minority
+had the selected idle states been actually entered every time.
 
-Also use EXPECT/ASSERT consistently. Currently there is an inconsistent mix
-without obvious reasons for usage of one or another.
-
-Fixes: 179ef035992e ("selftests: Add kselftest for syscall user dispatch")
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/af6a04dbfef9af8570f5bab43e3ef1416b62699a.1747839857.git.dvyukov@google.com
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
+Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../syscall_user_dispatch/sud_test.c          | 50 +++++++++----------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-index d975a6767329..48cf01aeec3e 100644
---- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-+++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-@@ -79,6 +79,21 @@ TEST_SIGNAL(dispatch_trigger_sigsys, SIGSYS)
- 	}
- }
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index edd9a8fb9878..f3a071ac3b2a 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -160,6 +160,14 @@ static inline int performance_multiplier(unsigned int nr_iowaiters)
  
-+static void prctl_valid(struct __test_metadata *_metadata,
-+			unsigned long op, unsigned long off,
-+			unsigned long size, void *sel)
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ 
++static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
 +{
-+	EXPECT_EQ(0, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++	/* Update the repeating-pattern data. */
++	data->intervals[data->interval_ptr++] = interval_us;
++	if (data->interval_ptr >= INTERVALS)
++		data->interval_ptr = 0;
 +}
 +
-+static void prctl_invalid(struct __test_metadata *_metadata,
-+			  unsigned long op, unsigned long off,
-+			  unsigned long size, void *sel, int err)
-+{
-+	EXPECT_EQ(-1, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
-+	EXPECT_EQ(err, errno);
-+}
-+
- TEST(bad_prctl_param)
- {
- 	char sel = SYSCALL_DISPATCH_FILTER_ALLOW;
-@@ -86,57 +101,42 @@ TEST(bad_prctl_param)
- 
- 	/* Invalid op */
- 	op = -1;
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0, 0, &sel);
--	ASSERT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0, 0, &sel, EINVAL);
- 
- 	/* PR_SYS_DISPATCH_OFF */
- 	op = PR_SYS_DISPATCH_OFF;
- 
- 	/* offset != 0 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, 0);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x1, 0x0, 0, EINVAL);
- 
- 	/* len != 0 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0xff, 0, EINVAL);
- 
- 	/* sel != NULL */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0x0, &sel, EINVAL);
- 
- 	/* Valid parameter */
--	errno = 0;
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, 0x0);
--	EXPECT_EQ(0, errno);
-+	prctl_valid(_metadata, op, 0x0, 0x0, 0x0);
- 
- 	/* PR_SYS_DISPATCH_ON */
- 	op = PR_SYS_DISPATCH_ON;
- 
- 	/* Dispatcher region is bad (offset > 0 && len == 0) */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, -1L, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x1, 0x0, &sel, EINVAL);
-+	prctl_invalid(_metadata, op, -1L, 0x0, &sel, EINVAL);
- 
- 	/* Invalid selector */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x1, (void *) -1);
--	ASSERT_EQ(EFAULT, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0x1, (void *) -1, EFAULT);
- 
- 	/*
- 	 * Dispatcher range overflows unsigned long
- 	 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, 1, -1L, &sel);
--	ASSERT_EQ(EINVAL, errno) {
--		TH_LOG("Should reject bad syscall range");
--	}
-+	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, 1, -1L, &sel, EINVAL);
- 
- 	/*
- 	 * Allowed range overflows usigned long
- 	 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel);
--	ASSERT_EQ(EINVAL, errno) {
--		TH_LOG("Should reject bad syscall range");
--	}
-+	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel, EINVAL);
- }
+ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
  
  /*
+@@ -284,6 +292,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	if (data->needs_update) {
+ 		menu_update(drv, dev);
+ 		data->needs_update = 0;
++	} else if (!dev->last_residency_ns) {
++		/*
++		 * This happens when the driver rejects the previously selected
++		 * idle state and returns an error, so update the recent
++		 * intervals table to prevent invalid information from being
++		 * used going forward.
++		 */
++		menu_update_intervals(data, UINT_MAX);
+ 	}
+ 
+ 	nr_iowaiters = nr_iowait_cpu(dev->cpu);
+@@ -553,10 +569,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
+ 
+ 	data->correction_factor[data->bucket] = new_factor;
+ 
+-	/* update the repeating-pattern data */
+-	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
+-	if (data->interval_ptr >= INTERVALS)
+-		data->interval_ptr = 0;
++	menu_update_intervals(data, ktime_to_us(measured_ns));
+ }
+ 
+ /**
 -- 
-2.39.5
+2.50.1
 
 
 
