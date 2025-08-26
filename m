@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C424B36AE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE829B35B81
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A39F1C42A47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC15A16FCD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2801494D9;
-	Tue, 26 Aug 2025 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A06334392;
+	Tue, 26 Aug 2025 11:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW51mTtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhFd6PZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F782F83BA;
-	Tue, 26 Aug 2025 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D430BF54;
+	Tue, 26 Aug 2025 11:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218499; cv=none; b=pzyTYmD3ZDjzBMXAfrPCQtcViY7LKbfaqtb5YDJ9kNXESfts2ROD5JpZBCwgb0SP5QG/ysjobrhhu41PzcY0XPD693uliqlvqrgU5vyanWzOjes+ps6tGMzZf8ihtiAltRKry4AsxQgxPOpQ87nEUSmaR1lCdqUb6IMCAb5oKZo=
+	t=1756207142; cv=none; b=VLT30VqV6V1v2DFRGpswYrwzdEc0wwh8OLy9CuqNeWcKV61Qrn3n8G8EwbBMv/Ij+wYfEJqkWcz6Ypt/wMeyP9HCGbfI8nKEDrJW7dWmXOfUoQE1szUPTWoFHpntLb7Q2QK7gBTaMoG94vIRwhUd63GeMgN/4wOxP3wqA9/R/Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218499; c=relaxed/simple;
-	bh=2e2V1r0DBhwkkAllKyZebN/mkjrwt1VhdG/qbpCor9Q=;
+	s=arc-20240116; t=1756207142; c=relaxed/simple;
+	bh=QCCUZTsgJbBmNM2OSWeVF/bitHk8pfLXb+ORtw84fFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GgUWQWh9A7YFi161MsntLk3VgLIMDieZFHX+wdjmVWQv3XJ200JQo/Kpvu0EWa0MTUud+RCZc0zCc3rjZ1AQm+aousShDg7FIntjWcLHtbWM9/yDik0Y9ddm5wiNLbHDZpHuNStVaKIbGpvvwbPfGvn6BEIbwS08kFUEoAMK9E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW51mTtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8EBC4CEF1;
-	Tue, 26 Aug 2025 14:28:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C73gqSqp/Dmjfn3+uLsRclheBfLlArYbTB/Znu5wUk9vhDHSvrrIwYd0Ecknb4vdNiE3gs8OR/z3m5jAEOXeqIYBZiCYPkVUdbjqje6rqxzJx3M9E04RiNNFMdryMG8FCpxZUY8f7vz/V8bT1Q9r0NLzM36VQmlB+Y1HO1PmdoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhFd6PZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C0C4CEF1;
+	Tue, 26 Aug 2025 11:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218499;
-	bh=2e2V1r0DBhwkkAllKyZebN/mkjrwt1VhdG/qbpCor9Q=;
+	s=korg; t=1756207142;
+	bh=QCCUZTsgJbBmNM2OSWeVF/bitHk8pfLXb+ORtw84fFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vW51mTtEfYsSE0cr9V9f+bjVm6C4aJMRVtV0eN2Ih3HF7e4lgfDG4+j8dXrqPvXdz
-	 R4uIeTmss3DW/g2I9RSJdctjHOdBNaD/1jNrkhLU23755WlCBfvIQTPqAdP9Sq24eQ
-	 +8rdLCCo3nLGwIR9ZxxXEHowEVM4kGL0L4b7g9+8=
+	b=dhFd6PZsiV7VPo4NRgW9wNsQX0I90U17dn5/ED9W2UJ6A0VHXfDTrTxZbWME0lfSz
+	 bhfyY56GrtUKEZHRVdMwHkrzYeJKaJM/8IHSd41tokdrnzYhbQGZAvVaNRvcH+O4hM
+	 SwxI+jPGOi5wNN8JuenSFdzdFEXc1YIm5BT9iMzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 024/403] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.16 066/457] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
 Date: Tue, 26 Aug 2025 13:05:50 +0200
-Message-ID: <20250826110906.440255272@linuxfoundation.org>
+Message-ID: <20250826110938.995406660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +64,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
+commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 upstream.
 
-Fix a race where a pending interrupt could be received and the handler
-called before the handler's data has been setup, by converting to
-irq_set_chained_handler_and_data().
+On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
+and in this case the driver ends up programming the UTRL_NEXUS_TYPE
+incorrectly as 0.
 
-Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This is because the left hand side of the shift is 1, which is of type
+int, i.e. 31 bits wide. Shifting by more than that width results in
+undefined behaviour.
+
+Fix this by switching to the BIT() macro, which applies correct type
+casting as required. This ensures the correct value is written to
+UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
+warning:
+
+    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
+    shift exponent 32 is too large for 32-bit type 'int'
+
+For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
+write.
+
+Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/stm32-adc-core.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/ufs/host/ufs-exynos.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -393,10 +393,9 @@ static int stm32_adc_irq_probe(struct pl
- 		return -ENOMEM;
- 	}
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1110,8 +1110,8 @@ static int exynos_ufs_post_link(struct u
+ 	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
  
--	for (i = 0; i < priv->cfg->num_irqs; i++) {
--		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
--		irq_set_handler_data(priv->irq[i], priv);
--	}
-+	for (i = 0; i < priv->cfg->num_irqs; i++)
-+		irq_set_chained_handler_and_data(priv->irq[i],
-+						 stm32_adc_irq_handler, priv);
+ 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
+-	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
+-	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
  
- 	return 0;
- }
+ 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
 
 
 
