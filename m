@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDFDB368E5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB138B3662C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458D4189B80E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F85565E3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A683431FD;
-	Tue, 26 Aug 2025 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E842FDC44;
+	Tue, 26 Aug 2025 13:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6oC5SA3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrWgCyHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB0C1662E7;
-	Tue, 26 Aug 2025 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0021D3376BE;
+	Tue, 26 Aug 2025 13:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217208; cv=none; b=s2utZpi2UW3ARBn9D51vWzsZVzdFh5w104lqKmVynv9AbL7uiIl2xER7kWDqAdFO3nkXg09cuPMY6GBYA4NKWow0QhlEUkYZ4Gsul9/9TrAwxiWR3jkiULg6ee3GWnMdhtPhLGs9LtdXDx7CHl2hl0aYt7a71NlG9+BVFUTgbyk=
+	t=1756215813; cv=none; b=OFwOlh0WryBMSaSFX9ZX+Z8k0nAS1SSPbbkx7UNLgofdbwA6pYVj9QKERKyBF66V5Uh89sFp2xYhO33K29oikNP5DKnVNuuy/OhzAty5nPj9/l4oyEowmoB0Lps4Cnpxog3KuiAj3xrRDLKYxixuDbJSEYgHC4V3TmdIGTqjZSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217208; c=relaxed/simple;
-	bh=Q9Wv1eSWfqSEP2kZgJuYWtxZjR1Z6BFjJhIxh+GeeVk=;
+	s=arc-20240116; t=1756215813; c=relaxed/simple;
+	bh=ho8KNqDjod76FrQ5MHMWI+QKskQ+qpt6qkAXK0/u84c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTwfoN7vxUWPNRMdkm+nKcy7NsApyLhW3M+xxi7hCHqi4DpD0iFsPuZ8zrYAB/f7ZAPcJ12hhknA0emJqL9dr3rbv/Qx/r/U3Mn8OkpmfRgT9/U5Ebc6OmyRLWrlmUiA/FMguSYA6SphOI5vu1tdX4RHNpe4DQPI/y6UAd+40G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6oC5SA3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90619C4CEF1;
-	Tue, 26 Aug 2025 14:06:47 +0000 (UTC)
+	 MIME-Version; b=J2DDiqxECHmp0y/GOuf32P29qyyPUzHMhqe921h3kUw299tM9Oq+G8VHBhT93HfKlzsQm9EQ82sKemP8pdJ7QzWUh0Q584w6AJDZyHda9sRz3kMsJc++FqH0VheOvBe7Gyvreh1cDz6BLu16/QATULNAXr2K6x+qd5EF/dJO2uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrWgCyHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823A8C4CEF1;
+	Tue, 26 Aug 2025 13:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217207;
-	bh=Q9Wv1eSWfqSEP2kZgJuYWtxZjR1Z6BFjJhIxh+GeeVk=;
+	s=korg; t=1756215812;
+	bh=ho8KNqDjod76FrQ5MHMWI+QKskQ+qpt6qkAXK0/u84c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6oC5SA3Dw+OtWi/DbpiBwxUQzyLBGAEQiE40bCGXXH1bzA4Q0552TSwY1jlTDUAX
-	 jv3ydnE/eL0hUm8QzTGDlTV7XcTRWNTD4cLfcQvor2yupDwRWKD+9uw1UNo4fEePg+
-	 XIiSXNxkr+4N2AntWQvHvag5PxFA/TDrTqgCkXlI=
+	b=LrWgCyHAwS4660yMuxrHZZ4bUfJS69PHS+hXhkHUbvLVeC7aBjQGaao6ItfmJ0tnL
+	 AaSj58tBNsmuV8wicuPH0/tRA/VMsWCNi6CG3DYCIJq43opCb4B+aojO49tf+kNkOI
+	 mTp5EKfmH1hmr22XeDmy/tOlhYFpVs2eH9nEfi3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/523] RDMA/core: Rate limit GID cache warning messages
-Date: Tue, 26 Aug 2025 13:04:26 +0200
-Message-ID: <20250826110925.972369931@linuxfoundation.org>
+Subject: [PATCH 5.15 176/644] perf sched: Fix memory leaks for evsel->priv in timehist
+Date: Tue, 26 Aug 2025 13:04:27 +0200
+Message-ID: <20250826110950.830693048@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
+[ Upstream commit 117e5c33b1c44037af016d77ce6c0b086d55535f ]
 
-The GID cache warning messages can flood the kernel log when there are
-multiple failed attempts to add GIDs. This can happen when creating many
-virtual interfaces without having enough space for their GIDs in the GID
-table.
+It uses evsel->priv to save per-cpu timing information.  It should be
+freed when the evsel is released.
 
-Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
-maintaining visibility of the issue.
+Add the priv destructor for evsel same as thread to handle that.
 
-Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 49394a2a24c78ce0 ("perf sched timehist: Introduce timehist command")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-6-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-sched.c | 12 ++++++++++++
+ tools/perf/util/evsel.c    | 11 +++++++++++
+ tools/perf/util/evsel.h    |  2 ++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 7989b7e1d1c04..2bd9fb3195f5e 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -582,8 +582,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u8 port,
- out_unlock:
- 	mutex_unlock(&table->lock);
- 	if (ret)
--		pr_warn("%s: unable to add gid %pI6 error=%d\n",
--			__func__, gid->raw, ret);
-+		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
-+				    __func__, gid->raw, ret);
- 	return ret;
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 19e96141e7b4..95a549fdabe0 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1902,6 +1902,16 @@ static u64 evsel__get_time(struct evsel *evsel, u32 cpu)
+ 	return r->last_time[cpu];
  }
  
++static void timehist__evsel_priv_destructor(void *priv)
++{
++	struct evsel_runtime *r = priv;
++
++	if (r) {
++		free(r->last_time);
++		free(r);
++	}
++}
++
+ static int comm_width = 30;
+ 
+ static char *timehist_get_commstr(struct thread *thread)
+@@ -3039,6 +3049,8 @@ static int perf_sched__timehist(struct perf_sched *sched)
+ 
+ 	setup_pager();
+ 
++	evsel__set_priv_destructor(timehist__evsel_priv_destructor);
++
+ 	/* prefer sched_waking if it is captured */
+ 	if (evlist__find_tracepoint_by_name(session->evlist, "sched:sched_waking"))
+ 		handlers[1].handler = timehist_sched_wakeup_ignore;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index c19a583ca9f6..f14c83e6829a 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -1416,6 +1416,15 @@ static void evsel__free_config_terms(struct evsel *evsel)
+ 	free_config_terms(&evsel->config_terms);
+ }
+ 
++static void (*evsel__priv_destructor)(void *priv);
++
++void evsel__set_priv_destructor(void (*destructor)(void *priv))
++{
++	assert(evsel__priv_destructor == NULL);
++
++	evsel__priv_destructor = destructor;
++}
++
+ void evsel__exit(struct evsel *evsel)
+ {
+ 	assert(list_empty(&evsel->core.node));
+@@ -1436,6 +1445,8 @@ void evsel__exit(struct evsel *evsel)
+ 	hashmap__free(evsel->per_pkg_mask);
+ 	evsel->per_pkg_mask = NULL;
+ 	zfree(&evsel->metric_events);
++	if (evsel__priv_destructor)
++		evsel__priv_destructor(evsel->priv);
+ 	perf_evsel__object.fini(evsel);
+ }
+ 
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index 0492cafac443..d39d8aab3769 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -231,6 +231,8 @@ void evsel__init(struct evsel *evsel, struct perf_event_attr *attr, int idx);
+ void evsel__exit(struct evsel *evsel);
+ void evsel__delete(struct evsel *evsel);
+ 
++void evsel__set_priv_destructor(void (*destructor)(void *priv));
++
+ struct callchain_param;
+ 
+ void evsel__config(struct evsel *evsel, struct record_opts *opts,
 -- 
 2.39.5
 
