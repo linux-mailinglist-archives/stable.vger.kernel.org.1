@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-174588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FF6B3641E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9712BB35D2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 990198A64C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6ED7C5C24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC0214B950;
-	Tue, 26 Aug 2025 13:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B745428F935;
+	Tue, 26 Aug 2025 11:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJxZ5/wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPMDOuYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5802FAD4B;
-	Tue, 26 Aug 2025 13:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A4921D3C0;
+	Tue, 26 Aug 2025 11:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214790; cv=none; b=TfD824Jq6d9xoPuiC3fIE48CObIc8aiFNzp71k4VHqIRkp5a1Ur2rBSp0YcsNo8tUd01CiCu5YYe59u1NmGSu7v42B+bX4kEwrEERWPUn3thMQXKGzhqqZPO+0FPCcaDNalnGgwQ8HmCvbrb+UfS5EV8vsLIlpyqKAn401Mnask=
+	t=1756208508; cv=none; b=ZvTtG/1H20BTU0CWM2QVnXg9QbX6nYU9xjLbCpinCTxKR8+g4Ei0G9Lxg41UMccECdhL2TzFzhSYN8sk08C5fg1RztHpbVs6lkd/vd3hsMVocomhZLhsIkSxCuhc9gRVZbaQMIjhhQ2GVH7+Nv93Y7EUNMp+LWL6G6O31QANhqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214790; c=relaxed/simple;
-	bh=BUtuQ/KFgleOJANdyDupvM6v7cC1gYF1uSgVhfLBlsI=;
+	s=arc-20240116; t=1756208508; c=relaxed/simple;
+	bh=8zgqqfBSvN6Cxeb2+7vtGrz7o/AOleB7wjekqIWoeWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DK0ah9gwBSYrKN0NRs1GvjoTCYrS7CO0p1QwRojeJ7envsuv/FcP2IDnoy7AtIKN50gWxTslBoXgSGP6oIZhFh05ganssIKpXlcWM8cMYhZ8a8A1VdTqX5Tp/88Q8wrt/IMeVBXcKX+p3vUouOGI57brJZmek20slvxpk6MzDD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJxZ5/wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8DFC4CEF1;
-	Tue, 26 Aug 2025 13:26:29 +0000 (UTC)
+	 MIME-Version; b=mBBXDPZk9mTLENAtzyDWqeFsSRnxKoEfp4e+WRqtGD5Iyd8YyLAUv8KkuFqgHP56825Im/WJt9vEaw/7YIlTqkBTAzL9e9t/26E0AErGnnY0BLmO7/PSamHToOFaZXG5c0jub9EkO8Xdmo75sy/vqHEIAjz8wAkGFyrnkpBmGVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPMDOuYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04619C4CEF1;
+	Tue, 26 Aug 2025 11:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214790;
-	bh=BUtuQ/KFgleOJANdyDupvM6v7cC1gYF1uSgVhfLBlsI=;
+	s=korg; t=1756208508;
+	bh=8zgqqfBSvN6Cxeb2+7vtGrz7o/AOleB7wjekqIWoeWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJxZ5/wzLIpZhfdkmJK1pXOqT+a0xmF+cy9XTixLbQm7i34l8i5yI3TmVdq1JjDpC
-	 fGUA5b+h0+d9vC+gopsl354yKZSmKsfhs3AxS4K7aqn7E0nq4ui0hrAM/UZawB18pg
-	 3fZvneFjRVDCvbDaQqk/qwtSeYfxNhfPP6ylHUv4=
+	b=dPMDOuYSO5HfBJXAIqOMftaBgDE3TXMWInniFlXzswIWaawMe/IdWaObARqQUuhk9
+	 JaqYCfsGiMa0jifpVUvEKrZm55phLdpp7tBEmiQEFQ7QJAZMYYCnnbinUVDX5mSmjR
+	 Rsgn6TJNyuiBGjZ0Fc6NvleoHkuVyQtJGjsfYrcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.1 270/482] usb: atm: cxacru: Merge cxacru_upload_firmware() into cxacru_heavy_init()
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 108/322] media: ov2659: Fix memory leaks in ov2659_probe()
 Date: Tue, 26 Aug 2025 13:08:43 +0200
-Message-ID: <20250826110937.437587919@linuxfoundation.org>
+Message-ID: <20250826110918.442691841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,236 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 8d1b02e5d7e3a6d2acffb1f4c094678fda9e3456 upstream.
+commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
 
-After a recent change in clang to expose uninitialized warnings from
-const variables [1], there is a warning in cxacru_heavy_init():
+ov2659_probe() doesn't properly free control handler resources in failure
+paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
+memory leaks and reorder the ctrl_handler assignment for better code flow.
 
-  drivers/usb/atm/cxacru.c:1104:6: error: variable 'bp' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1113:39: note: uninitialized use occurs here
-   1113 |         cxacru_upload_firmware(instance, fw, bp);
-        |                                              ^~
-  drivers/usb/atm/cxacru.c:1104:2: note: remove the 'if' if its condition is always true
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1095:32: note: initialize the variable 'bp' to silence this warning
-   1095 |         const struct firmware *fw, *bp;
-        |                                       ^
-        |                                        = NULL
-
-While the warning is technically correct that bp is conditionally passed
-uninitialized to cxacru_upload_firmware(), it is ultimately a false
-positive warning on the uninitialized use of bp because the same
-condition that initializes bp, instance->modem_type->boot_rom_patch, is
-the same one that gates the use of bp within cxacru_upload_firmware().
-As this warning occurs in clang's frontend before inlining occurs, it
-cannot know that these conditions are indentical to avoid the warning.
-
-Manually inline cxacru_upload_firmware() into cxacru_heavy_init(), as
-that is its only callsite, so that clang can see that bp is initialized
-and used under the same condition, clearing up the warning without any
-functional changes to the code (LLVM was already doing this inlining
-later).
-
+Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
 Cc: stable@vger.kernel.org
-Fixes: 1b0e61465234 ("[PATCH] USB ATM: driver for the Conexant AccessRunner chipset cxacru")
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2102
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250722-usb-cxacru-fix-clang-21-uninit-warning-v2-1-6708a18decd2@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/atm/cxacru.c |  106 +++++++++++++++++++++--------------------------
- 1 file changed, 49 insertions(+), 57 deletions(-)
+ drivers/media/i2c/ov2659.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -980,25 +980,60 @@ cleanup:
- 	return ret;
- }
+--- a/drivers/media/i2c/ov2659.c
++++ b/drivers/media/i2c/ov2659.c
+@@ -1469,14 +1469,15 @@ static int ov2659_probe(struct i2c_clien
+ 				     V4L2_CID_TEST_PATTERN,
+ 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
+ 				     0, 0, ov2659_test_pattern_menu);
+-	ov2659->sd.ctrl_handler = &ov2659->ctrls;
  
--static void cxacru_upload_firmware(struct cxacru_data *instance,
--				   const struct firmware *fw,
--				   const struct firmware *bp)
-+
-+static int cxacru_find_firmware(struct cxacru_data *instance,
-+				char *phase, const struct firmware **fw_p)
- {
--	int ret;
-+	struct usbatm_data *usbatm = instance->usbatm;
-+	struct device *dev = &usbatm->usb_intf->dev;
-+	char buf[16];
-+
-+	sprintf(buf, "cxacru-%s.bin", phase);
-+	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
-+
-+	if (request_firmware(fw_p, buf, dev)) {
-+		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
-+		return -ENOENT;
-+	}
-+
-+	usb_info(usbatm, "found firmware %s\n", buf);
-+
-+	return 0;
-+}
-+
-+static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
-+			     struct usb_interface *usb_intf)
-+{
-+	const struct firmware *fw, *bp;
-+	struct cxacru_data *instance = usbatm_instance->driver_data;
- 	struct usbatm_data *usbatm = instance->usbatm;
- 	struct usb_device *usb_dev = usbatm->usb_dev;
- 	__le16 signature[] = { usb_dev->descriptor.idVendor,
- 			       usb_dev->descriptor.idProduct };
- 	__le32 val;
-+	int ret;
-+
-+	ret = cxacru_find_firmware(instance, "fw", &fw);
-+	if (ret) {
-+		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
-+		return ret;
-+	}
- 
--	usb_dbg(usbatm, "%s\n", __func__);
-+	if (instance->modem_type->boot_rom_patch) {
-+		ret = cxacru_find_firmware(instance, "bp", &bp);
-+		if (ret) {
-+			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
-+			release_firmware(fw);
-+			return ret;
-+		}
-+	}
- 
- 	/* FirmwarePllFClkValue */
- 	val = cpu_to_le32(instance->modem_type->pll_f_clk);
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLFCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllFClkValue failed: %d\n", ret);
--		return;
-+		goto done;
+ 	if (ov2659->ctrls.error) {
+ 		dev_err(&client->dev, "%s: control initialization error %d\n",
+ 			__func__, ov2659->ctrls.error);
++		v4l2_ctrl_handler_free(&ov2659->ctrls);
+ 		return  ov2659->ctrls.error;
  	}
  
- 	/* FirmwarePllBClkValue */
-@@ -1006,7 +1041,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLBCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllBClkValue failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
++	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+ 	sd = &ov2659->sd;
+ 	client->flags |= I2C_CLIENT_SCCB;
  
- 	/* Enable SDRAM */
-@@ -1014,7 +1049,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SDRAMEN_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Enable SDRAM failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Firmware */
-@@ -1022,7 +1057,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, FW_ADDR, fw->data, fw->size);
- 	if (ret) {
- 		usb_err(usbatm, "Firmware upload failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Boot ROM patch */
-@@ -1031,7 +1066,7 @@ static void cxacru_upload_firmware(struc
- 		ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, BR_ADDR, bp->data, bp->size);
- 		if (ret) {
- 			usb_err(usbatm, "Boot ROM patching failed: %d\n", ret);
--			return;
-+			goto done;
- 		}
- 	}
- 
-@@ -1039,7 +1074,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SIG_ADDR, (u8 *) signature, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Signature storing failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	usb_info(usbatm, "starting device\n");
-@@ -1051,7 +1086,7 @@ static void cxacru_upload_firmware(struc
- 	}
- 	if (ret) {
- 		usb_err(usbatm, "Passing control to firmware failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Delay to allow firmware to start up. */
-@@ -1065,53 +1100,10 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_cm(instance, CM_REQUEST_CARD_GET_STATUS, NULL, 0, NULL, 0);
- 	if (ret < 0) {
- 		usb_err(usbatm, "modem failed to initialize: %d\n", ret);
--		return;
--	}
--}
--
--static int cxacru_find_firmware(struct cxacru_data *instance,
--				char *phase, const struct firmware **fw_p)
--{
--	struct usbatm_data *usbatm = instance->usbatm;
--	struct device *dev = &usbatm->usb_intf->dev;
--	char buf[16];
--
--	sprintf(buf, "cxacru-%s.bin", phase);
--	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
--
--	if (request_firmware(fw_p, buf, dev)) {
--		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
--		return -ENOENT;
-+		goto done;
- 	}
- 
--	usb_info(usbatm, "found firmware %s\n", buf);
--
--	return 0;
--}
--
--static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
--			     struct usb_interface *usb_intf)
--{
--	const struct firmware *fw, *bp;
--	struct cxacru_data *instance = usbatm_instance->driver_data;
--	int ret = cxacru_find_firmware(instance, "fw", &fw);
--
--	if (ret) {
--		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
--		return ret;
--	}
--
--	if (instance->modem_type->boot_rom_patch) {
--		ret = cxacru_find_firmware(instance, "bp", &bp);
--		if (ret) {
--			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
--			release_firmware(fw);
--			return ret;
--		}
--	}
--
--	cxacru_upload_firmware(instance, fw, bp);
--
-+done:
- 	if (instance->modem_type->boot_rom_patch)
- 		release_firmware(bp);
- 	release_firmware(fw);
 
 
 
