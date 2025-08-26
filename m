@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AB9B36BCC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1712DB35DE5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782BF982A7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80DDE7C626E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9FF35334E;
-	Tue, 26 Aug 2025 14:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CA2284B5B;
+	Tue, 26 Aug 2025 11:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Atk2iQCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgzONqF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EB935AAA5;
-	Tue, 26 Aug 2025 14:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE78F749C;
+	Tue, 26 Aug 2025 11:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218377; cv=none; b=C5qDQLVfz9wwi5GIgW3IREGYUo5Xozm8iWLsSR8XLry9TvSMIFTvLQ4vmpuwyj3aHZBGtwNZB2M4AL/ctGZXlAzm+JK+JbwbqfRfuJclFxLI+tAeP4DCpiZuCI7LYJZjEzzbPREiAsxER+V9BxOBz8c8EP5voPtcqeAq08XArUA=
+	t=1756208913; cv=none; b=QtEoLb/tTJHPsauDk0l6ZZrT5XMu8MdNRSXhwenmaTUl0oYU08GuIMG8ICF/UDyD+EmA4w9oFxEPQdOpPGYdvP+0oIkkA6phEL3ui3ARUvMMcYABLTnbX+1oGdPrszS2rNiLY+S2tOnizrtL0/ELc4kTpADsZ8ppcdMigDD552M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218377; c=relaxed/simple;
-	bh=38rHCAXM8dE9qU5aPnu3mdHwoHEdzmNhfDbw//xNWCU=;
+	s=arc-20240116; t=1756208913; c=relaxed/simple;
+	bh=6JViOKmsc8WE5Pr2d0H+FLYBaWTY559ICuMtJDOdOyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bp64jM+Sp0RSaN7SN2Og0bl4ZJ/12bT11oJ/TtehxKPpFPpruGR9oEJPgMxw2NMoyJnq0QzMoSXXOlexE+vXUeKbJpYpwxA3SKu9EUTkFCBD/UIJlsVVq/XdZLzbyFfQbKD9E+kw/JcghcvNxkS0XukeJ8za/u+e/t7ct/SiIgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Atk2iQCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7345FC4CEF1;
-	Tue, 26 Aug 2025 14:26:16 +0000 (UTC)
+	 MIME-Version; b=fBkmZNLyzmIJF9MlkSO2MQg+kisfvvaBhdeEPZmUsskJ6K+dRRlWk/UUyLUIEo1jBwB4G4k9zEsiJkuDjPcExD+ZVjoCi5Qbt7bNdeyXdFqFiHE80M+4Y3QxCDgJG2b+Y+LsENqme6uev7XPzi8hHdMvOtAsZgejyIWWUIwd4bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgzONqF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337C9C4CEF1;
+	Tue, 26 Aug 2025 11:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218376;
-	bh=38rHCAXM8dE9qU5aPnu3mdHwoHEdzmNhfDbw//xNWCU=;
+	s=korg; t=1756208913;
+	bh=6JViOKmsc8WE5Pr2d0H+FLYBaWTY559ICuMtJDOdOyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Atk2iQCxx8o29tDTcx5dBhiiAETerVqNif/T7T7khCVcGCoxnrKizTpwEBnPT9R8q
-	 t7LdS04WKfjPpKZcxlmWsm7Oh/r2hab5BhqgnDPPmGpx9k/wertCA133IfqWD2pLZZ
-	 GCswrdqvgXhX51kX/Se1YDJHnL6Un/qQKcx/PNGY=
+	b=mgzONqF9RmQdZEqIk4KE1gjHS94gmfWDiP7dHcPvaYIkJFUgzOaVrwgXtutedoGbA
+	 kTjbzDxpkvBELBamUarHU2Bp3CyfMuWE9rzeabcVxl3SpVT3H8W3iI1AarGk8+VT3T
+	 +EG0BqOYcN38nk+/Pq/cZKX2usPpNeV+D0oePwIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Pavel Machek <pavel@denx.de>
-Subject: [PATCH 5.10 498/523] gpio: rcar: Use raw_spinlock to protect register access
+	Qingfang Deng <dqfext@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 293/322] ppp: fix race conditions in ppp_fill_forward_path
 Date: Tue, 26 Aug 2025 13:11:48 +0200
-Message-ID: <20250826110936.726116230@linuxfoundation.org>
+Message-ID: <20250826110923.140482261@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +60,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Qingfang Deng <dqfext@gmail.com>
 
-commit f02c41f87cfe61440c18bf77d1ef0a884b9ee2b5 upstream.
+[ Upstream commit 0417adf367a0af11adf7ace849af4638cfb573f7 ]
 
-Use raw_spinlock in order to fix spurious messages about invalid context
-when spinlock debugging is enabled. The lock is only used to serialize
-register access.
+ppp_fill_forward_path() has two race conditions:
 
-    [    4.239592] =============================
-    [    4.239595] [ BUG: Invalid wait context ]
-    [    4.239599] 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35 Not tainted
-    [    4.239603] -----------------------------
-    [    4.239606] kworker/u8:5/76 is trying to lock:
-    [    4.239609] ffff0000091898a0 (&p->lock){....}-{3:3}, at: gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.239641] other info that might help us debug this:
-    [    4.239643] context-{5:5}
-    [    4.239646] 5 locks held by kworker/u8:5/76:
-    [    4.239651]  #0: ffff0000080fb148 ((wq_completion)async){+.+.}-{0:0}, at: process_one_work+0x190/0x62c
-    [    4.250180] OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.254094]  #1: ffff80008299bd80 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x1b8/0x62c
-    [    4.254109]  #2: ffff00000920c8f8
-    [    4.258345] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'bitclock-master' with a value.
-    [    4.264803]  (&dev->mutex){....}-{4:4}, at: __device_attach_async_helper+0x3c/0xdc
-    [    4.264820]  #3: ffff00000a50ca40 (request_class#2){+.+.}-{4:4}, at: __setup_irq+0xa0/0x690
-    [    4.264840]  #4:
-    [    4.268872] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.273275] ffff00000a50c8c8 (lock_class){....}-{2:2}, at: __setup_irq+0xc4/0x690
-    [    4.296130] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x00000000ee100000, max clock rate 200 MHz
-    [    4.304082] stack backtrace:
-    [    4.304086] CPU: 1 UID: 0 PID: 76 Comm: kworker/u8:5 Not tainted 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35
-    [    4.304092] Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-    [    4.304097] Workqueue: async async_run_entry_fn
-    [    4.304106] Call trace:
-    [    4.304110]  show_stack+0x14/0x20 (C)
-    [    4.304122]  dump_stack_lvl+0x6c/0x90
-    [    4.304131]  dump_stack+0x14/0x1c
-    [    4.304138]  __lock_acquire+0xdfc/0x1584
-    [    4.426274]  lock_acquire+0x1c4/0x33c
-    [    4.429942]  _raw_spin_lock_irqsave+0x5c/0x80
-    [    4.434307]  gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.440061]  gpio_rcar_irq_set_type+0xd4/0xd8
-    [    4.444422]  __irq_set_trigger+0x5c/0x178
-    [    4.448435]  __setup_irq+0x2e4/0x690
-    [    4.452012]  request_threaded_irq+0xc4/0x190
-    [    4.456285]  devm_request_threaded_irq+0x7c/0xf4
-    [    4.459398] ata1: link resume succeeded after 1 retries
-    [    4.460902]  mmc_gpiod_request_cd_irq+0x68/0xe0
-    [    4.470660]  mmc_start_host+0x50/0xac
-    [    4.474327]  mmc_add_host+0x80/0xe4
-    [    4.477817]  tmio_mmc_host_probe+0x2b0/0x440
-    [    4.482094]  renesas_sdhi_probe+0x488/0x6f4
-    [    4.486281]  renesas_sdhi_internal_dmac_probe+0x60/0x78
-    [    4.491509]  platform_probe+0x64/0xd8
-    [    4.495178]  really_probe+0xb8/0x2a8
-    [    4.498756]  __driver_probe_device+0x74/0x118
-    [    4.503116]  driver_probe_device+0x3c/0x154
-    [    4.507303]  __device_attach_driver+0xd4/0x160
-    [    4.511750]  bus_for_each_drv+0x84/0xe0
-    [    4.515588]  __device_attach_async_helper+0xb0/0xdc
-    [    4.520470]  async_run_entry_fn+0x30/0xd8
-    [    4.524481]  process_one_work+0x210/0x62c
-    [    4.528494]  worker_thread+0x1ac/0x340
-    [    4.532245]  kthread+0x10c/0x110
-    [    4.535476]  ret_from_fork+0x10/0x20
+1. The ppp->channels list can change between list_empty() and
+   list_first_entry(), as ppp_lock() is not held. If the only channel
+   is deleted in ppp_disconnect_channel(), list_first_entry() may
+   access an empty head or a freed entry, and trigger a panic.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250121135833.3769310-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[PL: manullay applied the changes]
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Pavel Machek <pavel@denx.de> # for 5.10-stable
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. pch->chan can be NULL. When ppp_unregister_channel() is called,
+   pch->chan is set to NULL before pch is removed from ppp->channels.
+
+Fix these by using a lockless RCU approach:
+- Use list_first_or_null_rcu() to safely test and access the first list
+  entry.
+- Convert list modifications on ppp->channels to their RCU variants and
+  add synchronize_net() after removal.
+- Check for a NULL pch->chan before dereferencing it.
+
+Fixes: f6efc675c9dd ("net: ppp: resolve forwarding path for bridge pppoe devices")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Link: https://patch.msgid.link/20250814012559.3705-2-dqfext@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rcar.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ppp/ppp_generic.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -34,7 +34,7 @@ struct gpio_rcar_bank_info {
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 1420c4efa48e..0553b0b356b3 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -33,6 +33,7 @@
+ #include <linux/ppp_channel.h>
+ #include <linux/ppp-comp.h>
+ #include <linux/skbuff.h>
++#include <linux/rculist.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/if_arp.h>
+ #include <linux/ip.h>
+@@ -1613,11 +1614,14 @@ static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
+ 	if (ppp->flags & SC_MULTILINK)
+ 		return -EOPNOTSUPP;
  
- struct gpio_rcar_priv {
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct device *dev;
- 	struct gpio_chip gpio_chip;
- 	struct irq_chip irq_chip;
-@@ -114,7 +114,7 @@ static void gpio_rcar_config_interrupt_i
- 	 * "Setting Level-Sensitive Interrupt Input Mode"
+-	if (list_empty(&ppp->channels))
++	pch = list_first_or_null_rcu(&ppp->channels, struct channel, clist);
++	if (!pch)
++		return -ENODEV;
++
++	chan = READ_ONCE(pch->chan);
++	if (!chan)
+ 		return -ENODEV;
+ 
+-	pch = list_first_entry(&ppp->channels, struct channel, clist);
+-	chan = pch->chan;
+ 	if (!chan->ops->fill_forward_path)
+ 		return -EOPNOTSUPP;
+ 
+@@ -3000,7 +3004,7 @@ ppp_unregister_channel(struct ppp_channel *chan)
  	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive or negative logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, hwirq, !active_high_rising_edge);
-@@ -133,7 +133,7 @@ static void gpio_rcar_config_interrupt_i
- 	if (!level_trigger)
- 		gpio_rcar_write(p, INTCLR, BIT(hwirq));
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_irq_set_type(struct irq_data *d, unsigned int type)
-@@ -226,7 +226,7 @@ static void gpio_rcar_config_general_inp
- 	 * "Setting General Input Mode"
- 	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, gpio, false);
-@@ -241,7 +241,7 @@ static void gpio_rcar_config_general_inp
- 	if (p->has_outdtsel && output)
- 		gpio_rcar_modify_bit(p, OUTDTSEL, gpio, false);
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_request(struct gpio_chip *chip, unsigned offset)
-@@ -310,9 +310,9 @@ static void gpio_rcar_set(struct gpio_ch
- 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	gpio_rcar_modify_bit(p, OUTDT, offset, value);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static void gpio_rcar_set_multiple(struct gpio_chip *chip, unsigned long *mask,
-@@ -329,12 +329,12 @@ static void gpio_rcar_set_multiple(struc
- 	if (!bankmask)
- 		return;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	val = gpio_rcar_read(p, OUTDT);
- 	val &= ~bankmask;
- 	val |= (bankmask & bits[0]);
- 	gpio_rcar_write(p, OUTDT, val);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_direction_output(struct gpio_chip *chip, unsigned offset,
-@@ -454,7 +454,7 @@ static int gpio_rcar_probe(struct platfo
- 		return -ENOMEM;
- 
- 	p->dev = dev;
--	spin_lock_init(&p->lock);
-+	raw_spin_lock_init(&p->lock);
- 
- 	/* Get device configuration from DT node */
- 	ret = gpio_rcar_parse_dt(p, &npins);
+ 	down_write(&pch->chan_sem);
+ 	spin_lock_bh(&pch->downl);
+-	pch->chan = NULL;
++	WRITE_ONCE(pch->chan, NULL);
+ 	spin_unlock_bh(&pch->downl);
+ 	up_write(&pch->chan_sem);
+ 	ppp_disconnect_channel(pch);
+@@ -3506,7 +3510,7 @@ ppp_connect_channel(struct channel *pch, int unit)
+ 	hdrlen = pch->file.hdrlen + 2;	/* for protocol bytes */
+ 	if (hdrlen > ppp->dev->hard_header_len)
+ 		ppp->dev->hard_header_len = hdrlen;
+-	list_add_tail(&pch->clist, &ppp->channels);
++	list_add_tail_rcu(&pch->clist, &ppp->channels);
+ 	++ppp->n_channels;
+ 	pch->ppp = ppp;
+ 	refcount_inc(&ppp->file.refcnt);
+@@ -3536,10 +3540,11 @@ ppp_disconnect_channel(struct channel *pch)
+ 	if (ppp) {
+ 		/* remove it from the ppp unit's list */
+ 		ppp_lock(ppp);
+-		list_del(&pch->clist);
++		list_del_rcu(&pch->clist);
+ 		if (--ppp->n_channels == 0)
+ 			wake_up_interruptible(&ppp->file.rwait);
+ 		ppp_unlock(ppp);
++		synchronize_net();
+ 		if (refcount_dec_and_test(&ppp->file.refcnt))
+ 			ppp_destroy_interface(ppp);
+ 		err = 0;
+-- 
+2.50.1
+
 
 
 
