@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96248B360A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6BCB36956
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1556F1BA6ED2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854BE1C83500
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F5A1F1538;
-	Tue, 26 Aug 2025 12:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C0A352FE1;
+	Tue, 26 Aug 2025 14:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jo3Ld28u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INLbW3fV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66451A5BBC;
-	Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E476352FE2;
+	Tue, 26 Aug 2025 14:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213137; cv=none; b=Idfc/CjRLJISDwJHwQ0npGOtqd+hsps77P7rnwwescsiGygNDP14xG9IMfEvrTPqnGU6Af9pUVKUb6YCu8tVxWKOzlchIGYiHOUXO7XE2fjG45YUC1PIcBH0SjMFf/JXJ6aWW9VOuyLaW6Z45EXpz7Vq9Kbo2bwqy9F/WamXjBY=
+	t=1756217606; cv=none; b=Wbk0NGlnfu19Bk4lBbOPtLFdquVr5G3tFFsuq7VZzr8MY/wtbuVSpG7f1n/AY/+bsCBOXEGmQMOMLvJMoIhU3k3Bo/SeZMFQfOoS+JjnCv+2LEUWknWBc3T1QtlxcmFL3vurckuDQYIgmQB1kpe0v+cEG928g191fiiLfZ503fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213137; c=relaxed/simple;
-	bh=tPJbIhB/0FUUDWpXX2Q4Ib0rIjAcHjH51E/VqPwokBA=;
+	s=arc-20240116; t=1756217606; c=relaxed/simple;
+	bh=l1eYWnbcJ8jbDrYaSFGR8i6wmmXOKTJpXy3ebhPTJbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ubllqi//ppmFHXVr8fTSRbLaDh40wlnyxCXxLmE4mL3mwCi2Cgggq71U8mogKuODgwDaqzwX4fzflEfWvEzvyTEhEo07EaPHYhtgYxnQ1udtIZajHPvUUF6nERVoSQ7K4ubN/jLDSF+jmF4VvztP/ic5a8m92tidTx+yLORPaa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jo3Ld28u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C078C4CEF1;
-	Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
+	 MIME-Version; b=D8CqZU+Rj+2pJu54DxMWOzXVbrk/Mxi0XyzmWrz8D0Ap2daxkSnBcYukRGKWLfMzAAVGvsouS2c574HFI9PV9T4liczL9V5FRjbDpyg3CtBx3s9qIBA+GC5FeHNXCJ2yrNEKNBe+d5xl4dPu49a8UkghxXBzhERZQjJMprGLPsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INLbW3fV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD86C4CEF1;
+	Tue, 26 Aug 2025 14:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213137;
-	bh=tPJbIhB/0FUUDWpXX2Q4Ib0rIjAcHjH51E/VqPwokBA=;
+	s=korg; t=1756217606;
+	bh=l1eYWnbcJ8jbDrYaSFGR8i6wmmXOKTJpXy3ebhPTJbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jo3Ld28uR+mIlEhS5TDSOhnw4jd79s0VRAgN+zacnraXEbEIqYKKD6lQVdQU1a1a+
-	 qU7D/TiUij3FIbGA0MAeoftJUyYmSlYh1ya6kFFJtN1/JfE3RfXfuS5vxR2EATUEvk
-	 rK7Q9DbjzdzTJb0ZHn2VZjNr+wvjRqpFXctDkD4U=
+	b=INLbW3fV7Gq6+yp266df6oXQqB4MOPX4vz8BP7lVkZnS91uAIu9EK5pwvcZ9P0gtD
+	 7PohMxi0vz+IUYi9yd1jZeJmH35998djG0KiIIa5NuyanzWhU6ASXvc5Zl/3LsAwNj
+	 6sqkM+cytVyUaX5MotWGewRBEKI5hEGP/cRbZB4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/587] jfs: Regular file corruption check
+Subject: [PATCH 5.10 175/523] phy: mscc: Fix parsing of unicast frames
 Date: Tue, 26 Aug 2025 13:06:25 +0200
-Message-ID: <20250826110958.937624776@linuxfoundation.org>
+Message-ID: <20250826110928.776113396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+[ Upstream commit 6fb5ff63b35b7e849cc8510957f25753f87f63d2 ]
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+According to the 1588 standard, it is possible to use both unicast and
+multicast frames to send the PTP information. It was noticed that if the
+frames were unicast they were not processed by the analyzer meaning that
+they were not timestamped. Therefore fix this to match also these
+unicast frames.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: ab2bf9339357 ("net: phy: mscc: 1588 block initialization")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250726140307.3039694-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/mscc/mscc_ptp.c | 1 +
+ drivers/net/phy/mscc/mscc_ptp.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 01b6912e60f8..742cadd1f37e 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
- 
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
-+
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
- 
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 85102e895665..4a00b82d3ca5 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -897,6 +897,7 @@ static int vsc85xx_eth1_conf(struct phy_device *phydev, enum ts_blk blk,
+ 				     get_unaligned_be32(ptp_multicast));
+ 	} else {
+ 		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST;
++		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST;
+ 		vsc85xx_ts_write_csr(phydev, blk,
+ 				     MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(0), val);
+ 		vsc85xx_ts_write_csr(phydev, blk,
+diff --git a/drivers/net/phy/mscc/mscc_ptp.h b/drivers/net/phy/mscc/mscc_ptp.h
+index 3ea163af0f4f..7e3809e4aa5f 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.h
++++ b/drivers/net/phy/mscc/mscc_ptp.h
+@@ -98,6 +98,7 @@
+ #define MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(x) (MSCC_ANA_ETH1_FLOW_ENA(x) + 3)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_MASK_MASK	GENMASK(22, 20)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST	0x400000
++#define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST	0x200000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_FULL_ADDR	0x100000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST_MASK	GENMASK(17, 16)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST	0x020000
 -- 
 2.39.5
 
