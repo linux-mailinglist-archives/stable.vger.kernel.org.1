@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCBBB35D82
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBC9B364F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B9DF367390
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C482B1C20A4C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AA2322530;
-	Tue, 26 Aug 2025 11:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68A02BE653;
+	Tue, 26 Aug 2025 13:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvXlvf7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JodzKsW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575032143C;
-	Tue, 26 Aug 2025 11:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F97024DD11;
+	Tue, 26 Aug 2025 13:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208095; cv=none; b=Bh/cDHBF5UUA7ZIw5zjPcL1zhkA2BaQXicc7qZRRO2cYitD62PmgKN88Xt/tK2922blLiPJpU91dlyWNKdVLD+ewUyk5lFEOyf5zmNeiDT/k2Jq/+hNRy/OBZCpS3jn/w+RoTpu/DK4albyM3F9mdqKwvgvL+VMn6B3/i41UGrg=
+	t=1756215309; cv=none; b=BWuAp84rE4f1Ox68Prc2C+dT5MwzkBGoQyqLcRxL6ERKqXEa9mr5Tc24RHJmkP8wDuLs8fkki1bKn6JGV98BAZD5t6DU1Ndobpvlp8w/Uu0sURTXF0bwlvXDERKlTKx2sMOTs/FYj/fG4ljSy9BrDAvTKiS08J1iZ5nMC17PEhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208095; c=relaxed/simple;
-	bh=MKPB5vTy7HbFNBKrsPoEYEcDDbKQknCfzICQogCeDIc=;
+	s=arc-20240116; t=1756215309; c=relaxed/simple;
+	bh=XWrd09b3IT0SUuvConxwuGvhRDWRdUFQDXH7V+LOFco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2bWa8tOZ0EAYOquGzW5g4EisNK+XL+Vc0ordx/HR4qmSIseXDsS5y9mKoQM79TlZaMQmDC3+mz9DFgn6vBLCaHjHR8fwloCJdpMQCta3/dFmKD4q4lLDK/V18IPt4+pJ8TmLvNyaWc2ra0FjVq6rPeSqnUOb6LI/07asLVFJD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvXlvf7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C3FC4CEF1;
-	Tue, 26 Aug 2025 11:34:54 +0000 (UTC)
+	 MIME-Version; b=s/Ka6CMauNL511/3WC8S001jFeQQbRX8aguZQtFEfzEbyY4m/Z4aDUYl3xT1OdPd0XRMZaZdhAfQdfg7lfskufAFpnd0gNzuJl8Qb938bB6TYh4PCOoAWmRxprn7PGxGnORaemVi2Bfk3YDvEoi6vvkrWXlhaqLjAiTPZlMOznE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JodzKsW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2670C4CEF1;
+	Tue, 26 Aug 2025 13:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208095;
-	bh=MKPB5vTy7HbFNBKrsPoEYEcDDbKQknCfzICQogCeDIc=;
+	s=korg; t=1756215309;
+	bh=XWrd09b3IT0SUuvConxwuGvhRDWRdUFQDXH7V+LOFco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvXlvf7COkn+3rxo6VuZUiO7BQofeCYa7mfeSlHcZLfrMLeQUp7qm5oFLCCXnvn0a
-	 yYbVo4UsHQNXkg5Tsmd8Ea6HJHYGRMnSVzMYViMETaUNJO7Y7hD0q8cdVb9pstGj01
-	 B7+jFqcfFIP08LrZizKQhz8h3qjYAr/l85HfR5Ng=
+	b=JodzKsW/WtLps+2MCjugjWCrFghcexjukXcZCFzgotXbiLGojgEnTm+tGM2oO9yHV
+	 +ddaI5yQ/wdiT8E02Ne7ybulL4INJd9B6taxauECLMVHuluYE5aO/gYvTxLqZFgLE1
+	 V7bCO8nf0UqUrY3cDGRIhHestlO3v8USBiIqW37Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 435/457] net/sched: Remove unnecessary WARNING condition for empty child qdisc in htb_activate
+Subject: [PATCH 6.1 466/482] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
 Date: Tue, 26 Aug 2025 13:11:59 +0200
-Message-ID: <20250826110948.039652840@linuxfoundation.org>
+Message-ID: <20250826110942.333915028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit 2c2192e5f9c7c2892fe2363244d1387f62710d83 ]
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-The WARN_ON trigger based on !cl->leaf.q->q.qlen is unnecessary in
-htb_activate. htb_dequeue_tree already accounts for that scenario.
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: William Liu <will@willsroot.io>
-Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://patch.msgid.link/20250819033632.579854-1-will@willsroot.io
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_htb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index c968ea763774..b5e40c51655a 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -592,7 +592,7 @@ htb_change_class_mode(struct htb_sched *q, struct htb_class *cl, s64 *diff)
-  */
- static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
- {
--	WARN_ON(cl->level || !cl->leaf.q || !cl->leaf.q->q.qlen);
-+	WARN_ON(cl->level || !cl->leaf.q);
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index dd7406a9380f..b90c286d77ed 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -294,6 +294,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
- 	if (!cl->prio_activity) {
- 		cl->prio_activity = 1 << cl->prio;
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
++
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
+ 
 -- 
 2.50.1
 
