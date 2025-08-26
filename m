@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D0DB3657B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12690B367A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13E2B1C20BDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37EAFB6388B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40136239E8B;
-	Tue, 26 Aug 2025 13:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E742A352FCF;
+	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IBtuiO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA2QM3nL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F165D1E480;
-	Tue, 26 Aug 2025 13:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9980B34AB0D;
+	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215742; cv=none; b=fVa1Fdu9l3zv4VRPs62BDniBZLlqB5Hf1OAAswaX0TrIW1G3n9zyzVWEmLnoSRKdZMMGMpEl+PYKyyo691pMwqzKDu931hHN0HxdgUw4CTs7D5m7d/MmIGqcI3BFbEx2S9b0G69elC82dbRzHyczIQTR0hA38aVp5W0kPw/H4JM=
+	t=1756217137; cv=none; b=RQn6NnJqhjs6QgI65tzYJsWzxnAxmbjIG49Z1I7EZXmYLfBWaLdthylDaG0wPfBLYAx341ccbqkpYN/TyWp/uTmYM4myTmatV46OaKeRJz5YtEADeQpYY/41dkNADv9sEHA9M3vlEhpico7PYQ5tJ5NBZvYglM3xvRyyoUfSKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215742; c=relaxed/simple;
-	bh=n+OGKPyRX84VxHVyItmUCXUoFZ9FoqgCBjpSi0VbX04=;
+	s=arc-20240116; t=1756217137; c=relaxed/simple;
+	bh=ri0E2APLt4U2yrk08d4QovnFQlvs/3hxokWiJFRbwM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqPImFnRVy9toW6p89pSDbmV9+Pft9MFrQuLyJE3ExYzkvW/ZRlPSCO5OnKGRalHA7v+QrLqU3RtOKNwrBN3Kxyh2Tc7lWjWlgiNHjwVc+GobhU7G+OenJC1vmh9o+R7/zoY/TtNUsydxRK9Iafvcf61BmkEN10my+IZ6NXFY58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IBtuiO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABB3C113CF;
-	Tue, 26 Aug 2025 13:42:21 +0000 (UTC)
+	 MIME-Version; b=E/m9J0JgNK04q7jEF4/jhFhjLqYq42blHoibEXJZePoE4WNdJh5v7Jy++jXgJGHT7RdXKCPb5LsrPRd5IPt+l1kWnRNec3GcpdNGgH34S8aCi1L6ZZ7LxDJYcA0GFJNklKUish5Nk81p+VBLA/L3zB3knsc1eOgaEiWPaSIECLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA2QM3nL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBE1C4CEF1;
+	Tue, 26 Aug 2025 14:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215741;
-	bh=n+OGKPyRX84VxHVyItmUCXUoFZ9FoqgCBjpSi0VbX04=;
+	s=korg; t=1756217137;
+	bh=ri0E2APLt4U2yrk08d4QovnFQlvs/3hxokWiJFRbwM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IBtuiO+WEwIwuhhzzIk5IfcpuA4NfpYWuL2n8Te2W9CC9r5ZAFYVHaU1DJdhzbzS
-	 81bJTlDugxN7H3+N5fRjrr2Jv4ayrk15Zxd2B2jDIqpUnw05jWS88e48MQ0ch2niLJ
-	 LGVoo8eYN4TYzlHZt6rldnd7X7AgIvaA+osRY13M=
+	b=IA2QM3nLRpw/3korKvvNIQ/mi+aKkVlUfM2cnONVRNG1w7OLgeck9Ul6ExRE7xXEo
+	 9PGfXmW7nfgFdrDQU2ozaHsZIMm29UpHc1UyzB8Hh5bwFrR0BFJHBd78ibhocKp2TB
+	 prpdOTGrs9G6ytnUNgUO3eOpC+CEoKgMB2gpp3Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/644] netfilter: nf_tables: adjust lockdep assertions handling
+	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
+	"Enju, Kohei" <enjuk@amazon.co.jp>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 029/523] comedi: das16m1: Fix bit shift out of bounds
 Date: Tue, 26 Aug 2025 13:03:59 +0200
-Message-ID: <20250826110950.152950822@linuxfoundation.org>
+Message-ID: <20250826110925.315851917@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
+commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
 
-It's needed to check the return value of lockdep_commit_lock_is_held(),
-otherwise there's no point in this assertion as it doesn't print any
-debug information on itself.
+When checking for a supported IRQ number, the following test is used:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+	if ((1 << it->options[1]) & 0xdcfc) {
 
-Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
-Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.
+
+Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
+Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
+Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/comedi/drivers/das16m1.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a1f60f275814..33d03340d9fc 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3443,7 +3443,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- /* can only be used if rule is no longer visible to dumps */
- static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+--- a/drivers/staging/comedi/drivers/das16m1.c
++++ b/drivers/staging/comedi/drivers/das16m1.c
+@@ -523,7 +523,8 @@ static int das16m1_attach(struct comedi_
+ 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
  
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
-@@ -5180,7 +5180,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
- 
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
--- 
-2.39.5
-
+ 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+-	if ((1 << it->options[1]) & 0xdcfc) {
++	if (it->options[1] >= 2 && it->options[1] <= 15 &&
++	    (1 << it->options[1]) & 0xdcfc) {
+ 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0)
 
 
 
