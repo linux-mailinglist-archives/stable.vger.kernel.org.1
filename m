@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4047BB36AC3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81C9B36482
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D5D11C4435A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54C478E30A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EC328314A;
-	Tue, 26 Aug 2025 14:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF0D341674;
+	Tue, 26 Aug 2025 13:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nK9Pqxnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQqR6ADx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08391D5CD4;
-	Tue, 26 Aug 2025 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77F13451AA;
+	Tue, 26 Aug 2025 13:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218104; cv=none; b=BCaGjyWO2hPirn8x+PX5X8BACPo+z4dhfS56iCuEw256PFA5ccNiJrCwkimXUM5zMTjESLPKqEsmkL4B/n4etL18nAX3bz1w7/kbFHnOHkQRdIq/7Y0spG3A9wmboUcQzvx0lNW2t56M7ags8X/5PuSPyKs/HGBnuskzH7QxrxY=
+	t=1756215024; cv=none; b=CUD5oBtiWXHbFQT5U4L2zj1Bd8xo0RMTTNFYcCqIaC+8wAhjNbn8Lnfi4TsrSR+H2fQMu8efFjtKI0l+m8xL/z+aM16ot3OYNy21YUMH+5g5ac0qZTrcVyqZZKObVrP0GGbAALp30qAS4ErpTP8kMJFucRZiBRYRPreCqWgF6vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218104; c=relaxed/simple;
-	bh=ZeuyGh6RoW66I10tJIJwDpg3qqfIZTm92/4xKanh2jM=;
+	s=arc-20240116; t=1756215024; c=relaxed/simple;
+	bh=8ykNdPX8Et02rA71+nPrpINz62Qydx6OzNP+XPrJZB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hI6tQWmaCFLRO2DOOqycdcTSAVPa8HA/deQwbP+HHc5FPvJuqO/nXNGucfHtQz4hlYuI7kWbLX172HfJ39cnJ7ByTaA+uQPq42RoQiKI0L7lU+wf0a3TRrT7dW1XxWB7dJ4u341rre+8IM9ouVCf8ny6H/0X8sA4RX4Hucb7mgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nK9Pqxnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800F9C16AAE;
-	Tue, 26 Aug 2025 14:21:43 +0000 (UTC)
+	 MIME-Version; b=ebnX9Yp5kn3H9lbgOZyzxxzEa/PqyZdvohgHBuCIoi6dLVwS+On6wNQyBESOwpw4/INZkQDMehQlDUzhKHBxPXHzWHweVu6aRdnLinsIndzLGKcLl1DqFh6B6pE/ePNDAf92GvRIhpqlNHzpSfG7Es6BXB3ZtfZaoZKh4P5Im/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQqR6ADx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A53C4CEF1;
+	Tue, 26 Aug 2025 13:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218103;
-	bh=ZeuyGh6RoW66I10tJIJwDpg3qqfIZTm92/4xKanh2jM=;
+	s=korg; t=1756215024;
+	bh=8ykNdPX8Et02rA71+nPrpINz62Qydx6OzNP+XPrJZB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nK9PqxnciJkTa6HrFhS2hwTEVuXV5ZF/rzsKkxy3PChkN7LfJhTH3Nsrkaf8OCibx
-	 3Vg5cHrCav4wweufZvJqSnQNHWIHWfv5nv7GHcTuSPwXZnCluj94wOdkmlu3O8TZvB
-	 rFJyzlfQq9MZsPtm9GB24PC6VioI6VJWVqO/tZxc=
+	b=sQqR6ADx1EJMno0UgfXZVTchZpofxknvZ5S+N4u/2+JjJkeODT0DDhPrpqCTFNvVD
+	 Jisfo5ILu4bCZjQ8GVw/z5zmjrhMSJb1h2vfKyJ2vsUTxfXx8Fas4fUZSbZiIp/q7/
+	 ENArm1MmOAHlweAAurznI8+bPdQF2peTde4WlOgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Scott GUO <scottzhguo@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 394/523] squashfs: fix memory leak in squashfs_fill_super
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Cristian Prundeanu <cpru@amazon.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 351/482] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
 Date: Tue, 26 Aug 2025 13:10:04 +0200
-Message-ID: <20250826110934.179320792@linuxfoundation.org>
+Message-ID: <20250826110939.506914710@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
+[ Upstream commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb ]
 
-If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
-allocated memory (sb->s_fs_info).
+`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
+to different stacks along with the Shadow Call Stack if it is enabled.
+Those two stack changes cannot be done atomically and both functions
+can be interrupted by SErrors or Debug Exceptions which, though unlikely,
+is very much broken : if interrupted, we can end up with mismatched stacks
+and Shadow Call Stack leading to clobbered stacks.
 
-Fix this by moving the call to sb_min_blocksize to before memory is
-allocated.
+In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
+but x18 stills points to the old task's SCS. When the interrupt handler
+tries to save the task's SCS pointer, it will save the old task
+SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
+clobbering it.
 
-Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
-Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: Scott GUO <scottzhguo@tencent.com>
-Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
+In `call_on_irq_stack()`, it can happen when switching from the task stack
+to the IRQ stack and when switching back. In both cases, we can be
+interrupted when the SCS pointer points to the IRQ SCS, but SP points to
+the task stack. The nested interrupt handler pushes its return addresses
+on the IRQ SCS. It then detects that SP points to the task stack,
+calls `call_on_irq_stack()` and clobbers the task SCS pointer with
+the IRQ SCS pointer, which it will also use !
+
+This leads to tasks returning to addresses on the wrong SCS,
+or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
+or FPAC if enabled.
+
+This is possible on a default config, but unlikely.
+However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
+instead the GIC is responsible for filtering what interrupts the CPU
+should receive based on priority.
+Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
+even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
+frequently depending on the system configuration and workload, leading
+to unpredictable kernel panics.
+
+Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
+Do the same in `call_on_irq_stack()`, but restore and mask around
+the branch.
+Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
+of behaviour between all configurations.
+
+Introduce and use an assembly macro for saving and masking DAIF,
+as the existing one saves but only masks IF.
+
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: Cristian Prundeanu <cpru@amazon.com>
+Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
+Tested-by: Cristian Prundeanu <cpru@amazon.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ removed duplicate save_and_disable_daif macro ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/super.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/kernel/entry.S |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -74,10 +74,15 @@ static int squashfs_fill_super(struct su
- 	unsigned short flags;
- 	unsigned int fragments;
- 	u64 lookup_table_start, xattr_id_table_start, next_table;
--	int err;
-+	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -827,6 +827,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
+  *
+  */
+ SYM_FUNC_START(cpu_switch_to)
++	save_and_disable_daif x11
+ 	mov	x10, #THREAD_CPU_CONTEXT
+ 	add	x8, x0, x10
+ 	mov	x9, sp
+@@ -850,6 +851,7 @@ SYM_FUNC_START(cpu_switch_to)
+ 	ptrauth_keys_install_kernel x1, x8, x9, x10
+ 	scs_save x0
+ 	scs_load_current
++	restore_irq x11
+ 	ret
+ SYM_FUNC_END(cpu_switch_to)
+ NOKPROBE(cpu_switch_to)
+@@ -876,6 +878,7 @@ NOKPROBE(ret_from_fork)
+  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
+  */
+ SYM_FUNC_START(call_on_irq_stack)
++	save_and_disable_daif x9
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	get_current_task x16
+ 	scs_save x16
+@@ -890,8 +893,10 @@ SYM_FUNC_START(call_on_irq_stack)
  
- 	TRACE("Entered squashfs_fill_superblock\n");
+ 	/* Move to the new stack and call the function there */
+ 	add	sp, x16, #IRQ_STACK_SIZE
++	restore_irq x9
+ 	blr	x1
  
-+	if (!devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
- 	if (sb->s_fs_info == NULL) {
- 		ERROR("Failed to allocate squashfs_sb_info\n");
-@@ -85,12 +90,7 @@ static int squashfs_fill_super(struct su
- 	}
- 	msblk = sb->s_fs_info;
- 
--	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
--	if (!msblk->devblksize) {
--		errorf(fc, "squashfs: unable to set blocksize\n");
--		return -EINVAL;
--	}
--
-+	msblk->devblksize = devblksize;
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
- 
- 	mutex_init(&msblk->meta_index_mutex);
++	save_and_disable_daif x9
+ 	/*
+ 	 * Restore the SP from the FP, and restore the FP and LR from the frame
+ 	 * record.
+@@ -899,6 +904,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+ 	scs_load_current
++	restore_irq x9
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
 
