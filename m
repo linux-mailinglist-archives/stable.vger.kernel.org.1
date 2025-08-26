@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-173936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E0FB36088
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C58B36AF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0F27C77C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE9E1C266A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040A41C860B;
-	Tue, 26 Aug 2025 12:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE6A3570B0;
+	Tue, 26 Aug 2025 14:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWZEj41I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J60IztIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58B31B0420;
-	Tue, 26 Aug 2025 12:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E924F352FEC;
+	Tue, 26 Aug 2025 14:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213056; cv=none; b=lBA4NfM0SmdHSZf90hf31Gh4geS6opnTsJHv69jdSWTK7mSA4hXcF7+aklPD/z/6qBchEjA9HjjjLowsrS6RtmkXZjLrM+5/BYAf2QMZLBuRCCflliAYiPTN6WvMfI207noxihPLuIvBvfchUsJTSxlMODSyrkzsn+JYKEXyG1Y=
+	t=1756218510; cv=none; b=MzGEJyTSYRPeU5lmmcl7KJukb84I8+nCz0b/BUgqZSQiy8v8E8yoxSORdsfHoKXplneVZHrRGCmOHLhuKzw/ZSGUWFC7VdN2NEbD0e+fJ78NnEPp6jKye9DtFVa4i4eRRTN9jdK3Rs0/dJfQ9O5O8uxUNEC6xeYfrnvGGhB6TB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213056; c=relaxed/simple;
-	bh=FnZSB0UQBOiKsSP/4s8ZoV98mTaCOoWwFnxno+EfZK0=;
+	s=arc-20240116; t=1756218510; c=relaxed/simple;
+	bh=LiRvn+o7xchiFniUR8aRwekq2RI331iT6F3ZaHjbbqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/Ua+BfPUvJAMHZ17AcgeE7SSicM580JrbaZXMy/EPaemQaRuN1hdlxaiV46oByLXYypB58royPYfaAm3mNcY5pgQZ800vap1ViwOFQKbpyBjXeCN+icd6wy4phZSHSiarzgs17oWqqkNHD1AX/c5mQ0jJ15+vTZ6tH0Rnngc7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWZEj41I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C40C4CEF1;
-	Tue, 26 Aug 2025 12:57:35 +0000 (UTC)
+	 MIME-Version; b=FWZ6H6lD1NaysoNK2vzR5xFDs6aGpipLHJyM4DSBP9FLrNXc2UjvqQcL7cmpn500MU2glFX3ExBII62r2fEUpbIS99m3d2ILIOKv0LCGC1ZnIQopzXYjz67+Z3QSQmM3LSBPOv/clz5pGzviU49cpFPhCTkAnz7JZdyBJtEvMTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J60IztIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4DEC4CEF1;
+	Tue, 26 Aug 2025 14:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213056;
-	bh=FnZSB0UQBOiKsSP/4s8ZoV98mTaCOoWwFnxno+EfZK0=;
+	s=korg; t=1756218509;
+	bh=LiRvn+o7xchiFniUR8aRwekq2RI331iT6F3ZaHjbbqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWZEj41IwLrWI0EVqqKpYUFUvM2hEUfZMYNsabsaOONYMqVQ5ueSTWYrysVHlWokT
-	 U/vW1Lkg/Cq/YCS2Qni5qEGRA2N+WgRde7qZqwy4tr83I1nCEGhID7BzQN+ArxqR1/
-	 u0VbAXdsLNiYi9YEK2ZIsdXaP9oNui534VKyWU7c=
+	b=J60IztIxD+ssHXWw3eUtspgeWmcchcdeWlqyE+NH9OHP58W4iL7Xc7oXaB0RHMgCG
+	 4HKHizsI6obHhalRJJ1F3ktinl+8oD5jeiZAC9DqJUbfIec8cNb43P772lp0xiyPuR
+	 Gi3CyBh4zgTFfrVRIhTYALO7CelcJ+n3nlMvQA6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
-	Paul Fertser <fercerpav@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/587] net: ncsi: Fix buffer overflow in fetching version id
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.4 028/403] comedi: das6402: Fix bit shift out of bounds
 Date: Tue, 26 Aug 2025 13:05:54 +0200
-Message-ID: <20250826110958.153118637@linuxfoundation.org>
+Message-ID: <20250826110906.581409184@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
+commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
 
-In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
-need to be null terminated while its size occupies the full size
-of the field. Fix the buffer overflow issue by adding one
-additional byte for null terminator.
+When checking for a supported IRQ number, the following test is used:
 
-Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
-Reviewed-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+	if ((1 << it->options[1]) & 0x8cec) {
+
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
+
+Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/internal.h | 2 +-
- net/ncsi/ncsi-rsp.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/comedi/drivers/das6402.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 2c260f33b55c..ad1f671ffc37 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -110,7 +110,7 @@ struct ncsi_channel_version {
- 	u8   update;		/* NCSI version update */
- 	char alpha1;		/* NCSI version alpha1 */
- 	char alpha2;		/* NCSI version alpha2 */
--	u8  fw_name[12];	/* Firmware name string                */
-+	u8  fw_name[12 + 1];	/* Firmware name string                */
- 	u32 fw_version;		/* Firmware version                   */
- 	u16 pci_ids[4];		/* PCI identification                 */
- 	u32 mf_id;		/* Manufacture ID                     */
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 8668888c5a2f..d5ed80731e89 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -775,6 +775,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
- 	ncv->alpha1 = rsp->alpha1;
- 	ncv->alpha2 = rsp->alpha2;
- 	memcpy(ncv->fw_name, rsp->fw_name, 12);
-+	ncv->fw_name[12] = '\0';
- 	ncv->fw_version = ntohl(rsp->fw_version);
- 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
- 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
--- 
-2.39.5
-
+--- a/drivers/staging/comedi/drivers/das6402.c
++++ b/drivers/staging/comedi/drivers/das6402.c
+@@ -569,7 +569,8 @@ static int das6402_attach(struct comedi_
+ 	das6402_reset(dev);
+ 
+ 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+-	if ((1 << it->options[1]) & 0x8cec) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (1 << it->options[1]) & 0x8cec) {
+ 		ret = request_irq(it->options[1], das6402_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
