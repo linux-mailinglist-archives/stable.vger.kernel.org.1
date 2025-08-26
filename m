@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72D8B36CAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D1EB3625F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE1D8E83FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2EC463D17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3262535FC2D;
-	Tue, 26 Aug 2025 14:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9859224DD11;
+	Tue, 26 Aug 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsG5lWCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toFMw5Ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E140F350843;
-	Tue, 26 Aug 2025 14:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537DB221704;
+	Tue, 26 Aug 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219339; cv=none; b=DQeBPIHoYx8kLw7aBO9FSYZJlj8Zw3EV3hgmfjvQwsyGKJIfzMW+d6pyqZsevOn8qT4jv8u2mY4JtLfTZEe9O+ilGgEIVFhQK8tJBrEnRTYC3kGckR1ntfo+LVWFSUbov3h/Xk4VD81v8kZQNa43jrHwdr8j/lMGXaRoO/0AbxY=
+	t=1756213896; cv=none; b=DSLPo0SfJ3XN0zxEagDbfZrHFjrHs1//x+tDjBCLKrCOu0PlQz/PxPQWeKWW0dxjkbE/GwEacf0jtzZcYf2sZeC7WcV84gTgRk5eWTILO5m/FFjxhOOTdN5WAHUkyMN+XIPC+0ur9KaKFR5sLS8333JUHDHFwODL14KR/rK1+6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219339; c=relaxed/simple;
-	bh=R9YVx94YPLQGvxBUJowVYUDLw7oeaJh7Oc+Dik4Lj4I=;
+	s=arc-20240116; t=1756213896; c=relaxed/simple;
+	bh=Pb6fEs0Rbz6GTdE+pgMRQo0073rrEIkR/IADinFYukM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jPn5itw7I9GvCPm4tNo3GCtYyQhkWXhmk12ORL1hyBMi3dEduhH0hDXtLBDpDacE+xNxT8glrtnkYF/y5WMZOYO0vHk1GBaS/ZAZHwnZ2uGGBz4ChRkm16eCcxH1s655TDJ2zk/BY/k5OgOU90eqMjYUc5KReIoda3cfFqyFiDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsG5lWCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AA4C4CEF1;
-	Tue, 26 Aug 2025 14:42:18 +0000 (UTC)
+	 MIME-Version; b=ieleSD35HcU2bUU2EohD/Y/ayhfNfH9mLhOJ9513RGISGjS4VJtkGGGjMtvaLHwxMyxdHNqhxXrtqYYF3PmerIc6MUCrp3utAOnyJEsRHymUEzVwWn5BGgJGx3AfFXd7/niiUQlCNgRDs6kP8CjXGZ4dG+KHOzDNnFqrosIyErI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toFMw5Ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D860FC4CEF1;
+	Tue, 26 Aug 2025 13:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219338;
-	bh=R9YVx94YPLQGvxBUJowVYUDLw7oeaJh7Oc+Dik4Lj4I=;
+	s=korg; t=1756213896;
+	bh=Pb6fEs0Rbz6GTdE+pgMRQo0073rrEIkR/IADinFYukM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsG5lWCY3kpxH+/A0F+amSf8zqeSUFIBtsEdMHiyyJX3pNlFlfG+gxekFu6qvFZd5
-	 ZfZ4/SMsZOZXfCxU2X/LDRRjSgGo5NW4OT3qLDzAJDZ3ORQGqdzpCrrIpO+Ov+KgIE
-	 QC5YqziNfC0MxLUKGY9IZL3U635GLn8FJLHvWwW4=
+	b=toFMw5Ek5C2bJrOGGQbp4HvoDT6ezrqN4i4hxqAS3wuSz9pKtjYg2m30wSiMT+wDs
+	 9KCjUSI/az5aQZRYb/XcoPtjxSFPI9tOXzd0VyTxLHni3XPNFKAzSfi9GkVq5L1RsL
+	 BKBfvI1xwfbfHdQqBgTSNByM29y/XwNMlhWQ0yB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 343/403] usb: hub: Dont try to recover devices lost during warm reset.
-Date: Tue, 26 Aug 2025 13:11:09 +0200
-Message-ID: <20250826110916.336983919@linuxfoundation.org>
+	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 521/587] comedi: pcl726: Prevent invalid irq number
+Date: Tue, 26 Aug 2025 13:11:10 +0200
+Message-ID: <20250826111006.250178700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 2521106fc732b0b75fd3555c689b1ed1d29d273c ]
+commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
 
-Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-recover a possible connected device. The port reset code correctly
-detects if a connection is lost during reset, but hub driver
-port_event() fails to take this into account in some cases.
-port_event() ends up using stale values and assumes there is a
-connected device, and will try all means to recover it, including
-power-cycling the port.
+The reproducer passed in an irq number(0x80008000) that was too large,
+which triggered the oob.
 
-Details:
-This case was triggered when xHC host was suspended with DbC (Debug
-Capability) enabled and connected. DbC turns one xHC port into a simple
-usb debug device, allowing debugging a system with an A-to-A USB debug
-cable.
+Added an interrupt number check to prevent users from passing in an irq
+number that was too large.
 
-xhci DbC code disables DbC when xHC is system suspended to D3, and
-enables it back during resume.
-We essentially end up with two hosts connected to each other during
-suspend, and, for a short while during resume, until DbC is enabled back.
-The suspended xHC host notices some activity on the roothub port, but
-can't train the link due to being suspended, so xHC hardware sets a CAS
-(Cold Attach Status) flag for this port to inform xhci host driver that
-the port needs to be warm reset once xHC resumes.
+If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
+because it shifts a 1-bit into the sign bit (which is UB in C).
+Possible solutions include reducing the upper bound on the
+`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
 
-CAS is xHCI specific, and not part of USB specification, so xhci driver
-tells usb core that the port has a connection and link is in compliance
-mode. Recovery from complinace mode is similar to CAS recovery.
+The old code would just not attempt to request the IRQ if the
+`options[1]` value were invalid.  And it would still configure the
+device without interrupts even if the call to `request_irq` returned an
+error.  So it would be better to combine this test with the test below.
 
-xhci CAS driver support that fakes a compliance mode connection was added
-in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-
-Once xHCI resumes and DbC is enabled back, all activity on the xHC
-roothub host side port disappears. The hub driver will anyway think
-port has a connection and link is in compliance mode, and hub driver
-will try to recover it.
-
-The port power-cycle during recovery seems to cause issues to the active
-DbC connection.
-
-Fix this by clearing connect_change flag if hub_port_reset() returns
--ENOTCONN, thus avoiding the whole unnecessary port recovery and
-initialization attempt.
-
-Cc: stable@vger.kernel.org
-Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250623133947.3144608-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
+Cc: stable <stable@kernel.org> # 5.13+
+Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
+Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/comedi/drivers/pcl726.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5425,6 +5425,7 @@ static void port_event(struct usb_hub *h
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
- 	int i = 0;
-+	int err;
- 
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5517,8 +5518,11 @@ static void port_event(struct usb_hub *h
- 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
- 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
--			if (hub_port_reset(hub, port1, NULL,
--					HUB_BH_RESET_TIME, true) < 0)
-+			err = hub_port_reset(hub, port1, NULL,
-+					     HUB_BH_RESET_TIME, true);
-+			if (!udev && err == -ENOTCONN)
-+				connect_change = 0;
-+			else if (err < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
- 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+--- a/drivers/comedi/drivers/pcl726.c
++++ b/drivers/comedi/drivers/pcl726.c
+@@ -328,7 +328,8 @@ static int pcl726_attach(struct comedi_d
+ 	 * Hook up the external trigger source interrupt only if the
+ 	 * user config option is valid and the board supports interrupts.
+ 	 */
+-	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (board->irq_mask & (1U << it->options[1]))) {
+ 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
