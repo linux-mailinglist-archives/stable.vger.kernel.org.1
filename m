@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC25B36A8D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFE7B36514
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCA13ADC7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CC6B468213
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1CA3568F3;
-	Tue, 26 Aug 2025 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D5A2F60C1;
+	Tue, 26 Aug 2025 13:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJ9cmvsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJuKbPsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FA02BEC45;
-	Tue, 26 Aug 2025 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118B91B87E8;
+	Tue, 26 Aug 2025 13:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218413; cv=none; b=i2cFKaYprckFKJXfwrSZwGAh1bs5P0kqOPRX9MQcoHLSNDcJ4fSAv+1stUydtrASIZE1drWSFw295GCVPA740ouCan+9FdIkGqwzV/a3I7yUZyPrBJsmob4wRBPWBirLlUCmN3NV22DIhhThDR6c9xK0AledqLlBoCHqqtnGv0s=
+	t=1756215323; cv=none; b=ayiR2S8g+wJ4Qb7BjxqDnAnavSq4+MqF9vr1gkh7h2KTcqBlFbL6LedniL5M+CnycsDbVlfjEiVARMqJ+JG/dFwypNOnPBNT9gBtrKeol4ER9eVgfkfKnKrmcW4UIyNVcgEduJg2WlEt3o7+NShLbHhrNODrq38rULN6U4PWnqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218413; c=relaxed/simple;
-	bh=peF4RenD7hnA7QnrsmGeMyxfNWfnNDFOPVB88bHrRSw=;
+	s=arc-20240116; t=1756215323; c=relaxed/simple;
+	bh=IiKagfN8NVAMMa5w4h6ZI61LDBW0xHwq/oM92UJ7vG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ2thE9Xn8HXC99R6Sn4eXAsqb32KsIQxME+O6jcb1zvc5WgA2CxMe8f32vnyQIkvU8p8YGGc0bnW+wwOw4AJk6j5I4LyJXcPf/xJSI1G10yB1DyVZ7/Tf+hQy2mOKHjRe4q+blY2CVHpN4ZPoh7FArqoagr0CAvY9OoxmJJ/7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJ9cmvsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E4AC4CEF1;
-	Tue, 26 Aug 2025 14:26:52 +0000 (UTC)
+	 MIME-Version; b=d6/QacPukSCGi5DuDlgXY/bHes494/y+PXQYrScoSidAionRqq/+TLBgw/0lgUrZPVq0bR5RQ3Acsbm2BNQdBtc2+06aDaPEOpFTO9OA909BzFPp3V5mQS7YhIrdp0CwSPa+oQ/pk0OaPbsBpGjvkkWnz79Zy4fy9/qqmVrV05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJuKbPsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40842C4CEF1;
+	Tue, 26 Aug 2025 13:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218413;
-	bh=peF4RenD7hnA7QnrsmGeMyxfNWfnNDFOPVB88bHrRSw=;
+	s=korg; t=1756215322;
+	bh=IiKagfN8NVAMMa5w4h6ZI61LDBW0xHwq/oM92UJ7vG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJ9cmvsZ6Cmje+3SzlzepOMBZHIH13aWdbHJAJw2mhWODQVugwdebRtkNwqsr+wJE
-	 zHgzDZqeuca4C0yHPI49mZXW2iOsC9BPgKgGfDPQN/n0LHWfb5geveRqauxput9mAO
-	 0zE3iT5j8OuPWcTkL01gHsqVQsv6Mu7WFd66nM7s=
+	b=KJuKbPsYutHrabBJ/a0XaO8tkuspWnWLY8+12hZPXNiTBb5NjvuvxhwK9wiSCWGSy
+	 ENv7jS6Pm9ZUWuYtMlfcvCf+c90U7nr5v9InKHFuxSiJ5BvMi1Pm/wVxf09ugvpwkl
+	 Vxl56ieLVxNCgWMkyC6FUlNE9amHvtz3v1Jh5oNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
+	Yuichiro Tsuji <yuichtsu@amazon.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 513/523] ALSA: usb-audio: Fix size validation in convert_chmap_v3()
+Subject: [PATCH 6.1 470/482] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
 Date: Tue, 26 Aug 2025 13:12:03 +0200
-Message-ID: <20250826110937.092565307@linuxfoundation.org>
+Message-ID: <20250826110942.432117878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yuichiro Tsuji <yuichtsu@amazon.com>
 
-[ Upstream commit 89f0addeee3cb2dc49837599330ed9c4612f05b0 ]
+[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
 
-The "p" pointer is void so sizeof(*p) is 1.  The intent was to check
-sizeof(*cs_desc), which is 3, instead.
+Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
 
-Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aKL5kftC1qGt6lpv@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The PHY address should be masked to 5 bits (0-31). Without this
+mask, invalid PHY addresses could be used, potentially causing issues
+with MDIO bus operations.
+
+Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
+it stays within the valid range.
+
+Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
+Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
+Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c | 2 +-
+ drivers/net/usb/asix_devices.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index 56c945d8240a..1bdb6a2f5596 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -350,7 +350,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
- 		u16 cs_len;
- 		u8 cs_type;
- 
--		if (len < sizeof(*p))
-+		if (len < sizeof(*cs_desc))
- 			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
- 		if (len < cs_len)
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index d1813a2495bc..021f38c25be8 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 -- 
 2.50.1
 
