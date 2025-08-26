@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3051B35FD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15310B3657C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 100537A3E28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5AE51896A6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870941D5AC0;
-	Tue, 26 Aug 2025 12:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ECE202C46;
+	Tue, 26 Aug 2025 13:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwS334xJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW3lDOWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451811DAC95;
-	Tue, 26 Aug 2025 12:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954BD27EFE7;
+	Tue, 26 Aug 2025 13:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212827; cv=none; b=H2BTpfSFmluaCTeUOIYHymE9YU09s26CrVMuIypnreeGLTMEebglaCH0EO4SPfBq6ag9Q8uvIFCMf+I0BO5yIW0/9uubQMow0oWuGQiEGVIvDKog2BmfXWFsZv/lkNGOOVg9WIuaJbmLhV+Iw1lM2f8lJretbW2ysHQW+p5foTQ=
+	t=1756215744; cv=none; b=kTX06lMWlhMUFXaOdRZOTA4E854XlbAQ0Ce+9sk9BbGNn/3vX/SXBtdrzxPEd2/FW7mwkfGKTC4eGB6JkvcQTj89q04IZUoiYDvIX1BAK0LTT/7YnvUxKFLeTrXX2FioKAfJxpxFRhmLWB/xFjp0IFGV7k6RtlDPKKvmjweewOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212827; c=relaxed/simple;
-	bh=3ykhaF4IneAHc++dLfr6jVHmvQlaPWF0dp7eW5oV2Ew=;
+	s=arc-20240116; t=1756215744; c=relaxed/simple;
+	bh=jUgHxUKwtL/wDA+u9Rh+d9EUqBhVy5Zmdtlga3hdPtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJPbNNuDuayI9JKYvLEwJjaln8e9VFfrjtB1/kYdMIw64uPfzhEXxvBdu9sPgeUvkNf/gmp3r/SyE3Mi34s+6Ts26ESrHZMUQTOSFcatnWTO7EYtgHOADJTaSngsDzIBAsYxAjFy9XFfxbMlA8lE0XRuFBY8t0fCTTuXdguVahE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwS334xJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0B1C4CEF1;
-	Tue, 26 Aug 2025 12:53:46 +0000 (UTC)
+	 MIME-Version; b=JLMksptaiPIJ1zRhUaMU5j4C7q3L+1j1SYGJjDfKRE2UEht2INpVHpmUXINpLlE2Olgt8+EK9eSnHCgKbj80amjGQbG2nys8c9QnkuBU4kORj/VCGBAwT1GbeHWPRZqPjMFHmdvRJR23jtNw+kBppRNWoshMa6N/DmEVdQCVVmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW3lDOWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28783C4CEF1;
+	Tue, 26 Aug 2025 13:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212827;
-	bh=3ykhaF4IneAHc++dLfr6jVHmvQlaPWF0dp7eW5oV2Ew=;
+	s=korg; t=1756215744;
+	bh=jUgHxUKwtL/wDA+u9Rh+d9EUqBhVy5Zmdtlga3hdPtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwS334xJ68jQwUVk82AZyr/nKp/zD+TyYXzRBRm9POymmon65/kwpjDttaCWGhmhJ
-	 kNmJxp8Aipx45x5nDKglLb07bawvSHwAwSEmYhI7JtKtr9Is4kBTIQ1uluv7gA9ilL
-	 7UXzcRrdKMCTKU6SWHaw6nV1Ur9zaVkEWfj/y4g0=
+	b=YW3lDOWOM8c+XVQ4yiRjIXQPrdcAWfrpNJbFdGwmeieTEwnvjNg9wYg6MWVIHB/1q
+	 bZXlZKujTi776RqNKg0KL/wf6FgWqJ0uXJosqaoYRrD5CEldskMXsnjSXFRiAgGeMd
+	 oGYAgnTAtKv02yGOJPso9zp0wgEZ3sm0EQUmO/f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Johan Korsnes <johan.korsnes@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/587] usb: xhci: Avoid showing errors during surprise removal
-Date: Tue, 26 Aug 2025 13:03:59 +0200
-Message-ID: <20250826110955.223806841@linuxfoundation.org>
+Subject: [PATCH 5.15 149/644] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+Date: Tue, 26 Aug 2025 13:04:00 +0200
+Message-ID: <20250826110950.176829160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Johan Korsnes <johan.korsnes@gmail.com>
 
-[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
+[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed as well.
+This option was removed from the Kconfig in commit
+8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
+removed from the defconfigs.
 
-When that flag is set don't show messages in the cleanup path for
-marking the controller dead.
-
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
+Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/configs/ppc6xx_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index c6d89b51c678..2a74a47a1c76 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1338,12 +1338,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
-  */
- void xhci_hc_died(struct xhci_hcd *xhci)
- {
-+	bool notify;
- 	int i, j;
- 
- 	if (xhci->xhc_state & XHCI_STATE_DYING)
- 		return;
- 
--	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
-+	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
-+	if (notify)
-+		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
- 	xhci->xhc_state |= XHCI_STATE_DYING;
- 
- 	xhci_cleanup_command_queue(xhci);
-@@ -1357,7 +1360,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
- 	}
- 
- 	/* inform usb core hc died if PCI remove isn't already handling it */
--	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
-+	if (notify)
- 		usb_hc_died(xhci_to_hcd(xhci));
- }
- 
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 7f7e7add44e7..cdaf8469d484 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -263,7 +263,6 @@ CONFIG_NET_SCH_DSMARK=m
+ CONFIG_NET_SCH_NETEM=m
+ CONFIG_NET_SCH_INGRESS=m
+ CONFIG_NET_CLS_BASIC=m
+-CONFIG_NET_CLS_TCINDEX=m
+ CONFIG_NET_CLS_ROUTE4=m
+ CONFIG_NET_CLS_FW=m
+ CONFIG_NET_CLS_U32=m
 -- 
 2.39.5
 
