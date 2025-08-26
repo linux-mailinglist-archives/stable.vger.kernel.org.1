@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B153B360FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BA9B3668B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809847C4705
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4277A1C2318C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ED9199FB0;
-	Tue, 26 Aug 2025 13:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D3934166B;
+	Tue, 26 Aug 2025 13:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19pnd62e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSGqTxTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BB88635D;
-	Tue, 26 Aug 2025 13:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B8734A32E;
+	Tue, 26 Aug 2025 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213293; cv=none; b=FkadznwBx8onfLE7durpPnhpTLPSRoLnWA78XNotyFlduFcz6KVIKrjHVHCKsAcjPXKsiFN0tnIT3G+8zYYUFg6r4PxdIC9hHhwZ3scHHoaYEFUTNE/F16XoQOePdBp21ABL5N8qd7AIk2m2aqQ8/cR61T5C1G4DoAdXkWoSBf8=
+	t=1756216192; cv=none; b=fwHKI4HfzwLaPVdmbh1MNDwwta6leB41ZYjVPxsS3S92POR2hIkXp4Jdioou9U8r0YbAHmt0Rdp3pup7xYfzf0KIoyjyuMA5qFrZZbEOrRD2ud5Zu2oy4SHj8A0G5QEd3E8VaOOAZDb+CMxmVrT8n+ZUO4PUjGKlPrDX4JfUefg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213293; c=relaxed/simple;
-	bh=yUqZFWEzeqbCuqAkh7ZrBg08+KmMV2li5NrP6qxpSHk=;
+	s=arc-20240116; t=1756216192; c=relaxed/simple;
+	bh=MpaSvR5DLCvf8O3cRpprGshLSN79sKuC+UmzM2+/Kkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lamfbjTkzfn/rza1x5Gp7ua34oH0QjZogap3cEIb1LxxgtlT1ph7tYQcGffEdz/dgi7LsXpKVOIOiMvdMgIUW6X7S7obTi4CgZcYJeK+VbqUxeEIM06bv7MVorScg0mgiLXD5u8qE9igCuW68zcvmZoVHkwRWENgr1BgTFHBMzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19pnd62e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42948C4CEF1;
-	Tue, 26 Aug 2025 13:01:33 +0000 (UTC)
+	 MIME-Version; b=uB5DmEZEZ43Cbr4GDT7CNA/PVCENx+4FhVIb3+/r9wAWKTHpVL4MzfD120GA1xB6jGn1Ctv2fUJmTpdrT6Z8NLmgWCHpm4hRwJoI6VYio3vV09ZKS+Zrswu/V/CGQHeGcxC5cnbWjcQ0AHp7Y50NEW3Nf5BjZO7Sp8hTyAPU5a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSGqTxTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5182BC4CEF1;
+	Tue, 26 Aug 2025 13:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213293;
-	bh=yUqZFWEzeqbCuqAkh7ZrBg08+KmMV2li5NrP6qxpSHk=;
+	s=korg; t=1756216192;
+	bh=MpaSvR5DLCvf8O3cRpprGshLSN79sKuC+UmzM2+/Kkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19pnd62e84d18MynuhJjkqvkRjZBdgMDI345fCl9yZbSOjgDXBCTQ9MbrzzZdafKS
-	 PB8ruOyvefNqIxBtOW4WTGwxQZ8pe+MEZ1iGGtG85P19OJAcNVATlrXZkFkN/qBX06
-	 iYs+qPisIokLH2HQ9i/2ZyVBsSbKqVUgBWOcBCFk=
+	b=rSGqTxTmOmMsMUrgsTAAkckYJlTaq536c5eYXq8OD6UiD1cuvrI7Uh0LBUnsiPyfR
+	 fKLyX6Du+S2L7MtuCrk63HanU31yjUuuv0CWS0WshoKS3ySYaxjCI5Tg0+Qndtk7l+
+	 Q3b+dHjwIHVLHjyEq0VeF44Tvnz05i7WTl1nd9WQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/587] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
+Subject: [PATCH 5.15 319/644] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
 Date: Tue, 26 Aug 2025 13:06:50 +0200
-Message-ID: <20250826110959.569142946@linuxfoundation.org>
+Message-ID: <20250826110954.289345986@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-Fix Smatch-detected error:
-drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
-error: uninitialized symbol 'r'.
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-Smatch detects a possible use of the uninitialized variable 'r' in
-dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
-skipped and 'r' is returned without being set, leading to undefined
-behavior.
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-Initialize 'r' to 0 before the loop. This ensures that if there are no
-devices to iterate over, the function still returns a defined value.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-index b487f7acc860..36e55a5bcb0d 100644
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -1062,7 +1062,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
- 	struct dmz_target *dmz = ti->private;
- 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
- 	sector_t capacity;
--	int i, r;
-+	int i, r = 0;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 72087e05b5a5..250ea9ec5f0c 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -860,6 +860,8 @@ static void __ghes_panic(struct ghes *ghes,
  
- 	for (i = 0; i < dmz->nr_ddevs; i++) {
- 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+ 	if (!panic_timeout)
 -- 
 2.39.5
 
