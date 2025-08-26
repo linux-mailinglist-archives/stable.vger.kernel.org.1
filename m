@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DE2B36CAC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517E1B3617D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61861C282F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E2D7B9C67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01F235AADC;
-	Tue, 26 Aug 2025 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44362C08A8;
+	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0cXHJuy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIE9vtS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619E352084;
-	Tue, 26 Aug 2025 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BC523026B;
+	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219201; cv=none; b=K/XGOd7zwlQgXaud37XGAQQrfmiWuDtFduiMbRCBPYZojdn5rC3ylkSKyB0LGcGk85n6OConebnkesoJDBvg0pXIxP8cWXtoyCq7t+XdWdF1JwAsmbZDkapXP3h8nb1KGrRuxIxF0N4D4Hrz+/hx6tV/MRSzp5HKBopSruan7Ck=
+	t=1756213739; cv=none; b=RpKY04BOiOus6nUuwp8W0n82zDrhFDhPUz3/4pVby6hrv4JQyfIxxP0z/b15D0jYsIGrqtJDEbNy5oUaZLkDLvmEZsN0YfJpvU05gICS2lvET0svDYtnhH0UPFC5GRBG8Bm0r6zTRpFNeDKpLevj6KKe6L45cRpyPxxdDKZ5q1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219201; c=relaxed/simple;
-	bh=jENMh6HQy0YUNH89xi7AjnQUagcseXZuokXG97BUJYg=;
+	s=arc-20240116; t=1756213739; c=relaxed/simple;
+	bh=b49btHaJNt+mRHvPNS/vCim1+qtXR94DmAzYPmFQGLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaYD7Jey5QkY2c+vbUP6as4rxICzuSgqre0h2S6V/IaxexTCZ8F4ufzZm1wTB4wMAQVVOMjoTbDH1oxHGSDTUNx6sUffo6ShmkYvqlK5+5I8eET3RpP0kBFzp+zVUGe/UXEMqQq5ZU82uAZlT4T8PGRlGqjMF59nZ9o+KZTob/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0cXHJuy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F9EC4CEF1;
-	Tue, 26 Aug 2025 14:40:00 +0000 (UTC)
+	 MIME-Version; b=EgC7vlrPha0QqujTtj+Bq1hBD7gqFcVGymm8tWtQzS5fsyZLJU+AFTzXHF8PX1B/lYjkFrkgii3vuxpZfbq+a7bFzsTZH/vr9+4jh6LoGlYUHBNsehkNZriSKA8SdsztkhM6eYep2ubkP5WLS4O7/P3RreW7JJrLwSFchjKH0r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIE9vtS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33638C4CEF1;
+	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219201;
-	bh=jENMh6HQy0YUNH89xi7AjnQUagcseXZuokXG97BUJYg=;
+	s=korg; t=1756213739;
+	bh=b49btHaJNt+mRHvPNS/vCim1+qtXR94DmAzYPmFQGLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0cXHJuyNFyBl73Rz1dg9qlyKGykdc3kj431MhHa+xtkhPvyvo3t54/+Ib82hCeIZ
-	 CwQdKSHaqm1aSTA9DQM93vCCsbdjh02uzvCfXs6NUTMi+Um0b3EPRwgAzzdSXGVq3k
-	 uhPmzW+C0KwfQsepWgzzurlvft5MfJmgAWDFYsM8=
+	b=bIE9vtS2fbo04s6uhhQDpDGCEdkC4lNWVJdFH66Y5f6jZWdoJ9UtAKTC/t4wdxISY
+	 OtzLvtT+DHxOifVIhZ+DBKXdpaSDll/b9bxSSSrDzbcTX6vYaKdFV3mJtPCY+f8YCD
+	 gADTz+snN4fkXoM4dbIc8pdIVaBbixQinG9JhJU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Stan Johnson <userm57@yahoo.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 5.4 284/403] m68k: Fix lost column on framebuffer debug console
-Date: Tue, 26 Aug 2025 13:10:10 +0200
-Message-ID: <20250826110914.659371245@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 462/587] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+Date: Tue, 26 Aug 2025 13:10:11 +0200
+Message-ID: <20250826111004.730102814@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 210a1ce8ed4391b64a888b3fb4b5611a13f5ccc7 upstream.
+commit f1fb088d9cecde5c3066d8ff8846789667519b7d upstream.
 
-Move the cursor position rightward after rendering the character,
-not before. This avoids complications that arise when the recursive
-console_putc call has to wrap the line and/or scroll the display.
-This also fixes the linewrap bug that crops off the rightmost column.
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-When the cursor is at the bottom of the display, a linefeed will not
-move the cursor position further downward. Instead, the display scrolls
-upward. Avoid the repeated add/subtract sequence by way of a single
-subtraction at the initialization of console_struct_num_rows.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
 Cc: stable@vger.kernel.org
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/9d4e8c68a456d5f2bc254ac6f87a472d066ebd5e.1743115195.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[sean: account for lack of kvm_x86_call()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/kernel/head.S |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ arch/x86/kvm/x86.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3379,6 +3379,7 @@ L(console_clear_loop):
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13266,16 +13266,22 @@ int kvm_arch_irq_bypass_add_producer(str
+ {
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
  
- 	movel	%d4,%d1				/* screen height in pixels */
- 	divul	%a0@(FONT_DESC_HEIGHT),%d1	/* d1 = max num rows */
-+	subql	#1,%d1				/* row range is 0 to num - 1 */
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
++
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
++
+ 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm,
+ 					 prod->irq, irqfd->gsi, 1);
+-
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
  
- 	movel	%d0,%a2@(Lconsole_struct_num_columns)
- 	movel	%d1,%a2@(Lconsole_struct_num_rows)
-@@ -3525,15 +3526,14 @@ func_start	console_putc,%a0/%a1/%d0-%d7
- 	cmpib	#10,%d7
- 	jne	L(console_not_lf)
- 	movel	%a0@(Lconsole_struct_cur_row),%d0
--	addil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	movel	%a0@(Lconsole_struct_num_rows),%d1
- 	cmpl	%d1,%d0
- 	jcs	1f
--	subil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	console_scroll
-+	jra	L(console_exit)
- 1:
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	jra	L(console_exit)
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	return ret;
+ }
  
- L(console_not_lf):
-@@ -3560,12 +3560,6 @@ L(console_not_cr):
-  */
- L(console_not_home):
- 	movel	%a0@(Lconsole_struct_cur_column),%d0
--	addql	#1,%a0@(Lconsole_struct_cur_column)
--	movel	%a0@(Lconsole_struct_num_columns),%d1
--	cmpl	%d1,%d0
--	jcs	1f
--	console_putc	#'\n'	/* recursion is OK! */
--1:
- 	movel	%a0@(Lconsole_struct_cur_row),%d1
+@@ -13285,9 +13291,9 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
  
  	/*
-@@ -3612,6 +3606,23 @@ L(console_do_font_scanline):
- 	addq	#1,%d1
- 	dbra	%d7,L(console_read_char_scanline)
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -13295,11 +13301,17 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
++
+ 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm, prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
  
-+	/*
-+	 *	Register usage in the code below:
-+	 *	a0 = pointer to console globals
-+	 *	d0 = cursor column
-+	 *	d1 = cursor column limit
-+	 */
++	spin_unlock_irq(&kvm->irqfds.lock);
 +
-+	lea	%pc@(L(console_globals)),%a0
 +
-+	movel	%a0@(Lconsole_struct_cur_column),%d0
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_column)	/* Update cursor pos */
-+	movel	%a0@(Lconsole_struct_num_columns),%d1
-+	cmpl	%d1,%d0
-+	jcs	L(console_exit)
-+	console_putc	#'\n'		/* Line wrap using tail recursion */
-+
- L(console_exit):
- func_return	console_putc
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
  
 
 
