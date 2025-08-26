@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-174247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7556AB361B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96239B36480
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CCBE7BAA8B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A691BC72B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592192459F3;
-	Tue, 26 Aug 2025 13:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089BE3314DF;
+	Tue, 26 Aug 2025 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1Y12Y+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+xWXvtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1636D18F2FC;
-	Tue, 26 Aug 2025 13:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B949D22DF99;
+	Tue, 26 Aug 2025 13:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213883; cv=none; b=SwC3k1R2jq8HPurqFEum/2U9r/MQo4Ydcp7osJ2AsUOCyTBwIgYC1ZC7NfaGueqoaWNK6H596gzFp0w1NlOHN7uzGvLOntAxao8jkDPOkFreiJJSFoRRfIA3aI7wrGEvhRoMD+K6SrSZFYAVfvAR4lQL79Fz8uBTYeevsb5eTww=
+	t=1756215085; cv=none; b=m6IcRsudgvGjyt6p5NAHYqIH6JzCNVZtrR9T/D6t6xRzAPW3kZLMmy2F0GVf3QlCVA3yVdg+gvscyZdZAdQWj5EFTDLV5p5x/+dK3NX49Jgtniwh+pvadWJlliSb+h6fGokfyS0OTcJQUtkpa6wAkw0jMijXm+aoO3FLLmKDWTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213883; c=relaxed/simple;
-	bh=SJI6MADQKff94JN8TsiUWX/UG/TLLgKER9QG82nIs3Y=;
+	s=arc-20240116; t=1756215085; c=relaxed/simple;
+	bh=VnYknSU8wxi34jynTxP55KrcO2+Yit9hgDO/6YPrIxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jlv/Ss6ITZVr8Ws4Cgn4Ok73dynQp80PfN++w80+yWatiM5Xaql4LwziG7w7RJ8jarXlAAiXP8ZprV/Saa6+7v1yuADdGikeOSFKSIuu4WQymjzyetE26OjnD8Si/DrGOCTLBLzZx00szWKn0+4e9/RHvX8AP4g1YvV6Q8nX0FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1Y12Y+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716B2C4CEF1;
-	Tue, 26 Aug 2025 13:11:22 +0000 (UTC)
+	 MIME-Version; b=Aub1bh5XB66R8EnHfa4VefXmAOCz8OHJTsN3IvEqJyktTBUyAEuibR8cxLO4T7usesRLRT4WaTlZ1dO1P4jRf5ahzPEuq1k+1L7y+aa4ovYWFzX9HKKmrdzqYofTqaZIEg+r0RHTZjtNXsgqEQkVQ409ZH7UAhl8otU26LS7K1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+xWXvtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B31AC4CEF1;
+	Tue, 26 Aug 2025 13:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213883;
-	bh=SJI6MADQKff94JN8TsiUWX/UG/TLLgKER9QG82nIs3Y=;
+	s=korg; t=1756215085;
+	bh=VnYknSU8wxi34jynTxP55KrcO2+Yit9hgDO/6YPrIxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1Y12Y+Tk66sAiQA2PbUGQJ7dS1Idnwakqbo7Oo3BEhPTmd3ajRkmiONpImazY7Zw
-	 5sjjcz/c6/QF2UDmnBegidz11jKPvf/7hEV1fldg2eT61kjS04x7iKbcgSH8qbr/8z
-	 eLmzby+/+nhI9ywaj9jJS8FGB0trcOkFbYug2UxM=
+	b=z+xWXvtLTlBiThBunp9eLpCuVVZjgWO2y22UxsddTotVQb8KjeceJoUY3x+yKB7Ax
+	 l+LbbA/7sEW1P/Rl84vsrduvG3r+f0mvD+s/kBqbod1ynaaxbksdJn1B312WmDBagp
+	 QCF9o0c7y0Zx3s2NH2+A26FgHQeBBRskqhxupdoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 484/587] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 380/482] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
 Date: Tue, 26 Aug 2025 13:10:33 +0200
-Message-ID: <20250826111005.286867401@linuxfoundation.org>
+Message-ID: <20250826110940.216394464@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c upstream.
+commit f1fb088d9cecde5c3066d8ff8846789667519b7d upstream.
 
-When memory_failure() is called for a already hwpoisoned pfn,
-kill_accessing_process() will be called to kill current task.  However, if
-the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
-the vma in walk_page_test() and return 0.
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
-with recovered clean pages"), kill_accessing_process() will return EFAULT.
-For x86, the current task will be killed in kill_me_maybe().
-
-However, after this commit, kill_accessing_process() simplies return 0,
-that means UCE is handled properly, but it doesn't actually.  In such
-case, the user task will trigger UCE infinitely.
-
-To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
-
-Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
-Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[sean: account for lack of kvm_x86_call()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kvm/x86.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -835,9 +835,17 @@ static int hwpoison_hugetlb_range(pte_t
- #define hwpoison_hugetlb_range	NULL
- #endif
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13387,16 +13387,22 @@ int kvm_arch_irq_bypass_add_producer(str
+ {
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
  
-+static int hwpoison_test_walk(unsigned long start, unsigned long end,
-+			     struct mm_walk *walk)
-+{
-+	/* We also want to consider pages mapped into VM_PFNMAP. */
-+	return 0;
-+}
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
 +
- static const struct mm_walk_ops hwpoison_walk_ops = {
- 	.pmd_entry = hwpoison_pte_range,
- 	.hugetlb_entry = hwpoison_hugetlb_range,
-+	.test_walk = hwpoison_test_walk,
- 	.walk_lock = PGWALK_RDLOCK,
- };
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
++
+ 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm,
+ 					 prod->irq, irqfd->gsi, 1);
+-
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	return ret;
+ }
+ 
+@@ -13406,9 +13412,9 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
+ 
+ 	/*
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -13416,11 +13422,18 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
++
++
+ 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm, prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
  
 
 
