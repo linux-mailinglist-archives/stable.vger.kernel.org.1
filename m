@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFE7B3693A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67493B3630B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C36008E67D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B6AC1BA73A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E8034F496;
-	Tue, 26 Aug 2025 14:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E4D341AA6;
+	Tue, 26 Aug 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFnaX0u7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZ8rN5/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E4C35AABB;
-	Tue, 26 Aug 2025 14:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5497A23A984;
+	Tue, 26 Aug 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217514; cv=none; b=qwQIsJ1BxvQedGMrBkWZlVSDELfY4BJ9VGJH6rw7g8xtfLfY8L/CsgeDW0pdTTE4NLtm6n8CSobdnn8wiUkUmMjO6/prepl5rNaFGCAbXyIuj8ySuimtvv/yVdWTCfnWcQQNcTL1+dsH7yJjBeV1szXLvog8Xvu99O7RL9Qg1Cc=
+	t=1756214326; cv=none; b=Ig7PHg1j3b8BEgKjMcrW+BP3eQHWTkUFUr6YgZhclYvx6rPJz8usVTFqTo3lWyzS4gLNO0pEYWPuAksOn7lNfyTs4gsKjrVi4j+HUPcGX4rpg0KEbFKE2wMTbOVgwdRB9vv6wd+MdDvGYzPy61VCOcfDY9KusT7B5jUfXfGWpC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217514; c=relaxed/simple;
-	bh=i1RHUSfKF9TeWunGcND9WYhknd5HY2fYFXs5KQG8T0k=;
+	s=arc-20240116; t=1756214326; c=relaxed/simple;
+	bh=H9RbVAYNn2YLLoUmolOXY8tNEB2OtFRjadaIx1dLsQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkejGYDaayBaW4pTGSPrVohv0t02h30yTI+kToRoEQX0aF/pyDXQZ2kDQLJT7x/qtac++btd/kTO9Wr8rWCmaUQgXu/Wchl6whgevyLWIg6//RysxsDiuTs40XjWQNGvmMbCNOC7tGepoglrypGlFNhHfcHmCshOxbhT4xULRno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFnaX0u7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA0EC113D0;
-	Tue, 26 Aug 2025 14:11:53 +0000 (UTC)
+	 MIME-Version; b=JyMh5mSwKB1+z7zA4NhLNftcd4TExzCkkZwVX96v4R4aucZVzKxb8GpC5aP38kDZzy3YLVq6CR77crMvlo4pGc4JOmroxxbrfBERiIp28bN3j1Vcn3rww/VT/WpP5LPx/tuoJ+Vibbky1mp1eJqYtu0h4A2nrvFLaW72wq57Txw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZ8rN5/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5B5C4CEF1;
+	Tue, 26 Aug 2025 13:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217513;
-	bh=i1RHUSfKF9TeWunGcND9WYhknd5HY2fYFXs5KQG8T0k=;
+	s=korg; t=1756214326;
+	bh=H9RbVAYNn2YLLoUmolOXY8tNEB2OtFRjadaIx1dLsQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFnaX0u7xRUHSU92K5RswsJI5tzDdnOFunmDMam34uhzlaiiINQGE3EAaRJB5bdSY
-	 X/bm/1czukcLaPDIn4AGBFLWtauZjHReMInnXprBHx++E40nVCEIFMQM7XhqUoj5TN
-	 uqcCE4Ejg6hJpaTIjz7c+kMqONtk+DkaJIvOGBVE=
+	b=uZ8rN5/i4R4QI49WYy2YlbNRhJbLBHNxHUvmZd52EF69yfqgIAIfeVZ+xigrCGiLR
+	 pxTYRP0quM8dch1g6W7MRIuY/cPM0/4xju3HnKfkNMBDF6PsRJy8yEgoxcWgQd0O6M
+	 f2+rFa/tWTJWl5sEnowBDjUrXFb7JhCR3vhFmB9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/523] sh: Do not use hyphen in exported variable name
+Subject: [PATCH 6.1 097/482] ALSA: hda: Handle the jack polling always via a work
 Date: Tue, 26 Aug 2025 13:05:50 +0200
-Message-ID: <20250826110927.952968663@linuxfoundation.org>
+Message-ID: <20250826110933.224848705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c32969d0362a790fbc6117e0b6a737a7e510b843 ]
+[ Upstream commit 5f7e54b23e4d253eff3b10b12d6fa92d28d7dddc ]
 
-arch/sh/Makefile defines and exports ld-bfd to be used by
-arch/sh/boot/compressed/Makefile and arch/sh/boot/romimage/Makefile.
-However some shells, including dash, will not pass through environment
-variables whose name includes a hyphen.  Usually GNU make does not use
-a shell to recurse, but if e.g. $(srctree) contains '~' it will use a
-shell here.
+We used to call directly hda_jackpoll_work() from a couple of places
+for updating the jack and notify to user-space, but this makes rather
+the code flow fragile.  Namely, because of those direct calls,
+hda_jackpoll_work() uses snd_hda_power_up_pm() and *_down_pm() calls
+instead of the standard snd_hda_power_up() and *_down() calls.  The
+latter pair assures the runtime PM resume sync, so it can avoid the
+race against the PM callbacks gracefully, while the former pair may
+continue if called concurrently, hence it may race (by design).
 
-Other instances of this problem were previously fixed by commits
-2bfbe7881ee0 "kbuild: Do not use hyphen in exported variable name"
-and 82977af93a0d "sh: rename suffix-y to suffix_y".
+In this patch, we change the call pattern of hda_jackpoll_work(); now
+all callers are replaced with the standard snd_hda_jack_report_sync()
+and the additional schedule_delayed_work().
 
-Rename the variable to ld_bfd.
+Since hda_jackpoll_work() is called only from the associated work,
+it's always outside the PM code path, and we can safely use
+snd_hda_power_up() and *_down() there instead.  This allows us to
+remove the racy check of power-state in hda_jackpoll_work(), as well
+as the tricky cancel_delayed_work() and rescheduling at
+hda_codec_runtime_suspend().
 
-References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sh4&ver=4.13%7Erc5-1%7Eexp1&stamp=1502943967&raw=0
-Fixes: 7b022d07a0fd ("sh: Tidy up the ldscript output format specifier.")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Closes: https://lore.kernel.org/20250619020844.2974160-1-joakim.zhang@cixtech.com
+Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250623131437.10670-4-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/Makefile                 | 10 +++++-----
- arch/sh/boot/compressed/Makefile |  4 ++--
- arch/sh/boot/romimage/Makefile   |  4 ++--
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ sound/pci/hda/hda_codec.c | 41 +++++++++++++--------------------------
+ 1 file changed, 14 insertions(+), 27 deletions(-)
 
-diff --git a/arch/sh/Makefile b/arch/sh/Makefile
-index 2faebfd72eca..8e8e24227fff 100644
---- a/arch/sh/Makefile
-+++ b/arch/sh/Makefile
-@@ -103,16 +103,16 @@ UTS_MACHINE		:= sh
- LDFLAGS_vmlinux		+= -e _stext
+diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
+index 9d7d99b584fe..94b3732e6cb2 100644
+--- a/sound/pci/hda/hda_codec.c
++++ b/sound/pci/hda/hda_codec.c
+@@ -641,24 +641,16 @@ static void hda_jackpoll_work(struct work_struct *work)
+ 	struct hda_codec *codec =
+ 		container_of(work, struct hda_codec, jackpoll_work.work);
  
- ifdef CONFIG_CPU_LITTLE_ENDIAN
--ld-bfd			:= elf32-sh-linux
--LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld-bfd)
-+ld_bfd			:= elf32-sh-linux
-+LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld_bfd)
- KBUILD_LDFLAGS		+= -EL
- else
--ld-bfd			:= elf32-shbig-linux
--LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld-bfd)
-+ld_bfd			:= elf32-shbig-linux
-+LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld_bfd)
- KBUILD_LDFLAGS		+= -EB
- endif
+-	/* for non-polling trigger: we need nothing if already powered on */
+-	if (!codec->jackpoll_interval && snd_hdac_is_power_on(&codec->core))
++	if (!codec->jackpoll_interval)
+ 		return;
  
--export ld-bfd
-+export ld_bfd
+ 	/* the power-up/down sequence triggers the runtime resume */
+-	snd_hda_power_up_pm(codec);
++	snd_hda_power_up(codec);
+ 	/* update jacks manually if polling is required, too */
+-	if (codec->jackpoll_interval) {
+-		snd_hda_jack_set_dirty_all(codec);
+-		snd_hda_jack_poll_all(codec);
+-	}
+-	snd_hda_power_down_pm(codec);
+-
+-	if (!codec->jackpoll_interval)
+-		return;
+-
+-	schedule_delayed_work(&codec->jackpoll_work,
+-			      codec->jackpoll_interval);
++	snd_hda_jack_set_dirty_all(codec);
++	snd_hda_jack_poll_all(codec);
++	schedule_delayed_work(&codec->jackpoll_work, codec->jackpoll_interval);
++	snd_hda_power_down(codec);
+ }
  
- head-y	:= arch/sh/kernel/head_32.o
+ /* release all pincfg lists */
+@@ -2922,12 +2914,12 @@ static void hda_call_codec_resume(struct hda_codec *codec)
+ 		snd_hda_regmap_sync(codec);
+ 	}
  
-diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
-index 589d2d8a573d..d4baaaace17f 100644
---- a/arch/sh/boot/compressed/Makefile
-+++ b/arch/sh/boot/compressed/Makefile
-@@ -30,7 +30,7 @@ endif
+-	if (codec->jackpoll_interval)
+-		hda_jackpoll_work(&codec->jackpoll_work.work);
+-	else
+-		snd_hda_jack_report_sync(codec);
++	snd_hda_jack_report_sync(codec);
+ 	codec->core.dev.power.power_state = PMSG_ON;
+ 	snd_hdac_leave_pm(&codec->core);
++	if (codec->jackpoll_interval)
++		schedule_delayed_work(&codec->jackpoll_work,
++				      codec->jackpoll_interval);
+ }
  
- ccflags-remove-$(CONFIG_MCOUNT) += -pg
+ static int hda_codec_runtime_suspend(struct device *dev)
+@@ -2939,8 +2931,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
+ 	if (!codec->card)
+ 		return 0;
  
--LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
-+LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(IMAGE_OFFSET) -e startup \
- 		   -T $(obj)/../../kernel/vmlinux.lds
+-	cancel_delayed_work_sync(&codec->jackpoll_work);
+-
+ 	state = hda_call_codec_suspend(codec);
+ 	if (codec->link_down_at_suspend ||
+ 	    (codec_has_clkstop(codec) && codec_has_epss(codec) &&
+@@ -2948,10 +2938,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
+ 		snd_hdac_codec_link_down(&codec->core);
+ 	snd_hda_codec_display_power(codec, false);
  
- #
-@@ -68,7 +68,7 @@ $(obj)/vmlinux.bin.lzo: $(vmlinux.bin.all-y) FORCE
+-	if (codec->bus->jackpoll_in_suspend &&
+-		(dev->power.power_state.event != PM_EVENT_SUSPEND))
+-		schedule_delayed_work(&codec->jackpoll_work,
+-					codec->jackpoll_interval);
+ 	return 0;
+ }
  
- OBJCOPYFLAGS += -R .empty_zero_page
+@@ -3120,10 +3106,11 @@ int snd_hda_codec_build_controls(struct hda_codec *codec)
+ 	if (err < 0)
+ 		return err;
  
--LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
-+LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
- 
- $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/vmlinux.bin.$(suffix-y) FORCE
- 	$(call if_changed,ld)
-diff --git a/arch/sh/boot/romimage/Makefile b/arch/sh/boot/romimage/Makefile
-index c7c8be58400c..17b03df0a8de 100644
---- a/arch/sh/boot/romimage/Makefile
-+++ b/arch/sh/boot/romimage/Makefile
-@@ -13,7 +13,7 @@ mmcif-obj-$(CONFIG_CPU_SUBTYPE_SH7724)	:= $(obj)/mmcif-sh7724.o
- load-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-load-y)
- obj-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-obj-y)
- 
--LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(load-y) -e romstart \
-+LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(load-y) -e romstart \
- 		   -T $(obj)/../../kernel/vmlinux.lds
- 
- $(obj)/vmlinux: $(obj)/head.o $(obj-y) $(obj)/piggy.o FORCE
-@@ -24,7 +24,7 @@ OBJCOPYFLAGS += -j .empty_zero_page
- $(obj)/zeropage.bin: vmlinux FORCE
- 	$(call if_changed,objcopy)
- 
--LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
-+LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
- 
- $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/zeropage.bin arch/sh/boot/zImage FORCE
- 	$(call if_changed,ld)
++	snd_hda_jack_report_sync(codec); /* call at the last init point */
+ 	if (codec->jackpoll_interval)
+-		hda_jackpoll_work(&codec->jackpoll_work.work);
+-	else
+-		snd_hda_jack_report_sync(codec); /* call at the last init point */
++		schedule_delayed_work(&codec->jackpoll_work,
++				      codec->jackpoll_interval);
++
+ 	sync_power_up_states(codec);
+ 	return 0;
+ }
 -- 
 2.39.5
 
