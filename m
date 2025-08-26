@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BDFB36C47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8D9B35CAA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DB26983521
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA733B790D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C814C35209C;
-	Tue, 26 Aug 2025 14:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8791AAE13;
+	Tue, 26 Aug 2025 11:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJJYlrmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrN8V2Za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557C350825;
-	Tue, 26 Aug 2025 14:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2990F31DDBC;
+	Tue, 26 Aug 2025 11:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218354; cv=none; b=U7swWufouHzwk0FcdzEqNBhshaevF8VkYNVquSGVSGFHJyxrAdhfMUbxGGvdfo7+QBiK8uQe4Gx8bzoTwuK9e457Lb3xSzINhH7U49QgXdpq66IDZdaC51kkFshqNlL9ftDbkb+1sQOJn9Bn1J1Hlf2aezTL4QXAZfbH37Yp9KY=
+	t=1756208090; cv=none; b=L28oMwLmtUrFSeC/HGR6aug3LDmcPfGW77orc9ERRHUdkFv20qYgHif+6EzQPlktyLgxnTXfftliJAyZfqCDOGU9juT3s5ligL/wtSjt3LD7XQ2jgvdSNEvDdDXJXvrGLMcRek04H/Ej6LMAiX4Lt32LytxP0mXbN6frS3AeywU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218354; c=relaxed/simple;
-	bh=psrU+LM/XVpxfb5j6hnSOkwi1zMwLDxyz0oa/ITE3qY=;
+	s=arc-20240116; t=1756208090; c=relaxed/simple;
+	bh=hIE7D3tHYKORnISV02+ERWVePivWc5dGGjDm21vF63w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKt+5Odceyve/Lna5z6J76yHwfGds6pwNWwAemXe6tiTK7A+nF0yrhgkDXsjExyrnmSTKZD2idfEnZLZKyfybdUVhm7pjPzJkyjvOCqIyHA2IK9uEmBX6DGNCD1ZdP9psSKU1S402JYPFIZCR2NTk3rWSpskon2ZJl/mJh+1kNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJJYlrmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF44C4CEF1;
-	Tue, 26 Aug 2025 14:25:53 +0000 (UTC)
+	 MIME-Version; b=ay8VpBVETO0oe/x2T/JZxBG9kz0SVCdhowJP4+dKLYVhH1wPJwBFk+fDVEuaytI90bmOo3oZB3c3kcTy4EygjWEwhmnKB+DNXRjBpCdfWkcr5dQ69fjoMMkx57AyuvME2t8DLZuzImT5YEGq0H2eCk9wDpTKGEutpZxNGtqdCwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrN8V2Za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4D8C4CEF1;
+	Tue, 26 Aug 2025 11:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218354;
-	bh=psrU+LM/XVpxfb5j6hnSOkwi1zMwLDxyz0oa/ITE3qY=;
+	s=korg; t=1756208090;
+	bh=hIE7D3tHYKORnISV02+ERWVePivWc5dGGjDm21vF63w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJJYlrmPBhvD/xISEW6Pc+ylUNEHNnMXYAcVq7QudFiQ1e+vJb2Zk7ySptu/F3JV6
-	 PO/itNoES29eztg64ZrhmL8bDftnn1hqIbFSyqq2nawO59TlYzwxHR+RJu5XeU77hN
-	 qCLYWZxxu9sXFsZeLzugrHR5e7DiuzW5kdhPn/Go=
+	b=MrN8V2ZaF5ufAxS9RtNZYnwhwTAM4HtoGR6dPFQR8rLeKpaCLkTZkqgx2SqhXJh0B
+	 tmzU8CHx5Tmlb80xYfj3Afojj6RjZcyAL3d9hS21mCwFw7Zai6fapzsLBQrcg0wegU
+	 DePDI8FiFbLNBFx7QdVzHlwd8fkDR+WFmLt53OQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 490/523] media: qcom: camss: cleanup media device allocated resource on error path
+Subject: [PATCH 6.16 416/457] net/mlx5: HWS, fix bad parameter in CQ creation
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826110936.531252905@linuxfoundation.org>
+Message-ID: <20250826110947.574914967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-[ Upstream commit 69080ec3d0daba8a894025476c98ab16b5a505a4 ]
+[ Upstream commit 2462c1b9217246a889ec318b3894d84e4dd709c6 ]
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+'cqe_sz' valid value should be 0 for 64-byte CQE.
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
-
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ err_genpd_cleanup => err_cleanup ]
+Fixes: 2ca62599aa0b ("net/mlx5: HWS, added send engine and context handling")
+Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Reviewed-by: Vlad Dogaru <vdogaru@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250817202323.308604-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -888,7 +888,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_cleanup;
-+		goto err_media_device_cleanup;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+index c4b22be19a9b..b0595c9b09e4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+@@ -964,7 +964,6 @@ static int hws_send_ring_open_cq(struct mlx5_core_dev *mdev,
+ 		return -ENOMEM;
  
- 	ret = camss_register_entities(camss);
-@@ -945,6 +945,8 @@ err_register_subdevs:
- 	camss_unregister_entities(camss);
- err_register_entities:
- 	v4l2_device_unregister(&camss->v4l2_dev);
-+err_media_device_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_cleanup:
- 	v4l2_async_notifier_cleanup(&camss->notifier);
- err_free:
+ 	MLX5_SET(cqc, cqc_data, uar_page, mdev->priv.uar->index);
+-	MLX5_SET(cqc, cqc_data, cqe_sz, queue->num_entries);
+ 	MLX5_SET(cqc, cqc_data, log_cq_size, ilog2(queue->num_entries));
+ 
+ 	err = hws_send_ring_alloc_cq(mdev, numa_node, queue, cqc_data, cq);
+-- 
+2.50.1
+
 
 
 
