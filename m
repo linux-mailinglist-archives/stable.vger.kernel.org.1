@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F1CB35C50
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54C1B36C0C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1B9917C7F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6B31C408F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8132BE643;
-	Tue, 26 Aug 2025 11:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756AF352FC1;
+	Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJKycCIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M00aZfaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D9421ADA7;
-	Tue, 26 Aug 2025 11:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322082676E9;
+	Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207642; cv=none; b=mJdPVhY+ogMAC0evVLb4d/MlQnQanLdd8t6OKk9LMw93rfyliAyV2McIY+0QlEibbAp/CYGWAa5siJN94vtbOsVFgoJdqjmx8AocwqsINi2YpXM62zQFxUlXr+en1Q3cVUMroH9spVB6AxYPcEtHJK9tcXJ3m278wtTr7+cUb1o=
+	t=1756219097; cv=none; b=BrgDusELlXdo+wZfwGoCrttNG+/KMVuLqsR6oYSJU4LR+RopYG2WxTQmm+Tdf4lxmew1fWoY9Kqw3bxvESs8kAC7uByuRySZ9Por3ZbKWcp5swTfBwwcZaqMmYP74iJembls8wItAR40h7+aFJoxgisRnGJz1TkAn5WnhIYoWJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207642; c=relaxed/simple;
-	bh=aQS+CCxiQMjKRZ96ND11U5BQlhrXnLTRfYeQ0HjE+ug=;
+	s=arc-20240116; t=1756219097; c=relaxed/simple;
+	bh=gMkgl1pz0MaWPGp5iT1Z1e/4tr7iCls0Bbt05+MrUdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDNJR4zUBQpoDSOpjjKoEGYMwxj/CAKgYCF4aieFPGAxbLPPGCpAesvSlvuVbXkDYasvcW1GhTM1Fyo++6lREBdPQiDgxafjrOHPmtYNhU49GvYmQMtvXs6H2pTm5iNrMNcKQlsfgzCnjPisuDcB9AefPcb7prp6QaHnEaZJVDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJKycCIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23B3C4CEF1;
-	Tue, 26 Aug 2025 11:27:21 +0000 (UTC)
+	 MIME-Version; b=W1p6Y9urQt6pFXzRhH312opEKpTfPeH4fewzTSMzMfrsMoYb8muOKNMqHsMiBLXm250hplUDrdl/LGcxte4dVlbikCB2TZCnPiOmk/A7z/nW5hQwBjrx2GP0euhaqPkgTuS43E2ZmAYHiBfZwSd14c3tAn8lC7VFGTmtXuO8z4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M00aZfaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AC3C4CEF1;
+	Tue, 26 Aug 2025 14:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207642;
-	bh=aQS+CCxiQMjKRZ96ND11U5BQlhrXnLTRfYeQ0HjE+ug=;
+	s=korg; t=1756219097;
+	bh=gMkgl1pz0MaWPGp5iT1Z1e/4tr7iCls0Bbt05+MrUdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJKycCIX/Su0FReDSKgZZOS1gqZTD5hnZdKUMN3g2eX9bJCTdVOOQyWVPR2CtjO+q
-	 p2VjkKRJELT8vJUjsyEL7Q80cFA5lIalxHx9GxuR9emS1Na3e0nIphS2KTCiiLP32x
-	 dZuKpiMUuVpoDpHeWiKtt0+oECCbxKuTpj0Iy2Bk=
+	b=M00aZfaW7SXAIcq6nlo/BVdAq47SJIVKAa4TJhtX32GesZamEOhLessKF4dcuCvKU
+	 EPBmseHBzdma5qzPO0aM39pglZzRdJwnhztLX4wU7Y7kymNKWx71x5pDggu2znbXCi
+	 ZneLF0yGOlL3Gps6SctnWhVs29UdhvA4MJMFDj8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlton Lin <charlton.lin@intel.com>,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.16 262/457] drm/i915/icl+/tc: Cache the max lane count value
+	Rand Deeb <rand.sec96@gmail.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 220/403] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
 Date: Tue, 26 Aug 2025 13:09:06 +0200
-Message-ID: <20250826110943.852759769@linuxfoundation.org>
+Message-ID: <20250826110912.910165178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,195 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit 5fd35236546abe780eaadb7561e09953719d4fc3 upstream.
+[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
 
-The PHY's pin assignment value in the TCSS_DDI_STATUS register - as set
-by the HW/FW based on the connected DP-alt sink's TypeC/PD pin
-assignment negotiation - gets cleared by the HW/FW on LNL+ as soon as
-the sink gets disconnected, even if the PHY ownership got acquired
-already by the driver (and hence the PHY itself is still connected and
-used by the display). This is similar to how the PHY Ready flag gets
-cleared on LNL+ in the same register.
+The 'index' variable in the rs_fill_link_cmd() function can reach
+LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
+variable is used as an index for the lq_cmd->rs_table array, which has a
+size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
 
-To be able to query the max lane count value on LNL+ - which is based on
-the above pin assignment - at all times even after the sink gets
-disconnected, the max lane count must be determined and cached during
-the PHY's HW readout and connect sequences. Do that here, leaving the
-actual use of the cached value to a follow-up change.
+Modify the condition of the inner loop to ensure that the 'index' variable
+does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
+potential overflow issues.
 
-v2: Don't read out the pin configuration if the PHY is disconnected.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org # v6.8+
-Reported-by: Charlton Lin <charlton.lin@intel.com>
-Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250811080152.906216-3-imre.deak@intel.com
-(cherry picked from commit 3e32438fc406761f81b1928d210b3d2a5e7501a0)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_tc.c |   57 ++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -65,6 +65,7 @@ struct intel_tc_port {
- 	enum tc_port_mode init_mode;
- 	enum phy_fia phy_fia;
- 	u8 phy_fia_idx;
-+	u8 max_lane_count;
- };
- 
- static enum intel_display_power_domain
-@@ -364,12 +365,12 @@ static int intel_tc_port_get_max_lane_co
- 	}
- }
- 
--int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
-+static int get_max_lane_count(struct intel_tc_port *tc)
- {
--	struct intel_display *display = to_intel_display(dig_port);
--	struct intel_tc_port *tc = to_tc_port(dig_port);
-+	struct intel_display *display = to_intel_display(tc->dig_port);
-+	struct intel_digital_port *dig_port = tc->dig_port;
- 
--	if (!intel_encoder_is_tc(&dig_port->base) || tc->mode != TC_PORT_DP_ALT)
-+	if (tc->mode != TC_PORT_DP_ALT)
- 		return 4;
- 
- 	assert_tc_cold_blocked(tc);
-@@ -383,6 +384,21 @@ int intel_tc_port_max_lane_count(struct
- 	return intel_tc_port_get_max_lane_count(dig_port);
- }
- 
-+static void read_pin_configuration(struct intel_tc_port *tc)
-+{
-+	tc->max_lane_count = get_max_lane_count(tc);
-+}
-+
-+int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
-+{
-+	struct intel_tc_port *tc = to_tc_port(dig_port);
-+
-+	if (!intel_encoder_is_tc(&dig_port->base))
-+		return 4;
-+
-+	return get_max_lane_count(tc);
-+}
-+
- void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
- 				      int required_lanes)
- {
-@@ -595,9 +611,12 @@ static void icl_tc_phy_get_hw_state(stru
- 	tc_cold_wref = __tc_cold_block(tc, &domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	__tc_cold_unblock(tc, domain, tc_cold_wref);
- }
- 
-@@ -655,8 +674,11 @@ static bool icl_tc_phy_connect(struct in
- 
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
--	if (tc->mode == TC_PORT_TBT_ALT)
-+	if (tc->mode == TC_PORT_TBT_ALT) {
-+		read_pin_configuration(tc);
-+
- 		return true;
-+	}
- 
- 	if ((!tc_phy_is_ready(tc) ||
- 	     !icl_tc_phy_take_ownership(tc, true)) &&
-@@ -667,6 +689,7 @@ static bool icl_tc_phy_connect(struct in
- 		goto out_unblock_tc_cold;
- 	}
- 
-+	read_pin_configuration(tc);
- 
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_release_phy;
-@@ -857,9 +880,12 @@ static void adlp_tc_phy_get_hw_state(str
- 	port_wakeref = intel_display_power_get(display, port_power_domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	intel_display_power_put(display, port_power_domain, port_wakeref);
- }
- 
-@@ -872,6 +898,9 @@ static bool adlp_tc_phy_connect(struct i
- 
- 	if (tc->mode == TC_PORT_TBT_ALT) {
- 		tc->lock_wakeref = tc_cold_block(tc);
-+
-+		read_pin_configuration(tc);
-+
- 		return true;
- 	}
- 
-@@ -893,6 +922,8 @@ static bool adlp_tc_phy_connect(struct i
- 
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
-+	read_pin_configuration(tc);
-+
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_unblock_tc_cold;
- 
-@@ -1123,9 +1154,12 @@ static void xelpdp_tc_phy_get_hw_state(s
- 	tc_cold_wref = __tc_cold_block(tc, &domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	drm_WARN_ON(display->drm,
- 		    (tc->mode == TC_PORT_DP_ALT || tc->mode == TC_PORT_LEGACY) &&
- 		    !xelpdp_tc_phy_tcss_power_is_enabled(tc));
-@@ -1137,14 +1171,19 @@ static bool xelpdp_tc_phy_connect(struct
- {
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
--	if (tc->mode == TC_PORT_TBT_ALT)
-+	if (tc->mode == TC_PORT_TBT_ALT) {
-+		read_pin_configuration(tc);
-+
- 		return true;
-+	}
- 
- 	if (!xelpdp_tc_phy_enable_tcss_power(tc, true))
- 		goto out_unblock_tccold;
- 
- 	xelpdp_tc_phy_take_ownership(tc, true);
- 
-+	read_pin_configuration(tc);
-+
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_release_phy;
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index e68a13c33c45..19defdb43126 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -2935,7 +2935,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
+ 		/* Repeat initial/next rate.
+ 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
+ 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
+-		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
++		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
+ 			if (is_legacy(tbl_type.lq_type)) {
+ 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
+ 					ant_toggle_cnt++;
+-- 
+2.39.5
+
 
 
 
