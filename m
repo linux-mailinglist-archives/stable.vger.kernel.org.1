@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECFAB361CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CA8B36A30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7BF2A3B32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9C718E6792
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAF2241673;
-	Tue, 26 Aug 2025 13:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACED6353366;
+	Tue, 26 Aug 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiDdvPEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUim6kb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7F2227BA4;
-	Tue, 26 Aug 2025 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659C4352FFA;
+	Tue, 26 Aug 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213671; cv=none; b=PvvTYea5gaS24S1U45PYCvyX7VYMCGiu1H2fgvVn+dp8LZy6nknhXbUBG6nsEMVqcrosW3bFAHiy+w/tVqy/AtAj+xoyBLztQM8/9FCJvpU2i/jJezQ9d4mRY69hmWfsk5g77qOrFE3cHrUxli3a5Gpq77M4sdndBumkbRr14Yk=
+	t=1756218133; cv=none; b=DgkHQdzlcEG3SiQ96mmhC0GtDH5hcIF6s+wnYYGsOQt/V03Fl341d+iTUzb1yC4HrkQkMcUY1YQVZP9NCOLSmaaLh0hlvnBU1jhq3Vo7dgpy1uppgBQ/e57cEQyHpUhuWxt9lgspE9s5VBWzj4cqbfPHLcRxz5zoFSOWnvxHCG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213671; c=relaxed/simple;
-	bh=4HGq9lU3UQuXCbZn01coiEFT7hPO5Q/q6rHvGRXob9c=;
+	s=arc-20240116; t=1756218133; c=relaxed/simple;
+	bh=oNAmdMhgWXxkzTOGs2OVJEbXPZS6PTw0OYzK+dhfPbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIz6J5H67Givkru5RzE+f1KVzacKIMy6U1a8Hjn9CvR0OvoB6eZXMyXptRapc6u5BLmS/vbLWNfejRsApZhBY2Wn2Rm+1x0WqSPAwlYjiYoOKrTM0s2DV0G2MFfeMNnFVC0/TfCHZXOcIazYFvbQnZN24n7jbKwFWEfTxkvHSxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiDdvPEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4965EC113CF;
-	Tue, 26 Aug 2025 13:07:50 +0000 (UTC)
+	 MIME-Version; b=U+AZ3Zf9AtX8HIxTHGtB8DBAGK4ZJvJtZ2zd4wB7EV6RzzI4TjBmJIh6bMx2Mxo0QUq/spmylaq5qdmR+4Ew3lJylkGPwU6l/RaXKrB9B7qrRjI//emqlphmr9s6fHiGYPgdCcLn/6miTlPZ6j6yeICRttM0DwVIzBjdHpxbzgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUim6kb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC46C113CF;
+	Tue, 26 Aug 2025 14:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213670;
-	bh=4HGq9lU3UQuXCbZn01coiEFT7hPO5Q/q6rHvGRXob9c=;
+	s=korg; t=1756218132;
+	bh=oNAmdMhgWXxkzTOGs2OVJEbXPZS6PTw0OYzK+dhfPbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oiDdvPENB5YUj3blOKpQWq+Yx15p1oCu5zy1xNti5pz2ut8sDHzNNzthd0wx8+5Zp
-	 sStCIEGJ+6r75mhkvUOWu6j3LnTWtj0w0WCgJg4MP7n0M20mZoaL8hUvdQ3k7Qp452
-	 xBMH670n3xyGn/3c04a7W3Xchjs4veFVc8gf3euU=
+	b=XUim6kb5w20+4mFcVt3wsswwuVtNbvAly7inDNnMuPC1bS1tLl0k5Ncf5PVx/C4iy
+	 we8WozrnacBfm0K2kSk2WoFfr2m2VDrJ8fVAlWeYjd66gaawyM+BMrjlnMWykxFU2G
+	 LTuA0C5er3zMpsI5G+jYHAyt9cvIZ0vqu1RFiA/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 435/587] net_sched: sch_ets: implement lockless ets_dump()
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.10 374/523] PCI: endpoint: Fix configfs group removal on driver teardown
 Date: Tue, 26 Aug 2025 13:09:44 +0200
-Message-ID: <20250826111004.015649679@linuxfoundation.org>
+Message-ID: <20250826110933.690235110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
+commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
 
-Instead of relying on RTNL, ets_dump() can use READ_ONCE()
-annotations, paired with WRITE_ONCE() ones in ets_change().
+An endpoint driver configfs attributes group is added to the
+epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
+added group is not removed from this list when the attribute group is
+unregistered with pci_ep_cfs_remove_epf_group().
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
+to correctly remove the attribute group from the driver list.
+
+With this change, once the loop over all attribute groups in
+pci_epf_remove_cfs() completes, the driver epf_group list should be
+empty. Add a WARN_ON() to make sure of that.
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,7 +651,7 @@ static int ets_qdisc_change(struct Qdisc
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -464,6 +464,7 @@ void pci_ep_cfs_remove_epf_group(struct
+ 	if (IS_ERR_OR_NULL(group))
+ 		return;
  
- 	sch_tree_lock(sch);
- 
--	q->nbands = nbands;
-+	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
- 			list_add_tail(&q->classes[i].alist, &q->active);
-@@ -663,11 +663,11 @@ static int ets_qdisc_change(struct Qdisc
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
--	q->nstrict = nstrict;
-+	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
- 	for (i = 0; i < q->nbands; i++)
--		q->classes[i].quantum = quanta[i];
-+		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
- 
- 	for (i = oldbands; i < q->nbands; i++) {
- 		q->classes[i].qdisc = queues[i];
-@@ -681,7 +681,7 @@ static int ets_qdisc_change(struct Qdisc
- 	for (i = q->nbands; i < oldbands; i++) {
- 		qdisc_put(q->classes[i].qdisc);
- 		q->classes[i].qdisc = NULL;
--		q->classes[i].quantum = 0;
-+		WRITE_ONCE(q->classes[i].quantum, 0);
- 		q->classes[i].deficit = 0;
- 		gnet_stats_basic_sync_init(&q->classes[i].bstats);
- 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-@@ -738,6 +738,7 @@ static int ets_qdisc_dump(struct Qdisc *
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct nlattr *opts;
- 	struct nlattr *nest;
-+	u8 nbands, nstrict;
- 	int band;
- 	int prio;
- 	int err;
-@@ -750,21 +751,22 @@ static int ets_qdisc_dump(struct Qdisc *
- 	if (!opts)
- 		goto nla_err;
- 
--	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
-+	nbands = READ_ONCE(q->nbands);
-+	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
- 		goto nla_err;
- 
--	if (q->nstrict &&
--	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
-+	nstrict = READ_ONCE(q->nstrict);
-+	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
- 		goto nla_err;
- 
--	if (q->nbands > q->nstrict) {
-+	if (nbands > nstrict) {
- 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
- 		if (!nest)
- 			goto nla_err;
- 
--		for (band = q->nstrict; band < q->nbands; band++) {
-+		for (band = nstrict; band < nbands; band++) {
- 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
--					q->classes[band].quantum))
-+					READ_ONCE(q->classes[band].quantum)))
- 				goto nla_err;
- 		}
- 
-@@ -776,7 +778,8 @@ static int ets_qdisc_dump(struct Qdisc *
- 		goto nla_err;
- 
- 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
--		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
-+		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
-+			       READ_ONCE(q->prio2band[prio])))
- 			goto nla_err;
- 	}
++	list_del(&group->group_entry);
+ 	configfs_unregister_default_group(group);
+ }
+ EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -147,6 +147,7 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
++	WARN_ON(!list_empty(&driver->epf_group));
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
 
 
