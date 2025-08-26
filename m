@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D5EB3670C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B385DB3622D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 797D0B6138D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D60E1728A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF2E350840;
-	Tue, 26 Aug 2025 14:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CB62BE032;
+	Tue, 26 Aug 2025 13:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyrlJQZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FE4VbeMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FD330AAD8;
-	Tue, 26 Aug 2025 14:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861D726FDBF;
+	Tue, 26 Aug 2025 13:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216817; cv=none; b=g6NG0gpfwweYLqwtRHBQshbRl5b+2wka9ylgESvsOmOK9kgNKLiB3lUx8eJRxNeUMqXDYQ9GNHBBJ4JZx8nvRqHiXE5uwzQ0ojf8oPz4v19XoPsu5i7kUx22EYSSi1TWRyXkY33dMeTRjBzcV0QyYJLPNNjYp7z7Ke/WXM1okME=
+	t=1756213830; cv=none; b=sWjAuQHI16MQumbXcNjjmSj1kUpfpjReroUaXM+yt2x/T+zy6QxkGf96QV9Sscx5Dp2B+Qx6M+o5cqj63yIEaa+mRWI3VwRlZgeNW7zkS1zkpFGY1gRcB8xhUnV2HgH8/6gWRMiNretLfQe2Us2jX90hMc3DnUqCtXL/qEnrNWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216817; c=relaxed/simple;
-	bh=WdHENq4MXH6gK4JKtTXf47ZCHtZeIyJxEVGH0sn0Bug=;
+	s=arc-20240116; t=1756213830; c=relaxed/simple;
+	bh=OCWqdV8RXyeyZpiEiDgmFQHyD4+j70WI3TYpPAbxGSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mupOXmGsunmaPAvER3AEHCNYeYJFAxt7aiy9NwomzBk3nP1YAF3igjbfE0jZq7PZpGh/6VrNvf3njMelmIhGalwTXZ06W6pkE5QN8HViz+1D0fjkUsapJVc5yJQoJG/hlrTgk2dDJT2aIWW29bv6CAjZDH3QgiVoFcQB7Mo73PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyrlJQZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD0AC4CEF1;
-	Tue, 26 Aug 2025 14:00:16 +0000 (UTC)
+	 MIME-Version; b=QbvO2haGvU9hkYP64bY2I8BUgA2iNbYr2vEzn357ZiqFg0qhSZ0l8hZsmgV7dbnaacPqvZwzReVLkWpuMIoc65L9zvEX9YRWH3hyV/0A8qmg/ODTc3ocXGPFqYqNx6IQXjCM0T112TS3W5rB5QvwTzPIX3/OQ56aU92ogrOenf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FE4VbeMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1537EC4CEF1;
+	Tue, 26 Aug 2025 13:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216817;
-	bh=WdHENq4MXH6gK4JKtTXf47ZCHtZeIyJxEVGH0sn0Bug=;
+	s=korg; t=1756213830;
+	bh=OCWqdV8RXyeyZpiEiDgmFQHyD4+j70WI3TYpPAbxGSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UyrlJQZFSeoYh1VXEk5OnvREY9HbNpuOYXmFKVXm+4q4JoA05wxW0RyFUxR5FGzPI
-	 83uluK1jAd9LgRz2SEB1qMJK6QWQHcP54yxLPBvsovgGXcJZ6pVMnrodqiaz/uBQTm
-	 QwZiHMcCHrY/ty39u4nyu/2DUCzwnUa1yF/JfS8o=
+	b=FE4VbeMk8EpFtWdVcE4yMbATbvArDRZqlhx6eSLCUd6ZOiAQ4KYP6z/eyxvfpWGXL
+	 jevdwj8QMf3LMHrJXXpb7jTyUQqtO5JTb2J5d19a8aIW4LqRvJD3H1gOBhDstwmkC/
+	 KB6VcSLtQqNiIRHCqNI1bUpUSa6p2Dvd8oKeU3y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 554/644] selftests: mptcp: connect: also cover checksum
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 496/587] PCI: imx6: Add IMX8MM_EP and IMX8MP_EP fixed 256-byte BAR 4 in epc_features
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826111000.256073947@linuxfoundation.org>
+Message-ID: <20250826111005.599433958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-commit fdf0f60a2bb02ba581d9e71d583e69dd0714a521 upstream.
+[ Upstream commit 399444a87acdea5d21c218bc8e9b621fea1cd218 ]
 
-The checksum mode has been added a while ago, but it is only validated
-when manually launching mptcp_connect.sh with "-C".
+For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 and reserved BAR 5
+in imx8m_pcie_epc_features.
 
-The different CIs were then not validating these MPTCP Connect tests
-with checksum enabled. To make sure they do, add a new test program
-executing mptcp_connect.sh with the checksum mode.
-
-Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
+Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[bhelgaas: add details in subject]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in Makefile, in the context, because userspace_pm.sh test
-  has been introduced later, in commit 3ddabc433670 ("selftests: mptcp:
-  validate userspace PM tests by default"), which is not in this
-  version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250708091003.2582846-3-hongxing.zhu@nxp.com
+[ Adapted BAR configuration to use reserved_bar bitmap and bar_fixed_size ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                  |    2 +-
- tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+ drivers/pci/controller/dwc/pci-imx6.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -6,7 +6,7 @@ KSFT_KHDR_INSTALL := 1
- CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g  -I$(top_srcdir)/usr/include
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1043,7 +1043,10 @@ static const struct pci_epc_features imx
+ 	.linkup_notifier = false,
+ 	.msi_capable = true,
+ 	.msix_capable = false,
+-	.reserved_bar = 1 << BAR_1 | 1 << BAR_3,
++	.reserved_bar = 1 << BAR_1 | 1 << BAR_3 | 1 << BAR_5,
++	.bar_fixed_size = {
++		[BAR_4] = SZ_256,
++	},
+ 	.align = SZ_64K,
+ };
  
- TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
--	      pm_netlink.sh mptcp_join.sh diag.sh \
-+	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh
- 
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
 
 
 
