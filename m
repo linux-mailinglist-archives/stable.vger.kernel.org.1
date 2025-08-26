@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA29B36342
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C43B36172
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAE1E7BD219
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50DA31BC0C30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8B9252900;
-	Tue, 26 Aug 2025 13:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891D4238C0B;
+	Tue, 26 Aug 2025 13:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnA/2al0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZjZGSDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAAC22DFA7;
-	Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472991ACEDA;
+	Tue, 26 Aug 2025 13:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214848; cv=none; b=FTttKNaVIpIJsOyOYi3SIW1zkguj5vkwmvoVlTUGg0Z59AIkxX1toaJ/+fiCPKRpv4Xz06N4YNiF5B+vMvbLbXyaCMNs1R3ROHP23q2yRkf4UDucrWQGXlHyHTmYKaYSnMDI5OzXUsB7psgbmoC8NCurQqKnqLmj1pWkn067ob8=
+	t=1756213570; cv=none; b=JBDb/ruc2lCBapv32Knjceb+YGA2qMARANQqmlbOQDIY/7Uc+X4nnzFvsJOUA8rhxPVNTvuG4Fv24CANnveNgiDv3PJuXdrY/FLNsv6203AYovNX23M0cF5Gzt3b1m1Nr5t3C/XUjdxUfFnXMnNph3icpKxg765g/V7GW1usZ98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214848; c=relaxed/simple;
-	bh=JSHTg8gjy0Qkl2Z4s7FYwVIGXaL7r7UcXlvx7wFb5AA=;
+	s=arc-20240116; t=1756213570; c=relaxed/simple;
+	bh=9gtCTVt5HLrI0ptjK5lZvZGuqrXwYwkprfK2y/ufGHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPhtHgnic5VkBi/B3yWiQueOPNXtbXh4XCuhpea/ZblXGUT1SKfsF0yJ4RWaaMQG1y8OUrdp2QDT6o4XGeFRVRahc6SsxPCjsiHlMcgfHytlIl1sI51CmqazzG70EbSgislFbInhmFZap0UarcrtRZCpoVk0whRrGPVjG3HAi74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnA/2al0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867F5C4CEF1;
-	Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
+	 MIME-Version; b=ata4bOMT26fmN6F4Krt7uN9lpU9i7yRMqyECBZX0lb+0dlnaxr+9j3Bk+2i4Hk1oG0bDSKJX5g/rGgN1m9j/tvPCrXidrwaj0WabUdTsYnUFyrB8FaQnrbGxBuVQi1+dB5KzNnyNq2p0c/Lgj9s7aF/EzX5O7CVrNhMCiKJyiP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZjZGSDu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0870C4CEF1;
+	Tue, 26 Aug 2025 13:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214848;
-	bh=JSHTg8gjy0Qkl2Z4s7FYwVIGXaL7r7UcXlvx7wFb5AA=;
+	s=korg; t=1756213570;
+	bh=9gtCTVt5HLrI0ptjK5lZvZGuqrXwYwkprfK2y/ufGHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnA/2al0+bsZezdc/65Tsm/TTH8KtYPehBBnjQEkIQWDVJGGvf38xhMkiKgQe5U3O
-	 e3c/VxR7H7uLGWXb8/eJuD2T2zQVH0GFNHLTv1b0TXRM4q/Q4GghWjyMDKt2dqJNPX
-	 IVGoNRJvdcBYrV+4lyIidYRFcw3gbpteUH2Ys3Ig=
+	b=mZjZGSDu2cZVreKMDiUL6WnKLkwO6Ml0cc11rSOkdX9BRUaQn6tng7nysJZLRExIX
+	 PuJmRAiroqRa0cOc1DP9BjtO94wh+iH5YZG0qze1d51MtJk8eulJwGIVfmZs3PzfNh
+	 p14CDlBfhOqNj7rZhPOmQkmBBJfHwNZ+ELuqPYz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 293/482] iio: imu: bno055: fix OOB access of hw_xlate array
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 397/587] parisc: Revise __get_user() to probe user read access
 Date: Tue, 26 Aug 2025 13:09:06 +0200
-Message-ID: <20250826110938.031458484@linuxfoundation.org>
+Message-ID: <20250826111003.023329436@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 399b883ec828e436f1a721bf8551b4da8727e65b upstream.
+commit 89f686a0fb6e473a876a9a60a13aec67a62b9a7e upstream.
 
-Fix a potential out-of-bounds array access of the hw_xlate array in
-bno055.c.
+Because of the way read access support is implemented, read access
+interruptions are only triggered at privilege levels 2 and 3. The
+kernel executes at privilege level 0, so __get_user() never triggers
+a read access interruption (code 26). Thus, it is currently possible
+for user code to access a read protected address via a system call.
 
-In bno055_get_regmask(), hw_xlate was iterated over the length of the
-vals array instead of the length of the hw_xlate array. In the case of
-bno055_gyr_scale, the vals array is larger than the hw_xlate array,
-so this could result in an out-of-bounds access. In practice, this
-shouldn't happen though because a match should always be found which
-breaks out of the for loop before it iterates beyond the end of the
-hw_xlate array.
+Fix this by probing read access rights at privilege level 3 (PRIV_USER)
+and setting __gu_err to -EFAULT (-14) if access isn't allowed.
 
-By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
-sure we are iterating over the correct length.
+Note the cmpiclr instruction does a 32-bit compare because COND macro
+doesn't work inside asm.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bno055/bno055.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/uaccess.h |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 3f4c18dc3ee9..0eb5e1334e55 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
- 	int len;
- 	int *fusion_vals;
- 	int *hw_xlate;
-+	int hw_xlate_len;
- 	int type;
- };
+--- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -42,9 +42,24 @@
+ 	__gu_err;					\
+ })
  
-@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
- 	1000, 1877467, 2000, 1877467,
- };
+-#define __get_user(val, ptr)				\
+-({							\
+-	__get_user_internal(SR_USER, val, ptr);	\
++#define __probe_user_internal(sr, error, ptr)			\
++({								\
++	__asm__("\tproberi (%%sr%1,%2),%3,%0\n"			\
++		"\tcmpiclr,= 1,%0,%0\n"				\
++		"\tldi %4,%0\n"					\
++		: "=r"(error)					\
++		: "i"(sr), "r"(ptr), "i"(PRIV_USER),		\
++		  "i"(-EFAULT));				\
++})
++
++#define __get_user(val, ptr)					\
++({								\
++	register long __gu_err;					\
++								\
++	__gu_err = __get_user_internal(SR_USER, val, ptr);	\
++	if (likely(!__gu_err))					\
++		__probe_user_internal(SR_USER, __gu_err, ptr);	\
++	__gu_err;						\
+ })
  
-+static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
- static struct bno055_sysfs_attr bno055_gyr_scale = {
- 	.vals = bno055_gyr_scale_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
- 	.fusion_vals = (int[]){1, 900},
--	.hw_xlate = (int[]){4, 3, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_scale_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
- 	.type = IIO_VAL_FRACTIONAL,
- };
- 
- static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
-+static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
- static struct bno055_sysfs_attr bno055_gyr_lpf = {
- 	.vals = bno055_gyr_lpf_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
- 	.fusion_vals = (int[]){32},
--	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_lpf_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
- 	.type = IIO_VAL_INT,
- };
- 
-@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
- 
- 	idx = (hwval & mask) >> shift;
- 	if (attr->hw_xlate)
--		for (i = 0; i < attr->len; i++)
-+		for (i = 0; i < attr->hw_xlate_len; i++)
- 			if (attr->hw_xlate[i] == idx) {
- 				idx = i;
- 				break;
--- 
-2.50.1
-
+ #define __get_user_asm(sr, val, ldx, ptr)		\
 
 
 
