@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-174579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD5DB3648D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F137AB35C0C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CC44467FB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB693188CC19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1969F341655;
-	Tue, 26 Aug 2025 13:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE10C2BEC34;
+	Tue, 26 Aug 2025 11:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QW5zVoOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTJ479Wg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC162340DA4;
-	Tue, 26 Aug 2025 13:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF662248A5;
+	Tue, 26 Aug 2025 11:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214766; cv=none; b=SWVGYpCpCjoG7faR9a5+7XCJOzIbPUGGrL4KRj/wqF8xypZpfNCpkJ4xvqPWqiekl1A8D4hOc9hYg0tdFFQ8GCsHxtUBNQTUNisgTE7yQhtY6GvnzoAj8N97Ui7iCxRmBvjdlFoa7ZlB3flWTiCSSKqlVWBQR1fBc9u2BbWppqs=
+	t=1756207563; cv=none; b=YfUtlncdAn3ocdeF8Cz0Zmk0F98tvQvQ/NQpzl9dSpbHK5JPvreDG5ja9wvh0k136qTiDk3DrCQ2e3+yaem7Ub4yFYvw8cKHjrNbla/TBCCvI2p4IPPSUgRcZ13BoQ0j+Mtbf/dZjh7SezIhK71wAW1qhOyHJdEibS6ypQUKgWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214766; c=relaxed/simple;
-	bh=6eue9MCx4z80O9lJrJfV+h0xI5acUFb26cGoo1Vr4CU=;
+	s=arc-20240116; t=1756207563; c=relaxed/simple;
+	bh=LhEBcpz4vBEt/u80N10X/12Gq3zgfMX+IiQWmwk0Dbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVtbl1k0wFP6ZJexkoXLfvJ+u6YKiZm8luo14n17JWDAsYBvW6PbILzXaz4y/P0jVYoLOfVJoDqN4fBY+mCCCdhdFMg1ZMFfkTTjbO5P6a2d9DXU3oDj/LR1CIXGkaUEV9yxhGoYvo07+CgNV++j5NDRBuclVV064uC5QQN0THM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QW5zVoOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF4FC4CEF1;
-	Tue, 26 Aug 2025 13:26:06 +0000 (UTC)
+	 MIME-Version; b=nQX2G4zVVrkfP/mOyStk/PkUpOtyY0HkVEqVMMlWG80A3BUh2Q2nz7pFBtV1Xx6nEQSRAWbrjwx27lj8DonEvqOgHh0Mm/rbJXJMkY3H3aXcgpQ8gArDGeUyYDtTJdtFgr1UEsqejvrg6qPkZGU1Ob/7qAz7E+NhWk6nyub/VOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTJ479Wg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BDDC4CEF1;
+	Tue, 26 Aug 2025 11:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214766;
-	bh=6eue9MCx4z80O9lJrJfV+h0xI5acUFb26cGoo1Vr4CU=;
+	s=korg; t=1756207563;
+	bh=LhEBcpz4vBEt/u80N10X/12Gq3zgfMX+IiQWmwk0Dbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QW5zVoOjvmnq6te853aBdunYELnYJZoTymrTdx/nMWj9KXzDdy60gHdlo5u6sh95p
-	 /JVA5EYX75oCl1lXnWfNc5k0e1m7FgZubcliBYHOaCosRQH9jbrKuOrqpMNbD+ON5w
-	 uIkmQRBv5hJ4n391u01itR2z9iMW9OPfRByM/3HU=
+	b=aTJ479Wg/6xEY+Gkopov7QqUQ9kBi8bPGHkuIIyswb4caCgXaj++zFyFBX4SUbFV7
+	 4SSS7X+Zr+pJmxPxE+bOiWk0PhG/3cEBDByCWgy7Iyb9/jUIJkLjt1QS5mD9fjXhOp
+	 u+KzglTfBzPxu+fggjBMIeY5n5Cg+9dzS8tnOwVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 262/482] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 231/457] io_uring/futex: ensure io_futex_wait() cleans up properly on failure
 Date: Tue, 26 Aug 2025 13:08:35 +0200
-Message-ID: <20250826110937.240474969@linuxfoundation.org>
+Message-ID: <20250826110943.083192979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
+commit 508c1314b342b78591f51c4b5dadee31a88335df upstream.
 
-The buffer length check before calling uvc_parse_format() only ensured
-that the buffer has at least 3 bytes (buflen > 2), buf the function
-accesses buffer[3], requiring at least 4 bytes.
+The io_futex_data is allocated upfront and assigned to the io_kiocb
+async_data field, but the request isn't marked with REQ_F_ASYNC_DATA
+at that point. Those two should always go together, as the flag tells
+io_uring whether the field is valid or not.
 
-This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
+Additionally, on failure cleanup, the futex handler frees the data but
+does not clear ->async_data. Clear the data and the flag in the error
+path as well.
 
-Fix it by checking that the buffer has at least 4 bytes in
-uvc_parse_format().
+Thanks to Trend Micro Zero Day Initiative and particularly ReDress for
+reporting this.
 
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 194bb58c6090 ("io_uring: add support for futex wake and wait")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |    3 +++
+ io_uring/futex.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -233,6 +233,9 @@ static int uvc_parse_format(struct uvc_d
- 	unsigned int i, n;
- 	u8 ftype;
+--- a/io_uring/futex.c
++++ b/io_uring/futex.c
+@@ -288,6 +288,7 @@ int io_futex_wait(struct io_kiocb *req,
+ 		goto done_unlock;
+ 	}
  
-+	if (buflen < 4)
-+		return -EINVAL;
-+
- 	format->type = buffer[2];
- 	format->index = buffer[3];
- 
++	req->flags |= REQ_F_ASYNC_DATA;
+ 	req->async_data = ifd;
+ 	ifd->q = futex_q_init;
+ 	ifd->q.bitset = iof->futex_mask;
+@@ -309,6 +310,8 @@ done:
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	io_req_set_res(req, ret, 0);
++	req->async_data = NULL;
++	req->flags &= ~REQ_F_ASYNC_DATA;
+ 	kfree(ifd);
+ 	return IOU_COMPLETE;
+ }
 
 
 
