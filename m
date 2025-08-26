@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A7DB36CD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B08AB35E56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B65F41C80F4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB11A1BC3562
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6934AAF8;
-	Tue, 26 Aug 2025 14:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F252BE65E;
+	Tue, 26 Aug 2025 11:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7lCfC+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2orcwn0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6A1E500C;
-	Tue, 26 Aug 2025 14:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5C2299957;
+	Tue, 26 Aug 2025 11:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219453; cv=none; b=N/5rkjuGGntc0xxh68G8exR0Qy6y4OWo3LSv2EMtiq3mkLtx9MwvzGZrOtDoinNyDhz28Ew43CQy4TwnUpwKfNNA3LS/KC+d8+gRJqwo7bAFpo0lsVMcnriVGqBhmj7KPFNbheFCsVZsj5SIfjXzqiIhnqrkkAv0/ubs0ZQE3v0=
+	t=1756208850; cv=none; b=p3Rq7tlN5/EzuY9+9rHVgnaHBNv+u7RUZcSPEQ1evD13nL3jpZ630GUrLXJFfsGyUQ/nR9mwRxRFcvhMY9H9hwsBpkACeYLO/rghp0JR/ypLW1Y7PKE/xA0I5QiKxTv02s3LqdFxLm6BpqDNg+rk98paMPYwAhhVHihePc+kUbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219453; c=relaxed/simple;
-	bh=FNIqsqg+eUE2m4z9MxHW4GkZdrNOAv87nriPdPr4P2s=;
+	s=arc-20240116; t=1756208850; c=relaxed/simple;
+	bh=cu1kXxJN9s15uwYVjlE5rXlichueM8kY8VJVvJyHU48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wn3aFWpaeZ0bXmQdmllQsrKivMwIsYO4MMorIfKU7YZTYhHsQBNGUZDSBm3L4ovsegN0dNqSbkAntscTk33D6bZ9BG7M21Yjg1sa6F+uJLhy9D4aOXb2lfoqRwpq/hQj+ssPQGQKRyqua6RBo984WNoB/+YLD1BvhFiR9Vcv+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7lCfC+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1202DC4CEF1;
-	Tue, 26 Aug 2025 14:44:12 +0000 (UTC)
+	 MIME-Version; b=vBxN8vvJ4bnyPnumktO5LjOgfNo1N/ljC9Iz1rYzjHsq/k65JWOOQgo1iDPobBSih5T3dC/g0G3Et9SN7LJCURqBy60IG4v/TznsADTShzTQv2/Qu1R+x2B/X4bx399Ww0gyD+Az7gBVdNbmMdUSowRcDN7bw2u2olnzVQjUihw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2orcwn0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E90C4CEF1;
+	Tue, 26 Aug 2025 11:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219453;
-	bh=FNIqsqg+eUE2m4z9MxHW4GkZdrNOAv87nriPdPr4P2s=;
+	s=korg; t=1756208850;
+	bh=cu1kXxJN9s15uwYVjlE5rXlichueM8kY8VJVvJyHU48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7lCfC+M3TuMD00ZFLvwztYEKpnGiKz7zVy2aq6/s8TQseFDYiLokHHscWn8/rOAO
-	 NwHYUXDz7kWfknGEYYNrYrhfdXbSrNOtk6aJwiJrNxXWg1q1GxR7RpISPXG2gFGgix
-	 kjyN7IjQM4voyiAtNKsiT7QCeCncGXKR+Xy5uDHM=
+	b=2orcwn0I3cjpd8MLiJNR9Z5FXgZcCMYhfeeUTm3JNcI35lg9M84A3z87awy9kQBY/
+	 Ul4bzHjkWObiyzRhYTwCL7uchJ/V0L5vnrKIWfvjdMSak/UbJjFACZL3EGzH4YGv8b
+	 7Y+zYQzorEW22OFVWzIVes2r1cIRxlk0NXG/TLWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 357/403] NFS: Fix the setting of capabilities when automounting a new filesystem
+Subject: [PATCH 6.12 268/322] RDMA/bnxt_re: Fix to remove workload check in SRQ limit path
 Date: Tue, 26 Aug 2025 13:11:23 +0200
-Message-ID: <20250826110916.742674655@linuxfoundation.org>
+Message-ID: <20250826110922.548481795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,156 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
+[ Upstream commit 666bce0bd7e771127cb0cda125cc9d32d9f9f15d ]
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+There should not be any checks of current workload to set
+srq_limit value to SRQ hw context.
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ adapted to older fs_context-less API structures ]
+Remove all such workload checks and make a direct call to
+set srq_limit via doorbell SRQ_ARM.
+
+Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20250805101000.233310-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++----
- fs/nfs/internal.h   |    1 +
- fs/nfs/nfs4client.c |   13 +------------
- fs/nfs/nfs4proc.c   |    2 ++
- 4 files changed, 44 insertions(+), 16 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |  8 ++-----
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 27 ------------------------
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h |  2 --
+ 3 files changed, 2 insertions(+), 35 deletions(-)
 
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -646,6 +646,42 @@ struct nfs_client *nfs_init_client(struc
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 4a3ce61a3bba..b222bf4f38e1 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1874,7 +1874,6 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 	struct bnxt_re_srq *srq = container_of(ib_srq, struct bnxt_re_srq,
+ 					       ib_srq);
+ 	struct bnxt_re_dev *rdev = srq->rdev;
+-	int rc;
+ 
+ 	switch (srq_attr_mask) {
+ 	case IB_SRQ_MAX_WR:
+@@ -1886,11 +1885,8 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 			return -EINVAL;
+ 
+ 		srq->qplib_srq.threshold = srq_attr->srq_limit;
+-		rc = bnxt_qplib_modify_srq(&rdev->qplib_res, &srq->qplib_srq);
+-		if (rc) {
+-			ibdev_err(&rdev->ibdev, "Modify HW SRQ failed!");
+-			return rc;
+-		}
++		bnxt_qplib_srq_arm_db(&srq->qplib_srq.dbinfo, srq->qplib_srq.threshold);
++
+ 		/* On success, update the shadow */
+ 		srq->srq_limit = srq_attr->srq_limit;
+ 		/* No need to Build and send response back to udata */
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 3170a3e2df24..0f50c1ffbe01 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -705,7 +705,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	srq->dbinfo.max_slot = 1;
+ 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
+ 	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
+-	srq->arm_req = false;
+ 
+ 	return 0;
+ fail:
+@@ -715,24 +714,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	return rc;
  }
- EXPORT_SYMBOL_GPL(nfs_init_client);
  
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
-  */
-@@ -683,9 +719,6 @@ static int nfs_init_server(struct nfs_se
- 	/* Initialise the client representation from the mount data */
- 	server->flags = data->flags;
- 	server->options = data->options;
--	server->caps |= NFS_CAP_HARDLINKS|NFS_CAP_SYMLINKS|NFS_CAP_FILEID|
--		NFS_CAP_MODE|NFS_CAP_NLINK|NFS_CAP_OWNER|NFS_CAP_OWNER_GROUP|
--		NFS_CAP_ATIME|NFS_CAP_CTIME|NFS_CAP_MTIME;
- 
- 	if (data->rsize)
- 		server->rsize = nfs_block_size(data->rsize, NULL);
-@@ -710,6 +743,8 @@ static int nfs_init_server(struct nfs_se
- 	if (error < 0)
- 		goto error;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* Preserve the values of mount_server-related mount options */
- 	if (data->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &data->mount_server.address,
-@@ -834,7 +869,6 @@ void nfs_server_copy_userdata(struct nfs
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1042,6 +1076,8 @@ struct nfs_server *nfs_clone_server(stru
- 	if (error < 0)
- 		goto out_free_server;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
- 	if (error < 0)
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -172,6 +172,7 @@ nfs4_find_client_sessionid(struct net *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct nfs_mount_info *,
- 					struct nfs_subversion *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(
- 					struct nfs_mount_info *,
- 					struct nfs_subversion *);
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1011,18 +1011,7 @@ static int nfs4_server_common_setup(stru
- 	if (error < 0)
- 		goto out;
- 
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
+-			  struct bnxt_qplib_srq *srq)
+-{
+-	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
+-	u32 count;
 -
-+	nfs_server_set_init_caps(server);
+-	count = __bnxt_qplib_get_avail(srq_hwq);
+-	if (count > srq->threshold) {
+-		srq->arm_req = false;
+-		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
+-	} else {
+-		/* Deferred arming */
+-		srq->arm_req = true;
+-	}
+-
+-	return 0;
+-}
+-
+ int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
+ 			 struct bnxt_qplib_srq *srq)
+ {
+@@ -774,7 +755,6 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
+ 	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
+ 	struct rq_wqe *srqe;
+ 	struct sq_sge *hw_sge;
+-	u32 count = 0;
+ 	int i, next;
  
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3884,6 +3884,8 @@ int nfs4_server_capabilities(struct nfs_
- 		.interruptible = true,
- 	};
- 	int err;
-+
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
+ 	spin_lock(&srq_hwq->lock);
+@@ -806,15 +786,8 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
+ 
+ 	bnxt_qplib_hwq_incr_prod(&srq->dbinfo, srq_hwq, srq->dbinfo.max_slot);
+ 
+-	spin_lock(&srq_hwq->lock);
+-	count = __bnxt_qplib_get_avail(srq_hwq);
+-	spin_unlock(&srq_hwq->lock);
+ 	/* Ring DB */
+ 	bnxt_qplib_ring_prod_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ);
+-	if (srq->arm_req == true && count > srq->threshold) {
+-		srq->arm_req = false;
+-		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
+-	}
+ 
+ 	return 0;
+ }
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 6f02954eb142..fd4f9fada46a 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -521,8 +521,6 @@ int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
+ 			 srqn_handler_t srq_handler);
+ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 			  struct bnxt_qplib_srq *srq);
+-int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
+-			  struct bnxt_qplib_srq *srq);
+ int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
+ 			 struct bnxt_qplib_srq *srq);
+ void bnxt_qplib_destroy_srq(struct bnxt_qplib_res *res,
+-- 
+2.50.1
+
 
 
 
