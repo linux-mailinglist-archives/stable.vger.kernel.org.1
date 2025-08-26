@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D246B367A3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C25CBB3618C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CD61888C59
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4CC1BA4F88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78F23568E4;
-	Tue, 26 Aug 2025 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00A814883F;
+	Tue, 26 Aug 2025 13:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkAY2M3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwKFM3hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F90350D4F;
-	Tue, 26 Aug 2025 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2C828FD;
+	Tue, 26 Aug 2025 13:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216627; cv=none; b=sGGbcxOKngwPdmO9I9560cimot3XJFX2iO78KCPaLOPKbdhBh+YJ1UTtwhISq+xc2Hb9sSjmgia+pHmXvsqf2vAHzV5i+fA0FNmoURFWVOXoj9Q59lGu+OsnbDclKjc9e4FRbHy3HOz+RS0XCFLDvKhatMX2FXYwYu0tP27PdDY=
+	t=1756213641; cv=none; b=AGqPcuYDEQytUjOV7Oz3D983U+k/XCG7mXOawtPa4+ztyru0cUu0lLCRslXgVQGmnHjj1eiRZDQ2cHmthcfXPldE+OqwnOFrwDIUE2iBboUvocSEln3FOWmToLJnD+9LKyFjqMlGuozdOP1E6nKsfuc7MghniphN0eMBN+FWRV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216627; c=relaxed/simple;
-	bh=vfauPPBk3wbvwfVs7n0sLkoNqXu+IpBf8oCkqoJnljI=;
+	s=arc-20240116; t=1756213641; c=relaxed/simple;
+	bh=RUk/p38orSiVjK1buMoSPOdGHaXXTZTj/1Ju93R/b0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E43a69laGGzFGygrGc2rrUTrE7uV9XlhMXLIkM0XLGDQX7D+Ve+LfdO3XymYycW35XmcHg3NuFAyjAhBVdjLkLMfc95ut4H6XY5/IDR5Skcb5+1bb58PKbn1Bj+1zV3R/mXxvBfwEQzn4Sw+DLJD2bfB1Xj9yXZyzVtIG68fsKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkAY2M3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131CAC4CEF1;
-	Tue, 26 Aug 2025 13:57:06 +0000 (UTC)
+	 MIME-Version; b=Y7x3c/7xYRCCI+6YX5IUWZmpl3MBnbcPfc+CRtb1nig6sstUvMDspDmFsvmHAnUvdN4c+JOnzxYrPMWPMqwHqKpKfrBnORl3sqzMWJUGfoARXVr6m12ad+TgPIW+4g1ddMpMwM1gkNFqcoc+Dr+uA/vH7qEI52Q9P2eQv+7z9p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwKFM3hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D03C4CEF1;
+	Tue, 26 Aug 2025 13:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216627;
-	bh=vfauPPBk3wbvwfVs7n0sLkoNqXu+IpBf8oCkqoJnljI=;
+	s=korg; t=1756213641;
+	bh=RUk/p38orSiVjK1buMoSPOdGHaXXTZTj/1Ju93R/b0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkAY2M3RpzqWve5rgaCljAb1ukMwJR3TFHQ1cmPXJQcoV+mv4XOT4D8ueAVlsHgsq
-	 gtRiZtV/4FVmMx6CN+tTQGCk/tCzOy4rb9kwu/wifl9jzN75/WM5s1N1a42sFvzgHO
-	 tap52TXYkhcnQ9wPSqR6qvZhYV8axdWGSEo7/9uk=
+	b=WwKFM3hpRSkoGCNH5HmMRuDFZvY6rIAQGaLnjf6C7MBO9/lRpEjDgz+Y/hkFze9cH
+	 JVURpYd9tpCSPRQIyk1Qy3dxFYzNC3rBtFgGYkOYl0dGp/lIffSdRwWfEREZKd1bJ/
+	 FfIZlb0WOqDAINqc2dvXjz2oZgKKWODBhJERSBc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.15 483/644] PCI: endpoint: Fix configfs group removal on driver teardown
+	"Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 425/587] ACPI: pfr_update: Fix the driver update version check
 Date: Tue, 26 Aug 2025 13:09:34 +0200
-Message-ID: <20250826110958.454926893@linuxfoundation.org>
+Message-ID: <20250826111003.751337896@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Chen Yu <yu.c.chen@intel.com>
 
-commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
+commit 8151320c747efb22d30b035af989fed0d502176e upstream.
 
-An endpoint driver configfs attributes group is added to the
-epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
-added group is not removed from this list when the attribute group is
-unregistered with pci_ep_cfs_remove_epf_group().
+The security-version-number check should be used rather
+than the runtime version check for driver updates.
 
-Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
-to correctly remove the attribute group from the driver list.
+Otherwise, the firmware update would fail when the update binary had
+a lower runtime version number than the current one.
 
-With this change, once the loop over all attribute groups in
-pci_epf_remove_cfs() completes, the driver epf_group list should be
-empty. Add a WARN_ON() to make sure of that.
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
+Fixes: 0db89fa243e5 ("ACPI: Introduce Platform Firmware Runtime Update device driver")
+Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
+Reported-by: "Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://patch.msgid.link/20250722143233.3970607-1-yu.c.chen@intel.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
- drivers/pci/endpoint/pci-epf-core.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/acpi/pfr_update.c  |    2 +-
+ include/uapi/linux/pfrut.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -658,6 +658,7 @@ void pci_ep_cfs_remove_epf_group(struct
- 	if (IS_ERR_OR_NULL(group))
- 		return;
+--- a/drivers/acpi/pfr_update.c
++++ b/drivers/acpi/pfr_update.c
+@@ -310,7 +310,7 @@ static bool applicable_image(const void
+ 	if (type == PFRU_CODE_INJECT_TYPE)
+ 		return payload_hdr->rt_ver >= cap->code_rt_version;
  
-+	list_del(&group->group_entry);
- 	configfs_unregister_default_group(group);
- }
- EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -343,6 +343,7 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
-+	WARN_ON(!list_empty(&driver->epf_group));
- 	mutex_unlock(&pci_epf_mutex);
+-	return payload_hdr->rt_ver >= cap->drv_rt_version;
++	return payload_hdr->svn_ver >= cap->drv_svn;
  }
  
+ static void print_update_debug_info(struct pfru_updated_result *result,
+--- a/include/uapi/linux/pfrut.h
++++ b/include/uapi/linux/pfrut.h
+@@ -89,6 +89,7 @@ struct pfru_payload_hdr {
+ 	__u32 hw_ver;
+ 	__u32 rt_ver;
+ 	__u8 platform_id[16];
++	__u32 svn_ver;
+ };
+ 
+ enum pfru_dsm_status {
 
 
 
