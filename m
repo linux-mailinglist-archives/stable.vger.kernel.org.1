@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-172971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5FBB35B1E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E35B36074
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10C88172A41
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C883AE982
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C7027AC3E;
-	Tue, 26 Aug 2025 11:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D16F1DD9D3;
+	Tue, 26 Aug 2025 12:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxbow7iJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJSMtr39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDFD20B7EE;
-	Tue, 26 Aug 2025 11:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9981A5BBC;
+	Tue, 26 Aug 2025 12:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207040; cv=none; b=Ckcrlj9QdLdNtWfL3DgHj5Aeln6CvVWcj+m6dohrtXQGIKyGDTEPMI0JWc3VdrpAJo8v1idCEQeOFRo/KO/KfprUzbw1yH9BJJ/YLE2pBnSfiyuUJ67qZe1HpsY2B8DaMgDP+v6nsPFC5lYT2TNRYbXCR3ymq6Htd0HXJ8z9d1g=
+	t=1756213027; cv=none; b=EF+jpesSsfqLHTCP+Jkq9dcacaNrftM2Ee1b6oRwLNZCBpIMHb4ncWN/jnkAI+bXUDidhouy/4It3WvNpEGU5Tcuwe1EdrtWWydFABoL3K58fkUN6YDtuQUBrijttDyu/Nx2yH2CX12AEiiOD7T0jV3dsJoVKQuHtxZmFalZh8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207040; c=relaxed/simple;
-	bh=Xi4zulE/eX9qJzvKbxyJRNQ4ZdZttUcxh2i+PdwuI8Q=;
+	s=arc-20240116; t=1756213027; c=relaxed/simple;
+	bh=ObzE/I6lJUafSMJGOpSPwxkVzaap2HgmWbdCdcICxx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VslH9eksDwRDXG1HddLJvE4QuR7ZZhFjjccE7M4QdWkz7okVwVpkwFi7Fv7JRt+C6OpOkaKFMhhtg8CWRpPo6GLGA8zQqdZpZNzuVHUyzy2Zx3WjvihWBqHVYbYVsmWcHbd1cwi2RKJR5hKVKzTPdU/4eMYgMoxIAFhYgvh4RKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxbow7iJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE43C4CEF1;
-	Tue, 26 Aug 2025 11:17:19 +0000 (UTC)
+	 MIME-Version; b=Kf/8+v94LZG7BYSO2tHdLizPjWlWt4xb0S500brQ0yJm+gH9PR0Q2svaVhRKrAqCKlDWmWNLP0HkxSeUXZXqs3VavEAPtc896AqMn4Pzol+pb90EkbhmEdTBj/YHiBjbtVUENlRaHB1lOSUt4LZ84pYp1xYrvKxO/EQ7PixelgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJSMtr39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3965C4CEF1;
+	Tue, 26 Aug 2025 12:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207040;
-	bh=Xi4zulE/eX9qJzvKbxyJRNQ4ZdZttUcxh2i+PdwuI8Q=;
+	s=korg; t=1756213027;
+	bh=ObzE/I6lJUafSMJGOpSPwxkVzaap2HgmWbdCdcICxx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxbow7iJlFe5A9aPo5aDq0IIKmY5xHRA3lJveQRrRttE9hHtX6PSsKv5mMtMzHayl
-	 4n9lArWmIQKJAiclHr6WQzcP+inFLzewIYcXvGYG4MKBYKgres8iBiDqbEL+NohQtI
-	 t0qlR9MqVGt0XyeOodqQATqk6V4Qi9Xn7Qmw/nYU=
+	b=KJSMtr39oRn4b+Zp4zMNizUPcYVUuXFmlcfJPzlqw0wVfPaeTI1sNPTWyMKNZvk80
+	 f/zEnGugIkv++TKKQ/fz4KzZHv1Cc0imTAAcXnapA3bM195XIPNHZZyYwmUXnTduZR
+	 +qUhU4wyoGazqjdtmU2jrYBp62iTdP37Dv3JNn14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 028/457] crypto: x86/aegis - Add missing error checks
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/587] s390/stp: Remove udelay from stp_sync_clock()
 Date: Tue, 26 Aug 2025 13:05:12 +0200
-Message-ID: <20250826110938.031567028@linuxfoundation.org>
+Message-ID: <20250826110957.092116800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 3d9eb180fbe8828cce43bce4c370124685b205c3 upstream.
+[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
 
-The skcipher_walk functions can allocate memory and can fail, so
-checking for errors is necessary.
+When an stp sync check is handled on a system with multiple
+cpus each cpu gets a machine check but only the first one
+actually handles the sync operation. All other CPUs spin
+waiting for the first one to finish with a short udelay().
+But udelay can't be used here as the first CPU modifies tod_clock_base
+before performing the sync op. During this timeframe
+get_tod_clock_monotonic() might return a non-monotonic time.
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The time spent waiting should be very short and udelay is a busy loop
+anyways, therefore simply remove the udelay.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/aegis128-aesni-glue.c |   36 +++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ arch/s390/kernel/time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/crypto/aegis128-aesni-glue.c
-+++ b/arch/x86/crypto/aegis128-aesni-glue.c
-@@ -104,10 +104,12 @@ static void crypto_aegis128_aesni_proces
+diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+index d34d3548c046..086d3e3ffdea 100644
+--- a/arch/s390/kernel/time.c
++++ b/arch/s390/kernel/time.c
+@@ -579,7 +579,7 @@ static int stp_sync_clock(void *data)
+ 		atomic_dec(&sync->cpus);
+ 		/* Wait for in_sync to be set. */
+ 		while (READ_ONCE(sync->in_sync) == 0)
+-			__udelay(1);
++			;
  	}
- }
- 
--static __always_inline void
-+static __always_inline int
- crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 				    struct skcipher_walk *walk, bool enc)
- {
-+	int err = 0;
-+
- 	while (walk->nbytes >= AEGIS128_BLOCK_SIZE) {
- 		if (enc)
- 			aegis128_aesni_enc(state, walk->src.virt.addr,
-@@ -120,7 +122,8 @@ crypto_aegis128_aesni_process_crypt(stru
- 					   round_down(walk->nbytes,
- 						      AEGIS128_BLOCK_SIZE));
- 		kernel_fpu_end();
--		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
-+		err = skcipher_walk_done(walk,
-+					 walk->nbytes % AEGIS128_BLOCK_SIZE);
- 		kernel_fpu_begin();
- 	}
- 
-@@ -134,9 +137,10 @@ crypto_aegis128_aesni_process_crypt(stru
- 						walk->dst.virt.addr,
- 						walk->nbytes);
- 		kernel_fpu_end();
--		skcipher_walk_done(walk, 0);
-+		err = skcipher_walk_done(walk, 0);
- 		kernel_fpu_begin();
- 	}
-+	return err;
- }
- 
- static struct aegis_ctx *crypto_aegis128_aesni_ctx(struct crypto_aead *aead)
-@@ -169,7 +173,7 @@ static int crypto_aegis128_aesni_setauth
- 	return 0;
- }
- 
--static __always_inline void
-+static __always_inline int
- crypto_aegis128_aesni_crypt(struct aead_request *req,
- 			    struct aegis_block *tag_xor,
- 			    unsigned int cryptlen, bool enc)
-@@ -178,20 +182,24 @@ crypto_aegis128_aesni_crypt(struct aead_
- 	struct aegis_ctx *ctx = crypto_aegis128_aesni_ctx(tfm);
- 	struct skcipher_walk walk;
- 	struct aegis_state state;
-+	int err;
- 
- 	if (enc)
--		skcipher_walk_aead_encrypt(&walk, req, false);
-+		err = skcipher_walk_aead_encrypt(&walk, req, false);
- 	else
--		skcipher_walk_aead_decrypt(&walk, req, false);
-+		err = skcipher_walk_aead_decrypt(&walk, req, false);
-+	if (err)
-+		return err;
- 
- 	kernel_fpu_begin();
- 
- 	aegis128_aesni_init(&state, &ctx->key, req->iv);
- 	crypto_aegis128_aesni_process_ad(&state, req->src, req->assoclen);
--	crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
--	aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
--
-+	err = crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
-+	if (err == 0)
-+		aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
- 	kernel_fpu_end();
-+	return err;
- }
- 
- static int crypto_aegis128_aesni_encrypt(struct aead_request *req)
-@@ -200,8 +208,11 @@ static int crypto_aegis128_aesni_encrypt
- 	struct aegis_block tag = {};
- 	unsigned int authsize = crypto_aead_authsize(tfm);
- 	unsigned int cryptlen = req->cryptlen;
-+	int err;
- 
--	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
-+	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
-+	if (err)
-+		return err;
- 
- 	scatterwalk_map_and_copy(tag.bytes, req->dst,
- 				 req->assoclen + cryptlen, authsize, 1);
-@@ -216,11 +227,14 @@ static int crypto_aegis128_aesni_decrypt
- 	struct aegis_block tag;
- 	unsigned int authsize = crypto_aead_authsize(tfm);
- 	unsigned int cryptlen = req->cryptlen - authsize;
-+	int err;
- 
- 	scatterwalk_map_and_copy(tag.bytes, req->src,
- 				 req->assoclen + cryptlen, authsize, 0);
- 
--	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
-+	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
-+	if (err)
-+		return err;
- 
- 	return crypto_memneq(tag.bytes, zeros.bytes, authsize) ? -EBADMSG : 0;
- }
+ 	if (sync->in_sync != 1)
+ 		/* Didn't work. Clear per-cpu in sync bit again. */
+-- 
+2.39.5
+
 
 
 
