@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-176310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4C6B36CC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3F7B36499
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCEBD584371
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D4DD1BC4C76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682FB35FC26;
-	Tue, 26 Aug 2025 14:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFD729BD83;
+	Tue, 26 Aug 2025 13:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAXKydHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqjtlucj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2323135FC1E;
-	Tue, 26 Aug 2025 14:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC0B11187;
+	Tue, 26 Aug 2025 13:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219326; cv=none; b=u9sojrIC54X8vDNJj5yYrJmZ3htQBgHyA9PhotmFrZIT16SMy5ScAMT9EDw33zcbCVPVGRsHMxSMiib1W9ddH9o/bkO5wZ9SwRA3QGZYGwtAg2LcG+6cWic3Uvc8Q08wNrdJ02C4PC5ML3e4jHdYk7gSrG91D867qjrNWBG0K5I=
+	t=1756215165; cv=none; b=XCtlI6pLf4bymo5PP4LZNA0GUG7Ym22jBDRKMRd5twodubpu9QAGwfAhe2SIPe4sNYak6NDV7AxI7ARISEUTwkGPZrBjhy7hwGAKQP1oJgkj+z1+8Ci46k3frwKwQbGYRYzviGMGeZRUhu9eFEJx28nk5nspu53Ia08STM4PeOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219326; c=relaxed/simple;
-	bh=qvcDY7wh/80rY+4v29+tVIDjQ0cvjumB4vbUWyP1xD0=;
+	s=arc-20240116; t=1756215165; c=relaxed/simple;
+	bh=8/ZY4mmNeTE2+IKADsGTv4BmbVptpaJi7ZKYRh6+epA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5V6HZ16GFdb46bF+23lcG/eto1jfa/xUS51DAOiZpStDl4tmJjT+B4EbCBo978CyOgJjPmGZO6rC88JSZxQe6m7rXCfltaDSgzvV3ewWwdvmCnQxxkD92cn4BK4+4I/U8kwoASuWiMFCBev65J+lJSW5OxDMZxPuxT8hWiC/SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAXKydHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3427C116D0;
-	Tue, 26 Aug 2025 14:42:05 +0000 (UTC)
+	 MIME-Version; b=s1JsntZIKtmqdbj3bI5aU0rV/+WeJxQRnfq8uzuu+pbZceZaxwIgG4nUOrtASbAAa/Z4AxG6ZnaRNa4pQCzOulZOVC/bZ0grHtQpLX5/UnxA9STFkJA2HCXCoNcIh1RCppx9B3YnCoEa/95mUCpjmkhv813qMnyTZBFnYbiN14Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqjtlucj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F8CC4CEF1;
+	Tue, 26 Aug 2025 13:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219326;
-	bh=qvcDY7wh/80rY+4v29+tVIDjQ0cvjumB4vbUWyP1xD0=;
+	s=korg; t=1756215165;
+	bh=8/ZY4mmNeTE2+IKADsGTv4BmbVptpaJi7ZKYRh6+epA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAXKydHlvQu9j/Fm09Bv9WZubRjKjSMk3VnYhdVk0xpxnxrvLg29vB0c28FSukIit
-	 1L5kz2PbsP3w6XH2mPPeaKZ6OhfTUECRkkgE/syQ3MgiR7co0IHZRv4rYf34aNVTge
-	 h07+r2u16E9paPQdfyuwkBL5msTUT/I+BSCk7H30=
+	b=Jqjtlucj7kWXo9qh06/UNBWUVDbm/+vImN2NxRh71cv/ZCmLEqpmmvMWLBxoOZOQh
+	 uqWfOUqjWB0TLAedqdf8POHSStrwUIeXbM6yjcPVBPFLk7XuIwhl7DYI1t8HNE0Q72
+	 6ygr/5YH9bKiYXqVmbgYGkP1sHCScEcZpVl64wzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 338/403] mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 411/482] iio: proximity: isl29501: fix buffered read on big-endian systems
 Date: Tue, 26 Aug 2025 13:11:04 +0200
-Message-ID: <20250826110916.189137255@linuxfoundation.org>
+Message-ID: <20250826110940.981738520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 694d6b99923eb05a8fd188be44e26077d19f0e21 ]
+commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
 
-Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
-migrating zsmalloc pages using the movable_operations migration framework.
-However, the commit did not take into account that zsmalloc supports
-migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
-zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
-not supported.
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-This can result in unmovable pages being allocated from movable page
-blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-Possible user visible effects:
-- Some ZONE_MOVABLE memory can be not actually movable
-- CMA allocation can fail because of this
-- Increased memory fragmentation due to ignoring the page mobility
-  grouping feature
-I'm not really sure who uses kernels without compaction support, though :(
-
-To fix this, clear the __GFP_MOVABLE flag when
-!IS_ENABLED(CONFIG_COMPACTION).
-
-Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
-Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zsmalloc.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/proximity/isl29501.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1067,6 +1067,9 @@ static struct zspage *alloc_zspage(struc
- 	if (!zspage)
- 		return NULL;
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
-+	if (!IS_ENABLED(CONFIG_COMPACTION))
-+		gfp &= ~__GFP_MOVABLE;
-+
- 	zspage->magic = ZSPAGE_MAGIC;
- 	migrate_lock_init(zspage);
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
++	}
  
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
