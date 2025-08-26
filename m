@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-174039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F34B360F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93219B369F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E312A23B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF021B60807
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423A1494D9;
-	Tue, 26 Aug 2025 13:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659F3350D67;
+	Tue, 26 Aug 2025 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWxS8GTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tytpdjY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EF118DB0D;
-	Tue, 26 Aug 2025 13:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2469F1DF75A;
+	Tue, 26 Aug 2025 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213332; cv=none; b=ltQRj6l+m92WzOnrBmUdvDQen/8gwpopt4aV3vIwI5t3DX12FR/6TzQYO9WEb4yx6suCJntvmWOE8lWL56XnFO7DZKdPlShh+xdmPvaXWVbr6VxLcjRzkgwj7xZWoD84EZvnSOMupnst1aA2ttXdLXJIZtzQ18bim0sTeTePBjw=
+	t=1756217712; cv=none; b=UjvqyrpafPY1e1XfYjo4YFJishTueVh+D2RZ06+2eefT7+3BEr1cCAidM5ceVFtFnjifuvYhIwOw/jNP8yH2002/ggdIDB0Y9J+0ELzBCoZb2jySO3C4mBL8LbNY6/4rN97sdKUzX/sgXq1YawT+KZdkdsii9+lQXkmKltnRj6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213332; c=relaxed/simple;
-	bh=ijCaDVG4RUx9SAhZKyqWoMdgWvDAg0PHu+N/aRuOGcc=;
+	s=arc-20240116; t=1756217712; c=relaxed/simple;
+	bh=0nuN1pAq0yoExnyZORslmkoSI/a/3sSzsA51GHRM4IM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKuIA/J1Hg5+cNt7Sm5wczymJis+f6KytA8x/6uGtwxZK6q7NosGVqPJNxp6XoddBl6uB4YHo2eS6D2RqSBXk94tDT5YAl2VNMMsNrmIMaJBEQ8Chy7rU93nWAzotieT7duO9dWqS+6vwk3DbPM8bt67jKc2nqkdnarRG/ZCgas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWxS8GTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54859C4CEF1;
-	Tue, 26 Aug 2025 13:02:10 +0000 (UTC)
+	 MIME-Version; b=qF50Z3dzyvBBsAjmCBs32UP1XvTINkFHPpPwusFQmfD0Tnrui1vMe4MfRnMnMYxLUfhlbwEsHpNlX3BCUmmhWfrsxo9iv8fV/9YmTAv8dIruGNyUgN3BzE76EwkF4wN3CC5dfGYafezxnDH7xSAKhF+wXEHjfEEuOGcOwudgiJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tytpdjY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EDDC4CEF1;
+	Tue, 26 Aug 2025 14:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213330;
-	bh=ijCaDVG4RUx9SAhZKyqWoMdgWvDAg0PHu+N/aRuOGcc=;
+	s=korg; t=1756217712;
+	bh=0nuN1pAq0yoExnyZORslmkoSI/a/3sSzsA51GHRM4IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWxS8GTBVp2ZXZ7ubWvce1PSIdo8zhZ8I3iyZH3GCA+7EKufZl6FOEEt7Ku/LoF8B
-	 Xl78AeuKtFczRPwMf0BG5W/bJgTJojqXJuWWEoUuDbJDnzFvlHIWZzyOr7Kb3hZisa
-	 XGxx3YKSbk0ZGriftRiZRE2lqx7qdigmMjkjkPfU=
+	b=tytpdjY3wwLUNYYorZ2wUucZghGdcR2GQQFWuJTizuBbgF8wHLHHX3sp85ZAnbAan
+	 W88g/PWkKnSYUcUsCuiE5W1ntWK1O9KdYL6jW9GT7MFdFWXTWOd6NK9FY+ZUO+uoiC
+	 L6KIvJnRodn436y1XrbcqtBNxf8vyO0u8y5O5ngg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 308/587] cdc-acm: fix race between initial clearing halt and open
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 247/523] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
 Date: Tue, 26 Aug 2025 13:07:37 +0200
-Message-ID: <20250826111000.755411226@linuxfoundation.org>
+Message-ID: <20250826110930.528045221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-On the devices that need their endpoints to get an
-initial clear_halt, this needs to be done before
-the devices can be opened. That means it needs to be
-before the devices are registered.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1520,6 +1520,12 @@ skip_countries:
- 			goto err_remove_files;
- 	}
- 
-+	if (quirks & CLEAR_HALT_CONDITIONS) {
-+		/* errors intentionally ignored */
-+		usb_clear_halt(usb_dev, acm->in);
-+		usb_clear_halt(usb_dev, acm->out);
-+	}
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index e9da95ebccc8..1120d669fe2e 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -958,6 +958,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
 +
- 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
- 			&control_interface->dev);
- 	if (IS_ERR(tty_dev)) {
-@@ -1527,11 +1533,6 @@ skip_countries:
- 		goto err_release_data_interface;
- 	}
+ 	lockdep_assert_held(&client_mutex);
  
--	if (quirks & CLEAR_HALT_CONDITIONS) {
--		usb_clear_halt(usb_dev, acm->in);
--		usb_clear_halt(usb_dev, acm->out);
--	}
--
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
- 
- 	return 0;
+ 	/* release machine specific resources */
+-- 
+2.39.5
+
 
 
 
