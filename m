@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD7EB362FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200FBB35B1A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28D41BC3520
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0315616E830
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0252FFDF2;
-	Tue, 26 Aug 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FE2293C44;
+	Tue, 26 Aug 2025 11:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0iCUeIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGT7G/op"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8C823F439;
-	Tue, 26 Aug 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEF521D00E;
+	Tue, 26 Aug 2025 11:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214292; cv=none; b=T1vBSgmy8ef4CG4XMgKN/Ptqckb3wCx2szL+cL/q00uBVO2OeurplsYtQQpPzKySJmvoyLDK+dV58BZm8fABfuhenNkxF1AEDqfShJvbifpX4LG5v0GWTIijgJ1uy1lK0ZV+YxRm6mJ1Jl4IgeG5yHsOqlNJN+bEIfhH0serzFQ=
+	t=1756207022; cv=none; b=o78SaxvI/lfv+c8glQmMh33bNYQjTFHcYPOp11TZw062WpB7S2QLkAxyQVvO9OhMi5jSRhtysQFkN2y4SVq078dQuybIHKjPOX1nZQfC70GFrYXsyYVB44Iff0L1qddcQT7NWfLxKCar4u5srwNbfsXJ3YcfIdVLOy0yNmTOsv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214292; c=relaxed/simple;
-	bh=FPji+Z9s5+Z+c/7ndSrvb1BO/aS9jyo3SXw7TFe+8kA=;
+	s=arc-20240116; t=1756207022; c=relaxed/simple;
+	bh=zUNTarj+BI9ZrqyT/VKzKwtTtmEdEj+FwWy4C10ER6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWAe9NuZmVQnxzu8uy0hT5bAV50BZyT4d+YMzkeh5OyRQyVqrqVi83hssMvkJg9kTyprBSn3HPgfZephy+G0EkW2J+JXcWCAp+w4sZ/v+KCgCsDnOh0qeg9OHIbDAS3FmbyAdRCDLOI9AhNNAKioZqZ4pzEkstaqBQE7YbWVDy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0iCUeIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03F7C4CEF1;
-	Tue, 26 Aug 2025 13:18:11 +0000 (UTC)
+	 MIME-Version; b=rDPp7MJ3TDRM9xw2MkjYrc3STeSiUJei2ryuq8E5QLPE0xPKLcoX274cxmDbD1Gfr9h4xgQoo/pCdu/MwCs0Yxj6i9xIqdoISATHbnPycrg7SF5+PPc6iNQfJh6G4/TuIij8urxM3yvuzL/sIwNJmboRg1D7SL8eNuZm5ZZg0HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGT7G/op; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4542C4CEF1;
+	Tue, 26 Aug 2025 11:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214292;
-	bh=FPji+Z9s5+Z+c/7ndSrvb1BO/aS9jyo3SXw7TFe+8kA=;
+	s=korg; t=1756207022;
+	bh=zUNTarj+BI9ZrqyT/VKzKwtTtmEdEj+FwWy4C10ER6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0iCUeIE2AW3gwdyV4T/pBUT5Pz3/0CptfIjw8dNxI2dqMCK38hb5HK7cPrlXIfKS
-	 NTAMVMtX3uZm3fHiyI1quS26V+Sruk86OjQAfbXrRZ6uGBjcTmMb02KQ0o0nqv6/0S
-	 526mIbdgkIYTAULZJtkxqz5/xtjUAXnks9hwtgIY=
+	b=mGT7G/op65p4aGTNWysC6YhvScpBFJ+dJweVWk8ogkzocN0LABgzB0vqcJ0SC6lXB
+	 gtRdj2mXLMsQ+/2WKy/Os4Opb8uVmnXJhb69tNaiDg34TTVw0HXIzWp93yvrTkXa4y
+	 Yb8hVtTOmjRkOY5FRnXexMErldZWg+Fhv1U+3uLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/482] hfsplus: dont use BUG_ON() in hfsplus_create_attributes_file()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.16 021/457] lib/crypto: arm/poly1305: Fix register corruption in no-SIMD contexts
 Date: Tue, 26 Aug 2025 13:05:05 +0200
-Message-ID: <20250826110932.106366470@linuxfoundation.org>
+Message-ID: <20250826110937.856305868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit c7c6363ca186747ebc2df10c8a1a51e66e0e32d9 ]
+commit 52c3e242f4d0043186b70d65460ba1767f27494a upstream.
 
-When the volume header contains erroneous values that do not reflect
-the actual state of the filesystem, hfsplus_fill_super() assumes that
-the attributes file is not yet created, which later results in hitting
-BUG_ON() when hfsplus_create_attributes_file() is called. Replace this
-BUG_ON() with -EIO error with a message to suggest running fsck tool.
+Restore the SIMD usability check that was removed by commit 773426f4771b
+("crypto: arm/poly1305 - Add block-only interface").
 
-Reported-by: syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=1107451c16b9eb9d29e6
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/7b587d24-c8a1-4413-9b9a-00a33fbd849f@I-love.SAKURA.ne.jp
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This safety check is cheap and is well worth eliminating a footgun.
+While the Poly1305 functions should not be called when SIMD registers
+are unusable, if they are anyway, they should just do the right thing
+instead of corrupting random tasks' registers and/or computing incorrect
+MACs.  Fixing this is also needed for poly1305_kunit to pass.
+
+Just use may_use_simd() instead of the original crypto_simd_usable(),
+since poly1305_kunit won't rely on crypto_simd_disabled_for_test.
+
+Fixes: 773426f4771b ("crypto: arm/poly1305 - Add block-only interface")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250706231100.176113-3-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/xattr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/lib/crypto/poly1305-glue.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 2b0e0ba58139..beedc1a2237a 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -172,7 +172,11 @@ static int hfsplus_create_attributes_file(struct super_block *sb)
- 		return PTR_ERR(attr_file);
- 	}
+--- a/arch/arm/lib/crypto/poly1305-glue.c
++++ b/arch/arm/lib/crypto/poly1305-glue.c
+@@ -7,6 +7,7 @@
  
--	BUG_ON(i_size_read(attr_file) != 0);
-+	if (i_size_read(attr_file) != 0) {
-+		err = -EIO;
-+		pr_err("detected inconsistent attributes file, running fsck.hfsplus is recommended.\n");
-+		goto end_attr_file_creation;
-+	}
+ #include <asm/hwcap.h>
+ #include <asm/neon.h>
++#include <asm/simd.h>
+ #include <crypto/internal/poly1305.h>
+ #include <linux/cpufeature.h>
+ #include <linux/jump_label.h>
+@@ -39,7 +40,7 @@ void poly1305_blocks_arch(struct poly130
+ {
+ 	len = round_down(len, POLY1305_BLOCK_SIZE);
+ 	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
+-	    static_branch_likely(&have_neon)) {
++	    static_branch_likely(&have_neon) && likely(may_use_simd())) {
+ 		do {
+ 			unsigned int todo = min_t(unsigned int, len, SZ_4K);
  
- 	hip = HFSPLUS_I(attr_file);
- 
--- 
-2.39.5
-
 
 
 
