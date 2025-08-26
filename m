@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E49B363E2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF99B35CE9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185F38E0AF6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066827C57DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304C72B2DA;
-	Tue, 26 Aug 2025 13:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B29A321457;
+	Tue, 26 Aug 2025 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMZzR09w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5BF3uo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D1D393DF2;
-	Tue, 26 Aug 2025 13:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4507D239573;
+	Tue, 26 Aug 2025 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214615; cv=none; b=OAMeJUTrWSyMokflMSdb1NjxOkqvl/AurVErVJhjOQIWbxGwFauLA/9OY54zWaQpFvStB+jQE6RCEm30TjDM6K/aexGjJETZY16SkgV8lluCYe45kbeUDvIRlEYWxeNs6mHM7MjbpTaiPX4IAtl5acQlGETUe1zJVmZqYOeYnP8=
+	t=1756208340; cv=none; b=qfnD/tFTGBNJBU38um4tBDEpLvqyKNVXkhEyhDL1rBm68PHy7mGZQn1pThUAyw7wpE/PV6/rUddy2KlWEkR6Qj1QXpNaeHT4jjWSNCxYj0ekDaUE5LS1wLfW2GJNJqHWf+/Ne9UJ7NbA3L+NtuBRUF/ZGxHgKunmcblzSEgHoQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214615; c=relaxed/simple;
-	bh=25qg5RE3867624GFPTssng9TILefDs31LTNNMvhwob4=;
+	s=arc-20240116; t=1756208340; c=relaxed/simple;
+	bh=IpqoGeRaEG5cP/IQ9VMQVnmJdTz/F1GUx2SS1r6nCxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xg0qGfWyA1Pi1qhxZ5/YXCy6Rxr/UciVjfH/qVrbUPAFJyowENM+2dcUq4vXNtEJpIZHQKerxF2xnrhZet8nRFekyhgnZXhSdO6C0z0Ae8kRchhay+fq8WQRF3EOIWI9MLFCZWtcC6DtCOmESbvNCuJV186Xxw8iwNzaajdemmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMZzR09w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715F7C4CEF1;
-	Tue, 26 Aug 2025 13:23:34 +0000 (UTC)
+	 MIME-Version; b=bICcGicJxYu9lE9uwf0166Dhy5Br/4zBhxvU39qjKH9Mpg5RJzo8nLx9RqXYbgvtokOSXyehLXVYuRXc2sd1MB73PZR/5QGgmLF8vahQvbJG9JdQGWjAZMTsDKbXDSKe2HS/p65ClwJuDtDj86UgILY3gJ4+DKUJHH1kr/FC/WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5BF3uo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF13BC4CEF1;
+	Tue, 26 Aug 2025 11:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214614;
-	bh=25qg5RE3867624GFPTssng9TILefDs31LTNNMvhwob4=;
+	s=korg; t=1756208340;
+	bh=IpqoGeRaEG5cP/IQ9VMQVnmJdTz/F1GUx2SS1r6nCxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMZzR09w1pLzXMKpbo9n2guHHEI1u3EucTIDQiurevrzjqSyVz6i3Vq9hPZHV6MHX
-	 pwCguZZ0ZxP9KNGZ+Qpg/7DyIOFjkc2vDXjul4r9VHXrxkDjmDxR4l48FJcHLsuF6h
-	 aEM7By1DFSRsywhEGGYGgFm4S/saJaQF7t+E6tOc=
+	b=j5BF3uo+h8yfP0pCItoP+wFcw1K7D8zR8sgpu9RKJ2VTI9jh08zQJzrL3kgE3N0fn
+	 fOVXQPtOBj4qBCi/jwn5QHtPhVTBky7chTFwzyKg4heopWMSQFz1ezWy7V48dhUkUD
+	 KEvI+a68EJw+naG1/zypbV1RapM0tZSJk2wjeO6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/482] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
+	Hong Guan <hguan@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.12 042/322] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
 Date: Tue, 26 Aug 2025 13:07:37 +0200
-Message-ID: <20250826110935.827306264@linuxfoundation.org>
+Message-ID: <20250826110916.414963097@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Hong Guan <hguan@ti.com>
 
-[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
+commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
 
-In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
-msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
-msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash. Similar issue occurs when access
-msg[1].buf[0] and msg[1].buf[1].
+main_uart1 reserved for TIFS firmware traces is routed to the
+onboard FT4232 via a FET switch which is connected to pin A21 and
+B21 of the SoC and not E17 and C17. Fix it.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hong Guan <hguan@ti.com>
+[bb@ti.com: expanded commit message]
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index d1e53de5206a..aae8335644f3 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
- 	u16 word;
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -259,8 +259,8 @@
  
- 	if (num == 1) {		/* write */
-+		if (msg[0].len < 3)
-+			return -EOPNOTSUPP;
- 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
- 	} else {
-+		if (msg[1].len < 2)
-+			return -EOPNOTSUPP;
- 		word = dib7000p_read_word(state, apb_address);
- 		msg[1].buf[0] = (word >> 8) & 0xff;
- 		msg[1].buf[1] = (word) & 0xff;
--- 
-2.39.5
-
+ 	main_uart1_pins_default: main-uart1-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
+-			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
++			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
++			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
+ 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
+ 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
+ 		>;
 
 
 
