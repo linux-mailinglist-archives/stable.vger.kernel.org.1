@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8A1B3613D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:06 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE63B36907
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 913077B3FFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9AA304E14CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53E405F7;
-	Tue, 26 Aug 2025 13:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5FF343D63;
+	Tue, 26 Aug 2025 14:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYOnRRKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfcnd1EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E459B1F0E29;
-	Tue, 26 Aug 2025 13:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE087352067;
+	Tue, 26 Aug 2025 14:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213682; cv=none; b=tZLO0iBOR98BdQVKvngEexfcMjkzH0M/rfYhCIY6xzsm96Vn/4KeTN38JWkw8ch/KkWTVrj3KGkY+HUHE0ePQblpgSgivbLUgMqoG1881yjQAqVRiKPoOao6l+sH39VdFjacWIRYczEdKT+uVsHfCiDkjA3j+/7m+qzERZjW4lI=
+	t=1756218061; cv=none; b=DOaE9SKRJaO1mmTEEntHXwt+zQW5N9Tki2wfzfNB/SSXDj6B+pXWlByoFeRhEfYK3a6bFKrvxjkucVxd0c1yFu84VGsamT8noNhOqqBMyxM0vvawSPAkIP0hKD+WRTV92IBkSg9kjtEHEWtRNrWEpZPJY+6zfnFXRWzVlQuOMB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213682; c=relaxed/simple;
-	bh=ZX+ZxY6V/u6Q22TW/8tHBaAa4GZm6ug68MqVG2R/dqA=;
+	s=arc-20240116; t=1756218061; c=relaxed/simple;
+	bh=pnEmDrQAVSicNV0h4RYYRhWVg3Rc2rQA+fh6zqohI0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owDQxdeOnHZTdu3oDzV/ZvAgDLAkVlfV+KEhRtGjbuZl9ro5yrHNTJNJe9UELMHfS1VhV8aG4J4yDujRCi4B3ZJW5MeWnk6r0SjcK1mnmInkH2D4mJrfW7H91yVqaGkeplg136SIJtsBH5WGV415gor38nRKO89kHL00hb+QukI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYOnRRKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB2C4CEF1;
-	Tue, 26 Aug 2025 13:08:00 +0000 (UTC)
+	 MIME-Version; b=AT7YLi6Ewt5wsFddrgiQiAwTMzOyTYxDEKqwyUphF3ogypC+bN030Pf2V1k8L2iJP6UXIAOrw41NCHA973CVOiadC/S5xB44jel/odcIt1QvzdjdhZn0SDYjZ95QmSw9YHjhnqUZiT2jImMaVCettMapc+vUJ6MpBB3KXfcZW9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfcnd1EQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F480C113CF;
+	Tue, 26 Aug 2025 14:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213681;
-	bh=ZX+ZxY6V/u6Q22TW/8tHBaAa4GZm6ug68MqVG2R/dqA=;
+	s=korg; t=1756218061;
+	bh=pnEmDrQAVSicNV0h4RYYRhWVg3Rc2rQA+fh6zqohI0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYOnRRKejGIsaTZs4TuSzCe0GUr5oQIqmEeZMhZ/0rst+C1NimWYLd/g+hl/OQHfz
-	 FZKpVMqeL3/Nfp2wxpsgLKsF0kjsg1TUKnG1L2QNSKjNnVFomF0bei43qPD45PQCLG
-	 kZHq03BpR5LsNdgdzcQgnOM2XxY3tiLLFK8nFlN0=
+	b=jfcnd1EQ2DC8KzZICaQwF11KPlfQG5n/NcMp841Ujr7ExkciGxIiaoPkgrJ3tpPJT
+	 BOhJmPCFDsC7PpkNtXvHRkm8Udk5aUC7FtZGu1RxhZf0qYmaH48AOkCuR8Pm2tWVQI
+	 AmEm4hGs7UdMQtlYLwM5xvcIImHjZDh8sxxWuxwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 439/587] fscrypt: Dont use problematic non-inline crypto engines
-Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826111004.121216203@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 379/523] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+Date: Tue, 26 Aug 2025 13:09:49 +0200
+Message-ID: <20250826110933.812025094@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,250 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit b41c1d8d07906786c60893980d52688f31d114a6 ]
+commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
 
-Make fscrypt no longer use Crypto API drivers for non-inline crypto
-engines, even when the Crypto API prioritizes them over CPU-based code
-(which unfortunately it often does).  These drivers tend to be really
-problematic, especially for fscrypt's workload.  This commit has no
-effect on inline crypto engines, which are different and do work well.
+Add video_device_release() in label 'err_m2m' to release the memory
+allocated by video_device_alloc() and prevent potential memory leaks.
+Remove the reduntant code in label 'err_m2m'.
 
-Specifically, exclude drivers that have CRYPTO_ALG_KERN_DRIVER_ONLY or
-CRYPTO_ALG_ALLOCATES_MEMORY set.  (Later, CRYPTO_ALG_ASYNC should be
-excluded too.  That's omitted for now to keep this commit backportable,
-since until recently some CPU-based code had CRYPTO_ALG_ASYNC set.)
-
-There are two major issues with these drivers: bugs and performance.
-
-First, these drivers tend to be buggy.  They're fundamentally much more
-error-prone and harder to test than the CPU-based code.  They often
-don't get tested before kernel releases, and even if they do, the crypto
-self-tests don't properly test these drivers.  Released drivers have
-en/decrypted or hashed data incorrectly.  These bugs cause issues for
-fscrypt users who often didn't even want to use these drivers, e.g.:
-
-- https://github.com/google/fscryptctl/issues/32
-- https://github.com/google/fscryptctl/issues/9
-- https://lore.kernel.org/r/PH0PR02MB731916ECDB6C613665863B6CFFAA2@PH0PR02MB7319.namprd02.prod.outlook.com
-
-These drivers have also similarly caused issues for dm-crypt users,
-including data corruption and deadlocks.  Since Linux v5.10, dm-crypt
-has disabled most of them by excluding CRYPTO_ALG_ALLOCATES_MEMORY.
-
-Second, these drivers tend to be *much* slower than the CPU-based code.
-This may seem counterintuitive, but benchmarks clearly show it.  There's
-a *lot* of overhead associated with going to a hardware driver, off the
-CPU, and back again.  To prove this, I gathered as many systems with
-this type of crypto engine as I could, and I measured synchronous
-encryption of 4096-byte messages (which matches fscrypt's workload):
-
-Intel Emerald Rapids server:
-   AES-256-XTS:
-      xts-aes-vaes-avx512   16171 MB/s  [CPU-based, Vector AES]
-      qat_aes_xts             289 MB/s  [Offload, Intel QuickAssist]
-
-Qualcomm SM8650 HDK:
-   AES-256-XTS:
-      xts-aes-ce             4301 MB/s  [CPU-based, ARMv8 Crypto Extensions]
-      xts-aes-qce              73 MB/s  [Offload, Qualcomm Crypto Engine]
-
-i.MX 8M Nano LPDDR4 EVK:
-   AES-256-XTS:
-      xts-aes-ce              647 MB/s   [CPU-based, ARMv8 Crypto Extensions]
-      xts(ecb-aes-caam)        20 MB/s   [Offload, CAAM]
-   AES-128-CBC-ESSIV:
-      essiv(cbc-aes-caam,sha256-lib) 23 MB/s   [Offload, CAAM]
-
-STM32MP157F-DK2:
-   AES-256-XTS:
-      xts-aes-neonbs         13.2 MB/s   [CPU-based, ARM NEON]
-      xts(stm32-ecb-aes)     3.1 MB/s    [Offload, STM32 crypto engine]
-   AES-128-CBC-ESSIV:
-      essiv(cbc-aes-neonbs,sha256-lib)
-                             14.7 MB/s   [CPU-based, ARM NEON]
-      essiv(stm32-cbc-aes,sha256-lib)
-                             3.2 MB/s    [Offload, STM32 crypto engine]
-   Adiantum:
-      adiantum(xchacha12-arm,aes-arm,nhpoly1305-neon)
-                             52.8 MB/s   [CPU-based, ARM scalar + NEON]
-
-So, there was no case in which the crypto engine was even *close* to
-being faster.  On the first three, which have AES instructions in the
-CPU, the CPU was 30 to 55 times faster (!).  Even on STM32MP157F-DK2
-which has a Cortex-A7 CPU that doesn't have AES instructions, AES was
-over 4 times faster on the CPU.  And Adiantum encryption, which is what
-actually should be used on CPUs like that, was over 17 times faster.
-
-Other justifications that have been given for these non-inline crypto
-engines (almost always coming from the hardware vendors, not actual
-users) don't seem very plausible either:
-
-  - The crypto engine throughput could be improved by processing
-    multiple requests concurrently.  Currently irrelevant to fscrypt,
-    since it doesn't do that.  This would also be complex, and unhelpful
-    in many cases.  2 of the 4 engines I tested even had only one queue.
-
-  - Some of the engines, e.g. STM32, support hardware keys.  Also
-    currently irrelevant to fscrypt, since it doesn't support these.
-    Interestingly, the STM32 driver itself doesn't support this either.
-
-  - Free up CPU for other tasks and/or reduce energy usage.  Not very
-    plausible considering the "short" message length, driver overhead,
-    and scheduling overhead.  There's just very little time for the CPU
-    to do something else like run another task or enter low-power state,
-    before the message finishes and it's time to process the next one.
-
-  - Some of these engines resist power analysis and electromagnetic
-    attacks, while the CPU-based crypto generally does not.  In theory,
-    this sounds great.  In practice, if this benefit requires the use of
-    an off-CPU offload that massively regresses performance and has a
-    low-quality, buggy driver, the price for this hardening (which is
-    not relevant to most fscrypt users, and tends to be incomplete) is
-    just too high.  Inline crypto engines are much more promising here,
-    as are on-CPU solutions like RISC-V High Assurance Cryptography.
-
-Fixes: b30ab0e03407 ("ext4 crypto: add ext4 encryption facilities")
+Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
 Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250704070322.20692-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/filesystems/fscrypt.rst |   37 +++++++++++++---------------------
- fs/crypto/fscrypt_private.h           |   16 ++++++++++++++
- fs/crypto/hkdf.c                      |    2 -
- fs/crypto/keysetup.c                  |    3 +-
- fs/crypto/keysetup_v1.c               |    3 +-
- 5 files changed, 36 insertions(+), 25 deletions(-)
+ drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/filesystems/fscrypt.rst
-+++ b/Documentation/filesystems/fscrypt.rst
-@@ -141,9 +141,8 @@ However, these ioctls have some limitati
-   CONFIG_PAGE_POISONING=y in your kernel config and add page_poison=1
-   to your kernel command line.  However, this has a performance cost.
+--- a/drivers/staging/media/imx/imx-media-csc-scaler.c
++++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
+@@ -914,7 +914,7 @@ imx_media_csc_scaler_device_init(struct
+ 	return &priv->vdev;
  
--- Secret keys might still exist in CPU registers, in crypto
--  accelerator hardware (if used by the crypto API to implement any of
--  the algorithms), or in other places not explicitly considered here.
-+- Secret keys might still exist in CPU registers or in other places
-+  not explicitly considered here.
- 
- Limitations of v1 policies
- ~~~~~~~~~~~~~~~~~~~~~~~~~~
-@@ -375,9 +374,12 @@ the work is done by XChaCha12, which is
- acceleration is unavailable.  For more information about Adiantum, see
- `the Adiantum paper <https://eprint.iacr.org/2018/720.pdf>`_.
- 
--The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair exists only to support
--systems whose only form of AES acceleration is an off-CPU crypto
--accelerator such as CAAM or CESA that does not support XTS.
-+The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair was added to try to
-+provide a more efficient option for systems that lack AES instructions
-+in the CPU but do have a non-inline crypto engine such as CAAM or CESA
-+that supports AES-CBC (and not AES-XTS).  This is deprecated.  It has
-+been shown that just doing AES on the CPU is actually faster.
-+Moreover, Adiantum is faster still and is recommended on such systems.
- 
- The remaining mode pairs are the "national pride ciphers":
- 
-@@ -1231,22 +1233,13 @@ this by validating all top-level encrypt
- Inline encryption support
- =========================
- 
--By default, fscrypt uses the kernel crypto API for all cryptographic
--operations (other than HKDF, which fscrypt partially implements
--itself).  The kernel crypto API supports hardware crypto accelerators,
--but only ones that work in the traditional way where all inputs and
--outputs (e.g. plaintexts and ciphertexts) are in memory.  fscrypt can
--take advantage of such hardware, but the traditional acceleration
--model isn't particularly efficient and fscrypt hasn't been optimized
--for it.
--
--Instead, many newer systems (especially mobile SoCs) have *inline
--encryption hardware* that can encrypt/decrypt data while it is on its
--way to/from the storage device.  Linux supports inline encryption
--through a set of extensions to the block layer called *blk-crypto*.
--blk-crypto allows filesystems to attach encryption contexts to bios
--(I/O requests) to specify how the data will be encrypted or decrypted
--in-line.  For more information about blk-crypto, see
-+Many newer systems (especially mobile SoCs) have *inline encryption
-+hardware* that can encrypt/decrypt data while it is on its way to/from
-+the storage device.  Linux supports inline encryption through a set of
-+extensions to the block layer called *blk-crypto*.  blk-crypto allows
-+filesystems to attach encryption contexts to bios (I/O requests) to
-+specify how the data will be encrypted or decrypted in-line.  For more
-+information about blk-crypto, see
- :ref:`Documentation/block/inline-encryption.rst <inline_encryption>`.
- 
- On supported filesystems (currently ext4 and f2fs), fscrypt can use
---- a/fs/crypto/fscrypt_private.h
-+++ b/fs/crypto/fscrypt_private.h
-@@ -27,6 +27,22 @@
-  */
- #define FSCRYPT_MIN_KEY_SIZE	16
- 
-+/*
-+ * This mask is passed as the third argument to the crypto_alloc_*() functions
-+ * to prevent fscrypt from using the Crypto API drivers for non-inline crypto
-+ * engines.  Those drivers have been problematic for fscrypt.  fscrypt users
-+ * have reported hangs and even incorrect en/decryption with these drivers.
-+ * Since going to the driver, off CPU, and back again is really slow, such
-+ * drivers can be over 50 times slower than the CPU-based code for fscrypt's
-+ * workload.  Even on platforms that lack AES instructions on the CPU, using the
-+ * offloads has been shown to be slower, even staying with AES.  (Of course,
-+ * Adiantum is faster still, and is the recommended option on such platforms...)
-+ *
-+ * Note that fscrypt also supports inline crypto engines.  Those don't use the
-+ * Crypto API and work much better than the old-style (non-inline) engines.
-+ */
-+#define FSCRYPT_CRYPTOAPI_MASK \
-+	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
- #define FSCRYPT_CONTEXT_V1	1
- #define FSCRYPT_CONTEXT_V2	2
- 
---- a/fs/crypto/hkdf.c
-+++ b/fs/crypto/hkdf.c
-@@ -72,7 +72,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkd
- 	u8 prk[HKDF_HASHLEN];
- 	int err;
- 
--	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
-+	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, FSCRYPT_CRYPTOAPI_MASK);
- 	if (IS_ERR(hmac_tfm)) {
- 		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
- 			    PTR_ERR(hmac_tfm));
---- a/fs/crypto/keysetup.c
-+++ b/fs/crypto/keysetup.c
-@@ -103,7 +103,8 @@ fscrypt_allocate_skcipher(struct fscrypt
- 	struct crypto_skcipher *tfm;
- 	int err;
- 
--	tfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
-+	tfm = crypto_alloc_skcipher(mode->cipher_str, 0,
-+				    FSCRYPT_CRYPTOAPI_MASK);
- 	if (IS_ERR(tfm)) {
- 		if (PTR_ERR(tfm) == -ENOENT) {
- 			fscrypt_warn(inode,
---- a/fs/crypto/keysetup_v1.c
-+++ b/fs/crypto/keysetup_v1.c
-@@ -52,7 +52,8 @@ static int derive_key_aes(const u8 *mast
- 	struct skcipher_request *req = NULL;
- 	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist src_sg, dst_sg;
--	struct crypto_skcipher *tfm = crypto_alloc_skcipher("ecb(aes)", 0, 0);
-+	struct crypto_skcipher *tfm =
-+		crypto_alloc_skcipher("ecb(aes)", 0, FSCRYPT_CRYPTOAPI_MASK);
- 
- 	if (IS_ERR(tfm)) {
- 		res = PTR_ERR(tfm);
+ err_m2m:
+-	video_set_drvdata(vfd, NULL);
++	video_device_release(vfd);
+ err_vfd:
+ 	kfree(priv);
+ 	return ERR_PTR(ret);
 
 
 
