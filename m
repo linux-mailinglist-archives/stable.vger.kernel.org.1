@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C20B362CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C27EB35CA4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18AFF36049E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207847C3D24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0923531CA74;
-	Tue, 26 Aug 2025 13:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DCE319866;
+	Tue, 26 Aug 2025 11:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrNSSQ7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+N+SNg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BDA2FC008;
-	Tue, 26 Aug 2025 13:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B180E3375DC;
+	Tue, 26 Aug 2025 11:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214004; cv=none; b=mMC7NHz3efLYIik7PHVFuRB4zyYakHRsDWQjn8IWzBGi4aE3ZSo/1RNi9j1gJHn+J6RGVTgKZScSNh0XnnMu/tktjZCg4b6swwD7cG3a17utRgh9nSTyUjwvE0UiFuYgdGU6Jggp+k0Pu+sTnO2yXHMsNqwtfpzpS6fHNzRHck4=
+	t=1756208071; cv=none; b=H4GzPk/ce+/Ta3F4AVpesgLtkpb8JaAK9tH8pH3Hr3lPAm7b02mCN7IvQdFV37wIagXTUOLsBdcMEBd90fDVxaiIDcGNZCUjTGNamGLY2PYGaduNOOMZ8JCSVUBvugr/4/t+brEpDaiLXTFmBQNqtrwuQqJD1ZmMcxlBv1+cAjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214004; c=relaxed/simple;
-	bh=iip5ejvZlMtelrI5HRzL5HRa/fKA96/jtN+tpP36Td4=;
+	s=arc-20240116; t=1756208071; c=relaxed/simple;
+	bh=khHUBhAuhNZdLu5uXGDt1NJ1qZ3fkL0alQy//bVQ5RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWvNSLxgeEwWhs+s4eKZ1jg9ODOjM9f2YIhyRsF9V6jRb1ap23C9ADBocQ/Y1rombY6ZZI8mRmWb6eyOE9vda2av5XehGnzsVthF236zvZcDcMRVudkUBmbvT8tqNDaPi0vbT/IWD/LOhk9V7J0NKPngezbTFFJK2oK0C6MnCKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrNSSQ7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BA2C4CEF4;
-	Tue, 26 Aug 2025 13:13:23 +0000 (UTC)
+	 MIME-Version; b=V6Uk7s0aJbxhB2sgy8lzjD8E80tH/815VI7Mr/+0hlXZJ5106uPKtTkbTaeI5quFWGFJtsvE5KTu+/TOL4gmlhB45EZHArUSoWyCFT3U0WikT6gMm2XliokCDrlF1D/vbcYb5LJMSYREVqWb9nW/qSkPcQT8nimrE+lDLba/9/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+N+SNg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7B6C19421;
+	Tue, 26 Aug 2025 11:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214004;
-	bh=iip5ejvZlMtelrI5HRzL5HRa/fKA96/jtN+tpP36Td4=;
+	s=korg; t=1756208071;
+	bh=khHUBhAuhNZdLu5uXGDt1NJ1qZ3fkL0alQy//bVQ5RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrNSSQ7swF6drlzxj3fDzbtbapFHS8DmH1xvmXbXLZ0ffGNwXbnuceT/eydWILQUo
-	 /88vTKgYWnPPU00c2KL8BocxG+cGVCFz4QnYSEFHXQ0rc2jJbCS7kX6kWkX4uARChU
-	 qFXwXIumd9zmD4MM10ONAgjVniPSbC3bEIIIVzjI=
+	b=d+N+SNg6uewuSoWV+4sr8mfbqEPaRnGbpZ/ApbWbVsqkKuybemifAlgsLGpuzXTgx
+	 MhjwMZr7giQfTwEPOXzo/neNozy1Tv8cHDEw5YTfuF2I+Y83rrdOQYS+N6/d1u8R2Y
+	 OR8Dmce+dRDPVTOXLMn7/BBGyJQw+tLKNfROrMo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 562/587] drm/hisilicon/hibmc: fix the hibmc loaded failed bug
+Subject: [PATCH 6.16 427/457] ASoC: cs35l56: Remove SoundWire Clock Divider workaround for CS35L63
 Date: Tue, 26 Aug 2025 13:11:51 +0200
-Message-ID: <20250826111007.322449002@linuxfoundation.org>
+Message-ID: <20250826110947.842003226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 93a08f856fcc5aaeeecad01f71bef3088588216a ]
+[ Upstream commit 8d13d1bdb59d0a2c526869ee571ec51a3a887463 ]
 
-When hibmc loaded failed, the driver use hibmc_unload to free the
-resource, but the mutexes in mode.config are not init, which will
-access an NULL pointer. Just change goto statement to return, because
-hibnc_hw_init() doesn't need to free anything.
+Production silicon for CS36L63 has some small differences compared to
+pre-production silicon. Remove soundwire clock workaround as no
+longer necessary. We don't want to do tricks with low-level clocking
+controls if we don't need to.
 
-Fixes: b3df5e65cc03 ("drm/hibmc: Drop drm_vblank_cleanup")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-5-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 978858791ced ("ASoC: cs35l56: Add initial support for CS35L63 for I2C and SoundWire")
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250820142209.127575-4-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l56-sdw.c | 69 ----------------------------------
+ sound/soc/codecs/cs35l56.h     |  3 --
+ 2 files changed, 72 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-index 8a98fa276e8a..96f960bcfd82 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-@@ -258,13 +258,13 @@ static int hibmc_load(struct drm_device *dev)
+diff --git a/sound/soc/codecs/cs35l56-sdw.c b/sound/soc/codecs/cs35l56-sdw.c
+index fa9693af3722..d7fa12d287e0 100644
+--- a/sound/soc/codecs/cs35l56-sdw.c
++++ b/sound/soc/codecs/cs35l56-sdw.c
+@@ -394,74 +394,6 @@ static int cs35l56_sdw_update_status(struct sdw_slave *peripheral,
+ 	return 0;
+ }
  
- 	ret = hibmc_hw_init(priv);
- 	if (ret)
--		goto err;
-+		return ret;
+-static int cs35l63_sdw_kick_divider(struct cs35l56_private *cs35l56,
+-				    struct sdw_slave *peripheral)
+-{
+-	unsigned int curr_scale_reg, next_scale_reg;
+-	int curr_scale, next_scale, ret;
+-
+-	if (!cs35l56->base.init_done)
+-		return 0;
+-
+-	if (peripheral->bus->params.curr_bank) {
+-		curr_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B1;
+-		next_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B0;
+-	} else {
+-		curr_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B0;
+-		next_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B1;
+-	}
+-
+-	/*
+-	 * Current clock scale value must be different to new value.
+-	 * Modify current to guarantee this. If next still has the dummy
+-	 * value we wrote when it was current, the core code has not set
+-	 * a new scale so restore its original good value
+-	 */
+-	curr_scale = sdw_read_no_pm(peripheral, curr_scale_reg);
+-	if (curr_scale < 0) {
+-		dev_err(cs35l56->base.dev, "Failed to read current clock scale: %d\n", curr_scale);
+-		return curr_scale;
+-	}
+-
+-	next_scale = sdw_read_no_pm(peripheral, next_scale_reg);
+-	if (next_scale < 0) {
+-		dev_err(cs35l56->base.dev, "Failed to read next clock scale: %d\n", next_scale);
+-		return next_scale;
+-	}
+-
+-	if (next_scale == CS35L56_SDW_INVALID_BUS_SCALE) {
+-		next_scale = cs35l56->old_sdw_clock_scale;
+-		ret = sdw_write_no_pm(peripheral, next_scale_reg, next_scale);
+-		if (ret < 0) {
+-			dev_err(cs35l56->base.dev, "Failed to modify current clock scale: %d\n",
+-				ret);
+-			return ret;
+-		}
+-	}
+-
+-	cs35l56->old_sdw_clock_scale = curr_scale;
+-	ret = sdw_write_no_pm(peripheral, curr_scale_reg, CS35L56_SDW_INVALID_BUS_SCALE);
+-	if (ret < 0) {
+-		dev_err(cs35l56->base.dev, "Failed to modify current clock scale: %d\n", ret);
+-		return ret;
+-	}
+-
+-	dev_dbg(cs35l56->base.dev, "Next bus scale: %#x\n", next_scale);
+-
+-	return 0;
+-}
+-
+-static int cs35l56_sdw_bus_config(struct sdw_slave *peripheral,
+-				  struct sdw_bus_params *params)
+-{
+-	struct cs35l56_private *cs35l56 = dev_get_drvdata(&peripheral->dev);
+-
+-	if ((cs35l56->base.type == 0x63) && (cs35l56->base.rev < 0xa1))
+-		return cs35l63_sdw_kick_divider(cs35l56, peripheral);
+-
+-	return 0;
+-}
+-
+ static int __maybe_unused cs35l56_sdw_clk_stop(struct sdw_slave *peripheral,
+ 					       enum sdw_clk_stop_mode mode,
+ 					       enum sdw_clk_stop_type type)
+@@ -477,7 +409,6 @@ static const struct sdw_slave_ops cs35l56_sdw_ops = {
+ 	.read_prop = cs35l56_sdw_read_prop,
+ 	.interrupt_callback = cs35l56_sdw_interrupt,
+ 	.update_status = cs35l56_sdw_update_status,
+-	.bus_config = cs35l56_sdw_bus_config,
+ #ifdef DEBUG
+ 	.clk_stop = cs35l56_sdw_clk_stop,
+ #endif
+diff --git a/sound/soc/codecs/cs35l56.h b/sound/soc/codecs/cs35l56.h
+index bd77a57249d7..40a1800a4585 100644
+--- a/sound/soc/codecs/cs35l56.h
++++ b/sound/soc/codecs/cs35l56.h
+@@ -20,8 +20,6 @@
+ #define CS35L56_SDW_GEN_INT_MASK_1	0xc1
+ #define CS35L56_SDW_INT_MASK_CODEC_IRQ	BIT(0)
  
- 	ret = drmm_vram_helper_init(dev, pci_resource_start(pdev, 0),
- 				    pci_resource_len(pdev, 0));
- 	if (ret) {
- 		drm_err(dev, "Error initializing VRAM MM; %d\n", ret);
--		goto err;
-+		return ret;
- 	}
- 
- 	ret = hibmc_kms_init(priv);
+-#define CS35L56_SDW_INVALID_BUS_SCALE	0xf
+-
+ #define CS35L56_RX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE)
+ #define CS35L56_TX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE \
+ 			    | SNDRV_PCM_FMTBIT_S32_LE)
+@@ -52,7 +50,6 @@ struct cs35l56_private {
+ 	u8 asp_slot_count;
+ 	bool tdm_mode;
+ 	bool sysclk_set;
+-	u8 old_sdw_clock_scale;
+ 	u8 sdw_link_num;
+ 	u8 sdw_unique_id;
+ };
 -- 
 2.50.1
 
