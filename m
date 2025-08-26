@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93306B36773
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D43AB36BEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A6E568032
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0473298379D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DA331985C;
-	Tue, 26 Aug 2025 13:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA2F35CEA6;
+	Tue, 26 Aug 2025 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2bH71s+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuMziX8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C62350852;
-	Tue, 26 Aug 2025 13:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46EA35691F;
+	Tue, 26 Aug 2025 14:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216632; cv=none; b=L1FnDeZAQGKAHlt3C4kIB0J1eaVUt3CxkyRS/0pvQp/SJI23w12UhjCm9METC0cp8lQENgpVJlNlWBA9uUT9JBO0+E3qPCdzXgELhi7ZZcT9fYHymHNvTa+SSV1yo1fAFaEE/TtK70pqcQrILx7qPEaujtqJG+Yd4LZdbAYWaJs=
+	t=1756219198; cv=none; b=hc2RYo7Oi8tgMPok/ul5wOvjo6c++Z+MH23svXmwrPrcz391Ssd9N8cP875nMcraDwy0v5ubgJkDtzeCaavg9mdzC9vNeNHJxSXd9HtHhlFgnG8yxGXwqRAl2PAAkkytUEunQOBQARu/40jUpGktAc221k3S7G5/MG7MiONip6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216632; c=relaxed/simple;
-	bh=/KVzAV7whAXguTejE3XqoI8A356w3L1JU7bgSl8m034=;
+	s=arc-20240116; t=1756219198; c=relaxed/simple;
+	bh=8Vbl6+KyOSqg/rvZlT/a9L8UPZWERrmzGLEIrmpxLv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVTv6SOLbLFeIUq5gIPSpMyOXWFepdKSgczY3EjHDjWGiwmY/ums4LOxyNh8Gt7fyAW4JziA+OThY9Ni39DUSog2CqzBN2xteNt28vrk6yyhjiNNU7+etBQmS4fCZTs9L/lrArb2nFvOJuaG4HSCLtzpACM4Xhjjt8AnMRevtqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2bH71s+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E669C4CEF1;
-	Tue, 26 Aug 2025 13:57:12 +0000 (UTC)
+	 MIME-Version; b=KylNNy0f+wiz/zoF8W/yJCEmhD0GTzGZ0SLj+GCXYnMjAXOOf3uhGJp5o8xJemXzxxjV/5npewRL9ehZt3wRK5/rOB4qWtEJoP2us6HSQC92IYWv9NkHWIiasvE4T0WL3s6JHA/dUyuuHD4sN7iZTh1EiLXoFyYkPaRfxWRI7bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuMziX8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67204C4CEF1;
+	Tue, 26 Aug 2025 14:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216632;
-	bh=/KVzAV7whAXguTejE3XqoI8A356w3L1JU7bgSl8m034=;
+	s=korg; t=1756219198;
+	bh=8Vbl6+KyOSqg/rvZlT/a9L8UPZWERrmzGLEIrmpxLv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2bH71s+eAQWOXDRPrVwfXxZsqFERJ8FIK3gglnRRpst0KyWE1pVi6KoygH/B99I8
-	 pUuekPrgayVuR3DYTTQbAe7rl/ur1IZsl4FKJMcf42TDdzLXtsnecI1r2DYpvcSyCL
-	 XfHGDdUJ2zn8DIDSsLLpbSz/mAQ2nhoCaK5o4bkQ=
+	b=LuMziX8YZf+PzF1eqU78EvV8XFokJ/4F2Pf0ANwfctPPi+t1o+cUuFao5YAXlRgI+
+	 hdPGAVZ8yroAdpZvs/zIc6HKV8lYB1C+Lnmy7tJOPBajiZ4zoAfKk7ZPXUKPCYbCuw
+	 r7ua/bkhpbvfAX35k2nxUn+z7jnhpbL8vqgSXeMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 485/644] soc/tegra: pmc: Ensure power-domains are in a known state
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 250/403] media: usb: hdpvr: disable zero-length read messages
 Date: Tue, 26 Aug 2025 13:09:36 +0200
-Message-ID: <20250826110958.507313225@linuxfoundation.org>
+Message-ID: <20250826110913.724600814@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
+[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
 
-After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
-until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
-failed to boot. Looking into this issue, before this commit was applied,
-if any of the Tegra power-domains were in 'on' state when the kernel
-booted, they were being turned off by the genpd core before any driver
-had chance to request them. This was purely by luck and a consequence of
-the power-domains being turned off earlier during boot. After this
-commit was applied, any power-domains in the 'on' state are kept on for
-longer during boot and therefore, may never transitioned to the off
-state before they are requested/used. The hang on the Tegra210 Jetson
-TX1 is caused because devices in some power-domains are accessed without
-the power-domain being turned off and on, indicating that the
-power-domain is not in a completely on state.
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
->From reviewing the Tegra PMC driver code, if a power-domain is in the
-'on' state there is no guarantee that all the necessary clocks
-associated with the power-domain are on and even if they are they would
-not have been requested via the clock framework and so could be turned
-off later. Some power-domains also have a 'clamping' register that needs
-to be configured as well. In short, if a power-domain is already 'on' it
-is difficult to know if it has been configured correctly. Given that the
-power-domains happened to be switched off during boot previously, to
-ensure that they are in a good known state on boot, fix this by
-switching off any power-domains that are on initially when registering
-the power-domains with the genpd framework.
-
-Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
-associated with a power partition") updated the
-tegra_powergate_of_get_resets() function to pass the 'off' to ensure
-that the resets for the power-domain are in the correct state on boot.
-However, now that we may power off a domain on boot, if it is on, it is
-better to move this logic into the tegra_powergate_add() function so
-that there is a single place where we are handling the initial state of
-the power-domain.
-
-Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -1174,7 +1174,7 @@ err:
- }
+diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+index 785c8508a46e..e6a190fe0e87 100644
+--- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
++++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
+ 	.functionality = hdpvr_functionality,
+ };
  
- static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
--					 struct device_node *np, bool off)
-+					 struct device_node *np)
- {
- 	struct device *dev = pg->pmc->dev;
- 	int err;
-@@ -1189,22 +1189,6 @@ static int tegra_powergate_of_get_resets
- 	err = reset_control_acquire(pg->reset);
- 	if (err < 0) {
- 		pr_err("failed to acquire resets: %d\n", err);
--		goto out;
--	}
--
--	if (off) {
--		err = reset_control_assert(pg->reset);
--	} else {
--		err = reset_control_deassert(pg->reset);
--		if (err < 0)
--			goto out;
--
--		reset_control_release(pg->reset);
--	}
--
--out:
--	if (err) {
--		reset_control_release(pg->reset);
- 		reset_control_put(pg->reset);
- 	}
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks hdpvr_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ static const struct i2c_adapter hdpvr_i2c_adapter_template = {
+ 	.name   = "Hauppauge HD PVR I2C",
+ 	.owner  = THIS_MODULE,
+ 	.algo   = &hdpvr_algo,
++	.quirks = &hdpvr_quirks,
+ };
  
-@@ -1249,20 +1233,43 @@ static int tegra_powergate_add(struct te
- 		goto set_available;
- 	}
- 
--	err = tegra_powergate_of_get_resets(pg, np, off);
-+	err = tegra_powergate_of_get_resets(pg, np);
- 	if (err < 0) {
- 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
- 		goto remove_clks;
- 	}
- 
--	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
--		if (off)
--			WARN_ON(tegra_powergate_power_up(pg, true));
-+	/*
-+	 * If the power-domain is off, then ensure the resets are asserted.
-+	 * If the power-domain is on, then power down to ensure that when is
-+	 * it turned on the power-domain, clocks and resets are all in the
-+	 * expected state.
-+	 */
-+	if (off) {
-+		err = reset_control_assert(pg->reset);
-+		if (err) {
-+			pr_err("failed to assert resets: %d\n", err);
-+			goto remove_resets;
-+		}
-+	} else {
-+		err = tegra_powergate_power_down(pg);
-+		if (err) {
-+			dev_err(dev, "failed to turn off PM domain %s: %d\n",
-+				pg->genpd.name, err);
-+			goto remove_resets;
-+		}
-+	}
- 
-+	/*
-+	 * If PM_GENERIC_DOMAINS is not enabled, power-on
-+	 * the domain and skip the genpd registration.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
-+		WARN_ON(tegra_powergate_power_up(pg, true));
- 		goto remove_resets;
- 	}
- 
--	err = pm_genpd_init(&pg->genpd, NULL, off);
-+	err = pm_genpd_init(&pg->genpd, NULL, true);
- 	if (err < 0) {
- 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
- 		       err);
+ static int hdpvr_activate_ir(struct hdpvr_device *dev)
+-- 
+2.39.5
+
 
 
 
