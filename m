@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22470B36B18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E8EB36C59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840425E80EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC171BC779B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C27C352093;
-	Tue, 26 Aug 2025 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE17635CEA8;
+	Tue, 26 Aug 2025 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQswnDYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agyEM6S7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F23342CA7;
-	Tue, 26 Aug 2025 14:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DD935CEA3;
+	Tue, 26 Aug 2025 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218222; cv=none; b=FSUW9rtG47pv8QBa9a/JisUB8sDeV9mz8rrPXNXQELTEdE00cNyTi9VMLu/vfbtXEFBq9UJvUiLauAvusw97R2zrD6SUzS5a/acljfoahDEgyUDu2L5xffzYqz3eu5wDcYMvJdovIlMp5jU4L8njznrW0yl8kyNdiK7sJUKbd/M=
+	t=1756219204; cv=none; b=d9ekPvVdhlA/dI4osy0VpYhmG6kzq0JOqBbXzcmQui8+/qePxW4O09UYt9c3ze55SuRLy0CGJnOOFJD7ixmFEI7+2IWkF0kJBsHErMkZGLx3YrTMx1HZRMolRpFDiVTZDJGC9RIqph59hDmAAmCslxsvfqShnRU7eARQRP+vhYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218222; c=relaxed/simple;
-	bh=nKfC1cZaz/4i7VQIcQY7c95GeRcBJaCha1d4Oi2KxVE=;
+	s=arc-20240116; t=1756219204; c=relaxed/simple;
+	bh=62Fx0h58kHNTd2l9LbmDPR0Rtg9k/GUdDBoP64OSkAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBb7SWwGYyNqUJlkxKsMnSAqkHt9d7sKGcrDBSvINVByFyZt/cVXjpgJFr4P5Iqzdz/kSvewojLdQ3CvskcHoCkCh83RVnEviaVM0bawfc35cdmOrQy8qUgOplK/ntrnK7053IUUpzAGcFTYoQ8wvKAJHomCHo+HQjJLURvdHCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQswnDYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EA2C4CEF1;
-	Tue, 26 Aug 2025 14:23:41 +0000 (UTC)
+	 MIME-Version; b=Co5vhMObQmCy+gTJfdhEFIDAJkTIzqdBv2FjqjbY0vaKJhT5hSRtqMN++KMwfwLRvCHVXV3X+w6Ba1TBGrvgza8kbGXfk0CTrOdUajwy9Xr0Hk4KCKQEEsvNKdHAJymkivoapnNNBxSIBvoTe17w46P8S+3tNbTp+QDUv7RpPfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agyEM6S7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CB4C113D0;
+	Tue, 26 Aug 2025 14:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218221;
-	bh=nKfC1cZaz/4i7VQIcQY7c95GeRcBJaCha1d4Oi2KxVE=;
+	s=korg; t=1756219204;
+	bh=62Fx0h58kHNTd2l9LbmDPR0Rtg9k/GUdDBoP64OSkAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQswnDYIYpldLVCjURZ20LW7di/BDJbxGhWDYVMuxXnhhdQWo8KEbT0ROCxCnW0e5
-	 Xt96c1Z2vh5gUVgAXrvNPrVBapWBTrLhiF1s6uBxMgtrGkzxkx3WmDGM3UDw0Tzs05
-	 wnHKmCK8ErB5hBBsdrlvkpP5sLscqWDm9rd0v1LA=
+	b=agyEM6S7O7t7ziqHCggAjP+GwptbHjrJWk9+3P+7Q6mnFDCE2iNOKNZmT+6zUcH3L
+	 rM8phOhmG+ngTM9Bdw1uCedLa6aeivlhKvKlxBY/qLEpAQoQGhgVpdvAcwJB0LsGEq
+	 r4il1kEmGulwlfFPfLPS058/UryOx7qdOaZ18mPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 409/523] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 293/403] ext4: fix reserved gdt blocks handling in fsmap
 Date: Tue, 26 Aug 2025 13:10:19 +0200
-Message-ID: <20250826110934.546701042@linuxfoundation.org>
+Message-ID: <20250826110914.903683802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
+commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
 
-Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
-or it will randomly work incorrectly on Huawei hisi platforms
-when doing reboot test.
+In some cases like small FSes with no meta_bg and where the resize
+doesn't need extra gdt blocks as it can fit in the current one,
+s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
+length entry, which is incorrect.
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
+  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
+  $ mount /dev/sda /mnt/scratch
+  $ xfs_io -c "fsmap -d" /mnt/scartch
+
+        0: 253:48 [0..127]: static fs metadata 128
+        1: 253:48 [128..255]: special 102:1 128
+        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
+        3: 253:48 [256..383]: special 102:3 128
+
+Fix this by adding a check for this case.
+
+Cc: stable@kernel.org
+Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/fsmap.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -368,6 +368,7 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
- 
- 	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
- 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
- 
- 	/* SanDisk Extreme 55AE */
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
+ 	/* Reserved GDT blocks */
+ 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
+ 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
++
++		/*
++		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
++		 * check for that.
++		 */
++		if (!len)
++			return 0;
++
+ 		error = ext4_getfsmap_fill(meta_list, fsb, len,
+ 					   EXT4_FMR_OWN_RESV_GDT);
+ 		if (error)
 
 
 
