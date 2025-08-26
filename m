@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0451DB36319
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76334B368D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 547AC8A5FB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04728E181F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467942405E1;
-	Tue, 26 Aug 2025 13:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9B4352FCB;
+	Tue, 26 Aug 2025 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uQU+NQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etEfmkTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031641ADFFE;
-	Tue, 26 Aug 2025 13:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBCE342CA7;
+	Tue, 26 Aug 2025 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214271; cv=none; b=t26sao6lZIDVaRDb9jPupXfkca4jy01G2FU4VH7E5VBT2CyuimcIqYiKAtSzzX4QYXba3hdJca4SCYHLKQ6lYrkkpmApgAdURHp5ojdAT3C5UJVfh1JjjJNpQP3DgLE/HxFIPXqHVp3Gshg2z1pXaKEtIVnrb7m5lcjEhWpBO7Y=
+	t=1756217301; cv=none; b=LWofmpvNJvC21tvMSZTuSES1yQf+KDenTzhSkvzE2cT1JXE0HuMFS0JYYz10F8vECH+5DPBOZAjbAVnDdl/zdLBp+SMD8InuHdvReQtSrgn2k68mtmEI9dDasVTOyBjCiIZK4Vu8Cu2EFAsPwX/toDnCRuSgYo9mPC3ybsR3rqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214271; c=relaxed/simple;
-	bh=5C8nxZKdVsNAzmqZarXfjKDbZVUIbtuqUK1ZWxSJSfc=;
+	s=arc-20240116; t=1756217301; c=relaxed/simple;
+	bh=o86oEMF0rcavR0MLWGys/raaCsGduibWKb07A7RXErY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1bGijS/QT6NIHOACWfs3tB6qIDJOgo17i1YUuQHX+bHs4ujDPDY00OYQfNYSh5x8AF9oXncOsH3SgfwKF7vEOIxhZS+dk9QzibJAqQemXHtXbLonvSxMh+RyrVaDiEzByNq0HY4T5N6bjmhR6ayRaNmYkbICNKyc8v+389KTqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uQU+NQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B67C4CEF1;
-	Tue, 26 Aug 2025 13:17:50 +0000 (UTC)
+	 MIME-Version; b=c1j91cuEErTW9YXGd4zIlyq/8xfgoe/sE2+ntw95Stmt6fRBO4ZaksLZXd+bsiX/ceDeAtLPfUfIfYR3pUu5J9WKLVWeXLj36Q6j5wKLMxOueIRgvGNgQb5HKZ9zkKfD+nd4aQ0ykZiSByhNmT/XK/MFypFgkPq76CQNqitBfv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etEfmkTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBE6C4CEF1;
+	Tue, 26 Aug 2025 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214270;
-	bh=5C8nxZKdVsNAzmqZarXfjKDbZVUIbtuqUK1ZWxSJSfc=;
+	s=korg; t=1756217300;
+	bh=o86oEMF0rcavR0MLWGys/raaCsGduibWKb07A7RXErY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uQU+NQoDRfC1K6h7z67F3qBJUAneJmnjepnWlloe/2kczbrL4YB38JSUeOtS7Tzb
-	 ZV+kRIYthehZvv+OtKz8Avp2foi71880cp749UPPfFsuflBowRnsP7JDNOMWNtn/54
-	 tYss0Nto6H6iQNh1BtmWuEukf6YJTepwQaPMpSbg=
+	b=etEfmkTcKgYvMZsc5wA07PNe5/LnTtP1MPPd6OLRbgmdVUe3vSeQ8diNAr2fgKkjP
+	 QDfAVzg64wCHOLX6GbTbOS9f+rS1aPxb4j1bg6YnmBdNj5orRYhVvQWT1d7ebR+Ac/
+	 rmtA2N4woRRLOuD3BZZXjlxsZUQJYIMIaFzCde88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Brahmajit Das <listout@listout.xyz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/482] netfilter: ctnetlink: fix refcount leak on table dump
+Subject: [PATCH 5.10 091/523] samples: mei: Fix building on musl libc
 Date: Tue, 26 Aug 2025 13:05:01 +0200
-Message-ID: <20250826110932.005009907@linuxfoundation.org>
+Message-ID: <20250826110926.794676045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit de788b2e6227462b6dcd0e07474e72c089008f74 ]
+[ Upstream commit 239df3e4b4752524e7c0fb3417c218d8063654b4 ]
 
-There is a reference count leak in ctnetlink_dump_table():
-      if (res < 0) {
-                nf_conntrack_get(&ct->ct_general); // HERE
-                cb->args[1] = (unsigned long)ct;
-                ...
+The header bits/wordsize.h is glibc specific and on building on musl
+with allyesconfig results in
 
-While its very unlikely, its possible that ct == last.
-If this happens, then the refcount of ct was already incremented.
-This 2nd increment is never undone.
+samples/mei/mei-amt-version.c:77:10: fatal error: bits/wordsize.h: No such file or directory
+   77 | #include <bits/wordsize.h>
+      |          ^~~~~~~~~~~~~~~~~
 
-This prevents the conntrack object from being released, which in turn
-keeps prevents cnet->count from dropping back to 0.
+mei-amt-version.c build file without bits/wordsize.h on musl and glibc.
 
-This will then block the netns dismantle (or conntrack rmmod) as
-nf_conntrack_cleanup_net_list() will wait forever.
+However on musl we get the follwing error without sys/time.h
 
-This can be reproduced by running conntrack_resize.sh selftest in a loop.
-It takes ~20 minutes for me on a preemptible kernel on average before
-I see a runaway kworker spinning in nf_conntrack_cleanup_net_list.
+samples/mei/mei-amt-version.c: In function 'mei_recv_msg':
+samples/mei/mei-amt-version.c:159:24: error: storage size of 'tv' isn't known
+  159 |         struct timeval tv;
+      |                        ^~
+samples/mei/mei-amt-version.c:160:9: error: unknown type name 'fd_set'
+  160 |         fd_set set;
+      |         ^~~~~~
+samples/mei/mei-amt-version.c:168:9: error: implicit declaration of function 'FD_ZERO' [-Wimplicit-function-declaration]
+  168 |         FD_ZERO(&set);
+      |         ^~~~~~~
+samples/mei/mei-amt-version.c:169:9: error: implicit declaration of function 'FD_SET'; did you mean 'L_SET'? [-Wimplicit-function-declaration]
+  169 |         FD_SET(me->fd, &set);
+      |         ^~~~~~
+      |         L_SET
+samples/mei/mei-amt-version.c:170:14: error: implicit declaration of function 'select' [-Wimplicit-function-declaration]
+  170 |         rc = select(me->fd + 1, &set, NULL, NULL, &tv);
+      |              ^~~~~~
+samples/mei/mei-amt-version.c:171:23: error: implicit declaration of function 'FD_ISSET' [-Wimplicit-function-declaration]
+  171 |         if (rc > 0 && FD_ISSET(me->fd, &set)) {
+      |                       ^~~~~~~~
+samples/mei/mei-amt-version.c:159:24: warning: unused variable 'tv' [-Wunused-variable]
+  159 |         struct timeval tv;
+      |                        ^~
 
-One fix would to change this to:
-        if (res < 0) {
-		if (ct != last)
-	                nf_conntrack_get(&ct->ct_general);
+Hence the the file has been included.
 
-But this reference counting isn't needed in the first place.
-We can just store a cookie value instead.
-
-A followup patch will do the same for ctnetlink_exp_dump_table,
-it looks to me as if this has the same problem and like
-ctnetlink_dump_table, we only need a 'skip hint', not the actual
-object so we can apply the same cookie strategy there as well.
-
-Fixes: d205dc40798d ("[NETFILTER]: ctnetlink: fix deadlock in table dumping")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: c52827cc4ddf ("staging/mei: add mei user space example")
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Link: https://lore.kernel.org/r/20250702135955.24955-1-listout@listout.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ samples/mei/mei-amt-version.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 2cf58a8b8e4d..d3e28574ceb9 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -859,8 +859,6 @@ ctnetlink_conntrack_event(unsigned int events, const struct nf_ct_event *item)
+diff --git a/samples/mei/mei-amt-version.c b/samples/mei/mei-amt-version.c
+index ad3e56042f96..892a221b44b4 100644
+--- a/samples/mei/mei-amt-version.c
++++ b/samples/mei/mei-amt-version.c
+@@ -69,11 +69,11 @@
+ #include <string.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
++#include <sys/time.h>
+ #include <unistd.h>
+ #include <errno.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+-#include <bits/wordsize.h>
+ #include <linux/mei.h>
  
- static int ctnetlink_done(struct netlink_callback *cb)
- {
--	if (cb->args[1])
--		nf_ct_put((struct nf_conn *)cb->args[1]);
- 	kfree(cb->data);
- 	return 0;
- }
-@@ -1175,19 +1173,26 @@ static int ctnetlink_filter_match(struct nf_conn *ct, void *data)
- 	return 0;
- }
- 
-+static unsigned long ctnetlink_get_id(const struct nf_conn *ct)
-+{
-+	unsigned long id = nf_ct_get_id(ct);
-+
-+	return id ? id : 1;
-+}
-+
- static int
- ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	unsigned int flags = cb->data ? NLM_F_DUMP_FILTERED : 0;
- 	struct net *net = sock_net(skb->sk);
--	struct nf_conn *ct, *last;
-+	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_tuple_hash *h;
- 	struct hlist_nulls_node *n;
- 	struct nf_conn *nf_ct_evict[8];
-+	struct nf_conn *ct;
- 	int res, i;
- 	spinlock_t *lockp;
- 
--	last = (struct nf_conn *)cb->args[1];
- 	i = 0;
- 
- 	local_bh_disable();
-@@ -1224,7 +1229,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
- 
- 			if (cb->args[1]) {
--				if (ct != last)
-+				if (ctnetlink_get_id(ct) != last_id)
- 					continue;
- 				cb->args[1] = 0;
- 			}
-@@ -1237,8 +1242,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 					    NFNL_MSG_TYPE(cb->nlh->nlmsg_type),
- 					    ct, true, flags);
- 			if (res < 0) {
--				nf_conntrack_get(&ct->ct_general);
--				cb->args[1] = (unsigned long)ct;
-+				cb->args[1] = ctnetlink_get_id(ct);
- 				spin_unlock(lockp);
- 				goto out;
- 			}
-@@ -1251,12 +1255,10 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- out:
- 	local_bh_enable();
--	if (last) {
-+	if (last_id) {
- 		/* nf ct hash resize happened, now clear the leftover. */
--		if ((struct nf_conn *)cb->args[1] == last)
-+		if (cb->args[1] == last_id)
- 			cb->args[1] = 0;
--
--		nf_ct_put(last);
- 	}
- 
- 	while (i) {
+ /*****************************************************************************
 -- 
-2.50.1
+2.39.5
 
 
 
