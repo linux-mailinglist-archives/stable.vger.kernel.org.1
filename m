@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-173891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B117BB3604B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE888B362E4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2A53AEB89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7609E467634
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF875145B3E;
-	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C04C334379;
+	Tue, 26 Aug 2025 13:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSxeqn/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W7nPkwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD641ACEDE;
-	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D88284678;
+	Tue, 26 Aug 2025 13:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212938; cv=none; b=JBmy757pfUlcPjpi1v+GMpt0OERi/+LEDaT/Xw3epsitPG53vSEE/ATwuQVa2hiqDVxklqti2XrS+WSgyrcnJ4EO9WqwblRrxVh10DCTSk8Px5YnoRKPVJtAjnpEaaOXkDyPMc3IMwZJvBFet8kb54EnzgFgfyPrweRAtQWGRjI=
+	t=1756214139; cv=none; b=rHh9jCNwDg7NLlqp6XyqRwyTKBqkiJXjqrx2k/JyXF0gH+QPxzi+LO8rrBswd66PvfkOtJTFRnbRsCIz36Me9k7U9rchlHSHClBKle0ORDM9dGABeNgsTdIyQ/eL1G/CIdVOM55Flago7TAXvlT4uZOQD4TDHuV/qlGstjio7YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212938; c=relaxed/simple;
-	bh=wuIvrZ55btVma3vJkTmd4Uwabj9htlf2GsxnqYHsQXw=;
+	s=arc-20240116; t=1756214139; c=relaxed/simple;
+	bh=GVlf6s5esLRcE4P+ATAmht9anVgF7DgSO9KkUYCSaK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=re+vNU0OJDWK9rE6USZNp1olsFJNPKA1JiE02QhnVhx6DhXIuCul03vaWH4RO4uCi7G6jRVz78eeQdzGwyd+P15PPtrbmt6tJPJ+SEmWzt+kzGNSDd+0lZ/Rd3JJl1K1dORyejp2ORzzI+nIe8iBU9VOmuoWbOW67wUGdTRc4Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSxeqn/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E543C4CEF4;
-	Tue, 26 Aug 2025 12:55:37 +0000 (UTC)
+	 MIME-Version; b=Pl2StObofAjBmPJRsy/8e3pfNvFwaYd64Guv6hoIVJf9IllOk/gJsyzSrESY/oL+9grRvM0Z4z2wZGz/cvezuZhEmlbvROBY7nG/0Km71ICGz+Pet5rKbp65IT1bIZVSL/0pyBLKPLGrIZnGWpBQ3fwNznRFFOWbvvrLGiEap0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W7nPkwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B8EC4CEF1;
+	Tue, 26 Aug 2025 13:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212938;
-	bh=wuIvrZ55btVma3vJkTmd4Uwabj9htlf2GsxnqYHsQXw=;
+	s=korg; t=1756214139;
+	bh=GVlf6s5esLRcE4P+ATAmht9anVgF7DgSO9KkUYCSaK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSxeqn/JmhYZ7hgCOVpA0sNyIMAeNbIUiiNXhKvSUQGWR3DMpDHDEOdVBhbWnW6Nk
-	 3NAC6nTtZjXAyppsERzsgIU5GstHQxl3roXgyTJC6U20pqP+WX42ukV3ZBP2uDh9Vf
-	 j6ohPjegOhvF9Fbm3tB30LezKogi5/fDmruAKmBg=
+	b=0W7nPkwY9EXpOdroRfoNsME3MMEFlAJaE8/P7+UfRStFQIS3xxcg3Y1At3tJ91yXI
+	 zC/FGCmlglpU3raBEQ4NryO1o8WAn5+lROnBzKVKC9L+o/xav//VdatpGnImWIxcgw
+	 GSUUDgZV2kpodgC2FRF78jzc4HJW24j7axsfgN8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/587] imx8m-blk-ctrl: set ISI panic write hurry level
-Date: Tue, 26 Aug 2025 13:04:38 +0200
-Message-ID: <20250826110956.237357413@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 026/482] ACPI: processor: perflib: Move problematic pr->performance check
+Date: Tue, 26 Aug 2025 13:04:39 +0200
+Message-ID: <20250826110931.444593025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +58,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
+commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
 
-Apparently, ISI needs cache settings similar to LCDIF.
-Otherwise we get artefacts in the image.
-Tested on i.MX8MP.
+Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
+application") added a pr->performance check that prevents the frequency
+QoS request from being added when the given processor has no performance
+object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
+to trigger on an attempt to take the given CPU offline later because the
+frequency QoS object has not been added for it due to the missing
+performance object.
 
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this by moving the pr->performance check before calling
+acpi_processor_get_platform_limit() so it only prevents a limit from
+being set for the CPU if the performance object is not present.  This
+way, the frequency QoS request is added as it was before the above
+commit and it is present all the time along with the CPU's cpufreq
+policy regardless of whether or not the CPU is online.
+
+Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
+Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/acpi/processor_perflib.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-index cc5ef6e2f0a8..0dfaf1d14035 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -664,6 +664,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
- #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
- #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -180,7 +180,7 @@ void acpi_processor_ppc_init(struct cpuf
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
-+#define ISI_CACHE_CTRL		0x50
-+#define  ISI_V_WR_HURRY		GENMASK(28, 26)
-+#define  ISI_U_WR_HURRY		GENMASK(25, 23)
-+#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
+-		if (!pr || !pr->performance)
++		if (!pr)
+ 			continue;
+ 
+ 		/*
+@@ -197,6 +197,9 @@ void acpi_processor_ppc_init(struct cpuf
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
+ 
++		if (!pr->performance)
++			continue;
 +
- static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 				unsigned long action, void *data)
- {
-@@ -693,6 +698,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
- 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
- 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
-+		/* Same here for ISI */
-+		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
-+				FIELD_PREP(ISI_V_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_U_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_Y_WR_HURRY, 7));
- 	}
- 
- 	return NOTIFY_OK;
--- 
-2.39.5
-
+ 		ret = acpi_processor_get_platform_limit(pr);
+ 		if (ret)
+ 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
 
 
 
