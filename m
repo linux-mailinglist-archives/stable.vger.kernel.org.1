@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92398B35C2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C67DB36403
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE17F16901B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AF8A7C62
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717BB2BE03C;
-	Tue, 26 Aug 2025 11:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A4B338F32;
+	Tue, 26 Aug 2025 13:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWwSZcS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fad3fOoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A62C15A8;
-	Tue, 26 Aug 2025 11:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFFF3375D9;
+	Tue, 26 Aug 2025 13:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207569; cv=none; b=tsnsvYkpZYi5UzL3uhO3/PvZ/ZBCmI4fr/NpHIfKhzmjq8+4QWYJJ6usXWbBQLUgla3MOtVJpXOFajjnzqb1gkpG1ETaFfmbdD4gwc2ABxZmOAltCljFBTG5Rz8ccFE2+10qIibyEEF/nd19o0pHybMwwt1qFA++OzafL0//fy4=
+	t=1756214730; cv=none; b=nh3j4OP/NraEd7Hk82Y8kw7IpXbe1extVNNcoIEqWJRoE899qNI6IKmLwPC/Ess3W7thPDAOjXp+qSrKlIc7sa46euJhFPF2OIcIikR350C9uo0bjhCevyhf6bf1L1Pj9zu2AcalZJ8Od7k7qSk5Kn1CpObbTg4RTh32EfHG80o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207569; c=relaxed/simple;
-	bh=pI3ksxWmEVmlzSzZkWnNqZU9mEsMTl+aKXQdwg3EmZM=;
+	s=arc-20240116; t=1756214730; c=relaxed/simple;
+	bh=zclSNOYDwNQ2rxlynHAR8HliFpJxwOoinKoWyh5Rzsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bB0Iqcvd7P5VhJBukvc0TJGfqKvvalGvJApG4liTRy/GYXbeRg0Adq81dbsI+8+PrUmohas9jC9xcjtJL5CihBlQim/tRE5ApTJeMcJUJtrQDrKFhF1JIafb32P+vYAiLkr5e4GVEt8inMIXY7HTaQ/w2hI+yt7TdBajiZ1haCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWwSZcS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E25AC4CEF1;
-	Tue, 26 Aug 2025 11:26:08 +0000 (UTC)
+	 MIME-Version; b=hyRM5d+AJ5hk8mY2ka+/xy05suKWTGCy1SjKTUodjyMLM7I6UqS7DxWlqO/6CH1N/uHFuAfTBHyBrrmhQ72q4/2Q1J9VYgiE865ZDwTlIJN0QLoR1S0yzVHJPLw6X5MjqjKcIGN7TbEcHXfHwGwTvbl4d4tYZhRYfV5kDE+5akw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fad3fOoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D0C4CEF1;
+	Tue, 26 Aug 2025 13:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207568;
-	bh=pI3ksxWmEVmlzSzZkWnNqZU9mEsMTl+aKXQdwg3EmZM=;
+	s=korg; t=1756214730;
+	bh=zclSNOYDwNQ2rxlynHAR8HliFpJxwOoinKoWyh5Rzsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWwSZcS4iZ+/OH0TQaqsNTEIKfBFBT8vSQw7D+hHycukyz/m42XsIhfnbAfxftg/u
-	 oeuSrL+hGX2hRL1ceeBXGbFLiZ7cwMup9gdGWzT8Mi+EjhyNzlj3KR7sGrMXdJV9hH
-	 QNTjQq7V5xe9i/iMjyS7tieFHDW0yx9BOQvSgfDE=
+	b=Fad3fOoe5MxQaVGKiwa0GLMczLrOFUXMoJpa7A1+E2V885i7AtdbairRQuhoIgtD/
+	 6+/3oJzKWxOgRY0ecB80lmkOI+kAp4mKpiyVbsY09WIpxmQCY+ZNL2Q2qvIGfqCG2a
+	 ykCp3TZhbR/ElO0ZIoyh+PRLFc+WYhDa5ETYRb1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 215/457] btrfs: reorganize logic at free_extent_buffer() for better readability
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 246/482] usb: core: config: Prevent OOB read in SS endpoint companion parsing
 Date: Tue, 26 Aug 2025 13:08:19 +0200
-Message-ID: <20250826110942.678676088@linuxfoundation.org>
+Message-ID: <20250826110936.846718814@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Xinyu Liu <katieeliu@tencent.com>
 
-[ Upstream commit 71c086b30d4373a01bd5627f54516a72891a026a ]
+commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
 
-It's hard to read the logic to break out of the while loop since it's a
-very long expression consisting of a logical or of two composite
-expressions, each one composed by a logical and. Further each one is also
-testing for the EXTENT_BUFFER_UNMAPPED bit, making it more verbose than
-necessary.
+usb_parse_ss_endpoint_companion() checks descriptor type before length,
+enabling a potentially odd read outside of the buffer size.
 
-So change from this:
+Fix this up by checking the size first before looking at any of the
+fields in the descriptor.
 
-    if ((!test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags) && refs <= 3)
-        || (test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags) &&
-            refs == 1))
-       break;
-
-To this:
-
-    if (test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags)) {
-        if (refs == 1)
-            break;
-    } else if (refs <= 3) {
-            break;
-    }
-
-At least on x86_64 using gcc 9.3.0, this doesn't change the object size.
-
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: ad580dfa388f ("btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/core/config.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -3486,10 +3486,13 @@ void free_extent_buffer(struct extent_bu
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -81,8 +81,14 @@ static void usb_parse_ss_endpoint_compan
+ 	 */
+ 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
  
- 	refs = atomic_read(&eb->refs);
- 	while (1) {
--		if ((!test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags) && refs <= 3)
--		    || (test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags) &&
--			refs == 1))
-+		if (test_bit(EXTENT_BUFFER_UNMAPPED, &eb->bflags)) {
-+			if (refs == 1)
-+				break;
-+		} else if (refs <= 3) {
- 			break;
-+		}
+-	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
+-			size < USB_DT_SS_EP_COMP_SIZE) {
++	if (size < USB_DT_SS_EP_COMP_SIZE) {
++		dev_notice(ddev,
++			   "invalid SuperSpeed endpoint companion descriptor "
++			   "of length %d, skipping\n", size);
++		return;
++	}
 +
- 		if (atomic_try_cmpxchg(&eb->refs, &refs, refs - 1))
- 			return;
- 	}
++	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
+ 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
+ 				" interface %d altsetting %d ep %d: "
+ 				"using minimum values\n",
 
 
 
