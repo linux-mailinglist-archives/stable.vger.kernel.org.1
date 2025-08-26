@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE47BB35C60
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D6CB36B1C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D91847C459C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D0DE4E2B93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7505343202;
-	Tue, 26 Aug 2025 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43702135B8;
+	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ah5Tkid2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKHrLKSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C26327797;
-	Tue, 26 Aug 2025 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F17352093;
+	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207846; cv=none; b=VwsHdnVJ4+W5TwbH0CiQ+VGHfW907Z3zXraqBX9GtnOvQpwZYiRchSVbtstYvQn8OCuTMmEIZC3bPt5d0W9dYDWEbOQVRD3yV+VBlyJP8lVceSTk00B4oejrOCYaiiXkiZEwIgOjMokA5Dib1DxZ10DTw7qBWh3sfGiphlddT3U=
+	t=1756219214; cv=none; b=lnZcuM2Ai8h/nv3MnVXGtY7HPWIxSAXHlVPm1oGzqlL2reNpd0PHTVMimwjk8xu/3RBT3c6oycbaZ/CVzK4rSHbOjGGm2H/P7BCgfvh/k28paz258tWqu62C0TcNOnWo8uLl/aBy1diclVu+fvV80W0ZjlgXhZ3K35u6o/jz3Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207846; c=relaxed/simple;
-	bh=j1mZUhgRemMEpXl8yQKA6x3zLv34vay4JfA0i8RaMXg=;
+	s=arc-20240116; t=1756219214; c=relaxed/simple;
+	bh=XbacfEwJFZzMYJfFSTZMBkCkNnFrhd+Wm+3clg4HTmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fpbz4Q+XJG2//4DIOlSl4RsxOdliGp89xPcbhT0nEtYpdQ+N/Ydw+4oM0i8+AbqBHRMS4Wexq3rCRwvgrEvG9I5E3LjZRpOeb6QEp0olmobqklLhq8ch+GD60/Myb12Cde12GnCve05WRp8MiGSqwfp4Cvu7rmLXUCRpwUJZVes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ah5Tkid2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35340C4CEF1;
-	Tue, 26 Aug 2025 11:30:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BICc7i+MVxaDJ8NOGosxkxekrjJy9YJa4F3TLwteH8YhunbqTjZedOS1WSWlI2ce0cZ4oaNvikIDZU2E1Loa2IruiN6n4/TsALDDHtxanNwgax6HKjnkU+x+PaNTlVdLuC1Oyq3X5+daelGCr+Yt85bsXWvhR3xdVb8SRsXxMyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKHrLKSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0C8C4CEF1;
+	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207846;
-	bh=j1mZUhgRemMEpXl8yQKA6x3zLv34vay4JfA0i8RaMXg=;
+	s=korg; t=1756219214;
+	bh=XbacfEwJFZzMYJfFSTZMBkCkNnFrhd+Wm+3clg4HTmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ah5Tkid2N2ERh6OQC9RvMZzCZ9pmWIbZuwq+dGJ3r4Ej5IKlVOXJBPzz45hSnZzxd
-	 gBsLuSLo+hBGwtu9QQ8k7R0sgV0zLPkXwxlYFjAVeYAchBiP4z1HlYXiolxZeXBUL3
-	 JaCOQNVlbKdZjLe4L/zJUt8b5UfMfmf/CiQ21wYc=
+	b=eKHrLKSgwt2MoxH3yNaw/dPtx6h+fpat/jvqCf8mFjtGpkUTia6HeiwMkQOQfd6Gl
+	 jdfL9tDn1+LLpgB8GbGK4NdhROjbstCPfyzo/5T+RCxpp+tKAGYQlnVFS+EGT+yYVS
+	 MA1CSoBVvPGyknhlnsH6wVX8fFkqJslmhoR9JhRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 339/457] iio: imu: inv_icm42600: use = { } instead of memset()
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.4 297/403] pwm: imx-tpm: Reset counter if CMOD is 0
 Date: Tue, 26 Aug 2025 13:10:23 +0200
-Message-ID: <20250826110945.708629923@linuxfoundation.org>
+Message-ID: <20250826110915.018594724@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +62,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-[ Upstream commit 352112e2d9aab6a156c2803ae14eb89a9fd93b7d ]
+commit 65c6f742ab14ab1a2679fba72b82dcc0289d96f1 upstream.
 
-Use { } instead of memset() to zero-initialize stack memory to simplify
-the code.
+As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
+of the TPM counter does NOT get updated when writing MOD.MOD unless
+SC.CMOD != 0. Therefore, with the current code, assuming the following
+sequence:
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: dfdc31e7ccf3 ("iio: imu: inv_icm42600: change invalid data error to -EBUSY")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	1) pwm_disable()
+	2) pwm_apply_might_sleep() /* period is changed here */
+	3) pwm_enable()
+
+and assuming only one channel is active, if CNT.COUNT is higher than the
+MOD.MOD value written during the pwm_apply_might_sleep() call then, when
+re-enabling the PWM during pwm_enable(), the counter will end up resetting
+after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
+normally expected.
+
+Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
+written.
+
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Link: https://lore.kernel.org/r/20250728194144.22884-1-laurentiumihalcea111@gmail.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    5 ++---
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/pwm/pwm-imx-tpm.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -902,7 +902,8 @@ int inv_icm42600_accel_parse_fifo(struct
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_accel_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_accel_buffer buffer = { };
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -205,6 +205,15 @@ static int pwm_imx_tpm_apply_hw(struct p
+ 		writel(val, tpm->base + PWM_IMX_TPM_SC);
  
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -921,8 +922,6 @@ int inv_icm42600_accel_parse_fifo(struct
- 			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
- 							st->fifo.nb.total, no);
- 
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -806,7 +806,8 @@ int inv_icm42600_gyro_parse_fifo(struct
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_gyro_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_gyro_buffer buffer = { };
- 
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -825,8 +826,6 @@ int inv_icm42600_gyro_parse_fifo(struct
- 			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
- 							st->fifo.nb.total, no);
- 
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
+ 		/*
++		 * if the counter is disabled (CMOD == 0), programming the new
++		 * period length (MOD) will not reset the counter (CNT). If
++		 * CNT.COUNT happens to be bigger than the new MOD value then
++		 * the counter will end up being reset way too late. Therefore,
++		 * manually reset it to 0.
++		 */
++		if (!cmod)
++			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
++		/*
+ 		 * set period count:
+ 		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
+ 		 * is updated when MOD register is written.
 
 
 
