@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F57B36C3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10E3B35BBA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B9C2A8490
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC603189AE10
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C52635082F;
-	Tue, 26 Aug 2025 14:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE4A304980;
+	Tue, 26 Aug 2025 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMmMOA4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iJw4rGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2471494D9;
-	Tue, 26 Aug 2025 14:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002062BEC2B;
+	Tue, 26 Aug 2025 11:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218772; cv=none; b=ltyXQVgyu9/vohJB46AlPp0g54qs+QOXtIQBDju9NUd8rvKkAyRA3p5o8QoJHKF0YiA1Qc9iHaFzZ8rcEb4YlHUqH3xWDugBBLHaGrgspU7LapP1aduf2cvdxm4LyC2VZrlwvl82n3xNax8oZMFpHTmrZpVNmit9EHyITjA1uNc=
+	t=1756207408; cv=none; b=KYi75tJjqaoX8D5rOWkMdqQLOhOocK5AUGYUhx1nY6Oo1B2bQdkv55WI3dEaQ67BfPGaknyjZ/yxmyvACgqdvufcP6EYWaJj3bfEdisYI3JC8JDycH/MfRhx8VWvp/gPjvWxdupmhVJSLn55mDDnZjSyvJ/Fuf0xgg/0mtbKr6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218772; c=relaxed/simple;
-	bh=3fiiuEFcVzpPNebpTYkrFNrqz5VoWiEIqQUKTOKMZ/0=;
+	s=arc-20240116; t=1756207408; c=relaxed/simple;
+	bh=CfPOEbFEnakMHgVxk/OUuBRw5rRBANytrfDlHyavC5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aymCAuxqQu8q1mHEZQxmqPLCXp2jmjFpdvDUuf5dW9RGwOcToUsMPZTBlussyTeqyFVDnltrDqkqPx8F+7p77IyOytAjjSjXxqOzjkStfRMgWqeAk1002jeCKQGHhQ+5w5zjisAOAgifErWn9OpVNxPnradeEEMzbHXslJUTakc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMmMOA4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57582C4CEF1;
-	Tue, 26 Aug 2025 14:32:52 +0000 (UTC)
+	 MIME-Version; b=msS/C+5KwrbX04vbQev/kg2ash+BTvnZ5QFLqdD60CoOuPXiMmf1o+Q4SKVs7nUrc4m7eKjhQCJxjqgcj78IcqrcXbKQGPXduuBEsoWULpCmP1DVR9Em5mATivRT+IKO1WEHyJB/4w+svDbgvBwFOOE5ZpCepEdRhZ4LkF8bpxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iJw4rGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420C6C4CEF1;
+	Tue, 26 Aug 2025 11:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218772;
-	bh=3fiiuEFcVzpPNebpTYkrFNrqz5VoWiEIqQUKTOKMZ/0=;
+	s=korg; t=1756207407;
+	bh=CfPOEbFEnakMHgVxk/OUuBRw5rRBANytrfDlHyavC5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMmMOA4B5bIQ9m1Pc4sYTMzvRBJKhSc2OllRJ767PjtitexCkB4NfOa/lkVJomGVo
-	 eszwdLFHwVQoFhm4bmhrC2T3bj2vM+vlXkup+i49O5vSvGvdJ/fI7odKzpn6Vuy0Jp
-	 Iel4ljTS3uoHXOZAGfXwJA13b2d0fUVkpvahUUE8=
+	b=1iJw4rGL/4TwBRnpjX4XvaKAttHAU7b/oLyXk1Erq+XEWAr9nxgsSrTARBG9xBbII
+	 pQ8qdyTwOLq8nBEgskn98g00xOZEdhfmDdqfpLUus1OukWB3ewtW39EY3i/FJ5HPT9
+	 ErK/gOW4isVfnnsyHVAnAYCXci3QEfQP17WRwBlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zixun LI <admin@hifiphile.com>,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/403] mtd: rawnand: atmel: set pmecc data setup time
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 170/457] drm/amd/amdgpu: fix missing lock for cper.ring->rptr/wptr access
 Date: Tue, 26 Aug 2025 13:07:34 +0200
-Message-ID: <20250826110910.276148401@linuxfoundation.org>
+Message-ID: <20250826110941.577935141@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
+commit 8e0d1edb5c16732b695eaf4bd7096b1569817cf0 upstream.
 
-Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
-by the datasheet.
+Add lock protection for 'ring->wptr'/'ring->rptr' to ensure the correct execution.
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Reported-by: Zixun LI <admin@hifiphile.com>
-Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
-Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8652920d2c00 ("drm/amdgpu: add mutex lock for cper ring")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
-index d1ed5878b3b1..28ed65dd3d43 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
- 	int nstrengths;
- 	int el_offset;
- 	bool correct_erased_chunks;
-+	bool clk_ctrl;
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+index 15dde1f50328..25252231a68a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+@@ -459,7 +459,7 @@ static u32 amdgpu_cper_ring_get_ent_sz(struct amdgpu_ring *ring, u64 pos)
  
- struct atmel_pmecc {
-@@ -846,6 +847,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
- 	if (IS_ERR(pmecc->regs.errloc))
- 		return ERR_CAST(pmecc->regs.errloc);
+ void amdgpu_cper_ring_write(struct amdgpu_ring *ring, void *src, int count)
+ {
+-	u64 pos, wptr_old, rptr = *ring->rptr_cpu_addr & ring->ptr_mask;
++	u64 pos, wptr_old, rptr;
+ 	int rec_cnt_dw = count >> 2;
+ 	u32 chunk, ent_sz;
+ 	u8 *s = (u8 *)src;
+@@ -472,9 +472,11 @@ void amdgpu_cper_ring_write(struct amdgpu_ring *ring, void *src, int count)
+ 		return;
+ 	}
  
-+	/* pmecc data setup time */
-+	if (caps->clk_ctrl)
-+		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
+-	wptr_old = ring->wptr;
+-
+ 	mutex_lock(&ring->adev->cper.ring_lock);
 +
- 	/* Disable all interrupts before registering the PMECC handler. */
- 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
- 	atmel_pmecc_reset(pmecc);
-@@ -899,6 +904,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
- 	.strengths = atmel_pmecc_strengths,
- 	.nstrengths = 5,
- 	.el_offset = 0x8c,
-+	.clk_ctrl = true,
- };
- 
- static struct atmel_pmecc_caps sama5d4_caps = {
++	wptr_old = ring->wptr;
++	rptr = *ring->rptr_cpu_addr & ring->ptr_mask;
++
+ 	while (count) {
+ 		ent_sz = amdgpu_cper_ring_get_ent_sz(ring, ring->wptr);
+ 		chunk = umin(ent_sz, count);
 -- 
-2.39.5
+2.50.1
 
 
 
