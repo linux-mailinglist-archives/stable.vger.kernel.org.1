@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5F1B3667E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467E0B36080
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2D8468108
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F070E1BA6740
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AB43431FE;
-	Tue, 26 Aug 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC4F1F1538;
+	Tue, 26 Aug 2025 12:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAhSa8yA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szCjlizh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2025A3451DE;
-	Tue, 26 Aug 2025 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581DE1ACEDE;
+	Tue, 26 Aug 2025 12:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216140; cv=none; b=Ei5eo2B16Uu1laCMnyO7IHkgQhT/9FnYybP31jIMeAKBWWXUo5GLHx4bprbF3gespTe7ItcsdgiioY+y/DKGAzbkQqFk9IyiyNk3pjL4djBjcT/lE6rhr22ni3Co0IV5fJbmtlElsQwso2cObU5K0SOmNaLgS0DFV7rmxv2nKJw=
+	t=1756213069; cv=none; b=sWLoauaaPOW4/SF+uQ4Ue7CYY06YblpLGYJNlHui3ECBfv+v1qdX8Y9k2XzXn3Irg9Fos28PWGGdThRLm7lUA2jz54agCGYifxaI8VudDp4rZO1SnIesV30W9XMh3krMBEL3RMyhU1Y4Wy5jSoWt56eE0HoEqTCE/loQ+vinfUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216140; c=relaxed/simple;
-	bh=0q1QjqNepTgWMJ++E8qFXMfwoxAZiKmaI+/dqEFjPDw=;
+	s=arc-20240116; t=1756213069; c=relaxed/simple;
+	bh=SSHR8omCJ3ZqFae/j5ZlnPsLx7LobKpvJrk3Teh6XOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAKuiFMlvdGc+wOf/noob67sXqEyjIrqIDVHOnjZxhoYean0nyLe0yYeq2Z8z7V4a0DfXQFi0t+SihVg8atkJV4IVpU/UeIitJOCUr68pYAOgD3Mo9aIVDg3N7QtVnWqJSWUfoQWNZTbAerS56U9o+jXNwtIgQcMHIMTa5pxFVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAhSa8yA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59066C4CEF1;
-	Tue, 26 Aug 2025 13:48:59 +0000 (UTC)
+	 MIME-Version; b=RdtTMwJZHV9k2ddNqNdmr35ySdv7exa5gdZoJgix0gWzcJu2h1ehE8uN10KQT66KxivukXi5jn4DujgERQBMDMBpGF7iPMrPajMTnP/pvy9p5MwUNr1UIw9JdFLnOpfLfLX4L0pUyfQp2HthdLo1VghcA5QoBBOqYSh9khZxUWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szCjlizh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05DBC4CEF1;
+	Tue, 26 Aug 2025 12:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216139;
-	bh=0q1QjqNepTgWMJ++E8qFXMfwoxAZiKmaI+/dqEFjPDw=;
+	s=korg; t=1756213069;
+	bh=SSHR8omCJ3ZqFae/j5ZlnPsLx7LobKpvJrk3Teh6XOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAhSa8yAmDogXKBFmnIRC+EsHGJ0IuhDaEpilSTFRqrdLw+ckM0cqWMXD81WtSSTf
-	 UDt1pkysKHcCPtrJWBwM1DucN6SMlASeJmUTOrqIG/KSjsorDVWnI3fRHrDMCEtms9
-	 gN5QEEZeHG7UOcCv+AVhncr/e7wDK0xf39uZdwLs=
+	b=szCjlizhsv0+jXMww2oUeDOT6FNwW+dDzLnPZPFCiZ1TXTjVwq2NjFwpCk59refXs
+	 PMqA//rwUM9WVh4V8E1XwmzfBHnhEZja2PG3e3faaIy1An/IhjV7Zmm/UISXSM25BH
+	 m23EIpipf0u9PZrOjsvp+AmdcPtWFyycf9SEmYtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petro Pavlov <petro.pavlov@vastdata.com>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 267/644] NFSD: detect mismatch of file handle and delegation stateid in OPEN op
+	Ihor Solodrai <isolodrai@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 209/587] bpf: Make reg_not_null() true for CONST_PTR_TO_MAP
 Date: Tue, 26 Aug 2025 13:05:58 +0200
-Message-ID: <20250826110952.991228005@linuxfoundation.org>
+Message-ID: <20250826110958.254390301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Ihor Solodrai <isolodrai@meta.com>
 
-commit 9c65001c57164033ad08b654c8b5ae35512ddf4a upstream.
+[ Upstream commit 5534e58f2e9bd72b253d033ee0af6e68eb8ac96b ]
 
-When the client sends an OPEN with claim type CLAIM_DELEG_CUR_FH or
-CLAIM_DELEGATION_CUR, the delegation stateid and the file handle
-must belong to the same file, otherwise return NFS4ERR_INVAL.
+When reg->type is CONST_PTR_TO_MAP, it can not be null. However the
+verifier explores the branches under rX == 0 in check_cond_jmp_op()
+even if reg->type is CONST_PTR_TO_MAP, because it was not checked for
+in reg_not_null().
 
-Note that RFC8881, section 8.2.4, mandates the server to return
-NFS4ERR_BAD_STATEID if the selected table entry does not match the
-current filehandle. However returning NFS4ERR_BAD_STATEID in the
-OPEN causes the client to retry the operation and therefor get the
-client into a loop. To avoid this situation we return NFS4ERR_INVAL
-instead.
+Fix this by adding CONST_PTR_TO_MAP to the set of types that are
+considered non nullable in reg_not_null().
 
-Reported-by: Petro Pavlov <petro.pavlov@vastdata.com>
-Fixes: c44c5eeb2c02 ("[PATCH] nfsd4: add open state code for CLAIM_DELEGATE_CUR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+An old "unpriv: cmp map pointer with zero" selftest fails with this
+change, because now early out correctly triggers in
+check_cond_jmp_op(), making the verification to pass.
+
+In practice verifier may allow pointer to null comparison in unpriv,
+since in many cases the relevant branch and comparison op are removed
+as dead code. So change the expected test result to __success_unpriv.
+
+Signed-off-by: Ihor Solodrai <isolodrai@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250609183024.359974-2-isolodrai@meta.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/bpf/verifier.c                               | 3 ++-
+ tools/testing/selftests/bpf/progs/verifier_unpriv.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5736,6 +5736,20 @@ nfsd4_process_open2(struct svc_rqst *rqs
- 		status = nfs4_check_deleg(cl, open, &dp);
- 		if (status)
- 			goto out;
-+		if (dp && nfsd4_is_deleg_cur(open) &&
-+				(dp->dl_stid.sc_file != fp)) {
-+			/*
-+			 * RFC8881 section 8.2.4 mandates the server to return
-+			 * NFS4ERR_BAD_STATEID if the selected table entry does
-+			 * not match the current filehandle. However returning
-+			 * NFS4ERR_BAD_STATEID in the OPEN can cause the client
-+			 * to repeatedly retry the operation with the same
-+			 * stateid, since the stateid itself is valid. To avoid
-+			 * this situation NFSD returns NFS4ERR_INVAL instead.
-+			 */
-+			status = nfserr_inval;
-+			goto out;
-+		}
- 		stp = nfsd4_find_and_lock_existing_open(fp, open);
- 	} else {
- 		open->op_file = NULL;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 1f9ae600e445..7d6ee41f4b4f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -460,7 +460,8 @@ static bool reg_not_null(const struct bpf_reg_state *reg)
+ 		type == PTR_TO_MAP_KEY ||
+ 		type == PTR_TO_SOCK_COMMON ||
+ 		(type == PTR_TO_BTF_ID && is_trusted_reg(reg)) ||
+-		type == PTR_TO_MEM;
++		type == PTR_TO_MEM ||
++		type == CONST_PTR_TO_MAP;
+ }
+ 
+ static bool type_is_ptr_alloc_obj(u32 type)
+diff --git a/tools/testing/selftests/bpf/progs/verifier_unpriv.c b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
+index 7ea535bfbacd..e4ef82a6ee38 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_unpriv.c
++++ b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
+@@ -619,7 +619,7 @@ __naked void pass_pointer_to_tail_call(void)
+ 
+ SEC("socket")
+ __description("unpriv: cmp map pointer with zero")
+-__success __failure_unpriv __msg_unpriv("R1 pointer comparison")
++__success __success_unpriv
+ __retval(0)
+ __naked void cmp_map_pointer_with_zero(void)
+ {
+-- 
+2.39.5
+
 
 
 
