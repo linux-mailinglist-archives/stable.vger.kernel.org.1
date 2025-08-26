@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B272AB36788
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C47DB368FF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FCDB566A96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAAAB7A4402
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146D4350D60;
-	Tue, 26 Aug 2025 13:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82844350D54;
+	Tue, 26 Aug 2025 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2onOCEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF3AWSjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EA21EEA55;
-	Tue, 26 Aug 2025 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3AA34DCE8;
+	Tue, 26 Aug 2025 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216679; cv=none; b=BHT4RSoiRoaHhLn3hkWwY3y0unD1hRsqeowcoG86yx0Tdw3s1MThjo5vewzWxOSzTk1ixEeDUqUz0FumcogRZAi+EnqP3L6Cw2gT+C8Nx48GFuf+oEMIREbx8DYdN+4rSDwoJrlHaknd1gppG1VS3Z4y7JuCvgpJCcsqzXXkNC0=
+	t=1756217992; cv=none; b=bfqFz7h1FiVTi8fUwrUAE12BXpFyxakOk2Rd3npQZN3sEyKq9+AY9MUlEhjn8rNVNe1Pp3VnvNqFqBr222dAdwrX31d5OH72/UB8sUd0F8DJKXyhgbt5RGDtukZSrNuIQjePDL6M6GwljR/uT8x2yNm14ssFDkqlF4zRd/Qs1Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216679; c=relaxed/simple;
-	bh=E8arlKsTUKT5S2EQ55UasQO9tHpBpZ05czHWBqBE4Qg=;
+	s=arc-20240116; t=1756217992; c=relaxed/simple;
+	bh=EhyQegcEqDxD4m2WMgGhwKPI7k4H2An5pz3XrloBwzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ot+Dtn6oRpZjaGqsmBdUMUpLMoLp1JpYrXrD2jKowwlNVdQw153l2/2w2Jum3JEo0NHUV2lDtOtNWvJOPikH3XRAMpebGDv/9KLy9JImQ4a92b8fMkUDdSoGymbONa+6NxOxiD3qO5CMLUoJTZD2NgoAp+ZfkkPxtLGd1CMFF0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2onOCEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B058C4CEF1;
-	Tue, 26 Aug 2025 13:57:59 +0000 (UTC)
+	 MIME-Version; b=ljUmDmQtSarQTIMYO+5z6vGD0M8yDYmXL6USXKKIxss/XDbukYYlWf3jRi/9dHKds1IHC1QEE/voHLVE8rNvzO0qRfN8i/xd8Ut+t1T2vT9/AuLpWLwnoYjEwo4HOrgCrEStMipA5t1ZETFQywQXT82FfoyCxIcqm8EMQtWjJ5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF3AWSjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79339C4CEF1;
+	Tue, 26 Aug 2025 14:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216679;
-	bh=E8arlKsTUKT5S2EQ55UasQO9tHpBpZ05czHWBqBE4Qg=;
+	s=korg; t=1756217991;
+	bh=EhyQegcEqDxD4m2WMgGhwKPI7k4H2An5pz3XrloBwzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2onOCEP+l6+P8HS5t1n9aXYtl3x86org8svot0OAq+QOZGIrLvPmuoBUlUjsUyFi
-	 1t/VNu+0GsoPGEspM7bmPgBHqGoomQa9RUTY0EfAOeFiasj8wc+Ge4WWZ4XUeTFoEc
-	 8PVZNsL/kcFCBrroBJQp5FpBGIQIsX4fZ/aJm75k=
+	b=MF3AWSjIm0zMc822REMDXSbxKPRyj7d9JXDAqi+euZXPgIEAyNksP//VKOcr/z1Z+
+	 tRb9ZkqJZ5kIE2s0UqqePy5sme08xIswf63lJcXOBABLd29Lxz7b5Z1lhJU9RxtHUb
+	 BFkvQ6Wv3nDmTQsJOUZAd9svhviRHn79rnqZe3kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 471/644] ext4: use kmalloc_array() for array space allocation
-Date: Tue, 26 Aug 2025 13:09:22 +0200
-Message-ID: <20250826110958.154006578@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 5.10 353/523] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
+Date: Tue, 26 Aug 2025 13:09:23 +0200
+Message-ID: <20250826110933.175579414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 76dba1fe277f6befd6ef650e1946f626c547387a upstream.
+commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
 
-Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
-allocation and overflow prevention.
+The freq_tables[] array has num_possible_cpus() elements so, to avoid an
+out of bounds access, this loop should be capped at "< nb_cpus" instead
+of "<= nb_cpus".  The freq_tables[] array is allocated in
+armada_8k_cpufreq_init().
 
-Cc: stable@kernel.org
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Link: https://patch.msgid.link/20250811125816.570142-1-liaoyuanhong@vivo.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/orphan.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -590,8 +590,9 @@ int ext4_init_orphan_info(struct super_b
- 	}
- 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
- 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
--	oi->of_binfo = kmalloc(oi->of_blocks*sizeof(struct ext4_orphan_block),
--			       GFP_KERNEL);
-+	oi->of_binfo = kmalloc_array(oi->of_blocks,
-+				     sizeof(struct ext4_orphan_block),
-+				     GFP_KERNEL);
- 	if (!oi->of_binfo) {
- 		ret = -ENOMEM;
- 		goto out_put;
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -96,7 +96,7 @@ static void armada_8k_cpufreq_free_table
+ {
+ 	int opps_index, nb_cpus = num_possible_cpus();
+ 
+-	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
++	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
+ 		int i;
+ 
+ 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
