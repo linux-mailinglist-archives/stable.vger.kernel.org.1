@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43C1B35C3A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4616B36AA0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43F5F172B44
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 344337AE321
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C99C2BE643;
-	Tue, 26 Aug 2025 11:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB7B35CEDB;
+	Tue, 26 Aug 2025 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRql9ICs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhMPbZyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5A321ADA7;
-	Tue, 26 Aug 2025 11:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282A9350D45;
+	Tue, 26 Aug 2025 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207601; cv=none; b=dlcC9yXUgssmw5tKC+Hfgo2EraMKkw8Yn+VKSMg3dBRJCNX7X7eRfW4lYLVaT+mxW3hEofw/LejP7AkGavoTjtgero6CPr1fvvwcofoyQIVtsu1LeA34m+SZ2km23LwHD7CWMjq5LRCgQzccpzUAB1vp7Tm/HGri5LL/Wimv1Nc=
+	t=1756218967; cv=none; b=S7IQNVwX2e5Krtyp37xakHxYIbCTpOaIoc4noPOpAJGQsnI8JiHGFVAN8dC/UmhE/hbK1v8rU40ZSZ7BSmOaJ12QHuOxePMcvcJvOCADdvoMQc523G107jo/CMkBi4Xpxhf7Hh9H2XOfL5A4a2GWNYyd7cAnbcCJBJ6b5kffyG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207601; c=relaxed/simple;
-	bh=j8oCPmUA/auJpGwhVorq8j1cc7TsXbJYVU0cpuL0ZqE=;
+	s=arc-20240116; t=1756218967; c=relaxed/simple;
+	bh=iIsVZq9orTc3WwFy11sJRdidapNc7U4RCmXw8xG2B6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iczu7Vj1i9P4+w1Imc1j0aP4j2xjLagveVg8mduWHpn0Rp6ihxfRXOb0o0jY+n5ny8J4TuDLK5TISkz0d3zQU7GVcsv+HPEJ2mxnYcD8SG4yn4xqfs2pCbdHOd11Zq+RXtE/1QJApbCXT/ZLSyo9Y5Vn84CRH9E6XZvP7Phszu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRql9ICs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558E7C4CEF1;
-	Tue, 26 Aug 2025 11:26:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nuOtfiRsAzCNuT1iqK/fmtL9ypmUDpNi2ooUvkdtgGgYPf/Lhicre41xAbFF/9GFlffYXlJmw1e+N0mzFnmJXeaP/vO361s6ffbXUHS/2zaOiwIF9PfX+RUvTBUfsb3M7c3fvX1Lh6vRZthECw5i+CtY0QoxISAfCpisSg6aiFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhMPbZyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B398EC4CEF1;
+	Tue, 26 Aug 2025 14:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207601;
-	bh=j8oCPmUA/auJpGwhVorq8j1cc7TsXbJYVU0cpuL0ZqE=;
+	s=korg; t=1756218967;
+	bh=iIsVZq9orTc3WwFy11sJRdidapNc7U4RCmXw8xG2B6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRql9ICs785tkf3VxlF2sXiDA2QshCRpnk5BTbvFFYYb3L7e6Cqolc5+xRcdrQE0C
-	 El4Vs7QfcN5jMTgyS5ELNPyjwsNOyYkX7sage9XGlOXPZw0FaXpUiqPz0+yey9NIxi
-	 V+fVbMfQDHjSQnMVFWolUHp/HUCohPiqwfh77QPU=
+	b=HhMPbZyAbwCcADDTu1kaYh8NFz4RZ3XUP427D+ijB41U3us+j5Iow+YgYgNXntgAF
+	 qfIww3sNmM8oaUp79i8WFlxuHWqqZWa3i9qYKsZwVyf9wjrGJXLDHzyblLGsAyCMQX
+	 cgAUP8EMw6fisVol1ppZ2aZ/0kmhvfnhdpDHEjQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Joe Quanaim <jdq@meta.com>,
-	Andrew Steffen <aksteffen@meta.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.16 244/457] NFS: Fix a race when updating an existing write
+	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 202/403] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
 Date: Tue, 26 Aug 2025 13:08:48 +0200
-Message-ID: <20250826110943.401253317@linuxfoundation.org>
+Message-ID: <20250826110912.437454137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e upstream.
+[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
 
-After nfs_lock_and_join_requests() tests for whether the request is
-still attached to the mapping, nothing prevents a call to
-nfs_inode_remove_request() from succeeding until we actually lock the
-page group.
-The reason is that whoever called nfs_inode_remove_request() doesn't
-necessarily have a lock on the page group head.
+When KCOV is enabled all functions get instrumented, unless the
+__no_sanitize_coverage attribute is used. To prepare for
+__no_sanitize_coverage being applied to __init functions[1], we have
+to handle differences in how GCC's inline optimizations get resolved.
+For thinkpad_acpi routines, this means forcing two functions to be
+inline with __always_inline.
 
-So in order to avoid races, let's take the page group lock earlier in
-nfs_lock_and_join_requests(), and hold it across the removal of the
-request in nfs_inode_remove_request().
-
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Joe Quanaim <jdq@meta.com>
-Tested-by: Andrew Steffen <aksteffen@meta.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pagelist.c        |    9 +++++----
- fs/nfs/write.c           |   29 ++++++++++-------------------
- include/linux/nfs_page.h |    1 +
- 3 files changed, 16 insertions(+), 23 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/pagelist.c
-+++ b/fs/nfs/pagelist.c
-@@ -253,13 +253,14 @@ nfs_page_group_unlock(struct nfs_page *r
- 	nfs_page_clear_headlock(req);
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 9eb74d9e1519..e480fff7142a 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -514,12 +514,12 @@ static unsigned long __init tpacpi_check_quirks(
+ 	return 0;
  }
  
--/*
-- * nfs_page_group_sync_on_bit_locked
-+/**
-+ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
-+ * @req: request in page group
-+ * @bit: PG_* bit that is used to sync page group
-  *
-  * must be called with page group lock held
-  */
--static bool
--nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
-+bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
+-static inline bool __pure __init tpacpi_is_lenovo(void)
++static __always_inline bool __pure __init tpacpi_is_lenovo(void)
  {
- 	struct nfs_page *head = req->wb_head;
- 	struct nfs_page *tmp;
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -153,20 +153,10 @@ nfs_page_set_inode_ref(struct nfs_page *
- 	}
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
  }
  
--static int
--nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
-+static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
+-static inline bool __pure __init tpacpi_is_ibm(void)
++static __always_inline bool __pure __init tpacpi_is_ibm(void)
  {
--	int ret;
--
--	if (!test_bit(PG_REMOVE, &req->wb_flags))
--		return 0;
--	ret = nfs_page_group_lock(req);
--	if (ret)
--		return ret;
- 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
- 		nfs_page_set_inode_ref(req, inode);
--	nfs_page_group_unlock(req);
--	return 0;
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
  }
- 
- /**
-@@ -585,19 +575,18 @@ retry:
- 		}
- 	}
- 
-+	ret = nfs_page_group_lock(head);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	/* Ensure that nobody removed the request before we locked it */
- 	if (head != folio->private) {
-+		nfs_page_group_unlock(head);
- 		nfs_unlock_and_release_request(head);
- 		goto retry;
- 	}
- 
--	ret = nfs_cancel_remove_inode(head, inode);
--	if (ret < 0)
--		goto out_unlock;
--
--	ret = nfs_page_group_lock(head);
--	if (ret < 0)
--		goto out_unlock;
-+	nfs_cancel_remove_inode(head, inode);
- 
- 	/* lock each request in the page group */
- 	for (subreq = head->wb_this_page;
-@@ -786,7 +775,8 @@ static void nfs_inode_remove_request(str
- {
- 	struct nfs_inode *nfsi = NFS_I(nfs_page_to_inode(req));
- 
--	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
-+	nfs_page_group_lock(req);
-+	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
- 		struct folio *folio = nfs_page_to_folio(req->wb_head);
- 		struct address_space *mapping = folio->mapping;
- 
-@@ -798,6 +788,7 @@ static void nfs_inode_remove_request(str
- 		}
- 		spin_unlock(&mapping->i_private_lock);
- 	}
-+	nfs_page_group_unlock(req);
- 
- 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
- 		atomic_long_dec(&nfsi->nrequests);
---- a/include/linux/nfs_page.h
-+++ b/include/linux/nfs_page.h
-@@ -160,6 +160,7 @@ extern void nfs_join_page_group(struct n
- extern int nfs_page_group_lock(struct nfs_page *);
- extern void nfs_page_group_unlock(struct nfs_page *);
- extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
-+extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
- extern	int nfs_page_set_headlock(struct nfs_page *req);
- extern void nfs_page_clear_headlock(struct nfs_page *req);
- extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
+-- 
+2.39.5
+
 
 
 
