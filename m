@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE449B36287
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D2B35E98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6193618975D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46585173CD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74C63376AC;
-	Tue, 26 Aug 2025 13:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706332F9C23;
+	Tue, 26 Aug 2025 11:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hkll2995"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd7Swccu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A0923C4E3;
-	Tue, 26 Aug 2025 13:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F20F2BE7A7;
+	Tue, 26 Aug 2025 11:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214094; cv=none; b=QInTzG/dT+jHPYkPzYOTy5GjgZ5utki9gDaPuXj6WqlI/slTal17yggjS86M2D1ZT3oXiUlO2epV6b5B7bsxvcUj1TQcSR2/ECa8EP2OPr1cocwcpiTBJCYw0cBvjY4YM6+hR9y64YqCOzmB6E95s8pFy3dKE5TBeTqGQ8iS82Y=
+	t=1756208987; cv=none; b=CDFG8qEHml/0H3mYweJ1MISUj7mvBCS30fi2OthJkxYMrLKdZ6kPhul7A1a25tdYMk4adIQuqXOLufk8fSAwz+B0jvSVpzq0RzouDP0kkUAdZEmbpgbjXm8MEIoTp+4EYCBEBTH+g5V6kKfv4KgOdQvhZwI/WdIDbFHGEURlksQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214094; c=relaxed/simple;
-	bh=UDXZMMiSFEN9Ws7rvOIFCq+fOVhFsbE9hxWbBa1b7MY=;
+	s=arc-20240116; t=1756208987; c=relaxed/simple;
+	bh=NSfQdpHbM/MI0XnaR7PbOuq+agSoLcR8s/lIGPt+Rdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1DKzmPLvzD7e6h+BtVLwpZ0LvM6pozV+989Py6U27RMQIRcw2IFFdRpYOiUbllwiyaF7nCHiSw1S5A/+nWQD/nwPEt9K5wkIKAYdNh7FoTsl1kMOtGeG1HNjy2iKO1Y++xBlEFBZBV4efQ0PWOc7u4g/xDb6kSmpJb5R1HBOVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hkll2995; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA97C19421;
-	Tue, 26 Aug 2025 13:14:53 +0000 (UTC)
+	 MIME-Version; b=DxC0kIiLmU0NMHYDhBVT1TtYOA9dhgfA87VQzoEVrdjmO4UV402ukdSXfofCsIs+z8E/dALWrkrVKoh4v7s1NOfZDHpOzI4aU0indQ/0fxJuhYYyv7dBbFVRnFRMbF2yQqILOgs2wUCnRIG4xF57btqPRyinVnUww6APjokPyzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd7Swccu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCF2C4CEF1;
+	Tue, 26 Aug 2025 11:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214094;
-	bh=UDXZMMiSFEN9Ws7rvOIFCq+fOVhFsbE9hxWbBa1b7MY=;
+	s=korg; t=1756208987;
+	bh=NSfQdpHbM/MI0XnaR7PbOuq+agSoLcR8s/lIGPt+Rdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hkll29956VQrcvWB64L0sqRoxGm3/jvGWtujqzKp03Gf/g4jq2ArVevvaRxneBbC6
-	 cgNSpyjC2fj9AEzSBPVngZTJw+pV4oj8I6pzfgJ227LKzJcPi8ZAM6uUikLrLHL1cd
-	 vbwab7b0JEKiA4VSflORlA7t78XicxLVLGNJxz6k=
+	b=cd7SwccubiaA6QVG21NK11kyiyRMKL/+yAyfNCm39G236wBYaof7k3tnF6uSOuJnz
+	 ac3raVP8nv5jxKYBeT32d4J13wZK+fpXIEEWFW1tnpmD+yX0MREpi2fBVPv12cvuPa
+	 O5aea6RF6WF9UcTFHQy24Xednls/eX8QqgIr+4x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 587/587] netfilter: nf_reject: dont leak dst refcount for loopback packets
-Date: Tue, 26 Aug 2025 13:12:16 +0200
-Message-ID: <20250826111007.971015745@linuxfoundation.org>
+Subject: [PATCH 6.12 322/322] alloc_fdtable(): change calling conventions.
+Date: Tue, 26 Aug 2025 13:12:17 +0200
+Message-ID: <20250826110923.838858168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
+[ Upstream commit 1d3b4bec3ce55e0c46cdce7d0402dbd6b4af3a3d ]
 
-recent patches to add a WARN() when replacing skb dst entry found an
-old bug:
+First of all, tell it how many slots do we want, not which slot
+is wanted.  It makes one caller (dup_fd()) more straightforward
+and doesn't harm another (expand_fdtable()).
 
-WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
-WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
-WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
-[..]
-Call Trace:
- nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
- nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
- expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
- ..
+Furthermore, make it return ERR_PTR() on failure rather than
+returning NULL.  Simplifies the callers.
 
-This is because blamed commit forgot about loopback packets.
-Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
+Simplify the size calculation, while we are at it - note that we
+always have slots_wanted greater than BITS_PER_LONG.  What the
+rules boil down to is
+	* use the smallest power of two large enough to give us
+that many slots
+	* on 32bit skip 64 and 128 - the minimal capacity we want
+there is 256 slots (i.e. 1Kb fd array).
+	* on 64bit don't skip anything, the minimal capacity is
+128 - and we'll never be asked for 64 or less.  128 slots means
+1Kb fd array, again.
+	* on 128bit, if that ever happens, don't skip anything -
+we'll never be asked for 128 or less, so the fd array allocation
+will be at least 2Kb.
 
-Instead of checking hook just check if the skb already has a route
-attached to it.
-
-Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
- net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ fs/file.c | 75 +++++++++++++++++++++----------------------------------
+ 1 file changed, 29 insertions(+), 46 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 675b5bbed638..2d663fe50f87 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -247,8 +247,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (!oth)
- 		return;
+diff --git a/fs/file.c b/fs/file.c
+index 4579c3296498..bfc9eb9e7229 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -90,18 +90,11 @@ static void copy_fdtable(struct fdtable *nfdt, struct fdtable *ofdt)
+  * 'unsigned long' in some places, but simply because that is how the Linux
+  * kernel bitmaps are defined to work: they are not "bits in an array of bytes",
+  * they are very much "bits in an array of unsigned long".
+- *
+- * The ALIGN(nr, BITS_PER_LONG) here is for clarity: since we just multiplied
+- * by that "1024/sizeof(ptr)" before, we already know there are sufficient
+- * clear low bits. Clang seems to realize that, gcc ends up being confused.
+- *
+- * On a 128-bit machine, the ALIGN() would actually matter. In the meantime,
+- * let's consider it documentation (and maybe a test-case for gcc to improve
+- * its code generation ;)
+  */
+-static struct fdtable * alloc_fdtable(unsigned int nr)
++static struct fdtable *alloc_fdtable(unsigned int slots_wanted)
+ {
+ 	struct fdtable *fdt;
++	unsigned int nr;
+ 	void *data;
  
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(oldskb) < 0)
-+	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
- 		return;
+ 	/*
+@@ -109,22 +102,32 @@ static struct fdtable * alloc_fdtable(unsigned int nr)
+ 	 * Allocation steps are keyed to the size of the fdarray, since it
+ 	 * grows far faster than any of the other dynamic data. We try to fit
+ 	 * the fdarray into comfortable page-tuned chunks: starting at 1024B
+-	 * and growing in powers of two from there on.
++	 * and growing in powers of two from there on.  Since we called only
++	 * with slots_wanted > BITS_PER_LONG (embedded instance in files->fdtab
++	 * already gives BITS_PER_LONG slots), the above boils down to
++	 * 1.  use the smallest power of two large enough to give us that many
++	 * slots.
++	 * 2.  on 32bit skip 64 and 128 - the minimal capacity we want there is
++	 * 256 slots (i.e. 1Kb fd array).
++	 * 3.  on 64bit don't skip anything, 1Kb fd array means 128 slots there
++	 * and we are never going to be asked for 64 or less.
+ 	 */
+-	nr /= (1024 / sizeof(struct file *));
+-	nr = roundup_pow_of_two(nr + 1);
+-	nr *= (1024 / sizeof(struct file *));
+-	nr = ALIGN(nr, BITS_PER_LONG);
++	if (IS_ENABLED(CONFIG_32BIT) && slots_wanted < 256)
++		nr = 256;
++	else
++		nr = roundup_pow_of_two(slots_wanted);
+ 	/*
+ 	 * Note that this can drive nr *below* what we had passed if sysctl_nr_open
+-	 * had been set lower between the check in expand_files() and here.  Deal
+-	 * with that in caller, it's cheaper that way.
++	 * had been set lower between the check in expand_files() and here.
+ 	 *
+ 	 * We make sure that nr remains a multiple of BITS_PER_LONG - otherwise
+ 	 * bitmaps handling below becomes unpleasant, to put it mildly...
+ 	 */
+-	if (unlikely(nr > sysctl_nr_open))
+-		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
++	if (unlikely(nr > sysctl_nr_open)) {
++		nr = round_down(sysctl_nr_open, BITS_PER_LONG);
++		if (nr < slots_wanted)
++			return ERR_PTR(-EMFILE);
++	}
  
- 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-@@ -321,8 +320,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
- 	if (iph->frag_off & htons(IP_OFFSET))
- 		return;
+ 	/*
+ 	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
+@@ -168,7 +171,7 @@ static struct fdtable * alloc_fdtable(unsigned int nr)
+ out_fdt:
+ 	kfree(fdt);
+ out:
+-	return NULL;
++	return ERR_PTR(-ENOMEM);
+ }
  
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
- 		return;
+ /*
+@@ -185,7 +188,7 @@ static int expand_fdtable(struct files_struct *files, unsigned int nr)
+ 	struct fdtable *new_fdt, *cur_fdt;
  
- 	if (skb_csum_unnecessary(skb_in) ||
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index e4776bd2ed89..f3579bccf0a5 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -293,7 +293,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	fl6.fl6_sport = otcph->dest;
- 	fl6.fl6_dport = otcph->source;
+ 	spin_unlock(&files->file_lock);
+-	new_fdt = alloc_fdtable(nr);
++	new_fdt = alloc_fdtable(nr + 1);
  
--	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
-+	if (!skb_dst(oldskb)) {
- 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
- 		if (!dst)
- 			return;
-@@ -397,8 +397,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
- 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
- 		skb_in->dev = net->loopback_dev;
+ 	/* make sure all fd_install() have seen resize_in_progress
+ 	 * or have finished their rcu_read_lock_sched() section.
+@@ -194,16 +197,8 @@ static int expand_fdtable(struct files_struct *files, unsigned int nr)
+ 		synchronize_rcu();
  
--	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
--	    nf_reject6_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
- 		return;
+ 	spin_lock(&files->file_lock);
+-	if (!new_fdt)
+-		return -ENOMEM;
+-	/*
+-	 * extremely unlikely race - sysctl_nr_open decreased between the check in
+-	 * caller and alloc_fdtable().  Cheaper to catch it here...
+-	 */
+-	if (unlikely(new_fdt->max_fds <= nr)) {
+-		__free_fdtable(new_fdt);
+-		return -EMFILE;
+-	}
++	if (IS_ERR(new_fdt))
++		return PTR_ERR(new_fdt);
+ 	cur_fdt = files_fdtable(files);
+ 	BUG_ON(nr < cur_fdt->max_fds);
+ 	copy_fdtable(new_fdt, cur_fdt);
+@@ -322,7 +317,6 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
+ 	struct file **old_fds, **new_fds;
+ 	unsigned int open_files, i;
+ 	struct fdtable *old_fdt, *new_fdt;
+-	int error;
  
- 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
+ 	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
+ 	if (!newf)
+@@ -354,17 +348,10 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
+ 		if (new_fdt != &newf->fdtab)
+ 			__free_fdtable(new_fdt);
+ 
+-		new_fdt = alloc_fdtable(open_files - 1);
+-		if (!new_fdt) {
+-			error = -ENOMEM;
+-			goto out_release;
+-		}
+-
+-		/* beyond sysctl_nr_open; nothing to do */
+-		if (unlikely(new_fdt->max_fds < open_files)) {
+-			__free_fdtable(new_fdt);
+-			error = -EMFILE;
+-			goto out_release;
++		new_fdt = alloc_fdtable(open_files);
++		if (IS_ERR(new_fdt)) {
++			kmem_cache_free(files_cachep, newf);
++			return ERR_CAST(new_fdt);
+ 		}
+ 
+ 		/*
+@@ -413,10 +400,6 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
+ 	rcu_assign_pointer(newf->fdt, new_fdt);
+ 
+ 	return newf;
+-
+-out_release:
+-	kmem_cache_free(files_cachep, newf);
+-	return ERR_PTR(error);
+ }
+ 
+ static struct fdtable *close_files(struct files_struct * files)
 -- 
 2.50.1
 
