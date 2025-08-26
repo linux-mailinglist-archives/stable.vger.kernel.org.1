@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE8CB3627F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9408EB35E63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B4D18A1A3A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26B4A367941
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A126158C;
-	Tue, 26 Aug 2025 13:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC43A288511;
+	Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdojZWuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0FIp0w3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2795E22AE5D;
-	Tue, 26 Aug 2025 13:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9963B200112;
+	Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213949; cv=none; b=jdtNlJU9J8ImAxe8QfdE81g3l/Bf2wUPvGR1onIdsX0cen5WHTRWdcUcbJJqHAKybdeZAvmZKrYtV0ZmsI74pnakKv61ql/8T/cGA5XRuAnyJEPg0GlgFcxs46U1/z1s1+979sqGIurmfU7ZP/jWd49uaWFRyzCqJD1yZnBm/IQ=
+	t=1756208908; cv=none; b=sjHwadYPwY/WPOS/33SDPNb8Bgu+4nB4ODATg7zCPB2j7j3RVxUs54aH+d3Cb/Pj9kmcld+4PVNGjDOE60NFQsG6fGNcYiqh/hkQkpqIuwOZ7NPTgpWfkGiTHxr91LjrvC7GkqD1VYCM2nw1RS0iS9GUTPBYqaFUzmKy3ry0MT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213949; c=relaxed/simple;
-	bh=sd1HSxeivHce7wp92uxyG7RNHxcAFaPao6D39NIpWWE=;
+	s=arc-20240116; t=1756208908; c=relaxed/simple;
+	bh=/VnG7mvalEkmzMb4sy8CgTgjVNABZFFWdCL4ojGUQcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9tl23U4BEWk1TCyIaTadbF8gN1pFTLPDRun2MJBLjC43RFzZ55VBnCBHfKCb3tqIbhV82vHu+hVFgUobJmE9NYZbhh6gHLD7idojF+ja9TWmZqA9M0IfLNF+bs9objt+u9H72HqkblV6BIx4j3sbAtWoSdD69BODh+1YrDtV/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdojZWuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B069FC4CEF4;
-	Tue, 26 Aug 2025 13:12:28 +0000 (UTC)
+	 MIME-Version; b=Md+E22rdvpwKDniKHDQbJrUXBP7mxNFHfGRQuhZnoq6a9FRx+uz8zDPtDpGmTZmhSbv7/HiwaXl2wPuC6gN41xLNW/GiJuJnMs9RMgWPLRncangsHIPKOtRx3jDMZI02pEEsuwoP9jruR81hxgKWNMeJYlf/muxJ/lLQD2Ldv9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0FIp0w3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2625DC4CEF1;
+	Tue, 26 Aug 2025 11:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213949;
-	bh=sd1HSxeivHce7wp92uxyG7RNHxcAFaPao6D39NIpWWE=;
+	s=korg; t=1756208908;
+	bh=/VnG7mvalEkmzMb4sy8CgTgjVNABZFFWdCL4ojGUQcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdojZWuDd38RdLa1mytkc03be9cnMfXgBAX2K36+5KJR+hBwmTJnFC3zFufPHSohC
-	 2+lfkeJk7yBOL58g9WsAkNYjqAMyyLd+3QypXNgu/TKq0GGScjvlKD9o7+u+xCFIN/
-	 hkVExWX2s5TkoBVlAJJlxISyRZu7pyBtcSY43npU=
+	b=y0FIp0w3tltjzT79APaOqSyzy4Z0HPZltMNqWGuRy7W6+Hl7RmLWjYB+TRngozPxV
+	 tzicbHFBiFbqox8ZBl9jyvucjLr8/rRpj75DQn6v1PuAnsR2wae1kNZPXAdZ1azWJn
+	 TJ4CkVXg3XEYfmbndj5+jm9jy/oznM/EQYobpu6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Justin Lai <justinlai0215@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 540/587] iio: imu: inv_icm42600: switch timestamp type from int64_t __aligned(8) to aligned_s64
+Subject: [PATCH 6.12 274/322] rtase: Fix Rx descriptor CRC error bit definition
 Date: Tue, 26 Aug 2025 13:11:29 +0200
-Message-ID: <20250826111006.752579628@linuxfoundation.org>
+Message-ID: <20250826110922.690764691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Justin Lai <justinlai0215@realtek.com>
 
-[ Upstream commit 27e6ddf291b1c05bfcc3534e8212ed6c46447c60 ]
+[ Upstream commit 065c31f2c6915b38f45b1c817b31f41f62eaa774 ]
 
-The vast majority of IIO drivers use aligned_s64 for the type of the
-timestamp field.  It is not a bug to use int64_t and until this series
-iio_push_to_buffers_with_timestamp() took and int64_t timestamp, it
-is inconsistent.  This change is to remove that inconsistency and
-ensure there is one obvious choice for future drivers.
+The CRC error bit is located at bit 17 in the Rx descriptor, but the
+driver was incorrectly using bit 16. Fix it.
 
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241215182912.481706-19-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: dfdc31e7ccf3 ("iio: imu: inv_icm42600: change invalid data error to -EBUSY")
+Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
+Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Link: https://patch.msgid.link/20250813071631.7566-1-justinlai0215@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/rtase/rtase.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_ic
- struct inv_icm42600_accel_buffer {
- 	struct inv_icm42600_fifo_sensor_data accel;
- 	int16_t temp;
--	int64_t timestamp __aligned(8);
-+	aligned_s64 timestamp;
- };
- 
- #define INV_ICM42600_SCAN_MASK_ACCEL_3AXIS				\
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_ic
- struct inv_icm42600_gyro_buffer {
- 	struct inv_icm42600_fifo_sensor_data gyro;
- 	int16_t temp;
--	int64_t timestamp __aligned(8);
-+	aligned_s64 timestamp;
- };
- 
- #define INV_ICM42600_SCAN_MASK_GYRO_3AXIS				\
+diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
+index 4a4434869b10..b3310e342ccf 100644
+--- a/drivers/net/ethernet/realtek/rtase/rtase.h
++++ b/drivers/net/ethernet/realtek/rtase/rtase.h
+@@ -239,7 +239,7 @@ union rtase_rx_desc {
+ #define RTASE_RX_RES        BIT(20)
+ #define RTASE_RX_RUNT       BIT(19)
+ #define RTASE_RX_RWT        BIT(18)
+-#define RTASE_RX_CRC        BIT(16)
++#define RTASE_RX_CRC        BIT(17)
+ #define RTASE_RX_V6F        BIT(31)
+ #define RTASE_RX_V4F        BIT(30)
+ #define RTASE_RX_UDPT       BIT(29)
+-- 
+2.50.1
+
 
 
 
