@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B17B36929
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6E2B36362
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1F85843FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E65E8A2DEE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E10352FE6;
-	Tue, 26 Aug 2025 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86461A5B8D;
+	Tue, 26 Aug 2025 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1O+C69F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HgKZJZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CFB352FDA;
-	Tue, 26 Aug 2025 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FDB2139C9;
+	Tue, 26 Aug 2025 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217601; cv=none; b=lKzvPHa/qxZI79PZiJI5OvtXmSIuEAG77l1Rfktj2pyR4WBgcyX1tJAzxWLega0U4o1hfx24qDJKKBHpKWY/oIetrVZlNu7hdo5LpmvTEmTMUt02898uP21CVjdj1nZ/BPJt3ZSH4NmwRdA+MWNklqH+oQYSkEBYVWSnFA6RZM4=
+	t=1756214416; cv=none; b=u1bZ/GY+FU2AlzOALn0Vi05r5P7iKO7pIVg9oSI36Z3SrlGN2DmovbWrCCUCeHnoz7V+FoiuAuui8MRha8hNMVOnXMl4i5BkBjKAuGvVPiutlFPQ0SYmtOIuVVKVWdOyvt6Zbyox9NFk7HklA8lWcB1/aGiD+CmhSWU+rrSHmEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217601; c=relaxed/simple;
-	bh=tt0MHI3i+FpcP7JRbKk7gftxqgfWM1zxXBf8jF7xPio=;
+	s=arc-20240116; t=1756214416; c=relaxed/simple;
+	bh=LsvCiarwnpNNKS98R82egHohuBbdcYlhIfbCYxAjr9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsLfTe85CHf7aDZbuQHO2cMmtrOON4lEMNzTYjIZBCrG/89OqN+88NVfnn/wOfuZzLPsDePuYcYvHJaJoL/yWfYXsZhYS6rE3xaYm0vOPBh9gzMGtNhfpP6UpALryD0pJcd4DoS6jNMbcR/DguYMkJGcG5S67N/l2+LZagw3OM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1O+C69F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97B6C113CF;
-	Tue, 26 Aug 2025 14:13:20 +0000 (UTC)
+	 MIME-Version; b=rTCCKSk1QSl1Ehu/F/mvTQUpfbgzZymz/0/YLiFSpluVInKUlcdb6mhgQpBQvghMNHn526UHWoCpTSdL4XuihcY4IH4TXHsWB88XyhwvIhRK2R1JAikiA9e/BK54Cgr751FQrJEPVc6J/2poV1oMZgEmrqaXfKASiaO+T0lc6tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HgKZJZ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11741C4CEF1;
+	Tue, 26 Aug 2025 13:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217601;
-	bh=tt0MHI3i+FpcP7JRbKk7gftxqgfWM1zxXBf8jF7xPio=;
+	s=korg; t=1756214416;
+	bh=LsvCiarwnpNNKS98R82egHohuBbdcYlhIfbCYxAjr9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1O+C69F8xmxB5Ms6ZkTC9p3/+B/1WMo0nviJAAvOva/U5FEPzyCeFdMyqAxatzLA
-	 GsHzSVvoTEvKkRC5WyEPhB0bD0kBBnGrZq4iNte8qZRKKDKAlPa83B8oRTdpVvXmb8
-	 7C40oQrM371PViSvpRrpahcNFbLudnERen3sZnWM=
+	b=0HgKZJZ2JKPhZN0aujx1boZCk/lYfecuh13MAo83DXRsFqBtGKoGupQEoUYhePJmR
+	 HD6kyOicZZOmT5HkrGarIajwcJQgePImT0px8KkxyIq3nhe1OLT4FzsYuvr2Pg1Rer
+	 34jwlYFgXUZ89HsI38Sl8qyLmIJZIVbi8NMA/gdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/523] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
+Subject: [PATCH 6.1 130/482] wifi: iwlwifi: mvm: fix scan request validation
 Date: Tue, 26 Aug 2025 13:06:23 +0200
-Message-ID: <20250826110928.730967898@linuxfoundation.org>
+Message-ID: <20250826110934.030845021@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
+[ Upstream commit 7c2f3ec7707188d8d5269ae2dce97d7be3e9f261 ]
 
-If the NFS client is doing writeback from a workqueue context, avoid using
-__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
-PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
-failures much more likely.
+The scan request validation function uses bitwise and instead
+of logical and. Fix it.
 
-We've seen those allocation failures show up when the loopback driver is
-doing writeback from a workqueue to a file on NFS, where memory allocation
-failure results in errors or corruption within the loopback device's
-filesystem.
-
-Suggested-by: Trond Myklebust <trondmy@kernel.org>
-Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709230308.3fbc1f27871b.I7a8ee91f463c1a2d9d8561c8232e196885d02c43@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 2fdc7c2a17fe..8af263a30fc0 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -588,9 +588,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
- 
- static inline gfp_t nfs_io_gfp_mask(void)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 2a4c59c71448..1d9798775f8a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -822,7 +822,7 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
+ 				     int n_channels)
  {
--	if (current->flags & PF_WQ_WORKER)
--		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
--	return GFP_KERNEL;
-+	gfp_t ret = current_gfp_context(GFP_KERNEL);
-+
-+	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
-+	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
-+		ret |= __GFP_NORETRY | __GFP_NOWARN;
-+	return ret;
- }
- 
- /* unlink.c */
+ 	return ((n_ssids <= PROBE_OPTION_MAX) &&
+-		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
++		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &&
+ 		(ies->common_ie_len +
+ 		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
+ 		 ies->len[NL80211_BAND_6GHZ] <=
 -- 
 2.39.5
 
