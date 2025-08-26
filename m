@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA1AB36945
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55837B36072
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1238E6CEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5300464F7D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51595353363;
-	Tue, 26 Aug 2025 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BEB1E5B62;
+	Tue, 26 Aug 2025 12:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwbHEhom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jio66hV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A166306D3F;
-	Tue, 26 Aug 2025 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0301C860B;
+	Tue, 26 Aug 2025 12:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217469; cv=none; b=VY8G/xWmaJYMgGiKCFNwaoz7LwZMTqYnb8okGLAzi6E8FMmRPBApPjNW77VPVaS99cxMA7uCFoRnRbKWOpB1iHPu0fbp/SHjTpIHwfsCxjlUGq8K9ggOAAHWmUli81ghXb6BQ1Wv+zi0ClwAcERVnLm7gXjUq0I4ks7rh4qwlFs=
+	t=1756213085; cv=none; b=N2VEVmHO1X+6H1+E5U3u8XC3guNYiCgsIzEy1lv6RNHEUe6msnhYXnIOAlQfXu0GSuzlcq3GZiFMv7X6Bv383mg39owaH8P/TLCasnY6Kh5/RgNmcoUNh/4ZX2sHiE2q2qmcZ/Id30zRlBMd/VWy+GplME85q12ZCH31G7JLvas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217469; c=relaxed/simple;
-	bh=06Kowqjy4EAkCJxmUxiDfSEzclUQwiHwPFUclxZ3uN0=;
+	s=arc-20240116; t=1756213085; c=relaxed/simple;
+	bh=pDa5d6O/+EJiFD2BItjOrKuqEP0Uhut/LQyuzCI+xYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keDyICNJVTdsYzxPC9fNduViyDXWqMGAqKlmQlokQJTDE28ytb7nqS7So0BxnD5Lyk2GoKIkkOTnyNDZeZkoa5cEePzBNSKNhAmzopZDEdq0mq0X1E4KVtGGjCzfOcnsJcjP/w0oUw8LexNbgoe+5Roo2bIiUA1sa9qTsCcuzjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwbHEhom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88494C4CEF1;
-	Tue, 26 Aug 2025 14:11:08 +0000 (UTC)
+	 MIME-Version; b=FT7X2fik3FjvIwbWAaPxjdc9UTBj0uGwstnaZU2r4UukQEe8o1zWv+txzxIZ4pDyAfxYEB6d+vJOcWov/h9XXSwgW3XngixHQWZTxPA9Cni+31zZbXSlewEJPXC4zzUfwJiVg+CIYbp8J8/pCivGlSHKiqvSYIxy7Peevi+wPBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jio66hV/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB81C4CEF1;
+	Tue, 26 Aug 2025 12:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217468;
-	bh=06Kowqjy4EAkCJxmUxiDfSEzclUQwiHwPFUclxZ3uN0=;
+	s=korg; t=1756213084;
+	bh=pDa5d6O/+EJiFD2BItjOrKuqEP0Uhut/LQyuzCI+xYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwbHEhomdpu4U0GzuTsPUGFMt81GPgbe/V6lKeNY8PIql9uC3wX3ceDcdhMymwEyt
-	 kLIFrEQjR31Zs5LAU+WsjnWtUBSSJIYfYss0zE/ZUQVuKG71OMUQ2arZKSwMb+RRhg
-	 Kic/ynfGQySSbgRH721T2G3/GErmYX16OblemjBY=
+	b=jio66hV/LvyzhJodplD/v6U/T7G/yn1M0oNUL+zCoaw4pn9+cGMvlOieJuMSLrpjk
+	 enQD9r/DyKTu7w/2CxxWJAaX3ttE6AV8zfW4vREGDsN5ZdIN8DqsAZX6MNXLH6/s6D
+	 hnVfa7UaEEg3WM7uOVq9RWwL2jC7etYGOMrMmRrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/523] rtc: rv3028: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.6 215/587] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
 Date: Tue, 26 Aug 2025 13:06:04 +0200
-Message-ID: <20250826110928.278038682@linuxfoundation.org>
+Message-ID: <20250826110958.407050710@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit b574acb3cf7591d2513a9f29f8c2021ad55fb881 ]
+[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
 
-When rv3028_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+When allocating receive buffers for the vsock virtio RX virtqueue, an
+SKB is allocated with a 4140 data payload (the 44-byte packet header +
+VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
+overhead, the resulting 8KiB allocation thanks to the rounding in
+kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
+higher-order page allocation on systems with 4KiB pages just for the
+sake of a few hundred bytes of packet data.
 
-Fixes: f583c341a515f ("rtc: rv3028: add clkout support")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-6-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
+better memory utilisation and removing the need to allocate higher-order
+pages entirely.
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-5-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-rv3028.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/virtio_vsock.h     | 7 ++++++-
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-rv3028.c b/drivers/rtc/rtc-rv3028.c
-index fa226f0fe67d..56fa66b6cadf 100644
---- a/drivers/rtc/rtc-rv3028.c
-+++ b/drivers/rtc/rtc-rv3028.c
-@@ -672,7 +672,7 @@ static long rv3028_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
- 
--	return 0;
-+	return clkout_rates[0];
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index fbf30721bac9..5148b035a8f3 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -110,7 +110,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
+ 	return (size_t)(skb_end_pointer(skb) - skb->head);
  }
  
- static int rv3028_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+-#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
++/* Dimension the RX SKB so that the entire thing fits exactly into
++ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
++ * rounding up to the next page order and also means that we
++ * don't leave higher-order pages sitting around in the RX queue.
++ */
++#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
+ #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
+ #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
+ 
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 2925f5d27ad3..51d51c67922b 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -221,7 +221,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ 
+ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
+ {
+-	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
++	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
+ 	struct scatterlist pkt, *p;
+ 	struct virtqueue *vq;
+ 	struct sk_buff *skb;
 -- 
 2.39.5
 
