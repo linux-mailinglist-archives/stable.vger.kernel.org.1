@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-175970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABADFB36B41
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B1CB35D40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE2F586CB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAD0A18921D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF04341AA1;
-	Tue, 26 Aug 2025 14:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0823375D9;
+	Tue, 26 Aug 2025 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbJhDhyq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RORuohGN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9771F4C90;
-	Tue, 26 Aug 2025 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356AB318146;
+	Tue, 26 Aug 2025 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218444; cv=none; b=MsETalm72BxmLGTt8TFGjNmbHbyA+K01wryd+lbHRLCq8JQx66xvVvfTjRnaAQqSrcmcZ1kml1oq+1HNf8OzrXM6+7BWgHEJEzM4Qey4BLqkpPZViMRRTDX/lvglsBXU2iYhuhxyDyfiQL1He4bzrhu9SBMLZ1bA/axyudDheJ8=
+	t=1756208082; cv=none; b=TG8FZqIGQ2wUasiZuP+WrnA5lAZVgQdFPSwRcPZwAnevw+JOuHe2bEWh6Aa4dqDSRNPc+DVhvxhC0FIjKxKnJ0N+pIAWTsDSF1s/sNgDeHCpSEU6WlSERyObJygXxkaMYPrhJH+VZ15tCGo1tHAZJ5+IO56tmCM2mtfuFlnM1d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218444; c=relaxed/simple;
-	bh=0k8419SR4O6MmqJ0w2IozfTk/gJT71LuvuEEGnd4EuI=;
+	s=arc-20240116; t=1756208082; c=relaxed/simple;
+	bh=uTBDAE8OztauwlBmyjhc7xnkL/x6ery0roKXbuPXVyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBwKCe4/IqC0Z+3IFOzaBLCa0soipx/x2O05Vya3NdJnE7B64nQ0JUqwbf9+PTB4LWI8GmQ4l3YVWi9KH7FnGVTABE1WZaAdcEKi35KX4sYaq6lYjU6I/3zB1pA5jp8PzI/9hxm+Jzf05oGsG1xaI/EltZYI0qDrtlJ3KPILw/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbJhDhyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2ADC4CEF1;
-	Tue, 26 Aug 2025 14:27:24 +0000 (UTC)
+	 MIME-Version; b=lHJXM/I4lsJnxbPyRyxvv2ndj8vA5De/eZZJecBW0BSL8VZLoBq0PLf45pu8ZKIgMbQZOua81FPN34QfFfZjPQQDeFvXQQ9EYThbJ72pKXnKHTtv6YrrOSSKDDgBLemhsDP+1OZ6TJI3nLwNpHLRIvb2VyDLDb9CBqzBVaNrMoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RORuohGN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B6FC4CEF4;
+	Tue, 26 Aug 2025 11:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218444;
-	bh=0k8419SR4O6MmqJ0w2IozfTk/gJT71LuvuEEGnd4EuI=;
+	s=korg; t=1756208082;
+	bh=uTBDAE8OztauwlBmyjhc7xnkL/x6ery0roKXbuPXVyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbJhDhyqKwhU9OryQZip/tGgpms6G2Dcs7XZO8qCAD+a2cTrTBrNw6jBLALt2blEI
-	 lGHBIdZsnpGknfz50BZtUm30ViaH9qgsqaNfha7wu66NOqGaiWNQ8k9inyFAGZ3gSC
-	 4CciDhkJ665XitJSMiro6th5aw0ev02fX1oyLxOE=
+	b=RORuohGNxZvO1l2aFMtP9wRS1n8cWd0QSth4sCyBQQMcl9RKL2ucLVbkAZ4WDrbEp
+	 BZFBsyVu6u0QHY8nIJcFYjic26G79aoa/qNiLyQNv4Mwhu76CSvbpwg6N8lBN63ynL
+	 zlLPdn4dSw7+KAJL5/og11yjO3MkYspSfeW7zzb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jason Xing <kernelxing@tencent.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Priya Singh <priyax.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 505/523] tracing: Limit access to parser->buffer when trace_get_user failed
+Subject: [PATCH 6.16 431/457] ixgbe: xsk: resolve the negative overflow of budget in ixgbe_xmit_zc
 Date: Tue, 26 Aug 2025 13:11:55 +0200
-Message-ID: <20250826110936.898075214@linuxfoundation.org>
+Message-ID: <20250826110947.942181170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +67,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
+[ Upstream commit 4d4d9ef9dfee877d494e5418f68a1016ef08cad6 ]
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+Resolve the budget negative overflow which leads to returning true in
+ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+Before this patch, when the budget is decreased to zero and finishes
+sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
+and enter into the while() statement to see if it should keep processing
+packets, but in the meantime it unexpectedly decreases the value again to
+'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
+true, showing 'we complete cleaning the budget'. That also means
+'clean_complete = true' in ixgbe_poll.
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
+The true theory behind this is if that budget number of descs are consumed,
+it implies that we might have more descs to be done. So we should return
+false in ixgbe_xmit_zc to tell napi poll to find another chance to start
+polling to handle the rest of descs. On the contrary, returning true here
+means job done and we know we finish all the possible descs this time and
+we don't intend to start a new napi poll.
 
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
+It is apparently against our expectations. Please also see how
+ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
+to make sure the budget can be decreased to zero at most and the negative
+overflow never happens.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The patch adds 'likely' because we rarely would not hit the loop condition
+since the standard budget is 256.
+
+Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Priya Singh <priyax.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250819222000.3504873-4-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   18 ++++++++++++------
- kernel/trace/trace.h |    8 +++++++-
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1613,7 +1613,7 @@ int trace_get_user(struct trace_parser *
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+index ac58964b2f08..7b941505a9d0 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+@@ -398,7 +398,7 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
+ 	dma_addr_t dma;
+ 	u32 cmd_type;
  
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1627,7 +1627,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1645,12 +1645,14 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1665,11 +1667,15 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1269,6 +1269,7 @@ bool ftrace_event_is_function(struct tra
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1276,7 +1277,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
- {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
- 
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1290,6 +1291,11 @@ static inline void trace_parser_clear(st
- 	parser->idx = 0;
- }
- 
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
+-	while (budget-- > 0) {
++	while (likely(budget)) {
+ 		if (unlikely(!ixgbe_desc_unused(xdp_ring))) {
+ 			work_done = false;
+ 			break;
+@@ -433,6 +433,8 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
+ 		xdp_ring->next_to_use++;
+ 		if (xdp_ring->next_to_use == xdp_ring->count)
+ 			xdp_ring->next_to_use = 0;
 +
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
++		budget--;
+ 	}
+ 
+ 	if (tx_desc) {
+-- 
+2.50.1
+
 
 
 
