@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA3EB36597
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91437B35F86
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F5F83AE60B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80431BA24A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709FA2264B8;
-	Tue, 26 Aug 2025 13:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D95F537F8;
+	Tue, 26 Aug 2025 12:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBqDm0ZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy6yWIg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDB32F84F;
-	Tue, 26 Aug 2025 13:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED35F18024;
+	Tue, 26 Aug 2025 12:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215555; cv=none; b=PbW4jYGrKVjnkNn06hCoXcdeWxqeZ9y4xbA05YyV3BN7aTmT52spqVuxV7w7Cu532rx1+8n+fH4dhEMDGa0NraJraFxdo6RSiLY2SoE8VOudOB9r2PsYEMiJqgPOZzkCTTTR8Cb0yWoixqDZRue084ShaFuevpmguBwak5NR1r4=
+	t=1756212594; cv=none; b=qO3vLXmdImkxa7vXQFwEaTCzpwKcNhFzAJiy4v1U44fFxfND69dZyZzDaOSCqaIpCWr1TAe4/UQNRraLK9A3lShB4Qp8ZW8NSi6FGFSXCBb5betCDJaFAu8ihqxtOi4e1Ro/RDNy5WLfT8EkyGjonzR5Aze5kk7fJ1PykjJ6DyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215555; c=relaxed/simple;
-	bh=txTYXXeNd/KR5zEIVIPPi9gfCrd8sW7agI6p8Sqvybw=;
+	s=arc-20240116; t=1756212594; c=relaxed/simple;
+	bh=KQJ3ifsxiNHR3QpVIgm5Yn7LQDsgX6LZHKd6IY2+Qpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmARuFOuRl3AQKMC6HBWa39eW2rgrPO2C/Jku5JioTGX8XI8AagyVo+6tYgwKe8KpWb79bxytXRm3szsTInYU0NiZMdRKUrkCIGqUOg+tmPKTGagkl7LPZdCtDmQWRVqgf0Jp9KzHlbc8MxKZZY1ZFpC0GiK1jMHgxb/9f++jI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBqDm0ZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B39C4CEF1;
-	Tue, 26 Aug 2025 13:39:13 +0000 (UTC)
+	 MIME-Version; b=S7IhOPzSOWfXuNSJ3kW7hVUy0FhgNZkaHAR7UTsNzy7uZ0aPsPquPTyKBQg09H3GqdMMMS26cyq8PK4xGE/DUsQNk0S6do49Yn8SHo7rzte4+9xRPr2UfA6uSqY+TRxqdGamjEekgax0csY6rqAeQLnS8KybXmHIRXQrwUIHXHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy6yWIg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1CAC4CEF4;
+	Tue, 26 Aug 2025 12:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215553;
-	bh=txTYXXeNd/KR5zEIVIPPi9gfCrd8sW7agI6p8Sqvybw=;
+	s=korg; t=1756212593;
+	bh=KQJ3ifsxiNHR3QpVIgm5Yn7LQDsgX6LZHKd6IY2+Qpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBqDm0ZIiz7wGNZNd41d5n+6nOCyYEaxp7oyigzQ1ZbDZEJFj8RKKyQvPFc80NYfK
-	 L1A9DveUmwl+tAL5H1G2JR1CuDEQqal+pRBh0CcqpuJwsoLGv517GS4/RhATe18Nab
-	 FwYVOUGqInAeJO55971v92mvPtdxJ1m3LjaOySgk=
+	b=Dy6yWIg1LYGZBR55vmG/XwDeb4FB1Lk2QmxERuD6p03TNtP08YxDGl6rwI1KgsMFD
+	 vCeZhDrYCqzxL5V5GWVlx0/ELFgCSTqQvqk1EgVf6UUxCercXSf9GN+1Udt2KIOXuO
+	 2IMCUeOSpJftvLbXjjFYYMMI9AiEePbF5nNJKEvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 5.15 060/644] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 6.6 002/587] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
 Date: Tue, 26 Aug 2025 13:02:31 +0200
-Message-ID: <20250826110947.989007651@linuxfoundation.org>
+Message-ID: <20250826110953.009879346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
+commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
 
-What we want is to verify there is that clone won't expose something
-hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
-may be a result of MNT_LOCKED on a child, but it may also come from
-lacking admin rights in the userns of the namespace mount belongs to.
+UAC3 power domain descriptors need to be verified with its variable
+bLength for avoiding the unexpected OOB accesses by malicious
+firmware, too.
 
-clone_private_mnt() checks the former, but not the latter.
-
-There's a number of rather confusing CAP_SYS_ADMIN checks in various
-userns during the mount, especially with the new mount API; they serve
-different purposes and in case of clone_private_mnt() they usually,
-but not always end up covering the missing check mentioned above.
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-[ merge conflict resolution: clone_private_mount() was reworked in
-  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
-  Tweak the relevant ns_capable check so that it works on older kernels ]
-Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
+Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/usb/validate.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -1975,6 +1975,11 @@ struct vfsmount *clone_private_mount(con
- 	if (!check_mnt(old_mnt))
- 		goto invalid;
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
+ 	return d->bLength >= sizeof(*d) + 4 + 2;
+ }
  
-+	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
-+		up_read(&namespace_sem);
-+		return ERR_PTR(-EPERM);
-+	}
++static bool validate_uac3_power_domain_unit(const void *p,
++					    const struct usb_desc_validator *v)
++{
++	const struct uac3_power_domain_descriptor *d = p;
 +
- 	if (has_locked_children(old_mnt, path->dentry))
- 		goto invalid;
++	if (d->bLength < sizeof(*d))
++		return false;
++	/* baEntities[] + wPDomainDescrStr */
++	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
++}
++
+ static bool validate_midi_out_jack(const void *p,
+ 				   const struct usb_desc_validator *v)
+ {
+@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
+ 	      struct uac3_clock_multiplier_descriptor),
+ 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
+ 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
++	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
+ 	{ } /* terminator */
+ };
  
 
 
