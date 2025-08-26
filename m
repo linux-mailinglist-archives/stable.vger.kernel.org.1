@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664CCB362C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9050B36802
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377101881E0C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8368C7BA12A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FB534165A;
-	Tue, 26 Aug 2025 13:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3704934AB15;
+	Tue, 26 Aug 2025 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK6KUWp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVefFlFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A33A015;
-	Tue, 26 Aug 2025 13:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4301DE8BE;
+	Tue, 26 Aug 2025 14:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214200; cv=none; b=ZfnZnM84HHHnuHweN3tACcg+u4Ixzrnqa5Vsiq7FjNx73NlPFnfchn8JIf0OcOvuXnso5KDiHaNBXFlR3FlP/uUQUIhT0i/PN1GIGbveVEvInHeFva5PEKkXSmDxXWSIrbJ409VvLabEK3hSl3rGIDplXuPAzhCzNxWIAifQSYM=
+	t=1756217215; cv=none; b=EpV8nU907skXG8chCfV9hbzDOZ2l7MSu5+SfkapdzJNa/qfMaIl6/9sN5d3QQhEdPfdqkwgQARALMnaSZC+cQR8o4LdeVaKDHYtb474xDl701VpwFpWr9/XoRCTjOp/lP0OzAc0W4p77xIIk/YkjS2+xmPyvnLroK4FI+jff+JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214200; c=relaxed/simple;
-	bh=Ri7Yi+owbYkqp4Cq/NfRZuRWWj8kN2T18dVtye6UHb0=;
+	s=arc-20240116; t=1756217215; c=relaxed/simple;
+	bh=h1Vw24IXINTvTPwC3nA2oEg8s+YW7mj9dgMsdPNb8CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLW2NQ89MPSF+KmCaIbROILMJWUR9EhJO2VbciXFxHCxQGThIZaGY2/Iu2pYR2o6IRLDOYcfkLil0km88Xyd6wxuAURBgYAd9LmsUa/JE1MNEc5Avzexym+TWg46QJADRuHaa2K/EDBgHbvhDI/gKnS8+0R0cKInhbbFKKFoFkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK6KUWp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61BCC4CEF1;
-	Tue, 26 Aug 2025 13:16:39 +0000 (UTC)
+	 MIME-Version; b=SqOSG2NuhU8vKg+PhkPLPaajTUIxNDQK68MJ0TmiF6QuTgpWYD9n8uAfrRhlKT6MYK1qocKExLN5K2UnvRrvqiYb8YEgsq3mvibZroavtZWYowVCOWBYlctzNZqCOQ1kt8BeFm1L0XIl/jh3jxZF4Del+1R3T9nj0aoJIwB1Hsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVefFlFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66266C4CEF1;
+	Tue, 26 Aug 2025 14:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214200;
-	bh=Ri7Yi+owbYkqp4Cq/NfRZuRWWj8kN2T18dVtye6UHb0=;
+	s=korg; t=1756217215;
+	bh=h1Vw24IXINTvTPwC3nA2oEg8s+YW7mj9dgMsdPNb8CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK6KUWp3S6T5Mz17sUDlC051s2tV2qhx03fTZxlOwP+MKJGCDioM1ycouxerCQrlm
-	 PYj4+rPdcqe2YTCcLMpHWeLJSdm5gYh2hDa49KSCebH0ZE6DMd45WL2PujHuBPTrsx
-	 yf3zmevOKe9MTDYtFYLbIbg2lQbBCS70Jxx3++ps=
+	b=vVefFlFtTUOj3VBQK9XvkiYo66mfXmj61LykUEocGn69QU8GOWHq6iNapR3pITQce
+	 SKQWqwpZYGJEWHKfZCOUHeQHsSmYi6dHphC8L8iVzxdx/1rHUzylfmRXHa3I7lweWC
+	 2qdrUqQoe39GjU7pO2QeWU+zoPqb1QN2s5eT2vw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 016/482] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 059/523] net: appletalk: fix kerneldoc warnings
 Date: Tue, 26 Aug 2025 13:04:29 +0200
-Message-ID: <20250826110931.189000359@linuxfoundation.org>
+Message-ID: <20250826110926.041815121@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Andrew Lunn <andrew@lunn.ch>
 
-commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
+[ Upstream commit 709565ae14aa2670d6b480be46720856e804af41 ]
 
-Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
-the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
-race with a confirmed client expiring and fail to get a reference. That
-could later lead to a UAF.
+net/appletalk/aarp.c:68: warning: Function parameter or member 'dev' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'expires_at' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'hwaddr' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'last_sent' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'next' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'packet_queue' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'status' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'target_addr' not described in 'aarp_entry'
+net/appletalk/aarp.c:68: warning: Function parameter or member 'xmit_count' not described in 'aarp_entry'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'dev' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'orig_dev' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'pt' not described in 'atalk_rcv'
+net/appletalk/ddp.c:1422: warning: Function parameter or member 'skb' not described in 'atalk_rcv'
 
-Fix this by getting a reference early in the case where there is an
-extant confirmed client. If that fails then treat it as if there were no
-confirmed client found at all.
-
-In the case where the unconfirmed client is expiring, just fail and
-return the result from get_client_locked().
-
-Reported-by: lei lu <llfamsec@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
-Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20201028005527.930388-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c4a92d07b08 ("net: appletalk: Fix use-after-free in AARP proxy probe")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/appletalk/aarp.c | 18 +++++++++---------
+ net/appletalk/ddp.c  |  7 ++++---
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4285,10 +4285,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
- 	}
- 	status = nfs_ok;
- 	if (conf) {
--		old = unconf;
--		unhash_client_locked(old);
--		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
--	} else {
-+		if (get_client_locked(conf) == nfs_ok) {
-+			old = unconf;
-+			unhash_client_locked(old);
-+			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
-+		} else {
-+			conf = NULL;
-+		}
-+	}
-+
-+	if (!conf) {
- 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
- 		if (old) {
- 			status = nfserr_clid_inuse;
-@@ -4305,10 +4311,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
- 			}
- 			trace_nfsd_clid_replaced(&old->cl_clientid);
- 		}
-+		status = get_client_locked(unconf);
-+		if (status != nfs_ok) {
-+			old = NULL;
-+			goto out;
-+		}
- 		move_to_confirmed(unconf);
- 		conf = unconf;
- 	}
--	get_client_locked(conf);
- 	spin_unlock(&nn->client_lock);
- 	if (conf == unconf)
- 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
+diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
+index 45f584171de79..be18af481d7d5 100644
+--- a/net/appletalk/aarp.c
++++ b/net/appletalk/aarp.c
+@@ -44,15 +44,15 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
+ /* Lists of aarp entries */
+ /**
+  *	struct aarp_entry - AARP entry
+- *	@last_sent - Last time we xmitted the aarp request
+- *	@packet_queue - Queue of frames wait for resolution
+- *	@status - Used for proxy AARP
+- *	expires_at - Entry expiry time
+- *	target_addr - DDP Address
+- *	dev - Device to use
+- *	hwaddr - Physical i/f address of target/router
+- *	xmit_count - When this hits 10 we give up
+- *	next - Next entry in chain
++ *	@last_sent: Last time we xmitted the aarp request
++ *	@packet_queue: Queue of frames wait for resolution
++ *	@status: Used for proxy AARP
++ *	@expires_at: Entry expiry time
++ *	@target_addr: DDP Address
++ *	@dev:  Device to use
++ *	@hwaddr:  Physical i/f address of target/router
++ *	@xmit_count:  When this hits 10 we give up
++ *	@next: Next entry in chain
+  */
+ struct aarp_entry {
+ 	/* These first two are only used for unresolved entries */
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index c9edfca153c99..f38b170a51af0 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1408,9 +1408,10 @@ static int atalk_route_packet(struct sk_buff *skb, struct net_device *dev,
+ 
+ /**
+  *	atalk_rcv - Receive a packet (in skb) from device dev
+- *	@skb - packet received
+- *	@dev - network device where the packet comes from
+- *	@pt - packet type
++ *	@skb: packet received
++ *	@dev: network device where the packet comes from
++ *	@pt: packet type
++ *	@orig_dev: the original receive net device
+  *
+  *	Receive a packet (in skb) from device dev. This has come from the SNAP
+  *	decoder, and on entry skb->transport_header is the DDP header, skb->len
+-- 
+2.39.5
+
 
 
 
