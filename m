@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6002EB35C58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E3BB36903
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90E35362C4D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E419E7A9821
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8095309DA0;
-	Tue, 26 Aug 2025 11:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E225350855;
+	Tue, 26 Aug 2025 14:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcJNupjZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WuDgDDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595129BDAE;
-	Tue, 26 Aug 2025 11:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE87350D4F;
+	Tue, 26 Aug 2025 14:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207644; cv=none; b=R/yaOnasvoKLKQKjtQksT3xuSfOb5c198uPmCddip82iSB7jNlCYjc/6pSq00jAbfOw5L1MPOS5IzaalCA9fbrDIfaL2XD4hR4YLPYWsM7H8sClfmPO7RLZKDcU9krR6aj5hkss0O5DbCIRzFYEjODZ6aQ62Nm8Q/JkhLabldLU=
+	t=1756218023; cv=none; b=Bi5gUFKIQMXgDn7KWTCUVGpzWWmsvMijXdWl68egAuC9q1jEiTnQ2eOS8GuZdMiUdKAEPBx79LXKoljCiqmXn1DYkbo2iKxJ9TZbXESgX+NCF1OkGbdfVnijcSHARYjCKmsyrpOS8K7jZ/OI3B/ofFm6NC4IFwpIAMN66f6yf2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207644; c=relaxed/simple;
-	bh=ZuUxwr2w6NSfWFPZ1Jd8YQ7FHIbPfm2+xzMKdgQazEc=;
+	s=arc-20240116; t=1756218023; c=relaxed/simple;
+	bh=2pBV91OsSskO4r7RMmUwZZcvj4LjC/BEtL7Ek4gmWNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neIohfO6hylSkB20NYR54R/Y/qfMgLHY7HdP8qy9UypW1R3Q+xhtxFWbAlECgttcl5tkiYCCS6mpMhK7sFjC7+alxvqNqNN14efZbtn4T8J+tkaOaqhdZ2HF5SDt4WjLK0lY2fgVRBFJk20EoCIGWYUlNiATj8l9tg/bFM37m2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcJNupjZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E24FC4CEF1;
-	Tue, 26 Aug 2025 11:27:24 +0000 (UTC)
+	 MIME-Version; b=kIhld97ZIv6Uq94TuDdaIIPrI3oBYDOVfFhfZ0xD7Bxw55Am785J9/v5L+u0usrJt6El/SP4Q+0OLNwTfzWdltqrTXE4XnrMU+9RR0cBXJzZkwT/0LFhEFlIf+RS1ekVIEWEXvKSD3H07UTRbkGVqbUUTm2p2j4tsyPc+Tfh+zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WuDgDDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05EEC4CEF1;
+	Tue, 26 Aug 2025 14:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207644;
-	bh=ZuUxwr2w6NSfWFPZ1Jd8YQ7FHIbPfm2+xzMKdgQazEc=;
+	s=korg; t=1756218023;
+	bh=2pBV91OsSskO4r7RMmUwZZcvj4LjC/BEtL7Ek4gmWNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcJNupjZGTTXDn9v7epRSfjmI7T1Ymp/yymYQZqs72n+Knf8Gh8LPlTmcnZme5yXW
-	 n6ZVxkMCb5TBgAERv2HYJK4tM5RoBZIhcUxc6UJkBsh2QjuneOeygRPVEZsu+JB4cy
-	 QivBzSOXCB5C4yUWYeEMAzijS1UcqTiZ8LECFKFE=
+	b=2WuDgDDzx4T5xRcOVv7ygg9h74hqd7CaWvwbFQ5EYJEwyWH6VaFTG8j34IMmk4VD1
+	 gQeIqFKquGEwrO/fMY7oH8Publx3K+6acATVZbWJlgfYt88r4Ff6OTGpG+Wr+P99fv
+	 GBKfP4LeXNKQ88XCFWemXqm/W2CaQMsgzmZ0HuZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlton Lin <charlton.lin@intel.com>,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.16 263/457] drm/i915/lnl+/tc: Fix max lane count HW readout
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 337/523] scsi: lpfc: Remove redundant assignment to avoid memory leak
 Date: Tue, 26 Aug 2025 13:09:07 +0200
-Message-ID: <20250826110943.877917151@linuxfoundation.org>
+Message-ID: <20250826110932.784774793@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit c87514a0bb0a64507412a2d98264060dc0c1562a upstream.
+[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
 
-On LNL+ for a disconnected sink the pin assignment value gets cleared by
-the HW/FW as soon as the sink gets disconnected, even if the PHY
-ownership got acquired already by the BIOS/driver (and hence the PHY
-itself is still connected and used by the display). During HW readout
-this can result in detecting the PHY's max lane count as 0 - matching
-the above cleared aka NONE pin assignment HW state. For a connected PHY
-the driver in general (outside of intel_tc.c) expects the max lane count
-value to be valid for the video mode enabled on the corresponding output
-(1, 2 or 4). Ensure this by setting the max lane count to 4 in this
-case. Note, that it doesn't matter if this lane count happened to be
-more than the max lane count with which the PHY got connected and
-enabled, since the only thing the driver can do with such an output -
-where the DP-alt sink is disconnected - is to disable the output.
+Remove the redundant assignment if kzalloc() succeeds to avoid memory
+leak.
 
-v2: Rebased on change reading out the pin configuration only if the PHY
-    is connected.
-
-Cc: stable@vger.kernel.org # v6.8+
-Reported-by: Charlton Lin <charlton.lin@intel.com>
-Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250811080152.906216-4-imre.deak@intel.com
-(cherry picked from commit 33cf70bc0fe760224f892bc1854a33665f27d482)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_tc.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -22,6 +22,7 @@
- #include "intel_modeset_lock.h"
- #include "intel_tc.h"
- 
-+#define DP_PIN_ASSIGNMENT_NONE	0x0
- #define DP_PIN_ASSIGNMENT_C	0x3
- #define DP_PIN_ASSIGNMENT_D	0x4
- #define DP_PIN_ASSIGNMENT_E	0x5
-@@ -307,6 +308,8 @@ static int lnl_tc_port_get_max_lane_coun
- 		REG_FIELD_GET(TCSS_DDI_STATUS_PIN_ASSIGNMENT_MASK, val);
- 
- 	switch (pin_assignment) {
-+	case DP_PIN_ASSIGNMENT_NONE:
-+		return 0;
- 	default:
- 		MISSING_CASE(pin_assignment);
- 		fallthrough;
-@@ -1158,6 +1161,12 @@ static void xelpdp_tc_phy_get_hw_state(s
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
- 		read_pin_configuration(tc);
-+		/*
-+		 * Set a valid lane count value for a DP-alt sink which got
-+		 * disconnected. The driver can only disable the output on this PHY.
-+		 */
-+		if (tc->max_lane_count == 0)
-+			tc->max_lane_count = 4;
- 	}
- 
- 	drm_WARN_ON(display->drm,
+diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
+index f91eee01ce95..c3e77db18945 100644
+--- a/drivers/scsi/lpfc/lpfc_debugfs.c
++++ b/drivers/scsi/lpfc/lpfc_debugfs.c
+@@ -6104,7 +6104,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			}
+ 			phba->nvmeio_trc_on = 1;
+ 			phba->nvmeio_trc_output_idx = 0;
+-			phba->nvmeio_trc = NULL;
+ 		} else {
+ nvmeio_off:
+ 			phba->nvmeio_trc_size = 0;
+-- 
+2.50.1
+
 
 
 
