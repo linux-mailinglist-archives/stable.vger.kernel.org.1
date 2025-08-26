@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92250B366CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07B5B36330
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC57A5619B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6164B8A4649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE9E34DCC1;
-	Tue, 26 Aug 2025 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E22341674;
+	Tue, 26 Aug 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmGu2WIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiVBxyGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAE634320F;
-	Tue, 26 Aug 2025 13:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA811B87E8;
+	Tue, 26 Aug 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216022; cv=none; b=ibE3rFcLYBqA/hA2R3mIMQ0UxGYrLQLThSVPxkOMT7HsUkDy4M4H6aukNjUoNnp834ZrxLnvNm8oUrPcFl1IXQHTNHR57yqD8lfihILk8loQSZ/LcCuxk7paSrhzGxfjs30NcpvkPJPKAWa+jEZ1vlwjq3W5FTtgtFa3VsCQyT8=
+	t=1756214313; cv=none; b=tOMgGoOyZYnyMHZile+Om8XSwYuCGy4gWhxlJqfHubONj+389M3Nb87PHhyf/S+4ovLYLv1KdZMUIQ2IxGOVz9TLSCWZrtk16KbbcRgzsUhx3lpiT7km0uDdWuQc9yrxuQ8NmTpAdl0KYjEm6NaaJUyMALYsa6XP3MyV1MxWkOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216022; c=relaxed/simple;
-	bh=37GQUSa3p46T7jCpvH8alaenZiQYZY6RxEba4dcHigE=;
+	s=arc-20240116; t=1756214313; c=relaxed/simple;
+	bh=W0sYGl+jzpwW8zDfxxQtAf+BAGGXoAj6UPyOdfzMbeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdwuFH0COaSVqOGFKXoOFFEWK18lVaHaaJqdbysYpzDhuIjKJKzXObjca+DhPsvNVRHbn9Bl7nNfZIMQCsrLXh3TJbB7HCUa+bUjtG5606HP+pkGwzcpjQ2UzQbU2JGoXZxrMbr02QlPyDv9Z0iiY//fjb94S8POVvMt3zH69Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmGu2WIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751FBC4CEF1;
-	Tue, 26 Aug 2025 13:47:01 +0000 (UTC)
+	 MIME-Version; b=qWQTxFFsirDK6QREHWJ9rVVUqByW+YkoL4Erj7ucGd6ptZbOTaBXQPGrHJPXbjIO4AR2mEsMPb7Wbt+Dtzdhy9V3eBY3tYY5FeL/hhEFQGZAX535bXkM2OXpxu2RQugSPhw0zXn1aAYSnApLbylF5Rm9r57+dWMHSS8AO3X190Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiVBxyGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C51C113D0;
+	Tue, 26 Aug 2025 13:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216021;
-	bh=37GQUSa3p46T7jCpvH8alaenZiQYZY6RxEba4dcHigE=;
+	s=korg; t=1756214313;
+	bh=W0sYGl+jzpwW8zDfxxQtAf+BAGGXoAj6UPyOdfzMbeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmGu2WIB3V5YtBFwdwjiJtRakb0OYDNPfoEKPWBZt00VTDFTUDnlwXHgBMqYRpqHa
-	 LVs8d4lThovWlcaMWAWzxnRv4H+0HkMWkGvnKMPP9TpTv6Y4eSxLaVUKcpcA9AC5O1
-	 YljNn3YA5IXvrQVw5Rt/bAHqyCRgLtbyYJL9a1VQ=
+	b=DiVBxyGsuMzjQkyaRuEeZTG3+nz/4f4KWGfUzl6BO6/RSO3NwnM6QzAyPoI4itx7M
+	 XF6s/7uT9T19wgYDA9cU/s16+l/gX7YitYpE4LpO3xXSpef8ZTiP3gvdbM8HjKE4Au
+	 NA+Nvc74anEiHmQIk7MTOeLd2QcHJgwk4h8P355Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 254/644] ALSA: intel_hdmi: Fix off-by-one error in __hdmi_lpe_audio_probe()
+	Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 092/482] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
 Date: Tue, 26 Aug 2025 13:05:45 +0200
-Message-ID: <20250826110952.677746601@linuxfoundation.org>
+Message-ID: <20250826110933.100482403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Breno Leitao <leitao@debian.org>
 
-commit 8cbe564974248ee980562be02f2b1912769562c7 upstream.
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in one character less
-being copied from 'card->shortname' to 'pcm->name'.
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-Use the destination buffer size instead to ensure the card name is
-copied correctly.
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-Cc: stable@vger.kernel.org
-Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20250805234156.60294-1-thorsten.blum@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/x86/intel_hdmi_audio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/x86/intel_hdmi_audio.c
-+++ b/sound/x86/intel_hdmi_audio.c
-@@ -1769,7 +1769,7 @@ static int __hdmi_lpe_audio_probe(struct
- 		/* setup private data which can be retrieved when required */
- 		pcm->private_data = ctx;
- 		pcm->info_flags = 0;
--		strscpy(pcm->name, card->shortname, strlen(card->shortname));
-+		strscpy(pcm->name, card->shortname, sizeof(pcm->name));
- 		/* setup the ops for playback */
- 		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 1f327ec4c30b..3c862acaa28a 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -860,6 +860,8 @@ static void __ghes_panic(struct ghes *ghes,
  
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+ 	if (!panic_timeout)
+-- 
+2.39.5
+
 
 
 
