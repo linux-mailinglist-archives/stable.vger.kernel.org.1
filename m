@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C133B35DDE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8487EB36843
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9B07C68CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 244DE1C40E37
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D886C29BDB8;
-	Tue, 26 Aug 2025 11:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4584235334B;
+	Tue, 26 Aug 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe/Tfetx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIRwnTTR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D8F749C;
-	Tue, 26 Aug 2025 11:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028B9352067;
+	Tue, 26 Aug 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208871; cv=none; b=UE2CbaZqX1yws7ZEag9jctZ4/HAiEYgekLuB86IPK9HIVjH4Z5QMHYVsw2WBkf4j9slaHMzPmlR/X2Sp613+s9NXkVlw9QylMjs+KmGwQVZWsqG2UuYAt9kEjuv9IzpFPnDrerprRFRUFA0tyM/YfDJEHa3LPb2t/Wpy67tNxyQ=
+	t=1756216933; cv=none; b=bRG0Fvito9Lj960lQSMEFWg5Rycsdkv8KURhaWqjiTGF6+wZnpk6BInzvJ+6AjzFXee8H/nPxwWrhC4CaOsAifPL8oPuilwU1IyUSamSAa5V+/YayQrAHyQ++FywTemp0L2qdd2Rl7XKXQDLi4vyLSuDRpox3qmOWjzfggkV36A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208871; c=relaxed/simple;
-	bh=j9g3X6WbQTZEhQwMPqk0l9Zg3rbKPbK59cLrBDdMVkY=;
+	s=arc-20240116; t=1756216933; c=relaxed/simple;
+	bh=qbLUZMlzg6jo8SOvZVGSJ0zYnm9cykDswXO2UHlK5Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kt1Mh+89uUzwpiuuIYqrsxc8Yvxp0II06kPNDPwyn7qkk7DZIj2mC6ZOMGd1p92I1Pob7lwtOKlVrM7QMwBWxAjj1PJIXmHmwVxGvaJ19qtntUjlK9YukTrK40F6rjW9pUr0cR54bjiF1iq4XumsC40eYWEKrMgrSykk3JrhheU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe/Tfetx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2773EC4CEF1;
-	Tue, 26 Aug 2025 11:47:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kj7pxVF+NXcIE3EgHmFUWzdd+mYHPwMjIAHaIH3qU+myQVZy9s+vQUpFcYkG0qXS3mLb1/Oz6N4Xo08U5r31ZrhksVNN+QCgIkvUpwFCJKVbxPbSgOCs9f5t6PpWGLfzdTqNHw9zKh1BLxd+cmFutyXtxKaaC7jaixsNgIGPl5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIRwnTTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DBEC113D0;
+	Tue, 26 Aug 2025 14:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208871;
-	bh=j9g3X6WbQTZEhQwMPqk0l9Zg3rbKPbK59cLrBDdMVkY=;
+	s=korg; t=1756216932;
+	bh=qbLUZMlzg6jo8SOvZVGSJ0zYnm9cykDswXO2UHlK5Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe/TfetxDSu5xt9j4PecWXRlFyYKSIQnuNYtR6kIXLoLJr2HeOfRpV/2PHIorue+X
-	 1pzm0iWXIqPyK1XLu382aLRbdC8y9cY3036YhxIrPpXmDu2jGcpnyFMMcwUDJ7ERLZ
-	 bA0/IDBjlCVDwagYYrLfA65kTNbYmGSNskjjBWvw=
+	b=SIRwnTTR3yo64kTdRRY4AoBewPT2+iPb+Rn0rEII06UNLK03/QxsRwwAo/uqYcbxQ
+	 wl8Uc/PNqTtsoOP2/FEZrz5UVVwAfcr4WYVxgo1LcR3lqJbJMOZKFBsanmeKmlahn7
+	 P+VL53oUgKj+xEjIugIp2rCS1z3q1ZMFyQEUesrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 246/322] tls: fix handling of zero-length records on the rx_list
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.15 570/644] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
 Date: Tue, 26 Aug 2025 13:11:01 +0200
-Message-ID: <20250826110921.995588423@linuxfoundation.org>
+Message-ID: <20250826111000.656718193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 62708b9452f8eb77513115b17c4f8d1a22ebf843 upstream.
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-Each recvmsg() call must process either
- - only contiguous DATA records (any number of them)
- - one non-DATA record
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-If the next record has different type than what has already been
-processed we break out of the main processing loop. If the record
-has already been decrypted (which may be the case for TLS 1.3 where
-we don't know type until decryption) we queue the pending record
-to the rx_list. Next recvmsg() will pick it up from there.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-Queuing the skb to rx_list after zero-copy decrypt is not possible,
-since in that case we decrypted directly to the user space buffer,
-and we don't have an skb to queue (darg.skb points to the ciphertext
-skb for access to metadata like length).
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
 
-Only data records are allowed zero-copy, and we break the processing
-loop after each non-data record. So we should never zero-copy and
-then find out that the record type has changed. The corner case
-we missed is when the initial record comes from rx_list, and it's
-zero length.
-
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250820021952.143068-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1774,6 +1774,9 @@ int decrypt_skb(struct sock *sk, struct
- 	return tls_decrypt_sg(sk, NULL, sgout, &darg);
- }
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -992,7 +992,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
-+/* All records returned from a recvmsg() call must have the same type.
-+ * 0 is not a valid content type. Use it as "no type reported, yet".
-+ */
- static int tls_record_content_type(struct msghdr *msg, struct tls_msg *tlm,
- 				   u8 *control)
- {
-@@ -2017,8 +2020,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 	if (err < 0)
- 		goto end;
- 
-+	/* process_rx_list() will set @control if it processed any records */
- 	copied = err;
--	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
-+	if (len <= copied || rx_more ||
-+	    (control && control != TLS_RECORD_TYPE_DATA))
- 		goto end;
- 
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
 
 
 
