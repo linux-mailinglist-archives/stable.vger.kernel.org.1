@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714C3B35DA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BC9B36164
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 437833BE98C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4860A4E4465
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAB12F8BD9;
-	Tue, 26 Aug 2025 11:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396B222AE5D;
+	Tue, 26 Aug 2025 13:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RY73WWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X17dfBQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CB329D26A;
-	Tue, 26 Aug 2025 11:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8E218F2FC;
+	Tue, 26 Aug 2025 13:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208692; cv=none; b=Jp4jAjpJvgdrzhOE8Vja4vPVwFq6CUADqdH0WBQrI2Adj7RcC9s9TRDwy1TwFtJmz5uPCO4yRFYE2VZ38hHxaPobLqwMW/dU4JR2VrT2kak/P4TudXXwrMW0YZgbuI+0Xho4ZEemi0kgOVYAdku7t5uNxF3y+CcMubTd0WIAaZQ=
+	t=1756213713; cv=none; b=myab8YdwBveC296E8HrLh4+3vq8WZEM42cVIrMeW6fe5mYXJn7mOTWzmDr6UsWRxtup37dlHzEH/xLU8dq5r8po+kJ3Dz7HtehSgR/Z8oqXskyoO/OQM6PbjFfCp9jy64uiwShccMtH2XdSs5TMOpG5y+c6wS9d+QsLSodEq0sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208692; c=relaxed/simple;
-	bh=j3AONzOvK1YDmmEx2oHeocH/D03t0fU0+XlEJxRR7FA=;
+	s=arc-20240116; t=1756213713; c=relaxed/simple;
+	bh=jfPdBYrQkkZ5/a/O3BkbtwZczuPeTiyUxG+BwtH6CEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0+0kJt+9b/DFjAwq++ISryPYkbJdYcOAGJjm4Bj5ulp/9E2cJRxh1SXUYlUYXSouNH6f8s0eheeNW2lILh9PNtl1Aogw7cAtelWIxSnnXEpo/Q4bKDK6cIWjfdV5ax2MxI3Cfr/xPLrEZ91rz26e1pCxEbQbeJtSAy/H/V6kM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RY73WWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBB5C4CEF1;
-	Tue, 26 Aug 2025 11:44:51 +0000 (UTC)
+	 MIME-Version; b=r7beguCOIKaTU5VDhRn6ZbLZhks7RphDN3yFkRZj0e+pyNzU6wOFyBYphVRtrMi/VeJga3IqKihseO+Bdh1omQln9XT3AiHtMVEbF+pCb9so38Rc4sNhJ8/tWNuOm/FqnigIrpbQkd/OY+VUeuqLRlj6+T++svrSGqL2pzi4dao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X17dfBQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1B8C4CEF1;
+	Tue, 26 Aug 2025 13:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208691;
-	bh=j3AONzOvK1YDmmEx2oHeocH/D03t0fU0+XlEJxRR7FA=;
+	s=korg; t=1756213712;
+	bh=jfPdBYrQkkZ5/a/O3BkbtwZczuPeTiyUxG+BwtH6CEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RY73WWLVn14MCQ8tf7IqKzVLx0KfDGxMRPux5QMBEvTr2qnxtQWGq8mqARWRo1KF
-	 nFkxSaKgGkgDvHwR4A2DakJeluIzE7S/yE9vyZkltKfLIjB5xg/lqM4OktPVXJMR7R
-	 FPanUJlZsMU0605LW6vxe6KQFw+LO0J9vl7FrlBU=
+	b=X17dfBQ2Lh9gHq1aMSW6VVnDo7WMCFrO9Ccs1FZKAh1RilU+wq+88TccTllrmZHhJ
+	 fH8VJXrSE70ywJR+xNOcrCFQTDj20UXI1jHQqGEAKcPc6US5pTSoDEAWBRoH6e5f18
+	 uhNwv2o2ndlCeE4JnG3UCGXhS7wxZ8dGKeLsgqd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alistair Delva <adelva@google.com>
-Subject: [PATCH 6.12 178/322] kvm: retry nx_huge_page_recovery_thread creation
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 444/587] btrfs: dont ignore inode missing when replaying log tree
 Date: Tue, 26 Aug 2025 13:09:53 +0200
-Message-ID: <20250826110920.258061084@linuxfoundation.org>
+Message-ID: <20250826111004.250775573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 916b7f42b3b3b539a71c204a9b49fdc4ca92cd82 upstream.
+[ Upstream commit 7ebf381a69421a88265d3c49cd0f007ba7336c9d ]
 
-A VMM may send a non-fatal signal to its threads, including vCPU tasks,
-at any time, and thus may signal vCPU tasks during KVM_RUN.  If a vCPU
-task receives the signal while its trying to spawn the huge page recovery
-vhost task, then KVM_RUN will fail due to copy_process() returning
--ERESTARTNOINTR.
+During log replay, at add_inode_ref(), we return -ENOENT if our current
+inode isn't found on the subvolume tree or if a parent directory isn't
+found. The error comes from btrfs_iget_logging() <- btrfs_iget() <-
+btrfs_read_locked_inode().
 
-Rework call_once() to mark the call complete if and only if the called
-function succeeds, and plumb the function's true error code back to the
-call_once() invoker.  This provides userspace with the correct, non-fatal
-error code so that the VMM doesn't terminate the VM on -ENOMEM, and allows
-subsequent KVM_RUN a succeed by virtue of retrying creation of the NX huge
-page task.
+The single caller of add_inode_ref(), replay_one_buffer(), ignores an
+-ENOENT error because it expects that error to mean only that a parent
+directory wasn't found and that is ok.
 
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[implemented the kvm user side]
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Message-ID: <20250227230631.303431-3-kbusch@meta.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Alistair Delva <adelva@google.com>
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling during
+log replay") we were converting any error when getting a parent directory
+to -ENOENT and any error when getting the current inode to -EIO, so our
+caller would fail log replay in case we can't find the current inode.
+After that commit however in case the current inode is not found we return
+-ENOENT to the caller and therefore it ignores the critical fact that the
+current inode was not found in the subvolume tree.
+
+Fix this by converting -ENOENT to 0 when we don't find a parent directory,
+returning -ENOENT when we don't find the current inode and making the
+caller, replay_one_buffer(), not ignore -ENOENT anymore.
+
+Fixes: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
+CC: stable@vger.kernel.org # 6.16
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted btrfs_inode pointer usage to older inode API ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c    |   10 ++++------
- include/linux/call_once.h |   43 ++++++++++++++++++++++++++++++++-----------
- 2 files changed, 36 insertions(+), 17 deletions(-)
+ fs/btrfs/tree-log.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7578,7 +7578,7 @@ static bool kvm_nx_huge_page_recovery_wo
- 	return true;
- }
- 
--static void kvm_mmu_start_lpage_recovery(struct once *once)
-+static int kvm_mmu_start_lpage_recovery(struct once *once)
- {
- 	struct kvm_arch *ka = container_of(once, struct kvm_arch, nx_once);
- 	struct kvm *kvm = container_of(ka, struct kvm, arch);
-@@ -7590,12 +7590,13 @@ static void kvm_mmu_start_lpage_recovery
- 				      kvm, "kvm-nx-lpage-recovery");
- 
- 	if (IS_ERR(nx_thread))
--		return;
-+		return PTR_ERR(nx_thread);
- 
- 	vhost_task_start(nx_thread);
- 
- 	/* Make the task visible only once it is fully started. */
- 	WRITE_ONCE(kvm->arch.nx_huge_page_recovery_thread, nx_thread);
-+	return 0;
- }
- 
- int kvm_mmu_post_init_vm(struct kvm *kvm)
-@@ -7603,10 +7604,7 @@ int kvm_mmu_post_init_vm(struct kvm *kvm
- 	if (nx_hugepage_mitigation_hard_disabled)
- 		return 0;
- 
--	call_once(&kvm->arch.nx_once, kvm_mmu_start_lpage_recovery);
--	if (!kvm->arch.nx_huge_page_recovery_thread)
--		return -ENOMEM;
--	return 0;
-+	return call_once(&kvm->arch.nx_once, kvm_mmu_start_lpage_recovery);
- }
- 
- void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
---- a/include/linux/call_once.h
-+++ b/include/linux/call_once.h
-@@ -26,20 +26,41 @@ do {									\
- 	__once_init((once), #once, &__key);				\
- } while (0)
- 
--static inline void call_once(struct once *once, void (*cb)(struct once *))
-+/*
-+ * call_once - Ensure a function has been called exactly once
-+ *
-+ * @once: Tracking struct
-+ * @cb: Function to be called
-+ *
-+ * If @once has never completed successfully before, call @cb and, if
-+ * it returns a zero or positive value, mark @once as completed.  Return
-+ * the value returned by @cb
-+ *
-+ * If @once has completed succesfully before, return 0.
-+ *
-+ * The call to @cb is implicitly surrounded by a mutex, though for
-+ * efficiency the * function avoids taking it after the first call.
-+ */
-+static inline int call_once(struct once *once, int (*cb)(struct once *))
- {
--        /* Pairs with atomic_set_release() below.  */
--        if (atomic_read_acquire(&once->state) == ONCE_COMPLETED)
--                return;
-+	int r, state;
- 
--        guard(mutex)(&once->lock);
--        WARN_ON(atomic_read(&once->state) == ONCE_RUNNING);
--        if (atomic_read(&once->state) != ONCE_NOT_STARTED)
--                return;
-+	/* Pairs with atomic_set_release() below.  */
-+	if (atomic_read_acquire(&once->state) == ONCE_COMPLETED)
-+		return 0;
- 
--        atomic_set(&once->state, ONCE_RUNNING);
--        cb(once);
--        atomic_set_release(&once->state, ONCE_COMPLETED);
-+	guard(mutex)(&once->lock);
-+	state = atomic_read(&once->state);
-+	if (unlikely(state != ONCE_NOT_STARTED))
-+		return WARN_ON_ONCE(state != ONCE_COMPLETED) ? -EINVAL : 0;
-+
-+	atomic_set(&once->state, ONCE_RUNNING);
-+	r = cb(once);
-+	if (r < 0)
-+		atomic_set(&once->state, ONCE_NOT_STARTED);
-+	else
-+		atomic_set_release(&once->state, ONCE_COMPLETED);
-+	return r;
- }
- 
- #endif /* _LINUX_CALL_ONCE_H */
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1422,6 +1422,8 @@ static noinline int add_inode_ref(struct
+ 		btrfs_dir = btrfs_iget_logging(parent_objectid, root);
+ 		if (IS_ERR(btrfs_dir)) {
+ 			ret = PTR_ERR(btrfs_dir);
++			if (ret == -ENOENT)
++				ret = 0;
+ 			dir = NULL;
+ 			goto out;
+ 		}
+@@ -1455,6 +1457,15 @@ static noinline int add_inode_ref(struct
+ 				if (IS_ERR(btrfs_dir)) {
+ 					ret = PTR_ERR(btrfs_dir);
+ 					dir = NULL;
++					/*
++					 * A new parent dir may have not been
++					 * logged and not exist in the subvolume
++					 * tree, see the comment above before
++					 * the loop when getting the first
++					 * parent dir.
++					 */
++					if (ret == -ENOENT)
++						ret = 0;
+ 					goto out;
+ 				}
+ 				dir = &btrfs_dir->vfs_inode;
+@@ -2623,9 +2634,8 @@ static int replay_one_buffer(struct btrf
+ 			   key.type == BTRFS_INODE_EXTREF_KEY) {
+ 			ret = add_inode_ref(wc->trans, root, log, path,
+ 					    eb, i, &key);
+-			if (ret && ret != -ENOENT)
++			if (ret)
+ 				break;
+-			ret = 0;
+ 		} else if (key.type == BTRFS_EXTENT_DATA_KEY) {
+ 			ret = replay_one_extent(wc->trans, root, path,
+ 						eb, i, &key);
 
 
 
