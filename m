@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF31B36167
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BA0B36700
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E2E2A1B7A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B77981D8D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA8221CC4D;
-	Tue, 26 Aug 2025 13:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF70A352060;
+	Tue, 26 Aug 2025 13:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3yep2LH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcL4Lxpm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC284230BF8;
-	Tue, 26 Aug 2025 13:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B58A34320F;
+	Tue, 26 Aug 2025 13:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213459; cv=none; b=jTQ8FnfBLsE1MdZME1q7i+aPED5/yiWWJNu6dKbEBvbPfIv41EzquQOwKqr2QvLu8FmVSyU6zZ5v3CGN72cFZgXXceXGqdEXoMa/7XAgbahPzEvhmZEIBCwTXPIDEFhAF0yVTkxSiuQgrd1mCZ6aWgwrkYcjsjQJiuH9X39B9eI=
+	t=1756216442; cv=none; b=jUP7b3/TvbwGt3pEDFRaOyrRLpbauaRpgGRpoQm1W5SpadX6wnKSKUz9LZ5uQMoR5c0zeuuS6fcY6JRzLNGYUYqRsnWTXCt7B12pWXnk/ypelbMvnX2+OrPHtkk6xGGnfUCCJz/VR1TTPrDbu37kaT3ubKu+e3ecgfKHnpfOUdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213459; c=relaxed/simple;
-	bh=PF+sJVv5DSo8klTV+5dFFxWm/aSsnAZMixcGRio5/k4=;
+	s=arc-20240116; t=1756216442; c=relaxed/simple;
+	bh=k6SlhydMQT+BFLzQwH1pj4urcutpXL31L7O38s1HSm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4EwpNjMaD0a6FF1z6rbchiN8VBRqgINIY+nv8vmyPJLpE7gwFNQo/s7KNd7CUDOPtGH1RLe7ZD2qk8EMxyn3m0hqEwkhyEiRrU7mmoGfy/RLmscbEQxOOYXbfn6IJb6rXJ/gfGYzk3OFcXYYrgJH9ENXK0nW12FC4VoHyLqibo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3yep2LH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC3BC4CEF1;
-	Tue, 26 Aug 2025 13:04:18 +0000 (UTC)
+	 MIME-Version; b=RsOh2yxNmHjkOTtV+PGVowk+azlGtjPy46CLqNQhHGTg0t92dXfIVwnyDXcYU9nk6h0mYaoRUB7bABXAdvsiEOou4OwVxcG7Tj4X4ve8RV16JAdozOhjxuX+m1egAedmPfhWawmtpSFKBOMAsA/z26P0tVV47Yby+HjHJnw28kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcL4Lxpm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2913C4CEF1;
+	Tue, 26 Aug 2025 13:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213458;
-	bh=PF+sJVv5DSo8klTV+5dFFxWm/aSsnAZMixcGRio5/k4=;
+	s=korg; t=1756216442;
+	bh=k6SlhydMQT+BFLzQwH1pj4urcutpXL31L7O38s1HSm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3yep2LHIYCLbhg/gWCuOmPEAdFOkoMOdxH/RpJTVFaF4kWc1QWpj3EftE6MR4kRc
-	 mcNOnDVRkzTfRCi85p1h6iwuSFiCQe+hqVMe5hFQqjS8ZuWzwrzYf3lkBh2jhPTVW0
-	 vz3+92WHwMtLFabPiIwMdnpE+XQ0uAEbAqVBKBF4=
+	b=HcL4Lxpm4Yj+Z3rjzLrE+3RTX6iXbsvQGhA0zRy1bchZAPFqdZ3T9QU/FmS5k+ugW
+	 3Zd8ErWgw0u7uUn8hJqpdwdt0iV8oqMtTYaX+kyE6T+YJaC74Ryc92iDch1pmrf3LK
+	 GeWk1J1W31vFUcsY0eqdL7ooRECXT7nC1kZFG+gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.6 355/587] arm64: dts: ti: k3-pinctrl: Enable Schmitt Trigger by default
+	kernel test robot <lkp@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 413/644] i3c: add missing include to internal header
 Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826111001.944247225@linuxfoundation.org>
+Message-ID: <20250826110956.691354139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 5b272127884bded21576a6ddceca13725a351c63 upstream.
+[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
 
-Switch Schmitt Trigger functions for PIN_INPUT* macros by default. This is
-HW PoR configuration, the slew rate requirements without ST enabled are
-pretty tough for these devices. We've noticed spurious GPIO interrupts even
-with noise-free edges but not meeting slew rate requirements (3.3E+6 V/s
-for 3.3v LVCMOS).
+LKP found a random config which failed to build because IO accessors
+were not defined:
 
-It's not obvious why one might want to disable the PoR-enabled ST on any
-pin. Just enable it by default. As it's not possible to provide OR-able
-macros to disable the ST, shall anyone require it, provide a set of
-new macros with _NOST suffix.
+   In file included from drivers/i3c/master.c:21:
+   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
+>> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
 
-Fixes: fe49f2d776f7 ("arm64: dts: ti: Use local header for pinctrl register values")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20250701105437.3539924-1-alexander.sverdlin@siemens.com
-[vigneshr@ti.com: Add Fixes tag]
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the proper header to where the IO accessors are used.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-pinctrl.h |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/i3c/internals.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
-+++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
-@@ -8,11 +8,16 @@
- #ifndef DTS_ARM64_TI_K3_PINCTRL_H
- #define DTS_ARM64_TI_K3_PINCTRL_H
+diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+index 86b7b44cfca2..1906c711f38a 100644
+--- a/drivers/i3c/internals.h
++++ b/drivers/i3c/internals.h
+@@ -9,6 +9,7 @@
+ #define I3C_INTERNALS_H
  
-+#define ST_EN_SHIFT		(14)
- #define PULLUDEN_SHIFT		(16)
- #define PULLTYPESEL_SHIFT	(17)
- #define RXACTIVE_SHIFT		(18)
- #define DEBOUNCE_SHIFT		(11)
+ #include <linux/i3c/master.h>
++#include <linux/io.h>
  
-+/* Schmitt trigger configuration */
-+#define ST_DISABLE		(0 << ST_EN_SHIFT)
-+#define ST_ENABLE		(1 << ST_EN_SHIFT)
-+
- #define PULL_DISABLE		(1 << PULLUDEN_SHIFT)
- #define PULL_ENABLE		(0 << PULLUDEN_SHIFT)
+ extern struct bus_type i3c_bus_type;
  
-@@ -26,9 +31,13 @@
- #define PIN_OUTPUT		(INPUT_DISABLE | PULL_DISABLE)
- #define PIN_OUTPUT_PULLUP	(INPUT_DISABLE | PULL_UP)
- #define PIN_OUTPUT_PULLDOWN	(INPUT_DISABLE | PULL_DOWN)
--#define PIN_INPUT		(INPUT_EN | PULL_DISABLE)
--#define PIN_INPUT_PULLUP	(INPUT_EN | PULL_UP)
--#define PIN_INPUT_PULLDOWN	(INPUT_EN | PULL_DOWN)
-+#define PIN_INPUT		(INPUT_EN | ST_ENABLE | PULL_DISABLE)
-+#define PIN_INPUT_PULLUP	(INPUT_EN | ST_ENABLE | PULL_UP)
-+#define PIN_INPUT_PULLDOWN	(INPUT_EN | ST_ENABLE | PULL_DOWN)
-+/* Input configurations with Schmitt Trigger disabled */
-+#define PIN_INPUT_NOST		(INPUT_EN | PULL_DISABLE)
-+#define PIN_INPUT_PULLUP_NOST	(INPUT_EN | PULL_UP)
-+#define PIN_INPUT_PULLDOWN_NOST	(INPUT_EN | PULL_DOWN)
- 
- #define PIN_DEBOUNCE_DISABLE	(0 << DEBOUNCE_SHIFT)
- #define PIN_DEBOUNCE_CONF1	(1 << DEBOUNCE_SHIFT)
+-- 
+2.39.5
+
 
 
 
