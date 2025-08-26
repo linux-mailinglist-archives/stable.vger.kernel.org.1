@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-172998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61114B35B73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F02B36033
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBE6236328F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC5F57A8D26
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A862BF3E2;
-	Tue, 26 Aug 2025 11:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC521DD0D4;
+	Tue, 26 Aug 2025 12:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoSE92rX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAz9jipA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D652248A5;
-	Tue, 26 Aug 2025 11:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906E1A00F0;
+	Tue, 26 Aug 2025 12:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207110; cv=none; b=n3K/agkMcMPDmW68wSd5bI8wy8kl9k7hV47G6Ef9eqXOgEJ2yML1W41l4BMCKv8+BmN+zzas8/3fpE4yRry8nXOaLTUKW0zk2Jiy0iWpRn8WsJN1TwAKYLrUm1g0WiLDLx1w/9cU0CVs2gv3xHVBKdCtWGHh43jDWr3azonadJ0=
+	t=1756213091; cv=none; b=URwNgyj6LpTRN0S8moquM1gAqg14zt6wE5gmf/AB6VxCOkT57XMZs4VebqOfgQ9cpTXvCDfeyqo33YN+P1WLg+dbDQghHmUO2Vey/uxsdg723MJJuM+pQQ26yJCzhtPeLAelnB/4u1+yjaKYMqUoP61LjMvMYM9MJKcEptCPjUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207110; c=relaxed/simple;
-	bh=HsK3WOmfhtUQJZa6/l4Fk+Gz9wB2CKayUsiNRsZM2Jg=;
+	s=arc-20240116; t=1756213091; c=relaxed/simple;
+	bh=Pf2Cf+L1yoTxGqpaB+jMpziwKJ0hAk+Hpn/hyA6/axQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RTh5vBSqa7dY6Zk8Mmv4Xe3QZlvOeYiSviEgd4CCLSyHd3y2Djln3RLMlfaOe1UAwWS2DruNxALgDRVrrUqTvQynqTmKNu6hbHBHmr1A8dqFbDxFsaz+62CgUu0q4iqNnUNyAQZMjNJ/SNpeHbTgd3TCLB7E3KKd1VaxidkpQnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoSE92rX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9DDC4CEF1;
-	Tue, 26 Aug 2025 11:18:29 +0000 (UTC)
+	 MIME-Version; b=oPA3tD9g6tkAGXhwiaR146KoPRBv1DRdKvhym/LFCn7gmoTYm0q4mnfxWQE9sj+ExKfHDG22MKqRpDIeLtW+lTdv+ftD2lhDNV6IrgKCV4pPB982j/MJE9qgKmt0MKbTYBYx0lq3QqSvDHQVGamSIl1FCTo0fj6c9/mPC/AbqTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAz9jipA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B75BC4CEF1;
+	Tue, 26 Aug 2025 12:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207110;
-	bh=HsK3WOmfhtUQJZa6/l4Fk+Gz9wB2CKayUsiNRsZM2Jg=;
+	s=korg; t=1756213090;
+	bh=Pf2Cf+L1yoTxGqpaB+jMpziwKJ0hAk+Hpn/hyA6/axQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoSE92rXMdMYakXXgvuBKJrESihFl+8pRvX+q+KM1sz72wmTkNqmR+7hlsYReZ165
-	 E3O62HabnesYcY9i+w4xji1N9OYXW1Gwk0Or9pPwd8HfGCFf2UQk3zFB1RdM5Vt2QQ
-	 AuICI3549jH8UlgeaMpbHMYSkSE32/gWfChM0zPU=
+	b=EAz9jipAODo1zfZdXF+IDwVvmjUjA9WRuwC2IuadLsj8gs2iM+UxVtEZHvzddQQV8
+	 nF670NL5ycj5iiJKLPHtLhUKjo90cQoeABZpnExXVTRvLersH28RwFd1mbtO32TPMq
+	 DScjkfbKmjHFcSxxQvPncPxvaqv+Qlt/3Ougvpmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will McVicker <willmcvicker@google.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.16 055/457] arm64: dts: exynos: gs101: ufs: add dma-coherent property
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 190/587] wifi: iwlegacy: Check rate_idx range after addition
 Date: Tue, 26 Aug 2025 13:05:39 +0200
-Message-ID: <20250826110938.714094373@linuxfoundation.org>
+Message-ID: <20250826110957.776048729@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Stanislaw Gruszka <stf_xl@wp.pl>
 
-commit 4292564c71cffd8094abcc52dd4840870d05cd30 upstream.
+[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
 
-ufs-exynos driver configures the sysreg shareability as
-cacheable for gs101 so we need to set the dma-coherent
-property so the descriptors are also allocated cacheable.
+Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
+the index is incorrect.
 
-This fixes the UFS stability issues we have seen with
-the upstream UFS driver on gs101.
-
-Fixes: 4c65d7054b4c ("arm64: dts: exynos: gs101: Add ufs and ufs-phy dt nodes")
-Cc: stable@vger.kernel.org
-Suggested-by: Will McVicker <willmcvicker@google.com>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Tested-by: André Draszik <andre.draszik@linaro.org>
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250314-ufs-dma-coherent-v1-1-bdf9f9be2919@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reported-by: Alexei Safin <a.safin@rosa.ru>
+Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/exynos/google/gs101.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-+++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-@@ -1371,6 +1371,7 @@
- 				 <&cmu_hsi2 CLK_GOUT_HSI2_SYSREG_HSI2_PCLK>;
- 			clock-names = "core_clk", "sclk_unipro_main", "fmp",
- 				      "aclk", "pclk", "sysreg";
-+			dma-coherent;
- 			freq-table-hz = <0 0>, <0 0>, <0 0>, <0 0>, <0 0>, <0 0>;
- 			pinctrl-0 = <&ufs_rst_n &ufs_refclk_out>;
- 			pinctrl-names = "default";
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 0a4aa3c678c1..75118e240619 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
+ 	    || rate_idx > RATE_COUNT_LEGACY)
+ 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
+ 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
+-	if (info->band == NL80211_BAND_5GHZ)
++	if (info->band == NL80211_BAND_5GHZ) {
+ 		rate_idx += IL_FIRST_OFDM_RATE;
++		if (rate_idx > IL_LAST_OFDM_RATE)
++			rate_idx = IL_LAST_OFDM_RATE;
++	}
+ 	/* Get PLCP rate for tx_cmd->rate_n_flags */
+ 	rate_plcp = il_rates[rate_idx].plcp;
+ 	/* Zero out flags for this packet */
+-- 
+2.39.5
+
 
 
 
