@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E095DB36A59
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5DCB36111
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C4188E5BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0775E1D77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E643570A7;
-	Tue, 26 Aug 2025 14:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF141AB52D;
+	Tue, 26 Aug 2025 13:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC9VFj1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Ihs48s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC1C3568F8;
-	Tue, 26 Aug 2025 14:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0232BAF7;
+	Tue, 26 Aug 2025 13:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217701; cv=none; b=rN/Bokh2lbZzWmJfoPtPZw32xbZ41xxBo8BotUemTlUIHhvcmmz1whpy6XdRxzdXBDw79eEdlVz9P0MFetneADJePN8WvmJbjmGUCqX1cFR4vXRttZkmAwjIVYv/vH/ORVG/xifoQMGRhBGuCyFfwtyqPYm8tymnZ6H68tbU5GU=
+	t=1756213322; cv=none; b=lcoxoLc2y3hVR3Ki2vg3srInSPKyvEkaDFqnlkw10wf2THIszUIAk4b4esA371hcO8ktdpNogl1AmM0mD2ZpitDu3ZnHHEbulQwP6xW2z20mSfYJAeFolZdbQ4dfwx35z+wxUbXpUoKxPSowGayobzZJnsTbJ3U5g8aiRYb5qRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217701; c=relaxed/simple;
-	bh=DOexs8crp6RQmpdjitHE1l6IqmAVlxYnGS38QHxMHtA=;
+	s=arc-20240116; t=1756213322; c=relaxed/simple;
+	bh=8wrf5EBOjtsoH69hGZyrFMH93Q1oZYQJD2zL9gfXoP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uty7L4jF8jpW+f0+p5JjCKxLF+yYE4t/ux7ehGZVpO8iWLZbmQhLEPoEhpGwfS8eV8M69jL+CrVhnUX7zI/1vCnLqsOp9wSkwIkDrhBYca76jX8r6M8yl/sy7ieVKyP8i5EVbziKRxsGeKZaZoRJl/Rfsqt4TaJBP+zAVrdhwa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC9VFj1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D573FC113D0;
-	Tue, 26 Aug 2025 14:15:00 +0000 (UTC)
+	 MIME-Version; b=IIsRRkMddkg8DxwN/CAijV5Qen8tCFM3tlgCc5Ac6yjygIoXaEEO2bN1K82XaBRVsKDNcalRHH0BgsB4iqkICv5dGt90+KBxMpTvSDndWQ09zbJP3dGDuWL+Au2RLBF2A+jGGFleoM7uBcyrov7FRIfF3v4HuyZh7O6WQ9hpmtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Ihs48s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA3CC4CEF1;
+	Tue, 26 Aug 2025 13:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217701;
-	bh=DOexs8crp6RQmpdjitHE1l6IqmAVlxYnGS38QHxMHtA=;
+	s=korg; t=1756213322;
+	bh=8wrf5EBOjtsoH69hGZyrFMH93Q1oZYQJD2zL9gfXoP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QC9VFj1xv/2OJnq4VzYWFfiqQc1B3zFI2C7anGcZvYcgrEBspWXtC5ZXkkl964CE9
-	 3hnmYoH7JEOPyHDB1LWzWk0KH5q+StkyMA2YrjFUPwH4h5X25NMHpPhfk+MwTASDKS
-	 ubegaPoEX25IR6XHZ4JrmUMDkr+SlE7Kuu0sU3XY=
+	b=g8Ihs48sWq37ljvA/mL0dXwdapficlilXpyBiKe9pIjpSWusM+XwLnVk2vjjgh9FU
+	 zO1iePh/r/YGhzNo8GDNezqDgbydSDoNF30dJ6KD3rojKN0UIrLXVcVt9UW62TuaEt
+	 jS0XrMqI9EO5n4nJ2ZCtz0wRioNyqjD1qBp+rj9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/523] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
-Date: Tue, 26 Aug 2025 13:07:33 +0200
-Message-ID: <20250826110930.434083536@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 305/587] usb: typec: ucsi: Update power_supply on power role change
+Date: Tue, 26 Aug 2025 13:07:34 +0200
+Message-ID: <20250826111000.680241284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
+commit 7616f006db07017ef5d4ae410fca99279aaca7aa upstream.
 
-In the error path of sd_set_power_mode() we don't update host->power_mode,
-which could lead to an imbalance of the runtime PM usage count. Fix this by
-always updating host->power_mode.
+The current power direction of an USB-C port also influences the
+power_supply's online status, so a power role change should also update
+the power_supply.
 
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Ricky Wu <ricky_wu@realtek.com>
-Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes an issue on some systems where plugging in a normal USB device in
+for the first time after a reboot will cause upower to erroneously
+consider the system to be connected to AC power.
+
+Cc: stable <stable@kernel.org>
+Fixes: 0e6371fbfba3 ("usb: typec: ucsi: Report power supply changes")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250721-fix-ucsi-pwr-dir-notify-v1-1-e53d5340cb38@qtmlabs.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
-index 1be3a355f10d..ab7023d956eb 100644
---- a/drivers/mmc/host/rtsx_usb_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
-@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
- 		err = sd_power_on(host);
- 	}
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -910,6 +910,7 @@ static void ucsi_handle_connector_change
  
--	if (!err)
--		host->power_mode = power_mode;
--
-+	host->power_mode = power_mode;
- 	return err;
- }
+ 	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
+ 		typec_set_pwr_role(con->port, role);
++		ucsi_port_psy_changed(con);
  
--- 
-2.39.5
-
+ 		/* Complete pending power role swap */
+ 		if (!completion_done(&con->complete))
 
 
 
