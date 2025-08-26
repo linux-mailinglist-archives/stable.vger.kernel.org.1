@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1393B363ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DBB36168
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270C31C200E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69CCB1BA79E4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F2828750C;
-	Tue, 26 Aug 2025 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEA3242D7B;
+	Tue, 26 Aug 2025 13:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLu6tpll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SemD0CdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D551B87E8;
-	Tue, 26 Aug 2025 13:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD7242D6A;
+	Tue, 26 Aug 2025 13:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214843; cv=none; b=ZIL1TDYQrrQILkx3fTV28g7qHuG87/6zzNmfSb542/iaFgdiH+fn76M29WiGaayLbjIXAxd200F4cw7Kvp0j0FC1L+N99k/axuYr/ETpeqHg3LjVMh6ef5J9ccriUFlQTeUJPYsF/OT2VMfM1n69pG0ZTcz2dLTbrSqBu0dxnqg=
+	t=1756213541; cv=none; b=rKM7bm8ueHlnYBpWt4MmwFq5sT21oTPEY+LJRtz+68zxO0XQt5XukBMyEIuV+itGMCCBu1YvQ3IWhw9cCVzopDcYkLKrs+kjRaVjFIt2aBRDmdrw4ogtRstUsXb7YLmCVslnCX9uaxalRF8Kd6VzguvGyQrg8sIpULW3wYUQeHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214843; c=relaxed/simple;
-	bh=Xlwh5gH0hIHPNopa+81bkq2h0umSmxAuIPR7ZBZ9hjc=;
+	s=arc-20240116; t=1756213541; c=relaxed/simple;
+	bh=7obho7UFx38bScCwidz5bZTIrbg9wrbYGkgaR842tZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=he718KFe+1hDkS2LkQVrJDOJSkpiSEDs7zjZIiV8LV/VwpJPwQ8mkiOBO/FkNpWDhIpD2CZO3cGBN22dsPHIUhD7yCiXo4LjBYCpo0CAkCA71SznXmttRPPcP6KyFdnnEx433AWAgNVWuBp2dan5vLIG4QIsEAI05diXnyKKRao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLu6tpll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E73C4CEF1;
-	Tue, 26 Aug 2025 13:27:22 +0000 (UTC)
+	 MIME-Version; b=jYD3BTRqoONomvmaTW5M9HG7cZk9IM/t1uKxmHQ0VcjJytNDJG1Z6ZRaWit9qeIK5kxjYa1MD0YzcEgRTjbZ7r7SuAt/dj3mrU6t7vxVifCk6rSAEbsV6YQu7sMMnGTYX+WIe5uvfxszQTMJSr/74E+J0VyW6BN9h4lXInz1AgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SemD0CdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DADC19421;
+	Tue, 26 Aug 2025 13:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214843;
-	bh=Xlwh5gH0hIHPNopa+81bkq2h0umSmxAuIPR7ZBZ9hjc=;
+	s=korg; t=1756213541;
+	bh=7obho7UFx38bScCwidz5bZTIrbg9wrbYGkgaR842tZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLu6tpllzmxh5FnsF+PDW7FJmm9YYR6PgiEfaQk3mq+v1IzJYXpp+8UZ+5WYfmLXc
-	 wbu4RaZgF6bQUf3Wh+ABk2vM5/WBsXThzrhvOqEtOsK16ugRgtb4eDr5mfUV8FPEt2
-	 FE8HRwtZXtU11vMdGXkgyBjyINmf9IddmOHgjmtI=
+	b=SemD0CdSFzE7OQ8vy5gXirTGajONH1GG82J3004up6SNK8TzfJ05cHwP9YbybgmCV
+	 ik3uXtAVoo4qMar+GsqIRgyt3xe/gpXYRR+MRY7OWDtBqcnsurNaRTQEqn1hcMswcG
+	 53rFIvack8OeFcS5Gbl2WkBhnB9xEpB/2CpobK5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 283/482] ext4: dont try to clear the orphan_present feature block device is r/o
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.6 387/587] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
 Date: Tue, 26 Aug 2025 13:08:56 +0200
-Message-ID: <20250826110937.775768055@linuxfoundation.org>
+Message-ID: <20250826111002.758593819@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Will Deacon <will@kernel.org>
 
-commit c5e104a91e7b6fa12c1dc2d8bf84abb7ef9b89ad upstream.
+commit 10a886aaed293c4db3417951f396827216299e3d upstream.
 
-When the file system is frozen in preparation for taking an LVM
-snapshot, the journal is checkpointed and if the orphan_file feature
-is enabled, and the orphan file is empty, we clear the orphan_present
-feature flag.  But if there are pending inodes that need to be removed
-the orphan_present feature flag can't be cleared.
+vhost_vsock_alloc_skb() returns NULL for packets advertising a length
+larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
+this is only checked once the SKB has been allocated and, if the length
+in the packet header is zero, the SKB may not be freed immediately.
 
-The problem comes if the block device is read-only.  In that case, we
-can't process the orphan inode list, so it is skipped in
-ext4_orphan_cleanup().  But then in ext4_mark_recovery_complete(),
-this results in the ext4 error "Orphan file not empty on read-only fs"
-firing and the file system mount is aborted.
+Hoist the size check before the SKB allocation so that an iovec larger
+than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
+outright. The subsequent check on the length field in the header can
+then simply check that the allocated SKB is indeed large enough to hold
+the packet.
 
-Fix this by clearing the needs_recovery flag in the block device is
-read-only.  We do this after the call to ext4_load_and_init-journal()
-since there are some error checks need to be done in case the journal
-needs to be replayed and the block device is read-only, or if the
-block device containing the externa journal is read-only, etc.
-
-Cc: stable@kernel.org
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1108271
-Cc: stable@vger.kernel.org
-Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-2-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vhost/vsock.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5295,6 +5295,8 @@ static int __ext4_fill_super(struct fs_c
- 		err = ext4_load_and_init_journal(sb, es, ctx);
- 		if (err)
- 			goto failed_mount3a;
-+		if (bdev_read_only(sb->s_bdev))
-+		    needs_recovery = 0;
- 	} else if (test_opt(sb, NOLOAD) && !sb_rdonly(sb) &&
- 		   ext4_has_feature_journal_needs_recovery(sb)) {
- 		ext4_msg(sb, KERN_ERR, "required journal recovery "
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -340,6 +340,9 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 
+ 	len = iov_length(vq->iov, out);
+ 
++	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
++		return NULL;
++
+ 	/* len contains both payload and hdr */
+ 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+ 	if (!skb)
+@@ -363,8 +366,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 		return skb;
+ 
+ 	/* The pkt is too big or the length in the header is invalid */
+-	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
+-	    payload_len + sizeof(*hdr) > len) {
++	if (payload_len + sizeof(*hdr) > len) {
+ 		kfree_skb(skb);
+ 		return NULL;
+ 	}
 
 
 
