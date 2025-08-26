@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C30B363F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499D5B36695
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D4D1BC53FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2896B612F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61009334723;
-	Tue, 26 Aug 2025 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBFC34DCD2;
+	Tue, 26 Aug 2025 13:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aaNW1sB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT+gNtYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213CA23F439;
-	Tue, 26 Aug 2025 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103B9226861;
+	Tue, 26 Aug 2025 13:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214854; cv=none; b=Vr3+LihAQKsQa5Q8MdoRS8F+FXUZsoMJsRBfIS/Wb95c8JOonvR/J6bh1t2z+E9FjZySBXC8P3ptx0yAobLzmYEMrKQN/x8gMv7XEgerX7s9EqDIeLQP3rzJwVhAMVIxTgTKJOiH5cCj1+Xiw1ydE6k0oyjII3ApiWgpBFzjvmY=
+	t=1756216562; cv=none; b=ZEmxCoNH4ASeDTsPXUf8n9oLeECw+raNlqc5+o90+P+XeD92jKXK0dEkc96vHIUFq0sVBt7yX0dxZDZ0J55558yz544MPYQX5L5k5qYVguiNPRHnrgho5q+a/nyLrzu+HmzNLczeJZL8mcA9dLyO/Aw/sP2rWtCeWFeS54tvqTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214854; c=relaxed/simple;
-	bh=6BY4rau6xF24liU3SO0M+iI2lHsEYBIWZI3ZDVvRp/0=;
+	s=arc-20240116; t=1756216562; c=relaxed/simple;
+	bh=WjJwW2TaoAMGkd+Eh6mZA8WLl/ERSnTPztqHFPusT/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gojAkI+z7sfVso3AhBXGXUVWg7WktZalv+0Sr+/sSRmoeC3NLf6mMhMKfG/3R22cNqoUOnxLcjKrhbOi8cv2SYM/3F9qxGDaHujAEaJjRMnAjsyzZs/LG9Z15AnEiJvpJlmE27Ht+mbXI56d6jnFvOQ7tDWFI2q+HNg0EFWotvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aaNW1sB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACC1C4CEF1;
-	Tue, 26 Aug 2025 13:27:33 +0000 (UTC)
+	 MIME-Version; b=Onk/wLWcBRb4Lec+9a8CpwMtvPWAsUaSVEzH+pwDOAoTS6BnF7nldVY9RfqUHRZVGNbqw/trrMKlh6IvVcTG/+cPLGXy3HKdTTb0M8BnJ4ahN9Um519innO+pG/yWlFirRsZK7VSSkgjhCrsjMgys5DotO6PGIPAXE13HNX38v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT+gNtYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FD1C4CEF1;
+	Tue, 26 Aug 2025 13:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214854;
-	bh=6BY4rau6xF24liU3SO0M+iI2lHsEYBIWZI3ZDVvRp/0=;
+	s=korg; t=1756216561;
+	bh=WjJwW2TaoAMGkd+Eh6mZA8WLl/ERSnTPztqHFPusT/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aaNW1sBSq5F7nL5iTAdnOdPauHwu0087Xf3T6QuwqGzPM1Ra58yPN/LzjFqMY3+Q
-	 N26KzQozCFxNruK72ivCWupivc2Kn+3tthcN6DDDDUt1aVG5l0Z10R0JkI3/4rh0Ge
-	 VYwFJ9eIbkjnW7aLTA2Tro2D8fFCIQ86E9//ExlE=
+	b=cT+gNtYQkPRtUlsE14NnmwmRL38t1TEyDqRoj14ZieFiLzRzLwhhRfKivZEJGVrHD
+	 eE/EiSVXVn/enHncJ8dau8bxTSK7yKOhIrSeS8krhzvnff9pWohoBw19ay/Lq9U7lQ
+	 DzQSgTKJHLHHqW16luTHs/9Dax4WpbEKAEuGOJsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 6.1 295/482] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 5.15 457/644] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
 Date: Tue, 26 Aug 2025 13:09:08 +0200
-Message-ID: <20250826110938.080607973@linuxfoundation.org>
+Message-ID: <20250826110957.800603271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
+commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
 
-A new warning in clang [1] complains that diq_start in
-wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-wlc_lcnphy_common_read_table():
-
-  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   2728 |                                                      &diq_start, 1, 16, 69);
-        |                                                       ^~~~~~~~~
-
-The table pointer passed to wlc_lcnphy_common_read_table() should not be
-considered constant, as wlc_phy_read_table() is ultimately going to
-update it. Remove the const qualifier from the tbl_ptr to clear up the
-warning.
+The freq_tables[] array has num_possible_cpus() elements so, to avoid an
+out of bounds access, this loop should be capped at "< nb_cpus" instead
+of "<= nb_cpus".  The freq_tables[] array is allocated in
+armada_8k_cpufreq_init().
 
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
+ drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
- 
- static void
- wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
--			     const u16 *tbl_ptr, u32 tbl_len,
-+			     u16 *tbl_ptr, u32 tbl_len,
- 			     u32 tbl_width, u32 tbl_offset)
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -96,7 +96,7 @@ static void armada_8k_cpufreq_free_table
  {
- 	struct phytbl_info tab;
+ 	int opps_index, nb_cpus = num_possible_cpus();
+ 
+-	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
++	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
+ 		int i;
+ 
+ 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
