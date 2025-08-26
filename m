@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DB4B3685F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F62B36CD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39D93983F38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7315873C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3173A352FD2;
-	Tue, 26 Aug 2025 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE6334DCFE;
+	Tue, 26 Aug 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaJSuH5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO+IMw/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E031DE8BE;
-	Tue, 26 Aug 2025 14:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1EF34AAF8;
+	Tue, 26 Aug 2025 14:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216865; cv=none; b=skIEYJTexSbh1H1NS2RLWQcn+c+e9g2jLBurSmpuft8zBDEVbI832BsTxvknWiF7A13aU4BZuZrkVv9ONizkFDqZO9xPRipWMgS6/H4uxD3x4EQzGajuA2BaeOlaFCIdk2sFEGKHsxwEwS1d2LC+7rt3vkErtj4W+nLnoND/Nzw=
+	t=1756219237; cv=none; b=Q1UxkDPFTi5sfu3D3HlS+DbBMaMD+NbD/onmPLQoyHxpFxGDNnC75+eRvRESJdBAhLb8qlf5x4fu6VFvkU8ZmY9tMamMdbnfuGuEICoJkA+XaSpMvTdYElFKnmCSa21WaGIWcu89r3zRq5khtuqv135b6UeoOOvnBPF3a08m6W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216865; c=relaxed/simple;
-	bh=UxN8ETDZMknVOfCWssRjmkRvLBGojHQ8EVbbtitdO7k=;
+	s=arc-20240116; t=1756219237; c=relaxed/simple;
+	bh=pxPzXMhy/WdPbf7/OitDRUO5o+pRit7qw8HUHwYZV3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGkXilNQG8cMDDB63BV98ajfYvbPKKU7PmGh/aP50GyZuM+p9lpZ8zVAvM8Ayth00Kd9dtShrysHvsBorPJIGWXNkaeMf4XhsqQjOJT1nhZHJkry//1yhqJTIBLxYhcLul9I46OznBggpd58dBOjQnT+t7HhykIDZg8l3JG0vXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaJSuH5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A760C4CEF1;
-	Tue, 26 Aug 2025 14:01:04 +0000 (UTC)
+	 MIME-Version; b=uvbObQ7z0om1FS/KM2EAdybhVlHKcYH7AfVSjp/+UQ2K2jV9gnYwM6IB/sdTM4skdNY0/6ut5VAHF2HrQXVjITnYtUG59b0IXfnk7U8dJ3RH+g+tUHVg2NKlmFiGYCEe/PD5O8RXjwB3yKrGIX8Firf+YMdVivWho/4WyTow1xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO+IMw/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9E2C4CEF1;
+	Tue, 26 Aug 2025 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216864;
-	bh=UxN8ETDZMknVOfCWssRjmkRvLBGojHQ8EVbbtitdO7k=;
+	s=korg; t=1756219237;
+	bh=pxPzXMhy/WdPbf7/OitDRUO5o+pRit7qw8HUHwYZV3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UaJSuH5EimDBDNMXOAFm92R2Z+hAA/k2gdtJqnWXel6a8PN8bRip7FabI/AH5+go2
-	 Ms3Ev55CnQlAOAUug+BxpUmbxMiiBKiN5Cgc7XkbUKrbNpZb6IlRkD6MPW+EtS+MmS
-	 /LjDuKvncKMkGzrxtU8sAwdr/juoVsNmnT+rNm2U=
+	b=jO+IMw/IXJUdslKnbZW+FPpzqT/LYNDGfLMQppFu51miUbEWzLeDLDJj+zb530Fw8
+	 gBT9GSDcKS9NMS/b9pnQeL4rIQeKZYvtIm8d6nL35Uk29G47NXJzjp4aqVuAY/7gB5
+	 WoWRmwinIlWMIcjF7voYkx3w+Jylv65XBJ3PGtbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 540/644] platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()
+	Ludwig Disterhof <ludwig@disterhof.eu>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 305/403] media: usbtv: Lock resolution while streaming
 Date: Tue, 26 Aug 2025 13:10:31 +0200
-Message-ID: <20250826110959.897687764@linuxfoundation.org>
+Message-ID: <20250826110915.244060855@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Ludwig Disterhof <ludwig@disterhof.eu>
 
-[ Upstream commit e2374953461947eee49f69b3e3204ff080ef31b1 ]
+commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
 
-The blocking notifier is registered in cros_ec_register(); however, it
-isn't unregistered in cros_ec_unregister().
+When an program is streaming (ffplay) and another program (qv4l2)
+changes the TV standard from NTSC to PAL, the kernel crashes due to trying
+to copy to unmapped memory.
 
-Fix it.
+Changing from NTSC to PAL increases the resolution in the usbtv struct,
+but the video plane buffer isn't adjusted, so it overflows.
 
-Fixes: 42cd0ab476e2 ("platform/chrome: cros_ec: Query EC protocol version if EC transitions between RO/RW")
+Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
 Cc: stable@vger.kernel.org
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250722120513.234031-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -313,6 +313,9 @@ EXPORT_SYMBOL(cros_ec_register);
-  */
- void cros_ec_unregister(struct cros_ec_device *ec_dev)
- {
-+	if (ec_dev->mkbp_event_supported)
-+		blocking_notifier_chain_unregister(&ec_dev->event_notifier,
-+						   &ec_dev->notifier_ready);
- 	platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
- 	mutex_destroy(&ec_dev->lock);
+--- a/drivers/media/usb/usbtv/usbtv-video.c
++++ b/drivers/media/usb/usbtv/usbtv-video.c
+@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
+ 	}
+ 
+ 	if (params) {
++		if (vb2_is_busy(&usbtv->vb2q) &&
++		    (usbtv->width != params->cap_width ||
++		     usbtv->height != params->cap_height))
++			return -EBUSY;
+ 		usbtv->width = params->cap_width;
+ 		usbtv->height = params->cap_height;
+ 		usbtv->n_chunks = usbtv->width * usbtv->height
 
 
 
