@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D64B36715
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC1CB369D4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CBA1BC34C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6663987DE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB3F225390;
-	Tue, 26 Aug 2025 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D6435335B;
+	Tue, 26 Aug 2025 14:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrL2KNDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoNNLJ9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53872258A;
-	Tue, 26 Aug 2025 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8981F790F;
+	Tue, 26 Aug 2025 14:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216460; cv=none; b=lrO04R9EvGGaoP/S1B8mUizIUW95F6BximWdNdyNzNYD3pihwgry0lWJg9rZuRjgsjDEdHRLYxwuGFNf+e3E/x8UgL55q9+6y00buVaqsGSWjvoGLoeIwvBVR09rVGbH6rxD5eUbyjb2ccKq0iGtspUygVAmZ/YAwj2p6EOddQ4=
+	t=1756217963; cv=none; b=UccJeJdx44sb3AP6jTdmolGJfVz7oiOVOgoVqDqOlfNGXFan7vaEl3hedzgm9LG7WbTNkPvUl8OtXCrHbUapFh7zzrHdvrOgcMAIoZu967bX6iTHrjyiY2Z5ZaugGvFrwqRw+hZZzY5DktLLkVRfdtrkTujVA2LwTz9xwSjyC3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216460; c=relaxed/simple;
-	bh=CzBS4VRE3T9hPKxrLJmKWb/4/b8K2uKK+A9z1p1k//E=;
+	s=arc-20240116; t=1756217963; c=relaxed/simple;
+	bh=hkCJWuDow/y0+mVn9r4TIexTPeU+6OFZmPBFXntYUCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDwLaXNwTsBdWEvELdYEdV4w+Bqzv8KYp/sd7+MQIIO4i9JVQG2uDilC77ZdW6KLlme9/C9b0f2HDYzSKVaCXKKMmOsbKzqOqzTHA2nFhXRDMtB63azcYSnJCotAqPjp7JQ53pEXugyLIBChWPhe60t9BdsKyichU75e4iF8JCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrL2KNDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8416C4CEF1;
-	Tue, 26 Aug 2025 13:54:19 +0000 (UTC)
+	 MIME-Version; b=Zt0KBDrrvIpkOomGvvdhKST3husE21lmfzRTTMs/+oPMi9OMDusFwCiu4PyHvEzKCVwwW54ZAUMwjUsHo2WqxPFBFkpIQd9TccPy0p0tzoRvNgVMpJgROeqbNiylqEBjpFpd3bDf1R9x8s7bqxPY5ty2guF8O38BXZqvhMRQ1CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoNNLJ9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82485C113CF;
+	Tue, 26 Aug 2025 14:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216460;
-	bh=CzBS4VRE3T9hPKxrLJmKWb/4/b8K2uKK+A9z1p1k//E=;
+	s=korg; t=1756217962;
+	bh=hkCJWuDow/y0+mVn9r4TIexTPeU+6OFZmPBFXntYUCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrL2KNDA6crW28Wxpvj71iu/cvYbLRTrp65/452d7sfcnepBSq8RHlJKpxp1CUhrl
-	 S7IbbkGkwNTLFJq84cPLWXXIMYX+a6NQkuyMi4PrFaGbLYC8tcNXGBSCkOQNnVsVOC
-	 M29hF8IzmTwstS2vIIz/Wx+mV4q/NaDCVfZxSxr8=
+	b=GoNNLJ9tsrSwnTBHU3Uc+b35vmi/mGqwEtcwG8kpiM7+iLlj4Aoj+cN1zkiMTW+xs
+	 FNE7RYPskHKEMbKkF7nc8T8vjed1WmPr97x1bnJn11RXtIqxPN/xM3GYHzlU/CyD3/
+	 QHBjqQPWcaE+0l/X7y9ncova5c3KVBi2/xVkD/W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Nicolas Schier <n.schier@avm.de>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 419/644] kconfig: nconf: Ensure null termination where strncpy is used
+Subject: [PATCH 5.10 300/523] jfs: upper bound check of tree index in dbAllocAG
 Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110956.840780036@linuxfoundation.org>
+Message-ID: <20250826110931.852600229@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-strncpy() does not guarantee null-termination if the source string is
-longer than the destination buffer.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-Ensure the buffer is explicitly null-terminated to prevent potential
-string overflows or undefined behavior.
-
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Nicolas Schier <n.schier@avm.de>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/nconf.c     | 2 ++
- scripts/kconfig/nconf.gui.c | 1 +
- 2 files changed, 3 insertions(+)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 7b371bd7fb36..8b166ccb0447 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -585,6 +585,8 @@ static void item_add_str(const char *fmt, ...)
- 		tmp_str,
- 		sizeof(k_menu_items[index].str));
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 234b7cc4acfa..f34025cc9b05 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1457,6 +1457,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
-+	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
++	}
 +
- 	free_item(curses_menu_items[index]);
- 	curses_menu_items[index] = new_item(
- 			k_menu_items[index].str,
-diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
-index 9aedf40f1dc0..da06ea2afe08 100644
---- a/scripts/kconfig/nconf.gui.c
-+++ b/scripts/kconfig/nconf.gui.c
-@@ -349,6 +349,7 @@ int dialog_inputbox(WINDOW *main_window,
- 	x = (columns-win_cols)/2;
- 
- 	strncpy(result, init, *result_len);
-+	result[*result_len - 1] = '\0';
- 
- 	/* create the windows */
- 	win = newwin(win_lines, win_cols, y, x);
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
 2.39.5
 
