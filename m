@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BE6B36243
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38232B35E87
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159BB2027EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2058A46517C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E1C26158C;
-	Tue, 26 Aug 2025 13:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4F033A023;
+	Tue, 26 Aug 2025 11:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IB1J7pwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toejX20s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B379018F2FC;
-	Tue, 26 Aug 2025 13:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF0E321424;
+	Tue, 26 Aug 2025 11:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213877; cv=none; b=uxyML9BikJnPI5HK81DXabikqD2gdMJxS1468gsy8GFECPtiM9+n6H3kc6X8zocQF/OUmDlsGycf3Qzm+bjAYSIbqxZ0XuHvdDbFUxois9scxCbf5gLU0zReevM61PcDXUehPXJIi1oJeGzECdCehqLtkbGTPuzZeUg+qIBxbkQ=
+	t=1756208710; cv=none; b=EHdhy3o08jYsEAbtQNrfduONJQijWFpslNJeFwlnSr/GeL4n78OciFj/DbDKpDkVAlP17APTKqHLVY4nJqMNRYqXon45AGIsylpPG3b5mln+Zz7xUv2i7zb5EOsQmwqiq42A4yHaeVmc+YnIlEgzDZY/ys+pr+SGOvl1ytscl9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213877; c=relaxed/simple;
-	bh=nRxttC8r5Rzg9vH1XkZv7NnhqvkPCCxz1/gmVk2UxUo=;
+	s=arc-20240116; t=1756208710; c=relaxed/simple;
+	bh=88Ls/iMqzX6lfpMHfAEz+qexs7a0Gi24iEyoWyzsfR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ph25ig3ANkQrq98t85S02XQlQ9gYZiSwQLwpA/amv5LxwkjwblGWooF5zEWIn+k4UTFQo+8bgS9gb3unn/ErNj9tneHAL8194bbt3vga/6NoXydVFCHRdjKHyWXmzcE+paT5o5MjA4rJIVTw1VPbr0BZ1UZn9lYDjOPc/reEqaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IB1J7pwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382FCC4CEF1;
-	Tue, 26 Aug 2025 13:11:17 +0000 (UTC)
+	 MIME-Version; b=FbCXPpG/iaKAl0cXtQDBhvyivhufd1SOTM0ErVHCGnblFntfC9c6bRTDx37J7yi7wH9jPa2Nnhb+suLkG4pkBI6xiaU3jR3o8W4529EhXu+AL01ihu6PuAJFq6Eb1TpnRxeQ5XJrk+V1zp1TWUn6nnGCGY7pbc8hztmy4upp0mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toejX20s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D24C4CEF1;
+	Tue, 26 Aug 2025 11:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213877;
-	bh=nRxttC8r5Rzg9vH1XkZv7NnhqvkPCCxz1/gmVk2UxUo=;
+	s=korg; t=1756208710;
+	bh=88Ls/iMqzX6lfpMHfAEz+qexs7a0Gi24iEyoWyzsfR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IB1J7pwBOz7dUzSmyTh8NkydyZp/VzbPv0o4yszqLoLShL7Wt4vuoRanH9z1njBHk
-	 dsMidqPdHnywm8e1B6c3/lrZeuseuIz5vmT/cxNFLZw0kTJ29NcJ66phhjKz0yWiyj
-	 ZIlkI5axeHQD2ovgSflpUtq7ge8YG7Mgyl+CXnZE=
+	b=toejX20stO1tFSwT8R88vGJ+5684dxublEEnL09L9nZFY0wNUqPgyoXB/xuTCr49Q
+	 wJJBZQic2iOveQ8YYUshBBzcawJc43U7Jd5qrOVuns0PwjzKss62sK2qVGBj+UJ/Co
+	 Fv5Rri+2ZHeVxD9xww+8VShlnh2Yq+ySizhneBmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Scott GUO <scottzhguo@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 482/587] squashfs: fix memory leak in squashfs_fill_super
+	Salah Triki <salah.triki@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 216/322] iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
 Date: Tue, 26 Aug 2025 13:10:31 +0200
-Message-ID: <20250826111005.235399634@linuxfoundation.org>
+Message-ID: <20250826110921.214909175@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
+commit 43c0f6456f801181a80b73d95def0e0fd134e1cc upstream.
 
-If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
-allocated memory (sb->s_fs_info).
+`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
+Check its return value using `IS_ERR()` and propagate the error if
+necessary.
 
-Fix this by moving the call to sb_min_blocksize to before memory is
-allocated.
-
-Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
-Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: Scott GUO <scottzhguo@tencent.com>
-Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/super.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/pressure/bmp280-core.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -187,10 +187,15 @@ static int squashfs_fill_super(struct su
- 	unsigned short flags;
- 	unsigned int fragments;
- 	u64 lookup_table_start, xattr_id_table_start, next_table;
--	int err;
-+	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -2727,11 +2727,12 @@ int bmp280_common_probe(struct device *d
  
- 	TRACE("Entered squashfs_fill_superblock\n");
- 
-+	if (!devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
+ 	/* Bring chip out of reset if there is an assigned GPIO line */
+ 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpiod))
++		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
 +
- 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
- 	if (sb->s_fs_info == NULL) {
- 		ERROR("Failed to allocate squashfs_sb_info\n");
-@@ -201,12 +206,7 @@ static int squashfs_fill_super(struct su
- 
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
- 
--	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
--	if (!msblk->devblksize) {
--		errorf(fc, "squashfs: unable to set blocksize\n");
--		return -EINVAL;
+ 	/* Deassert the signal */
+-	if (gpiod) {
+-		dev_info(dev, "release reset\n");
+-		gpiod_set_value(gpiod, 0);
 -	}
--
-+	msblk->devblksize = devblksize;
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
++	dev_info(dev, "release reset\n");
++	gpiod_set_value(gpiod, 0);
  
- 	mutex_init(&msblk->meta_index_mutex);
+ 	data->regmap = regmap;
+ 
 
 
 
