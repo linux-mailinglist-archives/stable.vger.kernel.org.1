@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCA6B36324
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7598B368D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4106837E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E0AA583364
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3EA23026B;
-	Tue, 26 Aug 2025 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26B935A2AE;
+	Tue, 26 Aug 2025 14:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auDbYgda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9cfL6Yi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09182187554;
-	Tue, 26 Aug 2025 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61171352092;
+	Tue, 26 Aug 2025 14:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214308; cv=none; b=XhRC5WcG2nySuGhJBnmx0v4T0zIrIxGiiAJG8V3bp5t2yAEYtCbZJCl8QI8s8ykRAwL0CSQOw/IBUg+r0TxMWWEE7zGBN1hEcwa4EiJmX5Oyy+cnKFG4nhrlx5xgNinE8nz/DKYGC6jNLR0yX7upRtLuCe2DJpU3il4f/enLDHc=
+	t=1756217430; cv=none; b=JAmSOcpWA6TUBURrXbOZGij2beUWLu8Ks/ZcGL3idLgg+IjQM9okI+CxPBr+r/RUb1JvNhr1xjIFyYfAseYrx9HlSq7GBhmvRJz0wnrvjlZ+d4YZnwRP7kRoWwGmWhK+LZRoSA40JHLiosppRpX9I9ncmorNnGtqEk0G3GvZrCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214308; c=relaxed/simple;
-	bh=ppWK1dSEJzM9+MLPTF2QvCL4qOGZIhSgLhEUVnG+6EE=;
+	s=arc-20240116; t=1756217430; c=relaxed/simple;
+	bh=6gBoW7TwdzgHG4NmQygTTqW/CuldRgTkcMvDp4Jz0KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BF4E46DsyeTAYy5iBROJwfF4MX79sTdpnQ1goPup5+vOq4QSRfOfpEr35O3XtlTbGuEuI0/+6MlqcHlYYXGLAH01A7PpMjqLzw39dcxjix0GDTb7xktYwL6WkUNtAG7ogCgrS5oD1Vzc7ECakRhztH5bh8PQDSnWFRJHeGJ4z9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auDbYgda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E2FC4CEF1;
-	Tue, 26 Aug 2025 13:18:27 +0000 (UTC)
+	 MIME-Version; b=BLAZ/YF2gq3HB/0bm4/9C8rMLekZ/a+P3UFiraZL1ILq9bMNhSnJyUgoBEzlyVLdyyFu6/e683NxtcWB8+Tpe/S50KPNqv7Rcrl5yINfY7tk6ovFMeXg0Ub6raRAHGi1+Wm/qy2g2eA4Sv8w6WD4JfbCnyxc3n1poOEImvQ3UK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9cfL6Yi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF4C4CEF1;
+	Tue, 26 Aug 2025 14:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214307;
-	bh=ppWK1dSEJzM9+MLPTF2QvCL4qOGZIhSgLhEUVnG+6EE=;
+	s=korg; t=1756217430;
+	bh=6gBoW7TwdzgHG4NmQygTTqW/CuldRgTkcMvDp4Jz0KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auDbYgdaRLWdy1dZohvQsbH3tahPlPLscq5azuovaBpucggZlGvp67UtPmvQ2rSs2
-	 PCiuq0EO8d29NWT45NNixSz1Jm64jmoKX1UC8QDIzXUjWGW82rpEBWxOpKYVYNBb60
-	 cyxNM7CdxhiN1RNeE9nj7QlOgS+g8Tg2WPzO5vkQ=
+	b=b9cfL6YifNyUYfEbAnVYYeyscPVmFZGPGRu3iXOm6/F19eru66KRXbLLwONmI+0HK
+	 fPOEsQ+n7HXHwiaRPnScWbtfYlpOy+gPzF0y6jLwDYdbBjIoWTIHs0KipOrqnKo/l+
+	 LK/ufztuJYixEjFyYVX1EYSU/0qSSOd+Ihp7bHLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/482] ACPI: processor: fix acpi_object initialization
+Subject: [PATCH 5.10 133/523] watchdog: ziirave_wdt: check record length in ziirave_firm_verify()
 Date: Tue, 26 Aug 2025 13:05:43 +0200
-Message-ID: <20250826110933.050904050@linuxfoundation.org>
+Message-ID: <20250826110927.783120701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+[ Upstream commit 8b61d8ca751bc15875b50e0ff6ac3ba0cf95a529 ]
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+The "rec->len" value comes from the firmware.  We generally do
+trust firmware, but it's always better to double check.  If
+the length value is too large it would lead to memory corruption
+when we set "data[i] = ret;"
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
-
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 217209db0204 ("watchdog: ziirave_wdt: Add support to upload the firmware.")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/3b58b453f0faa8b968c90523f52c11908b56c346.1748463049.git.dan.carpenter@linaro.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/ziirave_wdt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 8bd5c4fa91f2..cfa75b14caa2 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -216,7 +216,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+diff --git a/drivers/watchdog/ziirave_wdt.c b/drivers/watchdog/ziirave_wdt.c
+index cab86a08456b..3cfab859e507 100644
+--- a/drivers/watchdog/ziirave_wdt.c
++++ b/drivers/watchdog/ziirave_wdt.c
+@@ -306,6 +306,9 @@ static int ziirave_firm_verify(struct watchdog_device *wdd,
+ 		const u16 len = be16_to_cpu(rec->len);
+ 		const u32 addr = be32_to_cpu(rec->addr);
  
- static int acpi_processor_get_info(struct acpi_device *device)
- {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
++		if (len > sizeof(data))
++			return -EINVAL;
++
+ 		if (ziirave_firm_addr_readonly(addr))
+ 			continue;
+ 
 -- 
 2.39.5
 
