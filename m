@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADD3B35BE0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122AEB3666D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D46361CDB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE761C22B71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2F7267386;
-	Tue, 26 Aug 2025 11:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08B334F48C;
+	Tue, 26 Aug 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6mxGvvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ph7l06hD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622CC296BDF;
-	Tue, 26 Aug 2025 11:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A2534F48A;
+	Tue, 26 Aug 2025 13:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207363; cv=none; b=r0J4qqK9mvz0c5HVgh+HubqcKToYBPKmURn8yifRaFeYywcOVo5gYfb+X5DNWuGAQ1cnkvi+02PoAl7CwdRi6kyK+ygUQITJCr/4++XCnlhaf34oFqdO0VBQA1+TXCKqgkMo1Pk6rKFmRPdIlUS+Q6Qh9NIcVyPDAgishJrC+gc=
+	t=1756216155; cv=none; b=a0/RW07NKCVa+tUEDjJxaNaUeRevG6w0kF6rI08Vm1Sk/Nxra057khr5g74jDMaIcqiT4n/TBn1xJne4VH2XUVUxRHhoRWRZCgZkDAIxzmc191yi50hJJyjsUEPXwEetvSvPjeUgnQ6h1R4GoQStNiIEXG/O29d+604eZzSM80M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207363; c=relaxed/simple;
-	bh=WVRIm7jKECDqrr+f+Mb0L2zuYX2YQGfjxM1EVPLL614=;
+	s=arc-20240116; t=1756216155; c=relaxed/simple;
+	bh=FrxNK2oZCnhxSt74KJYV2L7YB6+tcM1mLKriamqbcOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QcHM8k+CcQK2IzRiT+vN6w8xFAxUqFvGBzqz23HHViasf5aD/98g2z4HTOaxgggADDClENYM9RB4oOC537ewmvaNpWAM4wSPn0RUfsJsRKWGHAlkEl4vKY4zdzy53kljiPKNS6JpTOaAC7Jav8lT+Z2eCEfNpo2Yw8RZ4ZGSrOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6mxGvvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767C6C4CEF1;
-	Tue, 26 Aug 2025 11:22:41 +0000 (UTC)
+	 MIME-Version; b=DJ2rSHu3hiVTd6lXUlgBpP8eF8zzOlbPJusf6oHsyCapW04whB7TaWcArZkYVQH0nJRKLq+uW/6Fz3XxDSByTbbNHWKcWjP3KRST+n3xODePA3dyKUz2kFo0lzbW3SMQA0FjpC/ZSdXw8/UOYOB4WcuRBe7PkveUjA5arEmtFn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ph7l06hD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4E4C4CEF1;
+	Tue, 26 Aug 2025 13:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207361;
-	bh=WVRIm7jKECDqrr+f+Mb0L2zuYX2YQGfjxM1EVPLL614=;
+	s=korg; t=1756216155;
+	bh=FrxNK2oZCnhxSt74KJYV2L7YB6+tcM1mLKriamqbcOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6mxGvvtc2+pRQHYG8T85IC17avEdLcLWzW/NPjpQ/s87j85flrjpRw6fZ+OmiTqJ
-	 wfrB2eXTtTAsi0cAvYbGlNI974pz/SY58xgfNXOCA/35xyCAIljzr7/XHuvc+3IRs1
-	 7OsH9qHVXtNss8RAKaPicK+6WBFU4lLT5SqczClY=
+	b=ph7l06hDQwSrgV5ogJa2bAhc8E2KmikQYVTutJmjveh02Cj/NKYUnwc6vreNeczU8
+	 mdNUDqW75Ji5tQGqGOIwqN7gf5wFTZLkO/jStY4B3+fGvOPkItKu9JsyfFZlB3fflI
+	 J9cnI6eXnWFQpia7Tg53lD7Ssph2joHYmv4vAspI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.16 112/457] i2c: qcom-geni: fix I2C frequency table to achieve accurate bus rates
-Date: Tue, 26 Aug 2025 13:06:36 +0200
-Message-ID: <20250826110940.138895817@linuxfoundation.org>
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 306/644] EDAC/synopsys: Clear the ECC counters on init
+Date: Tue, 26 Aug 2025 13:06:37 +0200
+Message-ID: <20250826110953.968786014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,209 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-commit 85c34532849dae0fdcf880900ac9d7718a73fd1b upstream.
+[ Upstream commit b1dc7f097b78eb8d25b071ead2384b07a549692b ]
 
-Update the I2C frequency table to match the recommended values
-specified in the I2C hardware programming guide. In the current IPQ5424
-configuration where 32MHz is the source clock, the I2C bus frequencies do
-not meet expectations—for instance, 363KHz is achieved instead of the
-expected 400KHz.
+Clear the ECC error and counter registers during initialization/probe to avoid
+reporting stale errors that may have occurred before EDAC registration.
 
-Fixes: 506bb2ab0075 ("i2c: qcom-geni: Support systems with 32MHz serial engine clock")
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Cc: <stable@vger.kernel.org> # v6.13+
-Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250513-i2c-bus-freq-v1-1-9a333ad5757f@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For that, unify the Zynq and ZynqMP ECC state reading paths and simplify the
+code.
+
+  [ bp: Massage commit message.
+    Fix an -Wsometimes-uninitialized warning as reported by
+    Reported-by: kernel test robot <lkp@intel.com>
+    Closes: https://lore.kernel.org/oe-kbuild-all/202507141048.obUv3ZUm-lkp@intel.com ]
+
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250713050753.7042-1-shubhrajyoti.datta@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/edac/synopsys_edac.c | 97 +++++++++++++++++-------------------
+ 1 file changed, 46 insertions(+), 51 deletions(-)
 
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -155,9 +155,9 @@ static const struct geni_i2c_clk_fld gen
- 
- /* source_clock = 32 MHz */
- static const struct geni_i2c_clk_fld geni_i2c_clk_map_32mhz[] = {
--	{ I2C_MAX_STANDARD_MODE_FREQ, 8, 14, 18, 40 },
--	{ I2C_MAX_FAST_MODE_FREQ, 4,  3, 11, 20 },
--	{ I2C_MAX_FAST_MODE_PLUS_FREQ, 2, 3,  6, 15 },
-+	{ I2C_MAX_STANDARD_MODE_FREQ, 8, 14, 18, 38 },
-+	{ I2C_MAX_FAST_MODE_FREQ, 4,  3, 9, 19 },
-+	{ I2C_MAX_FAST_MODE_PLUS_FREQ, 2, 3, 5, 15 },
- 	{}
+diff --git a/drivers/edac/synopsys_edac.c b/drivers/edac/synopsys_edac.c
+index e8ddb029f10d..cbc40f57b27b 100644
+--- a/drivers/edac/synopsys_edac.c
++++ b/drivers/edac/synopsys_edac.c
+@@ -346,20 +346,26 @@ struct synps_edac_priv {
+ #endif
  };
  
++enum synps_platform_type {
++	ZYNQ,
++	ZYNQMP,
++	SYNPS,
++};
++
+ /**
+  * struct synps_platform_data -  synps platform data structure.
++ * @platform:		Identifies the target hardware platform
+  * @get_error_info:	Get EDAC error info.
+  * @get_mtype:		Get mtype.
+  * @get_dtype:		Get dtype.
+- * @get_ecc_state:	Get ECC state.
+  * @get_mem_info:	Get EDAC memory info
+  * @quirks:		To differentiate IPs.
+  */
+ struct synps_platform_data {
++	enum synps_platform_type platform;
+ 	int (*get_error_info)(struct synps_edac_priv *priv);
+ 	enum mem_type (*get_mtype)(const void __iomem *base);
+ 	enum dev_type (*get_dtype)(const void __iomem *base);
+-	bool (*get_ecc_state)(void __iomem *base);
+ #ifdef CONFIG_EDAC_DEBUG
+ 	u64 (*get_mem_info)(struct synps_edac_priv *priv);
+ #endif
+@@ -734,51 +740,38 @@ static enum dev_type zynqmp_get_dtype(const void __iomem *base)
+ 	return dt;
+ }
+ 
+-/**
+- * zynq_get_ecc_state - Return the controller ECC enable/disable status.
+- * @base:	DDR memory controller base address.
+- *
+- * Get the ECC enable/disable status of the controller.
+- *
+- * Return: true if enabled, otherwise false.
+- */
+-static bool zynq_get_ecc_state(void __iomem *base)
++static bool get_ecc_state(struct synps_edac_priv *priv)
+ {
++	u32 ecctype, clearval;
+ 	enum dev_type dt;
+-	u32 ecctype;
+-
+-	dt = zynq_get_dtype(base);
+-	if (dt == DEV_UNKNOWN)
+-		return false;
+ 
+-	ecctype = readl(base + SCRUB_OFST) & SCRUB_MODE_MASK;
+-	if ((ecctype == SCRUB_MODE_SECDED) && (dt == DEV_X2))
+-		return true;
+-
+-	return false;
+-}
+-
+-/**
+- * zynqmp_get_ecc_state - Return the controller ECC enable/disable status.
+- * @base:	DDR memory controller base address.
+- *
+- * Get the ECC enable/disable status for the controller.
+- *
+- * Return: a ECC status boolean i.e true/false - enabled/disabled.
+- */
+-static bool zynqmp_get_ecc_state(void __iomem *base)
+-{
+-	enum dev_type dt;
+-	u32 ecctype;
+-
+-	dt = zynqmp_get_dtype(base);
+-	if (dt == DEV_UNKNOWN)
+-		return false;
+-
+-	ecctype = readl(base + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
+-	if ((ecctype == SCRUB_MODE_SECDED) &&
+-	    ((dt == DEV_X2) || (dt == DEV_X4) || (dt == DEV_X8)))
+-		return true;
++	if (priv->p_data->platform == ZYNQ) {
++		dt = zynq_get_dtype(priv->baseaddr);
++		if (dt == DEV_UNKNOWN)
++			return false;
++
++		ecctype = readl(priv->baseaddr + SCRUB_OFST) & SCRUB_MODE_MASK;
++		if (ecctype == SCRUB_MODE_SECDED && dt == DEV_X2) {
++			clearval = ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_UE_ERR;
++			writel(clearval, priv->baseaddr + ECC_CTRL_OFST);
++			writel(0x0, priv->baseaddr + ECC_CTRL_OFST);
++			return true;
++		}
++	} else {
++		dt = zynqmp_get_dtype(priv->baseaddr);
++		if (dt == DEV_UNKNOWN)
++			return false;
++
++		ecctype = readl(priv->baseaddr + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
++		if (ecctype == SCRUB_MODE_SECDED &&
++		    (dt == DEV_X2 || dt == DEV_X4 || dt == DEV_X8)) {
++			clearval = readl(priv->baseaddr + ECC_CLR_OFST) |
++			ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_CE_ERRCNT |
++			ECC_CTRL_CLR_UE_ERR | ECC_CTRL_CLR_UE_ERRCNT;
++			writel(clearval, priv->baseaddr + ECC_CLR_OFST);
++			return true;
++		}
++	}
+ 
+ 	return false;
+ }
+@@ -948,18 +941,18 @@ static int setup_irq(struct mem_ctl_info *mci,
+ }
+ 
+ static const struct synps_platform_data zynq_edac_def = {
++	.platform = ZYNQ,
+ 	.get_error_info	= zynq_get_error_info,
+ 	.get_mtype	= zynq_get_mtype,
+ 	.get_dtype	= zynq_get_dtype,
+-	.get_ecc_state	= zynq_get_ecc_state,
+ 	.quirks		= 0,
+ };
+ 
+ static const struct synps_platform_data zynqmp_edac_def = {
++	.platform = ZYNQMP,
+ 	.get_error_info	= zynqmp_get_error_info,
+ 	.get_mtype	= zynqmp_get_mtype,
+ 	.get_dtype	= zynqmp_get_dtype,
+-	.get_ecc_state	= zynqmp_get_ecc_state,
+ #ifdef CONFIG_EDAC_DEBUG
+ 	.get_mem_info	= zynqmp_get_mem_info,
+ #endif
+@@ -971,10 +964,10 @@ static const struct synps_platform_data zynqmp_edac_def = {
+ };
+ 
+ static const struct synps_platform_data synopsys_edac_def = {
++	.platform = SYNPS,
+ 	.get_error_info	= zynqmp_get_error_info,
+ 	.get_mtype	= zynqmp_get_mtype,
+ 	.get_dtype	= zynqmp_get_dtype,
+-	.get_ecc_state	= zynqmp_get_ecc_state,
+ 	.quirks         = (DDR_ECC_INTR_SUPPORT | DDR_ECC_INTR_SELF_CLEAR
+ #ifdef CONFIG_EDAC_DEBUG
+ 			  | DDR_ECC_DATA_POISON_SUPPORT
+@@ -1406,10 +1399,6 @@ static int mc_probe(struct platform_device *pdev)
+ 	if (!p_data)
+ 		return -ENODEV;
+ 
+-	if (!p_data->get_ecc_state(baseaddr)) {
+-		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
+-		return -ENXIO;
+-	}
+ 
+ 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+ 	layers[0].size = SYNPS_EDAC_NR_CSROWS;
+@@ -1429,6 +1418,12 @@ static int mc_probe(struct platform_device *pdev)
+ 	priv = mci->pvt_info;
+ 	priv->baseaddr = baseaddr;
+ 	priv->p_data = p_data;
++	if (!get_ecc_state(priv)) {
++		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
++		rc = -ENODEV;
++		goto free_edac_mc;
++	}
++
+ 	spin_lock_init(&priv->reglock);
+ 
+ 	mc_init(mci, pdev);
+-- 
+2.39.5
+
 
 
 
