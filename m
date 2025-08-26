@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D168B36224
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3FDB35C6B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6258B16D27A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD387B83D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5A8230BCE;
-	Tue, 26 Aug 2025 13:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568A343215;
+	Tue, 26 Aug 2025 11:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqRXzXJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqKCPjV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E61223DE5;
-	Tue, 26 Aug 2025 13:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768B343219;
+	Tue, 26 Aug 2025 11:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213796; cv=none; b=cX9pzzO2U8GA3e+LCF+7G+ZxaTHlRiBbnMI9sCbZmaqr1vfEFggFLfH/oQfDFFtgbGrv0bqZr6dXuU/fAtprW3bHAF0tNRNmd/O+Txi2HncW5is+wj5tiKPMLqvJ6D4TipCvbqSGNJF44dqT4/JDoh/BM1x2f9ApghMLLwKQBY8=
+	t=1756207856; cv=none; b=e5+iKTukaik1fF5bCAOTuFaUyyG86MkOcb9izIxLKb+oFbeSfNXHy43+MqONOvaXCft4Wz/utLLHrsV23C7TcMqr6EchVdjVr1ap8QIMsJzTXQIFc/HWGl7TGQAy7HwiN/oq6KG949CqHgYIQmyEn47mgYCDVotNrCiSpjzpvpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213796; c=relaxed/simple;
-	bh=iK4LZosbQTl8P4inROIG+0lSISg+PVe8hklX8+f4lmE=;
+	s=arc-20240116; t=1756207856; c=relaxed/simple;
+	bh=QcIfy/Jld1ucKH/If/CyA+b6+BQ2D51OhycvwQRX5vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hs9ZtBqy5jzhwTqGNgQqNpYY9SjJgLlsYLe4xXmo5lAoQOMwxv9YmhS+jZ6/shihbmDoemA2TylVwIW1qyxLNAh6dhPj93KIjLQ3ATmvn50QJki4y9TMxRswqFTfAr68gQ8EI0su8EN/JRL2y/V84By/I69tCtjcp9dvtXm13jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqRXzXJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA965C4CEF1;
-	Tue, 26 Aug 2025 13:09:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PXpKm10dsxeStd2lt5yn46nIlMVxq6VaYqcuU45HEPLyKVVk8Icn6xt4yuI5rUmAnI7kml5J1S0vXknKH0jtxTNvtlMoI/F63P/HCJPcEVft16vg71OSxSXrG/S4bagsf0+O8Xw2FDVYCQZTZ42pCkhUmQAOdBDZYtzymTqbMiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqKCPjV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9FAC4CEF1;
+	Tue, 26 Aug 2025 11:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213796;
-	bh=iK4LZosbQTl8P4inROIG+0lSISg+PVe8hklX8+f4lmE=;
+	s=korg; t=1756207856;
+	bh=QcIfy/Jld1ucKH/If/CyA+b6+BQ2D51OhycvwQRX5vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqRXzXJrlc77YXnPRCetnUTlFTbvCvP1PsXXfMjIOEIfXQYBq7tcQwHOVI+lQf8A3
-	 aVyZ9QvFrROqeUGvvgHxeStC9tXqsbSAW0rclc1fJLZxLgahz3Zk2MaWYc3bxOqo0D
-	 CIh1ja1o4TkluBmX0vib0FUuP6VvO7NZFD7ga1xg=
+	b=bqKCPjV1B30VaXrNh1hru8j5SYASF8kblbX+n1Qyt0M75BvW7yZr04R5JllBJbcKp
+	 +OVc1/OxWIKGpTEwxzjryhljr/QZsCGZlqdDxmQe+dw/xktaRbWNp2SMRoVc5zNLO6
+	 ToJ5dH39dCBi7rhu0u9jxBUvL7vwy8tNwn5lxX4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 451/587] btrfs: fix ssd_spread overallocation
+	Mael GUERIN <mael.guerin@murena.io>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.16 316/457] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
 Date: Tue, 26 Aug 2025 13:10:00 +0200
-Message-ID: <20250826111004.431237547@linuxfoundation.org>
+Message-ID: <20250826110945.167221096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Mael GUERIN <mael.guerin@murena.io>
 
-[ Upstream commit 807d9023e75fc20bfd6dd2ac0408ce4af53f1648 ]
+commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
 
-If the ssd_spread mount option is enabled, then we run the so called
-clustered allocator for data block groups. In practice, this results in
-creating a btrfs_free_cluster which caches a block_group and borrows its
-free extents for allocation.
+Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
+to fix USB resets after sending SCSI vendor commands due to CBW and
+CSW tags difference, leading to undesired slowness while communicating
+with the device.
 
-Since the introduction of allocation size classes in 6.1, there has been
-a bug in the interaction between that feature and ssd_spread.
-find_free_extent() has a number of nested loops. The loop going over the
-allocation stages, stored in ffe_ctl->loop and managed by
-find_free_extent_update_loop(), the loop over the raid levels, and the
-loop over all the block_groups in a space_info. The size class feature
-relies on the block_group loop to ensure it gets a chance to see a
-block_group of a given size class.  However, the clustered allocator
-uses the cached cluster block_group and breaks that loop. Each call to
-do_allocation() will really just go back to the same cached block_group.
-Normally, this is OK, as the allocation either succeeds and we don't
-want to loop any more or it fails, and we clear the cluster and return
-its space to the block_group.
+Please find below the copy of /sys/kernel/debug/usb/devices with my
+device plugged in (listed as TechSys USB mass storage here, the
+underlying chipset being the Novatek NTK96550-based camera):
 
-But with size classes, the allocation can succeed, then later fail,
-outside of do_allocation() due to size class mismatch. That latter
-failure is not properly handled due to the highly complex multi loop
-logic. The result is a painful loop where we continue to allocate the
-same num_bytes from the cluster in a tight loop until it fails and
-releases the cluster and lets us try a new block_group. But by then, we
-have skipped great swaths of the available block_groups and are likely
-to fail to allocate, looping the outer loop. In pathological cases like
-the reproducer below, the cached block_group is often the very last one,
-in which case we don't perform this tight bg loop but instead rip
-through the ffe stages to LOOP_CHUNK_ALLOC and allocate a chunk, which
-is now the last one, and we enter the tight inner loop until an
-allocation failure. Then allocation succeeds on the final block_group
-and if the next allocation is a size mismatch, the exact same thing
-happens again.
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0603 ProdID=8611 Rev= 0.01
+S:  Manufacturer=TechSys
+S:  Product=USB Mass Storage
+S:  SerialNumber=966110000000100
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Triggering this is as easy as mounting with -o ssd_spread and then
-running:
-
-  mount -o ssd_spread $dev $mnt
-  dd if=/dev/zero of=$mnt/big bs=16M count=1 &>/dev/null
-  dd if=/dev/zero of=$mnt/med bs=4M count=1 &>/dev/null
-  sync
-
-if you do the two writes + sync in a loop, you can force btrfs to spin
-an excessive amount on semi-successful clustered allocations, before
-ultimately failing and advancing to the stage where we force a chunk
-allocation. This results in 2G of data allocated per iteration, despite
-only using ~20M of data. By using a small size classed extent, the inner
-loop takes longer and we can spin for longer.
-
-The simplest, shortest term fix to unbreak this is to make the clustered
-allocator size_class aware in the dumbest way, where it fails on size
-class mismatch. This may hinder the operation of the clustered
-allocator, but better hindered than completely broken and terribly
-overallocating.
-
-Further re-design improvements are also in the works.
-
-Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
-CC: stable@vger.kernel.org # 6.1+
-Reported-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |   33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -3530,6 +3530,21 @@ btrfs_release_block_group(struct btrfs_b
- 	btrfs_put_block_group(cache);
- }
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_SANE_SENSE ),
  
-+static bool find_free_extent_check_size_class(const struct find_free_extent_ctl *ffe_ctl,
-+					      const struct btrfs_block_group *bg)
-+{
-+	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
-+		return true;
-+	if (!btrfs_block_group_should_use_size_class(bg))
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
-+	    bg->size_class == BTRFS_BG_SZ_NONE)
-+		return true;
-+	return ffe_ctl->size_class == bg->size_class;
-+}
++/* Added by Maël GUERIN <mael.guerin@murena.io> */
++UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
++		"Novatek",
++		"NTK96550-based camera",
++		USB_SC_SCSI, USB_PR_BULK, NULL,
++		US_FL_BULK_IGNORE_TAG ),
 +
  /*
-  * Helper function for find_free_extent().
-  *
-@@ -3551,7 +3566,8 @@ static int find_free_extent_clustered(st
- 	if (!cluster_bg)
- 		goto refill_cluster;
- 	if (cluster_bg != bg && (cluster_bg->ro ||
--	    !block_group_bits(cluster_bg, ffe_ctl->flags)))
-+	    !block_group_bits(cluster_bg, ffe_ctl->flags) ||
-+	    !find_free_extent_check_size_class(ffe_ctl, cluster_bg)))
- 		goto release_cluster;
- 
- 	offset = btrfs_alloc_from_cluster(cluster_bg, last_ptr,
-@@ -4107,21 +4123,6 @@ static int find_free_extent_update_loop(
- 	return -ENOSPC;
- }
- 
--static bool find_free_extent_check_size_class(struct find_free_extent_ctl *ffe_ctl,
--					      struct btrfs_block_group *bg)
--{
--	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
--		return true;
--	if (!btrfs_block_group_should_use_size_class(bg))
--		return true;
--	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
--		return true;
--	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
--	    bg->size_class == BTRFS_BG_SZ_NONE)
--		return true;
--	return ffe_ctl->size_class == bg->size_class;
--}
--
- static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- 					struct find_free_extent_ctl *ffe_ctl,
- 					struct btrfs_space_info *space_info,
+  * Reported by Hanno Boeck <hanno@gmx.de>
+  * Taken from the Lycoris Kernel
 
 
 
