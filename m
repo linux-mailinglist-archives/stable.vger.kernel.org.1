@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F65B362A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D1BB36631
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D9E67A1C81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A3018989DE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A026B747;
-	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF9234AB1A;
+	Tue, 26 Aug 2025 13:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKYzUcwM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiJ8ByYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71521DAC95;
-	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD671E519;
+	Tue, 26 Aug 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214323; cv=none; b=ePWiPR0+Pi7chaE/nF3CGfCHJq+pIDsfNsnWO6nnr3ivhCJNlvX9p7TPo/SuIBmaqJ4+dmrh2XgKBhTOLm5bbG4hsnydncKH0w3qwN2oIZZRyfDAyYu3G9B7w1+DCkdYwzUR1Hnsi7/bEqPb6xEx+7amz7N2k11ZF0AI1yA1glw=
+	t=1756216035; cv=none; b=lCHH0WfjTzEhD5wHHaw95B1lQ6rjgmTjwljSgey0iaU4iIEZVmu6qv2esQqZSStBySpSGcYOVd1mrpqSMo5PBoOv8RD1GeS+m8DKC1HmaMtSGcnMn6lcQ6yutOUHpnEGFuigZMAbxLxYfAHVW66glfwdhVn2nw1MjxPuIcpQ/yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214323; c=relaxed/simple;
-	bh=yIOsG67Lol29vaG7yZrRJREIuDeO5QHa/zlusKJFjvk=;
+	s=arc-20240116; t=1756216035; c=relaxed/simple;
+	bh=l+rabo6rIOo1Svq0ircHut7M3zCAhBd9pMOU/tt+lEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2t1KA/r+C44oUvK/5wJprmWB4tMzysHnPHpP2T72yXxhNw9B91CjXpPuM5fr+B0AycBUuzkiU2cIt28yok676ezM8vjerB3ye0YGDoz3d0j+/8LyoyWWdR+vPsRm/P6HsJ7+hgh+NtqXqu13sK3/PM7h8NweFdxRqQYk6Y6kzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKYzUcwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398FBC4CEF1;
-	Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
+	 MIME-Version; b=WBl9j1QoUez97WHrfIc7w45b/YCpo3Tqh8EoM5/rdwf/3mjtUwse+wGbO+bgOU6ME8cHDfIHo9NgdTM3LkWtdrUuHR6ROnBbWLv3gU3THfh9bd+0OWuOA5gEYK06Y/BKlbusUC5Td22zP4pwma/UKyoE/Saw4MW6AyQIuXJl17c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiJ8ByYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7E2C4CEF1;
+	Tue, 26 Aug 2025 13:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214323;
-	bh=yIOsG67Lol29vaG7yZrRJREIuDeO5QHa/zlusKJFjvk=;
+	s=korg; t=1756216034;
+	bh=l+rabo6rIOo1Svq0ircHut7M3zCAhBd9pMOU/tt+lEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKYzUcwMbHhKTErnTqWavEepKEr5kPh9bTk9bX6pjEAto5il8cDXELrIgLmT7rocM
-	 2laVmvRbqc6zXEe/aZqiFbx9rDtt4mwk/rm+pL16dNoIcc5FiFFVyfF8PH043QeSo5
-	 mjMCNgZX7ijGJmUcKhPBaAEQ1w6jSbhcLF34h14Y=
+	b=KiJ8ByYCL2wPejI8S0N25GkGFr5CjnCGSdmCMaeuwmK02oMZhIg1kWzZ1NFhFlphB
+	 1rCCHfsm1gbxy6k+JZNEntO+QSECwF8QLiyV95F7m4kcxwsIA7k3f2rC5ciUf7fqDt
+	 EJMfliYNemM2z5SUy1z+q4eLw2W2yz/9CftEQASU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/482] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 258/644] io_uring: dont use int for ABI
 Date: Tue, 26 Aug 2025 13:05:49 +0200
-Message-ID: <20250826110933.200543259@linuxfoundation.org>
+Message-ID: <20250826110952.774324625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
+commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
 
-In the error path of sd_set_power_mode() we don't update host->power_mode,
-which could lead to an imbalance of the runtime PM usage count. Fix this by
-always updating host->power_mode.
+__kernel_rwf_t is defined as int, the actual size of which is
+implementation defined. It won't go well if some compiler / archs
+ever defines it as i64, so replace it with __u32, hoping that
+there is no one using i16 for it.
 
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Ricky Wu <ricky_wu@realtek.com>
-Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/uapi/linux/io_uring.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
-index 2c650cd58693..c5a6bbc06953 100644
---- a/drivers/mmc/host/rtsx_usb_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
-@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
- 		err = sd_power_on(host);
- 	}
- 
--	if (!err)
--		host->power_mode = power_mode;
--
-+	host->power_mode = power_mode;
- 	return err;
- }
- 
--- 
-2.39.5
-
+--- a/include/uapi/linux/io_uring.h
++++ b/include/uapi/linux/io_uring.h
+@@ -29,7 +29,7 @@ struct io_uring_sqe {
+ 	};
+ 	__u32	len;		/* buffer size or number of iovecs */
+ 	union {
+-		__kernel_rwf_t	rw_flags;
++		__u32		rw_flags;
+ 		__u32		fsync_flags;
+ 		__u16		poll_events;	/* compatibility */
+ 		__u32		poll32_events;	/* word-reversed for BE */
 
 
 
