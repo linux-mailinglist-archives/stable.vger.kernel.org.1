@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5B7B35DB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2003BB36A21
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152E418859D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A3A585D7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F051429BDB8;
-	Tue, 26 Aug 2025 11:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F9E352FDF;
+	Tue, 26 Aug 2025 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtwI9hIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8A1iSg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2D817332C;
-	Tue, 26 Aug 2025 11:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528DF260586;
+	Tue, 26 Aug 2025 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208412; cv=none; b=FdutpnxYyR3A0thYuJlNVgA0Pq4JB9xiThh9YlHEcaViMJD8WPdk42uOW06AufYUpQyEqo8kTwuH0bUoWY4EFopzcjQuB15vDiI3Eh3PlG/LDG9jcyq73x9YL3yFKC5LpoVFUHUxVkvLuEAsjbkp5fDw1OmpkD1szEIiZBXv/MM=
+	t=1756217950; cv=none; b=o75xMBTUf1TvraOKGUwRuF4B3ckV2lvVRBS9QxYyyaOPSQZ6OQcHg4HEOl2wwIKPCZ/lB+LoShXBQNoG9HmoM42f99VLFydI0latKJHCGhRhwT43768wsGb6f6DFArxinHsBZ566YeiRcAFlNCTXo67kLTvMMTo5CMPv/V31mYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208412; c=relaxed/simple;
-	bh=dnAQ+HG1p/eCUuTQhUtKcvXDs6jkphv/IZoCPW8kbWw=;
+	s=arc-20240116; t=1756217950; c=relaxed/simple;
+	bh=OBSfZee4OMXqxhbVD4Hxz1QKf63KGwIzuKiPC2bbUKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWgCwkIaIloDENkcR5Hb0E97Wd5TIbot0zviOkP1BK4l8gO6eAKpdMFRftVRv376KKJTgB3MSYSQUEiYD7jOF7lT+ou+CQ8LtbpzvIZAcAV0kHdIRB7PTFUT7as+tgNE4G+EAzZ1+VMjK+eck5qNbzFosICKHaPlsjK/0sKDmbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtwI9hIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4366EC113CF;
-	Tue, 26 Aug 2025 11:40:12 +0000 (UTC)
+	 MIME-Version; b=molLu7/2mVcPO8g+7aAtXg8eDywr2Szxyrxbikv2hu3ttimeBZSvsxT0+IgeGEOenjlzAX6mQexwQDL+KyljY7FyLPRp38AXyKcW+fT3NrIynOW8o9tzM3Q8ZevEx4x8cxsmQsA6t1tCvCcOtHpcIYECQJ0mdaE3T9OY50DzHVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8A1iSg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA33C113CF;
+	Tue, 26 Aug 2025 14:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208412;
-	bh=dnAQ+HG1p/eCUuTQhUtKcvXDs6jkphv/IZoCPW8kbWw=;
+	s=korg; t=1756217949;
+	bh=OBSfZee4OMXqxhbVD4Hxz1QKf63KGwIzuKiPC2bbUKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtwI9hISNoCh/c24QJ1X8EUb20P6PBe/HAUslJl1UvS42SZMPxg5eAtxalEmR4VQl
-	 O6K7ux7VoHgmKJeQjKzm++ivAnEqWOuuct2rb8kOh18jJc6MfaLIJGOoBVydJxH2S5
-	 SjUf5WI/aMkW5F4vZSfbV7Wblfk4XvJLHm99M8Tc=
+	b=q8A1iSg3f2c0DxIZeqsZHfMoobXGTXqhfq3yVpxfyrpOzqbl46dtfEaHdwCYvIyDL
+	 wDClB9BcVhVKnbM/3qHGiuJeVs996HWcydfVxvqThr2R9XQuZ4Z1I9Ubl9mOpP48gW
+	 9Tx69JGritDQeX5axEB3VM15UiIkCHkdQsxq0e5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 100/322] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 305/523] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
 Date: Tue, 26 Aug 2025 13:08:35 +0200
-Message-ID: <20250826110918.174214353@linuxfoundation.org>
+Message-ID: <20250826110931.979114620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
+[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
+resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
+occur before sli4_hba.hdwqs are allocated.  This may result in a null
+pointer dereference when attempting to take the abts_io_buf_list_lock for
+the first hardware queue.  Fix by adding a null ptr check on
+phba->sli4_hba.hdwq and early return because this situation means there
+must have been an error during port initialization.
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -914,7 +914,7 @@ imx_media_csc_scaler_device_init(struct
- 	return &priv->vdev;
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 212153483874..a35426409a6f 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -469,6 +469,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
+ 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
+ 		return;
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
++	/* may be called before queues established if hba_setup fails */
++	if (!phba->sli4_hba.hdwq)
++		return;
++
+ 	spin_lock_irqsave(&phba->hbalock, iflag);
+ 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
+ 		qp = &phba->sli4_hba.hdwq[idx];
+-- 
+2.39.5
+
 
 
 
