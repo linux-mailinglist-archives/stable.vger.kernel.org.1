@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DB0B35D92
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BEAB360F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D7F1BC083A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B29552A2448
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503EE322754;
-	Tue, 26 Aug 2025 11:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46C91C4A2D;
+	Tue, 26 Aug 2025 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQf5my3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgGwIlOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E30C2FD7DE;
-	Tue, 26 Aug 2025 11:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FED0FBF0;
+	Tue, 26 Aug 2025 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208343; cv=none; b=lqRwWx/zsjx/jUSe1tCyCpjgFO/2aCBlOwF12DuF+4FXXdBkQNVIbYWMRVDsWN46wrYlsUDLTfVFy9i9a3PuJIfd3XWL8OKSlcDsFLchiDAkdamwYsphriI7GHEomjdE3Q7LtkHy7MIpJVS7mPCa4CsAruZkkM41jVdMxULA/wE=
+	t=1756213333; cv=none; b=E64vR25w+TAs9beFY14iLgwwVwGVHolyicGUM7oV2sSM/HxmffWMWK8Ea8WzW52ArPwrFPi8Gpy96Tov6CDeejnRvdlpt53cPDr7tdbPXhTGDNzNF6aeIqC6rJZyRv9PaAVbsO+zfRX25XwbyTPY7OiAA4LuttcXWN/q/p5CbRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208343; c=relaxed/simple;
-	bh=Z2shb8HHeAnjHC4hY0DE1GDAmPVwhhEPimAUMbkPfTc=;
+	s=arc-20240116; t=1756213333; c=relaxed/simple;
+	bh=gXGK+TpaPHnwBD7xPyoN2yJpydheS0Mu4gPFRwV2JLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxPphil+M7Z2hdpUobvZTJjCV8CM3zNxj6s7VJTZDiHzST9mkZPdXIQC3lxSNLbW577SZqjdY+tqlsbfGuBc50utt5Kz1vZhaHE2+OISxscj9SqXG7v5Ug+v1y2vFjDctdMrwXUzV89Utp+MSLMP/gkyoKphqKUjcp9Y8AJzek0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQf5my3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F58AC4CEF1;
-	Tue, 26 Aug 2025 11:39:02 +0000 (UTC)
+	 MIME-Version; b=nOp1N7NGviGN8uM74pAVszHEK5wiqgfg/pNbgloW+5uym89R/2XRsVv/ejzfSVgMTNAb64EcS2C8toRf5sOZCQaYX8dBXFgOfq6hRY44odncC1awV5Dj7InsXknjP6rMD9Sq0f+RLvMp/Th1jw4vPzKF6Ryrpcl+Tl8AxjhEE1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgGwIlOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EDAC4CEF1;
+	Tue, 26 Aug 2025 13:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208342;
-	bh=Z2shb8HHeAnjHC4hY0DE1GDAmPVwhhEPimAUMbkPfTc=;
+	s=korg; t=1756213333;
+	bh=gXGK+TpaPHnwBD7xPyoN2yJpydheS0Mu4gPFRwV2JLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQf5my3Gk+/Z6MOjbhzqAS6toL3R0qLiPQisYYL/mJqS//dYd272NEpQ3Nc0M/DlV
-	 H1pdObguLem9Dr0tgbmb8+h5BJOAW6+FJIucCkuIONrT10BY0Va5/HAwllFRjAnKUt
-	 e45s/qNWi0rL86Rw2yBvutUska8zIqGqmTRkg+RA=
+	b=XgGwIlOUSBUHDJib4M2qwL+yQYWvfE5r1k028tbkPaihfRg2vqE9WgLVC6t4EHL36
+	 X6lMa9CJAGoOSkMKYsPgKegcIlcwCTj+oALUgZ33e+E5hbNetB/a7qvsmkYxByk3H9
+	 KWZeNFBrvyk+OfcGPhppF5/MKwGYoJ4ZaIUiyh+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.12 043/322] arm64: dts: ti: k3-am62-verdin: Enable pull-ups on I2C buses
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 309/587] btrfs: zoned: use filesystem size not disk size for reclaim decision
 Date: Tue, 26 Aug 2025 13:07:38 +0200
-Message-ID: <20250826110916.445419400@linuxfoundation.org>
+Message-ID: <20250826111000.780053243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit bdf4252f736cc1d2a8e3e633c70fe6c728f0756e upstream.
+commit 55f7c65b2f69c7e4cb7aa7c1654a228ccf734fd8 upstream.
 
-Enable internal bias pull-ups on the SoC-side I2C buses that do not have
-external pull resistors populated on the SoM. This ensures proper
-default line levels.
+When deciding if a zoned filesystem is reaching the threshold to reclaim
+data block groups, look at the size of the filesystem not to potentially
+total available size of all drives in the filesystem.
 
-Cc: stable@vger.kernel.org
-Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20250528110741.262336-1-ghidoliemanuele@gmail.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Especially if a filesystem was created with mkfs' -b option, constraining
+it to only a portion of the block device, the numbers won't match and
+potentially garbage collection is kicking in too late.
+
+Fixes: 3687fcb0752a ("btrfs: zoned: make auto-reclaim less aggressive")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/btrfs/zoned.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-@@ -507,16 +507,16 @@
- 	/* Verdin I2C_2_DSI */
- 	pinctrl_i2c2: main-i2c2-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_IOPAD(0x00b0, PIN_INPUT, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
--			AM62X_IOPAD(0x00b4, PIN_INPUT, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
-+			AM62X_IOPAD(0x00b0, PIN_INPUT_PULLUP, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
-+			AM62X_IOPAD(0x00b4, PIN_INPUT_PULLUP, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
- 		>;
- 	};
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2350,8 +2350,8 @@ bool btrfs_zoned_should_reclaim(struct b
+ {
+ 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
+ 	struct btrfs_device *device;
++	u64 total = btrfs_super_total_bytes(fs_info->super_copy);
+ 	u64 used = 0;
+-	u64 total = 0;
+ 	u64 factor;
  
- 	/* Verdin I2C_4_CSI */
- 	pinctrl_i2c3: main-i2c3-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_IOPAD(0x01d0, PIN_INPUT, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
--			AM62X_IOPAD(0x01d4, PIN_INPUT, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
-+			AM62X_IOPAD(0x01d0, PIN_INPUT_PULLUP, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
-+			AM62X_IOPAD(0x01d4, PIN_INPUT_PULLUP, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
- 		>;
- 	};
+ 	ASSERT(btrfs_is_zoned(fs_info));
+@@ -2364,7 +2364,6 @@ bool btrfs_zoned_should_reclaim(struct b
+ 		if (!device->bdev)
+ 			continue;
  
-@@ -786,8 +786,8 @@
- 	/* Verdin I2C_3_HDMI */
- 	pinctrl_mcu_i2c0: mcu-i2c0-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
--			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
-+			AM62X_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
-+			AM62X_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
- 		>;
- 	};
- 
+-		total += device->disk_total_bytes;
+ 		used += device->bytes_used;
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
 
 
 
