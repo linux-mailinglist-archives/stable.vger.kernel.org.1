@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-175996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9022AB36AB1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFF8B3670D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00EE582ED3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454E42A6E3E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA803570C2;
-	Tue, 26 Aug 2025 14:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E2634DCC0;
+	Tue, 26 Aug 2025 13:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqifEkCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN+r4JVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B4A3570BA;
-	Tue, 26 Aug 2025 14:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C7F393DC0;
+	Tue, 26 Aug 2025 13:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218512; cv=none; b=UkG8MUOUTySYk0FJcZeYoQQS8DpDITWD30xiN9+uB28n4nRJxAgfax92sIeH0EcVro7ChIbNlRKMs8YO08OG9ancIEz4H7JrDgKyqOSPq1P12ChUlsxrS0I0sqfT6ZM71+7K/cqe5SQpIo6X5OZmvlXfSC3Oob68iIwiO1C+MW8=
+	t=1756216119; cv=none; b=YdqdomlY0U1PZ2A7fCva1TFrZP+PDBIIkLxE+F3hPRyi+4Wkc7wGykpsRqkYxZ7uRO+FSqx1cYmFHbaY3MtxnrBGOP3RDdwQJnEMf7dXPSVzq/dr9ct/mCj8RJOB1F0GM6SMHVV6jcj9MIf/fBTds8AXQ1G8ZQfO0pCiur+aOOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218512; c=relaxed/simple;
-	bh=hx0IUEHjtlb5ebPSACHG8imWvjhU7wyDQLsXWikhqsI=;
+	s=arc-20240116; t=1756216119; c=relaxed/simple;
+	bh=zf8GMJKU2K3etJCcTbBRYRPd3PQW6P8mzG161Lvn+DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZH9XgSk+yyAKHbZzqFUuh5OgBVHiNm4iFXgZxu5qSG6aZdOhFmUx8FbVavHfTIq0XCCXBd3U+zKiQJ+EiAQ+/iTm7sbWb/PlvYn0s4ZbYicXeuongRMeAMPgKC2gUXE8nV9o6/nZvTa3mnuz3mrC7RoUSw+x44IAh4y37+FYx1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqifEkCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BBBC113D0;
-	Tue, 26 Aug 2025 14:28:31 +0000 (UTC)
+	 MIME-Version; b=d26LdSsq5mh+flrWOlZ24F164kr0WpziSqWFry816fYutmxiFLlmUmyOYdAwY4flzf/xCnaMms6GXSrCGaJk0O9x1/B7tZyJ3j7WF8CwIqyQx/KV8NomoNDpzEj5A9sGRwGFClSGDcoxuRWvn/fVXKavU87IeO3qx04Hi4TKJ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN+r4JVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D01BC4CEF1;
+	Tue, 26 Aug 2025 13:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218512;
-	bh=hx0IUEHjtlb5ebPSACHG8imWvjhU7wyDQLsXWikhqsI=;
+	s=korg; t=1756216118;
+	bh=zf8GMJKU2K3etJCcTbBRYRPd3PQW6P8mzG161Lvn+DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqifEkCKZJPyqO3hc0/pIRwHNozQ0pXeJQrBzTFrPxKoMYq6xIHLtReQuZyMSqnh2
-	 lh9T2Q2RzNilGLxwJ5ZzmAFbcVMtyIGp0aK5M3L3VXJ6Kg+o1mf36hbqAS8PuZq9d9
-	 FbyctOG1Y+qc/UPBVniP3/ztYrYwlHoEU1d7ZJjQ=
+	b=jN+r4JVx51y+dpJ2MqGJpD2yYDMvM72OkYtzz09YpujA5qKem9qCxLKag3KgTuabp
+	 XG/qp8wYhBhHVoXfiL3RoKWQFDMwql7k7U1LIxyg3+CBlbxfZbjuIP+8cL8vHoP8E5
+	 rEOCzMb627iDxL3XjnNHEsip1if8V2TPUwVt483U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.4 029/403] comedi: Fix some signed shift left operations
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 264/644] net: dpaa: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:05:55 +0200
-Message-ID: <20250826110906.610792294@linuxfoundation.org>
+Message-ID: <20250826110952.916771372@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Johan Hovold <johan@kernel.org>
 
-commit ab705c8c35e18652abc6239c07cf3441f03e2cda upstream.
+commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
 
-Correct some left shifts of the signed integer constant 1 by some
-unsigned number less than 32.  Change the constant to 1U to avoid
-shifting a 1 into the sign bit.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-The corrected functions are comedi_dio_insn_config(),
-comedi_dio_update_state(), and __comedi_device_postconfig().
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-Fixes: e523c6c86232 ("staging: comedi: drivers: introduce comedi_dio_insn_config()")
-Fixes: 05e60b13a36b ("staging: comedi: drivers: introduce comedi_dio_update_state()")
-Fixes: 09567cb4373e ("staging: comedi: initialize subdevice s->io_bits in postconfig")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/comedi/drivers.c
-+++ b/drivers/staging/comedi/drivers.c
-@@ -339,10 +339,10 @@ int comedi_dio_insn_config(struct comedi
- 			   unsigned int *data,
- 			   unsigned int mask)
- {
--	unsigned int chan_mask = 1 << CR_CHAN(insn->chanspec);
-+	unsigned int chan = CR_CHAN(insn->chanspec);
- 
--	if (!mask)
--		mask = chan_mask;
-+	if (!mask && chan < 32)
-+		mask = 1U << chan;
- 
- 	switch (data[0]) {
- 	case INSN_CONFIG_DIO_INPUT:
-@@ -382,7 +382,7 @@ EXPORT_SYMBOL_GPL(comedi_dio_insn_config
- unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
- 				     unsigned int *data)
- {
--	unsigned int chanmask = (s->n_chan < 32) ? ((1 << s->n_chan) - 1)
-+	unsigned int chanmask = (s->n_chan < 32) ? ((1U << s->n_chan) - 1)
- 						 : 0xffffffff;
- 	unsigned int mask = data[0] & chanmask;
- 	unsigned int bits = data[1];
-@@ -625,8 +625,8 @@ static int insn_rw_emulate_bits(struct c
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1 << (chan - base_chan);		    /* mask */
--		_data[1] = data[0] ? (1 << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		     /* mask */
-+		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -499,8 +499,10 @@ static int dpaa_get_ts_info(struct net_d
+ 		of_node_put(ptp_node);
  	}
  
- 	ret = s->insn_bits(dev, s, &_insn, _data);
-@@ -709,7 +709,7 @@ static int __comedi_device_postconfig(st
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
++	}
  
- 		if (s->type == COMEDI_SUBD_DO) {
- 			if (s->n_chan < 32)
--				s->io_bits = (1 << s->n_chan) - 1;
-+				s->io_bits = (1U << s->n_chan) - 1;
- 			else
- 				s->io_bits = 0xffffffff;
- 		}
+ 	if (ptp)
+ 		info->phc_index = ptp->phc_index;
 
 
 
