@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5379B35D2C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D18E8B36CD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56BC33A8646
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9A19858AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D2E1FECAB;
-	Tue, 26 Aug 2025 11:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A126934DCCA;
+	Tue, 26 Aug 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC7QVf2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKZqN4fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A78199935;
-	Tue, 26 Aug 2025 11:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6E2343218;
+	Tue, 26 Aug 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208511; cv=none; b=AMkmLU6yZ3fdwuEnbF+0Z7JI6AhFr+2u6cMtXVfHpH3Lroy1SbqVcOVnLCKJHNSRqhPmPGVfzlzHsp+Nj2D9o4vVx7CBvShN2GVaI/SbS57gZnXKXbSRp4FK0bVVLVxBVRzTbS/DsnyB5Mwjeh3cnjMW7if5VqOaBDwg3/0PWIQ=
+	t=1756218954; cv=none; b=mZ8ztkUMJsZVyNblzUNjwmYCQQgWNABNvo6YzlMb2utNSj8q4/2n04IvplGoCuSX2V6pYbFRX5o8loPHSr/vSEC3FQASIZmVGnI2rLsC8yyPjVUlpjeBLz04CkvRIGwqRgMfl2/1hT6P/FAxDNwzVD9eo/1kBtgdZpzFlKwMANk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208511; c=relaxed/simple;
-	bh=VgdkHqNHcexagxrka9TQyNvx9zO0UvbHKn53zeqYAxk=;
+	s=arc-20240116; t=1756218954; c=relaxed/simple;
+	bh=07sqLu1k4ODsoZEsOn/o5gP0H1kbb8JkNxSlsHJqiRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiIcJQjSwIElwG7CRCryPJy/hxQrKU7nscDlVtv85JPf5n79mL7m9PfYHgvbSJbfVLLpTQnXIAIn0sr3Zqr/EG1dnQnVvQBpYPXc43bK0thG42jTROijg0fXQlzTYHjuzrs+FPm+hWzthg5jpUxCDoJK2Xkvef04ywqhCa0GS1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC7QVf2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E929C4CEF1;
-	Tue, 26 Aug 2025 11:41:51 +0000 (UTC)
+	 MIME-Version; b=qCgNVJ6tqATYuDwRZAwweJVca9AFFTbum0r1eM2MfISXU7W+93+Mxm71AcqoW49PbWKsdiLmIUJFfKlPE7i5UJ3j/FphjutjL1sHNczVeWnk5H9eEXS1itkZEaJy3uGSdrbW7R3IeuIv520ttgPmM0N/gMkIukR4rMGhfdiCuXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKZqN4fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2534C4CEF1;
+	Tue, 26 Aug 2025 14:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208511;
-	bh=VgdkHqNHcexagxrka9TQyNvx9zO0UvbHKn53zeqYAxk=;
+	s=korg; t=1756218954;
+	bh=07sqLu1k4ODsoZEsOn/o5gP0H1kbb8JkNxSlsHJqiRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC7QVf2/ZGyilBgtHFxhd5vf6hMZAtCSrCqHUzkTlNtlWruD8DDKYLmJ0zfv0f0cY
-	 d6350WdXn+5ZldxcEEtjuHXzLUtPxV6p+4fW9AZgV0I7ZucHB7tyFt0zJHMsOHTWVd
-	 8ANM4UtAoI6xUpcmm99A5I8w6nDzn4EbO3HqjbOA=
+	b=XKZqN4fpUitwpG4ACfyjqzqNCpHfNdCeIg2ziRrHLeaTe3n0K+xlxLof6EQ7z+/kx
+	 CEpSA6zWtB2Xzl/Vz+hlWjHSKeqoIqnaUWnF+Vo7IK4pym3W1Cq+/Rpe2toiQMTe2h
+	 v9+S000fr4JmhFdwUI2kqMyf7q9l6fRcVxkPNKG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathis Foerst <mathis.foerst@mt.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 109/322] media: mt9m114: Fix deadlock in get_frame_interval/set_frame_interval
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 198/403] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Tue, 26 Aug 2025 13:08:44 +0200
-Message-ID: <20250826110918.469913950@linuxfoundation.org>
+Message-ID: <20250826110912.334382443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathis Foerst <mathis.foerst@mt.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 298d1471cf83d5a2a05970e41822a2403f451086 upstream.
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-Getting / Setting the frame interval using the V4L2 subdev pad ops
-get_frame_interval/set_frame_interval causes a deadlock, as the
-subdev state is locked in the [1] but also in the driver itself.
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-In [2] it's described that the caller is responsible to acquire and
-release the lock in this case. Therefore, acquiring the lock in the
-driver is wrong.
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-Remove the lock acquisitions/releases from mt9m114_ifp_get_frame_interval()
-and mt9m114_ifp_set_frame_interval().
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
 
-[1] drivers/media/v4l2-core/v4l2-subdev.c - line 1129
-[2] Documentation/driver-api/media/v4l2-subdev.rst
-
-Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/mt9m114.c |    8 --------
- 1 file changed, 8 deletions(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/media/i2c/mt9m114.c
-+++ b/drivers/media/i2c/mt9m114.c
-@@ -1599,13 +1599,9 @@ static int mt9m114_ifp_get_frame_interva
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 78d5b4d31bb6..71d13b413418 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1231,7 +1231,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
+ 
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
  		return -EINVAL;
+ 	}
  
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	ival->numerator = 1;
- 	ival->denominator = sensor->ifp.frame_rate;
+@@ -1239,7 +1240,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
  
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return 0;
- }
- 
-@@ -1624,8 +1620,6 @@ static int mt9m114_ifp_set_frame_interva
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
  		return -EINVAL;
+ 	}
  
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	if (ival->numerator != 0 && ival->denominator != 0)
- 		sensor->ifp.frame_rate = min_t(unsigned int,
- 					       ival->denominator / ival->numerator,
-@@ -1639,8 +1633,6 @@ static int mt9m114_ifp_set_frame_interva
- 	if (sensor->streaming)
- 		ret = mt9m114_set_frame_rate(sensor);
+@@ -1293,8 +1295,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
  
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return ret;
- }
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
  
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
+ 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
+-- 
+2.39.5
+
 
 
 
