@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B7B363D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4027FB36A14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00DE41BC4B7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C42F1C40514
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0872223A9A0;
-	Tue, 26 Aug 2025 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1AB350835;
+	Tue, 26 Aug 2025 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+2R/gTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKOPzGVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9980187554;
-	Tue, 26 Aug 2025 13:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5B2350D4D;
+	Tue, 26 Aug 2025 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214795; cv=none; b=QPrQ+LUhffZM7FJVjvp5Y15F/txVXLsqIjkiDJ6BsayWIQCL8kNeXpPmq2/W6D5MRg3NNTN5tgAWFQ5SEL/8XEtwdtk9vgTJeUWZYcfdH9DH9jipLeqmf0myvx5LzxqlHnu7EpuhLplnvTS6Gim3McZtG/yh98t4iTzSe+L9+F0=
+	t=1756217895; cv=none; b=GeTV0n7GtuFwKL5LjftPjppy6rxa8cSW9II8nS35R4R8S9bFvgK9ECL7gKYRG+j0yLvKUSSbkEJRjILPJ/My+nHjv0NPtXs+RMlWNE/wHNP1TmDVLWq/1sfJ2ee0Amv+BuJDmOhMkLvglBtADjeX3z3lQRTHHzq71HjZ7Q7irng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214795; c=relaxed/simple;
-	bh=t0pWQJOUy578nc17cdp0/ZH/VTyhlynEX1+oxZfQbj4=;
+	s=arc-20240116; t=1756217895; c=relaxed/simple;
+	bh=0M0IkxDi8vuceObu25NDBa3YVVEg2eI/UZMBkBlKF/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt9meybHFJhBC4GLnquovxTrJWFNdowjCK0jLm4NVu65VtNCYDziPu1d/X/zLwwo1w37B+HIbJTyKdg81vABLoWtR98h4OkoRB5uDxXVsN59Lydq8zDLLG/U2QlDhq2IaaKvV1cwweNP8/mPwlSzGOJE3nwFsyKSVo1RGvAd/iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+2R/gTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24542C4CEF1;
-	Tue, 26 Aug 2025 13:26:34 +0000 (UTC)
+	 MIME-Version; b=q2iavCEDJAG7I/BJ/iflIKbzfaRm34kejcjTfzEzpOFOH+uC5BXrac7/KbrZ67LkweIDudIHAVNMQ8wUF0lMdkXWBlInchZBrNdYzvZhIX4bX9HvYU8C5aBDvQfKMgHtxIo7ycqiGtBm2H9XI2QbE0WgpKxYKC4h5mcg6zeK5u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKOPzGVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE26C113D0;
+	Tue, 26 Aug 2025 14:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214795;
-	bh=t0pWQJOUy578nc17cdp0/ZH/VTyhlynEX1+oxZfQbj4=;
+	s=korg; t=1756217894;
+	bh=0M0IkxDi8vuceObu25NDBa3YVVEg2eI/UZMBkBlKF/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+2R/gTUj5qU/jHcLqhSSni1ToxLfE2vSIwRMJs7xnyjWRKe35vv+C8wPD0qTH13D
-	 r+pA9smq6QX2zgfIv2PCYc98t1Em8uv8Muh4A/aMAwLkrDWwsJCXuB6s37TQmZW4D4
-	 V8RnVh42ST+Y5Lb9033YhH5qAmu7HRF6WYXhvAsc=
+	b=GKOPzGVFopfM+0yYhzJtezJmnv7T6GqsuT7sZCqyi0gL+1A+rdP2yPRjf2Vy7vGeU
+	 dvK6aP+I40mRhwONapmvk7uy7a4RBzn/MPMZh+qRuCf3lDXTFi4XYMVnNtBVHnH4r+
+	 qMwc+WPxWj5l3WShEu7fuxopcaRVU4sjXslnmtHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 6.1 272/482] usb: dwc3: meson-g12a: fix device leaks at unbind
-Date: Tue, 26 Aug 2025 13:08:45 +0200
-Message-ID: <20250826110937.490998024@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 316/523] i3c: add missing include to internal header
+Date: Tue, 26 Aug 2025 13:08:46 +0200
+Message-ID: <20250826110932.257287028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
+[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
 
-Make sure to drop the references taken to the child devices by
-of_find_device_by_node() during probe on driver unbind.
+LKP found a random config which failed to build because IO accessors
+were not defined:
 
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   In file included from drivers/i3c/master.c:21:
+   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
+>> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
+
+Add the proper header to where the IO accessors are used.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i3c/internals.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -847,6 +847,9 @@ static int dwc3_meson_g12a_remove(struct
- 	if (priv->drvdata->otg_switch_supported)
- 		usb_role_switch_unregister(priv->role_switch);
+diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+index 86b7b44cfca2..1906c711f38a 100644
+--- a/drivers/i3c/internals.h
++++ b/drivers/i3c/internals.h
+@@ -9,6 +9,7 @@
+ #define I3C_INTERNALS_H
  
-+	put_device(priv->switch_desc.udc);
-+	put_device(priv->switch_desc.usb2_port);
-+
- 	of_platform_depopulate(dev);
+ #include <linux/i3c/master.h>
++#include <linux/io.h>
  
- 	for (i = 0 ; i < PHY_COUNT ; ++i) {
+ extern struct bus_type i3c_bus_type;
+ 
+-- 
+2.39.5
+
 
 
 
