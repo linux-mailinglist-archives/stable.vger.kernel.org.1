@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B25B3699A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CB6B35DC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698928E6CA7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408F01BA648C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532321D3F2;
-	Tue, 26 Aug 2025 14:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633492F619C;
+	Tue, 26 Aug 2025 11:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwWnoYvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sclP2X4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC473568E1;
-	Tue, 26 Aug 2025 14:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF1317332C;
+	Tue, 26 Aug 2025 11:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217809; cv=none; b=K8jnsJKb1yzvtCAt9P0IsJ2geFy8jOa6m0A7XaNTlRwG2Zzmmc1Oynq1LhooEcSgNp6ynSBtEAglx8Po+TOu0M5zZraOqYEiZbTiX5Vf9OXGBb/WuOsJNaccTNTYxF8CyBSdKmNRMxhH5ZpQ51YHuckyV9iwM3fXvIq14GrJdyo=
+	t=1756208433; cv=none; b=m3gpasZT4N81IPGbLwNQBb+abbPM7O83Zq+W+DL/8lGjABsGWuPROrYm39vVfjHzXBa+OLzmBdiXPNCZ6pO7n+TW5i8maFAr8qlF6Ys4T2678yootG8cnfQZU/BSZoHmwqo2m+iuIeCoHXmw9H6gBCVZI0LNHoeHV5qVPR2erdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217809; c=relaxed/simple;
-	bh=AKdkKRIzZOyMbvsrsBxEx+McYmrdzfV4DLsMxEfg08Q=;
+	s=arc-20240116; t=1756208433; c=relaxed/simple;
+	bh=fi3CghU7dlqmNOH3fXt055E2yEglUn7UquPqYQAWhxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UmoYh6hnzKLubOPTfNTGsfJ6rWjGggu4UXuM53iTCP2qyS0Zq9qo6mHdeqdAhUlnQOPugYDqxPD9pfNRzPaP+IPyRG0JZTi3m2n0tAr7zUBRDCq5UCltQ3pdpSirV3nINKynnJFMYgvbna7tjz5WuPsN4SdgoWTYgys+qvq/+tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwWnoYvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ADAC4CEF1;
-	Tue, 26 Aug 2025 14:16:47 +0000 (UTC)
+	 MIME-Version; b=iDnK7wFwwTgc4XBPhaQ2vxsXVnGRMqY6iALZExV2F5QnQTSCpWZV+oXZE/EbpwzGtb/I1GOalNCXqx8AzuE3Kf+3Aa5rhebru3/ld1OxaBQOjsbzEG/Ydxyl1xQ4EyMPSsGz8z41vS/cF9TDrVNS0HWX5vp2lMV8dd87YYYhCLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sclP2X4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F67C4CEF1;
+	Tue, 26 Aug 2025 11:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217808;
-	bh=AKdkKRIzZOyMbvsrsBxEx+McYmrdzfV4DLsMxEfg08Q=;
+	s=korg; t=1756208433;
+	bh=fi3CghU7dlqmNOH3fXt055E2yEglUn7UquPqYQAWhxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwWnoYvqAMowJg1cA2w4R3KdN0WAXO1C34I75IARqXd78RrcGqrGzVoTNmsRzz9es
-	 N/XL63JaGnyRhbUAmi2MgUjd6JFNvaxmN9nNHvSQoJo/9z15bbwMIqCoOZYfN23Qhm
-	 Fmi5JDFmdyfXEpaAVXIIC/0+W0zVPHML7+GJuPro=
+	b=sclP2X4QA3W8ebabAHWMYyKzYyi1178xs7ZQUwrmeJOtYxYn/ptWb1ZYxqdb4tvUk
+	 W7dQIYrknT04+knh5drePEgUvjsHMeNbaWG8//jFFGifDj9xziCWnEnvX/8mhYZLYi
+	 YJGV2v7qK9IWar/vIXabfDDpSRWKt+epg66iJ/gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 283/523] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+	Tim Harvey <tharvey@gateworks.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.12 078/322] PCI: imx6: Remove apps_reset toggling from imx_pcie_{assert/deassert}_core_reset
 Date: Tue, 26 Aug 2025 13:08:13 +0200
-Message-ID: <20250826110931.417641140@linuxfoundation.org>
+Message-ID: <20250826110917.536845895@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+commit d31eb217425591e100b475fad6360cd3da2073c6 upstream.
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+apps_reset corresponds to LTSSM_EN in i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP
+platforms. Since assertion/de-assertion of apps_reset is done in
+imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable(), remove it from
+imx_pcie_assert_core_reset() and imx_pcie_deassert_core_reset().
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This also fixes a failure in enumerating the PI7C9X2G608GP (hotplug) chip
+reliably on i.MX8MM, as reported by Tim.
+
+It should be noted that only i.MX7D, i.MX8MQ, i.MX8MM, and i.MX8MP
+platforms have the apps_reset logic, so this change doesn't have any effect
+on other platforms.
+
+Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()")
+Reported-by: Tim Harvey <tharvey@gateworks.com>
+Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com/
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: reworded commit subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Tim Harvey <tharvey@gateworks.com> # imx8mp-venice-gw74xx (i.MX8MP + hotplug capable switch)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250709033722.2924372-2-hongxing.zhu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 971c134cd71a..5840001ea3e7 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1106,6 +1106,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1130,6 +1132,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1160,10 +1164,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -778,7 +778,6 @@ static int imx7d_pcie_core_reset(struct
+ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+ {
+ 	reset_control_assert(imx_pcie->pciephy_reset);
+-	reset_control_assert(imx_pcie->apps_reset);
+ 
+ 	if (imx_pcie->drvdata->core_reset)
+ 		imx_pcie->drvdata->core_reset(imx_pcie, true);
+@@ -790,7 +789,6 @@ static void imx_pcie_assert_core_reset(s
+ static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+ {
+ 	reset_control_deassert(imx_pcie->pciephy_reset);
+-	reset_control_deassert(imx_pcie->apps_reset);
+ 
+ 	if (imx_pcie->drvdata->core_reset)
+ 		imx_pcie->drvdata->core_reset(imx_pcie, false);
+@@ -997,6 +995,9 @@ static int imx_pcie_host_init(struct dw_
+ 		}
  	}
  
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
-+	}
++	/* Make sure that PCIe LTSSM is cleared */
++	imx_pcie_ltssm_disable(dev);
 +
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
-+	}
- 
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index b2c539a42154..e5776545a8a0 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -92,6 +92,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
--- 
-2.39.5
-
+ 	ret = imx_pcie_deassert_core_reset(imx_pcie);
+ 	if (ret < 0) {
+ 		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
 
 
 
