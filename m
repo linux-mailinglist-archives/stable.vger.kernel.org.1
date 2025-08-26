@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5F3B36AA8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E16B36210
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06157A01213
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E8C7C81A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B41A352FFD;
-	Tue, 26 Aug 2025 14:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DA633A023;
+	Tue, 26 Aug 2025 13:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUditx2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2vM8Z74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA79E35209D;
-	Tue, 26 Aug 2025 14:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5044E33A015;
+	Tue, 26 Aug 2025 13:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218219; cv=none; b=uUQduFVUJZdxoVhNdHdchNt1F/bWwjzheTu++PysOSeBpSijYsr7s3vExd568irzi9MNN6pb/StlfSNzoc/VHI3vGDAH8mrnJCGVv1lj+kjDApw7UB6S2KnPAukewFePeTEtSAOGjw10CKl8/nzqa5MC5vVRlpc+bXfribyFV9o=
+	t=1756213762; cv=none; b=Xfv5eq/crXnonqNtYxIDtkFSJ/GiofT7b0H8qvQyrL+bd+IJQ0v/WN4HxDGas5STaSfWaPpL0htlwk9TwGhkc1MaMzYdPNDmRKeBy6jqavF0Wz87QTC3hXAUFosV6h5Q8TI8UnLwlvgpX7yP7CgH4ieCHHqbYQbw+3GyEd2T/o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218219; c=relaxed/simple;
-	bh=HevwML83kkrw+yC/+IBfSoZ99k8uFb34/GHDyx7Zv+c=;
+	s=arc-20240116; t=1756213762; c=relaxed/simple;
+	bh=3+tcUbr+tkZyO8ATvF/gguJkaycsrIYJw4YXvBLFqsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOZNcbHk/3dVEw5CvfGGUBnXP3XGU0yILjZ95v4KBkvTsqpZG5zzgviFHUqzgz2uzGef3u0YoOhUrsqHwa+V99DTZbcvijiE1qgdWIVdl3avW1EUjbWfH2fPe9f9f6KifbvSUovFnVxUaYbGctfMCKQ8e3U/bAKrQTzaf94BVqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUditx2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD0AC4CEF1;
-	Tue, 26 Aug 2025 14:23:38 +0000 (UTC)
+	 MIME-Version; b=RHy6YXTeow1a7pQ/fHpQVTFSW1TXEZYXOe+8JenXCjxrw/V2osITiVXQTqYkMWFZ7UzLfIc16GAyE66ax8pz3qA5rKvbGUehUfB/1DufHvX8NB+yr2/vQ2kUOYDiioPAYttIob9dYLfs5MgRt/gSPxCpWcfb5Jg9sl52rHceNpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2vM8Z74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF283C4CEF4;
+	Tue, 26 Aug 2025 13:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218219;
-	bh=HevwML83kkrw+yC/+IBfSoZ99k8uFb34/GHDyx7Zv+c=;
+	s=korg; t=1756213762;
+	bh=3+tcUbr+tkZyO8ATvF/gguJkaycsrIYJw4YXvBLFqsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUditx2tNvjgS3saVGPH61MrcdOZ63WUmcyQxDy3ulh4OBEyLCP+UxisD/eiOJUKo
-	 zs3XAqmfO4GnuUB5+OF2F4LEhYEqbzW4VIgoQQF5v+vlDI8YJnVmpu03iPhvxNUK5N
-	 2WxFDIjTITzZ7TGPDsqNAc4uqSZO//WHnEdpLZJo=
+	b=c2vM8Z74i9XAaBFc3lGc754gEPdA+3R8/Pe+SanhIxais+GzOdfkJd8h3EaM+KiHq
+	 ocKc8G9P0i+As+964lpqvWehcS1892udjWniDMZvwp/os9ZK5Z9cJ/vUsVXY0NXPX2
+	 0svSUo8kLJJrkgc2+6qQGAn3iHSwIvFniYRn2+TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: [PATCH 5.10 408/523] most: core: Drop device reference after usage in get_channel()
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 469/587] ata: libata-scsi: Return aborted command when missing sense and result TF
 Date: Tue, 26 Aug 2025 13:10:18 +0200
-Message-ID: <20250826110934.522282914@linuxfoundation.org>
+Message-ID: <20250826111004.906872639@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit b47b493d6387ae437098112936f32be27f73516c upstream.
+Commit d2be9ea9a75550a35c5127a6c2633658bc38c76b upstream.
 
-In get_channel(), the reference obtained by bus_find_device_by_name()
-was dropped via put_device() before accessing the device's driver data
-Move put_device() after usage to avoid potential issues.
+ata_gen_ata_sense() is always called for a failed qc missing sense data
+so that a sense key, code and code qualifier can be generated using
+ata_to_sense_error() from the qc status and error fields of its result
+task file. However, if the qc does not have its result task file filled,
+ata_gen_ata_sense() returns early without setting a sense key.
 
-Fixes: 2485055394be ("staging: most: core: drop device reference")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
+Improve this by defaulting to returning ABORTED COMMAND without any
+additional sense code, since we do not know the reason for the failure.
+The same fix is also applied in ata_gen_passthru_sense() with the
+additional check that the qc failed (qc->err_mask is set).
+
+Fixes: 816be86c7993 ("ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/most/core.c
-+++ b/drivers/most/core.c
-@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
- 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
- 	if (!dev)
- 		return NULL;
--	put_device(dev);
- 	iface = dev_get_drvdata(dev);
-+	put_device(dev);
- 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
- 		if (!strcmp(dev_name(&c->dev), mdev_ch))
- 			return c;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -935,6 +935,8 @@ static void ata_gen_passthru_sense(struc
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+ 			    "missing result TF: can't generate ATA PT sense data\n");
++		if (qc->err_mask)
++			ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+ 		return;
+ 	}
+ 
+@@ -992,8 +994,8 @@ static void ata_gen_ata_sense(struct ata
+ 
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+-			    "missing result TF: can't generate sense data\n");
+-		return;
++			    "Missing result TF: reporting aborted command\n");
++		goto aborted;
+ 	}
+ 
+ 	/* Use ata_to_sense_error() to map status register bits
+@@ -1004,19 +1006,20 @@ static void ata_gen_ata_sense(struct ata
+ 		ata_to_sense_error(qc->ap->print_id, tf->status, tf->error,
+ 				   &sense_key, &asc, &ascq);
+ 		ata_scsi_set_sense(dev, cmd, sense_key, asc, ascq);
+-	} else {
+-		/* Could not decode error */
+-		ata_dev_warn(dev, "could not decode error status 0x%x err_mask 0x%x\n",
+-			     tf->status, qc->err_mask);
+-		ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+-		return;
+-	}
+ 
+-	block = ata_tf_read_block(&qc->result_tf, dev);
+-	if (block == U64_MAX)
++		block = ata_tf_read_block(&qc->result_tf, dev);
++		if (block != U64_MAX)
++			scsi_set_sense_information(sb, SCSI_SENSE_BUFFERSIZE,
++						   block);
+ 		return;
++	}
+ 
+-	scsi_set_sense_information(sb, SCSI_SENSE_BUFFERSIZE, block);
++	/* Could not decode error */
++	ata_dev_warn(dev,
++		"Could not decode error 0x%x, status 0x%x (err_mask=0x%x)\n",
++		tf->error, tf->status, qc->err_mask);
++aborted:
++	ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+ }
+ 
+ void ata_scsi_sdev_config(struct scsi_device *sdev)
 
 
 
