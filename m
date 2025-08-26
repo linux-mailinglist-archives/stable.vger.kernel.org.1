@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62DFB35E45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F3BB36B7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C414F560753
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E905BA019CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D697A199935;
-	Tue, 26 Aug 2025 11:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D0C2192F2;
+	Tue, 26 Aug 2025 14:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4ejI9IN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bu4UJZcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920AF29BDBA;
-	Tue, 26 Aug 2025 11:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE41299A94;
+	Tue, 26 Aug 2025 14:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208822; cv=none; b=iZPUCvoKderniBBL+1nthTW127Y5DxdHovGGmUVh5c4WHA/xsqTQco86enSlnIFRJoXZIodws7QvAS8BKVVyshMfMYxu44QM4JDHqGFh2/duqvKX52hfudZNbQQnU4I8o8StKqkKreflNVjuhDoI554t9pL8QYbp4ITAPU2CDJI=
+	t=1756218284; cv=none; b=mUBAWCoHhWi0jd/p68MDlVBlmKzgM+SUH9dvhrSkI2//7dp7v0aVqYwLRBh0BA0RpYIEjLJ9d2fIKRajYVCDGIbaQlo9/3RaDK+bHM4KlyIzQR4JwwNNDIFclP3dzbqrPcucmGskeOdfYHLsGogJe8/lBHgV3eu7b1+ziGxLmJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208822; c=relaxed/simple;
-	bh=OSYN37+ollnujCJdb7zCGsYjXV5RF77Z51CF+XIxcew=;
+	s=arc-20240116; t=1756218284; c=relaxed/simple;
+	bh=gCI2xzPEASQMc+jod1KHkaKp2FnPRmk8NW+c7PMoIeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTY3H45QcLuiXwEoqi9zdQuwXogEFZNFZM0xcX16utyv0XwRyDPQo2iE7gReWEMQbmXzPGwsa2TXXgUHbOcwzmjvrW8ApUWUxYjAUMx6N/zwH4kVnl3+qtnCioCiTumE3IyXo5IBq6iLwYdhYgG5KzUKdwrZgORC4MX13dX7svk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4ejI9IN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B02C113CF;
-	Tue, 26 Aug 2025 11:47:01 +0000 (UTC)
+	 MIME-Version; b=k/xTKVVl+4wPHll/hqLu+2781IyzuF/KPEtAvucpW5cSinGrhXSyGKznCfxb/SgRv8rYDZPdxr5ASqf9RTOkW1X/A8byWwNlcNbkZd8q4RTqX4OVREOgkWcuS5DzLRK3oMnzggy+XckMIHbT7JrFm5LLApozEFmx0AOIR60iMSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bu4UJZcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990A2C4CEF1;
+	Tue, 26 Aug 2025 14:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208822;
-	bh=OSYN37+ollnujCJdb7zCGsYjXV5RF77Z51CF+XIxcew=;
+	s=korg; t=1756218283;
+	bh=gCI2xzPEASQMc+jod1KHkaKp2FnPRmk8NW+c7PMoIeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4ejI9INTmc8PQkaNJO1emRW9ZnZoZ+wyqLEk1sg/14BtoecBYzJmuiM3PGgHWZlz
-	 6NlzhpZDodFwJoDpwRBMR7Z/hBzLYzUkk8qw8q0XZ0+VQHNvP7e26j4RakgQXYCHta
-	 6gYb7R+UmQmgcNmZe+JqwiVO5kEPU0mM/Otrip0Y=
+	b=bu4UJZcvS5qirY078DaJpyHq+I3M5vDC6FoyJLLU1N8hkVM+OWRl0suUFofdezism
+	 etoOmYWA0xqPZaH/7ihCJEcmLDi2LaFFfrJJywojxQvGf1wq036SFmff4jg9jtyIea
+	 2OYre9/uH33wNWiSIWEBMw3xF/UXYJkHJZnfuFDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/322] drm/format-helper: Add conversion from XRGB8888 to BGR888
+Subject: [PATCH 5.10 463/523] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
 Date: Tue, 26 Aug 2025 13:11:13 +0200
-Message-ID: <20250826110922.306779203@linuxfoundation.org>
+Message-ID: <20250826110935.866571761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,259 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit c9043706cb11b8005e145debe0a3211acd08e2c1 ]
+[ Upstream commit ed62a62a18bc144f73eadf866ae46842e8f6606e ]
 
-Add XRGB8888 emulation helper for devices that only support BGR888.
+Improve the description of the possible default SATA link power
+management policies and add the missing description for policy 5.
+No functional changes.
 
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/9A67EA95-9BC7-4D56-8F87-05EAC1C166AD@live.com
-Stable-dep-of: 05663d88fd0b ("drm/tests: Fix drm_test_fb_xrgb8888_to_xrgb2101010() on big-endian")
+Fixes: a5ec5a7bfd1f ("ata: ahci: Support state with min power but Partial low power state")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_format_helper.c           | 54 +++++++++++++
- .../gpu/drm/tests/drm_format_helper_test.c    | 81 +++++++++++++++++++
- include/drm/drm_format_helper.h               |  3 +
- 3 files changed, 138 insertions(+)
+ drivers/ata/Kconfig |   33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
-index b1be458ed4dd..4f60c8d8f63e 100644
---- a/drivers/gpu/drm/drm_format_helper.c
-+++ b/drivers/gpu/drm/drm_format_helper.c
-@@ -702,6 +702,57 @@ void drm_fb_xrgb8888_to_rgb888(struct iosys_map *dst, const unsigned int *dst_pi
- }
- EXPORT_SYMBOL(drm_fb_xrgb8888_to_rgb888);
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -117,22 +117,39 @@ config SATA_AHCI
  
-+static void drm_fb_xrgb8888_to_bgr888_line(void *dbuf, const void *sbuf, unsigned int pixels)
-+{
-+	u8 *dbuf8 = dbuf;
-+	const __le32 *sbuf32 = sbuf;
-+	unsigned int x;
-+	u32 pix;
-+
-+	for (x = 0; x < pixels; x++) {
-+		pix = le32_to_cpu(sbuf32[x]);
-+		/* write red-green-blue to output in little endianness */
-+		*dbuf8++ = (pix & 0x00ff0000) >> 16;
-+		*dbuf8++ = (pix & 0x0000ff00) >> 8;
-+		*dbuf8++ = (pix & 0x000000ff) >> 0;
-+	}
-+}
-+
-+/**
-+ * drm_fb_xrgb8888_to_bgr888 - Convert XRGB8888 to BGR888 clip buffer
-+ * @dst: Array of BGR888 destination buffers
-+ * @dst_pitch: Array of numbers of bytes between the start of two consecutive scanlines
-+ *             within @dst; can be NULL if scanlines are stored next to each other.
-+ * @src: Array of XRGB8888 source buffers
-+ * @fb: DRM framebuffer
-+ * @clip: Clip rectangle area to copy
-+ * @state: Transform and conversion state
-+ *
-+ * This function copies parts of a framebuffer to display memory and converts the
-+ * color format during the process. Destination and framebuffer formats must match. The
-+ * parameters @dst, @dst_pitch and @src refer to arrays. Each array must have at
-+ * least as many entries as there are planes in @fb's format. Each entry stores the
-+ * value for the format's respective color plane at the same index.
-+ *
-+ * This function does not apply clipping on @dst (i.e. the destination is at the
-+ * top-left corner).
-+ *
-+ * Drivers can use this function for BGR888 devices that don't natively
-+ * support XRGB8888.
-+ */
-+void drm_fb_xrgb8888_to_bgr888(struct iosys_map *dst, const unsigned int *dst_pitch,
-+			       const struct iosys_map *src, const struct drm_framebuffer *fb,
-+			       const struct drm_rect *clip, struct drm_format_conv_state *state)
-+{
-+	static const u8 dst_pixsize[DRM_FORMAT_MAX_PLANES] = {
-+		3,
-+	};
-+
-+	drm_fb_xfrm(dst, dst_pitch, dst_pixsize, src, fb, clip, false, state,
-+		    drm_fb_xrgb8888_to_bgr888_line);
-+}
-+EXPORT_SYMBOL(drm_fb_xrgb8888_to_bgr888);
-+
- static void drm_fb_xrgb8888_to_argb8888_line(void *dbuf, const void *sbuf, unsigned int pixels)
- {
- 	__le32 *dbuf32 = dbuf;
-@@ -1035,6 +1086,9 @@ int drm_fb_blit(struct iosys_map *dst, const unsigned int *dst_pitch, uint32_t d
- 		} else if (dst_format == DRM_FORMAT_RGB888) {
- 			drm_fb_xrgb8888_to_rgb888(dst, dst_pitch, src, fb, clip, state);
- 			return 0;
-+		} else if (dst_format == DRM_FORMAT_BGR888) {
-+			drm_fb_xrgb8888_to_bgr888(dst, dst_pitch, src, fb, clip, state);
-+			return 0;
- 		} else if (dst_format == DRM_FORMAT_ARGB8888) {
- 			drm_fb_xrgb8888_to_argb8888(dst, dst_pitch, src, fb, clip, state);
- 			return 0;
-diff --git a/drivers/gpu/drm/tests/drm_format_helper_test.c b/drivers/gpu/drm/tests/drm_format_helper_test.c
-index b4d62fb1d909..2a3d80b27cae 100644
---- a/drivers/gpu/drm/tests/drm_format_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_format_helper_test.c
-@@ -60,6 +60,11 @@ struct convert_to_rgb888_result {
- 	const u8 expected[TEST_BUF_SIZE];
- };
+ config SATA_MOBILE_LPM_POLICY
+ 	int "Default SATA Link Power Management policy for mobile chipsets"
+-	range 0 4
++	range 0 5
+ 	default 0
+ 	depends on SATA_AHCI
+ 	help
+ 	  Select the Default SATA Link Power Management (LPM) policy to use
+ 	  for mobile / laptop variants of chipsets / "South Bridges".
  
-+struct convert_to_bgr888_result {
-+	unsigned int dst_pitch;
-+	const u8 expected[TEST_BUF_SIZE];
-+};
+-	  The value set has the following meanings:
++	  Each policy combines power saving states and features:
++	   - Partial: The Phy logic is powered but is in a reduced power
++                      state. The exit latency from this state is no longer than
++                      10us).
++	   - Slumber: The Phy logic is powered but is in an even lower power
++                      state. The exit latency from this state is potentially
++		      longer, but no longer than 10ms.
++	   - DevSleep: The Phy logic may be powered down. The exit latency from
++	               this state is no longer than 20 ms, unless otherwise
++		       specified by DETO in the device Identify Device Data log.
++	   - HIPM: Host Initiated Power Management (host automatically
++		   transitions to partial and slumber).
++	   - DIPM: Device Initiated Power Management (device automatically
++		   transitions to partial and slumber).
 +
- struct convert_to_argb8888_result {
- 	unsigned int dst_pitch;
- 	const u32 expected[TEST_BUF_SIZE];
-@@ -107,6 +112,7 @@ struct convert_xrgb8888_case {
- 	struct convert_to_argb1555_result argb1555_result;
- 	struct convert_to_rgba5551_result rgba5551_result;
- 	struct convert_to_rgb888_result rgb888_result;
-+	struct convert_to_bgr888_result bgr888_result;
- 	struct convert_to_argb8888_result argb8888_result;
- 	struct convert_to_xrgb2101010_result xrgb2101010_result;
- 	struct convert_to_argb2101010_result argb2101010_result;
-@@ -151,6 +157,10 @@ static struct convert_xrgb8888_case convert_xrgb8888_cases[] = {
- 			.dst_pitch = TEST_USE_DEFAULT_PITCH,
- 			.expected = { 0x00, 0x00, 0xFF },
- 		},
-+		.bgr888_result = {
-+			.dst_pitch = TEST_USE_DEFAULT_PITCH,
-+			.expected = { 0xFF, 0x00, 0x00 },
-+		},
- 		.argb8888_result = {
- 			.dst_pitch = TEST_USE_DEFAULT_PITCH,
- 			.expected = { 0xFFFF0000 },
-@@ -217,6 +227,10 @@ static struct convert_xrgb8888_case convert_xrgb8888_cases[] = {
- 			.dst_pitch = TEST_USE_DEFAULT_PITCH,
- 			.expected = { 0x00, 0x00, 0xFF },
- 		},
-+		.bgr888_result = {
-+			.dst_pitch = TEST_USE_DEFAULT_PITCH,
-+			.expected = { 0xFF, 0x00, 0x00 },
-+		},
- 		.argb8888_result = {
- 			.dst_pitch = TEST_USE_DEFAULT_PITCH,
- 			.expected = { 0xFFFF0000 },
-@@ -330,6 +344,15 @@ static struct convert_xrgb8888_case convert_xrgb8888_cases[] = {
- 				0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00,
- 			},
- 		},
-+		.bgr888_result = {
-+			.dst_pitch = TEST_USE_DEFAULT_PITCH,
-+			.expected = {
-+				0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00,
-+				0xFF, 0x00, 0x00, 0x00, 0xFF, 0x00,
-+				0x00, 0x00, 0xFF, 0xFF, 0x00, 0xFF,
-+				0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF,
-+			},
-+		},
- 		.argb8888_result = {
- 			.dst_pitch = TEST_USE_DEFAULT_PITCH,
- 			.expected = {
-@@ -468,6 +491,17 @@ static struct convert_xrgb8888_case convert_xrgb8888_cases[] = {
- 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
- 			},
- 		},
-+		.bgr888_result = {
-+			.dst_pitch = 15,
-+			.expected = {
-+				0x0E, 0x44, 0x9C, 0x11, 0x4D, 0x05, 0xA8, 0xF3, 0x03,
-+				0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				0x6C, 0xF0, 0x73, 0x0E, 0x44, 0x9C, 0x11, 0x4D, 0x05,
-+				0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				0xA8, 0x03, 0x03, 0x6C, 0xF0, 0x73, 0x0E, 0x44, 0x9C,
-+				0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+			},
-+		},
- 		.argb8888_result = {
- 			.dst_pitch = 20,
- 			.expected = {
-@@ -914,6 +948,52 @@ static void drm_test_fb_xrgb8888_to_rgb888(struct kunit *test)
- 	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
- }
++	  The possible values for the default SATA link power management
++	  policies are:
+ 		0 => Keep firmware settings
+-		1 => Maximum performance
+-		2 => Medium power
+-		3 => Medium power with Device Initiated PM enabled
+-		4 => Minimum power
++		1 => No power savings (maximum performance)
++		2 => HIPM (Partial)
++		3 => HIPM (Partial) and DIPM (Partial and Slumber)
++		4 => HIPM (Partial and DevSleep) and DIPM (Partial and Slumber)
++		5 => HIPM (Slumber and DevSleep) and DIPM (Partial and Slumber)
  
-+static void drm_test_fb_xrgb8888_to_bgr888(struct kunit *test)
-+{
-+	const struct convert_xrgb8888_case *params = test->param_value;
-+	const struct convert_to_bgr888_result *result = &params->bgr888_result;
-+	size_t dst_size;
-+	u8 *buf = NULL;
-+	__le32 *xrgb8888 = NULL;
-+	struct iosys_map dst, src;
-+
-+	struct drm_framebuffer fb = {
-+		.format = drm_format_info(DRM_FORMAT_XRGB8888),
-+		.pitches = { params->pitch, 0, 0 },
-+	};
-+
-+	dst_size = conversion_buf_size(DRM_FORMAT_BGR888, result->dst_pitch,
-+				       &params->clip, 0);
-+	KUNIT_ASSERT_GT(test, dst_size, 0);
-+
-+	buf = kunit_kzalloc(test, dst_size, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-+	iosys_map_set_vaddr(&dst, buf);
-+
-+	xrgb8888 = cpubuf_to_le32(test, params->xrgb8888, TEST_BUF_SIZE);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, xrgb8888);
-+	iosys_map_set_vaddr(&src, xrgb8888);
-+
-+	/*
-+	 * BGR888 expected results are already in little-endian
-+	 * order, so there's no need to convert the test output.
-+	 */
-+	drm_fb_xrgb8888_to_bgr888(&dst, &result->dst_pitch, &src, &fb, &params->clip,
-+				  &fmtcnv_state);
-+	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
-+
-+	buf = dst.vaddr; /* restore original value of buf */
-+	memset(buf, 0, dst_size);
-+
-+	int blit_result = 0;
-+
-+	blit_result = drm_fb_blit(&dst, &result->dst_pitch, DRM_FORMAT_BGR888, &src, &fb, &params->clip,
-+				  &fmtcnv_state);
-+
-+	KUNIT_EXPECT_FALSE(test, blit_result);
-+	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
-+}
-+
- static void drm_test_fb_xrgb8888_to_argb8888(struct kunit *test)
- {
- 	const struct convert_xrgb8888_case *params = test->param_value;
-@@ -1851,6 +1931,7 @@ static struct kunit_case drm_format_helper_test_cases[] = {
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_argb1555, convert_xrgb8888_gen_params),
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_rgba5551, convert_xrgb8888_gen_params),
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_rgb888, convert_xrgb8888_gen_params),
-+	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_bgr888, convert_xrgb8888_gen_params),
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_argb8888, convert_xrgb8888_gen_params),
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_xrgb2101010, convert_xrgb8888_gen_params),
- 	KUNIT_CASE_PARAM(drm_test_fb_xrgb8888_to_argb2101010, convert_xrgb8888_gen_params),
-diff --git a/include/drm/drm_format_helper.h b/include/drm/drm_format_helper.h
-index 428d81afe215..aa1604d92c1a 100644
---- a/include/drm/drm_format_helper.h
-+++ b/include/drm/drm_format_helper.h
-@@ -96,6 +96,9 @@ void drm_fb_xrgb8888_to_rgba5551(struct iosys_map *dst, const unsigned int *dst_
- void drm_fb_xrgb8888_to_rgb888(struct iosys_map *dst, const unsigned int *dst_pitch,
- 			       const struct iosys_map *src, const struct drm_framebuffer *fb,
- 			       const struct drm_rect *clip, struct drm_format_conv_state *state);
-+void drm_fb_xrgb8888_to_bgr888(struct iosys_map *dst, const unsigned int *dst_pitch,
-+			       const struct iosys_map *src, const struct drm_framebuffer *fb,
-+			       const struct drm_rect *clip, struct drm_format_conv_state *state);
- void drm_fb_xrgb8888_to_argb8888(struct iosys_map *dst, const unsigned int *dst_pitch,
- 				 const struct iosys_map *src, const struct drm_framebuffer *fb,
- 				 const struct drm_rect *clip, struct drm_format_conv_state *state);
--- 
-2.50.1
-
+-	  Note "Minimum power" is known to cause issues, including disk
+-	  corruption, with some disks and should not be used.
++	  Excluding the value 0, higher values represent policies with higher
++	  power savings.
+ 
+ config SATA_AHCI_PLATFORM
+ 	tristate "Platform AHCI SATA support"
 
 
 
