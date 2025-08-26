@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A81B369C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A94B35CBF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AAA01C8392C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 037887A407D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEFC3568E3;
-	Tue, 26 Aug 2025 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6635A321420;
+	Tue, 26 Aug 2025 11:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTNbMoia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5d8I0D4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C82D35337D;
-	Tue, 26 Aug 2025 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231DE283FDF;
+	Tue, 26 Aug 2025 11:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217651; cv=none; b=hMAGxHiVA499kmCtqGq+ZgIHLMEmnnfKk62JA37XLX/5TTAOv80hdATs3rlIOMqRGZ1WWVe5m1ukYQLDotdkP3QrJFR9HcN/GzoEcR8UdVwdglCLP80qprVSSNyBwsXE66TukyAuf1W3IuXsTanQgkFYxthdMRS31zqfdTvMLA4=
+	t=1756208195; cv=none; b=EjPMpTsNcr2/lP+8oPKOfIwGTcHuUwgVoAr9gt+AHVJx+RXNKLlh3rEZ3MB0cxgdWpI4MT5v6kebXxouNyKOQwltqW/eOy34LiDCwHumBf8C7aPU28mbwTm/iVERkC5viJzRRcPUPRrkti8NsS87yWRGy1RmiWmtseeikxymiBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217651; c=relaxed/simple;
-	bh=jH6NCTB8SbmlKrqthmgF/XNajfVSS4ukyLIE6ZXBZp0=;
+	s=arc-20240116; t=1756208195; c=relaxed/simple;
+	bh=cAfepi6qL4JBY0blhoAHJKRZGVhlfX2RTncRoTxsqss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+90sycu03m6hmS23jqNyl4/hu+nrQ4nLcQsDQ20HrhWefM+3Bp9GMLD4SsaKwEuyD9HWi5K4eIGz4mx8S+WUjr5MQB/L4mYyRDx8VS4RtgdrhFQYrXRo4hkeNM/VqXPeyHLAg+0TgTAYrXSjnf/KCLVl7NoG4bM1tyvJ3EAmo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTNbMoia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC7CC4CEF1;
-	Tue, 26 Aug 2025 14:14:10 +0000 (UTC)
+	 MIME-Version; b=Eg6XN/0w4MDf+UWiJjUw8qqv/TWCQMFtyLKddj019We7N9sXJEb4j5tbg/nOBjclobi1x1DMZOWWuEjLzuqsMaz+GfqigY67KKE39MVJUIJmWi4Mm9Zxwf59BMpf5c8WWp9Pu9YkVnqb/B9pBfwrmxsJD4om/W6zRf0AKjum9GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5d8I0D4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E3EC4CEF1;
+	Tue, 26 Aug 2025 11:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217651;
-	bh=jH6NCTB8SbmlKrqthmgF/XNajfVSS4ukyLIE6ZXBZp0=;
+	s=korg; t=1756208195;
+	bh=cAfepi6qL4JBY0blhoAHJKRZGVhlfX2RTncRoTxsqss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTNbMoiannNnP2VL6t22BoFSBwG1g/f57jS5vIKvRw8iIuFkaWNPxw9UODDgnQBnH
-	 217ec+s2XOcrEElas7N0E88toTW528KKm876k84ZiuAn6WhJBoHW9283/HrWpbJXyf
-	 MQNxnIgr0ZWALNtpBD2+/754FIbDKFxbvAB+FRKw=
+	b=c5d8I0D40yQNMEPefvqE4ON02SHSf5iem/a/kW9lQg5qdMyobsXPsctwd0VM5NeX8
+	 14haFJ6NtmXwlrB9ruEJiegklmHFCgGW/BR6hjmecnpqST059U3lyWtpaljOeiNAcP
+	 iewJlhFVegne5xhCgaqo1tCs8tbIIhdapYnT+k4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cynthia Huang <cynthia@andestech.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/523] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
+	kernel test robot <lkp@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 018/322] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
 Date: Tue, 26 Aug 2025 13:07:13 +0200
-Message-ID: <20250826110929.961641101@linuxfoundation.org>
+Message-ID: <20250826110915.707075922@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cynthia Huang <cynthia@andestech.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
+commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
 
-The kernel does not provide sys_futex() on 32-bit architectures that do not
-support 32-bit time representations, such as riscv32.
+The MIPS32r2 ChaCha code has never been buildable with the clang
+assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
 
-As a result, glibc cannot define SYS_futex, causing compilation failures in
-tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
-such cases to ensure successful compilation and compatibility.
+    error: unknown instruction, did you mean: rol, rotr?
 
-Signed-off-by: Cynthia Huang <cynthia@andestech.com>
-Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Second, clang requires that both operands of the 'wsbh' instruction be
+explicitly given:
+
+    error: too few operands for instruction
+
+To fix this, align the code with the real instruction set by (1) using
+the real instruction 'rotr' instead of the nonstandard pseudo-
+instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+
+To make removing the use of 'rotl' a bit easier, also remove the
+unnecessary special-casing for big endian CPUs at
+.Lchacha_mips_xor_bytes.  The tail handling is actually
+endian-independent since it processes one byte at a time.  On big endian
+CPUs the old code byte-swapped SAVED_X, then iterated through it in
+reverse order.  But the byteswap and reverse iteration canceled out.
+
+Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
+little endian and big endian mips32r2 kernels.
+
+Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
+Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/mips/crypto/chacha-core.S |   20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..7a5fd1d5355e 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
- 					 FUTEX_PRIVATE_FLAG)
+--- a/arch/mips/crypto/chacha-core.S
++++ b/arch/mips/crypto/chacha-core.S
+@@ -55,17 +55,13 @@
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ #define MSB 0
+ #define LSB 3
+-#define ROTx rotl
+-#define ROTR(n) rotr n, 24
+ #define	CPU_TO_LE32(n) \
+-	wsbh	n; \
++	wsbh	n, n; \
+ 	rotr	n, 16;
+ #else
+ #define MSB 3
+ #define LSB 0
+-#define ROTx rotr
+ #define CPU_TO_LE32(n)
+-#define ROTR(n)
  #endif
  
-+/*
-+ * SYS_futex is expected from system C library, in glibc some 32-bit
-+ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
-+ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
-+ * SYS_futex_time64 in this situation to ensure the compilation and the
-+ * compatibility.
-+ */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
-+
- /**
-  * futex() - SYS_futex syscall wrapper
-  * @uaddr:	address of first futex
--- 
-2.39.5
-
+ #define FOR_EACH_WORD(x) \
+@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
+ 	xor	X(W), X(B); \
+ 	xor	X(Y), X(C); \
+ 	xor	X(Z), X(D); \
+-	rotl	X(V), S;    \
+-	rotl	X(W), S;    \
+-	rotl	X(Y), S;    \
+-	rotl	X(Z), S;
++	rotr	X(V), 32 - S; \
++	rotr	X(W), 32 - S; \
++	rotr	X(Y), 32 - S; \
++	rotr	X(Z), 32 - S;
+ 
+ .text
+ .set	reorder
+@@ -372,21 +368,19 @@ chacha_crypt_arch:
+ 	/* First byte */
+ 	lbu	T1, 0(IN)
+ 	addiu	$at, BYTES, 1
+-	CPU_TO_LE32(SAVED_X)
+-	ROTR(SAVED_X)
+ 	xor	T1, SAVED_X
+ 	sb	T1, 0(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Second byte */
+ 	lbu	T1, 1(IN)
+ 	addiu	$at, BYTES, 2
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 1(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Third byte */
+ 	lbu	T1, 2(IN)
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 2(OUT)
+ 	b	.Lchacha_mips_xor_done
 
 
 
