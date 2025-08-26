@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64631B368EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3DFB35D24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB607A9D02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A22C37C04AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA925352067;
-	Tue, 26 Aug 2025 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F43623D7FA;
+	Tue, 26 Aug 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YgwBFwX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5Ci9eQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785CA260586;
-	Tue, 26 Aug 2025 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4B3199935;
+	Tue, 26 Aug 2025 11:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217931; cv=none; b=nP8xAwLYonDu37PgUilvt8s5bYZlSUjdAS3lXlWobXSyHVNvIMcih4o473PfypYnNcfuSCb2TmTUdK2U62Kztb1Lh8t6ULp52Uc+4226T1MpChRk49MNLqCCSVVLorP53k/I86/91g+NO1pWmjm5BDy7XS4hOcJuJP27R08gdrY=
+	t=1756208472; cv=none; b=Lt+cjPmy4Tjrou7h5EC/zJ9vrVMfC4vBXv39sp3N5skhqYu16acErpWxU5bxWdhX+tPwJKQ4S3Zz+lzAzJVpCwA/UCVCZAolcP/SoY4lT67k4dV31t7YWVIeIdVnwZE+o/KKJ2o/uWct/hwYuRbpaciP157OezCQ6spuygR5VfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217931; c=relaxed/simple;
-	bh=UX51uqgcJ4qPqlzY26nizXHEDXVX9gEwY1sednsZ5yw=;
+	s=arc-20240116; t=1756208472; c=relaxed/simple;
+	bh=MiZbG2fJNkaDDDuT19hTO4lWQjbhH2WmFXA4HU4+wyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/7si0nJBqQ2hmmgfCqpNc64gKVX1M/evSq2V7t8N4qta3F26Bs5P4VsgC9RRQVOyVN1Zc2nxpXYjMDuvvq0OVzu5W8i0E5UTrxHyjdvl8pEkA+I7xqLNckxeOQ4wgTSM8rUti+eZGMM0YqSdCuUCXRmtXSD5XTQqPBAQpeDmIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YgwBFwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA12C4CEF1;
-	Tue, 26 Aug 2025 14:18:50 +0000 (UTC)
+	 MIME-Version; b=WRXGgKKnJtvdzX1Uk6ddUZH3kNre/hyu1wTSn0jdUez/vUv2bzkK2fp36UOnpVW/DRnltzM4UtDVZkquD3N16WsQtDNNpUghKh6eZ3GKlqoeCNa4O0HK9wGwsl2XfAd9pm20p8DKPSQz8Fwym9lmz43Q7aJ/6WnWbt1jrFq7F00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5Ci9eQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F90C4CEF1;
+	Tue, 26 Aug 2025 11:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217931;
-	bh=UX51uqgcJ4qPqlzY26nizXHEDXVX9gEwY1sednsZ5yw=;
+	s=korg; t=1756208472;
+	bh=MiZbG2fJNkaDDDuT19hTO4lWQjbhH2WmFXA4HU4+wyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YgwBFwXchZbVSk9WmKGQrTvvdImQEnrC+jyeT4gjfof8uRkwCmfS3KJZTkMxwfM3
-	 dAD0gA5oG4RCEvS0X2y0hxD2gvGQWZu3LT+iFUirbTyrbruP02N0/Wnz8fGn/XwWpF
-	 k5AHv9UIOPGzm2Hf08Rujgj4khk/+6HGkwpvv5Dc=
+	b=v5Ci9eQWePXLYcRjWAf4ilPaRuJoQj47TKaRaoy3Sa5GnY6HxEsSP5IixhWC9Hd57
+	 3Du246bj94xe2ffPqZZuiYtjD61poTFwjcRaaQrdOQJkb8hMTlFB9Cu1g1M6up5lOM
+	 +Ss1N3+A6gF1OeqalSTla67xa45SGPA2Uv/kJ54k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 329/523] ipmi: Fix strcpy source and destination the same
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 124/322] drm/amdgpu: update mmhub 3.0.1 client id mappings
 Date: Tue, 26 Aug 2025 13:08:59 +0200
-Message-ID: <20250826110932.592028732@linuxfoundation.org>
+Message-ID: <20250826110918.861252934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
+commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
 
-The source and destination of some strcpy operations was the same.
-Split out the part of the operations that needed to be done for those
-particular calls so the unnecessary copy wasn't done.
+Update the client id mapping so the correct clients
+get printed when there is a mmhub page fault.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
-index 883b4a341012..56be20f7485b 100644
---- a/drivers/char/ipmi/ipmi_watchdog.c
-+++ b/drivers/char/ipmi/ipmi_watchdog.c
-@@ -1198,14 +1198,8 @@ static struct ipmi_smi_watcher smi_watcher = {
- 	.smi_gone = ipmi_smi_gone
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
+@@ -36,40 +36,47 @@
+ 
+ static const char *mmhub_client_ids_v3_0_1[][2] = {
+ 	[0][0] = "VMC",
++	[1][0] = "ISPXT",
++	[2][0] = "ISPIXT",
+ 	[4][0] = "DCEDMC",
+ 	[5][0] = "DCEVGA",
+ 	[6][0] = "MP0",
+ 	[7][0] = "MP1",
+-	[8][0] = "MPIO",
+-	[16][0] = "HDP",
+-	[17][0] = "LSDMA",
+-	[18][0] = "JPEG",
+-	[19][0] = "VCNU0",
+-	[21][0] = "VSCH",
+-	[22][0] = "VCNU1",
+-	[23][0] = "VCN1",
+-	[32+20][0] = "VCN0",
+-	[2][1] = "DBGUNBIO",
++	[8][0] = "MPM",
++	[12][0] = "ISPTNR",
++	[14][0] = "ISPCRD0",
++	[15][0] = "ISPCRD1",
++	[16][0] = "ISPCRD2",
++	[22][0] = "HDP",
++	[23][0] = "LSDMA",
++	[24][0] = "JPEG",
++	[27][0] = "VSCH",
++	[28][0] = "VCNU",
++	[29][0] = "VCN",
++	[1][1] = "ISPXT",
++	[2][1] = "ISPIXT",
+ 	[3][1] = "DCEDWB",
+ 	[4][1] = "DCEDMC",
+ 	[5][1] = "DCEVGA",
+ 	[6][1] = "MP0",
+ 	[7][1] = "MP1",
+-	[8][1] = "MPIO",
+-	[10][1] = "DBGU0",
+-	[11][1] = "DBGU1",
+-	[12][1] = "DBGU2",
+-	[13][1] = "DBGU3",
+-	[14][1] = "XDP",
+-	[15][1] = "OSSSYS",
+-	[16][1] = "HDP",
+-	[17][1] = "LSDMA",
+-	[18][1] = "JPEG",
+-	[19][1] = "VCNU0",
+-	[20][1] = "VCN0",
+-	[21][1] = "VSCH",
+-	[22][1] = "VCNU1",
+-	[23][1] = "VCN1",
++	[8][1] = "MPM",
++	[10][1] = "ISPMWR0",
++	[11][1] = "ISPMWR1",
++	[12][1] = "ISPTNR",
++	[13][1] = "ISPSWR",
++	[14][1] = "ISPCWR0",
++	[15][1] = "ISPCWR1",
++	[16][1] = "ISPCWR2",
++	[17][1] = "ISPCWR3",
++	[18][1] = "XDP",
++	[21][1] = "OSSSYS",
++	[22][1] = "HDP",
++	[23][1] = "LSDMA",
++	[24][1] = "JPEG",
++	[27][1] = "VSCH",
++	[28][1] = "VCNU",
++	[29][1] = "VCN",
  };
  
--static int action_op(const char *inval, char *outval)
-+static int action_op_set_val(const char *inval)
- {
--	if (outval)
--		strcpy(outval, action);
--
--	if (!inval)
--		return 0;
--
- 	if (strcmp(inval, "reset") == 0)
- 		action_val = WDOG_TIMEOUT_RESET;
- 	else if (strcmp(inval, "none") == 0)
-@@ -1216,18 +1210,26 @@ static int action_op(const char *inval, char *outval)
- 		action_val = WDOG_TIMEOUT_POWER_DOWN;
- 	else
- 		return -EINVAL;
--	strcpy(action, inval);
- 	return 0;
- }
- 
--static int preaction_op(const char *inval, char *outval)
-+static int action_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preaction);
-+		strcpy(outval, action);
- 
- 	if (!inval)
- 		return 0;
-+	rv = action_op_set_val(inval);
-+	if (!rv)
-+		strcpy(action, inval);
-+	return rv;
-+}
- 
-+static int preaction_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "pre_none") == 0)
- 		preaction_val = WDOG_PRETIMEOUT_NONE;
- 	else if (strcmp(inval, "pre_smi") == 0)
-@@ -1240,18 +1242,26 @@ static int preaction_op(const char *inval, char *outval)
- 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
- 	else
- 		return -EINVAL;
--	strcpy(preaction, inval);
- 	return 0;
- }
- 
--static int preop_op(const char *inval, char *outval)
-+static int preaction_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preop);
-+		strcpy(outval, preaction);
- 
- 	if (!inval)
- 		return 0;
-+	rv = preaction_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preaction, inval);
-+	return 0;
-+}
- 
-+static int preop_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "preop_none") == 0)
- 		preop_val = WDOG_PREOP_NONE;
- 	else if (strcmp(inval, "preop_panic") == 0)
-@@ -1260,7 +1270,22 @@ static int preop_op(const char *inval, char *outval)
- 		preop_val = WDOG_PREOP_GIVE_DATA;
- 	else
- 		return -EINVAL;
--	strcpy(preop, inval);
-+	return 0;
-+}
-+
-+static int preop_op(const char *inval, char *outval)
-+{
-+	int rv;
-+
-+	if (outval)
-+		strcpy(outval, preop);
-+
-+	if (!inval)
-+		return 0;
-+
-+	rv = preop_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preop, inval);
- 	return 0;
- }
- 
-@@ -1297,18 +1322,18 @@ static int __init ipmi_wdog_init(void)
- {
- 	int rv;
- 
--	if (action_op(action, NULL)) {
-+	if (action_op_set_val(action)) {
- 		action_op("reset", NULL);
- 		pr_info("Unknown action '%s', defaulting to reset\n", action);
- 	}
- 
--	if (preaction_op(preaction, NULL)) {
-+	if (preaction_op_set_val(preaction)) {
- 		preaction_op("pre_none", NULL);
- 		pr_info("Unknown preaction '%s', defaulting to none\n",
- 			preaction);
- 	}
- 
--	if (preop_op(preop, NULL)) {
-+	if (preop_op_set_val(preop)) {
- 		preop_op("preop_none", NULL);
- 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
- 	}
--- 
-2.39.5
-
+ static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
 
 
 
