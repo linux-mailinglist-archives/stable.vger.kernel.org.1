@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4140CB3616A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2681DB35BB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE6A2A5BC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F5B57B1131
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E2F25A2B5;
-	Tue, 26 Aug 2025 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060E0284B5B;
+	Tue, 26 Aug 2025 11:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8MFX80N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/5k37Nu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CECF257859;
-	Tue, 26 Aug 2025 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5420C001;
+	Tue, 26 Aug 2025 11:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213464; cv=none; b=nV9C4x/vN1rwHCI/lKo2P7DbDfzNdlq4mM9ZGAZovaLr4FDEe2UBb3o4JleGTkfqhDAKgX1cIW645+d8/nWiLRdKOtupvhLb+8cr6YQhtAa3Gu+vUhCu4thkfS3k84J0eotjlm2UYOF4DpXAJ8b/J9SnpfvLgN5Ghmejcgo/BSc=
+	t=1756207619; cv=none; b=T0gwgUb6p3sBAx+SVEp9PhiBMFQiqq9UMisdgfF1qkgRHlHB72qBEdKTuowRj1+WpKk1r0jBHKlAanXFFlf0tmpZrAR6UsJEmW3JG9N/Z2Ih3X/1yGJv8Y5iyMunxCQO4xOG8MA/mLyhHE1dp0+iTGBjnAW7hpF1BsT1pynQpaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213464; c=relaxed/simple;
-	bh=Q/JehDsQ3lNS/LbGVkogKN+3vMS32BbdpfZBQ05APNI=;
+	s=arc-20240116; t=1756207619; c=relaxed/simple;
+	bh=PMtdQoemG12pHtl2vBLEf5TOwzHoSGlbKFB2PQ6OQyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smvHwEzj6MPZU2s5gO64MvIFRz/W/JHDcEHfHcqOzguz7DSeP0TU7t8OlDpd6GvIx8B1KLQTRe5AqexEhqxJ+fsiHpxLMWyZb4Z84ODrS3N6iW8DUVjuoWE2gOgMKnEoXND8gfAZcWR9w/WqsCX1qu3ottLFwpatGGbUWNQ5JbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8MFX80N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB18C113CF;
-	Tue, 26 Aug 2025 13:04:23 +0000 (UTC)
+	 MIME-Version; b=A4Cg7jkcq+D8si6lVsNvT788NeIxyWObmT6qKDV9KQVTZWzmZ1wgeBCpa1xb8IScc9DVhcc61PjbXvwomvfR/4eYV+tAdWwXIoX0mXeZTrRhrrsxUCEjC/FWG4yEeEgBimHCSyT2Anrvsa4pKkBko4TztCnZJB6v+JTZ/8mwn/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/5k37Nu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5327BC4CEF1;
+	Tue, 26 Aug 2025 11:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213464;
-	bh=Q/JehDsQ3lNS/LbGVkogKN+3vMS32BbdpfZBQ05APNI=;
+	s=korg; t=1756207619;
+	bh=PMtdQoemG12pHtl2vBLEf5TOwzHoSGlbKFB2PQ6OQyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8MFX80NBtzB5CRTPpTlIbgnD5L5SHIT96bGg/ltsDdQ05ErA4eNMpykfJx6AcNEW
-	 Du9LjA8PweY4rRgdhjmNC5AlmxNGr7MXCHmgHgY9ANpx3kOXLpG5APFnAC5VFFpWTT
-	 MOgRwQ+UyZT9t5i1mT96QLR6nkvjlFYhkJkjJ0K4=
+	b=S/5k37NuFMmMtVVXZP0Sy8AA129EM4g4o+JcTT32jwVx4/PREB2Bgd4CDG6kRCTnD
+	 nSTrOVuYIjYuFJ4gw7BOni7JglNKecfUSFwVMGwfqrnHl/HptlW2Ruc1khMMHefFuT
+	 wYZ5cX/rD3XtYjxTrvJhnOm+kmwG65JUxZd2hPSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.6 357/587] arm64: dts: ti: k3-am62-verdin: Enable pull-ups on I2C buses
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 222/457] xfs: decouple xfs_trans_alloc_empty from xfs_trans_alloc
 Date: Tue, 26 Aug 2025 13:08:26 +0200
-Message-ID: <20250826111001.996028960@linuxfoundation.org>
+Message-ID: <20250826110942.853865634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit bdf4252f736cc1d2a8e3e633c70fe6c728f0756e upstream.
+[ Upstream commit 83a80e95e797a2a6d14bf7983e5e6eecf8f5facb ]
 
-Enable internal bias pull-ups on the SoC-side I2C buses that do not have
-external pull resistors populated on the SoM. This ensures proper
-default line levels.
+xfs_trans_alloc_empty only shares the very basic transaction structure
+allocation and initialization with xfs_trans_alloc.
 
-Cc: stable@vger.kernel.org
-Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20250528110741.262336-1-ghidoliemanuele@gmail.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Split out a new __xfs_trans_alloc helper for that and otherwise decouple
+xfs_trans_alloc_empty from xfs_trans_alloc.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: d2845519b072 ("xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/xfs/xfs_trans.c |   52 ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-@@ -448,16 +448,16 @@
- 	/* Verdin I2C_2_DSI */
- 	pinctrl_i2c2: main-i2c2-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_IOPAD(0x00b0, PIN_INPUT, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
--			AM62X_IOPAD(0x00b4, PIN_INPUT, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
-+			AM62X_IOPAD(0x00b0, PIN_INPUT_PULLUP, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
-+			AM62X_IOPAD(0x00b4, PIN_INPUT_PULLUP, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
- 		>;
- 	};
+--- a/fs/xfs/xfs_trans.c
++++ b/fs/xfs/xfs_trans.c
+@@ -241,6 +241,28 @@ undo_blocks:
+ 	return error;
+ }
  
- 	/* Verdin I2C_4_CSI */
- 	pinctrl_i2c3: main-i2c3-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_IOPAD(0x01d0, PIN_INPUT, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
--			AM62X_IOPAD(0x01d4, PIN_INPUT, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
-+			AM62X_IOPAD(0x01d0, PIN_INPUT_PULLUP, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
-+			AM62X_IOPAD(0x01d4, PIN_INPUT_PULLUP, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
- 		>;
- 	};
++static struct xfs_trans *
++__xfs_trans_alloc(
++	struct xfs_mount	*mp,
++	uint			flags)
++{
++	struct xfs_trans	*tp;
++
++	ASSERT(!(flags & XFS_TRANS_RES_FDBLKS) || xfs_has_lazysbcount(mp));
++
++	tp = kmem_cache_zalloc(xfs_trans_cache, GFP_KERNEL | __GFP_NOFAIL);
++	if (!(flags & XFS_TRANS_NO_WRITECOUNT))
++		sb_start_intwrite(mp->m_super);
++	xfs_trans_set_context(tp);
++	tp->t_flags = flags;
++	tp->t_mountp = mp;
++	INIT_LIST_HEAD(&tp->t_items);
++	INIT_LIST_HEAD(&tp->t_busy);
++	INIT_LIST_HEAD(&tp->t_dfops);
++	tp->t_highest_agno = NULLAGNUMBER;
++	return tp;
++}
++
+ int
+ xfs_trans_alloc(
+ 	struct xfs_mount	*mp,
+@@ -254,33 +276,16 @@ xfs_trans_alloc(
+ 	bool			want_retry = true;
+ 	int			error;
  
-@@ -729,8 +729,8 @@
- 	/* Verdin I2C_3_HDMI */
- 	pinctrl_mcu_i2c0: mcu-i2c0-default-pins {
- 		pinctrl-single,pins = <
--			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
--			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
-+			AM62X_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
-+			AM62X_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
- 		>;
- 	};
++	ASSERT(resp->tr_logres > 0);
++
+ 	/*
+ 	 * Allocate the handle before we do our freeze accounting and setting up
+ 	 * GFP_NOFS allocation context so that we avoid lockdep false positives
+ 	 * by doing GFP_KERNEL allocations inside sb_start_intwrite().
+ 	 */
+ retry:
+-	tp = kmem_cache_zalloc(xfs_trans_cache, GFP_KERNEL | __GFP_NOFAIL);
+-	if (!(flags & XFS_TRANS_NO_WRITECOUNT))
+-		sb_start_intwrite(mp->m_super);
+-	xfs_trans_set_context(tp);
+-
+-	/*
+-	 * Zero-reservation ("empty") transactions can't modify anything, so
+-	 * they're allowed to run while we're frozen.
+-	 */
+-	WARN_ON(resp->tr_logres > 0 &&
+-		mp->m_super->s_writers.frozen == SB_FREEZE_COMPLETE);
+-	ASSERT(!(flags & XFS_TRANS_RES_FDBLKS) ||
+-	       xfs_has_lazysbcount(mp));
+-
+-	tp->t_flags = flags;
+-	tp->t_mountp = mp;
+-	INIT_LIST_HEAD(&tp->t_items);
+-	INIT_LIST_HEAD(&tp->t_busy);
+-	INIT_LIST_HEAD(&tp->t_dfops);
+-	tp->t_highest_agno = NULLAGNUMBER;
+-
++	WARN_ON(mp->m_super->s_writers.frozen == SB_FREEZE_COMPLETE);
++	tp = __xfs_trans_alloc(mp, flags);
+ 	error = xfs_trans_reserve(tp, resp, blocks, rtextents);
+ 	if (error == -ENOSPC && want_retry) {
+ 		xfs_trans_cancel(tp);
+@@ -329,9 +334,8 @@ xfs_trans_alloc_empty(
+ 	struct xfs_mount		*mp,
+ 	struct xfs_trans		**tpp)
+ {
+-	struct xfs_trans_res		resv = {0};
+-
+-	return xfs_trans_alloc(mp, &resv, 0, 0, XFS_TRANS_NO_WRITECOUNT, tpp);
++	*tpp = __xfs_trans_alloc(mp, XFS_TRANS_NO_WRITECOUNT);
++	return 0;
+ }
  
+ /*
 
 
 
