@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829E4B35BA1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E688B360C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7251895ACC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD302A127B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492B630F55C;
-	Tue, 26 Aug 2025 11:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35F7148850;
+	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SrOHZIyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkMukoUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064DB2BE653;
-	Tue, 26 Aug 2025 11:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3413957E;
+	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207334; cv=none; b=URoQHQDCyZYj6QDPodkwvGDZW7GZdlQetzV2NTDVQdjIyZzSFWSTCqQHoortPwZIseLnaQM6TcsJXW49ZnP/HB0euhPud69JTzMQuwV4pLOVnJsUvbsuR+SjodE7ULzHKPM6ydWfQyAhbwmc6T0UbpgDuztmO18u+sGMJn5MFUQ=
+	t=1756213248; cv=none; b=Su3pkiUH3VnOeEJoX57pN6o+Q9legMMlFQJsd/ekFGEiJCLC19ekpiTF7kYaafQnGHrcTPwXWbx/zpx2uGbKRgcmtmMMjd6zBEao5TmkGixx5bytm6xg2waxXip90PFmvDxrDRs1fUGntF+E9r3TJ5wEpZQ4rqOzBqa8kiX6Vss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207334; c=relaxed/simple;
-	bh=BH/QX/eaU2DoyOfllgy2QxivmR1bCgV23Ey0r5iQOTw=;
+	s=arc-20240116; t=1756213248; c=relaxed/simple;
+	bh=zs7wjhdApDgAOLGlxKLCTSmEM1VKmzAmX8tZMwBWLkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+li9ECtyLJZJFYetGwl4IMADtGfxQjaG62Xzm80YGMkCyt7lRxtK7kpxl1PekyQptXLl2dQNwymmCujiw8elvYqaiKW7seNkQlk2oImprT0mqE7PhI1ZLRouufJpBc3/hHMSvUQaLe090pTOj7pQzWq2s1TK8KZEq3q0XOO0wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SrOHZIyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9696FC4CEF1;
-	Tue, 26 Aug 2025 11:22:13 +0000 (UTC)
+	 MIME-Version; b=eBLMs5Q/PM12rTGoZdNYaWiOkBOSs/jvkp70KvBNKp9N1YxbnIIAliI3XfGRR58mfHZa4HetT3KHZa9jyz/erPqEb+YBG79VU4YfWymu5IN+T+BYmYzPK/8KQrFb5yp4fFIkECCqZ1frSIiShNl8Ww58me4gr49Ail7BbVZ0aFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkMukoUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E01C4CEF1;
+	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207333;
-	bh=BH/QX/eaU2DoyOfllgy2QxivmR1bCgV23Ey0r5iQOTw=;
+	s=korg; t=1756213248;
+	bh=zs7wjhdApDgAOLGlxKLCTSmEM1VKmzAmX8tZMwBWLkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SrOHZIyJY5E17uOB23hvofsOklSTrAtantuZiHC1zKoubpdCU+L4SPEkod9EVniKo
-	 G2moT6LBn2GgDlKVLfcaV+jvMuOCzgYzU6I2fBT3CiRUvaYiqOtZ7q1ZSrHZiC1yd0
-	 pFZXxg9fTQ3phiGxgx59p58PrxGGR5pziQRc7DGQ=
+	b=MkMukoUiSw6wdnGSW159SbuZCkyixPyHAyOiqHFMOaZYX20BOu/e22aTK7M0Maxg0
+	 ETGq1gABRas+CJlgCZKfqR3bPWIGLCsPiEOeQWCh5vcVxXKRRGXG/LaTRMLNgrN+Iw
+	 bPgBWsC58dD3b4iRlnOtwS3e17NUIp61rA7P+OFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathis Foerst <mathis.foerst@mt.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 141/457] media: mt9m114: Fix deadlock in get_frame_interval/set_frame_interval
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nicolas Schier <n.schier@avm.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 276/587] kconfig: nconf: Ensure null termination where strncpy is used
 Date: Tue, 26 Aug 2025 13:07:05 +0200
-Message-ID: <20250826110940.859971088@linuxfoundation.org>
+Message-ID: <20250826110959.948892993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathis Foerst <mathis.foerst@mt.com>
+From: Shankari Anand <shankari.ak0208@gmail.com>
 
-commit 298d1471cf83d5a2a05970e41822a2403f451086 upstream.
+[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
 
-Getting / Setting the frame interval using the V4L2 subdev pad ops
-get_frame_interval/set_frame_interval causes a deadlock, as the
-subdev state is locked in the [1] but also in the driver itself.
+strncpy() does not guarantee null-termination if the source string is
+longer than the destination buffer.
 
-In [2] it's described that the caller is responsible to acquire and
-release the lock in this case. Therefore, acquiring the lock in the
-driver is wrong.
+Ensure the buffer is explicitly null-terminated to prevent potential
+string overflows or undefined behavior.
 
-Remove the lock acquisitions/releases from mt9m114_ifp_get_frame_interval()
-and mt9m114_ifp_set_frame_interval().
-
-[1] drivers/media/v4l2-core/v4l2-subdev.c - line 1129
-[2] Documentation/driver-api/media/v4l2-subdev.rst
-
-Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Acked-by: Nicolas Schier <n.schier@avm.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/mt9m114.c |    8 --------
- 1 file changed, 8 deletions(-)
+ scripts/kconfig/nconf.c     | 2 ++
+ scripts/kconfig/nconf.gui.c | 1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/media/i2c/mt9m114.c
-+++ b/drivers/media/i2c/mt9m114.c
-@@ -1599,13 +1599,9 @@ static int mt9m114_ifp_get_frame_interva
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
- 		return -EINVAL;
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index 8cd72fe25974..7a17c94a1594 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -591,6 +591,8 @@ static void item_add_str(const char *fmt, ...)
+ 		tmp_str,
+ 		sizeof(k_menu_items[index].str));
  
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	ival->numerator = 1;
- 	ival->denominator = sensor->ifp.frame_rate;
++	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
++
+ 	free_item(curses_menu_items[index]);
+ 	curses_menu_items[index] = new_item(
+ 			k_menu_items[index].str,
+diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
+index 25a7263ef3c8..5f13a0a7fb0b 100644
+--- a/scripts/kconfig/nconf.gui.c
++++ b/scripts/kconfig/nconf.gui.c
+@@ -349,6 +349,7 @@ int dialog_inputbox(WINDOW *main_window,
+ 	x = (columns-win_cols)/2;
  
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return 0;
- }
+ 	strncpy(result, init, *result_len);
++	result[*result_len - 1] = '\0';
  
-@@ -1624,8 +1620,6 @@ static int mt9m114_ifp_set_frame_interva
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
- 		return -EINVAL;
- 
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	if (ival->numerator != 0 && ival->denominator != 0)
- 		sensor->ifp.frame_rate = min_t(unsigned int,
- 					       ival->denominator / ival->numerator,
-@@ -1639,8 +1633,6 @@ static int mt9m114_ifp_set_frame_interva
- 	if (sensor->streaming)
- 		ret = mt9m114_set_frame_rate(sensor);
- 
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return ret;
- }
- 
+ 	/* create the windows */
+ 	win = newwin(win_lines, win_cols, y, x);
+-- 
+2.39.5
+
 
 
 
