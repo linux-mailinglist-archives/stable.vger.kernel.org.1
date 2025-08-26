@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1252B360C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91313B36688
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2DE1BA4E2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 918E01C22F6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A884214813;
-	Tue, 26 Aug 2025 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604EF35208B;
+	Tue, 26 Aug 2025 13:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnVg6Ggn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsVkJjq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B631FBCB1;
-	Tue, 26 Aug 2025 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4FD350845;
+	Tue, 26 Aug 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213187; cv=none; b=AdnTaNgb78JjD66iPcNaQxvS1qxCPqDZ+uY10doQ3bKiYtA/TtxyvN6P520Gkqk3f8FVuztZ/f7NYYl/J27gcFCfngTqh9T02g1WQvdBmK/H9hYeZ2oGkQf3XBo81vCJmPMSpvccxTwVlmPEpiQt6K0zO2CSUr4Gx4rh3q+Rht0=
+	t=1756216166; cv=none; b=eM201HoksGaBlG6IirGBjh3ipZz5zeP2mLTN1O8UAdM8gd6gA+R9GUR+K80MZTixXuVSYGjA1O9ddYLsGWGJTiysXH+v+6LN/jM1jW0+fj0r9HMNyxAOThDSis81ctTXVC2Vf+rcASfOdi/ns6a5MWyXX8ps+29/h+5jl0A6f30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213187; c=relaxed/simple;
-	bh=80y8tSrdjeKGv/WhWMZZzWfzBByQ8RSQJHQDxCdl6+8=;
+	s=arc-20240116; t=1756216166; c=relaxed/simple;
+	bh=jjGHPavrJwnvc16l0z01zzM827+TbDt3fpfkxJOhJx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/6e8ckAhnU2fnXYUZNEiPcq45ZZHUaZvHEychkwFdhw2prrNI7yBSx659MzLcU8gICDGDgMBESVJwT7HDqMVao+4ZBH1xTdtxCGzv4Oyg9bKX6Smkb2Oyx7o3daRtoIzGpYRLXBtcCFhcePKb3yg1lbTE/iKyQAlfGB/M9QEr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnVg6Ggn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA311C4CEF1;
-	Tue, 26 Aug 2025 12:59:46 +0000 (UTC)
+	 MIME-Version; b=KL3VrxOfL440p7Iie+3fY5+AHmULWsmUffeOtoD+odhir2vtQuTg/xfxmie7UhSU9dAgxGqk7H8gqwNv87ACWr3lX/Sf+86mGKvAGc2wnWyT926YCvon5Y5bZz560OlyYY0j0ibB6b1gHnXGSXI9Nyx00N+T5TKgvTUpPAR/B5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsVkJjq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66512C4CEF1;
+	Tue, 26 Aug 2025 13:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213187;
-	bh=80y8tSrdjeKGv/WhWMZZzWfzBByQ8RSQJHQDxCdl6+8=;
+	s=korg; t=1756216165;
+	bh=jjGHPavrJwnvc16l0z01zzM827+TbDt3fpfkxJOhJx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnVg6Ggnxwf9tQDH5/HFYTm156F5NQNo1fZ41XnnE0S9jwSh0YC6frMQgvpXN/bF2
-	 Gv70WgsnWgAp+20yQVKACr8UY/Er3nSN0lsKT9UalC1FMgdNlDSLQSnxn2f/B+DF/I
-	 64rTz3vxi4f5kvibfEPRyyIT+yKbkOVjPOZ+Avm8=
+	b=YsVkJjq3F7QL6t45zMJlY+ejt6f2/Yd3S12HpmHIT5n/z5lhzjz1LuvZHwkbBZCv6
+	 MhcAwYyqlpJchvI3tE2DWWoGhq3O48pwE4eqohrKaw7S441ACsxfjXE/w2uJwc3NsJ
+	 Nskicx/bAWlXZYHyil59V+3DDEO0hXuiK1IV//0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/587] media: tc358743: Return an appropriate colorspace from tc358743_set_fmt
+Subject: [PATCH 5.15 310/644] gpio: tps65912: check the return value of regmap_update_bits()
 Date: Tue, 26 Aug 2025 13:06:41 +0200
-Message-ID: <20250826110959.342121998@linuxfoundation.org>
+Message-ID: <20250826110954.066117648@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 377cc006a364dfdab2f3f221cfad63a9265200b8 ]
+[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
 
-When calling tc358743_set_fmt, the code was calling tc358743_get_fmt
-to choose a valid format. However that sets the colorspace
-based on information read back from the chip, not the colour
-format requested.
+regmap_update_bits() can fail, check its return value like we do
+elsewhere in the driver.
 
-The result was that if you called try or set format for UYVY
-when the current format was RGB3 then you would get told SRGB,
-and try RGB3 when current was UYVY and you would get told
-SMPTE170M.
-
-The value programmed in the VI_REP register for the colorspace
-is always set by this driver, therefore there is no need to read
-back the value, and never set to REC709.
-Return the colorspace based on the format set/tried instead.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 44 ++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 27 deletions(-)
+ drivers/gpio/gpio-tps65912.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index f516651e95cf..a70a3287fb8f 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -1668,12 +1668,23 @@ static int tc358743_enum_mbus_code(struct v4l2_subdev *sd,
- 	return 0;
- }
- 
-+static u32 tc358743_g_colorspace(u32 code)
-+{
-+	switch (code) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+		return V4L2_COLORSPACE_SRGB;
-+	case MEDIA_BUS_FMT_UYVY8_1X16:
-+		return V4L2_COLORSPACE_SMPTE170M;
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int tc358743_get_fmt(struct v4l2_subdev *sd,
- 		struct v4l2_subdev_state *sd_state,
- 		struct v4l2_subdev_format *format)
+diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
+index fab771cb6a87..bac757c191c2 100644
+--- a/drivers/gpio/gpio-tps65912.c
++++ b/drivers/gpio/gpio-tps65912.c
+@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
+ 					  unsigned offset, int value)
  {
- 	struct tc358743_state *state = to_state(sd);
--	u8 vi_rep = i2c_rd8(sd, VI_REP);
+ 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
++	int ret;
  
- 	if (format->pad != 0)
- 		return -EINVAL;
-@@ -1683,23 +1694,7 @@ static int tc358743_get_fmt(struct v4l2_subdev *sd,
- 	format->format.height = state->timings.bt.height;
- 	format->format.field = V4L2_FIELD_NONE;
+ 	/* Set the initial value */
+-	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+-			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
++				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	if (ret)
++		return ret;
  
--	switch (vi_rep & MASK_VOUT_COLOR_SEL) {
--	case MASK_VOUT_COLOR_RGB_FULL:
--	case MASK_VOUT_COLOR_RGB_LIMITED:
--		format->format.colorspace = V4L2_COLORSPACE_SRGB;
--		break;
--	case MASK_VOUT_COLOR_601_YCBCR_LIMITED:
--	case MASK_VOUT_COLOR_601_YCBCR_FULL:
--		format->format.colorspace = V4L2_COLORSPACE_SMPTE170M;
--		break;
--	case MASK_VOUT_COLOR_709_YCBCR_FULL:
--	case MASK_VOUT_COLOR_709_YCBCR_LIMITED:
--		format->format.colorspace = V4L2_COLORSPACE_REC709;
--		break;
--	default:
--		format->format.colorspace = 0;
--		break;
--	}
-+	format->format.colorspace = tc358743_g_colorspace(format->format.code);
- 
- 	return 0;
- }
-@@ -1713,19 +1708,14 @@ static int tc358743_set_fmt(struct v4l2_subdev *sd,
- 	u32 code = format->format.code; /* is overwritten by get_fmt */
- 	int ret = tc358743_get_fmt(sd, sd_state, format);
- 
--	format->format.code = code;
-+	if (code == MEDIA_BUS_FMT_RGB888_1X24 ||
-+	    code == MEDIA_BUS_FMT_UYVY8_1X16)
-+		format->format.code = code;
-+	format->format.colorspace = tc358743_g_colorspace(format->format.code);
- 
- 	if (ret)
- 		return ret;
- 
--	switch (code) {
--	case MEDIA_BUS_FMT_RGB888_1X24:
--	case MEDIA_BUS_FMT_UYVY8_1X16:
--		break;
--	default:
--		return -EINVAL;
--	}
--
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
- 		return 0;
- 
+ 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+ 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
 -- 
 2.39.5
 
