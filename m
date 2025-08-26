@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC270B36230
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DB8B35E49
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872E2174CD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FBF465377
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9F0299A94;
-	Tue, 26 Aug 2025 13:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A5630146D;
+	Tue, 26 Aug 2025 11:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM8ucpdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mi6/dWYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC30818F2FC;
-	Tue, 26 Aug 2025 13:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF018DF9D;
+	Tue, 26 Aug 2025 11:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213835; cv=none; b=WSXlDnAlNxcQEpQHwsx+nO6/fi11ry6P+ozhGwfTipe/uX/Su+wk22NaJJgdDNxhmK8SZ2s6ZUOBk4ZUTRUQrCLWM5ypiL7hk3BamYqhZzXRxYodgtmfELfvmD9w2M3HA2pOmAyaURwec8orC4KIlSzphUkFBsvS5nUXjfxgr58=
+	t=1756208752; cv=none; b=dO0CKe9Tp+fu2mQtgMP/A8kk3xvNCS2sCHya+TjvyAoW2M8EIK5M0XM6jmPYR7E/yEFW2iKquK3ZoRqR4M7EvxuagQPDzBJAMgdGm5eb/d/b1GUWgiABBfWU5Mk6PE5ns2Bf9gZ1XL5QArtMFDZP3ZvTmkJGITtQkXQ8iPNC58o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213835; c=relaxed/simple;
-	bh=B7W6S0rGWps1OnZRyPkc4sV8YkMyh1mz259kOyPRJ+Y=;
+	s=arc-20240116; t=1756208752; c=relaxed/simple;
+	bh=liHK7TCUbLVPO0Sf+9GY5QBtKTr1A0PWvTX4fI1fmbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e0apbf8u7bPcGd2hhOs6Lmt5hTxy7THroj/MZNfsdJKGWwyptDV3/wyGolnj4KpkF1CDUOjSBTDWkKTgUZ2eXRhXS8tJnPuu2cf3xYRhUACquFn8roXbsXMln7rVBvEJbF8kXilYpMS0h2BsKkZ11UDhmM3QuSlI8tew710MfSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZM8ucpdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E348C4CEF1;
-	Tue, 26 Aug 2025 13:10:35 +0000 (UTC)
+	 MIME-Version; b=GCJts9OJnkctnjh1hKYxDWDBjIoXrPGeJAy1nLNS4ZVKtkyW3g37+I46pYySfbEvA2uOxuRPENNqGrFk/pH/0Ile2/gNIm8NcsqctoHbrLwKCTeyWFUXxLmVZ8QDWHNz18Uo0QRU9TQ7ydSrX8YbYoCF2zxZPD+KFEOsu6AmFek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mi6/dWYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A111EC4CEF1;
+	Tue, 26 Aug 2025 11:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213835;
-	bh=B7W6S0rGWps1OnZRyPkc4sV8YkMyh1mz259kOyPRJ+Y=;
+	s=korg; t=1756208752;
+	bh=liHK7TCUbLVPO0Sf+9GY5QBtKTr1A0PWvTX4fI1fmbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZM8ucpdDd66G0RLUsYH8kOJKwOH7O9f1kuO+gaxSFXpEiEiDcUXjD5i6CUcmEVEYo
-	 cDmWaZbjGwWHFpkqJpQki2gyIq+J7c6LDD6Sfmg4BAUwkNqhVNvj5mblSSvQ92RItk
-	 fW/oS6NDT9lB7/H20p2QH55YzYRq2c6yEqdWj3GE=
+	b=Mi6/dWYfbyVSv//M+eDltkrzPInH6zJz/TRugoWLwtNahgLv0NX2HN9KWSSC6K45m
+	 Yo4jQbjht7oFomaie7ylle6wiHJP52XYaSylbpvQE0PyTKlY/rlZowk4lQhilBWMl1
+	 JrtI6qVXKqyNrwtVq7S6pXbU8i0jz4bgG5SAp0fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 497/587] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
+	stable <stable@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.12 231/322] usb: typec: maxim_contaminant: re-enable cc toggle if cc is open and port is clean
 Date: Tue, 26 Aug 2025 13:10:46 +0200
-Message-ID: <20250826111005.627345671@linuxfoundation.org>
+Message-ID: <20250826110921.606626526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
+commit a381c6d6f646226924809d0ad01a9465786da463 upstream.
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+Presently in `max_contaminant_is_contaminant()` if there's no
+contaminant detected previously, CC is open & stopped toggling and no
+contaminant is currently present, TCPC.RC would be programmed to do DRP
+toggling. However, it didn't actively look for a connection. This would
+lead to Type-C not detect *any* new connections. Hence, in the above
+situation, re-enable toggling & program TCPC to look for a new
+connection.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+Also, return early if TCPC was looking for connection as this indicates
+TCPC has neither detected a potential connection nor a change in
+contaminant state.
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
+In addition, once dry detection is complete (port is dry), restart
+toggling.
 
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adapted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 02b332a06397e ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |   53 +++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1028,8 +1028,8 @@ static int exynos_ufs_post_link(struct u
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -329,6 +329,39 @@ static int max_contaminant_enable_dry_de
+ 	return 0;
+ }
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
++static int max_contaminant_enable_toggling(struct max_tcpci_chip *chip)
++{
++	struct regmap *regmap = chip->data.regmap;
++	int ret;
++
++	/* Disable dry detection if enabled. */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL,
++				 FIELD_PREP(CCLPMODESEL,
++					    LOW_POWER_MODE_DISABLE));
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL1, CCCONNDRY, 0);
++	if (ret)
++		return ret;
++
++	ret = max_tcpci_write8(chip, TCPC_ROLE_CTRL, TCPC_ROLE_CTRL_DRP |
++			       FIELD_PREP(TCPC_ROLE_CTRL_CC1,
++					  TCPC_ROLE_CTRL_CC_RD) |
++			       FIELD_PREP(TCPC_ROLE_CTRL_CC2,
++					  TCPC_ROLE_CTRL_CC_RD));
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT);
++	if (ret)
++		return ret;
++
++	return max_tcpci_write8(chip, TCPC_COMMAND, TCPC_CMD_LOOK4CONNECTION);
++}
++
+ bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce,
+ 				    bool *cc_handled)
+ {
+@@ -345,6 +378,12 @@ bool max_contaminant_is_contaminant(stru
+ 	if (ret < 0)
+ 		return false;
+ 
++	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
++		if (chip->contaminant_state == DETECTED)
++			return true;
++		return false;
++	}
++
+ 	if (chip->contaminant_state == NOT_DETECTED || chip->contaminant_state == SINK) {
+ 		if (!disconnect_while_debounce)
+ 			msleep(100);
+@@ -377,6 +416,12 @@ bool max_contaminant_is_contaminant(stru
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
+ 			}
++
++			ret = max_contaminant_enable_toggling(chip);
++			if (ret)
++				dev_err(chip->dev,
++					"Failed to enable toggling, ret=%d",
++					ret);
+ 		}
+ 	} else if (chip->contaminant_state == DETECTED) {
+ 		if (!(cc_status & TCPC_CC_STATUS_TOGGLING)) {
+@@ -384,6 +429,14 @@ bool max_contaminant_is_contaminant(stru
+ 			if (chip->contaminant_state == DETECTED) {
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
++			} else {
++				ret = max_contaminant_enable_toggling(chip);
++				if (ret) {
++					dev_err(chip->dev,
++						"Failed to enable toggling, ret=%d",
++						ret);
++					return true;
++				}
+ 			}
+ 		}
+ 	}
 
 
 
