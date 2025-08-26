@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6659EB35D4A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB545B36912
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D905366CFB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6EA9846C0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153E1340D9D;
-	Tue, 26 Aug 2025 11:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A559935691B;
+	Tue, 26 Aug 2025 14:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rw8xlHwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGq8Igb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68EC33EB1D;
-	Tue, 26 Aug 2025 11:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B4356913;
+	Tue, 26 Aug 2025 14:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208002; cv=none; b=sbuY6YJw6q/6ypjEmpBJhD1K3628mAeKuY5vp0bqr8s1TdWjvpAt8031ZCrXWpVD5P1DhsNqUK89H2AW21cMR75fqCBBug5cW0fnj42LX27MD3PJcOMkCxeBJ0KasnX/po6ChaM0hlsaMgKICCNS0LLJZgXvDXeAnOwY4A/HQ2w=
+	t=1756216922; cv=none; b=WbPmw21JHHPSagmHFJTzyIQwsTqnXU3S5vC1tu29Rd36xARqt6bgy7oVp2vHjmINevdONZV2u9Gd5nl4E8cSKfYaVPxXLVE/DuJ6ftGzaLLDB2TUPo7NxWJN4l1Yvl9xZg9VxgxpZ6Jxp5pzwlaOPxwYcr7FlHHOAmsNmQ5o7wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208002; c=relaxed/simple;
-	bh=9mNnpEqprpM9JRP4SBEnSEB68385xm1ualEqVfzzk2k=;
+	s=arc-20240116; t=1756216922; c=relaxed/simple;
+	bh=xoSHTfNzMBP8Plchqk8PWmXzRjCy64SbxpU9T3KzJv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhbjDtDeCImnv3P0ZCiq4xGdp1oqguPBWfT3mJ7yA1CWB8dGWVWcWbhup1P5Rr3RkKGlshnwVXOSWUWwid0PZVuOOtCB5KCwmXh7LsGoB92CSB8hbiR04q1GSn5AIBedAWBZ42e92Orgg2WGSMTz7Lyaq9CdwLYpaLAKwnKbvsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rw8xlHwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F91C116B1;
-	Tue, 26 Aug 2025 11:33:22 +0000 (UTC)
+	 MIME-Version; b=IXF2UxLh2Gm4hFXz0ZRTw+1cPBGa7YxzEmusv81MFxzjw7E2ZbA4iQgI1y2vOzlADqGVIhligY9Xj10vsnxdtMYdUA+dyytcf4jaYUCDZxg/BIWC+JZXmsiwlRpPD9V/Ec6vacEni+1wmm/wuc1HXBbwGD6CgTzb69rr2hOGyzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGq8Igb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADA1C4CEF1;
+	Tue, 26 Aug 2025 14:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208002;
-	bh=9mNnpEqprpM9JRP4SBEnSEB68385xm1ualEqVfzzk2k=;
+	s=korg; t=1756216922;
+	bh=xoSHTfNzMBP8Plchqk8PWmXzRjCy64SbxpU9T3KzJv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rw8xlHwrEOzwIUi0drltnaWnOlaaJn2v9+tI2/tVxUjyiXblMIjA/K9BrcZpNP++I
-	 gZabs3HZD1ry0CwS1Da5YnrhN+z0ZedLCtSFeXVDyHGr1PeSBu8xYxd/hMuMQofgXQ
-	 YAoCMHw+/YC5iu7nl3TYdaqvzAU49cQ9f313fnLg=
+	b=nGq8Igb+/uPRYTE2ci9Lzok4DqH5aP/v9axHCBz/WOrK+hqFVXycPfZxCefMgB8/L
+	 aOMZ9A6sBHH7CzPPKpkxIT/bdkBNFyymR/LlXgtcwiqnUDcQUBRfcxTcKRXVYjwFMl
+	 VVY1xVKMU+Py/72jOMQRc2d2AmND2v3BkMYD1tS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 400/457] bnxt_en: Fix lockdep warning during rmmod
+Subject: [PATCH 5.15 593/644] mptcp: disable add_addr retransmission when timeout is 0
 Date: Tue, 26 Aug 2025 13:11:24 +0200
-Message-ID: <20250826110947.179868746@linuxfoundation.org>
+Message-ID: <20250826111001.234336662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 4611d88a37cfc18cbabc6978aaf7325d1ae3f53a ]
+[ Upstream commit f5ce0714623cffd00bf2a83e890d09c609b7f50a ]
 
-The commit under the Fixes tag added a netdev_assert_locked() in
-bnxt_free_ntp_fltrs().  The lock should be held during normal run-time
-but the assert will be triggered (see below) during bnxt_remove_one()
-which should not need the lock.  The netdev is already unregistered by
-then.  Fix it by calling netdev_assert_locked_or_invisible() which will
-not assert if the netdev is unregistered.
+When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
+retransmitted immediately, which looks like a buggy behaviour. Instead,
+interpret 0 as "no retransmissions needed".
 
-WARNING: CPU: 5 PID: 2241 at ./include/net/netdev_lock.h:17 bnxt_free_ntp_fltrs+0xf8/0x100 [bnxt_en]
-Modules linked in: rpcrdma rdma_cm iw_cm ib_cm configfs ib_core bnxt_en(-) bridge stp llc x86_pkg_temp_thermal xfs tg3 [last unloaded: bnxt_re]
-CPU: 5 UID: 0 PID: 2241 Comm: rmmod Tainted: G S      W           6.16.0 #2 PREEMPT(voluntary)
-Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
-Hardware name: Dell Inc. PowerEdge R730/072T6D, BIOS 2.4.3 01/17/2017
-RIP: 0010:bnxt_free_ntp_fltrs+0xf8/0x100 [bnxt_en]
-Code: 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 48 8b 47 60 be ff ff ff ff 48 8d b8 28 0c 00 00 e8 d0 cf 41 c3 85 c0 0f 85 2e ff ff ff <0f> 0b e9 27 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffa92082387da0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff9e5b593d8000 RCX: 0000000000000001
-RDX: 0000000000000001 RSI: ffffffff83dc9a70 RDI: ffffffff83e1a1cf
-RBP: ffff9e5b593d8c80 R08: 0000000000000000 R09: ffffffff8373a2b3
-R10: 000000008100009f R11: 0000000000000001 R12: 0000000000000001
-R13: ffffffffc01c4478 R14: dead000000000122 R15: dead000000000100
-FS:  00007f3a8a52c740(0000) GS:ffff9e631ad1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055bb289419c8 CR3: 000000011274e001 CR4: 00000000003706f0
-Call Trace:
- <TASK>
- bnxt_remove_one+0x57/0x180 [bnxt_en]
- pci_device_remove+0x39/0xc0
- device_release_driver_internal+0xa5/0x130
- driver_detach+0x42/0x90
- bus_remove_driver+0x61/0xc0
- pci_unregister_driver+0x38/0x90
- bnxt_exit+0xc/0x7d0 [bnxt_en]
+The documentation is updated to explicitly state that setting the timeout
+to 0 disables retransmission.
 
-Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250816183850.4125033-1-michael.chan@broadcom.com
+Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Cc: stable@vger.kernel.org
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ pm.c => pm_netlink.c , drop mptcp_pm_alloc_anno_list hunk ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/networking/mptcp-sysctl.rst |    2 ++
+ net/mptcp/pm_netlink.c                    |   13 ++++++++++---
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 25681c2343fb..ec8752c298e6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -5325,7 +5325,7 @@ static void bnxt_free_ntp_fltrs(struct bnxt *bp, bool all)
- {
- 	int i;
+--- a/Documentation/networking/mptcp-sysctl.rst
++++ b/Documentation/networking/mptcp-sysctl.rst
+@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
+ 	resent to an MPTCP peer that has not acknowledged a previous
+ 	ADD_ADDR message.
  
--	netdev_assert_locked(bp->dev);
-+	netdev_assert_locked_or_invisible(bp->dev);
++	Do not retransmit if set to 0.
++
+ 	The default value matches TCP_RTO_MAX. This is a per-namespace
+ 	sysctl.
  
- 	/* Under netdev instance lock and all our NAPIs have been disabled.
- 	 * It's safe to delete the hash table.
--- 
-2.50.1
-
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -316,6 +316,7 @@ static void mptcp_pm_add_timer(struct ti
+ 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
+ 	struct mptcp_sock *msk = entry->sock;
+ 	struct sock *sk = (struct sock *)msk;
++	unsigned int timeout;
+ 
+ 	pr_debug("msk=%p\n", msk);
+ 
+@@ -333,6 +334,10 @@ static void mptcp_pm_add_timer(struct ti
+ 		goto out;
+ 	}
+ 
++	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
++	if (!timeout)
++		goto out;
++
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+ 	if (!mptcp_pm_should_add_signal_addr(msk)) {
+@@ -344,7 +349,7 @@ static void mptcp_pm_add_timer(struct ti
+ 
+ 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
+ 		sk_reset_timer(sk, timer,
+-			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
++			       jiffies + timeout);
+ 
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+@@ -386,6 +391,7 @@ static bool mptcp_pm_alloc_anno_list(str
+ 	struct mptcp_pm_add_entry *add_entry = NULL;
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct net *net = sock_net(sk);
++	unsigned int timeout;
+ 
+ 	lockdep_assert_held(&msk->pm.lock);
+ 
+@@ -403,8 +409,9 @@ static bool mptcp_pm_alloc_anno_list(str
+ 	add_entry->retrans_times = 0;
+ 
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
+-	sk_reset_timer(sk, &add_entry->add_timer,
+-		       jiffies + mptcp_get_add_addr_timeout(net));
++	timeout = mptcp_get_add_addr_timeout(net);
++	if (timeout)
++		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
+ 
+ 	return true;
+ }
 
 
 
