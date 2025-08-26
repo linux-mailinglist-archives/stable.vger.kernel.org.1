@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8401B36447
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2E8B35B7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3B8561BF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8631F3A5D06
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5AC1B4F1F;
-	Tue, 26 Aug 2025 13:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39470299959;
+	Tue, 26 Aug 2025 11:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BR4GJjNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeBpQJJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C55B187554;
-	Tue, 26 Aug 2025 13:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E502BEC2B;
+	Tue, 26 Aug 2025 11:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214601; cv=none; b=g676haZKOtNitTHcCvKI43NJdvrVOz9t9R78C/oNxKHTBPr/t/SojgZhhjeBHEvQHN+PKWlRzYIid6ezZvz+vefHumwIb6K1nFHA2xLkcm39hyMbeNDIqCHxMeg2ZMWY2Lwe2AEsYVxcL+cypGAsA9WWI1TZU/HO/8kzPK4VguE=
+	t=1756207441; cv=none; b=FZIqJiCzUMzUvIJ7h5JEIpG1aOar2cddr1nLgaQbJnlNV0jHQqeVzafPskxrgGqxtNLwCR61ecDJ+lziJ/ir5Zc92K2kFfWX449wKyeFP7k8A/yjMm11ovlVJ9VoVc53rms7xe1W7rxd372LVUA6Qng0o01ursGtNamD+3iU6kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214601; c=relaxed/simple;
-	bh=xwPxjvyvoVwpoXIU7uJKkWPsCY+CrF0f/0NAkhjeiME=;
+	s=arc-20240116; t=1756207441; c=relaxed/simple;
+	bh=6bzFszY9fq93FbzYlmvg6DZoHg3AsexLR2h75Q3x5W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiIMFOT2Da6ei0l/sJ8ArRPZ2y5jR7glVS3+zLKCzmA72UFkg2zklR7C98rb7msBIoNnoryFj1612qOVLasw2TpzeqLPgvX/2WaTghqntXx5xDymqEhiG8PwMSixdADhddiphG/L3DtrPKqAZlMh/ABCIml80vgusjlkP3u52E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR4GJjNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6A9C4CEF1;
-	Tue, 26 Aug 2025 13:23:20 +0000 (UTC)
+	 MIME-Version; b=vADenSzl9YHpvMNma8jzI6NbCsl0RyXedrJ6erXQ9ztwX7X6j0DeUVNf8Y2fqk+rzTd+rV0zKGonBUAQFW08NIYxUkzNCl+0u1wJfwkvuxKycuiMYTKfIx7jEajnCScNGcbqcFnItnyEQoqpotW2OT2xRp2QkP1KKsYMlnENVa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeBpQJJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA1C4CEF4;
+	Tue, 26 Aug 2025 11:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214601;
-	bh=xwPxjvyvoVwpoXIU7uJKkWPsCY+CrF0f/0NAkhjeiME=;
+	s=korg; t=1756207440;
+	bh=6bzFszY9fq93FbzYlmvg6DZoHg3AsexLR2h75Q3x5W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BR4GJjNREN/7Ij7qdkfeim3GeagTHCHJQZDB8CQFYcdNC8jkNceWZxarV0vr9ErZA
-	 lwt4DgHFsQJTUDf5jww8qhLo9xLbHQNCHkKK7uCg0HEerODWtwOrfc2tP4nj97M0Bg
-	 REwyBxHqzacS4Ud6cNT20giVUDJuQ8EdUMWqVLVE=
+	b=qeBpQJJTUhGDu+lfxKR3RpC5KETRGin06ftkP0PHSkQ8JggZ13DX/Zsb0r+ZxTezo
+	 P++/s76kFozOf1baGTm3hd9K4VoCA8QlvD5yQDoeBx+REIey7ViZvJvUqCH4Dx43nn
+	 pam7DvZ8rPm1BX/wkm8kVdlVUd7nkAy54BmybTe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florin Leotescu <florin.leotescu@nxp.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/482] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.16 151/457] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
 Date: Tue, 26 Aug 2025 13:07:15 +0200
-Message-ID: <20250826110935.302267036@linuxfoundation.org>
+Message-ID: <20250826110941.103886370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
+commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
 
-Prevent the PWM value from being set to minimum when thermal zone
-temperature exceeds any trip point during driver probe. Otherwise, the
-PWM fan speed will remains at minimum speed and not respond to
-temperature changes.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clamp the param if the user provides a value that will result in an invalid
+fps.
+
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/emc2305.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/venc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index e42ae43f3de4..286582e99c28 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -301,6 +301,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
- 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
- 	}
-+
-+	if (data->cdev_data[cdev_idx].cur_state > 0)
-+		/* Update pwm when temperature is above trips */
-+		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
-+					     data->max_state, EMC2305_FAN_MAX);
-+
- 	/* Set minimal PWM speed. */
- 	if (data->pwm_separate) {
- 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
-@@ -314,10 +320,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		}
- 	}
- 	data->cdev_data[cdev_idx].cur_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	data->cdev_data[cdev_idx].last_hwmon_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	return 0;
- }
--- 
-2.39.5
-
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
+ 
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
 
