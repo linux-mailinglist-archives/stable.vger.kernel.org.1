@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-176323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627C9B36D22
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8B7B36259
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109708A2EAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56F7F8A55AA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4612352095;
-	Tue, 26 Aug 2025 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163E6268C40;
+	Tue, 26 Aug 2025 13:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6hwUzVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocV6pu3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7685E350843;
-	Tue, 26 Aug 2025 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67C81B85F8;
+	Tue, 26 Aug 2025 13:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219359; cv=none; b=fW6d4WlNg+o15SicxtrSAwwMY40SNp4eqUPV3TmS5nMruJLdilMt4UZqr4CXC8Zms5/bJv1Z3dfJH+ZyzhYCfpYsexqy2TBTjWyHQeUe9cbgi+vfcdVcjplevNI5yrwwcvircFATNyUxq/9dwNl5xeYLgQ25P+JboP5XFxHL1Rk=
+	t=1756213911; cv=none; b=GoxznQSqH/U9mpulmxsuKDVQXtWsiYzo1J0kO13ASLB5JZodMrhQfUI0nLr/6yPLyLZu92Xcf9d5eiPmyburAWLOe2nC/M+9nbE1urwqALMOWnp+f0p6Ag7+o102OlY/gOVYEjUJ6+ZDKP4uES5fSdhqdH5RayVMlS2lxjdWa6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219359; c=relaxed/simple;
-	bh=zDzH+iAHaQKUjm72gnHTvCWWc+IaT4bRDYsidWSkBMM=;
+	s=arc-20240116; t=1756213911; c=relaxed/simple;
+	bh=OMoamD2RZGbFWXOWrJo8vyke3r7l30a0QH/kPTBUr2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kENDz/Tj34J2VIVsmeOOLE9l5nIcYYLT6FArEGUZ27mCYsfHub2pqxOu1RvGvI6+jQcyTdSAyH+PzhCMkykrWtvqu9XHiCo57KKib9rxmtz2NBv8qRYinbsuEwu7Egp9xXX3PojwtaktIXmTTUtKFGP7zsTIROXQoez5jzea60U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6hwUzVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7288C4CEF1;
-	Tue, 26 Aug 2025 14:42:38 +0000 (UTC)
+	 MIME-Version; b=ji6xKqM/NHoWe+4eGNY3phlJlgb2S8E0rVNhLW4kLHAhTXnkwJ5LRuzngcDJQAF1VZk7/hJ1hFtv53ovGz1lUROn59CxFajIfvgATSK/LjClaSZszHz8bOCi6lqZVxR+3wDc7JVtPofDP+WldfaGmihf4FRF3bFfh6mhUUddqRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocV6pu3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F4AC4CEF1;
+	Tue, 26 Aug 2025 13:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219359;
-	bh=zDzH+iAHaQKUjm72gnHTvCWWc+IaT4bRDYsidWSkBMM=;
+	s=korg; t=1756213911;
+	bh=OMoamD2RZGbFWXOWrJo8vyke3r7l30a0QH/kPTBUr2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6hwUzVMAIFNkj4tHy6J0i8NBuWQ+XHmUsB6RkWaFydcb1L0Ibtg8hkZfstgVBgbI
-	 4jTPehbJjbgAbokMEZzXMln288+iEtR9/kDDbHv51PiCenga5qJ3IFiZpXOWTYAisg
-	 WcYD30eknvBhzVxQZHlIgIbO7cx8YW7yrpItSpq4=
+	b=ocV6pu3MNd6F+UFgE6lLvm+cStDaheSDGMRO0ZKdx2J1omgvLpU+mSz+1jL2JTMBl
+	 V/d++kTVcbsRe4btxUmqPUpvAMgLqEQ7hji11E0aYA1GbDrLZosbr5oef4xXjtV1Q6
+	 GbFh57NuSfP9M6Iu0u9gv2M+o8c2ORVl3xdhPu0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Zhe <zhe.he@windriver.com>,
-	Liu Haitao <haitao.liu@windriver.com>,
-	Yongxin Liu <yongxin.liu@windriver.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 350/403] mm/kmemleak: turn kmemleak_lock and object->lock to raw_spinlock_t
+	stable <stable@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 527/587] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
 Date: Tue, 26 Aug 2025 13:11:16 +0200
-Message-ID: <20250826110916.544606541@linuxfoundation.org>
+Message-ID: <20250826111006.407710680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,425 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Zhe <zhe.he@windriver.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 8c96f1bc6fc49c724c4cdd22d3e99260263b7384 ]
+commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
 
-kmemleak_lock as a rwlock on RT can possibly be acquired in atomic
-context which does work.
+Many Realtek USB Wi-Fi dongles released in recent years have two modes:
+one is driver CD mode which has Windows driver onboard, another one is
+Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
+Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
 
-Since the kmemleak operation is performed in atomic context make it a
-raw_spinlock_t so it can also be acquired on RT.  This is used for
-debugging and is not enabled by default in a production like environment
-(where performance/latency matters) so it makes sense to make it a
-raw_spinlock_t instead trying to get rid of the atomic context.  Turn
-also the kmemleak_object->lock into raw_spinlock_t which is acquired
-(nested) while the kmemleak_lock is held.
+Currently there are only two USB IDs known to be used by these multi-mode
+Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
 
-The time spent in "echo scan > kmemleak" slightly improved on 64core box
-with this patch applied after boot.
+Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=a192 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-[bigeasy@linutronix.de: redo the description, update comments. Merge the individual bits:  He Zhe did the kmemleak_lock, Liu Haitao the ->lock and Yongxin Liu forwarded Liu's patch.]
-Link: http://lkml.kernel.org/r/20191219170834.4tah3prf2gdothz4@linutronix.de
-Link: https://lkml.kernel.org/r/20181218150744.GB20197@arrakis.emea.arm.com
-Link: https://lkml.kernel.org/r/1542877459-144382-1-git-send-email-zhe.he@windriver.com
-Link: https://lkml.kernel.org/r/20190927082230.34152-1-yongxin.liu@windriver.com
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Liu Haitao <haitao.liu@windriver.com>
-Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 47b0f6d8f0d2 ("mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=1a2b Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |  112 +++++++++++++++++++++++++++++-----------------------------
- 1 file changed, 56 insertions(+), 56 deletions(-)
+ drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -13,7 +13,7 @@
-  *
-  * The following locks and mutexes are used by kmemleak:
-  *
-- * - kmemleak_lock (rwlock): protects the object_list modifications and
-+ * - kmemleak_lock (raw_spinlock_t): protects the object_list modifications and
-  *   accesses to the object_tree_root. The object_list is the main list
-  *   holding the metadata (struct kmemleak_object) for the allocated memory
-  *   blocks. The object_tree_root is a red black tree used to look-up
-@@ -22,13 +22,13 @@
-  *   object_tree_root in the create_object() function called from the
-  *   kmemleak_alloc() callback and removed in delete_object() called from the
-  *   kmemleak_free() callback
-- * - kmemleak_object.lock (spinlock): protects a kmemleak_object. Accesses to
-- *   the metadata (e.g. count) are protected by this lock. Note that some
-- *   members of this structure may be protected by other means (atomic or
-- *   kmemleak_lock). This lock is also held when scanning the corresponding
-- *   memory block to avoid the kernel freeing it via the kmemleak_free()
-- *   callback. This is less heavyweight than holding a global lock like
-- *   kmemleak_lock during scanning
-+ * - kmemleak_object.lock (raw_spinlock_t): protects a kmemleak_object.
-+ *   Accesses to the metadata (e.g. count) are protected by this lock. Note
-+ *   that some members of this structure may be protected by other means
-+ *   (atomic or kmemleak_lock). This lock is also held when scanning the
-+ *   corresponding memory block to avoid the kernel freeing it via the
-+ *   kmemleak_free() callback. This is less heavyweight than holding a global
-+ *   lock like kmemleak_lock during scanning.
-  * - scan_mutex (mutex): ensures that only one thread may scan the memory for
-  *   unreferenced objects at a time. The gray_list contains the objects which
-  *   are already referenced or marked as false positives and need to be
-@@ -135,7 +135,7 @@ struct kmemleak_scan_area {
-  * (use_count) and freed using the RCU mechanism.
-  */
- struct kmemleak_object {
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	unsigned int flags;		/* object status flags */
- 	struct list_head object_list;
- 	struct list_head gray_list;
-@@ -191,8 +191,8 @@ static int mem_pool_free_count = ARRAY_S
- static LIST_HEAD(mem_pool_free_list);
- /* search tree for object boundaries */
- static struct rb_root object_tree_root = RB_ROOT;
--/* rw_lock protecting the access to object_list and object_tree_root */
--static DEFINE_RWLOCK(kmemleak_lock);
-+/* protecting the access to object_list and object_tree_root */
-+static DEFINE_RAW_SPINLOCK(kmemleak_lock);
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1501,6 +1501,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_WP_DETECT ),
  
- /* allocation caches for kmemleak internal data */
- static struct kmem_cache *object_cache;
-@@ -426,7 +426,7 @@ static struct kmemleak_object *mem_pool_
- 	}
- 
- 	/* slab allocation failed, try the memory pool */
--	write_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	object = list_first_entry_or_null(&mem_pool_free_list,
- 					  typeof(*object), object_list);
- 	if (object)
-@@ -435,7 +435,7 @@ static struct kmemleak_object *mem_pool_
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
- 		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
--	write_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- 
- 	return object;
- }
-@@ -453,9 +453,9 @@ static void mem_pool_free(struct kmemlea
- 	}
- 
- 	/* add the object to the memory pool free list */
--	write_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	list_add(&object->object_list, &mem_pool_free_list);
--	write_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- }
- 
- /*
-@@ -514,9 +514,9 @@ static struct kmemleak_object *find_and_
- 	struct kmemleak_object *object;
- 
- 	rcu_read_lock();
--	read_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	object = lookup_object(ptr, alias);
--	read_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- 
- 	/* check whether the object is still available */
- 	if (object && !get_object(object))
-@@ -546,11 +546,11 @@ static struct kmemleak_object *find_and_
- 	unsigned long flags;
- 	struct kmemleak_object *object;
- 
--	write_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	object = lookup_object(ptr, alias);
- 	if (object)
- 		__remove_object(object);
--	write_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- 
- 	return object;
- }
-@@ -585,7 +585,7 @@ static struct kmemleak_object *create_ob
- 	INIT_LIST_HEAD(&object->object_list);
- 	INIT_LIST_HEAD(&object->gray_list);
- 	INIT_HLIST_HEAD(&object->area_list);
--	spin_lock_init(&object->lock);
-+	raw_spin_lock_init(&object->lock);
- 	atomic_set(&object->use_count, 1);
- 	object->flags = OBJECT_ALLOCATED;
- 	object->pointer = ptr;
-@@ -617,7 +617,7 @@ static struct kmemleak_object *create_ob
- 	/* kernel backtrace */
- 	object->trace_len = __save_stack_trace(object->trace);
- 
--	write_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 
- 	untagged_ptr = (unsigned long)kasan_reset_tag((void *)ptr);
- 	min_addr = min(min_addr, untagged_ptr);
-@@ -649,7 +649,7 @@ static struct kmemleak_object *create_ob
- 
- 	list_add_tail_rcu(&object->object_list, &object_list);
- out:
--	write_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- 	return object;
- }
- 
-@@ -667,9 +667,9 @@ static void __delete_object(struct kmeml
- 	 * Locking here also ensures that the corresponding memory block
- 	 * cannot be freed when it is being scanned.
- 	 */
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	object->flags &= ~OBJECT_ALLOCATED;
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 	put_object(object);
- }
- 
-@@ -739,9 +739,9 @@ static void paint_it(struct kmemleak_obj
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	__paint_it(object, color);
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- }
- 
- static void paint_ptr(unsigned long ptr, int color)
-@@ -803,7 +803,7 @@ static void add_scan_area(unsigned long
- 	if (scan_area_cache)
- 		area = kmem_cache_alloc(scan_area_cache, gfp_kmemleak_mask(gfp));
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	if (!area) {
- 		pr_warn_once("Cannot allocate a scan area, scanning the full object\n");
- 		/* mark the object for full scan to avoid false positives */
-@@ -825,7 +825,7 @@ static void add_scan_area(unsigned long
- 
- 	hlist_add_head(&area->node, &object->area_list);
- out_unlock:
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 	put_object(object);
- }
- 
-@@ -847,9 +847,9 @@ static void object_set_excess_ref(unsign
- 		return;
- 	}
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	object->excess_ref = excess_ref;
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 	put_object(object);
- }
- 
-@@ -869,9 +869,9 @@ static void object_no_scan(unsigned long
- 		return;
- 	}
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	object->flags |= OBJECT_NO_SCAN;
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 	put_object(object);
- }
- 
-@@ -1031,9 +1031,9 @@ void __ref kmemleak_update_trace(const v
- 		return;
- 	}
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	object->trace_len = __save_stack_trace(object->trace);
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 
- 	put_object(object);
- }
-@@ -1238,7 +1238,7 @@ static void scan_block(void *_start, voi
- 	unsigned long flags;
- 	unsigned long untagged_ptr;
- 
--	read_lock_irqsave(&kmemleak_lock, flags);
-+	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	for (ptr = start; ptr < end; ptr++) {
- 		struct kmemleak_object *object;
- 		unsigned long pointer;
-@@ -1273,7 +1273,7 @@ static void scan_block(void *_start, voi
- 		 * previously acquired in scan_object(). These locks are
- 		 * enclosed by scan_mutex.
- 		 */
--		spin_lock_nested(&object->lock, SINGLE_DEPTH_NESTING);
-+		raw_spin_lock_nested(&object->lock, SINGLE_DEPTH_NESTING);
- 		/* only pass surplus references (object already gray) */
- 		if (color_gray(object)) {
- 			excess_ref = object->excess_ref;
-@@ -1282,7 +1282,7 @@ static void scan_block(void *_start, voi
- 			excess_ref = 0;
- 			update_refs(object);
- 		}
--		spin_unlock(&object->lock);
-+		raw_spin_unlock(&object->lock);
- 
- 		if (excess_ref) {
- 			object = lookup_object(excess_ref, 0);
-@@ -1291,12 +1291,12 @@ static void scan_block(void *_start, voi
- 			if (object == scanned)
- 				/* circular reference, ignore */
- 				continue;
--			spin_lock_nested(&object->lock, SINGLE_DEPTH_NESTING);
-+			raw_spin_lock_nested(&object->lock, SINGLE_DEPTH_NESTING);
- 			update_refs(object);
--			spin_unlock(&object->lock);
-+			raw_spin_unlock(&object->lock);
- 		}
- 	}
--	read_unlock_irqrestore(&kmemleak_lock, flags);
-+	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
- }
- 
- /*
-@@ -1329,7 +1329,7 @@ static void scan_object(struct kmemleak_
- 	 * Once the object->lock is acquired, the corresponding memory block
- 	 * cannot be freed (the same lock is acquired in delete_object).
- 	 */
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	if (object->flags & OBJECT_NO_SCAN)
- 		goto out;
- 	if (!(object->flags & OBJECT_ALLOCATED))
-@@ -1349,9 +1349,9 @@ static void scan_object(struct kmemleak_
- 			if (start >= end)
- 				break;
- 
--			spin_unlock_irqrestore(&object->lock, flags);
-+			raw_spin_unlock_irqrestore(&object->lock, flags);
- 			cond_resched();
--			spin_lock_irqsave(&object->lock, flags);
-+			raw_spin_lock_irqsave(&object->lock, flags);
- 		} while (object->flags & OBJECT_ALLOCATED);
- 	} else
- 		hlist_for_each_entry(area, &object->area_list, node)
-@@ -1359,7 +1359,7 @@ static void scan_object(struct kmemleak_
- 				   (void *)(area->start + area->size),
- 				   object);
- out:
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- }
- 
- /*
-@@ -1413,7 +1413,7 @@ static void kmemleak_scan(void)
- 	/* prepare the kmemleak_object's */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
--		spin_lock_irqsave(&object->lock, flags);
-+		raw_spin_lock_irqsave(&object->lock, flags);
- #ifdef DEBUG
- 		/*
- 		 * With a few exceptions there should be a maximum of
-@@ -1430,7 +1430,7 @@ static void kmemleak_scan(void)
- 		if (color_gray(object) && get_object(object))
- 			list_add_tail(&object->gray_list, &gray_list);
- 
--		spin_unlock_irqrestore(&object->lock, flags);
-+		raw_spin_unlock_irqrestore(&object->lock, flags);
- 	}
- 	rcu_read_unlock();
- 
-@@ -1498,14 +1498,14 @@ static void kmemleak_scan(void)
- 	 */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
--		spin_lock_irqsave(&object->lock, flags);
-+		raw_spin_lock_irqsave(&object->lock, flags);
- 		if (color_white(object) && (object->flags & OBJECT_ALLOCATED)
- 		    && update_checksum(object) && get_object(object)) {
- 			/* color it gray temporarily */
- 			object->count = object->min_count;
- 			list_add_tail(&object->gray_list, &gray_list);
- 		}
--		spin_unlock_irqrestore(&object->lock, flags);
-+		raw_spin_unlock_irqrestore(&object->lock, flags);
- 	}
- 	rcu_read_unlock();
- 
-@@ -1525,7 +1525,7 @@ static void kmemleak_scan(void)
- 	 */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
--		spin_lock_irqsave(&object->lock, flags);
-+		raw_spin_lock_irqsave(&object->lock, flags);
- 		if (unreferenced_object(object) &&
- 		    !(object->flags & OBJECT_REPORTED)) {
- 			object->flags |= OBJECT_REPORTED;
-@@ -1535,7 +1535,7 @@ static void kmemleak_scan(void)
- 
- 			new_leaks++;
- 		}
--		spin_unlock_irqrestore(&object->lock, flags);
-+		raw_spin_unlock_irqrestore(&object->lock, flags);
- 	}
- 	rcu_read_unlock();
- 
-@@ -1687,10 +1687,10 @@ static int kmemleak_seq_show(struct seq_
- 	struct kmemleak_object *object = v;
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	if ((object->flags & OBJECT_REPORTED) && unreferenced_object(object))
- 		print_unreferenced(seq, object);
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 	return 0;
- }
- 
-@@ -1720,9 +1720,9 @@ static int dump_str_object_info(const ch
- 		return -EINVAL;
- 	}
- 
--	spin_lock_irqsave(&object->lock, flags);
-+	raw_spin_lock_irqsave(&object->lock, flags);
- 	dump_object_info(object);
--	spin_unlock_irqrestore(&object->lock, flags);
-+	raw_spin_unlock_irqrestore(&object->lock, flags);
- 
- 	put_object(object);
- 	return 0;
-@@ -1741,11 +1741,11 @@ static void kmemleak_clear(void)
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
--		spin_lock_irqsave(&object->lock, flags);
-+		raw_spin_lock_irqsave(&object->lock, flags);
- 		if ((object->flags & OBJECT_REPORTED) &&
- 		    unreferenced_object(object))
- 			__paint_it(object, KMEMLEAK_GREY);
--		spin_unlock_irqrestore(&object->lock, flags);
-+		raw_spin_unlock_irqrestore(&object->lock, flags);
- 	}
- 	rcu_read_unlock();
- 
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
+ UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
+ 		"Maxtor",
+ 		"USB to SATA",
 
 
 
