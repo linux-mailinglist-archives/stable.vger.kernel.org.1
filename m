@@ -1,156 +1,213 @@
-Return-Path: <stable+bounces-176395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C90B3701A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 18:23:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CF5B37067
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 18:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75C11694CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B9277C83CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DD7272816;
-	Tue, 26 Aug 2025 16:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAFB34DCFE;
+	Tue, 26 Aug 2025 16:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="KhlEYKzx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZUmUidr"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA217C211;
-	Tue, 26 Aug 2025 16:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9FE3164DB
+	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 16:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756225409; cv=none; b=IwzfPDeuf4QeBDPIR0fVcglh2ViY3NMh4vbiBof1JwDmo/v4klkm4pq6DRVDys6EoPSYQDjDT1nPdew1HdpvviMTVYPYKeE1pEpNhO3M5evceeh1iX4FlCFHthVNU/71vLGyniFFsLZId9Hf2Iu1DNUntMMZh6NP4FzLZYCyXeY=
+	t=1756225928; cv=none; b=nMyjXmIu6TowGBfLVlT8xsPEPX3b7qA4p1Ns/WawPjPq7QzpUXvPFBO8NNVIY66PEbFjdvat2lRSgqmmcuuf3e0bsaXOUk97Xzy0SkudePmgyjvj5nUhxUCHW5lTMVTtchAfIQ+uxIzs22iPGfoebn8VMNWYbAGhtV1FBI51KeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756225409; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tKvkRBsmr25lLBpy/03Dpm4Wxnk2s0as8pwn8JfWDioYCrfxA0NvEk3hLBN/Qg2BOhFPfIZtZd5d+usPB48In3fhZohjaiETaGEHCmHz2GVyCuJAg3j2LTt4grbI+Pd3MO5PYuc0TK88zKmuIYqE1AWqtXFztEIRYQyR1JigD9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=KhlEYKzx; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1756225404; x=1756830204; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=KhlEYKzxk4eYrMBYwRrxWj97+MeHlwoVlfvRujAqIc1fUApWIHwMiCS2gRRtLVOb
-	 cHxNGyLAGcOLOUYOpip0VInOw7QdqnNJ/qTUjihPrbLoMdGGPz6+UxNz6RGhltBYz
-	 zccUk5igAZvZMgJB54GG3zrtprWWD9t2UF5S5/sMW+bMLLIV7uHlGSspL1mpdPpME
-	 JAdGVvP5sqxO6ywRiabpuLVN5d9V2xEG27lgSIyrr377xws1GmNa9KDjB2H5d3zuz
-	 uimCG4DtT9bhFnS4o68CIJx677JAD3keGGez3Bb8YGuxv6bAYfJ7IovBnYmFW+v1Z
-	 X9W6Zo8SfZkZFHqyrg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.135]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MjS9C-1u7BIc20Rm-00h4FN; Tue, 26
- Aug 2025 18:23:24 +0200
-Message-ID: <1b282d8b-20ea-4496-925b-759bd4911245@gmx.de>
-Date: Tue, 26 Aug 2025 18:23:22 +0200
+	s=arc-20240116; t=1756225928; c=relaxed/simple;
+	bh=FUpSUFw6fO2ITfybdwjfny+I+SBlOz8l7RVSe6xNbXI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QKtRVsywIiiOzNEKs6EnpthDT723jLBxWwMtr2KSvS6iUr8b669sDE45hiZu6TuDoUm9BiGAbxHXuaeBdtOVZW/28xZTi83j9LNRd01gIfMJwIfe8ubENUGXsUaUqHiRDFcAdRxG2L4yu62pIILG8XFuflcDiT10y2+AZi6WuCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZUmUidr; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b49d7a11c0aso539707a12.0
+        for <stable@vger.kernel.org>; Tue, 26 Aug 2025 09:32:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756225926; x=1756830726; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gHSDypqHOOk6osgXzA+8WxKPxKWGxAytI2s6DahvMQ0=;
+        b=HZUmUidrxmQtTks8209gOmompW1ODn0oqa4IiN3qmGRrOuyRRr80N5UuTShqXjjLE3
+         p33FDg7/Our5AWJQMJK2v/hJx99lYzj5WXYofauL9w75JWN/iV7nZkJO8Dpls2TLerMx
+         ZrngUBSwSPdZd/3YuhsoGL4WmGPBoWPlcuW2ZkmOrehaGQ2Panfz4H/AVyHD1XVo9kVq
+         uS2ZbQx3rS3oX2h1Ydd9G8gceox/empIhW86pe715sVnGveWklVncw8QEw0iHwuPfDlK
+         in6/Jd9SD2aNA3tGl2+NvNZE5mgeJ0uzmCvMv7LsJqad6ULj7DNXuVeOS5IM0EUuufYS
+         YTjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756225926; x=1756830726;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gHSDypqHOOk6osgXzA+8WxKPxKWGxAytI2s6DahvMQ0=;
+        b=BC7ml+4imU+bAzNot4y4mXbq+O62+2uIUszTpM14GBZJIsiXkk08ekNSCPom7r/65d
+         XLZiHxfEl2hfirGHwNmGSX1wbEYTygYM+BD846d1P/Q7mVQtw8KeAFIkTkfnExE+p1N2
+         dqhUJmco+Y7h1K3GRNLcaiHYyGZsUwq1nVI1USVjgdEiGilauf84VTuB8S73BC+et8xL
+         moFJZPGCTv2XPbZCz/xEvr0Ab/31KxZD/dNOLaBFKDe44//dM9Lhb+IrpVaEe+yS5Qjp
+         m5PPqKaTQFsl0PJF1M9LUo2Ti/PmTavFv8WyubUjAxjeTyKFwGDN/63S2GlDJGjKiPpA
+         KfJg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvbgw6tlnt3CLOYYGIu35vpM6mDghmNU9ejuDhZexcUvnXuaCg1CUhIssK5qOGM5YPi5Sk7Hk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY968XEwimD5nzDXzswwCAHzl4R7FDRzfdGZRUcVFkx+vc82qK
+	6xf0tg6DBEpBeB0UyUukDkk2yWbcLVv1l2AA6keCWZjoL03AMKEYJ1DbYtY5gAkvu8N1wB20jGe
+	4jBozDc6l5Es8mOSmmeMnov87uoySClgVow==
+X-Gm-Gg: ASbGncuPcvcC+hTnVSb7KtxxJO0vTmAndCYa78E/adccdOT4pL1WQP4sRR2j465jfAh
+	eOZlOqC+RTXZlywlmM+eT+JXjLfM5WRVH0AXrzuMTjg/MD8UYhmRy3pSUN5sTVLgM7PtjzYe7uX
+	bpCjjokNzB3alowN+ZgQvuttDrFzjN+IfLzLPV/dCXXkI6QPvjFMruQy1PP+FX4LmT6spH4u3ex
+	qlCPGo=
+X-Google-Smtp-Source: AGHT+IEwIVXL4cP/21KjY3fa8n5tTQJGioOD3i1gbfi5T/iCcbNNr8lbNqtY5nd3xDUD9XzpX0EFInpr6SiO90xMbGs=
+X-Received: by 2002:a17:90b:4b0f:b0:325:8f8c:4e13 with SMTP id
+ 98e67ed59e1d1-3258f8c503cmr6203380a91.2.1756225926186; Tue, 26 Aug 2025
+ 09:32:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250826110937.289866482@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:4lrZlQ3LJdUDqEOfFqdPOqwIpBAXjK2+Z0hGYszP6hLx7+mZjMJ
- D/D30j08qD7z5tbRQj59b3mpSgZWw3zRO+pdcloW7LJ58wAPuYzfSJoDPm763Ndpo6RnlSZ
- svCbbzZJjBKbCpJyNe1E4qU7LvQD2N0M654QDGwjhsW1PjMirREAL6DEeOCCMUZLJhcnl6x
- L7YFUqVQGOfDgMROz3KiA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:CnNdA227jjc=;cVqx1pVXcrfPZGEPOp40ESr9UQz
- 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
- 917HPkHzJLaLE8lIgTe8UNyYv6Bv
+References: <20250808151517.1596616-1-alexander.deucher@amd.com>
+In-Reply-To: <20250808151517.1596616-1-alexander.deucher@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 26 Aug 2025 12:31:54 -0400
+X-Gm-Features: Ac12FXzaPTqWyhS_lK7IZdRsLFg3Tx236cSDKlNP6zTb32rf63B565jLFoSGzyc
+Message-ID: <CADnq5_Mx8uEPttTvpuMhDQNMysR1+zi2P+LnRbrmESakFG1Bqg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu: drop hw access in non-DC audio fini
+To: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org, 
+	oushixiong <oushixiong1025@163.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
+ping?
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
-
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
-
+On Fri, Aug 8, 2025 at 11:23=E2=80=AFAM Alex Deucher <alexander.deucher@amd=
+.com> wrote:
+>
+> We already disable the audio pins in hw_fini so
+> there is no need to do it again in sw_fini.
+>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
+> Cc: stable@vger.kernel.org
+> Cc: oushixiong <oushixiong1025@163.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/dce_v10_0.c | 5 -----
+>  drivers/gpu/drm/amd/amdgpu/dce_v11_0.c | 5 -----
+>  drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  | 5 -----
+>  drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  | 5 -----
+>  4 files changed, 20 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c b/drivers/gpu/drm/amd=
+/amdgpu/dce_v10_0.c
+> index bf7c22f81cda3..ba73518f5cdf3 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
+> @@ -1462,17 +1462,12 @@ static int dce_v10_0_audio_init(struct amdgpu_dev=
+ice *adev)
+>
+>  static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
+>  {
+> -       int i;
+> -
+>         if (!amdgpu_audio)
+>                 return;
+>
+>         if (!adev->mode_info.audio.enabled)
+>                 return;
+>
+> -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
+> -               dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i=
+], false);
+> -
+>         adev->mode_info.audio.enabled =3D false;
+>  }
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c b/drivers/gpu/drm/amd=
+/amdgpu/dce_v11_0.c
+> index 47e05783c4a0e..b01d88d078fa2 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
+> @@ -1511,17 +1511,12 @@ static int dce_v11_0_audio_init(struct amdgpu_dev=
+ice *adev)
+>
+>  static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
+>  {
+> -       int i;
+> -
+>         if (!amdgpu_audio)
+>                 return;
+>
+>         if (!adev->mode_info.audio.enabled)
+>                 return;
+>
+> -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
+> -               dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i=
+], false);
+> -
+>         adev->mode_info.audio.enabled =3D false;
+>  }
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c b/drivers/gpu/drm/amd/=
+amdgpu/dce_v6_0.c
+> index 276c025c4c03d..81760a26f2ffc 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+> @@ -1451,17 +1451,12 @@ static int dce_v6_0_audio_init(struct amdgpu_devi=
+ce *adev)
+>
+>  static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
+>  {
+> -       int i;
+> -
+>         if (!amdgpu_audio)
+>                 return;
+>
+>         if (!adev->mode_info.audio.enabled)
+>                 return;
+>
+> -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
+> -               dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i]=
+, false);
+> -
+>         adev->mode_info.audio.enabled =3D false;
+>  }
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c b/drivers/gpu/drm/amd/=
+amdgpu/dce_v8_0.c
+> index e62ccf9eb73de..19a265bd4d196 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
+> @@ -1443,17 +1443,12 @@ static int dce_v8_0_audio_init(struct amdgpu_devi=
+ce *adev)
+>
+>  static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
+>  {
+> -       int i;
+> -
+>         if (!amdgpu_audio)
+>                 return;
+>
+>         if (!adev->mode_info.audio.enabled)
+>                 return;
+>
+> -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
+> -               dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i]=
+, false);
+> -
+>         adev->mode_info.audio.enabled =3D false;
+>  }
+>
+> --
+> 2.50.1
+>
 
