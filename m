@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC18B35DC7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1A8B35C63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CF957C682F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777477C4A4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9742BF3E2;
-	Tue, 26 Aug 2025 11:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7700133471E;
+	Tue, 26 Aug 2025 11:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thrCMLWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LXnq9h6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FFA2D6E6B;
-	Tue, 26 Aug 2025 11:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D102135B8;
+	Tue, 26 Aug 2025 11:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208786; cv=none; b=CrRnZMG9760pbWMl713iq1ZYCiY5Ze3di63yhKsBYEPH657KfOgURngle5/mmQOXFCED9JV0GZLnsRVJWeXjKO0q2xYDS8huhrXBGe9u2iDb+74GyhxUCLMs4G2x6wVzHJy2RYx6jIH2b7x8jfxVSHv/QsFAwQzVspi1IiA0RP8=
+	t=1756207862; cv=none; b=aRyTe1NYqgbDPsY58pp5H+lbcH2I3XZ2oNOzMVktnhkWy/5+Y/88OWt76ANLbDsUqYYCBMP0jc+A4LSCnf1mQCoNtv15s0I88Yiu9Khqg/Z0zRyjUdKrYznssUgqHn9Bml+juiFim2K2wcVYF33nk7CANo6qhVHAR05Zmyqt0gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208786; c=relaxed/simple;
-	bh=3MoOhj7RQlsVKPJgK1JNLRdW9XZ2ZhnfSdm/6SAFzgw=;
+	s=arc-20240116; t=1756207862; c=relaxed/simple;
+	bh=t5TFbTPYgklvHCOiuMNOH/izDsn3H1vxB4RzZL9gPJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rw+tAnabLjrW/OiigyjncyePhCjBF5qmxnckTu4O6SNnnlterVBV3olOKEStmLfTH43mtFZkh83VSCERUjeFarvObgdqE84D0jhYrNoURMvBpT/gbJr15FMXwygOzx8rRKCzFjrlZQdt3eJlOR3dGypO8mVuT4iNE34Ut55cIKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thrCMLWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6E2C4CEF1;
-	Tue, 26 Aug 2025 11:46:25 +0000 (UTC)
+	 MIME-Version; b=Jn7m9+gSehBi/QP4IBSIb/cVI3vssSKj+RKw8dVJDecbY55JEAcF1uroLjEvIiSUSOw/aHx8nH4bR9xwJh1ghumJYgBuClREVYNIagZGLExYcJxmalqEPqXagYOVvxmjZ/pXUaFkUBbAe9inCQ0P1ciA3JWfRwXKuj5QE9+JwYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LXnq9h6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B874DC4CEF1;
+	Tue, 26 Aug 2025 11:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208785;
-	bh=3MoOhj7RQlsVKPJgK1JNLRdW9XZ2ZhnfSdm/6SAFzgw=;
+	s=korg; t=1756207862;
+	bh=t5TFbTPYgklvHCOiuMNOH/izDsn3H1vxB4RzZL9gPJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thrCMLWul0ht2uTM5VNZmf/W+AStywoMUa8tfUWfQxMHJJ7cGNTAVrQiHvJvToMuO
-	 WneNncMijV9uh5V3JXZozEYxBPdxN/nHyiGGsdleXAEumI9BYxGCP19I5fOPHyiNfp
-	 ESXXz+QRQm/F6TNNsMNAhgUI0fqGnXbhcXY9M+eE=
+	b=0LXnq9h6cNLT3LFlXt8UqjA9mzW9an3NKRN9IK4WpGzs8Gvp5dS5Yhwckd4eBAXOM
+	 /AOnNamfI3X1Pl0YBk0H05keCmzvNWoVi4fcBX0i0y/B2RVfqqiqjvn4A52i5we1b3
+	 u0ITnJXve3GFQxwBdkasi4H9w1HqnC7rKXmuoC1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/322] mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+Subject: [PATCH 6.16 344/457] spi: spi-qpic-snand: fix calculating of ECC OOB regions properties
 Date: Tue, 26 Aug 2025 13:10:28 +0200
-Message-ID: <20250826110921.134879324@linuxfoundation.org>
+Message-ID: <20250826110945.830828023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit d2d7a96b29ea6ab093973a1a37d26126db70c79f upstream.
+[ Upstream commit 13d0fe84a214658254a7412b2b46ec1507dc51f0 ]
 
-This adds SDHCI_AM654_QUIRK_DISABLE_HS400 quirk which shall be used
-to disable HS400 support. AM62P SR1.0 and SR1.1 do not support HS400
-due to errata i2458 [0] so disable HS400 for these SoC revisions.
+The OOB layout used by the driver has two distinct regions which contains
+hardware specific ECC data, yet the qcom_spi_ooblayout_ecc() function sets
+the same offset and length values for both regions which is clearly wrong.
 
-[0] https://www.ti.com/lit/er/sprz574a/sprz574a.pdf
-Fixes: 37f28165518f ("arm64: dts: ti: k3-am62p: Add ITAP/OTAP values for MMC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250820193047.4064142-1-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ adapted quirk bit assignment from BIT(2) to BIT(1) ]
+Change the code to calculate the correct values for both regions.
+
+For reference, the following table shows the computed offset and length
+values for various OOB size/ECC strength configurations:
+
+                              +-----------------+-----------------+
+                              |before the change| after the change|
+  +-------+----------+--------+--------+--------+--------+--------+
+  |  OOB  |   ECC    | region | region | region | region | region |
+  |  size | strength | index  | offset | length | offset | length |
+  +-------+----------+--------+--------+--------+--------+--------+
+  |  128  |     8    |    0   |   113  |   15   |    0   |   49   |
+  |       |          |    1   |   113  |   15   |   65   |   63   |
+  +-------+----------+--------+--------+--------+--------+--------+
+  |  128  |     4    |    0   |   117  |   11   |    0   |   37   |
+  |       |          |    1   |   117  |   11   |   53   |   75   |
+  +-------+----------+--------+--------+--------+--------+--------+
+  |   64  |     4    |    0   |    53  |   11   |    0   |   37   |
+  |       |          |    1   |    53  |   11   |   53   |   11   |
+  +-------+----------+--------+--------+--------+--------+--------+
+
+Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250805-qpic-snand-oob-ecc-fix-v2-1-e6f811c70d6f@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci_am654.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/spi/spi-qpic-snand.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -155,6 +155,7 @@ struct sdhci_am654_data {
- 	u32 tuning_loop;
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index 722ab60d616f..e98e997680c7 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -216,13 +216,21 @@ static int qcom_spi_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 	struct qcom_nand_controller *snandc = nand_to_qcom_snand(nand);
+ 	struct qpic_ecc *qecc = snandc->qspi->ecc;
  
- #define SDHCI_AM654_QUIRK_FORCE_CDTEST BIT(0)
-+#define SDHCI_AM654_QUIRK_DISABLE_HS400 BIT(1)
- };
- 
- struct window {
-@@ -734,6 +735,7 @@ static int sdhci_am654_init(struct sdhci
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
-+	struct device *dev = mmc_dev(host->mmc);
- 	u32 ctl_cfg_2 = 0;
- 	u32 mask;
- 	u32 val;
-@@ -789,6 +791,12 @@ static int sdhci_am654_init(struct sdhci
- 	if (ret)
- 		goto err_cleanup_host;
- 
-+	if (sdhci_am654->quirks & SDHCI_AM654_QUIRK_DISABLE_HS400 &&
-+	    host->mmc->caps2 & (MMC_CAP2_HS400 | MMC_CAP2_HS400_ES)) {
-+		dev_info(dev, "HS400 mode not supported on this silicon revision, disabling it\n");
-+		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
+-	if (section > 1)
+-		return -ERANGE;
+-
+-	oobregion->length = qecc->ecc_bytes_hw + qecc->spare_bytes;
+-	oobregion->offset = mtd->oobsize - oobregion->length;
++	switch (section) {
++	case 0:
++		oobregion->offset = 0;
++		oobregion->length = qecc->bytes * (qecc->steps - 1) +
++				    qecc->bbm_size;
++		return 0;
++	case 1:
++		oobregion->offset = qecc->bytes * (qecc->steps - 1) +
++				    qecc->bbm_size +
++				    qecc->steps * 4;
++		oobregion->length = mtd->oobsize - oobregion->offset;
++		return 0;
 +	}
-+
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -852,6 +860,12 @@ static int sdhci_am654_get_of_property(s
- 	return 0;
+ 
+-	return 0;
++	return -ERANGE;
  }
  
-+static const struct soc_device_attribute sdhci_am654_descope_hs400[] = {
-+	{ .family = "AM62PX", .revision = "SR1.0" },
-+	{ .family = "AM62PX", .revision = "SR1.1" },
-+	{ /* sentinel */ }
-+};
-+
- static const struct of_device_id sdhci_am654_of_match[] = {
- 	{
- 		.compatible = "ti,am654-sdhci-5.1",
-@@ -943,6 +957,10 @@ static int sdhci_am654_probe(struct plat
- 		goto err_pltfm_free;
- 	}
- 
-+	soc = soc_device_match(sdhci_am654_descope_hs400);
-+	if (soc)
-+		sdhci_am654->quirks |= SDHCI_AM654_QUIRK_DISABLE_HS400;
-+
- 	host->mmc_host_ops.execute_tuning = sdhci_am654_execute_tuning;
- 
- 	pm_runtime_get_noresume(dev);
+ static int qcom_spi_ooblayout_free(struct mtd_info *mtd, int section,
+-- 
+2.50.1
+
 
 
 
