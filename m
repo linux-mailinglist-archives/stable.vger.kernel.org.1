@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A07FB36974
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AA3B362A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F9CC3A3896
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 675A9188D9E2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3792FFDEB;
-	Tue, 26 Aug 2025 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFB334AAE0;
+	Tue, 26 Aug 2025 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9WkWfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rShjMU3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25826286881;
-	Tue, 26 Aug 2025 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1897434A30A;
+	Tue, 26 Aug 2025 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217309; cv=none; b=JNIzJNq3iQg1nKsJixlVVbZDWAesHI8t0gLwfspE9No9hvBRDyOlKxgvNodjOQF6yQULo7uweL4GuDeZZh/B9KocYdRuRlGWxthRiXEim9kLryfUg7QK7Aos3/taL3OLepsyVrrrZUcXwtwIzlCY9t1C0TqKaBZq/PSYRe9K/rA=
+	t=1756214134; cv=none; b=tPxxAbwLkLAFAzqTzP3wBKVKljRaGzrGY8cYwKPgNBXwmUHMz7K9HLg/DP7Hv9iyNQ2h6h43ay+fDGTu+vuIVy6i6PoTNdQa6YuqXoxfQKGtki9zWRVYYntbyeUL/9mSLwK63q8RiqI9/X+MQMfP1aPAMSFCZt1ZhftQ5v3GJvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217309; c=relaxed/simple;
-	bh=qoHc4H2alG9tr+b5dJlgvd2E7Af+ikPtn6Jom3dyzkE=;
+	s=arc-20240116; t=1756214134; c=relaxed/simple;
+	bh=pz52C7vbvPfYYxbIiUNddI9wntj6AwYm7OOSNzK/v/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THhkofp6hnTSrJT9xBpLkWp0jALZQQk8HQCVkRCMuPAVelJLRFUnzfqyzjR2V9HKN80RuP/PSZGydqedXspOV9ocs/lqxp5Pagkg1bq3nb4lQGJ9QQNkcogPgu4c0NI7Vk8FIqpw91Pj+pzKbGSbseVaEQXH5ya/5kHUf3S3ONw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9WkWfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E661C4CEF1;
-	Tue, 26 Aug 2025 14:08:28 +0000 (UTC)
+	 MIME-Version; b=Z65V4tYGeGfe8NjdqW7viRsePp180pGrsLmDVlF9FeRuhmP/J/5zEJgxCo8ovGori0ba5+/TOKclZPbf9oo4DdoutyyKFbhPwOYWAupLlT+OOIb3+tQ60ll2o5aC3Ur3X7w5v2bzObrlB7lIwp6XYn8MkjK2Ee2xuzhduTlRGE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rShjMU3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE0C4CEF1;
+	Tue, 26 Aug 2025 13:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217308;
-	bh=qoHc4H2alG9tr+b5dJlgvd2E7Af+ikPtn6Jom3dyzkE=;
+	s=korg; t=1756214133;
+	bh=pz52C7vbvPfYYxbIiUNddI9wntj6AwYm7OOSNzK/v/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn9WkWfcUtx5dpGb4jADAESFn+R23smeIlHHHAulu2jpngt2cvZoITPJYGZNO3CGb
-	 82iClU6UEYmHa+SRMgNeY0v3TyYOvgRPN/OZ0esbck86RxoQX+6tQCxG4ctrvDKADV
-	 vHi841lS/bkm/VSNIPCuSnI7yTXqrDM0sjttdNfE=
+	b=rShjMU3ArtVozM1sf/9BAjJW0kbnD0dyCTnGoVqGQ3nRFPik6qrK6CA/ufAZokyWe
+	 vjUdUP/LRxZb2BdNQD9mD0+1K7eMb01zAP+/Ynj4wMxbi5LzY5lGmSuyNfbeiWsJKL
+	 C2KrHwUe8NOs9PR9/8JL5qpMu5QejRPHnrDmQ8zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Vlad URSU <vlad@ursu.me>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 067/523] e1000e: ignore uninitialized checksum word on tgp
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 024/482] Documentation: ACPI: Fix parent device references
 Date: Tue, 26 Aug 2025 13:04:37 +0200
-Message-ID: <20250826110926.229254832@linuxfoundation.org>
+Message-ID: <20250826110931.391083016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
+commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
 
-As described by Vitaly Lifshits:
+The _CRS resources in many cases want to have ResourceSource field
+to be a type of ACPI String. This means that to compile properly
+we need to enclosure the name path into double quotes. This will
+in practice defer the interpretation to a run-time stage, However,
+this may be interpreted differently on different OSes and ACPI
+interpreter implementations. In particular ACPICA might not correctly
+recognize the leading '^' (caret) character and will not resolve
+the relative name path properly. On top of that, this piece may be
+used in SSDTs which are loaded after the DSDT and on itself may also
+not resolve relative name paths outside of their own scopes.
+With this all said, fix documentation to use fully-qualified name
+paths always to avoid any misinterpretations, which is proven to
+work.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set.
-
-Unfortunately some systems have left the factory with an uninitialized
-value of 0xFFFF at register address 0x3F (checksum word location).
-So on Tiger Lake platform we ignore the computed checksum when such
-condition is encountered.
-
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Tested-by: Vlad URSU <vlad@ursu.me>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
- drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
- 2 files changed, 9 insertions(+)
+ Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -638,6 +638,9 @@
- /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
- #define NVM_SUM                    0xBABA
+--- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
++++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+@@ -14,7 +14,7 @@ Consider this topology::
+     |      |   | 0x70 |--CH01--> i2c client B (0x50)
+     +------+   +------+
  
-+/* Uninitialized ("empty") checksum word value */
-+#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
-+
- /* PBA (printed board assembly) number words */
- #define NVM_PBA_OFFSET_0           8
- #define NVM_PBA_OFFSET_1           9
---- a/drivers/net/ethernet/intel/e1000e/nvm.c
-+++ b/drivers/net/ethernet/intel/e1000e/nvm.c
-@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
- 		checksum += nvm_data;
- 	}
+-which corresponds to the following ASL::
++which corresponds to the following ASL (in the scope of \_SB)::
  
-+	if (hw->mac.type == e1000_pch_tgp &&
-+	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
-+		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
-+		return 0;
-+	}
-+
- 	if (checksum != (u16)NVM_SUM) {
- 		e_dbg("NVM Checksum Invalid\n");
- 		return -E1000_ERR_NVM;
+     Device (SMB1)
+     {
+@@ -24,7 +24,7 @@ which corresponds to the following ASL::
+             Name (_HID, ...)
+             Name (_CRS, ResourceTemplate () {
+                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+-                            AddressingMode7Bit, "^SMB1", 0x00,
++                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+                             ResourceConsumer,,)
+             }
+ 
+@@ -37,7 +37,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH00", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
+@@ -52,7 +52,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH01", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
 
 
 
