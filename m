@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF906B36039
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE53B35B43
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6D5161E44
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2282E188CDEE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3D01F4717;
-	Tue, 26 Aug 2025 12:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A78934573B;
+	Tue, 26 Aug 2025 11:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsWPAku8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sKF2OVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196C117A303;
-	Tue, 26 Aug 2025 12:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FAF3451DE;
+	Tue, 26 Aug 2025 11:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212923; cv=none; b=I4oj4RCXHvkiMD9AhRnL7pTknC9iiTyt7aOnT1nz9HTxq3hz+wdvQDHUtz+V0o5fDK9mzceIYdznJfCfSeWqv97QxMh8fwXMnTiwGRE3SmXCIUNAnvbaWHLygYD3FXt0MG/5GJ5/Abox5+J9tL16SFL8kn6Uwk1qpyaKLp6e4Is=
+	t=1756207091; cv=none; b=fd/79/YleNADhOTquK8C8Fom32b0tdpVDnOZ++Jrhyuuz2Agx8Nz2akgNGckGMJ2KgkyT1rJG1yG4wazfR2YPxZOmdjUfSmuT/8Gle7ulfqQlWEv8jUFQ+MK7S7YROZyY+xs3ovVNW2RbeyfuiGeOv+lI0GFthJG3M7CP67LPeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212923; c=relaxed/simple;
-	bh=ux/gCWa1dt4gruud99HseJaVtyeF99IJrIkJft61kyw=;
+	s=arc-20240116; t=1756207091; c=relaxed/simple;
+	bh=qNu+2n6pKxTX7CrSNizuKRlK3J3vzLqUKC7YnTypEsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNoeRLEiqJbbdmHcxbHWmpWLq4M83rCBhq0nWgyLvr+IF6H9dyWmOd87HhA1vegwpq5vclQqhRIrIQB+kHJZOUApxpsJBF0aeY94151w/pPjijoVgXrzgPtID3mEsu3ghWeAluZ94OCNJdQQ8CFN6kZCdY8F+YtriVCWYeX2Qdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsWPAku8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D796C4CEF1;
-	Tue, 26 Aug 2025 12:55:22 +0000 (UTC)
+	 MIME-Version; b=NNVZarqs+K7PJcVpOoo+14E7GcGRvziUDA3RikL07NY/uN70I0wF8bw7OPlkQpFwVhBbYOMCiXzCEpk5r5Sw4M1KIwD2JEcMMA5iWn0aOdglzvkO+CIqo3WlkHh65j8lzrA3hu1wTHD7ONn+MSdEasHamUYfwUjD6o69X04Kte4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sKF2OVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE8CC4CEF1;
+	Tue, 26 Aug 2025 11:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212922;
-	bh=ux/gCWa1dt4gruud99HseJaVtyeF99IJrIkJft61kyw=;
+	s=korg; t=1756207091;
+	bh=qNu+2n6pKxTX7CrSNizuKRlK3J3vzLqUKC7YnTypEsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsWPAku8MjaAIOaRlPAFwKH/Xe/YasPzQndxKaGhQ+xbstbploQNK56pCEojB6Jhx
-	 K6+QQ/eUCJ2/wbrLtwrZ5E0ER9/goOnoV49DCEgJfxA1R14UyYf2UbENNmgh0jdC0A
-	 rW0t8y+oB6EvUSWKMclQpUpHAGH2mgPusrBY9NTA=
+	b=1sKF2OVbmo4EAYBTYu9BjXbKi2irFXBxLfJWis9VL1llYYeITC7eYMeqSUKbrrwI5
+	 jy/8lrFadYDWKB9oiYhcCgyfCbYxl4HmCo2sHmT1IEP8/q2YEI4FNV7gR9cF0EJHzc
+	 gS6seV15Vh8E9j9YqsFbRarZjM9lNkuTkN8PWCnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/587] arm64: Mark kernel as tainted on SAE and SError panic
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	stable <stable@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.16 017/457] vt: keyboard: Dont process Unicode characters in K_OFF mode
 Date: Tue, 26 Aug 2025 13:05:01 +0200
-Message-ID: <20250826110956.815824180@linuxfoundation.org>
+Message-ID: <20250826110937.750585206@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
+commit b1cc2092ea7a52e2c435aee6d2b1bcb773202663 upstream.
 
-Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
-interrupts trigger a panic to flag potential hardware faults. This
-tainting mechanism aids in debugging and enables correlation of
-hardware-related crashes in large-scale deployments.
+We don't process Unicode characters if the virtual terminal is in raw
+mode, so there's no reason why we shouldn't do the same for K_OFF
+(especially since people would expect K_OFF to actually turn off all VT
+key processing).
 
-This change aligns with similar patches[1] that mark machine check
-events when the system crashes due to hardware errors.
-
-Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/traps.c | 1 +
- arch/arm64/mm/fault.c     | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/tty/vt/keyboard.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-index 8b70759cdbb9..610f8a1099f5 100644
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -953,6 +953,7 @@ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigne
- 
- void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
- {
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	console_verbose();
- 
- 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 2e5d1e238af9..893b9485b840 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -753,6 +753,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
- 		 */
- 		siaddr  = untagged_addr(far);
+--- a/drivers/tty/vt/keyboard.c
++++ b/drivers/tty/vt/keyboard.c
+@@ -1487,7 +1487,7 @@ static void kbd_keycode(unsigned int key
+ 		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
+ 						KBD_UNICODE, &param);
+ 		if (rc != NOTIFY_STOP)
+-			if (down && !raw_mode)
++			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
+ 				k_unicode(vc, keysym, !down);
+ 		return;
  	}
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
- 
- 	return 0;
--- 
-2.39.5
-
 
 
 
