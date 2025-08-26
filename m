@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34C6B35DAF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 107F5B3698A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 631E1363C55
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6281F1C25A73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2796132143C;
-	Tue, 26 Aug 2025 11:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9700335A281;
+	Tue, 26 Aug 2025 14:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5oy/cro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4QLagPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53E3321438;
-	Tue, 26 Aug 2025 11:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53201350D65;
+	Tue, 26 Aug 2025 14:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208228; cv=none; b=kri0nahfgNamlEos2I4xutqpvUxgJCWAvjReAOnwdYisXowYUHfI2acro4Uf4EQ6CB1XpjXfxpOoIOqv2nNQXQ8zPSsh8GBNZ2Z+Uid5cuqEyCkkbIiky7VCeZhPAYXj+nc97lJBZ0Qe9nxzV5bFfIXT1B7+8xR1B6l4kXZgHlw=
+	t=1756217728; cv=none; b=NbWoIceZFJ3FGH+Axu7VFkLa4izgSbSJVf00YhJ/am3J2/ct+CgtF1Xdcyx4rKtGkMIE0rjO1AXoSTyijFD59ojO34l9WBgqWhgc/AzZ1g1krUYZyOjiKVbwUiQMYziv92tPqm5fGIfAASi1+Lpq6UIg/skhPtITgotS1KN46QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208228; c=relaxed/simple;
-	bh=uQH+4sXSxW3kUkQx1xRY833sCLnBGpBoG+5gZDR7VBw=;
+	s=arc-20240116; t=1756217728; c=relaxed/simple;
+	bh=rfjkrCC2KoIaya/3KzodZE6t623N+vRxdBZwnqR0IaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGewDd+Sbv1gQTUfTXa3LhgTeQ8SxhgXMcCZVoOQ/5ijRVMyEEgP9XucQ+k/5Rpo2bM3WMahxybMP5yMf14ezN6GJ69KgncoLmE8Ly70YRDiBkgyJ30fb7Y5Xher6SPupgpoi5DWYJmPJOEhSEp99z9xfzE7tJsbjd+PDNUGuqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5oy/cro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603CFC4CEF1;
-	Tue, 26 Aug 2025 11:37:08 +0000 (UTC)
+	 MIME-Version; b=Q4KBVOVSmexuMq5Nn0XQqmiCM/NQiHgY1NNOK699cIlv+vlLYMqaveka4lnnrkBrGX/W7Izv9u/xf9DxcKCJVTEvALW4NCb3urEFpiuxLy9OE8ltGqFR9TWq5x9Hde8n12TS1NfmGDmDB5OSYgty/obdrQJIpZqMJW6QcHO3hOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4QLagPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A859C113D0;
+	Tue, 26 Aug 2025 14:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208228;
-	bh=uQH+4sXSxW3kUkQx1xRY833sCLnBGpBoG+5gZDR7VBw=;
+	s=korg; t=1756217727;
+	bh=rfjkrCC2KoIaya/3KzodZE6t623N+vRxdBZwnqR0IaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5oy/crot5kiymtC20LkexKB4k9Ceg5VnThGNvsJECzhDmWt+25aRu5ckyquDxOvo
-	 xCFuC+7iuMbVTQwYiWmEb6atExSZLIu7hlnONlR/IV1Z4WxUldl1T9KTq3u73Fmlpm
-	 zLFstATd8Eidv0cJi0XPQMApHfrjiVjSYVoOeJyE=
+	b=T4QLagPC2/63agAl2jAmzI7IFJxZwv+3upBOJ8NlGbappyzO4hkKtwB3XOtZu3G2N
+	 bcs0qZ+1mEqLfu+D0scInXCWyJMd1ItfrCvFV51FpJ+URuqTJYB+3s4MBDW8/Ev9mP
+	 yiVUdP/3DSrXGTDl5bbvz2Y9Jetbpj2l1KkFFpVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 030/322] ext4: fix fsmap end of range reporting with bigalloc
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 235/523] selftests: tracing: Use mutex_unlock for testing glob filter
 Date: Tue, 26 Aug 2025 13:07:25 +0200
-Message-ID: <20250826110916.069085458@linuxfoundation.org>
+Message-ID: <20250826110930.245970767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-With bigalloc enabled, the logic to report last extent has a bug since
-we try to use cluster units instead of block units. This can cause an
-issue where extra incorrect entries might be returned back to the
-user. This was flagged by generic/365 with 64k bs and -O bigalloc.
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-** Details of issue **
+Use mutex_unlock instead.
 
-The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
-only 1 bg.
-
-$ xfs_io -c "fsmap -d" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128   /* sb */
-  1: 253:48 [128..255]: special 102:1 128   /* gdt */
-  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
-  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
-  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
-  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
-  7: 253:48 [4352..6911]: inodes 2560
-  8: 253:48 [6912..538623]: unknown 531712
-  9: 253:48 [538624..10485759]: free space 9947136
-
-The issue can be seen with:
-
-$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128
-  1: 253:48 [384..2047]: unknown 1664
-
-Only the first entry was expected to be returned but we get 2. This is
-because:
-
-ext4_getfsmap_datadev()
-  first_cluster, last_cluster = 0
-  ...
-  info->gfi_last = true;
-  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
-    fsb = C2B(1) = 16
-    fslen = 0
-    ...
-    /* Merge in any relevant extents from the meta_list */
-    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-      ...
-      // since fsb = 16, considers all metadata which starts before 16 blockno
-      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
-        info->gfi_next_fsblk = 1
-      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
-        info->gfi_next_fsblk = 2
-      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
-        info->gfi_next_fsblk = 3
-      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
-        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
-          // emits an extra entry ** BUG **
-        }
-    }
-
-Fix this by directly calling ext4_getfsmap_datadev() with a dummy
-record that has fmr_physical set to (end_fsb + 1) instead of
-last_cluster + 1. By using the block instead of cluster we get the
-correct behavior.
-
-Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
-is okay since the gfi_lastfree and metadata checks in
-ext4_getfsmap_datadev_helper() are anyways redundant when we only want
-to emit the last allocated block of the range, as we have already
-taken care of emitting metadata and any last free blocks.
-
-Cc: stable@kernel.org
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsmap.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
- 	ext4_group_t end_ag;
- 	ext4_grpblk_t first_cluster;
- 	ext4_grpblk_t last_cluster;
-+	struct ext4_fsmap irec;
- 	int error = 0;
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index 4b994b6df5ac..ed81eaf2afd6 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
- 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
-@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
- 			goto err;
- 	}
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
  
--	/* Report any gaps at the end of the bg */
-+	/*
-+	 * The dummy record below will cause ext4_getfsmap_helper() to report
-+	 * any allocated blocks at the end of the range.
-+	 */
-+	irec.fmr_device = 0;
-+	irec.fmr_physical = end_fsb + 1;
-+	irec.fmr_length = 0;
-+	irec.fmr_owner = EXT4_FMR_OWN_FREE;
-+	irec.fmr_flags = 0;
-+
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
--					     0, info);
-+	error = ext4_getfsmap_helper(sb, info, &irec);
- 	if (error)
- 		goto err;
- 
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
+-- 
+2.39.5
+
 
 
 
