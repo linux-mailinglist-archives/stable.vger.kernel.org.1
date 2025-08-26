@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB421B3692C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DE4B3659F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92FBF985008
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF620565C96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDEF3451A0;
-	Tue, 26 Aug 2025 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4F12AD04;
+	Tue, 26 Aug 2025 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7bhKF9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf2e+jfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D088E2192F2;
-	Tue, 26 Aug 2025 14:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B7D13FD86;
+	Tue, 26 Aug 2025 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217075; cv=none; b=mqwih7S7nWrPLBjsEztzfRTN8eAdXDwA9HCvJCktGAzvN00fbxXok895GRFA6l2qPxWHyPCJbF0naMixegAO/zaQKiI4X8K9LZfzIeJqr4tn7KT2tKDfQ3EY9h+G/zEPMeainBA/jncyGzDoUAss3Gamjmq5l7wPLNPxgc8sBuw=
+	t=1756215346; cv=none; b=Ax8o3G1eKYKN/a5tnJNdUAN2ZQU3CzJIPDCn6GQF2kAZ4TN4gBwKvDJQijeK66MvTJCv5yGL+Ya6xASzSnXc4Sk5vRALnpa3gjTDFuV+wTh+VgzimmuJXadDQx6SVz123gCTJtxNvAHDU7D+U8Kjaf86uW6sVhQ9n1i0V0rhsvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217075; c=relaxed/simple;
-	bh=+oeCs66aO5prwh7mQAhuGWqbPHR58QLLwYiVgI9nDtI=;
+	s=arc-20240116; t=1756215346; c=relaxed/simple;
+	bh=BePGml9hq//1sdL/+57hH/dWzyo04arw92lhHseqpTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqY6ikUfoR3IPZPiaCDxoLAWbKqVz876dB+UxPVUGN3zCo7nLcI/JyUrrSMePmAmP6E6DkFiOSsLoAohnPFK5i3eVT+TpGc0G8wLr46sxD+Z75VMnbOu6GrAqSh7VxzCv/9Gdym+VmpSIv8lAL+nwSg0COUYcni4vnjE1pKI63g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7bhKF9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63286C4CEF1;
-	Tue, 26 Aug 2025 14:04:35 +0000 (UTC)
+	 MIME-Version; b=jWPfHdWhk0SyVFUfK5QfRLauxUFR9zJjW/wODSuOtG3mut9gbCW2vocNf3ZTt5Z+4MdyIi+7TLFq8/nahi74d/A9rOJWUtqlURBSs4MTpyf+9JaY0IPW3ARcSJkJAn06znqken95udM3rebCFkXQe3WQcAZsjrvCK/HEilBO3Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf2e+jfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A93C4CEF1;
+	Tue, 26 Aug 2025 13:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217075;
-	bh=+oeCs66aO5prwh7mQAhuGWqbPHR58QLLwYiVgI9nDtI=;
+	s=korg; t=1756215346;
+	bh=BePGml9hq//1sdL/+57hH/dWzyo04arw92lhHseqpTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7bhKF9a8ygubQFdYQ9Wger5RskeQ4MmFU62VAsRsjAq1avzpov/6DrD00yX+VVqC
-	 BfiQuls/1a0erCpjsNXP4AkwvcMqNoYzklEN9OH8CkgoUtvqKhMwt3Ogzl8esQn7i0
-	 /KRAjUYCx0kdEnfw/deRpeNTtmq6Kxb67RbO6Q84=
+	b=jf2e+jfso22VRBSFdwBshpPsxKqPyEJYnrVj+RUaZRsbbvUCdD+frKtWMhJmcIup6
+	 /8goHCeodoojrboWLFRFDy0VYpOEcKvxiy98KwljGn5MTdq+/+190TUaod8LzW/Thj
+	 R7/jIuDzFyoRjAUowSvDTUVyWWR+PmHOS2nZzXRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mete Durlu <meted@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 641/644] s390/hypfs: Avoid unnecessary ioctl registration in debugfs
+Subject: [PATCH 6.1 479/482] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
 Date: Tue, 26 Aug 2025 13:12:12 +0200
-Message-ID: <20250826111002.446609938@linuxfoundation.org>
+Message-ID: <20250826110942.649674693@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fec7bdfe7f8694a0c39e6c3ec026ff61ca1058b9 ]
+[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
 
-Currently, hypfs registers ioctl callbacks for all debugfs files,
-despite only one file requiring them. This leads to unintended exposure
-of unused interfaces to user space and can trigger side effects such as
-restricted access when kernel lockdown is enabled.
+The entry of the validators table for UAC3 feature unit is defined
+with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
+UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
 
-Restrict ioctl registration to only those files that implement ioctl
-functionality to avoid interface clutter and unnecessary access
-restrictions.
-
-Tested-by: Mete Durlu <meted@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
+Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/hypfs/hypfs_dbfs.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ sound/usb/validate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
-index f4c7dbfaf8ee..c5f53dc3dbbc 100644
---- a/arch/s390/hypfs/hypfs_dbfs.c
-+++ b/arch/s390/hypfs/hypfs_dbfs.c
-@@ -64,24 +64,28 @@ static long dbfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 	long rc;
- 
- 	mutex_lock(&df->lock);
--	if (df->unlocked_ioctl)
--		rc = df->unlocked_ioctl(file, cmd, arg);
--	else
--		rc = -ENOTTY;
-+	rc = df->unlocked_ioctl(file, cmd, arg);
- 	mutex_unlock(&df->lock);
- 	return rc;
- }
- 
--static const struct file_operations dbfs_ops = {
-+static const struct file_operations dbfs_ops_ioctl = {
- 	.read		= dbfs_read,
- 	.llseek		= no_llseek,
- 	.unlocked_ioctl = dbfs_ioctl,
- };
- 
-+static const struct file_operations dbfs_ops = {
-+	.read		= dbfs_read,
-+};
-+
- void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
- {
--	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df,
--					 &dbfs_ops);
-+	const struct file_operations *fops = &dbfs_ops;
-+
-+	if (df->unlocked_ioctl)
-+		fops = &dbfs_ops_ioctl;
-+	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
- 	mutex_init(&df->lock);
- }
- 
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index 4f4e8e87a14c..a0d55b77c994 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+-	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
++	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+ 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
 -- 
 2.50.1
 
