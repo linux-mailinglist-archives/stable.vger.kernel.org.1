@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE21FB35DAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20207B35B5B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17AED16D3C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4C53AF28D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7BA321433;
-	Tue, 26 Aug 2025 11:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB27245012;
+	Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR/xl40K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1/L/lvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC23628689B;
-	Tue, 26 Aug 2025 11:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3789C301486;
+	Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208233; cv=none; b=kdmkchG2rYmoxw6XESc7Lpbek57ZsYh/TQtK2xxU1b87X6exChH8v1lxw9iIMed53PmNb0sZiT4jdwm/LzqkDCXPwrQuEmaToLQ6rmjaiOhDd0yRzKZbHVsBr+WoGFmx1mxkDB5ZBRzwD6nMe6/1ROa4o6U2yGYOAzOukRoEmVE=
+	t=1756207321; cv=none; b=otSE1s/jirVhgRXnYYf0cNZQJhWy4EKVn7vLp/d2Ye3h6zPFZEP0w4DfrLjStgogCGaMJi84Jg5LPGTO3d01BCChNyKwi/jplt4kcUycpCPGLZeeVzccLsGZDEt+YnGXL/idxsKs/q5tnwWdd8/yZcdrDr/IsCpvVCML8QmJ/Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208233; c=relaxed/simple;
-	bh=LHWGnajclvMhRRu/pqx/B9rblBh4O8RJ5ytQpYAITSQ=;
+	s=arc-20240116; t=1756207321; c=relaxed/simple;
+	bh=GTM1SQYOJ0bnCAwkd43R3g9BTAKsOcDeO9qGC+PwjxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hnb9NFQWCtq5mDODHpsoLTxCxX+oL9VM8IUvQkSkbXzO+HuPAU7Qs/O8Y5cwYAiDsbBzFDA3DSiEhLT0850hWmDJr8VuAhMew5SPyiPb0svn0tiNYBLqRJ12KGvxYjHpauuKK3lc6J1Yh/xddGOHTZl9t/mHTCWRmFzub33XfVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR/xl40K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7E6C4CEF1;
-	Tue, 26 Aug 2025 11:37:13 +0000 (UTC)
+	 MIME-Version; b=dLctn/OapUyEy0tMtIj8j4ifyvO9YfEn8bcjA1P62lL8uISJk8XdW8PhgJJaQD6F86vKsOE++VHzF5G0BrSdbAb1G6tjL3jEbC25uZ3KvDtt3tWoxwOCtQNc2EDH4tKgu45KYS3dQ8Sf1dcPfx7nJfLGcWcEJbu+SDeCKkKwqH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1/L/lvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA30C4CEF1;
+	Tue, 26 Aug 2025 11:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208233;
-	bh=LHWGnajclvMhRRu/pqx/B9rblBh4O8RJ5ytQpYAITSQ=;
+	s=korg; t=1756207321;
+	bh=GTM1SQYOJ0bnCAwkd43R3g9BTAKsOcDeO9qGC+PwjxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oR/xl40KZcGKBgFr4TDPmWGx6+9i2vMp7lDQUOpXUKacCIvM/mrY4qLSpME4hZvbv
-	 3QKsDzmI3/XkB5xj7j4oPV/lQBeo6QMGeXWcS5FXAy3KLl8W+Z6rQJtSmHZRePZ8SM
-	 OLMnR4Zfr2ac21IBGKCByifkGr7SXXohPcnzxHw4=
+	b=n1/L/lvqAgaXenF1cCZURpCQvDztxHhcMSZ8lkBP+zn+Z2oVBOv+Z2JekCghCThOZ
+	 UDsjxCLJB/E8n/WP4oy/axugicM4JveCFm/1VG9nUHB51bmEbjeVYqh2TTuYFklOtV
+	 VbN05D/RwiqnEIEQk0/IoTCsR6N3C4MulAzqZ+rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.12 005/322] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 6.16 136/457] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
 Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110915.328485319@linuxfoundation.org>
+Message-ID: <20250826110940.734784361@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 51888393cc64dd0462d0b96c13ab94873abbc030 upstream.
+commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
 
-For all practical purposes, there is no difference between the situation
-in which a given device is not ignoring children and its active child
-count is nonzero and the situation in which its runtime PM usage counter
-is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
-device's usage counter and return 1 in the latter case.
+It's a common pattern in drivers to free the control handler's resources
+and then return the handler's error code on drivers' error handling paths.
+Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
+effectively indicating successful return to the caller.
 
-For consistency, make it do so in the former case either by adjusting
-pm_runtime_get_conditional() and update the related kerneldoc comments
-accordingly.
+There's no apparent need to touch the error field while releasing the
+control handler's resources and cleaning up stale pointers. Not touching
+the handler's error field is a more certain way to address this problem
+than changing all the users, in which case the pattern would be likely to
+re-emerge in new drivers.
 
-Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
+Do just that, don't touch the control handler's error field in
+v4l2_ctrl_handler_free().
+
+Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1183,10 +1183,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
-  *
-  * Return -EINVAL if runtime PM is disabled for @dev.
-  *
-- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
-- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
-- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
-- * without changing the usage counter.
-+ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
-+ * is set, or (2) @dev is not ignoring children and its active child count is
-+ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
-+ * the usage counter of @dev and return 1.
-+ *
-+ * Otherwise, return 0 without changing the usage counter.
-  *
-  * If @ign_usage_count is %true, this function can be used to prevent suspending
-  * the device when its runtime PM status is %RPM_ACTIVE.
-@@ -1208,7 +1210,8 @@ static int pm_runtime_get_conditional(st
- 		retval = -EINVAL;
- 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
- 		retval = 0;
--	} else if (ign_usage_count) {
-+	} else if (ign_usage_count || (!dev->power.ignore_children &&
-+		   atomic_read(&dev->power.child_count) > 0)) {
- 		retval = 1;
- 		atomic_inc(&dev->power.usage_count);
- 	} else {
-@@ -1241,10 +1244,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_acti
-  * @dev: Target device.
-  *
-  * Increment the runtime PM usage counter of @dev if its runtime PM status is
-- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
-- * it returns 1. If the device is in a different state or its usage_count is 0,
-- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
-- * in which case also the usage_count will remain unmodified.
-+ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
-+ * ignoring children and its active child count is nonzero.  1 is returned in
-+ * this case.
-+ *
-+ * If @dev is in a different state or it is not in use (that is, its usage
-+ * counter is 0, or it is ignoring children, or its active child count is 0),
-+ * 0 is returned.
-+ *
-+ * -EINVAL is returned if runtime PM is disabled for the device, in which case
-+ * also the usage counter of @dev is not updated.
-  */
- int pm_runtime_get_if_in_use(struct device *dev)
- {
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -1661,7 +1661,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
+ 	kvfree(hdl->buckets);
+ 	hdl->buckets = NULL;
+ 	hdl->cached = NULL;
+-	hdl->error = 0;
+ 	mutex_unlock(hdl->lock);
+ 	mutex_destroy(&hdl->_lock);
+ }
 
 
 
