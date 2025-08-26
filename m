@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-175766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E71EB36993
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF4CB35BC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4181C2395F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE869685866
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5337035207F;
-	Tue, 26 Aug 2025 14:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D60239573;
+	Tue, 26 Aug 2025 11:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mezh5PyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZtamngX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E5C306D3F;
-	Tue, 26 Aug 2025 14:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45577284B5B;
+	Tue, 26 Aug 2025 11:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217913; cv=none; b=O1IR+SsEWq90tzouDpKIdAyBE13LCYLtL5XDJT3RRai0i+iNjhQQrysLQmDKq1sLIERzL5Z0I3xIMJbf6/3TIEEaoOQNPPcebRbl1tdKGreH6zPY6bGjBlvx/sioU2HFtEvB6449p9K12b7XCvB0i4Lc8CrNKcwpwyMWOpq4Exg=
+	t=1756207652; cv=none; b=fwY7Cxa326PvE4mxSY8RYrU8vxgW8jaQaNYueXCN/AjvauGDOU7HRKmoauzrVx2YfYctMN7DoRK/QfX3KQrl/Gql79fDPSqUQwoPAPGCD7i+lsRIESQYCe33wuGwcwG3a4cuOieFAiC8gawYQ1LHoWtXKcyS+FUARSaJt4DfoZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217913; c=relaxed/simple;
-	bh=7VbbnCfHx/ebJ285bsf2oKz7Awvy2IC2wuCVFbCNl9o=;
+	s=arc-20240116; t=1756207652; c=relaxed/simple;
+	bh=xBIZhFRlQdgjUw+xGyKWDWqw5lyXjgrPvpm8upSRdKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH6Z5WnCznuGB2jXv45Cj2ZLC0lR0yEzsc/astMpm5CAiJWAbETPG68QYNvVeI749/vdqYCRRabXy34amPwm7b/TeYG2O6pbYbrk0E1jlkU4vjlehD9ejpxvh5JKA/XVaZBltgGV5gWMog9GLgQfD6+xGaSyaDVnU8yP95ces5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mezh5PyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9581FC4CEF1;
-	Tue, 26 Aug 2025 14:18:32 +0000 (UTC)
+	 MIME-Version; b=bNwbpuFTrtEHfOa3YSzK8uBdvr0QEr0Ji8vg+atc27D47hCTdNxEPuTWLUEts1wv7nmTrweiir9YHr7qMHGCnLNSsNkM1FE2osN4T7HigVuwcuzVwrghW7E0GsNNdIwaIan4zCIJNV62a0jxNVjUj7Zy8xt4ZBNK24ZSmZbXn3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZtamngX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1455C4CEF1;
+	Tue, 26 Aug 2025 11:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217912;
-	bh=7VbbnCfHx/ebJ285bsf2oKz7Awvy2IC2wuCVFbCNl9o=;
+	s=korg; t=1756207652;
+	bh=xBIZhFRlQdgjUw+xGyKWDWqw5lyXjgrPvpm8upSRdKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mezh5PyZUqKVMQLzCqwBbP5Oqi4GAhcDBebFLrdxBYE3K+u+/yxJnGdcJlfQijAQC
-	 y9TirWF4nco0oxpdGagVWoZ4sAP7uezEFCFwucLlPhES9DmsLmql1CbH+pu1H9Wjte
-	 zrfedNgYY42XuK0lNfBlaIacFi1GGLJlOo1oQuZE=
+	b=OZtamngXFMxUvrMhvZtCioCXvzuUeGzJM6NDyJtq3AHhLvIwZnZE/nZ1V1ftfcq4I
+	 CKjgwfiniXAy/r3ZW7o9MfhbonYFbnjLvzxb3xkIvTW1AzI4g7fwrzwZqY77/vfS3m
+	 wEg2NkJ8B6KvFoHfzwhy/mxKlaGfkyadfsnC0WRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Nicolas Schier <n.schier@avm.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 322/523] kconfig: nconf: Ensure null termination where strncpy is used
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 248/457] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
 Date: Tue, 26 Aug 2025 13:08:52 +0200
-Message-ID: <20250826110932.408940094@linuxfoundation.org>
+Message-ID: <20250826110943.496812744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +69,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
+commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c upstream.
 
-strncpy() does not guarantee null-termination if the source string is
-longer than the destination buffer.
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
 
-Ensure the buffer is explicitly null-terminated to prevent potential
-string overflows or undefined behavior.
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
 
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Nicolas Schier <n.schier@avm.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
+
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
+
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf.c     | 2 ++
- scripts/kconfig/nconf.gui.c | 1 +
- 2 files changed, 3 insertions(+)
+ mm/memory-failure.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index af814b39b876..cdbd60a3ae16 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -581,6 +581,8 @@ static void item_add_str(const char *fmt, ...)
- 		tmp_str,
- 		sizeof(k_menu_items[index].str));
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -847,9 +847,17 @@ static int hwpoison_hugetlb_range(pte_t
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
-+	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
 +
- 	free_item(curses_menu_items[index]);
- 	curses_menu_items[index] = new_item(
- 			k_menu_items[index].str,
-diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
-index 77f525a8617c..8b3e9bc893a7 100644
---- a/scripts/kconfig/nconf.gui.c
-+++ b/scripts/kconfig/nconf.gui.c
-@@ -398,6 +398,7 @@ int dialog_inputbox(WINDOW *main_window,
- 	x = (columns-win_cols)/2;
+ static const struct mm_walk_ops hwpoison_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
  
- 	strncpy(result, init, *result_len);
-+	result[*result_len - 1] = '\0';
- 
- 	/* create the windows */
- 	win = newwin(win_lines, win_cols, y, x);
--- 
-2.39.5
-
 
 
 
