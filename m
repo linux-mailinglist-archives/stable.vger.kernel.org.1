@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCA2B3605C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584D7B35B08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DFFF46310F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBDA77BC1AB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C111F1538;
-	Tue, 26 Aug 2025 12:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610E227AC3E;
+	Tue, 26 Aug 2025 11:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZRqIH5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPQyS8nF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71D91ACEDE;
-	Tue, 26 Aug 2025 12:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC0A20B7EE;
+	Tue, 26 Aug 2025 11:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213003; cv=none; b=BGNqXrGeeIj/XtoGO7rCZ5pmA9mDiQ8yMFKy7D8FzI/MukXKKvHU3xPy1hpbFPphI8Sdw3O/kQtAT+0nwrT4iOZMeU7RYR2WpYv/Z+6ZM7hHVR20ew5MtWDlqWk66NSThuD8ZALM7Rhj04M9ci1z8kZ1oKGUoVqU+zIIStKOEAs=
+	t=1756207025; cv=none; b=S4P0wpkaJZJVyLXWUaZUIdE6Wj3y9oVXRZMsd/DoW+gB36iK6IPqIoxafPd3aVwGfoGlmFsAZ8Ng+u2vkGP9fNyBv1UIh2Dxtllf9pvGzStXNIpy1vazWJIRky7QVrucyzoWK363Wm58DcOPNl6oS4vufsyYIXmtWg81LUCD2Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213003; c=relaxed/simple;
-	bh=NmVZhW0dWqOGAPWAUIPSCsa4LjqW5tSOOaqvduw8yfA=;
+	s=arc-20240116; t=1756207025; c=relaxed/simple;
+	bh=6Dsu5ZXvhA77KSqqrU9G4x48OcyUofydbqn2Ho0YiLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iKABcl4BrKOduiAXawSHfpdLzMV0k3WpCMPZtQfj7SVndIhlrjtunDQ9wn1MTkKDcrSE/a1CaTaemWiNNQn6li10B/A4+WUq7uWWcm/oy0Z48oAheFIx3x89/ftoZo0OB1A3D/ZdbjVbkPpkH/coBDDK/VYbbXd77HmJJ2LUPq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZRqIH5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A60C4CEF1;
-	Tue, 26 Aug 2025 12:56:43 +0000 (UTC)
+	 MIME-Version; b=uJmxR5QgHSu/oQ2iyuhTBVxpX0RKnrUFIVMa+Y3H+P2Sbz2MacLWExzvzDb3LSC4TWnRDD1QWMOGwExvr6VYq8GVCFahdLbzLhQFLsSfY45Qx4nxzoO6/BDPXx2F65BsTbGK5Ws5njL0p7eEpHOhpsit/yaZo5mCl1h8LMn+Sjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPQyS8nF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45641C4CEF1;
+	Tue, 26 Aug 2025 11:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213003;
-	bh=NmVZhW0dWqOGAPWAUIPSCsa4LjqW5tSOOaqvduw8yfA=;
+	s=korg; t=1756207024;
+	bh=6Dsu5ZXvhA77KSqqrU9G4x48OcyUofydbqn2Ho0YiLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZRqIH5xcjqMNpzWBLjPuYa+t4pT8JslWaxFm7Pr0lzV+JXPTambkYY3dIRA+5Gtz
-	 ivkFRceoEEdCwWYWZygXiaTyxOIC6hS3iFBnNMPj3AUx8l54RRaiDzJNvBKwx8UZps
-	 i1Pekysd7ER1i7nY5uoySo1Jj24LjtlTzqcNhZVg=
+	b=hPQyS8nF4TmbQFkKnLktA5oDvObAP3XJrKIiEWysnBR94a5VtW6as2pkwkqMGFVwG
+	 U+uOUnLkIIrm3OgD+7T7Ui3QodU0nHAy/zdNLUTYHSP5FEEYqDoy1852flkqAOuemv
+	 7fV1Tv0b5zK4BwakEOCq+FG0tyJPsOJaXLEbA8Qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/587] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.16 022/457] lib/crypto: arm64/poly1305: Fix register corruption in no-SIMD contexts
 Date: Tue, 26 Aug 2025 13:05:06 +0200
-Message-ID: <20250826110956.941375296@linuxfoundation.org>
+Message-ID: <20250826110937.880487652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
+commit eec76ea5a7213c48529a46eed1b343e5cee3aaab upstream.
 
-The buffer bgx_sel used in snprintf() was too small to safely hold
-the formatted string "BGX%d" for all valid bgx_id values. This caused
-a -Wformat-truncation warning with `Werror` enabled during build.
+Restore the SIMD usability check that was removed by commit a59e5468a921
+("crypto: arm64/poly1305 - Add block-only interface").
 
-Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
-snprintf() to ensure safety and suppress the warning.
+This safety check is cheap and is well worth eliminating a footgun.
+While the Poly1305 functions should not be called when SIMD registers
+are unusable, if they are anyway, they should just do the right thing
+instead of corrupting random tasks' registers and/or computing incorrect
+MACs.  Fixing this is also needed for poly1305_kunit to pass.
 
-Build warning:
-  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
-‘bgx_acpi_match_id’:
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
-directive output may be truncated writing between 1 and 3 bytes into a
-region of size 2 [-Werror=format-truncation=]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                             ^~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-directive argument in the range [0, 255]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                         ^~~~~~~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+Just use may_use_simd() instead of the original crypto_simd_usable(),
+since poly1305_kunit won't rely on crypto_simd_disabled_for_test.
 
-compiler warning due to insufficient snprintf buffer size.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a59e5468a921 ("crypto: arm64/poly1305 - Add block-only interface")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250706231100.176113-4-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/lib/crypto/poly1305-glue.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index a317feb8decb..087d4c2b3efd 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1427,9 +1427,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
- {
- 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct bgx *bgx = context;
--	char bgx_sel[5];
-+	char bgx_sel[7];
+--- a/arch/arm64/lib/crypto/poly1305-glue.c
++++ b/arch/arm64/lib/crypto/poly1305-glue.c
+@@ -7,6 +7,7 @@
  
--	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-+	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
- 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
- 		pr_warn("Invalid link device\n");
- 		return AE_OK;
--- 
-2.39.5
-
+ #include <asm/hwcap.h>
+ #include <asm/neon.h>
++#include <asm/simd.h>
+ #include <crypto/internal/poly1305.h>
+ #include <linux/cpufeature.h>
+ #include <linux/jump_label.h>
+@@ -33,7 +34,7 @@ void poly1305_blocks_arch(struct poly130
+ 			  unsigned int len, u32 padbit)
+ {
+ 	len = round_down(len, POLY1305_BLOCK_SIZE);
+-	if (static_branch_likely(&have_neon)) {
++	if (static_branch_likely(&have_neon) && likely(may_use_simd())) {
+ 		do {
+ 			unsigned int todo = min_t(unsigned int, len, SZ_4K);
+ 
 
 
 
