@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF30CB3605D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4480FB35B39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5E71BC0797
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37951361D32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D0A1F4717;
-	Tue, 26 Aug 2025 12:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8E3312803;
+	Tue, 26 Aug 2025 11:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDB/VV3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/bThEuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2EF1A5BBC;
-	Tue, 26 Aug 2025 12:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777833A01B;
+	Tue, 26 Aug 2025 11:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212977; cv=none; b=hSJZ5DCfXBXn+ZGrR2ZSlhSug3SttDZjwdXWS0Ket9njEtMdZ6/mxY+og70MSdgf4SvaggGa93llnmoszZHS965vzebdyYNYmgxW1Z5En3sAQ/+VVncf+SHC7MjKWeZekgeWAuaAKqqsaOTnJMgFwF/xKLg78YwRqxjCuEb8xUU=
+	t=1756207070; cv=none; b=Qqdjy/pzo2A8g1IEE0E/8tT1IEeCgiV0cHbeFn0LRrZzXH2A58IO1htabjD0JfXw4ue9yd4fpUmP3Vsd6iIeV9BNKfYGJQh09wpfsVsOo2s18ll/az87oKoHr9GGqOEAJitolc3gzpp9lQ3M0+xTkanc9bsOAuQ9XXYDCIqZP1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212977; c=relaxed/simple;
-	bh=lHB1lFlX1kAcHjRlbruiLgMdSy1b8OlSWL7H7EBxMk0=;
+	s=arc-20240116; t=1756207070; c=relaxed/simple;
+	bh=2l+gTs1Ue6mA6SiKYfoQs8kfRHWdjQae51tSYr/UUOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Np9K8HUMDSfSXEnhdlywORCejeqtxx1D1qQktNQ69r3vImAoOEoRo6KzfchOeluDggESxTpM7cF+dEg6FY1x+lzgP/UsOuROFrbeag1HXHrYOyzW/ahmw8AZGieBwOr1C2B/KJ6rpdMPmoTHoOb+D0uyudTnsgegYKlO8mku6Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDB/VV3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DA2C4CEF1;
-	Tue, 26 Aug 2025 12:56:16 +0000 (UTC)
+	 MIME-Version; b=AjwUsi+xNMTduICS0jHEcYAxbn8MZ4yky4bbrbkdHzhF0bAdecXqMCKxdgppwPKObMCfKDBen+Xj0/UHyaJPnzhj6QeZAerXlMyOk0N1proXgGm07UJj/SfbXXCY1Mfbo84rT8oGby0kyRfsCmCYfCqQd7HQMr9cXe9Pn5NjGzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/bThEuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00551C4CEF4;
+	Tue, 26 Aug 2025 11:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212977;
-	bh=lHB1lFlX1kAcHjRlbruiLgMdSy1b8OlSWL7H7EBxMk0=;
+	s=korg; t=1756207070;
+	bh=2l+gTs1Ue6mA6SiKYfoQs8kfRHWdjQae51tSYr/UUOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDB/VV3CMn9YNDvizgp9lb7SSlkaCSBnBZx5d8k9sgAvR1TL79+51jI8z7NddQlj6
-	 HaQ8mHZbk9SFvrn/lrVRK1VYSrgyWRJK7pMDEM3DSzyUadRN/pgvjy7BiIc3PMw2QA
-	 ptGtTGE3dgtYh7TxqK5QtRGyy2Zvf1KYmnP/aqHk=
+	b=v/bThEuPEg6U2UtpcK+drJYAyao0dq6xWadw+j2hWhO3uu4BGIY+ZpuiAuJr5xFVQ
+	 aAi4WzCYLDnrRh5zq1QBTDsfhhfPIpRy8XA8loXK4s7RzP49Ewg/q++L/OjhKPRZbi
+	 hfPPVGl4y7Ig287msSn5oqcKIUji2OETNbxuLKwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	zhangjianrong <zhangjianrong5@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/587] net: thunderbolt: Enable end-to-end flow control also in transmit
+	stable@kernel.org,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.16 039/457] ext4: fix fsmap end of range reporting with bigalloc
 Date: Tue, 26 Aug 2025 13:05:23 +0200
-Message-ID: <20250826110957.370343031@linuxfoundation.org>
+Message-ID: <20250826110938.312812900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhangjianrong <zhangjianrong5@huawei.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit a8065af3346ebd7c76ebc113451fb3ba94cf7769 ]
+commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
 
-According to USB4 specification, if E2E flow control is disabled for
-the Transmit Descriptor Ring, the Host Interface Adapter Layer shall
-not require any credits to be available before transmitting a Tunneled
-Packet from this Transmit Descriptor Ring, so e2e flow control should
-be enabled in both directions.
+With bigalloc enabled, the logic to report last extent has a bug since
+we try to use cluster units instead of block units. This can cause an
+issue where extra incorrect entries might be returned back to the
+user. This was flagged by generic/365 with 64k bs and -O bigalloc.
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/20250624153805.GC2824380@black.fi.intel.com
-Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
-Link: https://patch.msgid.link/20250628093813.647005-1-zhangjianrong5@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+** Details of issue **
+
+The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
+only 1 bg.
+
+$ xfs_io -c "fsmap -d" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128   /* sb */
+  1: 253:48 [128..255]: special 102:1 128   /* gdt */
+  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
+  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
+  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
+  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
+  7: 253:48 [4352..6911]: inodes 2560
+  8: 253:48 [6912..538623]: unknown 531712
+  9: 253:48 [538624..10485759]: free space 9947136
+
+The issue can be seen with:
+
+$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128
+  1: 253:48 [384..2047]: unknown 1664
+
+Only the first entry was expected to be returned but we get 2. This is
+because:
+
+ext4_getfsmap_datadev()
+  first_cluster, last_cluster = 0
+  ...
+  info->gfi_last = true;
+  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
+    fsb = C2B(1) = 16
+    fslen = 0
+    ...
+    /* Merge in any relevant extents from the meta_list */
+    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
+      ...
+      // since fsb = 16, considers all metadata which starts before 16 blockno
+      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
+        info->gfi_next_fsblk = 1
+      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
+        info->gfi_next_fsblk = 2
+      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
+        info->gfi_next_fsblk = 3
+      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
+        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
+          // emits an extra entry ** BUG **
+        }
+    }
+
+Fix this by directly calling ext4_getfsmap_datadev() with a dummy
+record that has fmr_physical set to (end_fsb + 1) instead of
+last_cluster + 1. By using the block instead of cluster we get the
+correct behavior.
+
+Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
+is okay since the gfi_lastfree and metadata checks in
+ext4_getfsmap_datadev_helper() are anyways redundant when we only want
+to emit the last allocated block of the range, as we have already
+taken care of emitting metadata and any last free blocks.
+
+Cc: stable@kernel.org
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/thunderbolt/main.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ fs/ext4/fsmap.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 0a53ec293d04..643cf67840b5 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -924,8 +924,12 @@ static int tbnet_open(struct net_device *dev)
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
+ 	ext4_group_t end_ag;
+ 	ext4_grpblk_t first_cluster;
+ 	ext4_grpblk_t last_cluster;
++	struct ext4_fsmap irec;
+ 	int error = 0;
  
- 	netif_carrier_off(dev);
+ 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
+@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
+ 			goto err;
+ 	}
  
--	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE,
--				RING_FLAG_FRAME);
-+	flags = RING_FLAG_FRAME;
-+	/* Only enable full E2E if the other end supports it too */
-+	if (tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
-+		flags |= RING_FLAG_E2E;
+-	/* Report any gaps at the end of the bg */
++	/*
++	 * The dummy record below will cause ext4_getfsmap_helper() to report
++	 * any allocated blocks at the end of the range.
++	 */
++	irec.fmr_device = 0;
++	irec.fmr_physical = end_fsb + 1;
++	irec.fmr_length = 0;
++	irec.fmr_owner = EXT4_FMR_OWN_FREE;
++	irec.fmr_flags = 0;
 +
-+	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags);
- 	if (!ring) {
- 		netdev_err(dev, "failed to allocate Tx ring\n");
- 		return -ENOMEM;
-@@ -944,11 +948,6 @@ static int tbnet_open(struct net_device *dev)
- 	sof_mask = BIT(TBIP_PDF_FRAME_START);
- 	eof_mask = BIT(TBIP_PDF_FRAME_END);
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
+-					     0, info);
++	error = ext4_getfsmap_helper(sb, info, &irec);
+ 	if (error)
+ 		goto err;
  
--	flags = RING_FLAG_FRAME;
--	/* Only enable full E2E if the other end supports it too */
--	if (tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
--		flags |= RING_FLAG_E2E;
--
- 	ring = tb_ring_alloc_rx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags,
- 				net->tx_ring.ring->hop, sof_mask,
- 				eof_mask, tbnet_start_poll, net);
--- 
-2.39.5
-
 
 
 
