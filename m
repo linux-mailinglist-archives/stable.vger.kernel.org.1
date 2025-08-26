@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A927B36613
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFC3B36B57
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D561C23B2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56EC582C40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB3E34DCDD;
-	Tue, 26 Aug 2025 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDD7352096;
+	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC55IFXP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkKTJtgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E1534DCCE;
-	Tue, 26 Aug 2025 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF4E3568F4;
+	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216003; cv=none; b=oHeW/aZsGM5EcQJAjRiTuNz7/e1xHq9HmGbJQVY3h48LFh5c+7+8fPoRo9A3frNHlq5F/leGlJ5poXHqXkLfCt3sUAlpgWF4RRcDPuTNLDPRayDeIkdPb5owAS7AxaHor1LpcTB4iV5srfQbyRTHgzmFV0FvqLubImf1hmbrdKI=
+	t=1756218577; cv=none; b=tO7idyazgoMxZt5iMrB4jmJp28LPp3JPtkLmn9dtem7GCuT5TKMqGpOc53v0cQA9Pxry3G/9gEJN9wrcfotQzGpOng4R0du0oSnCHIsQ3OprUAs3YFfjn7Bp6az1EWUgl4lSAQCoCRRc26dr8/CSN9i1/K1vIhMj+L6AeMnxadU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216003; c=relaxed/simple;
-	bh=w1/R2J2yv7+sPykg/5zVUIvk+KjZBY068iPp87FGgA4=;
+	s=arc-20240116; t=1756218577; c=relaxed/simple;
+	bh=ArA7JRGcXQmzyzsQve1+1XZ0pSfk4s//rB4hFdOAltU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKTK9ip66cloBGdVa4pzO4doqsgVW+qNvwRB9l+6rS/0FVmar27QD8jv1LvD0u+2NTyC0ToxMacYz6BTZY1uaAYGXUCJHBhlAi51QSfA1ITB6Q85+A5Bt3hDGDypXjHVzKOzDun+mRC1NDhNREsXbgHDGgdvcqaSVDVcEAFevKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC55IFXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34059C113CF;
-	Tue, 26 Aug 2025 13:46:43 +0000 (UTC)
+	 MIME-Version; b=P0FYqAjbH7KphdHr6l/O5auv2osnBbEcSnJ36FMIVcasqGNPSfo59iIeoAQtnAoWer1ndG3gUhHtL8cviAZzDWzoFdL5AkwKAUJa1jM8uL17tVf5kPNRdPi9Kj3cQdoDdH59+PtFsm3MoHD63uDzlcl7lAZd8tt5pq6vHuzCE64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkKTJtgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A285C4CEF1;
+	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216003;
-	bh=w1/R2J2yv7+sPykg/5zVUIvk+KjZBY068iPp87FGgA4=;
+	s=korg; t=1756218577;
+	bh=ArA7JRGcXQmzyzsQve1+1XZ0pSfk4s//rB4hFdOAltU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MC55IFXP9ln6kWGglSs01/BLtgWNwtDpOaPgc0OFnLKm6qilpKR/rSiVtM7Q6biO2
-	 YMCZwF142GDr6MsZ8LTBYi2eutLA5iVmCdfS+wKcV8508y1BQQxVMbCU39RC/sQ/X3
-	 WqZcT7bx54MrKqdZXzcPM8qO4P6YIvs/Pa6ih4+Y=
+	b=XkKTJtguXNb+nVXUjH+ZX7yIcyfNzc+779dAwZungKU4BjwTvKm28D1XZ9pBwnSHO
+	 OapqAPKjCgJNFZvrgo+rYwZTHPwIsoKYOZZXF08rqA6acCBT7OVAQndpX0KHB63tpa
+	 cIq9wUeCZJU2DJ/v1JaFGJ0w/Iu54JEmBOyzI7XE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 5.15 247/644] perf/core: Prevent VMA split of buffer mappings
+	stable@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 012/403] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
 Date: Tue, 26 Aug 2025 13:05:38 +0200
-Message-ID: <20250826110952.512721393@linuxfoundation.org>
+Message-ID: <20250826110906.077974480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit b024d7b56c77191cde544f838debb7f8451cd0d6 upstream.
+commit c1ba3c0cbdb5e53a8ec5d708e99cd4c497028a13 upstream.
 
-The perf mmap code is careful about mmap()'ing the user page with the
-ringbuffer and additionally the auxiliary buffer, when the event supports
-it. Once the first mapping is established, subsequent mapping have to use
-the same offset and the same size in both cases. The reference counting for
-the ringbuffer and the auxiliary buffer depends on this being correct.
+Due to the changes in commit 581073f626e3 ("af_packet: do not call
+packet_read_pending() from tpacket_destruct_skb()"), every time
+tpacket_destruct_skb() is executed, the skb_completion is marked as
+completed. When wait_for_completion_interruptible_timeout() returns
+completed, the pending_refcnt has not yet been reduced to zero.
+Therefore, when ph is NULL, the wait function may need to be called
+multiple times until packet_read_pending() finally returns zero.
 
-Though perf does not prevent that a related mapping is split via mmap(2),
-munmap(2) or mremap(2). A split of a VMA results in perf_mmap_open() calls,
-which take reference counts, but then the subsequent perf_mmap_close()
-calls are not longer fulfilling the offset and size checks. This leads to
-reference count leaks.
+We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
+constraint could be way off.
 
-As perf already has the requirement for subsequent mappings to match the
-initial mapping, the obvious consequence is that VMA splits, caused by
-resizing of a mapping or partial unmapping, have to be prevented.
-
-Implement the vm_operations_struct::may_split() callback and return
-unconditionally -EINVAL.
-
-That ensures that the mapping offsets and sizes cannot be changed after the
-fact. Remapping to a different fixed address with the same size is still
-possible as it takes the references for the new mapping and drops those of
-the old mapping.
-
-Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27504
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: stable@vger.kernel.org
+Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
+Cc: stable@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/packet/af_packet.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6381,11 +6381,21 @@ out_put:
- 	ring_buffer_put(rb); /* could be last */
- }
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2713,7 +2713,7 @@ static int tpacket_snd(struct packet_soc
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+ 	int hlen, tlen, copylen = 0;
+-	long timeo = 0;
++	long timeo;
  
-+static int perf_mmap_may_split(struct vm_area_struct *vma, unsigned long addr)
-+{
-+	/*
-+	 * Forbid splitting perf mappings to prevent refcount leaks due to
-+	 * the resulting non-matching offsets and sizes. See open()/close().
-+	 */
-+	return -EINVAL;
-+}
-+
- static const struct vm_operations_struct perf_mmap_vmops = {
- 	.open		= perf_mmap_open,
- 	.close		= perf_mmap_close, /* non mergeable */
- 	.fault		= perf_mmap_fault,
- 	.page_mkwrite	= perf_mmap_fault,
-+	.may_split	= perf_mmap_may_split,
- };
+ 	mutex_lock(&po->pg_vec_lock);
  
- static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -2767,6 +2767,7 @@ static int tpacket_snd(struct packet_soc
+ 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !po->has_vnet_hdr)
+ 		size_max = dev->mtu + reserve + VLAN_HLEN;
+ 
++	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 	reinit_completion(&po->skb_completion);
+ 
+ 	do {
+@@ -2774,7 +2775,6 @@ static int tpacket_snd(struct packet_soc
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+ 			if (need_wait && skb) {
+-				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
 
 
 
