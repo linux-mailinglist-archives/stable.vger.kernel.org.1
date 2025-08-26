@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123D9B3646B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9F3B35C32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D8C1BC3CA5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6EA77C473E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ABA2FC01F;
-	Tue, 26 Aug 2025 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAE134DCE8;
+	Tue, 26 Aug 2025 11:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KivGwKOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bVZ+3AN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91F5219300;
-	Tue, 26 Aug 2025 13:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BF6334723;
+	Tue, 26 Aug 2025 11:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215014; cv=none; b=DbVReEC0kkCosH+ztXSqX/ciCZW1+OjyI1QBCqDFZfAP8KNGQ6lTNcmV1LVq1Y6qD++wj7DZp8dWhwJb/BuEjtQNXJ1T7DBduFwoY3cgkseO8xlQae+TQki8hpuF+j4essw4jjaTwvyYxWgQc1KhxKC7No/ZHE8DCDpnjLBr7RU=
+	t=1756207719; cv=none; b=UXtw9ZrK8MtXBFl+Kd0Bqh5LZoQ1DLchPooocAQi6U7C/aBMkeFZIw5yo3d/jtRNQSi2VlLIw41XzWMzKLK+7X+JoeEEb9/kr2RyNA5SyZBjnTKvHRzN3gwR4gvg/28xnkWtkgRbJJWs+Rtj8ia17VGLMxyzO/OMxyMwP4kNJ6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215014; c=relaxed/simple;
-	bh=gVdMEv9x56O2xWyM7ZXFwzq73G8bO7VECjkTfxNBUvY=;
+	s=arc-20240116; t=1756207719; c=relaxed/simple;
+	bh=kceQT1zJyEdIEDn93f/lm+j9DhLUaCUauU7+NFgBCOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHFSz9ijDv6oyd4baboqfR3ghk0m9GtcRuL1xGzlzn4IYtc9NTWHmZeUYBH2xHKQ5Je047UET9940FEU1LFmwTLIXVzR3jzrSlKdFz1nuOl82bhDfXSD0w0CQedfsyCOOjwW6I+8YtyNzfDfhshPbufC1sxpS7BOpYZJJbagC9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KivGwKOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF1CC4CEF1;
-	Tue, 26 Aug 2025 13:30:13 +0000 (UTC)
+	 MIME-Version; b=qPc/uq5uH6A6rHayDgF7D9QEVriEtat2tdlk1271YpmEdWEP0LzFiuAV87RqomljW2Shlt/JzNn2jPN4hAVvw1NMs01PjGgR5ExuSKrRmx/OFywimZyf4GLMOfOv/8BJg8yHvatwI6fp6OEW0Pl63gkIFZJIhXyMnGLpsrTW9R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bVZ+3AN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9A3C4CEF1;
+	Tue, 26 Aug 2025 11:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215014;
-	bh=gVdMEv9x56O2xWyM7ZXFwzq73G8bO7VECjkTfxNBUvY=;
+	s=korg; t=1756207719;
+	bh=kceQT1zJyEdIEDn93f/lm+j9DhLUaCUauU7+NFgBCOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KivGwKODXFHGMRfHwxdAOg5MsrPcDi7Qy8LU1qAtGPkQvfRq/tmrAiq4KSzwwAlaA
-	 qfOryr9ZFRC5A2eD2j5Wozf2OCXLRuQTS2nvSbn+bdI4nLFzw0p3C9/ZMyNIDGwE+s
-	 uWNTh0Pb37rIcMJ7ZEQtaq9L6WUkbbUG8Oesn4Q8=
+	b=2bVZ+3ANti4qs0xV+pe9R+R3/tNWnsU6em+YkgOlRgDomEyd+QCF5LCN2uebH35QH
+	 T0MluOycx79BBUVpe0Pi06lTLk50hwJK+knKgh4yz/5jRMPqD5qif3ug0FDNN1WkKQ
+	 yayiVFLrOppD+2ZeXBjDMDGFPntp4merFUcI1OGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.1 323/482] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 292/457] drm/amd: Restore cached manual clock settings during resume
 Date: Tue, 26 Aug 2025 13:09:36 +0200
-Message-ID: <20250826110938.789701779@linuxfoundation.org>
+Message-ID: <20250826110944.599325230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
+[ Upstream commit 796ff8a7e01bd18738d3bb4111f9d6f963145d29 ]
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+If the SCLK limits have been set before S3 they will not
+be restored. The limits are however cached in the driver and so
+they can be restored by running a commit sequence during resume.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
-
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250725031222.3015095-3-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4e9526924d09057a9ba854305e17eded900ced82)
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1327,7 +1327,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
- }
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -76,6 +76,9 @@ static void smu_power_profile_mode_get(s
+ 				       enum PP_SMC_POWER_PROFILE profile_mode);
+ static void smu_power_profile_mode_put(struct smu_context *smu,
+ 				       enum PP_SMC_POWER_PROFILE profile_mode);
++static int smu_od_edit_dpm_table(void *handle,
++				 enum PP_OD_DPM_TABLE_COMMAND type,
++				 long *input, uint32_t size);
+ 
+ static int smu_sys_get_pp_feature_mask(void *handle,
+ 				       char *buf)
+@@ -2144,6 +2147,7 @@ static int smu_resume(struct amdgpu_ip_b
+ 	int ret;
+ 	struct amdgpu_device *adev = ip_block->adev;
+ 	struct smu_context *smu = adev->powerplay.pp_handle;
++	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+ 
+ 	if (amdgpu_sriov_multi_vf_mode(adev))
+ 		return 0;
+@@ -2181,6 +2185,12 @@ static int smu_resume(struct amdgpu_ip_b
+ 			return ret;
+ 	}
+ 
++	if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
++		ret = smu_od_edit_dpm_table(smu, PP_OD_COMMIT_DPM_TABLE, NULL, 0);
++		if (ret)
++			return ret;
++	}
++
+ 	dev_info(adev->dev, "SMU is resumed successfully!\n");
+ 
+ 	return 0;
 
 
 
