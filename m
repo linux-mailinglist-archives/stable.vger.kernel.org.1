@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5770B364CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5DBB35C78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86A378A0EFD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 443537B8FAE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7333D22DFA7;
-	Tue, 26 Aug 2025 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3593090CE;
+	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz5RvFuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzcWc3bf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D0137932;
-	Tue, 26 Aug 2025 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7512BE653;
+	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215123; cv=none; b=tegNLuoOSxBS684OjSOHZMFR9cj9GnOzaPbK2sW/mNgMsumqYKImVyuM1bl+TmSqqpRzIin8PwzemY4dXpuYQq6I1wCKfH7N3VSq0dDy+tyBR3qXunPFQw85InCtagdRTYzFcWIZt2t5yDLbtYQMO6huCQXAPQta8D1mdsyDS0M=
+	t=1756207910; cv=none; b=aL5Ghp/k4cfrQtHmBi/FJ6zfnrUETYp1CGpj9NIQKFMdyi70YJMOEXdMS6XqDOBeOHQhTjrE6eNjeFHtWu8qmZgePWtFQgflverS2bLJj3uvxeQm+NhviJsOB+BPHescXs0cFvvgWmudcu/KbJOUA4sMi8mK04HaAN4lxDNIlfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215123; c=relaxed/simple;
-	bh=HOwS783ENCBr19Da1REGL6c13N91U3zefcVYMedDLKA=;
+	s=arc-20240116; t=1756207910; c=relaxed/simple;
+	bh=Aq9oQ+M64b42taiVwtGQyqB7LAwkZ0+/2CYIQsHIMfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWImjx3cSnp2vDVV18AJ5WN/ZOkvQnAfjpltRHcR6kmpmg0N4u1Rzquv7a+dk7gF57kY4zuZAG8HnEGjSM5/FzsSCJMgtsYRcFJSpthqeG0R1OYc4SX936XMjsM71nNKVOgjMFyQTSTUmdamLHMmtcAaUnzDKaCSn0CkxQohGRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz5RvFuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0896C4CEF1;
-	Tue, 26 Aug 2025 13:32:02 +0000 (UTC)
+	 MIME-Version; b=bQ5Tc0HziTRVBVO1WDAg9CIqRDXG/x215vq6NcAZLGsv+tQFxOWnCxgKR83OK6+WpSq6UdlPAGkL+xv/htF+23cMEHe9FD4PPaZTgP/NTaHN2InQQBtQf3EvEKxtYmew3Stz5B1jmCVYmokdv+lQauP4HpdKlPebY6McMwwPwes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzcWc3bf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D10AC4CEF1;
+	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215123;
-	bh=HOwS783ENCBr19Da1REGL6c13N91U3zefcVYMedDLKA=;
+	s=korg; t=1756207910;
+	bh=Aq9oQ+M64b42taiVwtGQyqB7LAwkZ0+/2CYIQsHIMfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xz5RvFuAG7DN2LCFZWUoUmSzI5U3u/5aMPMjd3IwWcOxVhtzC7JxtnOOH+z49ggmO
-	 rMn/UJMe183QWUNyR6fKmzARtjRavwhbOLxbp3qxR+nR60TKCTK0uzupHUiXWDfS07
-	 xy7/oNIaxJjFKP2ysf4w079Y4rUS/a2GE7CQVAGc=
+	b=wzcWc3bfXxXrm1GHBgqZNHDhOVmKPTaJ8kiu9REZg3cJfxQvU0OW/0ugNC92Eeqph
+	 HliEDTgAElWg2puCko5pFiiKgRbZ1S/XGrVy7+83f2YsrGZhwj6qQ+XOQ2DRnXG+zL
+	 3O7jPba4qGMkhZLnAfBJ/CmOsZVC5cXg1xY6taSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Scott GUO <scottzhguo@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 396/482] squashfs: fix memory leak in squashfs_fill_super
+	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 365/457] RDMA/core: Free pfn_list with appropriate kvfree call
 Date: Tue, 26 Aug 2025 13:10:49 +0200
-Message-ID: <20250826110940.611823493@linuxfoundation.org>
+Message-ID: <20250826110946.327567551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
 
-commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
+[ Upstream commit 111aea0464c20f3eb25a48d5ff6c036e6b416123 ]
 
-If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
-allocated memory (sb->s_fs_info).
+Ensure that pfn_list allocated by kvcalloc() is freed using corresponding
+kvfree() function. Match memory allocation and free routines kvcalloc -> kvfree.
 
-Fix this by moving the call to sb_min_blocksize to before memory is
-allocated.
-
-Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
-Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: Scott GUO <scottzhguo@tencent.com>
-Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 259e9bd07c57 ("RDMA/core: Avoid hmm_dma_map_alloc() for virtual DMA devices")
+Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+Link: https://patch.msgid.link/aJjcPjL1BVh8QrMN@bhairav-test.ee.iitb.ac.in
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/infiniband/core/umem_odp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -123,10 +123,15 @@ static int squashfs_fill_super(struct su
- 	unsigned short flags;
- 	unsigned int fragments;
- 	u64 lookup_table_start, xattr_id_table_start, next_table;
--	int err;
-+	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
+index b1c44ec1a3f3..572a91a62a7b 100644
+--- a/drivers/infiniband/core/umem_odp.c
++++ b/drivers/infiniband/core/umem_odp.c
+@@ -115,7 +115,7 @@ static int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
  
- 	TRACE("Entered squashfs_fill_superblock\n");
- 
-+	if (!devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
- 	if (sb->s_fs_info == NULL) {
- 		ERROR("Failed to allocate squashfs_sb_info\n");
-@@ -136,12 +141,7 @@ static int squashfs_fill_super(struct su
- 
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
- 
--	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
--	if (!msblk->devblksize) {
--		errorf(fc, "squashfs: unable to set blocksize\n");
--		return -EINVAL;
--	}
--
-+	msblk->devblksize = devblksize;
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
- 
- 	mutex_init(&msblk->meta_index_mutex);
+ out_free_map:
+ 	if (ib_uses_virt_dma(dev))
+-		kfree(map->pfn_list);
++		kvfree(map->pfn_list);
+ 	else
+ 		hmm_dma_map_free(dev->dma_device, map);
+ 	return ret;
+@@ -287,7 +287,7 @@ static void ib_umem_odp_free(struct ib_umem_odp *umem_odp)
+ 	mutex_unlock(&umem_odp->umem_mutex);
+ 	mmu_interval_notifier_remove(&umem_odp->notifier);
+ 	if (ib_uses_virt_dma(dev))
+-		kfree(umem_odp->map.pfn_list);
++		kvfree(umem_odp->map.pfn_list);
+ 	else
+ 		hmm_dma_map_free(dev->dma_device, &umem_odp->map);
+ }
+-- 
+2.50.1
+
 
 
 
