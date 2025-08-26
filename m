@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AB0B36042
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD26B365D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 128BC3BD2D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3DE1BC377E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D12D320B;
-	Tue, 26 Aug 2025 12:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F623341651;
+	Tue, 26 Aug 2025 13:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfvPyrbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRTFGLQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333311A23BE;
-	Tue, 26 Aug 2025 12:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D98F8BE8;
+	Tue, 26 Aug 2025 13:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212899; cv=none; b=eMydHKjbjzhIkXrkrBeP3a7pusBP2cVWl4eY2wNpgQG541Ira5MJZYbmswGfDQ7dv9YAnD0Sph+p5Sle6uBYEimXnWA1zPrzoZ5AMQgFjc1Wi9TQ6UfP9bfPIXG4+JCsmYOOxc9xVgetsu+Mm4a0/3Yt/nTRddYtoq8uneT6qNc=
+	t=1756215881; cv=none; b=bcLvFFR232bY0nGu/nDD+6iCbtiqYKpqtAXGrE9Ofe+kMoo2C/T4NtKt56yzdVGvKstBPwTTr/ZdtLiWHYi+fixb2puC5imyDgevdpFu+3FmxGFbEXUQOrBachvtj2iuyx9aNCMn4+p73wJg3poQH9KnXdtxOf0wCJ+k4QcbqnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212899; c=relaxed/simple;
-	bh=jFcNu6ycqb9bA17DZRM2v/JsiwjWmQguxReZGpxL1pI=;
+	s=arc-20240116; t=1756215881; c=relaxed/simple;
+	bh=lqXqBaNntbfWsub9ihn0jYrtv9DiY5vPSa94iHisriY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUiFmi0g5B2pwHPPTgCCyLLkAa3jgjDcH4VO/aIqGDre2xrYVpb0pDSiM2uCaN5R3DORrva7chAzC9BKrnQRsR88R7r1YrD2xpf1Ew/YxRUjOJpdEv6iD3e+bSYlbBICGjCx8FPkoxNtEyL9AfWmgjolOFuzmAgLfg12WKo5KJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfvPyrbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA96C4CEF1;
-	Tue, 26 Aug 2025 12:54:58 +0000 (UTC)
+	 MIME-Version; b=Zzr/NfTtjP+LjjHiFX0YWebDx9EekS8jolmh4VN+X6m17oTdP+mWv7wRQF7PgaghVnndUyL5VUhffWahKOcOC5ReNEBMXKQK2y2uE0izww9d5Oody0jDpTI2ZEnZt3Hi/nqE9dKfbdJgGMAfyQl58uCLSE5LwnxhXADXsX81PlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRTFGLQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24E3C16AAE;
+	Tue, 26 Aug 2025 13:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212899;
-	bh=jFcNu6ycqb9bA17DZRM2v/JsiwjWmQguxReZGpxL1pI=;
+	s=korg; t=1756215881;
+	bh=lqXqBaNntbfWsub9ihn0jYrtv9DiY5vPSa94iHisriY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfvPyrbmpY8HIgTbSv5b4+V1pEix7sSF1CRkrTXkQir6s+hJbVzlpgvwRW0Y8RY5o
-	 lSczGNZPWuAN1qJdt/3tFjkdnWuaTiDx9xuPggycL7ZhtDP1gx/gu2vAuwBtI9t1oi
-	 VZ2dp1X05R44sLdKT2l/kOm6cm4tgY7FcNM2Qn74=
+	b=fRTFGLQfv332APJsQ0xO9a6H1ZuWBUZkpEkusJ9d7vYNAAcmGJBLoNmjFbEQeAKsJ
+	 uKwerpVvyKynNEYQ5nTCe+4f4TY/VSdafn6y06z5yAka0iSURRoSsrxuwRIJpvDOLr
+	 dQSc/z7C+sRecK08C/UMwPjCqVRvzro22vHWOCzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"John Warthog9 Hawley" <warthog9@kernel.org>,
-	Dhaval Giani <dhaval.giani@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/587] ktest.pl: Prevent recursion of default variable options
+Subject: [PATCH 5.15 202/644] vhost-scsi: Fix log flooding with target does not exist errors
 Date: Tue, 26 Aug 2025 13:04:53 +0200
-Message-ID: <20250826110956.614927074@linuxfoundation.org>
+Message-ID: <20250826110951.444143718@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
+[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
 
-If a default variable contains itself, do not recurse on it.
+As part of the normal initiator side scanning the guest's scsi layer
+will loop over all possible targets and send an inquiry. Since the
+max number of targets for virtio-scsi is 256, this can result in 255
+error messages about targets not existing if you only have a single
+target. When there's more than 1 vhost-scsi device each with a single
+target, then you get N * 255 log messages.
 
-For example:
+It looks like the log message was added by accident in:
 
-  ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
+control queue handler")
 
-The above works because the temp variable ADD_CONFIG (is a temp because it
-is created with ":=") is already defined, it will be substituted in the
-variable option. But if it gets commented out:
+when we added common helpers. Then in:
 
-  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+commit 09d7583294aa ("vhost/scsi: Use common handling code in request
+queue handler")
 
-Then the above will go into a recursive loop where ${ADD_CONFIG} will
-get replaced with the current definition of ADD_CONFIG which contains the
-${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
-after 100 attempts of recursion and fail.
+we converted the scsi command processing path to use the new
+helpers so we started to see the extra log messages during scanning.
 
-When replacing a variable with the default variable, if the default
-variable contains itself, do not replace it.
+The patches were just making some code common but added the vq_err
+call and I'm guessing the patch author forgot to enable the vq_err
+call (vq_err is implemented by pr_debug which defaults to off). So
+this patch removes the call since it's expected to hit this path
+during device discovery.
 
-Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/vhost/scsi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 331601575743..a8979280b505 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1358,7 +1358,10 @@ sub __eval_option {
- 	# If a variable contains itself, use the default var
- 	if (($var eq $name) && defined($opt{$var})) {
- 	    $o = $opt{$var};
--	    $retval = "$retval$o";
-+	    # Only append if the default doesn't contain itself
-+	    if ($o !~ m/\$\{$var\}/) {
-+		$retval = "$retval$o";
-+	    }
- 	} elsif (defined($opt{$o})) {
- 	    $o = $opt{$o};
- 	    $retval = "$retval$o";
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 2c19fa02141d..dff93612fcfd 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -907,10 +907,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
+ 			/* validated at handler entry */
+ 			vs_tpg = vhost_vq_get_backend(vq);
+ 			tpg = READ_ONCE(vs_tpg[*vc->target]);
+-			if (unlikely(!tpg)) {
+-				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
++			if (unlikely(!tpg))
+ 				goto out;
+-			}
+ 		}
+ 
+ 		if (tpgp)
 -- 
 2.39.5
 
