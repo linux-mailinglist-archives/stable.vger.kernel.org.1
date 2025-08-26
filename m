@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13889B35C7A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED9B36C8D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 477927B819F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB05562E56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C70134A332;
-	Tue, 26 Aug 2025 11:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDD32AE7F;
+	Tue, 26 Aug 2025 14:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkS5FrM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIxBpofs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E082F34A31F;
-	Tue, 26 Aug 2025 11:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0808035206D;
+	Tue, 26 Aug 2025 14:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207916; cv=none; b=eUjK168/MkgehXgMvxagkqMbaqdeUb53eqyy6ovVI7R+X8gZQJ22cbUd/6Nvi+0fl9mjaBXAUdfebu6CjTTqFNHr8V4lBqNbYQGeVMTbdLvENAVncnjPtgd/5wvmFCbul8CnKOfVB3hz//4SRIpx3U+svRsw/17g9i4ObpiX958=
+	t=1756219370; cv=none; b=FVI/ZwuyTVY9wTeqsxN7k5bbqIfp3kBsna0Bqos/x3FACrcYQav/2vQP4amZKXynxaTheIyi+ChvXnRu9R14y8CnPo5aOPsRqxEngnc1wF+5mcHf7YYXVsEOItY2zwMhnyD/btQKBDjYAGy2mm6QeGqSm6k8Jd2Bov3CCZemaOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207916; c=relaxed/simple;
-	bh=ZwwLZV9HCCmqD8OhRnrNu2uZJDmp35eX1osRnoK+9RU=;
+	s=arc-20240116; t=1756219370; c=relaxed/simple;
+	bh=/jS8Wd+Jk+DX27th5xnmNB4wLZgH9D/AcQKNK8yae4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lD4IUahbalErvbxiQxyUKniuwMq24N02MNVVFOKYTQFMMbc+NAOTrj38Je7A81NMrNT4XI0CCDviTkOJZCFfM8qv8W+YahFFUxutpgI1vxP0B8Wb49zHuiA0/j1nBTntr6ifSefODH1flqdRsmFLAkikWJ5sCiSMQwMLFDPBLbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkS5FrM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7122BC4CEF1;
-	Tue, 26 Aug 2025 11:31:55 +0000 (UTC)
+	 MIME-Version; b=kmh4MbcgCvrB+eEMpqTahtPvuCHYPiYzQUUceijAkU8tE8WP2DVLeJSNUljwX86tyqJOQtdgmQOp1vT8zyeIFvloUTOylGeVlYUnM5Il+5jpOg6PvhgZhM8TwO/dB68pqmTy0smw+4qzo3Z8c2JBLphsOuCxe/TfLkGteWj+piY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIxBpofs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDE3C4CEF1;
+	Tue, 26 Aug 2025 14:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207915;
-	bh=ZwwLZV9HCCmqD8OhRnrNu2uZJDmp35eX1osRnoK+9RU=;
+	s=korg; t=1756219369;
+	bh=/jS8Wd+Jk+DX27th5xnmNB4wLZgH9D/AcQKNK8yae4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkS5FrM4TaqXzl6vJ0sCRFYOLedQCSQYiDirmYZPn6brltp+/oCpfTxFvrnGAQY2m
-	 HVu8VbCIxfGBbEK3/vhuv8G2E5cdxnarQbB8vtNAFvUKlwUYoy9nndD1agoDfI4fET
-	 7Pr9LMEl3WAtSkC7ngp9eRp3LYQk/pqcj4PEBwtA=
+	b=IIxBpofsAZ/nunhmnO1+8XLH8DrywgNBppJp2Xq7kOA5q1uP2G61ZpLeyAgoxNq6k
+	 ClCqE1aVyvuLQdcZ4rnm9ZvKo2Z1a25TBGPtoZaYTMYIIclGRXQOm7Y4QbzQJF0HyK
+	 L5r3v1LU8s9mMMkUo1fGHAY7pc6RaDKRrKsnBY0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 366/457] RDMA/hns: Fix dip entries leak on devices newer than hip09
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 5.4 324/403] kbuild: Update assembler calls to use proper flags and language target
 Date: Tue, 26 Aug 2025 13:10:50 +0200
-Message-ID: <20250826110946.350693992@linuxfoundation.org>
+Message-ID: <20250826110915.765579826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-[ Upstream commit fa2e2d31ee3b7212079323b4b09201ef68af3a97 ]
+commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
 
-DIP algorithm is also supported on devices newer than hip09, so free
-dip entries too.
+as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
+cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
+clang will emit -Werror,-Wunused-command-line-argument for various -m
+and -f flags in KBUILD_CFLAGS for assembler sources.
 
-Fixes: f91696f2f053 ("RDMA/hns: Support congestion control type selection according to the FW")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250812122602.3524602-1-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Callers of as-option and as-instr should be adding flags to
+KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
+KBUILD_AFLAGS in all macros to clear up the initial problem.
+
+Unfortunately, -Wunused-command-line-argument can still be triggered
+with clang by the presence of warning flags or macro definitions because
+'-x assembler' is used, instead of '-x assembler-with-cpp', which will
+consume these flags. Switch to '-x assembler-with-cpp' in places where
+'-x assembler' is used, as the compiler is always used as the driver for
+out of line assembler sources in the kernel.
+
+Finally, add -Werror to these macros so that they behave consistently
+whether or not CONFIG_WERROR is set.
+
+[nathan: Reworded and expanded on problems in commit message
+         Use '-x assembler-with-cpp' in a couple more places]
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1699
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Kbuild.include |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 256757f0ff65..b544ca024484 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -3043,7 +3043,7 @@ static void hns_roce_v2_exit(struct hns_roce_dev *hr_dev)
- 	if (!hr_dev->is_vf)
- 		hns_roce_free_link_table(hr_dev);
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -99,16 +99,16 @@ try-run = $(shell set -e;		\
+ 	fi)
  
--	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP09)
-+	if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
- 		free_dip_entry(hr_dev);
- }
+ # as-option
+-# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
++# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
  
--- 
-2.50.1
-
+ as-option = $(call try-run,\
+-	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+ 
+ # as-instr
+-# Usage: cflags-y += $(call as-instr,instr,option1,option2)
++# Usage: aflags-y += $(call as-instr,instr,option1,option2)
+ 
+ as-instr = $(call try-run,\
+-	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
++	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
+ 
+ # __cc-option
+ # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
 
 
 
