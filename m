@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C47B367B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120CDB3620A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B24EF173604
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCE87C088D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7093352FD4;
-	Tue, 26 Aug 2025 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EE1284678;
+	Tue, 26 Aug 2025 13:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCFA7Umb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVzuj8jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9AC352095;
-	Tue, 26 Aug 2025 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02C242D7B;
+	Tue, 26 Aug 2025 13:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216742; cv=none; b=CP2kYdqGqBCCANiq3q4zNmfG5DVbY0S31tX0xwpszgzb2q5W3vxcoGXEX7L7hHZt962pftPTvM4v1JJlxnkUxrG2ATwjNGOP9ebk0cSQbSSsi87U4HqUWJqLwScYTMhWYruhNcxdif0or3tIgNMKjyQulG9fZaASj0StNOhbpnk=
+	t=1756213759; cv=none; b=MgXoq8kI4t6C+7AovMtX07axgnZrXOx3mAg5LVRKRxki7gsscCKTUptxEI02CZiK4TZSQqoNPA7wgtKNAyqfqf7IgNWUFSD9YaI2XUpOzTX90wrVzptgyhmhEltC5K4k2Xdcdp8Mjwf31KgiZeGqlpey7cF848vn0sNXnLkvKFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216742; c=relaxed/simple;
-	bh=2+6A7VOqx49AaB7bzP76kAJ4Cj40Q1v9LpH6ynDWUDE=;
+	s=arc-20240116; t=1756213759; c=relaxed/simple;
+	bh=lDkQzTOb4JQ5FXW9xWD9eYpX+tQDSKAF9VqSpkVM+bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkmHDVNL7LYv9A6fN4jvfwG02C21mvBrLWkoQEmXe+Hrl7t8Y8I8sq3cnQyKCf1tYRFG2J+t/wVJS8zVdn7+3HlF1PMTg2g6lsjJzXF7oLnxVtutobDP7Tyu2pmQyfvVyCBC6gn3PzvJ6rMWLHsJOYxNJwFtFfFAmQpiLt7R5oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCFA7Umb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D18AC113D0;
-	Tue, 26 Aug 2025 13:59:01 +0000 (UTC)
+	 MIME-Version; b=bwXIQwiiWiFtiozrSxkvH9UA8d2U5pFY77pVJfEWTr4FZ2t+TPuI48OemZXhzO8oI4x3vIO/TOaRsN2xwdktR6xf7jzhys89bgqwZn/vCEtuupJNR5qZTOdyMjMnGAUfI2zuC9F8JdvYqY/ZLClA8I4vGVZ68pklbY16xZksvMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVzuj8jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AA9C4CEF1;
+	Tue, 26 Aug 2025 13:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216742;
-	bh=2+6A7VOqx49AaB7bzP76kAJ4Cj40Q1v9LpH6ynDWUDE=;
+	s=korg; t=1756213758;
+	bh=lDkQzTOb4JQ5FXW9xWD9eYpX+tQDSKAF9VqSpkVM+bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCFA7UmbT6YcSqjpfIUNu9IXMuYBUw+FoYpl/mDa1eEO6pFdPhXekabkCjsbaPjiS
-	 g/rV8I67Bia1PQCSkqsC5uL939o9Sxp2ekkdN5TxAQvtCZpUwT/O1f5jJRXqVjCVT7
-	 tj2ZFCTnfG0IsPTSjBmdVOqqV/p8zclwIUtSg+fw=
+	b=mVzuj8jHkxwY7KUlGok+Ehy2a1zzhLak5x54eJlzWuYUAuWFDY6wXvmx1Lcp8Rjnj
+	 RHPMUZmqxQLEqOJSSizTVYjHjCYSd/uyic+5dg4Pur36m2B82Wz7loYD/RZtTH3gMT
+	 y37AHIyjMk3IyOQfWhl2yRVN93AP4Dy310ywgFzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 526/644] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
+Subject: [PATCH 6.6 468/587] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
 Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826110959.543958468@linuxfoundation.org>
+Message-ID: <20250826111004.882506640@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
+[ Upstream commit 51888393cc64dd0462d0b96c13ab94873abbc030 ]
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+For all practical purposes, there is no difference between the situation
+in which a given device is not ignoring children and its active child
+count is nonzero and the situation in which its runtime PM usage counter
+is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
+device's usage counter and return 1 in the latter case.
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
+For consistency, make it do so in the former case either by adjusting
+pm_runtime_get_conditional() and update the related kerneldoc comments
+accordingly.
 
-The resulting runtime PM ref imbalance causes warning messages such as:
-
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
-
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
-
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
-
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
-
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
-
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
-[ changed "recent enough PCIe ports" comment to "some PCIe ports" ]
+Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
+Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c |    4 +---
- drivers/pci/pci.c      |    8 ++++++--
- drivers/pci/probe.c    |    2 +-
- include/linux/pci.h    |   10 +++++++++-
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ drivers/base/power/runtime.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -792,13 +792,11 @@ int pci_acpi_program_hp_params(struct pc
- bool pciehp_is_native(struct pci_dev *bridge)
- {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
- 
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
- 
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
- 
- 	if (pcie_ports_native)
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2921,8 +2921,12 @@ static const struct dmi_system_id bridge
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1181,10 +1181,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
   *
-- * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
+  * Return -EINVAL if runtime PM is disabled for @dev.
+  *
+- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
+- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
+- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
+- * without changing the usage counter.
++ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
++ * is set, or (2) @dev is not ignoring children and its active child count is
++ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
++ * the usage counter of @dev and return 1.
 + *
-+ * Return: Whether it is possible to move the bridge to D3.
++ * Otherwise, return 0 without changing the usage counter.
+  *
+  * If @ign_usage_count is %true, this function can be used to prevent suspending
+  * the device when its runtime PM status is %RPM_ACTIVE.
+@@ -1206,7 +1208,8 @@ static int pm_runtime_get_conditional(st
+ 		retval = -EINVAL;
+ 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
+ 		retval = 0;
+-	} else if (ign_usage_count) {
++	} else if (ign_usage_count || (!dev->power.ignore_children &&
++		   atomic_read(&dev->power.child_count) > 0)) {
+ 		retval = 1;
+ 		atomic_inc(&dev->power.usage_count);
+ 	} else {
+@@ -1239,10 +1242,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_acti
+  * @dev: Target device.
+  *
+  * Increment the runtime PM usage counter of @dev if its runtime PM status is
+- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
+- * it returns 1. If the device is in a different state or its usage_count is 0,
+- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
+- * in which case also the usage_count will remain unmodified.
++ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
++ * ignoring children and its active child count is nonzero.  1 is returned in
++ * this case.
 + *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
++ * If @dev is in a different state or it is not in use (that is, its usage
++ * counter is 0, or it is ignoring children, or its active child count is 0),
++ * 0 is returned.
++ *
++ * -EINVAL is returned if runtime PM is disabled for the device, in which case
++ * also the usage counter of @dev is not updated.
   */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
+ int pm_runtime_get_if_in_use(struct device *dev)
  {
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1590,7 +1590,7 @@ void set_pcie_hotplug_bridge(struct pci_
- 
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
- }
- 
- static void set_pcie_thunderbolt(struct pci_dev *dev)
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -317,7 +317,14 @@ struct pci_sriov;
- struct pci_p2pdma;
- struct rcec_ea;
- 
--/* The pci_dev structure describes PCI devices */
-+/* struct pci_dev - describes a PCI device
-+ *
-+ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
-+ *			Conventional PCI Hot-Plug, ACPI slot).
-+ *			Such bridges are allocated additional MMIO and bus
-+ *			number resources to allow for hierarchy expansion.
-+ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
-+ */
- struct pci_dev {
- 	struct list_head bus_list;	/* Node in per-bus list */
- 	struct pci_bus	*bus;		/* Bus this device is on */
-@@ -440,6 +447,7 @@ struct pci_dev {
- 	unsigned int	is_physfn:1;
- 	unsigned int	is_virtfn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
 
 
 
