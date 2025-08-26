@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4D1B36985
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A93B36377
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17D6982FD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29FA8167A81
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7D1352077;
-	Tue, 26 Aug 2025 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41B4338F32;
+	Tue, 26 Aug 2025 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1vREBqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvTvye2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB1F2AE68;
-	Tue, 26 Aug 2025 14:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F9D34165A;
+	Tue, 26 Aug 2025 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217493; cv=none; b=G7h0TNjks55MfU4Ebylw6pHDQJp7ZnK6N/0+twnjlKil9yK8j5PUgpQK7tIhih3GkpnPsd6HoIAe+h/AA4+AWi1XwAZZ6yDp4YQ1aeogoNCqJ0Z6FDLzeZPO7CUcu9HGRvnsLbOgDk4fHNA8X7IKFJ+rg0FSNkNbFPaabTw8M3I=
+	t=1756214472; cv=none; b=nSk8vDatE5pLjMmPlX8a5MG7fQU2dRahm5MGFZ4E2Snwb/AXSQmbM7XAm36170mLUKPg9AMug7ud5h/6xSDNwrrGpFFjS9CzgO75CRPKjWc0EGeqxi8DhqQAoLYVCcB2ArbtXMQXgsH76tsWppPzZ/8V2JVZlfwNpe5IAWZj4GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217493; c=relaxed/simple;
-	bh=NS3OWPwuli7nIUiO8Q4otL4TewrNfHa99FiIxp5CEsI=;
+	s=arc-20240116; t=1756214472; c=relaxed/simple;
+	bh=vCho1hyMzXiknJikRRvcVqnuqpzYCZ8R/6OW1dUQkg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SY438NXI1FeHq/2MCql/dQt3pTqwfvHaXwJM07IN/iPHWKb9K9b/xPBBJTGQZsOU3pXCyhZTSpIGAgaWd8AS7VwCs+sXxGCCC8o0Xra0EFl5HgiLeDYsn2lwOiRQ28xyqsl6sOe38L3UgninpOTlnhuGmffYDcRm39RVQeaV9O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1vREBqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0AAC4CEF1;
-	Tue, 26 Aug 2025 14:11:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NuLQa3ez4vLKotwWZPoip0dsw+VYEVWGfbncpCCgHptUE9loGwtOXB3STLMXdhVDIKKA9/1qZgQEM0mnQJ5LWk2fqRbj2aysyGZmtI5MvjtFY0CyFRYRkOH/zQSLdKulPyARAtWi4QbN4tu/Yh81l49jPiIhc7sy2NvsHun9Eas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvTvye2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1CFC4CEF1;
+	Tue, 26 Aug 2025 13:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217492;
-	bh=NS3OWPwuli7nIUiO8Q4otL4TewrNfHa99FiIxp5CEsI=;
+	s=korg; t=1756214472;
+	bh=vCho1hyMzXiknJikRRvcVqnuqpzYCZ8R/6OW1dUQkg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1vREBqywGKaTFTMMxIi+LSKtDBD4/Ta8InK0OWB5vO9pph9L9yrRs1bks9LkQlf9
-	 pAGqWhdNTHUoDYzn6InSrBVcvtEhvbt/iAyNNXYUMnYePDYn3+9dpbgxjXUuXoZetH
-	 o0Up1qVxOfGJxQFXBhwv0pmlkYCgORKEqNjvVSVA=
+	b=HvTvye2YROrV9YM/FuAzAwtMqQXzdIZmcslYDYWh+RPiCorGS1udLB9d9lA3nTXRj
+	 Cc3K3Amd1ceEmx9HQwZ5FKhbHSQ5dJYb25MMoojG/B6xTq4231LaAkdpFBe2q828N/
+	 nQNTXhaaW8A1XasPsG53tcjGfGn/rFhYgirrf34s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/523] PCI: pnv_php: Work around switches with broken presence detection
+Subject: [PATCH 6.1 119/482] wifi: rtw89: Lower the timeout in rtw89_fw_read_c2h_reg() for USB
 Date: Tue, 26 Aug 2025 13:06:12 +0200
-Message-ID: <20250826110928.468748171@linuxfoundation.org>
+Message-ID: <20250826110933.764220129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
+[ Upstream commit 671be46afd1f03de9dc6e4679c88e1a7a81cdff6 ]
 
-The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
-was observed to incorrectly assert the Presence Detect Set bit in its
-capabilities when tested on a Raptor Computing Systems Blackbird system,
-resulting in the hot insert path never attempting a rescan of the bus
-and any downstream devices not being re-detected.
+This read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
+1000000 µs can take ~250 seconds in the worst case because sending a
+USB control message takes ~250 µs.
 
-Work around this by additionally checking whether the PCIe data link is
-active or not when performing presence detection on downstream switches'
-ports, similar to the pciehp_hpc.c driver.
+Lower the timeout to 4000 for USB in order to reduce the maximum polling
+time to ~1 second.
 
-Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+This problem was observed with RTL8851BU while suspending to RAM with
+WOWLAN enabled. The computer sat for 4 minutes with a black screen
+before suspending.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/09313da6-c865-4e91-b758-4cb38a878796@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 9 +++++++--
+ drivers/net/wireless/realtek/rtw89/fw.h | 2 ++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 1ccd8a8e7c71..7fa92cb51451 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -389,6 +389,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
- 	return 0;
- }
- 
-+static int pcie_check_link_active(struct pci_dev *pdev)
-+{
-+	u16 lnk_status;
-+	int ret;
-+
-+	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
-+	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
-+		return -ENODEV;
-+
-+	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
-+
-+	return ret;
-+}
-+
- static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 0f022a5192ac..977aadfdf997 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -2397,13 +2397,18 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
  {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-@@ -401,6 +415,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- 	 */
- 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
- 	if (ret >= 0) {
-+		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
-+			presence == OPAL_PCI_SLOT_EMPTY) {
-+			/*
-+			 * Similar to pciehp_hpc, check whether the Link Active
-+			 * bit is set to account for broken downstream bridges
-+			 * that don't properly assert Presence Detect State, as
-+			 * was observed on the Microsemi Switchtec PM8533 PFX
-+			 * [11f8:8533].
-+			 */
-+			if (pcie_check_link_active(php_slot->pdev) > 0)
-+				presence = OPAL_PCI_SLOT_PRESENT;
-+		}
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const u32 *c2h_reg = chip->c2h_regs;
+-	u32 ret;
++	u32 ret, timeout;
+ 	u8 i, val;
+ 
+ 	info->id = RTW89_FWCMD_C2HREG_FUNC_NULL;
+ 
++	if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
++		timeout = RTW89_C2H_TIMEOUT_USB;
++	else
++		timeout = RTW89_C2H_TIMEOUT;
 +
- 		*state = presence;
- 		ret = 0;
- 	} else {
+ 	ret = read_poll_timeout_atomic(rtw89_read8, val, val, 1,
+-				       RTW89_C2H_TIMEOUT, false, rtwdev,
++				       timeout, false, rtwdev,
+ 				       chip->c2h_ctrl_reg);
+ 	if (ret) {
+ 		rtw89_warn(rtwdev, "c2h reg timeout\n");
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 0047d5d0e9b1..d0f2c5b22513 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -33,6 +33,8 @@ enum rtw89_fw_dl_status {
+ #define RTW89_C2HREG_HDR_LEN 2
+ #define RTW89_H2CREG_HDR_LEN 2
+ #define RTW89_C2H_TIMEOUT 1000000
++#define RTW89_C2H_TIMEOUT_USB 4000
++
+ struct rtw89_mac_c2h_info {
+ 	u8 id;
+ 	u8 content_len;
 -- 
 2.39.5
 
