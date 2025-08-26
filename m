@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B607B3603A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E167B362DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17D163B9C22
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25D2F2A2EB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BF821D3EA;
-	Tue, 26 Aug 2025 12:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9346126158C;
+	Tue, 26 Aug 2025 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpilGxLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ON3umKDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67226214813;
-	Tue, 26 Aug 2025 12:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9B4139579;
+	Tue, 26 Aug 2025 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212891; cv=none; b=Im0S2BjSDT1X2O07mZeQCh1oAT1V3jnrAxS5qMIqgSvlU1o1zWm4kJL8vTytnESlTSBwnxhEYymyfv3oa9HDj98RbarZp5gLsEyhvq1wX22rgvcNilAZphKGpkKunV50XKdNWAhyoCVDaotuDbhNt32DmfDv2NFu+2+7qkZG7b8=
+	t=1756214171; cv=none; b=qtwRH2+VcZVxmk4d6veUloX01wfr45uTyn3dN6Fz9NEBaCtM3bLn/20dgq1YgCD5rMQKudrUURh1yU9ioH9bka00IcDKNCiOO9Bxt2ahWSp5DJgpAzbY++zCyn6w7C680pjc/XbMsTb0v4Ihej5hw4ot9MHnu/UtXeFwlwK2VnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212891; c=relaxed/simple;
-	bh=F1dgpP8beS5l7TGwGeOF9OrzDVOiC8jNz7SolQ7dm4M=;
+	s=arc-20240116; t=1756214171; c=relaxed/simple;
+	bh=GQinJb4AdNCY4q3oDGQuteRMj7bSS0QkDMmR0mZlE/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0r3ig28mG2jLDMQuFNP3Sae/NEOZxmwFBXVAHKH3pRX3wAVtBanpZkx1X7wycALGSaCkN4jrMBPyi/TC69vVJq+TNjDf9Pv+a9LpD15oqAloLyBDGvQgR/R047wtGymP+Xna4kG/kjlqhgwdVlG+loeY/6Q6qLVGAbNhIFAd+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpilGxLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C2BC4CEF4;
-	Tue, 26 Aug 2025 12:54:50 +0000 (UTC)
+	 MIME-Version; b=Z3aAhWWhFmcwz4yiq88kTi0ACJnD6Hd8z+/3efIzujOVPBJF1D2leXaSX8dEeDCRF5KczfMz68HuqmZ0rANj047tEr2H0QERhOVhS698HjZioeOsB16lzvdWFDJc4MBhziM9k532+4RKUL6WuPsdsX8g5KIVkxqcOpYEDD0l0ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ON3umKDl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B7FC4CEF1;
+	Tue, 26 Aug 2025 13:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212891;
-	bh=F1dgpP8beS5l7TGwGeOF9OrzDVOiC8jNz7SolQ7dm4M=;
+	s=korg; t=1756214171;
+	bh=GQinJb4AdNCY4q3oDGQuteRMj7bSS0QkDMmR0mZlE/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpilGxLLQaPe1vIl29mQU6/DEcY2z7X+CtGVCM621ykFoOWUUlDG+H1pnAXsq1zZU
-	 I7E1pfo4cISW+sOMlhoUblMmBR75xpcSvKh51Zsl2xRpE4HcthNnb3BoNzyJvdp+1s
-	 ShAlpbqKLkNXiqxPxweKY3JwxNZGFnTR+E7lPiFU=
+	b=ON3umKDleRlfZoHlTkoDEm8ETIee/pMSO+lMpHtRnme7GacMad63I6slf5PgzLqBz
+	 XkUG69obMOpTWE31FCMa6k4dg0WYaIkg9r4LbIA6k8hTuaGPokTA4s1qEvuTkn1rie
+	 uExB/ebQPRXtcXk19m95wJ+1RM+SzTuBMfEFDEMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
-	Juergen Gross <jgross@suse.com>,
-	Elliott Mitchell <ehem+xen@m5p.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/587] xen/netfront: Fix TX response spurious interrupts
+Subject: [PATCH 6.1 037/482] KVM: x86: Move handling of is_guest_mode() into fastpath exit handlers
 Date: Tue, 26 Aug 2025 13:04:50 +0200
-Message-ID: <20250826110956.539980125@linuxfoundation.org>
+Message-ID: <20250826110931.725419444@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
+[ Upstream commit bf1a49436ea37b98dd2f37c57608951d0e28eecc ]
 
-We found at Vates that there are lot of spurious interrupts when
-benchmarking the xen-net PV driver frontend. This issue appeared with a
-patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
-harden netfront against event channel storms"). On an iperf benchmark,
-spurious interrupts can represent up to 50% of the interrupts.
+Let the fastpath code decide which exits can/can't be handled in the
+fastpath when L2 is active, e.g. when KVM generates a VMX preemption
+timer exit to forcefully regain control, there is no "work" to be done and
+so such exits can be handled in the fastpath regardless of whether L1 or
+L2 is active.
 
-Spurious interrupts are interrupts that are rised for nothing, there is
-no work to do. This appends because the function that handles the
-interrupts ("xennet_tx_buf_gc") is also called at the end of the request
-path to garbage collect the responses received during the transmission
-load.
+Moving the is_guest_mode() check into the fastpath code also makes it
+easier to see that L2 isn't allowed to use the fastpath in most cases,
+e.g. it's not immediately obvious why handle_fastpath_preemption_timer()
+is called from the fastpath and the normal path.
 
-The request path is doing the work that the interrupt handler should
-have done otherwise. This is particurary true when there is more than
-one vcpu and get worse linearly with the number of vcpu/queue.
-
-Moreover, this problem is amplifyed by the penalty imposed by a spurious
-interrupt. When an interrupt is found spurious the interrupt chip will
-delay the EOI to slowdown the backend. This delay will allow more
-responses to be handled by the request path and then there will be more
-chance the next interrupt will not find any work to do, creating a new
-spurious interrupt.
-
-This causes performance issue. The solution here is to remove the calls
-from the request path and let the interrupt handler do the processing of
-the responses. This approch removes most of the spurious interrupts
-(<0.05%) and also has the benefit of freeing up cycles in the request
-path, allowing it to process more work, which improves performance
-compared to masking the spurious interrupt one way or another.
-
-This optimization changes a part of the code that is present since the
-net frontend driver was upstreamed. There is no similar pattern in the
-other xen PV drivers. Since the first commit of xen-netfront is a blob
-that doesn't explain all the design choices I can only guess why this
-specific mecanism was here. This could have been introduce to compensate
-a slow backend at the time (maybe the backend was fixed or optimize
-later) or a small queue. In 18 years, both frontend and backend gain lot
-of features and optimizations that could have obsolete the feature of
-reaping completions from the TX path.
-
-Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
-guest(s):
-
-Without this patch on the :
-vm -> dom0: 4.5Gb/s
-vm -> vm:   7.0Gb/s
-
-Without XSA-391 patch (revert of b27d47950e48):
-vm -> dom0: 8.3Gb/s
-vm -> vm:   8.7Gb/s
-
-With XSA-391 and this patch:
-vm -> dom0: 11.5Gb/s
-vm -> vm:   12.6Gb/s
-
-v2:
-- add revewed and tested by tags
-- resend with the maintainers in the recipients list
-
-v3:
-- remove Fixes tag but keep the commit ref in the explanation
-- add a paragraph on why this code was here
-
-Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
+Link: https://lore.kernel.org/r/20240110012705.506918-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: resolve syntactic conflict in svm_exit_handlers_fastpath()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kvm/svm/svm.c | 6 +++---
+ arch/x86/kvm/vmx/vmx.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index 0115f8f5b724..5b59c0ee6c66 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -637,8 +637,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index b4283c2358a6..337a304d211b 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3964,6 +3964,9 @@ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
+ 	struct vmcb_control_area *control = &to_svm(vcpu)->vmcb->control;
  
--	xennet_tx_buf_gc(queue);
++	if (is_guest_mode(vcpu))
++		return EXIT_FASTPATH_NONE;
++
+ 	/*
+ 	 * Note, the next RIP must be provided as SRCU isn't held, i.e. KVM
+ 	 * can't read guest memory (dereference memslots) to decode the WRMSR.
+@@ -4127,9 +4130,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
+ 
+ 	svm_complete_interrupts(vcpu);
+ 
+-	if (is_guest_mode(vcpu))
+-		return EXIT_FASTPATH_NONE;
 -
- 	return 0;
+ 	return svm_exit_handlers_fastpath(vcpu);
  }
  
-@@ -848,9 +846,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index c804ad001a79..18ceed9046a9 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7138,6 +7138,9 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
  
--	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
--	xennet_tx_buf_gc(queue);
+ static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
++	if (is_guest_mode(vcpu))
++		return EXIT_FASTPATH_NONE;
++
+ 	switch (to_vmx(vcpu)->exit_reason.basic) {
+ 	case EXIT_REASON_MSR_WRITE:
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+@@ -7337,9 +7340,6 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
+ 	vmx_recover_nmi_blocking(vmx);
+ 	vmx_complete_interrupts(vmx);
+ 
+-	if (is_guest_mode(vcpu))
+-		return EXIT_FASTPATH_NONE;
 -
- 	if (!netfront_tx_slot_available(queue))
- 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
+ 	return vmx_exit_handlers_fastpath(vcpu);
+ }
  
 -- 
-2.39.5
+2.50.1
 
 
 
