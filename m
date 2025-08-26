@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC32B36065
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D4DB362F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13BBB188D77F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD7618874ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67DE1DD0D4;
-	Tue, 26 Aug 2025 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819EC22AE5D;
+	Tue, 26 Aug 2025 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF7e8553"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJQOscsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FE5145B3E;
-	Tue, 26 Aug 2025 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3063E27A455;
+	Tue, 26 Aug 2025 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212993; cv=none; b=AGLgdYQjHZXI6YEBQcXmOWweGRj+DwuS9X7ikeLIAPGZH9VHk/OcL8U5bW4BbyhBsYeUvrUrhGKXX2huB2Jt1aOchs5tvFIY4k6E+VAwYxL72Nzk7cGcE5u5SVXbPz/nwjWSfNEATKCwMsgS1zJZj+FsLUx7aFuB8aKpbigHBjg=
+	t=1756214276; cv=none; b=FqjlQr9l1xSurmBCgVu7gj30wzQEkrmLIOgmqN3zCYsc2sbRiGemMEinaLqlQCV/KlB+AC2+BFmiykyAoBJb/gM1QjrG7OA3D6ckRw3DjL+KCjJ87JdOwfCGcBJ5kTdmYvFRkUyzQX5UuLSrSLnX4hItP2IV1Pgs8FJosyYwRvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212993; c=relaxed/simple;
-	bh=Q924h72a7tr14zjBZVSwxpmtFfoPKtP2vheM2+hsWeA=;
+	s=arc-20240116; t=1756214276; c=relaxed/simple;
+	bh=nfiTlDjqOzAxJxQyXg1E9s3KHmTsY2ZOIY8Us72Es/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYO4CmrLVRl061B7jxPMLfIhkPpSX6p5ua2nombbc2o4AxmuYy9r72RsiEaWIe2YVDxlpO+1A+BadCz9kI8MjW8rTgwC586uYdqorkojSAop1WBm3CgsBzb2hr+9qDkW3lJioWS+KY1qk9U+aVe1YlCNw7Yx1oomf8dlrTb/pnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF7e8553; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89AAC4CEF1;
-	Tue, 26 Aug 2025 12:56:32 +0000 (UTC)
+	 MIME-Version; b=hjQ5JwfDn0P25AFemzq32bMLSss9WXUfgYqBxmkTO6croaMi8tjiyJArwXiSLD7vTyN20qfyNeBLpy8hPDOLygZaw1VmDFgTnl7m4ooPDkLQs1uok2WW+WBZiLIElM30AF41eGGVtfIAF61Nelhp2SBuAPu17P77RNGSYsYwBSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJQOscsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E7EC4CEF1;
+	Tue, 26 Aug 2025 13:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212993;
-	bh=Q924h72a7tr14zjBZVSwxpmtFfoPKtP2vheM2+hsWeA=;
+	s=korg; t=1756214276;
+	bh=nfiTlDjqOzAxJxQyXg1E9s3KHmTsY2ZOIY8Us72Es/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF7e8553VqrneB+lXMwFMb7C2YbKIg7x7tyTTQswNJwkJv/rUK7zwSmY6QQiUusN0
-	 C29lfvgBnPBolaXQcBltMX8rcCdRP/GQnJdIipws19js6XTnE+qoRw6LVXHzGiabAo
-	 XIubR2OaywuKe9kAmU+mHerILt8Xbf97Pkkz1DsI=
+	b=YJQOscskUWWf2sgZp/Xbp+F0KturnjsnJ1+dULeL1hTtnOIP3TW0D9xqKY2Dgbb+c
+	 SyNCF1a8FDArVNA802UdIjmn8Vq2Qy3pwHSdSduj+Kinpu8WdrO7/YGsMA4SPFofWt
+	 xQb7kwLxLcyIRvfSGdJVUSwIwXu3WE+gV5i26PFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/587] wifi: ath12k: Add memset and update default rate value in wmi tx completion
+Subject: [PATCH 6.1 076/482] PM / devfreq: governor: Replace sscanf() with kstrtoul() in set_freq_store()
 Date: Tue, 26 Aug 2025 13:05:29 +0200
-Message-ID: <20250826110957.520945626@linuxfoundation.org>
+Message-ID: <20250826110932.711970126@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
+[ Upstream commit 914cc799b28f17d369d5b4db3b941957d18157e8 ]
 
-When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
-is invoked from two paths: the TX completion handler for data frames
-and the WMI TX completion handler for management frames.
-In the data path, the skb->cb is properly zeroed using memset, but in
-the WMI path, this step is missing.
+Replace sscanf() with kstrtoul() in set_freq_store() and check the result
+to avoid invalid input.
 
-As a result, mac80211 encountered uninitialized (junk) values in
-skb->cb when generating the radiotap header for monitor mode, leading
-to invalid radiotap lengths.
-
-Hence, explicitly zero the status field in the skb->cb using memset
-in WMI TX completion path to ensure consistent and correct behavior
-during WMI tx completion path.
-
-Additionally, set info->status.rates[0].idx = -1 to indicate that
-no valid rate information is available, avoiding misinterpretation of
-garbage values.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/lkml/20250421030020.3108405-2-zhenglifeng1@huawei.com/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/devfreq/governor_userspace.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e918218ce2d6..7e400a0e0eb1 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -4965,6 +4965,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+diff --git a/drivers/devfreq/governor_userspace.c b/drivers/devfreq/governor_userspace.c
+index d69672ccacc4..8d057cea09d5 100644
+--- a/drivers/devfreq/governor_userspace.c
++++ b/drivers/devfreq/governor_userspace.c
+@@ -9,6 +9,7 @@
+ #include <linux/slab.h>
+ #include <linux/device.h>
+ #include <linux/devfreq.h>
++#include <linux/kstrtox.h>
+ #include <linux/pm.h>
+ #include <linux/mutex.h>
+ #include <linux/module.h>
+@@ -39,10 +40,13 @@ static ssize_t set_freq_store(struct device *dev, struct device_attribute *attr,
+ 	unsigned long wanted;
+ 	int err = 0;
  
- 	info = IEEE80211_SKB_CB(msdu);
-+	memset(&info->status, 0, sizeof(info->status));
++	err = kstrtoul(buf, 0, &wanted);
++	if (err)
++		return err;
 +
-+	/* skip tx rate update from ieee80211_status*/
-+	info->status.rates[0].idx = -1;
-+
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+ 	mutex_lock(&devfreq->lock);
+ 	data = devfreq->governor_data;
  
+-	sscanf(buf, "%lu", &wanted);
+ 	data->user_frequency = wanted;
+ 	data->valid = true;
+ 	err = update_devfreq(devfreq);
 -- 
 2.39.5
 
