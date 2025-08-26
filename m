@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CC9B35E43
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF230B36CDA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58296188DE9A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95BE39812D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C472FAC02;
-	Tue, 26 Aug 2025 11:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60656352081;
+	Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyM5+Jg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCjRBBFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5F1267386;
-	Tue, 26 Aug 2025 11:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9A31E500C;
+	Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208853; cv=none; b=ITNhdWeljcYUmjZcsDPy+M9lKmqKamHOVq1Z2/qkYcS/OeSKiGhJUStxvr9WYYA8flpMVe7BjRDiFR5CN+u7wN1kjHdZnds+RZfDMkMhT8W25pgDcaq2a+PB6D9xKOYBBqx/dASPL13J3EJvhxLJGJKLdKQaWZDOjZ9A9bJEXig=
+	t=1756219456; cv=none; b=hcOWKAAZfpDWWmoFuahjrW46M/PYc0uhleohS/xfNPxYaqFkcCu+dCzTSkDZZwIwYP88/EaplSUaGZgtq9LAH4UZvDlmRWd37puTDEx9ERCFnNBGxCb5tB/BaNZOBA60zmlZI/6S8EGiIf7dBwYzSkDEo/JDsZ2bYrca6M/t6jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208853; c=relaxed/simple;
-	bh=x565+mLhXAk/RpQ+XFomNOcT+Z1ADobaJxGxeojc350=;
+	s=arc-20240116; t=1756219456; c=relaxed/simple;
+	bh=mFv9DMMQvUq3/ztyOE7UxKa3bI/3lbOVen4bdZUTbjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbHdEVdzXfxHKZCZcKD09K96SeUwWZ6y+t9WF6fjfaiNdF8HUIlPqHH4RKoN9tbzIcNJhFZB+ut5n+KHpRoCbMWdkeSb3WbxFCkKQyRBmMlW2qXNCPw5mfnF+oPvIz6K9vZOQx124IGp4eJyf0JmCETQlMDL49eDCdHTFun9wjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyM5+Jg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AECC4CEF4;
-	Tue, 26 Aug 2025 11:47:32 +0000 (UTC)
+	 MIME-Version; b=RlBvXbJ56LJqFx++giq+unP+VWhWA9+coe0zhjXoBSfNQ4Yy/HnlAVlqJv8XSmvsRQaXdFmbn+D1qz7hxGC1OATuHrgweosKNJyk/qz4UfoA/eYRG+8Bhe/hDY64uLsCnDY+cLr3mAHOVEHYU+7wr3kdDYC6SumhIz5fxIbyfKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCjRBBFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EB1C4CEF1;
+	Tue, 26 Aug 2025 14:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208853;
-	bh=x565+mLhXAk/RpQ+XFomNOcT+Z1ADobaJxGxeojc350=;
+	s=korg; t=1756219456;
+	bh=mFv9DMMQvUq3/ztyOE7UxKa3bI/3lbOVen4bdZUTbjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyM5+Jg6gVbhnC7cXx/mZy6p+rGP6KOVGLofW7cDjxjHH4JA086lQRzhob5OVtVZ+
-	 SZl/gthbQ+C1uEHr/dEsqmjPV9J3o/4KlXjOckqWtzq7DAeMKJ1DjUogZfpkr665VG
-	 8xG76pPHGMEAZfHxtGb8MeOixl00UtzXcOHnj9hQ=
+	b=PCjRBBFnGmdXc8MurlF9pmwohkfR84Bse0jYIUUisryAFkWl20OGmLbQjfOucJyua
+	 fWjbVxpJE9bFEKXdSRYy3TT/UMA5ZXDYo/ZSZLVvXZQn7etm9JMbBMz91VDjLAqKj6
+	 jL+Zm/2T/saP5hLt5CZtavAyYaPALAvbspZ3f+uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/322] RDMA/bnxt_re: Fix a possible memory leak in the driver
+Subject: [PATCH 5.4 358/403] usb: musb: omap2430: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:11:24 +0200
-Message-ID: <20250826110922.571926668@linuxfoundation.org>
+Message-ID: <20250826110916.880308413@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit ba60a1e8cbbd396c69ff9c8bc3242f5ab133e38a ]
+[ Upstream commit 1473e9e7679bd4f5a62d1abccae894fb86de280f ]
 
-The GID context reuse logic requires the context memory to be
-not freed if and when DEL_GID firmware command fails. But, if
-there's no subsequent ADD_GID to reuse it, the context memory
-must be freed when the driver is unloaded. Otherwise it leads
-to a memory leak.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-Below is the kmemleak trace reported:
-
-unreferenced object 0xffff88817a4f34d0 (size 8):
-  comm "insmod", pid 1072504, jiffies 4402561550
-  hex dump (first 8 bytes):
-  01 00 00 00 00 00 00 00                          ........
-  backtrace (crc ccaa009e):
-  __kmalloc_cache_noprof+0x33e/0x400
-  0xffffffffc2db9d48
-  add_modify_gid+0x5e0/0xb60 [ib_core]
-  __ib_cache_gid_add+0x213/0x350 [ib_core]
-  update_gid+0xf2/0x180 [ib_core]
-  enum_netdev_ipv4_ips+0x3f3/0x690 [ib_core]
-  enum_all_gids_of_dev_cb+0x125/0x1b0 [ib_core]
-  ib_enum_roce_netdev+0x14b/0x250 [ib_core]
-  ib_cache_setup_one+0x2e5/0x540 [ib_core]
-  ib_register_device+0x82c/0xf10 [ib_core]
-  0xffffffffc2df5ad9
-  0xffffffffc2da8b07
-  0xffffffffc2db174d
-  auxiliary_bus_probe+0xa5/0x120
-  really_probe+0x1e4/0x850
-  __driver_probe_device+0x18f/0x3d0
-
-Fixes: 4a62c5e9e2e1 ("RDMA/bnxt_re: Do not free the ctx_tbl entry if delete GID fails")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-4-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Removed populate_irqs-related goto changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/usb/musb/omap2430.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 9bd837a5b8a1..b213ecca2854 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -1615,6 +1615,28 @@ static void bnxt_re_free_nqr_mem(struct bnxt_re_dev *rdev)
- 	rdev->nqr = NULL;
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -476,13 +476,13 @@ static int omap2430_probe(struct platfor
+ 			ARRAY_SIZE(musb_resources));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	pm_runtime_enable(glue->dev);
+@@ -497,7 +497,9 @@ static int omap2430_probe(struct platfor
+ 
+ err3:
+ 	pm_runtime_disable(glue->dev);
+-
++err_put_control_otghs:
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ err2:
+ 	platform_device_put(musb);
+ 
+@@ -511,6 +513,8 @@ static int omap2430_remove(struct platfo
+ 
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ 
+ 	return 0;
  }
- 
-+/* When DEL_GID fails, driver is not freeing GID ctx memory.
-+ * To avoid the memory leak, free the memory during unload
-+ */
-+static void bnxt_re_free_gid_ctx(struct bnxt_re_dev *rdev)
-+{
-+	struct bnxt_qplib_sgid_tbl *sgid_tbl = &rdev->qplib_res.sgid_tbl;
-+	struct bnxt_re_gid_ctx *ctx, **ctx_tbl;
-+	int i;
-+
-+	if (!sgid_tbl->active)
-+		return;
-+
-+	ctx_tbl = sgid_tbl->ctx;
-+	for (i = 0; i < sgid_tbl->max; i++) {
-+		if (sgid_tbl->hw_id[i] == 0xFFFF)
-+			continue;
-+
-+		ctx = ctx_tbl[i];
-+		kfree(ctx);
-+	}
-+}
-+
- static void bnxt_re_dev_uninit(struct bnxt_re_dev *rdev, u8 op_type)
- {
- 	u8 type;
-@@ -1623,6 +1645,7 @@ static void bnxt_re_dev_uninit(struct bnxt_re_dev *rdev, u8 op_type)
- 	if (test_and_clear_bit(BNXT_RE_FLAG_QOS_WORK_REG, &rdev->flags))
- 		cancel_delayed_work_sync(&rdev->worker);
- 
-+	bnxt_re_free_gid_ctx(rdev);
- 	if (test_and_clear_bit(BNXT_RE_FLAG_RESOURCES_INITIALIZED,
- 			       &rdev->flags))
- 		bnxt_re_cleanup_res(rdev);
--- 
-2.50.1
-
 
 
 
