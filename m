@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BD2B364B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DF2B35FCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C296E7A5A5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6043C463956
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D771123D28F;
-	Tue, 26 Aug 2025 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFFD1EB9F2;
+	Tue, 26 Aug 2025 12:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7lNyTaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsK9mvjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9538C227EA8;
-	Tue, 26 Aug 2025 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30AA186E40;
+	Tue, 26 Aug 2025 12:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215681; cv=none; b=gUn7gA/hqHUjAjuu6E6/V1TinzxIVS7L3UbrdpuE9913229ZBBRRtiKhoV7+EzwYx1IQcftuSQ7moZZj1ihyVH/BYEFJDU3vKMrlNMg+jpB9230l8wrqkKFIqQZrbxEReUpbz1hehln8VjrvlCUodbvbqJDvuN9voMV/7XPD5X4=
+	t=1756212693; cv=none; b=Pbm/9bI54gBEMpTTF4t/Tk77ss+xzFYg+V1S6HmEQzCxSQ1p+k6i4H9CI1Y2Hif7qxcU1f+nE2W67BcL/XGDQW/Km5xiFPc43PWcIHzGTh74ULYktT5Y/f/sfN2NQsTofeBIPbW50TgN6syoNCZuUx8YfuhZJFFVYhoEgYj9nes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215681; c=relaxed/simple;
-	bh=T1hVc8D7X6Lh9AVEQpUjHbw+F3PsIDvjaCe4LftoOjc=;
+	s=arc-20240116; t=1756212693; c=relaxed/simple;
+	bh=4mtUXFAzzMX0Qz5SAKhFeois1T7aI+fWXy3VuzJ8xO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTPisBG9Z+fRb4zGtXv2Z0LMJzaZXsnDGk3VZ/0AVieBjtGtGe8i1yl9+cAEYxkm8jxDMEKiVrlJPmuY25tNSYyl1aD0z+/6cnzeUHNi6hxuPFPIy+JVKINq5q52qlBHoHFRwrDGis3MrA2Ia36Grnov2JGKHbhBpIWNIi1tdIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7lNyTaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270EFC113CF;
-	Tue, 26 Aug 2025 13:41:20 +0000 (UTC)
+	 MIME-Version; b=SoslVddlxuQpC8z7m+msqXYvQCTZJQBiA3WjRHTJM4TLfDn9K7mt2KB1LooKmaWIw4hkUjdMdYrxXcNKf5lYu02OicNUYbj+p2IDnZP0MS5NUa8Dl2HkU8ElYEl2ajUmMY+45NzqWjoBLw5pp5T8/ssvRvyvYiQNXc2UldzeYQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsK9mvjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191E8C4CEF1;
+	Tue, 26 Aug 2025 12:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215681;
-	bh=T1hVc8D7X6Lh9AVEQpUjHbw+F3PsIDvjaCe4LftoOjc=;
+	s=korg; t=1756212693;
+	bh=4mtUXFAzzMX0Qz5SAKhFeois1T7aI+fWXy3VuzJ8xO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7lNyTaXuj/JSi/rOtv6UIktqu2xeC4cijwNVAdlRaKV5p4AZhSHvJluYEOV79AT3
-	 v8gipd3/6snWcWJ5nUa/yQ4oZgb7Eux3skeOVNhF9TOvNiZrutpE8KRfWDvkEflQQo
-	 HEIyfQEJtj3SjIH/UwgCIcu6ABShuePf1r5PVLmg=
+	b=DsK9mvjgNBw2SgRdUY1+t8i9y9FAyFbRk5GP3JBbv5ON+eXrgSRoG34Qpnc97A5F8
+	 GA+A+i04sRjqKmJp589nLHPIS9oRih69EOr/Ya4rK+qF4r7itNFZa+yTTNiHVeH5IO
+	 laETseD8C+d5znZGDnn+Qyo9+ruivD8PBP6q/Au8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/644] arm: dts: ti: omap: Fixup pinheader typo
-Date: Tue, 26 Aug 2025 13:03:35 +0200
-Message-ID: <20250826110949.591395465@linuxfoundation.org>
+Subject: [PATCH 6.6 067/587] arm64: Handle KCOV __init vs inline mismatches
+Date: Tue, 26 Aug 2025 13:03:36 +0200
+Message-ID: <20250826110954.640095745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Törnqvist <albin.tornqvist@codiax.se>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
+[ Upstream commit 65c430906efffee9bd7551d474f01a6b1197df90 ]
 
-This commit fixes a typo introduced in commit
-ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-gpio0_7 is located on the P9 header on the BBB.
-This was verified with a BeagleBone Black by toggling the pin and
-checking with a multimeter that it corresponds to pin 42 on the P9
-header.
+GCC appears to have kind of fragile inlining heuristics, in the
+sense that it can change whether or not it inlines something based on
+optimizations. It looks like the kcov instrumentation being added (or in
+this case, removed) from a function changes the optimization results,
+and some functions marked "inline" are _not_ inlined. In that case,
+we end up with __init code calling a function not marked __init, and we
+get the build warnings I'm trying to eliminate in the coming patch that
+adds __no_sanitize_coverage to __init functions:
 
-Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
-Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
-Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
+
+This problem is somewhat fragile (though using either __always_inline
+or __init will deterministically solve it), but we've tripped over
+this before with GCC and the solution has usually been to just use
+__always_inline and move on.
+
+For arm64 this requires forcing one ACPI function to be inlined with
+__always_inline.
+
+Link: https://lore.kernel.org/r/20250724055029.3623499-1-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-boneblack.dts | 2 +-
+ arch/arm64/include/asm/acpi.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
-index 9312197316f0..db1bf9452e57 100644
---- a/arch/arm/boot/dts/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/am335x-boneblack.dts
-@@ -34,7 +34,7 @@ &gpio0 {
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
- 		"[mmc0_cd]",
--		"P8_42A [ecappwm0]",
-+		"P9_42A [ecappwm0]",
- 		"P8_35 [lcd d12]",
- 		"P8_33 [lcd d13]",
- 		"P8_31 [lcd d14]",
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index a407f9cd549e..c07a58b96329 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
+ {}
+ #endif
+ 
+-static inline const char *acpi_get_enable_method(int cpu)
++static __always_inline const char *acpi_get_enable_method(int cpu)
+ {
+ 	if (acpi_psci_present())
+ 		return "psci";
 -- 
 2.39.5
 
