@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972F9B363B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746ABB35B77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 057A48A3DA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8683B7C40B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAF51C84B8;
-	Tue, 26 Aug 2025 13:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A5F29BD87;
+	Tue, 26 Aug 2025 11:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kay3Pax6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGq8Admk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092AF1B85F8;
-	Tue, 26 Aug 2025 13:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD602BEFF0;
+	Tue, 26 Aug 2025 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214628; cv=none; b=Gw2wrDvPavC+WHL5JdRd8mmljQL+Gtub58Iq+qA3qQWXgS5Jg4+nd90mfZXK2KXZ1Pf1uKt9f9GYrBaAj+EhKmWHkpRfHxoKnobE9CUnqQ8Qe9EdGly9rqs9E66c8l3MvkC+qCyRAIKYhqmm9rSrN6rRoVe7KfHY2h9zB0UH4V4=
+	t=1756207433; cv=none; b=ZA/K43ltid5ZgwL8L+Z5XDluihCHGaWFofBWKXWUh7Yr4cQ9uuWonDJ5RC0t0iZLosSwsPz4Qojclg5nbMpaPl6abwzTooaVv9oiGkK2PCfQ8cuI7LfT5aXHAJF383gQe3gCOeih7WCEAjglw/oJHdP1mBD3R8ub/B3BDkoxFYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214628; c=relaxed/simple;
-	bh=NsRb8ve5fchPgXhwFTbSculXloNtdiNWYIp7fEBQ3kQ=;
+	s=arc-20240116; t=1756207433; c=relaxed/simple;
+	bh=GysSvYB/ElYF40AIJvyp3ID1xNkbuO2n/K/U4MHFUss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFXBGILHcoleXJ3HqO0HvPwngx4m71pHiqPaKR7uIC2USa6FTbu5sNNCMAp2OjmWjVquq47I7kWlf7ZRpVW9tP1fl4cuZrmevalJt5U00sW2V+1z+M02+pXKIhkDv832pmfml5W+3bvz6eWpIWJpJlWzdcjyAHYTeS4y3+lPeao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kay3Pax6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEAEC4CEF1;
-	Tue, 26 Aug 2025 13:23:47 +0000 (UTC)
+	 MIME-Version; b=EX7z2LvyOWh4CzFN+WXu0Zek4nCfZhJsff7vfDjbKeEcbDIjPxrvRpE9HKD/CIiLXfso9Q4AYRDpfBbi2a9iiCNMW85l+RehShEM8OHIAyX/OM/6Te3fhK+r7GrmbACixtWAXVfybIefNah+Y6ZXdgDTXy06VaSLKZdaXdCftOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGq8Admk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B93C4CEF4;
+	Tue, 26 Aug 2025 11:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214627;
-	bh=NsRb8ve5fchPgXhwFTbSculXloNtdiNWYIp7fEBQ3kQ=;
+	s=korg; t=1756207432;
+	bh=GysSvYB/ElYF40AIJvyp3ID1xNkbuO2n/K/U4MHFUss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kay3Pax6tAP0gVwSkH7rjqjbYXJxXUI3nnuaEH4AXcz+UxsdViweEMVgETug//esl
-	 0LZOO3qY64UsK7SOG4OTE/Cn/T2WXXKqxwoWcXPNIaKSjO8mgOMbd5dmyivFWfZa/P
-	 2HjXYeaZbH2LLKiolNQhmWWW3K+HaXj5oHvqf/Ks=
+	b=OGq8AdmkiJX2Uqd8dIrSLUVnC/TAb6WFPhO+QJZMgG8/mFsCuZLIlLKNo2Dz7Sq0L
+	 sOfEtVbR7wn5kJnNHwwFHyslFcYiR13Y87m10mVlAVIyVs9rTbPIvnwn/scfVXAvkv
+	 jlLHZgizWUNog8IAEyZMSUjvS8YIqcD8uu7IsWM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/482] module: Prevent silent truncation of module name in delete_module(2)
+	YuanShang <YuanShang.Mao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 178/457] drm/amdgpu: Retain job->vm in amdgpu_job_prepare_job
 Date: Tue, 26 Aug 2025 13:07:42 +0200
-Message-ID: <20250826110935.944985976@linuxfoundation.org>
+Message-ID: <20250826110941.775796519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: YuanShang <YuanShang.Mao@amd.com>
 
-[ Upstream commit a6323bd4e611567913e23df5b58f2d4e4da06789 ]
+commit c00d8b79fd2167c6ac65e096619535acdf8678d5 upstream.
 
-Passing a module name longer than MODULE_NAME_LEN to the delete_module
-syscall results in its silent truncation. This really isn't much of
-a problem in practice, but it could theoretically lead to the removal of an
-incorrect module. It is more sensible to return ENAMETOOLONG or ENOENT in
-such a case.
+The field job->vm is used in function amdgpu_job_run to get the page
+table re-generation counter and decide whether the job should be skipped.
 
-Update the syscall to return ENOENT, as documented in the delete_module(2)
-man page to mean "No module by that name exists." This is appropriate
-because a module with a name longer than MODULE_NAME_LEN cannot be loaded
-in the first place.
+Specifically, function amdgpu_vm_generation checks if the VM is valid for this job to use.
+For instance, if a gfx job depends on a cancelled sdma job from entity vm->delayed,
+then the gfx job should be skipped.
 
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Link: https://lore.kernel.org/r/20250630143535.267745-2-petr.pavlu@suse.com
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26c95e838e63 ("drm/amdgpu: set the VM pointer to NULL in amdgpu_job_prepare")
+Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ed76936c6b10b547c6df4ca75412331e9ef6d339)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/main.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_job.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 554aba47ab68..3269f6c46814 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -699,14 +699,16 @@ SYSCALL_DEFINE2(delete_module, const char __user *, name_user,
- 	struct module *mod;
- 	char name[MODULE_NAME_LEN];
- 	char buf[MODULE_FLAGS_BUF_SIZE];
--	int ret, forced = 0;
-+	int ret, len, forced = 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+@@ -387,13 +387,6 @@ amdgpu_job_prepare_job(struct drm_sched_
+ 			dev_err(ring->adev->dev, "Error getting VM ID (%d)\n", r);
+ 			goto error;
+ 		}
+-		/*
+-		 * The VM structure might be released after the VMID is
+-		 * assigned, we had multiple problems with people trying to use
+-		 * the VM pointer so better set it to NULL.
+-		 */
+-		if (!fence)
+-			job->vm = NULL;
+ 		return fence;
+ 	}
  
- 	if (!capable(CAP_SYS_MODULE) || modules_disabled)
- 		return -EPERM;
- 
--	if (strncpy_from_user(name, name_user, MODULE_NAME_LEN-1) < 0)
--		return -EFAULT;
--	name[MODULE_NAME_LEN-1] = '\0';
-+	len = strncpy_from_user(name, name_user, MODULE_NAME_LEN);
-+	if (len == 0 || len == MODULE_NAME_LEN)
-+		return -ENOENT;
-+	if (len < 0)
-+		return len;
- 
- 	audit_log_kern_module(name);
- 
--- 
-2.39.5
-
 
 
 
