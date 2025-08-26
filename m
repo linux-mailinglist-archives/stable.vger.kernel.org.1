@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C7B36953
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1042B35B04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E218E721F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C00618836BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF4635209D;
-	Tue, 26 Aug 2025 14:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDBB2BE653;
+	Tue, 26 Aug 2025 11:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyUEkZCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONFY2wNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5A6306D3F;
-	Tue, 26 Aug 2025 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D25C293C44;
+	Tue, 26 Aug 2025 11:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217276; cv=none; b=NbJn9FCllR01OQPTOe7efiR2RTyxmDqxp4XU4Ty++Y2xg88y3R5sdEosTxQ8V3E3w/lpwDRo0MoyySbGQMNFVC1KTPMFY9vHRgGI/IMvk5oNBdAtB5kk4OEUYRKDQxzocYHmvAbM7e6ppgOm3wF2EKiMhnwwbkot1dK2gZ4Papw=
+	t=1756207012; cv=none; b=LkQyaBb3/czXejZkoR3xA1MMXeOSZARfb+0EEQ/MY+39RWpn/htMiJ7tHsQxWKyN5ycUe7GgY5adCpcCotuiEqAB+Y38K4haqb9/nWEZ9yt9Z75RRBPmzcr/bny88aRbQSrHRdDMda2A9wzD1aCvplSebGi7/SLsz7vkwms/Upg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217276; c=relaxed/simple;
-	bh=Ei84zOudAJlk2yxA4KUArfKlIeQinhICnYKnpZH4zLM=;
+	s=arc-20240116; t=1756207012; c=relaxed/simple;
+	bh=Pa+WcXJzJEEuBD5jkGYKFaGeGBwqq+l3pWSQbFrHn6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0Unuiilmt3N0mQ4wZc7FhaDQHkB1iKA3NYzP7PUErA3WFXiEIbdeDgiA29ybD0BM13dAjG5CYR2TZ8Cxj/KkeUcGv48QDqKHPUDc0n5d5kXFQ9cB1Lr/FY14N15tv9m6seH1ERSJ+9HIFkCzt0jVu1aJZikwVkq/riB3t+z7W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyUEkZCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F90C4CEF1;
-	Tue, 26 Aug 2025 14:07:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S9kLgWmxz2OC+2+3JXScV0JyNRDsjUk3+7/PusmdmTbBSuNLpXNgH++rmjcuHl/8oO8x1fWigpPHEwwKPN9AkcBGnLQMsjZs05mLhfgC7qjfL9PnuLUC3R6bJkZZypxJ0u+xUGNMXWr8FSkrGMvMSRL2tnpGBql5CC6LzguCUcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONFY2wNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1949C4CEF1;
+	Tue, 26 Aug 2025 11:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217276;
-	bh=Ei84zOudAJlk2yxA4KUArfKlIeQinhICnYKnpZH4zLM=;
+	s=korg; t=1756207012;
+	bh=Pa+WcXJzJEEuBD5jkGYKFaGeGBwqq+l3pWSQbFrHn6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyUEkZCMokcR07vwEEWAlhcsdNrufE0Mac24xPUZOL7EDSK7gVxfJ3yX/ND12WSkv
-	 LVzCmVntEfGpWg8XS1gO1owSdDTUMAfG+5GDX0pgONPX4CvqKas8eqJywBXIIbk6Ez
-	 XVV2iEIKczqIUzMRURLW/9idwKq64UBRoXK1sgN8=
+	b=ONFY2wNuflkunIw+unuac5fLajs5b7eTzOR7d1E+9QczIVCtH53HnizUq4R2bLO38
+	 Far42XzaQPtE0PYTh+oJhGWhHUnK9JMisqXv/hExbUApakpvgCifLK5+90RPvDjinK
+	 PiK1L/Y6Vjz3QVy3c3LuSWdPCc1bfEs6yNV6+MUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/523] vmci: Prevent the dispatching of uninitialized payloads
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 009/457] iio: adc: ad7173: fix num_slots
 Date: Tue, 26 Aug 2025 13:04:53 +0200
-Message-ID: <20250826110926.607712980@linuxfoundation.org>
+Message-ID: <20250826110937.541103421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
+commit 92c247216918fcaa64244248ee38a0f1d342278c upstream.
 
-The reproducer executes the host's unlocked_ioctl call in two different
-tasks. When init_context fails, the struct vmci_event_ctx is not fully
-initialized when executing vmci_datagram_dispatch() to send events to all
-vm contexts. This affects the datagram taken from the datagram queue of
-its context by another task, because the datagram payload is not initialized
-according to the size payload_size, which causes the kernel data to leak
-to the user space.
+Fix the num_slots value for most chips in the ad7173 driver. The correct
+value is the number of CHANNELx registers on the chip.
 
-Before dispatching the datagram, and before setting the payload content,
-explicitly set the payload content to 0 to avoid data leakage caused by
-incomplete payload initialization.
+In commit 4310e15b3140 ("iio: adc: ad7173: don't make copy of
+ad_sigma_delta_info struct"), we refactored struct ad_sigma_delta_info
+to be static const data instead of being dynamically populated during
+driver probe. However, there was an existing bug in commit 76a1e6a42802
+("iio: adc: ad7173: add AD7173 driver") where num_slots was incorrectly
+set to the number of CONFIGx registers instead of the number of
+CHANNELx registers. This bug was partially propagated to the refactored
+code in that the 16-channel chips were only given 8 slots instead of
+16 although we did managed to fix the 8-channel chips and one of the
+4-channel chips in that commit. However, we botched two of the 4-channel
+chips and ended up incorrectly giving them 8 slots during the
+refactoring.
 
-Fixes: 28d6692cd8fb ("VMCI: context implementation.")
-Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
-Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
+This patch fixes that mistake on the 4-channel chips and also
+corrects the 16-channel chips to have 16 slots.
+
+Fixes: 4310e15b3140 ("iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250706-iio-adc-ad7173-fix-num_slots-on-most-chips-v3-1-d1f5453198a7@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/ad7173.c |   36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index 26ff49fdf0f7..ccadbc0d8f7d 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
-+		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
-+			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -772,10 +772,26 @@ static const struct ad_sigma_delta_info
+ 	.num_slots = 8,
+ };
  
--- 
-2.39.5
-
++static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
++	.set_channel = ad7173_set_channel,
++	.append_status = ad7173_append_status,
++	.disable_all = ad7173_disable_all,
++	.disable_one = ad7173_disable_one,
++	.set_mode = ad7173_set_mode,
++	.has_registers = true,
++	.has_named_irqs = true,
++	.addr_shift = 0,
++	.read_mask = BIT(6),
++	.status_ch_mask = GENMASK(3, 0),
++	.data_reg = AD7173_REG_DATA,
++	.num_resetclks = 64,
++	.num_slots = 16,
++};
++
+ static const struct ad7173_device_info ad4111_device_info = {
+ 	.name = "ad4111",
+ 	.id = AD4111_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -797,7 +813,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad4112_device_info = {
+ 	.name = "ad4112",
+ 	.id = AD4112_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -818,7 +834,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad4113_device_info = {
+ 	.name = "ad4113",
+ 	.id = AD4113_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -837,7 +853,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad4114_device_info = {
+ 	.name = "ad4114",
+ 	.id = AD4114_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 16,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -856,7 +872,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad4115_device_info = {
+ 	.name = "ad4115",
+ 	.id = AD4115_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 16,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -875,7 +891,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad4116_device_info = {
+ 	.name = "ad4116",
+ 	.id = AD4116_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 11,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -894,7 +910,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad7172_2_device_info = {
+ 	.name = "ad7172-2",
+ 	.id = AD7172_2_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
+ 	.num_voltage_in = 5,
+ 	.num_channels = 4,
+ 	.num_configs = 4,
+@@ -927,7 +943,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad7173_8_device_info = {
+ 	.name = "ad7173-8",
+ 	.id = AD7173_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in = 17,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -944,7 +960,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad7175_2_device_info = {
+ 	.name = "ad7175-2",
+ 	.id = AD7175_2_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
+ 	.num_voltage_in = 5,
+ 	.num_channels = 4,
+ 	.num_configs = 4,
+@@ -961,7 +977,7 @@ static const struct ad7173_device_info a
+ static const struct ad7173_device_info ad7175_8_device_info = {
+ 	.name = "ad7175-8",
+ 	.id = AD7175_8_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in = 17,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
 
 
 
