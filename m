@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6349FB36B89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61957B35DEF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF9FB7ABED5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61FF17C7648
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACA8350830;
-	Tue, 26 Aug 2025 14:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684D529D29B;
+	Tue, 26 Aug 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J73K5rqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta59N+eL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD13B10E0;
-	Tue, 26 Aug 2025 14:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244BA21D3C0;
+	Tue, 26 Aug 2025 11:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219391; cv=none; b=fLHYGYIqXTzvUeeOtV+h/3Mxrih+DMlw6ZkE3wm1jgtbpYZKX9MbImPY0elss4DPgAjIA/OoT8OSpXDoQv/WwgC5XJx44cCE+Nhk9k11CQWb4d+5ckdDJGW6CqDzByV+fMeK5CoL2mTB6ivq5OHP1vnT/fJmbBOKxYUFV6vyaqc=
+	t=1756208937; cv=none; b=QkfXgPypHo2ulOVy+e+04/4OTITMrEoK2qFhkL9SuZBcs7lPCc1yJTicl6y+Di08aZ4cDW9PrjBFhms3B6EBqzdmn2hL/VPIQeKdhtMRXMgrtn6e7FJEVzXlZvxf3MecLaur3hKcY37yrLjaXA893Tr+dD1rFfqBrMTO7EYlIag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219391; c=relaxed/simple;
-	bh=ztdUQUC9dWSrglNOQ3Yj98rMqhRmiuClbjiWfRrm/EM=;
+	s=arc-20240116; t=1756208937; c=relaxed/simple;
+	bh=a0rEK2kAzlsObCA1jgM1oawyJYGwTD0MvUqYqfJUR8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8Ybl4OMGMsPCw1Pgb1AE5Mlmwv8h+pFgvWCb51U3gXL6U0uCV6hn/UnTHPhTnQgDlT9Js9IDjuHB6tQJe65sUX1HOe1kdp0/x4k1HC1FmaJ5VVk8gCHqZ6vN/H1I0shdzZJVBmrNEso0rRwxkh5k7q4b7+xhLKGjThj7qO9RAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J73K5rqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A116C4CEF1;
-	Tue, 26 Aug 2025 14:43:10 +0000 (UTC)
+	 MIME-Version; b=Doo/3qTFW+sHZJH3SU051KpHRzwk6q31XEqi2BtUHC0lvTqoZohiGob6ulWP0hxx8hLys4DlWJi5t5DQf5bhDKbvJqwSAwSHnhCtYLqCBnUTQ91aSUCiz0CYPbXXv8BS5Z6Brnk64kSVovoMUtAZew4/IDLs7U/t61IH4hvrw5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta59N+eL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB9BC4CEF4;
+	Tue, 26 Aug 2025 11:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219390;
-	bh=ztdUQUC9dWSrglNOQ3Yj98rMqhRmiuClbjiWfRrm/EM=;
+	s=korg; t=1756208937;
+	bh=a0rEK2kAzlsObCA1jgM1oawyJYGwTD0MvUqYqfJUR8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J73K5rqBtghwhLDptZvbQfTjI2R0E+Tdm6/zT/JFqzPDGmw0twOo3s7d649MFTf1F
-	 /Q8qB8m408SutOy/M74nTLYegfiFQ0KXryufaxeKn8/TnF8HX2Mq0B7+847czcwQE7
-	 a4UkIkojNYW+xW9OoFKvXroMBxb8eyWYapq0HEqM=
+	b=Ta59N+eLiNkrtJK8lG4eG7Am5osduhvjgUCZG88xc8OwRR222JHkfeZjVQRz6zznc
+	 zQ/ha9dtozpIAP3K7G6lpEdvZlXS3hKjD6uKZGqW0h1HaerXuwQ8HSqG47NuKA5d+L
+	 Lw6Ru9dnnpnpuu8b5pvtubnMpM+rOe0FjlF27UWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 364/403] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+Subject: [PATCH 6.12 275/322] scsi: qla4xxx: Prevent a potential error pointer dereference
 Date: Tue, 26 Aug 2025 13:11:30 +0200
-Message-ID: <20250826110917.056343183@linuxfoundation.org>
+Message-ID: <20250826110922.714690279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 7af160aea26c7dc9e6734d19306128cce156ec40 ]
+[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
 
-In the interrupt handler rain_interrupt(), the buffer full check on
-rain->buf_len is performed before acquiring rain->buf_lock. This
-creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
-rain->buf_len is concurrently accessed and modified in the work
-handler rain_irq_work_handler() under the same lock.
+The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
+but qla4xxx_ep_connect() returns error pointers.  Propagating the error
+pointers will lead to an Oops in the caller, so change the error pointers
+to NULL.
 
-Multiple interrupt invocations can race, with each reading buf_len
-before it becomes full and then proceeding. This can lead to both
-interrupts attempting to write to the buffer, incrementing buf_len
-beyond its capacity (DATA_SIZE) and causing a buffer overflow.
-
-Fix this bug by moving the spin_lock() to before the buffer full
-check. This ensures that the check and the subsequent buffer modification
-are performed atomically, preventing the race condition. An corresponding
-spin_unlock() is added to the overflow path to correctly release the
-lock.
-
-This possible bug was found by an experimental static analysis tool
-developed by our team.
-
-Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ drivers/media/cec/usb/rainshadow/ => drivers/media/usb/rainshadow-cec/ ]
+Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/rainshadow-cec/rainshadow-cec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/usb/rainshadow-cec/rainshadow-cec.c
-+++ b/drivers/media/usb/rainshadow-cec/rainshadow-cec.c
-@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
- {
- 	struct rain *rain = serio_get_drvdata(serio);
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 97e9ca5a2a02..59ff6bb11d84 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -6606,6 +6606,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
  
-+	spin_lock(&rain->buf_lock);
- 	if (rain->buf_len == DATA_SIZE) {
-+		spin_unlock(&rain->buf_lock);
- 		dev_warn_once(rain->dev, "buffer overflow\n");
- 		return IRQ_HANDLED;
- 	}
--	spin_lock(&rain->buf_lock);
- 	rain->buf_len++;
- 	rain->buf[rain->buf_wr_idx] = data;
- 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
+ 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
+ 	vfree(dst_addr);
++	if (IS_ERR(ep))
++		return NULL;
+ 	return ep;
+ }
+ 
+-- 
+2.50.1
+
 
 
 
