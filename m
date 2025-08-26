@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD78B361BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB9BB35E18
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2002A6C6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8202F1BA5456
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288EA2147EF;
-	Tue, 26 Aug 2025 13:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D577E338F3F;
+	Tue, 26 Aug 2025 11:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgdCvqWp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFUj4XqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92B11ACEDA;
-	Tue, 26 Aug 2025 13:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920083376BD;
+	Tue, 26 Aug 2025 11:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213625; cv=none; b=fgl4RR2PvyC8les5zomI5f7rOylU4EcVxIEhe++vHi58mZ0d4k6BPhYFduHLO5tFufG7f6sp4uHlqRly0Zul/EWu6o8eumQ4OMkmQjArY7iR98YDpRalw/rQmHS3ShmVdFAgRQrHOEp2EE8+3sM2KoRfywAEDT2kc8E5Yzx+2VM=
+	t=1756208607; cv=none; b=D18Kccr4gZAHuI5Wxf9KfuZbWZ69noqbazEqZ7DY0cAwXBgijTuMF222gnS/ZjhkBoqtO9LsWZWI/ghNjnn+7lH9amekVqEgVqfWRdU33ZXzvm4VMMBYtUBUOcbGF/0hhUoYwBIxHeo5Iv+qh8UVluN7fdvd/H2sb2Y6o9DJNx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213625; c=relaxed/simple;
-	bh=I+XxFpSPfLtFIU5PQmR1tVRQHWOs4VECWrqx93QvEeM=;
+	s=arc-20240116; t=1756208607; c=relaxed/simple;
+	bh=IDagQxjLjxJBgYuLxwG50tnm5PG7iWHZHtG4GCoiD10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9pgo7QXomyfQg3Uo2nzE7MJ6c9OpzmyPs4FLZfCm9KiKpUVMrF1foZdPTtf2Zyp7fuNPlnH/KWAwCj7FWkMpmxRMBA18TErmK7gQIJdrqf4dkhcNHUy1U6bUz7VyRv/NQnf5CcBwWp2GzD3KahYQ15Gp92KFMhDThIPYVypSNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgdCvqWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4232CC4CEF1;
-	Tue, 26 Aug 2025 13:07:05 +0000 (UTC)
+	 MIME-Version; b=EmFVBxNgLnJO+1LSty4VdhY/Bp4VDnbGQm3SSPXJkGmjR9sKm4bz7bOsqewnzwdq5adgQYwbYuz8kzUUb2TNAcR/rX6Jdj4EtuHof2ZWiGIIlGaqZknJA0f8VDBMP1DtqJ7JYYYCYqPH94RYBGGrI2f4s8Hrt4OHDqOzKB3YEHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFUj4XqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCCEC116B1;
+	Tue, 26 Aug 2025 11:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213625;
-	bh=I+XxFpSPfLtFIU5PQmR1tVRQHWOs4VECWrqx93QvEeM=;
+	s=korg; t=1756208607;
+	bh=IDagQxjLjxJBgYuLxwG50tnm5PG7iWHZHtG4GCoiD10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgdCvqWpVPN3SPCphChkdOxCjx5Hd8WACfJnf7iIUzgj8g92p2ce/hPmzbwqqBOPr
-	 gamRODGkNOpg40M6R1omYD3p8tId5FCjxh6alKHD+/CTOJbFrxdek1KjyW9lJ8hkXg
-	 iqiUl3v37JcJnFsjz4v44mf4+haf/uwXH7mjblbY=
+	b=qFUj4XqJTUsifZiAJilGewfP2V8TONZNDP87GEVHm9Xya5w8i4S+/aF0uXjCuSVXz
+	 lEyWA81UQvnoex8oNOMbziv0VvUs2QenfTzqwhAjPxU1jYEHb1b59I6xO4XaMSky0x
+	 dgNXfkum11lN9gMIVCqVzcvGSwtT/Ct4pBmcV9nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 411/587] media: qcom: camss: cleanup media device allocated resource on error path
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 145/322] btrfs: always abort transaction on failure to add block group to free space tree
 Date: Tue, 26 Aug 2025 13:09:20 +0200
-Message-ID: <20250826111003.386980451@linuxfoundation.org>
+Message-ID: <20250826110919.385535750@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 69080ec3d0daba8a894025476c98ab16b5a505a4 upstream.
+[ Upstream commit 1f06c942aa709d397cf6bed577a0d10a61509667 ]
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+Only one of the callers of __add_block_group_free_space() aborts the
+transaction if the call fails, while the others don't do it and it's
+either never done up the call chain or much higher in the call chain.
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
+So make sure we abort the transaction at __add_block_group_free_space()
+if it fails, which brings a couple benefits:
 
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+1) If some call chain never aborts the transaction, we avoid having some
+   metadata inconsistency because BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE is
+   cleared when we enter __add_block_group_free_space() and therefore
+   __add_block_group_free_space() is never called again to add the block
+   group items to the free space tree, since the function is only called
+   when that flag is set in a block group;
+
+2) If the call chain already aborts the transaction, then we get a better
+   trace that points to the exact step from __add_block_group_free_space()
+   which failed, which is better for analysis.
+
+So abort the transaction at __add_block_group_free_space() if any of its
+steps fails.
+
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/free-space-tree.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1660,7 +1660,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_genpd_cleanup;
-+		goto err_media_device_cleanup;
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1379,12 +1379,17 @@ static int __add_block_group_free_space(
+ 	clear_bit(BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE, &block_group->runtime_flags);
+ 
+ 	ret = add_new_free_space_info(trans, block_group, path);
+-	if (ret)
++	if (ret) {
++		btrfs_abort_transaction(trans, ret);
+ 		return ret;
++	}
+ 
+-	return __add_to_free_space_tree(trans, block_group, path,
+-					block_group->start,
+-					block_group->length);
++	ret = __add_to_free_space_tree(trans, block_group, path,
++				       block_group->start, block_group->length);
++	if (ret)
++		btrfs_abort_transaction(trans, ret);
++
++	return 0;
+ }
+ 
+ int add_block_group_free_space(struct btrfs_trans_handle *trans,
+@@ -1409,9 +1414,6 @@ int add_block_group_free_space(struct bt
  	}
  
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
-@@ -1711,6 +1711,8 @@ err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
- 	pm_runtime_disable(dev);
-+err_media_device_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
- 
+ 	ret = __add_block_group_free_space(trans, block_group, path);
+-	if (ret)
+-		btrfs_abort_transaction(trans, ret);
+-
+ out:
+ 	btrfs_free_path(path);
+ 	mutex_unlock(&block_group->free_space_lock);
 
 
 
