@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF8CB36717
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B067B36A72
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0B141BA57DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 537D27A3C9E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712F52FFDEB;
-	Tue, 26 Aug 2025 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F42350825;
+	Tue, 26 Aug 2025 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Re1J9PfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvyKT/y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F65E258A;
-	Tue, 26 Aug 2025 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21500353366;
+	Tue, 26 Aug 2025 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216468; cv=none; b=TDeEZkJHmtkeZpVoBiZ0qFoCtCGEZUfnYVzep6p5yMYi7WCfCrkl8a2phU3P2GHBviQWPulmG7EXYWom0IujNqCY7UyfCbCVqZYHomLATZARspS0+0uDMDX7CcYRc8y20In9tp+8GIq6yTCwMAuvxnj30TWSVsfsZt5Yluzh1I0=
+	t=1756218856; cv=none; b=IILr532VEEp+wr7Qd+KuwC+kVwCBgyTYzUWok+K1He0ZNDANQtawGBQ8EhZ59V+9dyuD3VF/kJWo9fN9cFkU5AB7I4/NlI8m7I71N8EmWoSfCIaiQYsa9MNWSNfHiIvsX5Ng/vXmMLDAti389tc/6FB6uJMoWs+X+pKSldZw0Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216468; c=relaxed/simple;
-	bh=kw/g9cPvszbtDslEyBk3zPNWZ/0YnTfjsFj4cnPzMsg=;
+	s=arc-20240116; t=1756218856; c=relaxed/simple;
+	bh=hcCsTJnk7y+IAk1FCA7lJ3E/iR8sb6FMisRbJPYhH+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuxhY6g7Db9y+9uPLnvRqGTVFa+V9mEAqVa2kbWvp3MBpt2H2Lo0GzRwh918FheKAyePn3XVB/70I8sxRDDuX6wDtnTO5g23Y7cK4zaRNY43xTUsJFld3XAyk2TP7wYP2bEZaxvtxscuMz7HwyJVOncjZhkIVvMtRcMlw8SC8uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Re1J9PfT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C40C4CEF1;
-	Tue, 26 Aug 2025 13:54:27 +0000 (UTC)
+	 MIME-Version; b=s6wivnNcENZcyq7xq9f6V0nFSx9jE3tDA2GriYUZUUuCGZoTWEUXaKM7oxtTIHBLvu3uxoOgkmjRCmPOkz1LLZeg36H5cw1z6jZCSnBWAn5bigGQWvpOvvSHKJT3TqEY5JJesGbznB26ROrfQhwYcPsrE5XZfuXuZ9tEyaFZYZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvyKT/y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2F0C4CEF1;
+	Tue, 26 Aug 2025 14:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216468;
-	bh=kw/g9cPvszbtDslEyBk3zPNWZ/0YnTfjsFj4cnPzMsg=;
+	s=korg; t=1756218856;
+	bh=hcCsTJnk7y+IAk1FCA7lJ3E/iR8sb6FMisRbJPYhH+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Re1J9PfTOPVjKAZnua3KtQT5I3VlCJn6HnCiLVoS+1D2ZPGWTYrsxEhAv0O+0oRBU
-	 eRamRrsIrWf51tr/flpKnDEJ/BcGtNpsTEXLSQLV4OBXLbpPJqGVrxiGC3wJ8QD/eO
-	 HTauaFE15L647+Y4aQDwYgiBKZFb6omDir0u/JXw=
+	b=HvyKT/y/Mh1bUNWOgBoWrkUncAvROr4ts50hErPsGGMXY7ln1olI4+nzkPF5xYQR1
+	 xH+cNHw4lYdbNcLaKqUMhwHcau1YZipLq0ZVSc6DVaHIMS/lvvZvgULdFUmaq74brt
+	 ygVdCsXxK83AwZIn1sd0TumpgW7sltZLjy25w1nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 395/644] jfs: upper bound check of tree index in dbAllocAG
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 160/403] net: gianfar: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:08:06 +0200
-Message-ID: <20250826110956.237392298@linuxfoundation.org>
+Message-ID: <20250826110911.300756362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
+commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
 
-When computing the tree index in dbAllocAG, we never check if we are
-out of bounds realative to the size of the stree.
-This could happen in a scenario where the filesystem metadata are
-corrupted.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
-Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
+
+Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
+Cc: stable@vger.kernel.org	# 4.18
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index c2d4349cd959..f4f4c5ec38c6 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1457,6 +1457,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
- 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
- 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
+--- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
++++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+@@ -1490,8 +1490,10 @@ static int gfar_get_ts_info(struct net_d
+ 	if (ptp_node) {
+ 		ptp_dev = of_find_device_by_node(ptp_node);
+ 		of_node_put(ptp_node);
+-		if (ptp_dev)
++		if (ptp_dev) {
+ 			ptp = platform_get_drvdata(ptp_dev);
++			put_device(&ptp_dev->dev);
++		}
+ 	}
  
-+	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
-+		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
-+		release_metapage(mp);
-+		return -EIO;
-+	}
-+
- 	/* dmap control page trees fan-out by 4 and a single allocation
- 	 * group may be described by 1 or 2 subtrees within the ag level
- 	 * dmap control page, depending upon the ag size. examine the ag's
--- 
-2.39.5
-
+ 	if (ptp)
 
 
 
