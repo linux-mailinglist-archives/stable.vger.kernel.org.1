@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFB5B35BCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A801B360E0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14F772A414A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ED9817F4F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0338D335BAA;
-	Tue, 26 Aug 2025 11:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2BA196C7C;
+	Tue, 26 Aug 2025 13:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Giign18d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvOWbTbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50EF267386;
-	Tue, 26 Aug 2025 11:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BB52BAF7;
+	Tue, 26 Aug 2025 13:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207287; cv=none; b=sGdy5j8MX1ovVKQA7J5C9HT2ndnw61KRKj3IH/fxB1Y4Cn3YQXrujCh44ClmfJj4bUHZunzl6+3yYWq82Ra3heDW/t+G4Y/EuTZTXWCbjej04PMje0vDvBawmoD2TR7LHyPKugvdYBmTuqnF6sXZD2dcc1iCgUirxmzRaUABNB8=
+	t=1756213288; cv=none; b=MsTj68K1kbVvAMQNBX/PgRo0L/oUalL7TvviO4Aj++hSfKVO1uGUhRPrRWsP4ewkVMJT4z8Bb/iPLpSyl3PRH+WLIQaQjmVxOnuwnLfHLpJMYV7tl8tcJIRkOjQMqd+aK18PQH+wdDkKo9gtVEQq5KhFylozisbj11F2ue6yhpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207287; c=relaxed/simple;
-	bh=D6CwOuQ3I7wBiMUzDGTq5uj4kIgIWAw4n/SDWLUv2UA=;
+	s=arc-20240116; t=1756213288; c=relaxed/simple;
+	bh=l5nf+ucW5/RLkV0O+aXyQT7Ken14cqEwekeDvGDF7nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNH16grHnvmuaX4iHFGj9KVvve09PLVXG7SijTuqxQNct1JzYftzDu17TOQI0j7Gd6tlUO1D7Gg9Iq3FWEOIT5k3Bh9dnsxaFi3dPY3hcPICsYVu1ACE3mN3pCQId8ClVWAofXM348X/1iHFa03dvUdKOdDY6i4E2d6DCVjRhbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Giign18d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47545C4CEF1;
-	Tue, 26 Aug 2025 11:21:27 +0000 (UTC)
+	 MIME-Version; b=ljZvB9Cj5a+I3j+L2grLRSr0iYsXYz5LstmERlQVK7Lnasb7pQxxaHLUqQRGsKe1yjFSfIFQwhlDCiPxPw8ZO/UBuGsVr0oixpDwync5qGYpUCCHpCLx8CdmL1PTF0YMxXq98dpKxGS5fkeTtor6cEkg1v7ORXVPGCZjRl7kTjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvOWbTbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA00C4CEF1;
+	Tue, 26 Aug 2025 13:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207287;
-	bh=D6CwOuQ3I7wBiMUzDGTq5uj4kIgIWAw4n/SDWLUv2UA=;
+	s=korg; t=1756213288;
+	bh=l5nf+ucW5/RLkV0O+aXyQT7Ken14cqEwekeDvGDF7nY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Giign18dHf1C8oSiYawmWcxBMuUD+YMV69CkaJgS1nnJBVLovp37z6GT8PyfcLFmE
-	 tkllURMqi/Z2rAyJyH3pKl1rkNn0IGqh7953QLsRL7VK1OvHQ2TTzppt+7LcHJNOsM
-	 h0ty6ElIkF04wCcad49vy32QM8SyuBPV7jBqvg9w=
+	b=EvOWbTbfkdBaRYrZCAJxy0ksB8QPSYJM9FIeSokQifaVqtmtYq8DqZ3d43OidF7U+
+	 d2TBd2Rl+bA2lt8bGsPshTMJDnJ72CHaePDXk7fsqAnsHZeyt1GOiYaSznNNB9cSrI
+	 oTphG26AZshqoY2lQ6s9HCzgmBZyQWr46qf9yQRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.16 124/457] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 259/587] soundwire: amd: serialize amd manager resume sequence during pm_prepare
 Date: Tue, 26 Aug 2025 13:06:48 +0200
-Message-ID: <20250826110940.438194377@linuxfoundation.org>
+Message-ID: <20250826110959.520110726@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
+[ Upstream commit 03837341790039d6f1cbf7a1ae7dfa2cb77ef0a4 ]
 
-For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
-are built, so both 32-bit and 64-bit compilers (and tools) should be
-in the PATH environment variable.
+During pm_prepare callback, pm_request_resume() delays SoundWire manager D0
+entry sequence. Synchronize runtime resume sequence for amd_manager
+instance prior to invoking child devices resume sequence for both the amd
+power modes(ClockStop Mode and Power off mode).
+Change the power_mode_mask check and use pm_runtime_resume() in
+amd_pm_prepare() callback.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250530054447.1645807-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soundwire/amd_manager.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -39,7 +39,9 @@ endif
- 
- export LD_BFD
- 
--# Set default 32 bits cross compilers for vdso
-+# Set default 32 bits cross compilers for vdso.
-+# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
-+# need to be in the path.
- CC_ARCHES_32 = hppa hppa2.0 hppa1.1
- CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
- CROSS32_COMPILE := $(call cc-cross-prefix, \
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index b89f8067e6cd..3d8937245c18 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1104,10 +1104,10 @@ static int __maybe_unused amd_pm_prepare(struct device *dev)
+ 	 * device is not in runtime suspend state, observed that device alerts are missing
+ 	 * without pm_prepare on AMD platforms in clockstop mode0.
+ 	 */
+-	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
+-		ret = pm_request_resume(dev);
++	if (amd_manager->power_mode_mask) {
++		ret = pm_runtime_resume(dev);
+ 		if (ret < 0) {
+-			dev_err(bus->dev, "pm_request_resume failed: %d\n", ret);
++			dev_err(bus->dev, "pm_runtime_resume failed: %d\n", ret);
+ 			return 0;
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
