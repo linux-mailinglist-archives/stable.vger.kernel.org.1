@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F5CB36059
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92653B36928
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3C65E0FC4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B51C31C40354
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB91D5AC0;
-	Tue, 26 Aug 2025 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E44B34F464;
+	Tue, 26 Aug 2025 14:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmlmXAYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc83kO3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A8B187554;
-	Tue, 26 Aug 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EF341651;
+	Tue, 26 Aug 2025 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212948; cv=none; b=KaMs06EZZ3iYZozYVQe9WAZryay8VhjzXdB8/wSZ1E2TI+ztm2mBs5C/GAXh/MxKBN2TYJXcpqi4N7qbmgffFGXamW8bkUfYZtrVDa9nzUfKwBesDuWD/0srzDMNYqGQ5U/1oprqcol7y3jDpEy3j7Ca+zJC6K8nia7QuGio56I=
+	t=1756217414; cv=none; b=BdRYagLN9ZLs1w8r1k6GMzro3Lmr9uNjgvIgpE4D2qz3cYkmz1CE8GP+vRo71AEyPnCN8wgOaX6Isifwf2c37CBIUqXAH6dTPZ/mLO/Jr0OjyqiDrNHBuQpiSIqiqVOXhauoVEADC4szBQsVGV4eNN5DMjXloB/go+GDWH0gIuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212948; c=relaxed/simple;
-	bh=Q5/ePj+AwP+l9BogPF834PwAU2VqXP7pSYbXskGN+9w=;
+	s=arc-20240116; t=1756217414; c=relaxed/simple;
+	bh=JhVsnG3U0pxFmPxdEraFBZr0dBzmaI8zG1IZd63K4n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7LjXEFiMRzBIS3fTi4PcfoM+AT8I8CubmraCLFc81B3W9CqwlE2WLUamGqb9tbKvbxDWlqfgIntFS4KeKQwUtLhe4g41oEIFHemyBQW5FK3x/9HcgZx3HrRanw/xdqYVv8GsfZ6fZJNVZ/gwDv6/uTqm97T53meuy/2TghstzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmlmXAYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C4BC4CEF1;
-	Tue, 26 Aug 2025 12:55:48 +0000 (UTC)
+	 MIME-Version; b=Bbc63PWC6grL1J/1MzlVneUeZDJFxtMbyYaiP5DkILgvMHOF9HNieGTXhKZwZ8nMIhhmll6dbXgHqL+LZs7IuU2uzGDMqI7D3A+bQ2fgAkrcxO2G3b7XAKhtL44FqazoRpRUmb/n3wF0LXqkUtYYatq4jt8dJflS7BIAxsIkp9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc83kO3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511BEC4CEF1;
+	Tue, 26 Aug 2025 14:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212948;
-	bh=Q5/ePj+AwP+l9BogPF834PwAU2VqXP7pSYbXskGN+9w=;
+	s=korg; t=1756217414;
+	bh=JhVsnG3U0pxFmPxdEraFBZr0dBzmaI8zG1IZd63K4n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmlmXAYUhHAkKzu39+jzz8BUcZBxVcPuSSE6dYvR8yfSiGK2Iw2J5UbeRmIHrEVTM
-	 CqGSI+IxzPlZwpwzDex7UII7hmxBg7dWNdcbknv9TxBcBhgCExRyaG7ll0Uo1IsFpU
-	 0W5Yu4kM/rtw3iiUVEO8xS3j0aMidr/D3c+tLxQI=
+	b=kc83kO3z4ugO48HKgSIWnzE2S+IKdywjJPXb6sxay9MrBmNHKvEKVuKjfaAdkDgof
+	 +/Vz6D1QW3UEnjuMJkIn5yx12PV3MnXxZq8YsfDZ76ebEsOTMipBXTK1qYDzNDRczg
+	 +H0WXiPgMgFbEPxiMtT3ilPq66zVSlPUe6/ItlIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@fb.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/587] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
+Subject: [PATCH 5.10 103/523] m68k: Dont unregister boot console needlessly
 Date: Tue, 26 Aug 2025 13:05:13 +0200
-Message-ID: <20250826110957.116965115@linuxfoundation.org>
+Message-ID: <20250826110927.079162955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mason <clm@fb.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
+[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
 
-schbench (https://github.com/masoncl/schbench.git) is showing a
-regression from previous production kernels that bisected down to:
+When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
+generate console output. That will continue to work even after
+debug_cons_nputs() becomes unavailable so there's no need to
+unregister the boot console.
 
-sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
+Take the opportunity to remove a repeated MACH_IS_* test. Use the
+actual .write method (instead of a wrapper) and test that pointer
+instead. This means adding an unused parameter to debug_cons_nputs() for
+consistency with the struct console API.
 
-The schbench command line was:
+early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
+head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
+depend on the latter, to obviate some ifdef conditionals.
 
-schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
-
-This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
-threads spread across the rest of the CPUs.  Neither the worker threads
-or the message threads do any work, they just wake each other up and go
-back to sleep as soon as possible.
-
-The end result is the first 4 CPUs are pegged waking up those 1024
-workers, and the rest of the CPUs are constantly banging in and out of
-idle.  If I take a v6.9 Linus kernel and revert that one commit,
-performance goes from 3.4M RPS to 5.4M RPS.
-
-schedstat shows there are ~100x  more new idle balance operations, and
-profiling shows the worker threads are spending ~20% of their CPU time
-on new idle balance.  schedstats also shows that almost all of these new
-idle balance attemps are failing to find busy groups.
-
-The fix used here is to crank up the cost of the newidle balance whenever it
-fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
-control, this also changes update_newidle_cost() to use
-sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
-
-Signed-off-by: Chris Mason <clm@fb.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
+Cc: Daniel Palmer <daniel@0x0f.com>
+Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ arch/m68k/Kconfig.debug         |  2 +-
+ arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
+ arch/m68k/kernel/head.S         |  8 +++----
+ 3 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6ce3028e6e85..1cf43e91ae9d 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11697,8 +11697,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
- 		 * next wakeup on the CPU.
-+		 *
-+		 * sched_balance_newidle() bumps the cost whenever newidle
-+		 * balance fails, and we don't want things to grow out of
-+		 * control.  Use the sysctl_sched_migration_cost as the upper
-+		 * limit, plus a litle extra to avoid off by ones.
- 		 */
--		sd->max_newidle_lb_cost = cost;
-+		sd->max_newidle_lb_cost =
-+			min(cost, sysctl_sched_migration_cost + 200);
- 		sd->last_decay_max_lb_cost = jiffies;
- 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
- 		/*
-@@ -12384,10 +12390,17 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index 11b306bdd788..5a3713170a61 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
  
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
--			update_newidle_cost(sd, domain_cost);
+ config EARLY_PRINTK
+ 	bool "Early printk"
+-	depends on !(SUN3 || M68000 || COLDFIRE)
++	depends on MMU_MOTOROLA
+ 	help
+ 	  Write kernel log output directly to a serial port.
+ 	  Where implemented, output goes to the framebuffer as well.
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index f11ef9f1f56f..521cbb8a150c 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -16,25 +16,10 @@
+ #include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
+ 
+-asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
 -
- 			curr_cost += domain_cost;
- 			t0 = t1;
-+
-+			/*
-+			 * Failing newidle means it is not effective;
-+			 * bump the cost so we end up doing less of it.
-+			 */
-+			if (!pulled_task)
-+				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
-+
-+			update_newidle_cost(sd, domain_cost);
- 		}
+-static void __ref debug_cons_write(struct console *c,
+-				   const char *s, unsigned n)
+-{
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME147)
+-		mvme147_scc_write(c, s, n);
+-	else if (MACH_IS_MVME16x)
+-		mvme16x_cons_write(c, s, n);
+-	else
+-		debug_cons_nputs(s, n);
+-#endif
+-}
++asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
  
- 		/*
+ static struct console early_console_instance = {
+ 	.name  = "debug",
+-	.write = debug_cons_write,
+ 	.flags = CON_PRINTBUFFER | CON_BOOT,
+ 	.index = -1
+ };
+@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
+ 	if (early_console || buf)
+ 		return 0;
+ 
++	if (MACH_IS_MVME147)
++		early_console_instance.write = mvme147_scc_write;
++	else if (MACH_IS_MVME16x)
++		early_console_instance.write = mvme16x_cons_write;
++	else
++		early_console_instance.write = debug_cons_nputs;
+ 	early_console = &early_console_instance;
+ 	register_console(early_console);
+ 
+@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
+ }
+ early_param("earlyprintk", setup_early_printk);
+ 
+-/*
+- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
+- * after init sections are discarded (for platforms that use it).
+- */
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-
+ static int __init unregister_early_console(void)
+ {
+-	if (!early_console || MACH_IS_MVME16x)
+-		return 0;
++	/*
++	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
++	 * called after init sections are discarded (for platforms that use it).
++	 */
++	if (early_console && early_console->write == debug_cons_nputs)
++		return unregister_console(early_console);
+ 
+-	return unregister_console(early_console);
++	return 0;
+ }
+ late_initcall(unregister_early_console);
+-
+-#endif
+diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
+index 493c95db0e51..2d40e0f34de5 100644
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3242,8 +3242,8 @@ func_return	putn
+  *	turns around and calls the internal routines.  This routine
+  *	is used by the boot console.
+  *
+- *	The calling parameters are:
+- *		void debug_cons_nputs(const char *str, unsigned length)
++ *	The function signature is -
++ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
+  *
+  *	This routine does NOT understand variable arguments only
+  *	simple strings!
+@@ -3252,8 +3252,8 @@ ENTRY(debug_cons_nputs)
+ 	moveml	%d0/%d1/%a0,%sp@-
+ 	movew	%sr,%sp@-
+ 	ori	#0x0700,%sr
+-	movel	%sp@(18),%a0		/* fetch parameter */
+-	movel	%sp@(22),%d1		/* fetch parameter */
++	movel	%sp@(22),%a0		/* char *s */
++	movel	%sp@(26),%d1		/* unsigned int n */
+ 	jra	2f
+ 1:
+ #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
