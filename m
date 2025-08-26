@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBFCCB369F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8932CB35DC3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28F775863F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DE2E7C64A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F3435691F;
-	Tue, 26 Aug 2025 14:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3AB2BE7A7;
+	Tue, 26 Aug 2025 11:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPnJCDFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxApm7T5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD1A352FC7;
-	Tue, 26 Aug 2025 14:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88F2BF3E2;
+	Tue, 26 Aug 2025 11:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218153; cv=none; b=mb91sE/4hI9WBTSFtsw6rzO2YZYBoVqfFE44iEPY2Oy7o8mzD9cV5QjYu5i/mcrMe24n/E3rOUk1SxzYl62aCRRMsuTCk4upXgC8R3C+cHjND7ELzX5uRLeRj8Z5DRBh4MQuGVe6QyBkJQ2zR7lU13uSmMTPPMidGC1+tNB7xV4=
+	t=1756208772; cv=none; b=Yp+kO12Rfg/Eg8wlkC1ToYRoaIXR029ADsZXdaGCXf7LQuDJj65/QOTDy1l3nKPxO6c/j0o1h0AVjQITAGXeOqfALiqGjVXtgC+WJLafp96f3bQ2MUyarsCaon9viYxp/P8M039kBwJnLtKJr18CCU0fX7SvEiI7VEdGp5ucwKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218153; c=relaxed/simple;
-	bh=y+U4zROu2w5oGI0bmFc8VXXETDqt2RRR2IprGW+QLZs=;
+	s=arc-20240116; t=1756208772; c=relaxed/simple;
+	bh=0vRDKn2KEQDnhr6YnJCizm+btgmjjQsZITsWrqZ2peg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAUpZ09e3GNoibwsCvrWjtTaLUfkc9Aj68Zbu+Os3Tng8NAgZzCgRHkZV+/VECNElD3MiEWXdS6ysQebvt5WgPYgYqsKEFUwwgoce4X9AyFOMs2UfO+dnvbRw4EgirQRkbaOuObnN5I9/O/VmsfxqpVZttY+kfV1pDosJc8Bo4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPnJCDFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B2C113D0;
-	Tue, 26 Aug 2025 14:22:31 +0000 (UTC)
+	 MIME-Version; b=Kexiw9LDh0Q5WGm64GRW0rlXz380dQeMSavmT8BusgABa2VmHt+R8/gwG+M+PvPzR6iCzE6sFIh7yYeHF2s4AeLVwLODBWJOy8gfz2jWjJMeqFf0PXihqqEuKkZVZHFfv7yMpAC83sPQtbFQJ+RD95sPH7f/9gaWWpRsWGFQqBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxApm7T5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D346C4CEF1;
+	Tue, 26 Aug 2025 11:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218151;
-	bh=y+U4zROu2w5oGI0bmFc8VXXETDqt2RRR2IprGW+QLZs=;
+	s=korg; t=1756208772;
+	bh=0vRDKn2KEQDnhr6YnJCizm+btgmjjQsZITsWrqZ2peg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPnJCDFJqI9uw6MzrBf5ES6VLTOR+AjQNw4U8RtqXw5LMq5eLTQl937vTRl0bo+AH
-	 w3LVX7DXmdIVDHcNcgBEz6+JfNJolYifcEY16EAmjOoeQOHkopTdzklWArQSDwaoT+
-	 aREGpx8hATXHq7ru9hf0dxfy/wG8zALYC0FSPVSQ=
+	b=IxApm7T5lRWO2M6YZq5b7ZBZTLvBIuEnXdZgPeKuxRy/jziYxFQV3O8YhHp7IE1Jn
+	 /Qy/pg7qBWhJiwrtL6xIKyy57Tbahx1LzVpTbrLNGUmOUOdwoyqVnA3x8sEFSmfEtL
+	 BoPH/jv9Q5jGqqCGzZi106gyEDlwrVcmcUAovNB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 413/523] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	Ye Bin <yebin10@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 208/322] fs/buffer: fix use-after-free when call bh_read() helper
 Date: Tue, 26 Aug 2025 13:10:23 +0200
-Message-ID: <20250826110934.643769609@linuxfoundation.org>
+Message-ID: <20250826110921.006360447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+There's issue as follows:
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
+Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
+CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_address_description.constprop.0+0x2c/0x390
+ print_report+0xb4/0x270
+ kasan_report+0xb8/0xf0
+ end_buffer_read_sync+0xe3/0x110
+ end_bio_bh_io_sync+0x56/0x80
+ blk_update_request+0x30a/0x720
+ scsi_end_request+0x51/0x2b0
+ scsi_io_completion+0xe3/0x480
+ ? scsi_device_unbusy+0x11e/0x160
+ blk_complete_reqs+0x7b/0x90
+ handle_softirqs+0xef/0x370
+ irq_exit_rcu+0xa5/0xd0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+ Above issue happens when do ntfs3 filesystem mount, issue may happens
+ as follows:
+           mount                            IRQ
+ntfs_fill_super
+  read_cache_page
+    do_read_cache_folio
+      filemap_read_folio
+        mpage_read_folio
+	 do_mpage_readpage
+	  ntfs_get_block_vbo
+	   bh_read
+	     submit_bh
+	     wait_on_buffer(bh);
+	                            blk_complete_reqs
+				     scsi_io_completion
+				      scsi_end_request
+				       blk_update_request
+				        end_bio_bh_io_sync
+					 end_buffer_read_sync
+					  __end_buffer_read_notouch
+					   unlock_buffer
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+            wait_on_buffer(bh);--> return will return to caller
 
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+					  put_bh
+					    --> trigger stack-out-of-bounds
+In the mpage_read_folio() function, the stack variable 'map_bh' is
+passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
+wait_on_buffer() returns to continue processing, the stack variable
+is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
+process, calling put_bh() may result in stack overrun.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the bh is not allocated on the stack, it belongs to a folio.  Freeing
+a buffer head which belongs to a folio is done by drop_buffers() which
+will fail to free buffers which are still locked.  So it is safe to call
+put_bh() before __end_buffer_read_notouch().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ fs/buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1490,6 +1490,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+diff --git a/fs/buffer.c b/fs/buffer.c
+index e9e84512a027..79c19ffa4401 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -157,8 +157,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
+  */
+ void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
+ {
+-	__end_buffer_read_notouch(bh, uptodate);
+ 	put_bh(bh);
++	__end_buffer_read_notouch(bh, uptodate);
+ }
+ EXPORT_SYMBOL(end_buffer_read_sync);
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+-- 
+2.50.1
+
 
 
 
