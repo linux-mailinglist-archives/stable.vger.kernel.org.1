@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A94B36C89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470E5B35C93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14B715A2E6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9FF3AE8C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DD13570B0;
-	Tue, 26 Aug 2025 14:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3359C3376A5;
+	Tue, 26 Aug 2025 11:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TidTXRnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuUHqxEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA7A352094;
-	Tue, 26 Aug 2025 14:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A3C3093BA;
+	Tue, 26 Aug 2025 11:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219407; cv=none; b=IlujiRqIT7H8OZIXWZncGlyOrkHGcsbLgyotx9vT6znWhJgv+enTj12Ey/e7tOweYkX9yEDrdicD6KpzjvkNPF9sU9mjpK1OB8vsPOAK/Jnr5t7Afzdim6St6oaPB5SR522uHza2bYsXxLaBRmGVj8pi1+GpG4EpmLvm9WjBofA=
+	t=1756208037; cv=none; b=bS8efrveqzdicnVbE/posYIMO468Ru5bGPf07+BcEaH7ODDK2ASoL1eg/t8j5es1I2Ay09Pt8o6Wi3rorYTX5cW8Rho4xim9NjBeyjgFWi1DzhSybcqef5f2YGY3/pVtI0l1yia/e+KPW6ES4A25zpjiTexiOLndtihFHUg/KwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219407; c=relaxed/simple;
-	bh=yeJ0s/Jes2wEvFFEGH1IFqRroruyKein3FUpxf8hfvo=;
+	s=arc-20240116; t=1756208037; c=relaxed/simple;
+	bh=4imxUJW9eJ8MNCn8BIyRbfPNRwsyu5DIEExJoQH0yJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDmJGGpGcIJCIIOHhEQKei91wVAauJtBOibyC12DY7vcd++3t+CMLHDtQbyYGgHK50u8K6227C+fuCFtjKqVn3m/d3lbAFcQfzd/HE6UIFJv6Nx4TMwmgRYZzSxlp+Gtg08oo3F/KdxiKtezldNCODkgSuQ/VFf40nncwcVYxNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TidTXRnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFAFC4CEF1;
-	Tue, 26 Aug 2025 14:43:26 +0000 (UTC)
+	 MIME-Version; b=cPUJkYk4nmpRQpPJghpoUBpNH3SL8Qz8Qh4V0hp4vVgvAnck42QM7+kYHvJo1SqEvun8CCzh3UBvugGwpErdp7583ZrlVyQKRZxlYEqmRfM9HYRlEobfoBKmICdXynr8aSNy/HEmbTIqfDu8AEJPDDeJA4aqKa3Tn3TlODwO7pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuUHqxEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67637C4CEF4;
+	Tue, 26 Aug 2025 11:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219406;
-	bh=yeJ0s/Jes2wEvFFEGH1IFqRroruyKein3FUpxf8hfvo=;
+	s=korg; t=1756208037;
+	bh=4imxUJW9eJ8MNCn8BIyRbfPNRwsyu5DIEExJoQH0yJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TidTXRnMBY+hPBeOSogOgbIgce942x/u0B7Wl05TnFyUnlaNG1U7/kYx9bvMRt2HY
-	 FLt+8xYxiBawEnMJAxtEeXQPrB3L4s42UeICQyn51isNFJfZQRq9Nkp/7SUty6zph3
-	 ykDJ/nzjeyCei91GMEOio4B2/wPe0x+l2jYWbJCQ=
+	b=fuUHqxEfq8+MDMrxC5au0WSiySGv/2KhfDQcakzpDn+fdNwsO7saEZV0R002QLADL
+	 X1A6vJAnLHDEskYSoffGeUCfXB2KlqFn5QZP+UCaGy4NmiTWHm2Th5NuPlEypcVodU
+	 AnFcpuWdigIspHxeqT4vKIsvqW0NvLlr+IR2C9wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
+	Yuichiro Tsuji <yuichtsu@amazon.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 370/403] media: qcom: camss: cleanup media device allocated resource on error path
+Subject: [PATCH 6.16 412/457] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
 Date: Tue, 26 Aug 2025 13:11:36 +0200
-Message-ID: <20250826110917.228691919@linuxfoundation.org>
+Message-ID: <20250826110947.476612272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Yuichiro Tsuji <yuichtsu@amazon.com>
 
-[ Upstream commit 69080ec3d0daba8a894025476c98ab16b5a505a4 ]
+[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
+The PHY address should be masked to 5 bits (0-31). Without this
+mask, invalid PHY addresses could be used, potentially causing issues
+with MDIO bus operations.
 
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ err_genpd_cleanup => err_cleanup ]
+Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
+it stays within the valid range.
+
+Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
+Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
+Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -888,7 +888,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_cleanup;
-+		goto err_media_device_cleanup;
- 	}
- 
- 	ret = camss_register_entities(camss);
-@@ -945,6 +945,8 @@ err_register_subdevs:
- 	camss_unregister_entities(camss);
- err_register_entities:
- 	v4l2_device_unregister(&camss->v4l2_dev);
-+err_media_device_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_cleanup:
- 	v4l2_async_notifier_cleanup(&camss->notifier);
- err_free:
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index d9f5942ccc44..792ddda1ad49 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
+-- 
+2.50.1
+
 
 
 
