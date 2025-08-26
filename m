@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891CEB3639B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4D7B36C07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A536D8E076A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E73F1C24160
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112113451DE;
-	Tue, 26 Aug 2025 13:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB6A2BEC45;
+	Tue, 26 Aug 2025 14:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhQ/ifYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18LBvPOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1D62D0606;
-	Tue, 26 Aug 2025 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343C611713;
+	Tue, 26 Aug 2025 14:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214551; cv=none; b=TYdGbwe6dw8GT5vKWlUXubH62nuxCwbOLK4ObrHy5Fcu/KV70cPeSH8tesIR1lSwL7Qgx8byFPJPsX3YASHFEZsv8937FnOx65lGf0ZMbSzFd1L0OFFq2SvM8Oi4aT51iNiac3fc3Jnct0sDOU9dFm32weY41g1dpQ/5Vg1jXaY=
+	t=1756218718; cv=none; b=gpoBHMRqd11wcDKRjYYvelL6ApcTPI+BTnUQ0QsUTJ9L18OM/D2m5fdfwInhrZXe+Fyuf8KqisBZ96FVWwb+GjkUDVho33XUWj+iOOm5Lx4SpISbMs51Nu/IyW+taCXzECKRbvALeQMg/s/zdXqPhPVOJOtxsqdTFjxGeZfgHKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214551; c=relaxed/simple;
-	bh=17xjPZzrY+aLXbsaYzY+eoqk1btIQsckpgq3onFRIes=;
+	s=arc-20240116; t=1756218718; c=relaxed/simple;
+	bh=7BrzEVCSCg4+evHEIVxRaiQgFiVcP311OFo+qCHVQZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUwNrYmJKkPnBRj4/lrHswyZ4gJLBtaUgPAac+qhdq9O0kKLWoqeoXAyvOK6d4s1XDsDviI46Ezq/aCzX4P5SuoeGelDtn46jLq9BOHms7lG0AM5xI4PdpzGwHtML6f19UGW8sYiEwnsid5P6bIk3zvq5XnYj50N56+kvgFbqoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhQ/ifYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F117FC4CEF1;
-	Tue, 26 Aug 2025 13:22:30 +0000 (UTC)
+	 MIME-Version; b=nOm3+pdVbZ0mLq5ZabYRmQIZfXedE+z4CaRCcxW6aiRkmJhm59xrfp/olfgPOS9OqV924n7LaitZTw5E3gDe9UF4onJyaexw95CmJ9uYN0kkPwtItw3ioNTRA+XByXRGnMEjxQuRkdFOIaTxL9q+vdB9mBpuw8RfOV8hqBcD6rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18LBvPOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD2BC4CEF1;
+	Tue, 26 Aug 2025 14:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214551;
-	bh=17xjPZzrY+aLXbsaYzY+eoqk1btIQsckpgq3onFRIes=;
+	s=korg; t=1756218718;
+	bh=7BrzEVCSCg4+evHEIVxRaiQgFiVcP311OFo+qCHVQZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhQ/ifYb2WinwSc9Rd1JDG++8CRRfB/3Kkom0VATg/99fTmH9LioQbnH8MF2l7vf6
-	 wtSGHzD7G5yJv8snYo+DvGJwQfsfXT4F13gRdW7Ceh+u32Iuk8F++ptd3Ca17e1Wdw
-	 GADzruT7hPrOnUnVltGMHpm7cARJCW275l1QsBgE=
+	b=18LBvPOnlUd5UYsI0Em0y95TCe5qiUKidb3FvopX73ftx7VYB9Z3zi4+6UU5SxUJE
+	 Z5+3/IfQK/62hBJxLPOTsBx2654eGn0KzIlAB+WPs8kO5wPMIHnvaAI2hS5r9ws6hz
+	 WzaIx6mxiRGB7TJHXoOAuyYfTVKEqWraHprgdozI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Showrya M N <showrya@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/482] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
+Subject: [PATCH 5.4 106/403] crypto: marvell/cesa - Fix engine load inaccuracy
 Date: Tue, 26 Aug 2025 13:07:12 +0200
-Message-ID: <20250826110935.230520177@linuxfoundation.org>
+Message-ID: <20250826110909.610388803@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Showrya M N <showrya@chelsio.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
+[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
 
-In case of an ib_fast_reg_mr allocation failure during iSER setup, the
-machine hits a panic because iscsi_conn->dd_data is initialized
-unconditionally, even when no memory is allocated (dd_size == 0).  This
-leads invalid pointer dereference during connection teardown.
+If an error occurs during queueing the engine load will never be
+decremented.  Fix this by moving the engine load adjustment into
+the cleanup function.
 
-Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
-
-Panic trace:
-------------
- iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
- iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
- BUG: unable to handle page fault for address: fffffffffffffff8
- RIP: 0010:swake_up_locked.part.5+0xa/0x40
- Call Trace:
-  complete+0x31/0x40
-  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
-  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
-  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
-  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
-  ? netlink_lookup+0x12f/0x1b0
-  ? netlink_deliver_tap+0x2c/0x200
-  netlink_unicast+0x1ab/0x280
-  netlink_sendmsg+0x257/0x4f0
-  ? _copy_from_user+0x29/0x60
-  sock_sendmsg+0x5f/0x70
-
-Signed-off-by: Showrya M N <showrya@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libiscsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/marvell/cipher.c | 4 +++-
+ drivers/crypto/marvell/hash.c   | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
-index 6e811d753cb1..ee4e3feedd10 100644
---- a/drivers/scsi/libiscsi.c
-+++ b/drivers/scsi/libiscsi.c
-@@ -3184,7 +3184,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
- 		return NULL;
- 	conn = cls_conn->dd_data;
+diff --git a/drivers/crypto/marvell/cipher.c b/drivers/crypto/marvell/cipher.c
+index f92f86c94bff..d48034a9e0da 100644
+--- a/drivers/crypto/marvell/cipher.c
++++ b/drivers/crypto/marvell/cipher.c
+@@ -73,9 +73,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
+ static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
+ {
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
  
--	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
-+	if (dd_size)
-+		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
- 	conn->session = session;
- 	conn->cls_conn = cls_conn;
- 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_skcipher_dma_cleanup(req);
++
++	atomic_sub(req->cryptlen, &engine->load);
+ }
+ 
+ static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
+@@ -202,7 +205,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
+ 	struct mv_cesa_engine *engine = creq->base.engine;
+ 	unsigned int ivsize;
+ 
+-	atomic_sub(skreq->cryptlen, &engine->load);
+ 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
+diff --git a/drivers/crypto/marvell/hash.c b/drivers/crypto/marvell/hash.c
+index de1599bca3b7..01dd597b6a2a 100644
+--- a/drivers/crypto/marvell/hash.c
++++ b/drivers/crypto/marvell/hash.c
+@@ -107,9 +107,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
+ static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
+ {
+ 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_ahash_dma_cleanup(req);
++
++	atomic_sub(req->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
+@@ -363,8 +366,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
+ 			}
+ 		}
+ 	}
+-
+-	atomic_sub(ahashreq->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
