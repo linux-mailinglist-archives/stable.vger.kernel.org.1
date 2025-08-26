@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D02EB35C17
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF248B36182
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23011363548
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2971B2A60F4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46A529D26A;
-	Tue, 26 Aug 2025 11:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9B6259CB2;
+	Tue, 26 Aug 2025 13:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXb5vXAS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lYEaegt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D0F239573;
-	Tue, 26 Aug 2025 11:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7A22A4E5;
+	Tue, 26 Aug 2025 13:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207502; cv=none; b=dT5+uhFFK+uq6QSgn6NMSA0l1ceMONcGe/1fSkRDXon0zEzwiZ+ibHH5tI2YbvvwAs1uXHR47bW8Ay4MJwRqNHu0RYDO1YBCBhUC9oFWYoWDIE2sYnBvb8p0EWetyDVWjzW6G+F2fSDIB+SXhwy0dS+J1nrBEdwjnLf63eUm3qc=
+	t=1756213523; cv=none; b=jPLJjUf6It3Tjxn7awW/NkeFEkjHOqv8HNt2X2tDcM29suA64a7L46LkGbJxOr9dxcTdRhTb76uBG5xaXyWoPOWhbcS/1tbC1pdC7npq3pSa2Zj7bPf3FXWW4Z+6TCdUkxJ2CM5rXa4nS2Xkwf7LxHlWNWOpBgbeG2HJ8cyurgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207502; c=relaxed/simple;
-	bh=gjPhH0Sa1Qvx7xDLI47JopOrwOb60odI+I0DSPdKeBo=;
+	s=arc-20240116; t=1756213523; c=relaxed/simple;
+	bh=aQN8c0l4/RS7SWsFuEPLuPJKnoKYky4NNJQDc5xNkkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFcus9VxLhLyH1r4cV+JA6U9eIH45EmtIztKEdrz69oKh7GJ3vhV1YG/ORbeA+84BwKToCaTmQgk9fKdc344Q5RRTqvtqrox2uzy97/mGgqaKoLay7KgZBWJRsTRGGdpg/oqa3OzE/4jcEUvsXvdjWr+34cDeaf3Qat6JJYlrMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXb5vXAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72F4C4CEF1;
-	Tue, 26 Aug 2025 11:25:01 +0000 (UTC)
+	 MIME-Version; b=dkrDCZkEAT0FCLZgb4Z70sL9vrVvcyvtGQ3wcOITZNLzq08DIfEk0r3nyte/E/A7KZ3hE+SawJLwTieABz7xXWBbvn0FSoHiUhSPv8+kogxmVFXPVCEXmbibAJgpRhlj0E6nMmBYRE2hTScV13OF7ij94oEsb8w3lz7QvhvrSIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lYEaegt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72852C113CF;
+	Tue, 26 Aug 2025 13:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207502;
-	bh=gjPhH0Sa1Qvx7xDLI47JopOrwOb60odI+I0DSPdKeBo=;
+	s=korg; t=1756213522;
+	bh=aQN8c0l4/RS7SWsFuEPLuPJKnoKYky4NNJQDc5xNkkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXb5vXASzFIWa1CSMgTJ9IrQp/AWHRx8f6KMVVFHWHMRp/UHwW7TxPvQWmAefDL6e
-	 g4Qv8h4Y0UPfTov/PoFgAG51CzP0UtDN5Ae7q8Qdatr6V9l4QZOdV4iex7yo1nohO1
-	 v2atdU4f8xiOtFIQI+DVi98srvGKoafwu6zZ+gGs=
+	b=2lYEaegtf9/rEvqBlBdYPoa9CGaOTxvA6QFHVc2U7yEmKkhNEttD5WJJ8XH5bXd5Q
+	 fQ7KtL2prnsqBk3FuUYZ6tkTWV3nxHLFgrl5LXXRJ6pMmBm1p0CfY8cbWb5+M8vLcu
+	 Nc+H0Whf/FihOvYvhhUBpedV11dqGvuD7NV3bZiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 206/457] mptcp: remove duplicate sk_reset_timer call
-Date: Tue, 26 Aug 2025 13:08:10 +0200
-Message-ID: <20250826110942.456511834@linuxfoundation.org>
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 342/587] crypto: qat - lower priority for skcipher and aead algorithms
+Date: Tue, 26 Aug 2025 13:08:11 +0200
+Message-ID: <20250826111001.615416150@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-commit 5d13349472ac8abcbcb94407969aa0fdc2e1f1be upstream.
+commit 8024774190a5ef2af2c5846f60a50b23e0980a32 upstream.
 
-sk_reset_timer() was called twice in mptcp_pm_alloc_anno_list.
+Most kernel applications utilizing the crypto API operate synchronously
+and on small buffer sizes, therefore do not benefit from QAT acceleration.
 
-Simplify the code by using a 'goto' statement to eliminate the
-duplication.
+Reduce the priority of QAT implementations for both skcipher and aead
+algorithms, allowing more suitable alternatives to be selected by default.
 
-Note that this is not a fix, but it will help backporting the following
-patch. The same "Fixes" tag has been added for this reason.
-
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-4-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/crypto/intel/qat/qat_common/qat_algs.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -353,9 +353,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
- 
--		sk_reset_timer(sk, &add_entry->add_timer,
--			       jiffies + mptcp_get_add_addr_timeout(net));
--		return true;
-+		goto reset_timer;
- 	}
- 
- 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
-@@ -369,6 +367,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	add_entry->retrans_times = 0;
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
-+reset_timer:
- 	sk_reset_timer(sk, &add_entry->add_timer,
- 		       jiffies + mptcp_get_add_addr_timeout(net));
- 
+--- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
+@@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
+ 	.base = {
+ 		.cra_name = "authenc(hmac(sha1),cbc(aes))",
+ 		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
+-		.cra_priority = 4001,
++		.cra_priority = 100,
+ 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+ 		.cra_blocksize = AES_BLOCK_SIZE,
+ 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+@@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
+ 	.base = {
+ 		.cra_name = "authenc(hmac(sha256),cbc(aes))",
+ 		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
+-		.cra_priority = 4001,
++		.cra_priority = 100,
+ 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+ 		.cra_blocksize = AES_BLOCK_SIZE,
+ 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+@@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
+ 	.base = {
+ 		.cra_name = "authenc(hmac(sha512),cbc(aes))",
+ 		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
+-		.cra_priority = 4001,
++		.cra_priority = 100,
+ 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+ 		.cra_blocksize = AES_BLOCK_SIZE,
+ 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+@@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
+ static struct skcipher_alg qat_skciphers[] = { {
+ 	.base.cra_name = "cbc(aes)",
+ 	.base.cra_driver_name = "qat_aes_cbc",
+-	.base.cra_priority = 4001,
++	.base.cra_priority = 100,
+ 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+ 	.base.cra_blocksize = AES_BLOCK_SIZE,
+ 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
+@@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers
+ }, {
+ 	.base.cra_name = "ctr(aes)",
+ 	.base.cra_driver_name = "qat_aes_ctr",
+-	.base.cra_priority = 4001,
++	.base.cra_priority = 100,
+ 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+ 	.base.cra_blocksize = 1,
+ 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
+@@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers
+ }, {
+ 	.base.cra_name = "xts(aes)",
+ 	.base.cra_driver_name = "qat_aes_xts",
+-	.base.cra_priority = 4001,
++	.base.cra_priority = 100,
+ 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
+ 			  CRYPTO_ALG_ALLOCATES_MEMORY,
+ 	.base.cra_blocksize = AES_BLOCK_SIZE,
 
 
 
