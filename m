@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4230B35FBF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D07EB36537
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C4016C905
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7785D8A5570
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66891D5AC0;
-	Tue, 26 Aug 2025 12:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D1922AE5D;
+	Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl+UydYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsCntY3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CF31B6CE9;
-	Tue, 26 Aug 2025 12:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D7F221290;
+	Tue, 26 Aug 2025 13:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212669; cv=none; b=KkDnmDbUEzNftN288ihdHdyP6jWvy+ltZRxp1QULP9n05EQExK5G124FTEe+KO8TgcDXd9LSTLwguppN6mFXFCTRdi3YAlS6bN0VME8UbRT3PGwfQojefOywS+d5p8Uqr2eWp8damZA2tFE8i35x7hxRgJw1P/Q8/EYStbmWxVU=
+	t=1756215578; cv=none; b=pDXxstpMXFnpfmgVzgMxUNZowO2P99dIecCoxvlQOLf17NUSDWMc5PbS3+rum5RG5aUlZ0MTkVx5sHuylag5Tl9bv0l7O4e93ylptN5Q1bsSt2yDK0KvtKs6BEszkReM1nScTRqV3dMh5lb6rFO2NEYAzpSoDJnJvVKu+jkJ2YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212669; c=relaxed/simple;
-	bh=A5GDUt7kG67QmQtp3qHalMbsARswyIyNjVSay6+QKJs=;
+	s=arc-20240116; t=1756215578; c=relaxed/simple;
+	bh=6ceVsoXvQA6aOTZgAzE6HV9DYJh/ZHRyLjcCQk8fowc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kn6bwnf4jgfwE2Qlb3qqVgiAA83uGcGbTg6FJQdgPto+Es1PouU/WtsddIUyoYzby3WR2t43zEitKzuCoKWMu3HkwIVc5Vcz8iqZuNIe/D3+0A/TVfIfQXW+EqBKh3RyqEu1jbOZ6BvnG3MNHGPw5bvxSDTFb7peg10VcGKAFB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl+UydYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26389C4CEF1;
-	Tue, 26 Aug 2025 12:51:08 +0000 (UTC)
+	 MIME-Version; b=O7JKl7UxB8jnJSTn7gi0PYxFnIB943EaDtd8UNSu+kpPO5q212ZWSYTJQ4ZI7KcaT+1PHGlzjIQdzaCO93/2ZWTBBe0tBb4B74sFBcyFAsRCc4zc5cBQ6zQB8RL1egy4n1vMJsHM8DxrM+XpdcgGtaFX2mbkQx7cHAhEELC16Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsCntY3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095AEC4CEF1;
+	Tue, 26 Aug 2025 13:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212669;
-	bh=A5GDUt7kG67QmQtp3qHalMbsARswyIyNjVSay6+QKJs=;
+	s=korg; t=1756215577;
+	bh=6ceVsoXvQA6aOTZgAzE6HV9DYJh/ZHRyLjcCQk8fowc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vl+UydYDYTkGC0jPtzyujGnW+3TSoi9XVaE+N7s7NA1e0otij9XZdpB7UN5EoVIxZ
-	 wT0jhm/zyzTUE9Nim98Dp721U5qoAwPAmm9tEnBYPlXMPogGuDaVJsG0uGrwaP40XC
-	 W+NEiHW1NXtMBPczhVN2Sb4wdEl7K/y05INe8rM4=
+	b=bsCntY3fis2gTJARD3r35vEpgQ5r8HQnSQ4UihGjRAD2uim+9DkDE7999hbpRs1vO
+	 ImAQE7QnR74jk6Tn89SG9o9c65AerLH1+4pxOIbbApJzYFlQkXuQPbVjEjmI9cADmg
+	 BHMUSpk4ye+QQjvpT2ho1NvnbgmNPAgy3Zrm21Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 027/587] sunvdc: Balance device refcount in vdc_port_mpgroup_check
-Date: Tue, 26 Aug 2025 13:02:56 +0200
-Message-ID: <20250826110953.641367748@linuxfoundation.org>
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 086/644] net: hns3: disable interrupt when ptp init failed
+Date: Tue, 26 Aug 2025 13:02:57 +0200
+Message-ID: <20250826110948.628571984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
+[ Upstream commit cde304655f25d94a996c45b0f9956e7dcc2bc4c0 ]
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+When ptp init failed, we'd better disable the interrupt and clear the
+flag, to avoid early report interrupt at next probe.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-3-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/sunvdc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -956,8 +956,10 @@ static bool vdc_port_mpgroup_check(struc
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+index b7cf9fbf97183..6d7aeac600128 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+@@ -509,14 +509,14 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init freq, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
  
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
+ 	ret = hclge_ptp_set_ts_mode(hdev, &hdev->ptp->ts_cfg);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts mode, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
  
- 	return false;
- }
+ 	ktime_get_real_ts64(&ts);
+@@ -524,7 +524,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts time, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
+ 
+ 	set_bit(HCLGE_STATE_PTP_EN, &hdev->state);
+@@ -532,6 +532,9 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 
+ 	return 0;
+ 
++out_clear_int:
++	clear_bit(HCLGE_PTP_FLAG_EN, &hdev->ptp->flags);
++	hclge_ptp_int_en(hdev, false);
+ out:
+ 	hclge_ptp_destroy_clock(hdev);
+ 
+-- 
+2.39.5
+
 
 
 
