@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DA1B367F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CEF3B369A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E338F8E5522
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954FE5849C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF44350D5D;
-	Tue, 26 Aug 2025 13:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1589E3568F5;
+	Tue, 26 Aug 2025 14:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7UluNDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvnzIRWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FD1350D54;
-	Tue, 26 Aug 2025 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CDB3568FB;
+	Tue, 26 Aug 2025 14:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216404; cv=none; b=uZrrsDzvKI28eRzteRSLDfoV9nVS4PkEGFLl6I4NJTSyE3jTRwZkJr2L6rxQS9u2smH6yDTt2cTWuVBusO01Jbzhtf0h+FcTdpwfcr8hbDKOcWlkVX8MRmYjVNfHifTTTWsPHjxgjDiewDXjXUJHtZmD0zGNcdisVzFcYXevBSc=
+	t=1756217658; cv=none; b=UzQGfZiTBmvEr9SU7Ao1pMjKLKtQyFEXFp1h9igRk6VmpSQRO9Rm4NhNWUu+bO6saxInkeh9dY0/PHfN6+MSahRDDrzO6r0o/CqOxT59V8n79s5etvRR+KzjYL6i/KWRG74u51xaTEf1vRhEFxeA0m0doRtQG2PUtOFDUHmQmx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216404; c=relaxed/simple;
-	bh=6NFMBSEUHzo85Oh6w4PXDR48KZykZz+kGqL2ORi0RY4=;
+	s=arc-20240116; t=1756217658; c=relaxed/simple;
+	bh=O1gZ+fzGBuAZOB+xDW7cHcDN0tmZ4hsjVZEyBhVM1OA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8tJGS6Ua18dl3ThLlx1f8VMXvB1LraOLe7atmxOyCZ89LPoGpT7rJzoKpjlUYaGn550T6npUNo4Y3Elj3YYkB8VOnJIzyDQpJwAxo79rpThRL/lkobi+hfJ7WTsm1NeyLBcjse5KZND/zef/L2/2W1HACKyVkgp0hw7kfnNuec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7UluNDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B2BC113D0;
-	Tue, 26 Aug 2025 13:53:24 +0000 (UTC)
+	 MIME-Version; b=DuXfVECRmIfx9lutRpvp1+h4UblS0IUCimujQTRVqrgPcsvtahBCsnNrMzrLuByBH7Ch7SftbmLKjGLXdCHAMf5LWhzVvtfjcOutADBLwSRZrJuIlyof2y1lWd1b2D+D0IdBaENNe6q4pen6H08hCVLlmqTHYTIQjk3ySm13N0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvnzIRWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4EAC113CF;
+	Tue, 26 Aug 2025 14:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216404;
-	bh=6NFMBSEUHzo85Oh6w4PXDR48KZykZz+kGqL2ORi0RY4=;
+	s=korg; t=1756217658;
+	bh=O1gZ+fzGBuAZOB+xDW7cHcDN0tmZ4hsjVZEyBhVM1OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7UluNDDB44tXusiVsyfV3nq6fy0JYVS9boJRHBzGqKkx9dmWoRk8E60Lz+W1oKga
-	 zc++r27hhzf73MtCVrJrrmwkRCeDa62Mw2n4iDozPz2BWHUXfUGk+zVKlwIOaFaerV
-	 ALcXli6GOhBdiajgbcTzcvVwgQNBHULneIoQb89A=
+	b=qvnzIRWgl0lNdfdq5t2CBeayJ/vs2h2k3MaZhEOgfGnAooVDfWau+3JBBca9RBUAB
+	 hFAzhV7pdHAiZE/TTkSzkowEdmFk2msVrh87/iBZo1+VwUkwT+TK1J0TYQqUuy+hx1
+	 LE3UnCxcVOGQWGV/rlUOAn9K5dVRi1/sycPJPyEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Jay Chen <shawn2000100@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 345/644] arm64: Mark kernel as tainted on SAE and SError panic
+Subject: [PATCH 5.10 226/523] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
 Date: Tue, 26 Aug 2025 13:07:16 +0200
-Message-ID: <20250826110954.945779802@linuxfoundation.org>
+Message-ID: <20250826110930.034753264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Jay Chen <shawn2000100@gmail.com>
 
-[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
+[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
 
-Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
-interrupts trigger a panic to flag potential hardware faults. This
-tainting mechanism aids in debugging and enables correlation of
-hardware-related crashes in large-scale deployments.
+There is a subtle contradiction between sections of the xHCI 1.2 spec
+regarding the initialization of Input Endpoint Context fields. Section
+4.8.2 ("Endpoint Context Initialization") states that all fields should
+be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
+specifies that the Average TRB Length (avg_trb_len) field shall be
+greater than 0, and explicitly notes (p.454): "Software shall set
+Average TRB Length to '8' for control endpoints."
 
-This change aligns with similar patches[1] that mark machine check
-events when the system crashes due to hardware errors.
+Strictly setting all fields to 0 during initialization conflicts with
+the specific recommendation for control endpoints. In practice, setting
+avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
+value is used for bandwidth calculation.
 
-Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Motivation: Our company is developing a custom Virtual xHC hardware
+platform that strictly follows the xHCI spec and its recommendations.
+During validation, we observed that enumeration fails and a parameter
+error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
+not set to 8 as recommended by Section 6.2.3. This demonstrates the
+importance of assigning a meaningful, non-zero value to avg_trb_len,
+even in virtualized or emulated environments.
+
+This patch explicitly sets avg_trb_len to 8 for EP0 in
+xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
+prevent potential issues with xHCI host controllers that enforce the
+spec strictly.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
+Signed-off-by: Jay Chen <shawn2000100@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/traps.c | 1 +
- arch/arm64/mm/fault.c     | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/usb/host/xhci-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-index c71074cb2bef..6debe95f8a62 100644
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -883,6 +883,7 @@ void panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigned long far)
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 5b0e00978322..1874a81d9766 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1227,6 +1227,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
+ 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
+ 				   dev->eps[0].ring->cycle_state);
  
- void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
- {
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	console_verbose();
++	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
++
+ 	trace_xhci_setup_addressable_virt_device(dev);
  
- 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 632762039714..d293aac8c554 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -726,6 +726,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
- 		 */
- 		siaddr  = untagged_addr(far);
- 	}
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
- 
- 	return 0;
+ 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
 -- 
 2.39.5
 
