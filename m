@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDEDB35D67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB62BB35C68
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D46787C5F8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6548681604
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FD92F619C;
-	Tue, 26 Aug 2025 11:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15F23469E6;
+	Tue, 26 Aug 2025 11:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKpp1kuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFqnizCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B88271475;
-	Tue, 26 Aug 2025 11:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC16345726;
+	Tue, 26 Aug 2025 11:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208633; cv=none; b=LgyklaLiNDACfvN+1moBV+Z+FhsIppHO6i5v7WfX3K9fnNHvBNe1kVm9jDFZHHhoc8g+CBFWB4K7I3YJW5v/JXG4uWdPqE6Y5AZbff63fDEKb2cd+oNIlobF/7IAnFFMe/vMImwz6SDBu19QB8Z6FdDC6iL+iShceXhFn4qUYvs=
+	t=1756207872; cv=none; b=O4vqV625JTCJsX2lX+4gJGSuhBq88RTOlDEJyqQ1oPoQeMBrdmUJkskuWjmcVJOMtNhUGJsUHg85R5cscK3u4rOEsj1kRljhC27MbinVthFH5+MYmP9IHJDEXBJ5AArKDeJL0kXuOo6EsfOOS6QVN2XbzGSDMehfu+/YHgtgzE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208633; c=relaxed/simple;
-	bh=3mEItnlr1VP6oOLBro/XoLbm4VEMj83AkHC/vtuyA0A=;
+	s=arc-20240116; t=1756207872; c=relaxed/simple;
+	bh=JvTQdVdIQwpOzKDKiQ8vaEPS2K7/EaB508a0oUix2zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ke96K0FkDRIa6Qg0gHPNi5kym3WSLMUUkpnDfHtFScBhe3iZE44rcMPiYvNUIZ8/aqzBv0tbN0v9veZGob7AUZuzjwMk/Ap9kEcBFS7CMB5HITZ9NSXvgf9fC7S90spyDQOoYHw+76B0E+kDmYhmJlw5QQ13VQXRNWnjm6qe/g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKpp1kuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B45C4CEF1;
-	Tue, 26 Aug 2025 11:43:52 +0000 (UTC)
+	 MIME-Version; b=O6SYenaFyWseD3FIZUrmI2khEofcy+zMZO+U3PCtXEe+xjtyKDEGtg4rOQy+uKhX7FIFXT10Q7Jlwrg5kB90qaWk7zmFaAWiN/Mo3TIBnJmUt/08TbEgX75VoDUCc5wfzhKEJf1zG+wGv4sZCYO1IBVlJ7axXn6quH4SmompR34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFqnizCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D504C4CEF1;
+	Tue, 26 Aug 2025 11:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208633;
-	bh=3mEItnlr1VP6oOLBro/XoLbm4VEMj83AkHC/vtuyA0A=;
+	s=korg; t=1756207872;
+	bh=JvTQdVdIQwpOzKDKiQ8vaEPS2K7/EaB508a0oUix2zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKpp1kuIhFsggVgyJAFjuMxuj/V3SUkV14KrQkyGyU4zt+xHAf8sr9qowfq4Lt2ux
-	 E1gM6cISODjbUOC/QtZ+Rb8uDpUYeFp6o28jiBuO4d9LNS8ZFatKpMUE8rxfcsNUwW
-	 R9zhWykzt9mtJbD5IbQWls4fxsGWQMVKBW0QvKpI=
+	b=eFqnizCIFw86C25AhQTS3fEaJ5l2/bvKgc+AF0XDLCJ4wjQBB87qVzN95YECIsApz
+	 VJXf3BSRoq0SQgxSWmXf17LUqiM1HpsjNT702V7M3RDKlLPfRst4+JB0WD+2eup0dB
+	 qHayoOTYCW8ycYLkHlkYry3KVP9c/Wbq2EUSRGUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.12 187/322] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
-Date: Tue, 26 Aug 2025 13:10:02 +0200
-Message-ID: <20250826110920.483627598@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.16 319/457] usb: typec: maxim_contaminant: disable low power mode when reading comparator values
+Date: Tue, 26 Aug 2025 13:10:03 +0200
+Message-ID: <20250826110945.236806977@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
+commit cabb6c5f4d9e7f49bdf8c0a13c74bd93ee35f45a upstream.
 
-Also needed by DCE 6.
-This way the code that gathers this info can be shared between
-different DCE versions and doesn't have to be repeated.
+Low power mode is enabled when reading CC resistance as part of
+`max_contaminant_read_resistance_kohm()` and left in that state.
+However, it's supposed to work with 1uA current source. To read CC
+comparator values current source is changed to 80uA. This causes a storm
+of CC interrupts as it (falsely) detects a potential contaminant. To
+prevent this, disable low power mode current sourcing before reading
+comparator values.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
-Cc: stable@vger.kernel.org
+Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/stable/20250814-fix-upstream-contaminant-v1-1-801ce8089031%40google.com
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-1-6c8d6c3adafb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |    5 +++++
+ drivers/usb/typec/tcpm/tcpci_maxim.h       |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -386,8 +386,6 @@ static void dce_pplib_apply_display_requ
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -188,6 +188,11 @@ static int max_contaminant_read_comparat
+ 	if (ret < 0)
+ 		return ret;
  
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
- 	int j;
- 	int num_cfgs = 0;
- 
-+	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
-+	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
-+	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
- 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
- 
- 	for (j = 0; j < context->stream_count; j++) {
-@@ -243,13 +246,6 @@ void dce11_pplib_apply_display_requireme
- 	pp_display_cfg->min_engine_clock_deep_sleep_khz
- 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
- 
--	pp_display_cfg->avail_mclk_switch_time_us =
--						dce110_get_min_vblank_time_us(context);
--	/* TODO: dce11.2*/
--	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
--
--	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
- 
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
++	/* Disable low power mode */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL,
++				 FIELD_PREP(CCLPMODESEL,
++					    LOW_POWER_MODE_DISABLE));
++
+ 	/* Sleep to allow comparators settle */
+ 	usleep_range(5000, 6000);
+ 	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL, TCPC_TCPC_CTRL_ORIENTATION, PLUG_ORNT_CC1);
+--- a/drivers/usb/typec/tcpm/tcpci_maxim.h
++++ b/drivers/usb/typec/tcpm/tcpci_maxim.h
+@@ -21,6 +21,7 @@
+ #define CCOVPDIS                                BIT(6)
+ #define SBURPCTRL                               BIT(5)
+ #define CCLPMODESEL                             GENMASK(4, 3)
++#define LOW_POWER_MODE_DISABLE                  0
+ #define ULTRA_LOW_POWER_MODE                    1
+ #define CCRPCTRL                                GENMASK(2, 0)
+ #define UA_1_SRC                                1
 
 
 
