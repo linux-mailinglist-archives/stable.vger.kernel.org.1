@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE52B36B97
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4D1B36985
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D1512A5F69
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17D6982FD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E80A2BEC45;
-	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7D1352077;
+	Tue, 26 Aug 2025 14:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtpTvjM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1vREBqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03B7405F7;
-	Tue, 26 Aug 2025 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB1F2AE68;
+	Tue, 26 Aug 2025 14:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218562; cv=none; b=bVWpZn0xcLP40LTRLYTPT0Xuok22UCj49+46GS8RKw5rkjHGXtUoobdOciRF5SEbGlCtsOF8/pewaGGLN6x2P/igeqX2E9DTqoGd0T9BZgzZFvYtrunghsZLMTJgMHSPYSQV/mA/873bSqfM1f59Vt/qXkUgs7G6NBQf0LN69h4=
+	t=1756217493; cv=none; b=G7h0TNjks55MfU4Ebylw6pHDQJp7ZnK6N/0+twnjlKil9yK8j5PUgpQK7tIhih3GkpnPsd6HoIAe+h/AA4+AWi1XwAZZ6yDp4YQ1aeogoNCqJ0Z6FDLzeZPO7CUcu9HGRvnsLbOgDk4fHNA8X7IKFJ+rg0FSNkNbFPaabTw8M3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218562; c=relaxed/simple;
-	bh=a/iilQZQHUxo24Vj78b/8p5VNM9l9VQrEugQGUZHoLA=;
+	s=arc-20240116; t=1756217493; c=relaxed/simple;
+	bh=NS3OWPwuli7nIUiO8Q4otL4TewrNfHa99FiIxp5CEsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6PNwftPYnpK7Wx3F7u56jio/0AOeeUn99HbBjx1IyhYatRCP89fOBIHg8QjkkAJqukkUPnNw238boOLdz6u+xHhgLYe/yLCWsYPil2/NbXOFjkB2DsqojmoAuI1Al3sCwHMCBxvTLxLZ29ibFB0DuBkOlMfy74O5zvMTpNHQto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtpTvjM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3966AC4CEF1;
-	Tue, 26 Aug 2025 14:29:19 +0000 (UTC)
+	 MIME-Version; b=SY438NXI1FeHq/2MCql/dQt3pTqwfvHaXwJM07IN/iPHWKb9K9b/xPBBJTGQZsOU3pXCyhZTSpIGAgaWd8AS7VwCs+sXxGCCC8o0Xra0EFl5HgiLeDYsn2lwOiRQ28xyqsl6sOe38L3UgninpOTlnhuGmffYDcRm39RVQeaV9O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1vREBqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0AAC4CEF1;
+	Tue, 26 Aug 2025 14:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218559;
-	bh=a/iilQZQHUxo24Vj78b/8p5VNM9l9VQrEugQGUZHoLA=;
+	s=korg; t=1756217492;
+	bh=NS3OWPwuli7nIUiO8Q4otL4TewrNfHa99FiIxp5CEsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtpTvjM8ARRkaCyOv7nsfLV7INgeCLy5k8SddVI/PFJRdE/fqA0LhvQlcONMawf4A
-	 1kUwcuNJaMLvhmbpZ90zdXoHS5fjhk8D/hQEHPFlHpc5LSVgeaXYc9VPUDla0ipf+q
-	 PioLL5jzYQAnlMk2SIeVtm9zv0xEzxiZ+fqI8MJM=
+	b=w1vREBqywGKaTFTMMxIi+LSKtDBD4/Ta8InK0OWB5vO9pph9L9yrRs1bks9LkQlf9
+	 pAGqWhdNTHUoDYzn6InSrBVcvtEhvbt/iAyNNXYUMnYePDYn3+9dpbgxjXUuXoZetH
+	 o0Up1qVxOfGJxQFXBhwv0pmlkYCgORKEqNjvVSVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 045/403] power: supply: bq24190_charger: Fix runtime PM imbalance on error
-Date: Tue, 26 Aug 2025 13:06:11 +0200
-Message-ID: <20250826110907.075731305@linuxfoundation.org>
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/523] PCI: pnv_php: Work around switches with broken presence detection
+Date: Tue, 26 Aug 2025 13:06:12 +0200
+Message-ID: <20250826110928.468748171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 1a37a039711610dd53ec03d8cab9e81875338225 ]
+[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
 
-pm_runtime_get_sync() increments the runtime PM usage counter even
-it returns an error code. Thus a pairing decrement is needed on
-the error handling path to keep the counter balanced.
+The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+was observed to incorrectly assert the Presence Detect Set bit in its
+capabilities when tested on a Raptor Computing Systems Blackbird system,
+resulting in the hot insert path never attempting a rescan of the bus
+and any downstream devices not being re-detected.
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Stable-dep-of: 47c29d692129 ("power: supply: bq24190: Fix use after free bug in bq24190_remove due to race condition")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Work around this by additionally checking whether the PCIe data link is
+active or not when performing presence detection on downstream switches'
+ports, similar to the pciehp_hpc.c driver.
+
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq24190_charger.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -484,8 +484,10 @@ static ssize_t bq24190_sysfs_store(struc
- 		return ret;
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 1ccd8a8e7c71..7fa92cb51451 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -389,6 +389,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	return 0;
+ }
  
- 	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pm_runtime_put_noidle(bdi->dev);
- 		return ret;
-+	}
- 
- 	ret = bq24190_write_mask(bdi, info->reg, info->mask, info->shift, v);
- 	if (ret)
++static int pcie_check_link_active(struct pci_dev *pdev)
++{
++	u16 lnk_status;
++	int ret;
++
++	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
++	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
++		return -ENODEV;
++
++	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
++
++	return ret;
++}
++
+ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ {
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+@@ -401,6 +415,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
++		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++			presence == OPAL_PCI_SLOT_EMPTY) {
++			/*
++			 * Similar to pciehp_hpc, check whether the Link Active
++			 * bit is set to account for broken downstream bridges
++			 * that don't properly assert Presence Detect State, as
++			 * was observed on the Microsemi Switchtec PM8533 PFX
++			 * [11f8:8533].
++			 */
++			if (pcie_check_link_active(php_slot->pdev) > 0)
++				presence = OPAL_PCI_SLOT_PRESENT;
++		}
++
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
+-- 
+2.39.5
+
 
 
 
