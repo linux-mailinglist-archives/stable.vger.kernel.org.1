@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04258B367D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DE2B36ABE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65984565AB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9055B5865D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768C235336C;
-	Tue, 26 Aug 2025 14:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7486935AAA1;
+	Tue, 26 Aug 2025 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTQc5p6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0Ymyjtl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE0352FFD;
-	Tue, 26 Aug 2025 14:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B5C35335B;
+	Tue, 26 Aug 2025 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216820; cv=none; b=U/fO5r4UyohFzELmB3qNAQSXWOAnr6q8tlmiBSgPD2ZdmIxa1aUKyRac3glg+viW5EPWkSlqVh5p2w/d1HydWUnzmNIJjzlIo0SGbw+K27xoMJ70xsWF3cbIjHb2CT9AWig0hNuDDF4Jm5ZsXo0/op8S6JFwauKNz1XufYLe4SQ=
+	t=1756218232; cv=none; b=Ecr25M9QUoPU5c9vC6vP7szOEeZtyimgRxvF7c7GcjtQUElurfbKZVif4QeNqselpd7UzFbyRW3lfuBToFT335uxFIR4LhSYFLPEQjZo85hJsQm6KcT8fLNkL5BOY2DBCjMpqTUlCXLlXJW/9a7MbEW0uB9mBkdTbM/7/tHbsCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216820; c=relaxed/simple;
-	bh=SfKmUmZheLjZBmoIiWcs709HIVlQljh8nqMsNitxIeM=;
+	s=arc-20240116; t=1756218232; c=relaxed/simple;
+	bh=E+iGdNKPltJjBOuYYrrqnk+QHlOFN7xqxzdXlWXowOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q04bPeqFWoiYHcqiQdEG98lGnDom+aOOxprriQvDkMibxS/mOpYdmpMQOLG5HNAHRkOXEF+kf6t/U3Fs5KTodP7Frg69FIncWwf9ockAWL7frMBrEMx69G6MsYXPaWrOd4Guz3uoxBqe1dsnMrUFnHl2niexn+AfIzM7IAPYVCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTQc5p6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA674C4CEF1;
-	Tue, 26 Aug 2025 14:00:19 +0000 (UTC)
+	 MIME-Version; b=CSl1mM5GX8dOvoQPdq+FctnbfonOyr4SqPj29xuPdQPA+25em2Y/4RiYAe5vtKbQXh8kCYgeBMPmLDph5A2zE2Ite5YZGmeCE07xbYN9cKpHm5WxOCU0kYZPeQTzHG26nFFhT9ZvoSbqUbXlgpYD6BmwOAj1ZRuS6+92U/KmUnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0Ymyjtl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB77DC113CF;
+	Tue, 26 Aug 2025 14:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216820;
-	bh=SfKmUmZheLjZBmoIiWcs709HIVlQljh8nqMsNitxIeM=;
+	s=korg; t=1756218232;
+	bh=E+iGdNKPltJjBOuYYrrqnk+QHlOFN7xqxzdXlWXowOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTQc5p6ndujMTJTNIsqw/3Xn5yFfS890OTznlVNlYDrJOO3+XzLRrbBTYh6L1Md8L
-	 woaLjt3216sVN0y53KLajmK1lGJlLKE0VrnFF6gt4pKT9vufFJv6ixH4/JEXjfUOFX
-	 Gm798CYmqS07y2YS4d3oBZHt1jlAvIGDzTLXtKGY=
+	b=a0YmyjtlVy1ikVZKcdYIoagL10ue6KGjxrR85zYonCYSQ+jPn5SRrB2jp/e6r5OBP
+	 n9yI2QNLlobwDCl/N93RTJPZCJ8ID+SZT8AE+O9neqsfmeo4VuXU0mYa1LGm/rIkW1
+	 po5a9kAyivujefePqI7X32VYXI1/fORS8kVLuC4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 555/644] selftests: mptcp: add missing join check
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 436/523] cdc-acm: fix race between initial clearing halt and open
 Date: Tue, 26 Aug 2025 13:10:46 +0200
-Message-ID: <20250826111000.281649161@linuxfoundation.org>
+Message-ID: <20250826110935.209432826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 857898eb4b28daf3faca3ae334c78b2bb141475e upstream.
+[ Upstream commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 ]
 
-This function also writes the name of the test with its ID, making clear
-a new test has been executed.
+On the devices that need their endpoints to get an
+initial clear_halt, this needs to be done before
+the devices can be opened. That means it needs to be
+before the devices are registered.
 
-Without that, the ADD_ADDR results from this test was appended at the
-end of the previous test causing confusions. Especially when the second
-test was failing, we had:
-
-  17 signal invalid addresses     syn[ ok ] - synack[ ok ] - ack[ ok ]
-                                  add[ ok ] - echo  [ ok ]
-                                  add[fail] got 2 ADD_ADDR[s] expected 3
-
-In fact, this 17th test was OK but not the 18th one.
-
-Now we have:
-
-  17 signal invalid addresses     syn[ ok ] - synack[ ok ] - ack[ ok ]
-                                  add[ ok ] - echo  [ ok ]
-  18 signal addresses race test   syn[fail] got 2 JOIN[s] syn expected 3
-   - synack[fail] got 2 JOIN[s] synack expected
-   - ack[fail] got 2 JOIN[s] ack expected 3
-                                  add[fail] got 2 ADD_ADDR[s] expected 3
-
-Fixes: 33c563ad28e3 ("selftests: mptcp: add_addr and echo race test")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in mptcp_join.sh, because commit 86e39e04482b ("mptcp: keep
-  track of local endpoint still available for each msk") is not in this
-  version and changed the context. The same line can still be applied at
-  the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/class/cdc-acm.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1138,6 +1138,7 @@ signal_address_tests()
- 	ip netns exec $ns2 ./pm_nl_ctl add 10.0.3.2 flags signal
- 	ip netns exec $ns2 ./pm_nl_ctl add 10.0.4.2 flags signal
- 	run_tests $ns1 $ns2 10.0.1.1
-+	chk_join_nr "signal addresses race test" 3 3 3
- 	chk_add_nr 4 4
- }
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1517,6 +1517,12 @@ skip_countries:
+ 	usb_driver_claim_interface(&acm_driver, data_interface, acm);
+ 	usb_set_intfdata(data_interface, acm);
  
++	if (quirks & CLEAR_HALT_CONDITIONS) {
++		/* errors intentionally ignored */
++		usb_clear_halt(usb_dev, acm->in);
++		usb_clear_halt(usb_dev, acm->out);
++	}
++
+ 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
+ 			&control_interface->dev);
+ 	if (IS_ERR(tty_dev)) {
+@@ -1524,11 +1530,6 @@ skip_countries:
+ 		goto alloc_fail6;
+ 	}
+ 
+-	if (quirks & CLEAR_HALT_CONDITIONS) {
+-		usb_clear_halt(usb_dev, acm->in);
+-		usb_clear_halt(usb_dev, acm->out);
+-	}
+-
+ 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+ 
+ 	return 0;
 
 
 
