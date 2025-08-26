@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-175071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15DDB366F9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FE6B36098
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA645630CF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EECF7C7E03
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DEA22128B;
-	Tue, 26 Aug 2025 13:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099261F1534;
+	Tue, 26 Aug 2025 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT8oJu0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwP3vLnH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E64B343218;
-	Tue, 26 Aug 2025 13:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B772D1C54A9;
+	Tue, 26 Aug 2025 12:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216064; cv=none; b=DdWyTR/XabcYjOgLpFBbumvJDkoLrki+YkMzBjcCD0UK1s4qD1yx2bGMXTR/FETRXDLuCHfMQV/iFQC/LZ3dSnkAYto/KmbVHs7/9K8OjpGa4TWSWwpbwpICR4C7U5BoF5M6lXNKWYJNMqTyhhYMAu+2XXLhtbW66h+ljkT3ajk=
+	t=1756213079; cv=none; b=Ma8GhgNPAfWvGzRLdipm0v2uQrt03HmofA19BGeQX5KgR0myrmoArNcWR+yUnz/7LtdJJOgbhswO5yRNMOFRNqU7BnpH9VJWUBnmhPfhnaOEGUPclgOU0MENh2Mykk0cFrvF9j1W9qmUFTKa6CuSGaYPnxERF2tuaj7izxaJWH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216064; c=relaxed/simple;
-	bh=TyDGWgzDxdOWWqg7GKGWoDLjDSa8VFH/84T5N7thCA4=;
+	s=arc-20240116; t=1756213079; c=relaxed/simple;
+	bh=+qAS97AhzWwsXe4fLnx2lOS4GBFBAdbm5dNlzQMVUZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Udl4frnsr6BA/xt1WQuEVVI2m8Dw76ENGhu4JengIqkZ9Lqd0M/HdRE2vhTDcRvePe/Vp7aTEgMvzJRFOh+MsTJK1K/6/7f2xtkXrTaI1/+MuRoolalWb5mJoR1ZFpXeU9QwpCSTog/HooqZpD6XaZHIq+4msSCTgLIYOsAiOe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT8oJu0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD15C4CEF1;
-	Tue, 26 Aug 2025 13:47:43 +0000 (UTC)
+	 MIME-Version; b=EKlhi965wIL+pXJzLoNfMMRvhclJhz9JopoZ/kZR2+f+cIGwlDkzuX2pAhj5wgU3FE/4/byZcCudgxMGTQczm8w+x6qOTHIP1VoUav2hjeBFi6ZGxNJMMmpWqULbJlWpf0iv2MG22vINjxkgutEbv940mWQUpOEx96Wy0ZQHoh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwP3vLnH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B50FC4CEF1;
+	Tue, 26 Aug 2025 12:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216063;
-	bh=TyDGWgzDxdOWWqg7GKGWoDLjDSa8VFH/84T5N7thCA4=;
+	s=korg; t=1756213079;
+	bh=+qAS97AhzWwsXe4fLnx2lOS4GBFBAdbm5dNlzQMVUZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sT8oJu0YF1cHBMRrk1PMlKpQqIMPp2Rlq52qWBNFJtxUa4lXaSAxmN9TacL3IodkR
-	 2dsX+BikXBJr1vuzWs7aAXnPz6IqywH0C1Fniwq6CW/44d8YF04LjQOypr5VIbqEOV
-	 xY8DIRmJQ3UhMzhzeWLASQooFNR4BpV+m89+erIU=
+	b=NwP3vLnHWVS9jSTxAfXUPGOWdOj2lCp1/icIsM/QrWrhR+kXZWy6/sBOPDgL0++X3
+	 GYpDo/QyAf8RovcD9ZkDq+NgQKPcKzUdR+NsWHZljmhU1yvOYrcxPKokYgM7652EJt
+	 rPr7kJzexvtlH3RtVHkM/UETVXRmL/P94KKf/Naw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 271/644] Documentation: ACPI: Fix parent device references
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 213/587] rcu: Fix rcu_read_unlock() deadloop due to IRQ work
 Date: Tue, 26 Aug 2025 13:06:02 +0200
-Message-ID: <20250826110953.086845923@linuxfoundation.org>
+Message-ID: <20250826110958.356712052@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +66,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Joel Fernandes <joelagnelf@nvidia.com>
 
-commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
+[ Upstream commit b41642c87716bbd09797b1e4ea7d904f06c39b7b ]
 
-The _CRS resources in many cases want to have ResourceSource field
-to be a type of ACPI String. This means that to compile properly
-we need to enclosure the name path into double quotes. This will
-in practice defer the interpretation to a run-time stage, However,
-this may be interpreted differently on different OSes and ACPI
-interpreter implementations. In particular ACPICA might not correctly
-recognize the leading '^' (caret) character and will not resolve
-the relative name path properly. On top of that, this piece may be
-used in SSDTs which are loaded after the DSDT and on itself may also
-not resolve relative name paths outside of their own scopes.
-With this all said, fix documentation to use fully-qualified name
-paths always to avoid any misinterpretations, which is proven to
-work.
+During rcu_read_unlock_special(), if this happens during irq_exit(), we
+can lockup if an IPI is issued. This is because the IPI itself triggers
+the irq_exit() path causing a recursive lock up.
 
-Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is precisely what Xiongfeng found when invoking a BPF program on
+the trace_tick_stop() tracepoint As shown in the trace below. Fix by
+managing the irq_work state correctly.
+
+irq_exit()
+  __irq_exit_rcu()
+    /* in_hardirq() returns false after this */
+    preempt_count_sub(HARDIRQ_OFFSET)
+    tick_irq_exit()
+      tick_nohz_irq_exit()
+	    tick_nohz_stop_sched_tick()
+	      trace_tick_stop()  /* a bpf prog is hooked on this trace point */
+		   __bpf_trace_tick_stop()
+		      bpf_trace_run2()
+			    rcu_read_unlock_special()
+                              /* will send a IPI to itself */
+			      irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+
+A simple reproducer can also be obtained by doing the following in
+tick_irq_exit(). It will hang on boot without the patch:
+
+  static inline void tick_irq_exit(void)
+  {
+ +	rcu_read_lock();
+ +	WRITE_ONCE(current->rcu_read_unlock_special.b.need_qs, true);
+ +	rcu_read_unlock();
+ +
+
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Closes: https://lore.kernel.org/all/9acd5f9f-6732-7701-6880-4b51190aa070@huawei.com/
+Tested-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+[neeraj: Apply Frederic's suggested fix for PREEMPT_RT]
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/rcu/tree.h        | 13 ++++++++++++-
+ kernel/rcu/tree_plugin.h | 37 ++++++++++++++++++++++++++-----------
+ 2 files changed, 38 insertions(+), 12 deletions(-)
 
---- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-+++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-@@ -14,7 +14,7 @@ Consider this topology::
-     |      |   | 0x70 |--CH01--> i2c client B (0x50)
-     +------+   +------+
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index ac8cc756920d..08f5d019c6ce 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -175,6 +175,17 @@ struct rcu_snap_record {
+ 	unsigned long   jiffies;	/* Track jiffies value */
+ };
  
--which corresponds to the following ASL::
-+which corresponds to the following ASL (in the scope of \_SB)::
++/*
++ * An IRQ work (deferred_qs_iw) is used by RCU to get the scheduler's attention.
++ * to report quiescent states at the soonest possible time.
++ * The request can be in one of the following states:
++ * - DEFER_QS_IDLE: An IRQ work is yet to be scheduled.
++ * - DEFER_QS_PENDING: An IRQ work was scheduled but either not yet run, or it
++ *                     ran and we still haven't reported a quiescent state.
++ */
++#define DEFER_QS_IDLE		0
++#define DEFER_QS_PENDING	1
++
+ /* Per-CPU data for read-copy update. */
+ struct rcu_data {
+ 	/* 1) quiescent-state and grace-period handling : */
+@@ -192,7 +203,7 @@ struct rcu_data {
+ 					/*  during and after the last grace */
+ 					/* period it is aware of. */
+ 	struct irq_work defer_qs_iw;	/* Obtain later scheduler attention. */
+-	bool defer_qs_iw_pending;	/* Scheduler attention pending? */
++	int defer_qs_iw_pending;	/* Scheduler attention pending? */
+ 	struct work_struct strict_work;	/* Schedule readers for strict GPs. */
  
-     Device (SMB1)
-     {
-@@ -24,7 +24,7 @@ which corresponds to the following ASL::
-             Name (_HID, ...)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
--                            AddressingMode7Bit, "^SMB1", 0x00,
-+                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
-                             ResourceConsumer,,)
-             }
+ 	/* 2) batch handling */
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index de727f2568bf..771e8cbb10d7 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -474,13 +474,16 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+ 	struct rcu_node *rnp;
+ 	union rcu_special special;
  
-@@ -37,7 +37,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH00", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
-@@ -52,7 +52,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH01", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
++	rdp = this_cpu_ptr(&rcu_data);
++	if (rdp->defer_qs_iw_pending == DEFER_QS_PENDING)
++		rdp->defer_qs_iw_pending = DEFER_QS_IDLE;
++
+ 	/*
+ 	 * If RCU core is waiting for this CPU to exit its critical section,
+ 	 * report the fact that it has exited.  Because irqs are disabled,
+ 	 * t->rcu_read_unlock_special cannot change.
+ 	 */
+ 	special = t->rcu_read_unlock_special;
+-	rdp = this_cpu_ptr(&rcu_data);
+ 	if (!special.s && !rdp->cpu_no_qs.b.exp) {
+ 		local_irq_restore(flags);
+ 		return;
+@@ -617,7 +620,23 @@ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
+ 
+ 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
+ 	local_irq_save(flags);
+-	rdp->defer_qs_iw_pending = false;
++
++	/*
++	 * If the IRQ work handler happens to run in the middle of RCU read-side
++	 * critical section, it could be ineffective in getting the scheduler's
++	 * attention to report a deferred quiescent state (the whole point of the
++	 * IRQ work). For this reason, requeue the IRQ work.
++	 *
++	 * Basically, we want to avoid following situation:
++	 * 1. rcu_read_unlock() queues IRQ work (state -> DEFER_QS_PENDING)
++	 * 2. CPU enters new rcu_read_lock()
++	 * 3. IRQ work runs but cannot report QS due to rcu_preempt_depth() > 0
++	 * 4. rcu_read_unlock() does not re-queue work (state still PENDING)
++	 * 5. Deferred QS reporting does not happen.
++	 */
++	if (rcu_preempt_depth() > 0)
++		WRITE_ONCE(rdp->defer_qs_iw_pending, DEFER_QS_IDLE);
++
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -664,17 +683,13 @@ static void rcu_read_unlock_special(struct task_struct *t)
+ 			set_tsk_need_resched(current);
+ 			set_preempt_need_resched();
+ 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
+-			    expboost && !rdp->defer_qs_iw_pending && cpu_online(rdp->cpu)) {
++			    expboost && rdp->defer_qs_iw_pending != DEFER_QS_PENDING &&
++			    cpu_online(rdp->cpu)) {
+ 				// Get scheduler to re-evaluate and call hooks.
+ 				// If !IRQ_WORK, FQS scan will eventually IPI.
+-				if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD) &&
+-				    IS_ENABLED(CONFIG_PREEMPT_RT))
+-					rdp->defer_qs_iw = IRQ_WORK_INIT_HARD(
+-								rcu_preempt_deferred_qs_handler);
+-				else
+-					init_irq_work(&rdp->defer_qs_iw,
+-						      rcu_preempt_deferred_qs_handler);
+-				rdp->defer_qs_iw_pending = true;
++				rdp->defer_qs_iw =
++					IRQ_WORK_INIT_HARD(rcu_preempt_deferred_qs_handler);
++				rdp->defer_qs_iw_pending = DEFER_QS_PENDING;
+ 				irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+ 			}
+ 		}
+-- 
+2.39.5
+
 
 
 
