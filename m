@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D837B360DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FA4B36968
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2CD217A46B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A351C40C78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39B61D86FF;
-	Tue, 26 Aug 2025 13:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A272BE058;
+	Tue, 26 Aug 2025 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsjiuXPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keQTUca3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036B1C4A2D;
-	Tue, 26 Aug 2025 13:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FCC3568F4;
+	Tue, 26 Aug 2025 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213280; cv=none; b=tWTbT6BYBL8CtIIk/xtVzzwHGo6ilRZdqpoxPNW2gIOPlHPWLiSpksuDTR0gPwfQuqReZENqC3R8I0ypdZ5NeT0Uc9T/c7wFbC00waQjpDXucY5Xbt6Iy0L3l0N20NolyOeRxfLo0uY7E5wzVxvZ3+cKOafad/Zv0aGniUGfZdc=
+	t=1756217661; cv=none; b=AkAV1ygsv4nwQJRss9OkN5LZ9Xu8iN+KywSnR7s+L31GNcP1VPdo5+cTqZWln2hVdmpW7in7F9ss6jEMNKTs80KmZkQeqE9Pic2BXOru+IsEf5OkNaV5bMwbxpJHFR+lrCXwZUnkr14iredRCQmkLj03zSepo1lfCWl0znvyHdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213280; c=relaxed/simple;
-	bh=xpUD+Ew7h0e78ST2DlG/mXnPWzxwmGLxGCY4t99Isu4=;
+	s=arc-20240116; t=1756217661; c=relaxed/simple;
+	bh=5qMOnR5L+pmTO6zhmvV9VI+qcfhFml1ypvHJ7pvxdWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fHFrif6eoGNIThUNGihvUb221arN6xK1RadKdBHDchRSKf3JtgLaL6Im7siEIOWB3UZEHSMvSXOkdrD6j0cccj+qL9SEPoHrrOzaa+X+IUKN7J78oIMlUIslFudbC4hdCqOTNsAx1of4E/lVWoB/7/8Ko1/pQxso2QctVYGRToA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsjiuXPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6F5C4CEF1;
-	Tue, 26 Aug 2025 13:01:19 +0000 (UTC)
+	 MIME-Version; b=Z+voZ5w8KrtAeCk6BauXM8M5/VfULcx44L1pWa2aY1lUV2ENdkDOfyBbWA01L9a957xb5VsNIf+t8u2yMKqfPwYQRn5BjIUBYuFV8CqXxsUCUPK8yaPpwg486B+zTxwLypgWl4nHU7cEG586OGdOVivlEUx/AP6uYUFqcKNrvhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keQTUca3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02012C4CEF1;
+	Tue, 26 Aug 2025 14:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213280;
-	bh=xpUD+Ew7h0e78ST2DlG/mXnPWzxwmGLxGCY4t99Isu4=;
+	s=korg; t=1756217661;
+	bh=5qMOnR5L+pmTO6zhmvV9VI+qcfhFml1ypvHJ7pvxdWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TsjiuXPIfCd6WYqW8QojVbbiTQUT+jGHNkJuGjMNLu3aiHHtUJev9xCb+TNNFO8sg
-	 nXjfwlERgPQrbpLAjiCS5k1TGiFDly+LBhUURlCod+5gtuLri+WG4qrndSrqGgv1ts
-	 sWxrfhXIHtbozCedRMlAvKDf4faeVyeBCS9Kvn5Y=
+	b=keQTUca3iDTHmmmjXry7gJzVKT6sb/p5I11XdBNUU0AzoSguH8IVE+myAAi0UBJ54
+	 rhtXN9NDLBzywvmwyep5pRqTGpRn4zOWvcmgBETKfwuTLxvRXts3vGGt035G5bXzUW
+	 wdn99LlvzTMMVjC1MN9E1Z+/2x3oTmP1B9MdEsp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/587] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
-Date: Tue, 26 Aug 2025 13:07:16 +0200
-Message-ID: <20250826111000.230823235@linuxfoundation.org>
+Subject: [PATCH 5.10 227/523] usb: xhci: Avoid showing errors during surprise removal
+Date: Tue, 26 Aug 2025 13:07:17 +0200
+Message-ID: <20250826110930.058748846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
+[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
 
-If pcim_request_all_regions() fails, error path operates on
-uninitialized 'bus' pointer. Found out by Coverity static analyzer.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed as well.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When that flag is set don't show messages in the cleanup path for
+marking the controller dead.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index 63e4356e8caf..8f36cef88fe6 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -415,6 +415,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
- 	if (!adev)
- 		return -ENOMEM;
-+	bus = &adev->base.core;
-+
- 	ret = avs_bus_init(adev, pci, id);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to init avs bus: %d\n", ret);
-@@ -425,7 +427,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index c026e7cc0af1..a65ad8e760d0 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1094,12 +1094,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
+  */
+ void xhci_hc_died(struct xhci_hcd *xhci)
+ {
++	bool notify;
+ 	int i, j;
  
--	bus = &adev->base.core;
- 	bus->addr = pci_resource_start(pci, 0);
- 	bus->remap_addr = pci_ioremap_bar(pci, 0);
- 	if (!bus->remap_addr) {
+ 	if (xhci->xhc_state & XHCI_STATE_DYING)
+ 		return;
+ 
+-	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
++	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
++	if (notify)
++		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
+ 	xhci->xhc_state |= XHCI_STATE_DYING;
+ 
+ 	xhci_cleanup_command_queue(xhci);
+@@ -1113,7 +1116,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
+ 	}
+ 
+ 	/* inform usb core hc died if PCI remove isn't already handling it */
+-	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
++	if (notify)
+ 		usb_hc_died(xhci_to_hcd(xhci));
+ }
+ 
 -- 
 2.39.5
 
