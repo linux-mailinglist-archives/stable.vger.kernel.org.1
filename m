@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B01B35B61
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95A8B36914
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2570F189B46D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7E25980B92
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726D9284B5B;
-	Tue, 26 Aug 2025 11:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8CD352FD4;
+	Tue, 26 Aug 2025 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG9y2sBc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxMsnqaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3067E267386;
-	Tue, 26 Aug 2025 11:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E1F350835;
+	Tue, 26 Aug 2025 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207150; cv=none; b=eYiL7ZbrvbBtiIDM9E13kCmHiO1I6tl/rWj4LJJ8o84LPOeK2c2Fo7fNkguikmKIhunqmIgWKYm3eGEn75qOJ6jsDcrD42U7Q3h0ZrRYFgV/oP5BCPGw43YRu576LSdDdOvhV28VLRKnI32x7akT1h2AJy6/q44IPLWWRlmiQrg=
+	t=1756217435; cv=none; b=oWov1x+QxbmUfHm8madaGMYYzYe4zN/85YrouiK5YpVm+QH+Qv+dVPZ3R58/qXjdP4lLi1wMOw6ZACsQ3OVf0cPRAAKvDgYsio13zq8FgAvJob1m4Qzz4VdHNMbPmd+lesMBhZFO3J1GRaBJNVfB/EXQ2JeJs0w4Z4bKOLcdHG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207150; c=relaxed/simple;
-	bh=ZvlfWnQaMIHfqW8kkIePGCtSCpeNyYtGWVq2GPUk8ig=;
+	s=arc-20240116; t=1756217435; c=relaxed/simple;
+	bh=WN7HFyuD9oCRka0GLS5oWXVKeSM7BNtGwu4nyEv1mbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOiuUKFmg2O15I2fJU2JTZJcjs78dTTFwEhrdCkVbqiIeZROjIoylGtJCMXvzB3ZOIl+YzSwa6ls4EdBtug+10BvjZp4En9JcfnEod9Yh5ElJmQJVHthBxRQsTCMbjpb22brmnCREoeHmZ6KCfPPYX/PFJEN40zxMRzl5ScjSRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KG9y2sBc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5773EC4CEF1;
-	Tue, 26 Aug 2025 11:19:09 +0000 (UTC)
+	 MIME-Version; b=LSD41qjFseQF/HqB7YK9oKb5r6FxJd+3+ztL4X2jBL7GyaI+cKArnuz0m+J/ccEYN5HJBmI6jFx0X6Zv6h96wVnB7hEf6F8wdCdhoYhVDShw9rM7LSqtWThvBn7y6tGvJG1DuQ1HqOtbmJVupdf7Zlk4JXKPCMMIJjhgIMWl3kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxMsnqaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3745CC4CEF1;
+	Tue, 26 Aug 2025 14:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207149;
-	bh=ZvlfWnQaMIHfqW8kkIePGCtSCpeNyYtGWVq2GPUk8ig=;
+	s=korg; t=1756217435;
+	bh=WN7HFyuD9oCRka0GLS5oWXVKeSM7BNtGwu4nyEv1mbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KG9y2sBcc87q22RXSta8zh+8srgWLKQKdSN6tXHZs3VoY9qGLr4pjtAN3sXTppkMw
-	 4VZugdaRHK3E/rGSJ4VytrSpZcebfj2OfCtjuqahxd4JBfGhA2S4och/clqRdt8QSE
-	 dFq/mkoQxwrysCarWM0bznvLuJQlsD4mKnwV+CVc=
+	b=kxMsnqaUHFYMVqbhFbStZYtgcbDKbNmG0/2BrfeBZfRcVszaooBWeJkepoawNHSvL
+	 HsJTNbjAX5elv4jxN0Wp35FKZMGJVkikMmu6MCIjJB9iTsi0vcGtn28vyJEoUi2bfJ
+	 VisrxhN3HqrKuA+9rWJtX+0rmM9jdy7PbrKp07UU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.16 069/457] ata: libata-scsi: Return aborted command when missing sense and result TF
+	Zheng Yu <zheng.yu@northwestern.edu>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 143/523] jfs: fix metapage reference count leak in dbAllocCtl
 Date: Tue, 26 Aug 2025 13:05:53 +0200
-Message-ID: <20250826110939.073272858@linuxfoundation.org>
+Message-ID: <20250826110928.021786454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Zheng Yu <zheng.yu@northwestern.edu>
 
-commit d2be9ea9a75550a35c5127a6c2633658bc38c76b upstream.
+[ Upstream commit 856db37592021e9155384094e331e2d4589f28b1 ]
 
-ata_gen_ata_sense() is always called for a failed qc missing sense data
-so that a sense key, code and code qualifier can be generated using
-ata_to_sense_error() from the qc status and error fields of its result
-task file. However, if the qc does not have its result task file filled,
-ata_gen_ata_sense() returns early without setting a sense key.
+In dbAllocCtl(), read_metapage() increases the reference count of the
+metapage. However, when dp->tree.budmin < 0, the function returns -EIO
+without calling release_metapage() to decrease the reference count,
+leading to a memory leak.
 
-Improve this by defaulting to returning ABORTED COMMAND without any
-additional sense code, since we do not know the reason for the failure.
-The same fix is also applied in ata_gen_passthru_sense() with the
-additional check that the qc failed (qc->err_mask is set).
+Add release_metapage(mp) before the error return to properly manage
+the metapage reference count and prevent the leak.
 
-Fixes: 816be86c7993 ("ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ("jfs: fix shift-out-of-bounds in dbSplit")
+
+Signed-off-by: Zheng Yu <zheng.yu@northwestern.edu>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ fs/jfs/jfs_dmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -938,6 +938,8 @@ static void ata_gen_passthru_sense(struc
- 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
- 		ata_dev_dbg(dev,
- 			    "missing result TF: can't generate ATA PT sense data\n");
-+		if (qc->err_mask)
-+			ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
- 		return;
- 	}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 37888187b977..234b7cc4acfa 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1877,8 +1877,10 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
+ 			return -EIO;
+ 		dp = (struct dmap *) mp->data;
  
-@@ -992,8 +994,8 @@ static void ata_gen_ata_sense(struct ata
+-		if (dp->tree.budmin < 0)
++		if (dp->tree.budmin < 0) {
++			release_metapage(mp);
+ 			return -EIO;
++		}
  
- 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
- 		ata_dev_dbg(dev,
--			    "missing result TF: can't generate sense data\n");
--		return;
-+			    "Missing result TF: reporting aborted command\n");
-+		goto aborted;
- 	}
- 
- 	/* Use ata_to_sense_error() to map status register bits
-@@ -1004,13 +1006,15 @@ static void ata_gen_ata_sense(struct ata
- 		ata_to_sense_error(tf->status, tf->error,
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(dev, cmd, sense_key, asc, ascq);
--	} else {
--		/* Could not decode error */
--		ata_dev_warn(dev, "could not decode error status 0x%x err_mask 0x%x\n",
--			     tf->status, qc->err_mask);
--		ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
- 		return;
- 	}
-+
-+	/* Could not decode error */
-+	ata_dev_warn(dev,
-+		"Could not decode error 0x%x, status 0x%x (err_mask=0x%x)\n",
-+		tf->error, tf->status, qc->err_mask);
-+aborted:
-+	ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
- }
- 
- void ata_scsi_sdev_config(struct scsi_device *sdev)
+ 		/* try to allocate the blocks.
+ 		 */
+-- 
+2.39.5
+
 
 
 
