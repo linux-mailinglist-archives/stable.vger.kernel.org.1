@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-173848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A20B36014
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BFCB36006
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DCA7463CF8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C9B3A99C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCF91FF1D1;
-	Tue, 26 Aug 2025 12:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1256C1F09A8;
+	Tue, 26 Aug 2025 12:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXP+VOp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUDdJbO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD0D1EDA2C;
-	Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB231E5718;
+	Tue, 26 Aug 2025 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212824; cv=none; b=oClpIHCq8owTN1fkuw1J7NQ598GRA6oB4cfQmWjvorszyrf/4TYLW7V+s2W/ICYCRiiirm0AMmQklbpStJv+ka172Xvk2HghUKvICacJkp9QTzRYQgGD0jh9gUNKP10i8ZwwV1gr7eIIYbLk8NQc75o9MmM8YLRio6q41kVA5ZU=
+	t=1756212829; cv=none; b=erzZNYJPgiBuFRCUX1q02EHyG+URbnMyI6Qp3SK5U7JwcxZGRTa1YISD7eoBKDlWgCBYDCWAIwp4SKg4Vqt9l51YEycYDnQmai7WMfxYUGUjRPnlwWsJDNd9fZOvTezDq8DbizHmejVQvOsB8ZPHtWcI6n+sHEpmd6jsWoXNnno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212824; c=relaxed/simple;
-	bh=kM+2dw4keRJqEHUsb2QMlO+GC8RvFBQkTCL9KU3E03Y=;
+	s=arc-20240116; t=1756212829; c=relaxed/simple;
+	bh=FNHyEi10fpSX6LJVlgIrObT2IkcHnp1tvvDcGto4MAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jURLfAAO4UA307gL8HDsmW43jIBHe06rADCSO+KY+DAHk482LC7aeDBo6OspQZvjlI9XvgOoVjQ+Y1JHPD0ms4HtH0fP/2A3qDhZ8ljdpf29CfLdOWxKPRw42GVXkv8w37/J8kWu15phfZWSqnbQDtYCquvkNvuI7d8L8VCdVHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXP+VOp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E707C4CEF1;
-	Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
+	 MIME-Version; b=EgsQXcuMDITXm/Tp2y8GTQB5MkHB0GLzGj5GU+Do2eho+DZrHdLLA7KxdKGVtY5SXLbkz0GrS2z5zjI6EpXXIcp1QkT/8l7nnXhkUsEGuCbXLLHlHJHJxSsmDWxzwQJHj8kCdy75PYRevxXkR/KdYtKz65td0lQ+LYnkLO8jdSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUDdJbO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBA6C4CEF1;
+	Tue, 26 Aug 2025 12:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212824;
-	bh=kM+2dw4keRJqEHUsb2QMlO+GC8RvFBQkTCL9KU3E03Y=;
+	s=korg; t=1756212829;
+	bh=FNHyEi10fpSX6LJVlgIrObT2IkcHnp1tvvDcGto4MAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXP+VOp0KPkRmVAaA8hKQ5yO9FJYWbbGAICoiBlnt9ED33t2xvPZchY8RqhTDlqED
-	 KgGfgf8XloDE95XyCDF8ngU/68JTYPMvbneFWCUd9DGyNAY60YkUvZEpxkG4YwnBEd
-	 soERFyU9ky5GWpOezClW3crzKRlnx0AnIXNYCvuY=
+	b=mUDdJbO2uTws4HWR4yCymCCF3wvyRJleqgcSeEa/GVOHf5H4sFbm+pxJ6ON5mv/7t
+	 Zd6/ksdXWX8WPbPc/BFeitad2W2hAYfrnghZSsIBD/FCK3of1KokTiI/l0I6vP7KKm
+	 wvKQaDJUYMoU2kRYHkKKcz/hBXWen2wFcm0ND0Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/587] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
-Date: Tue, 26 Aug 2025 13:04:25 +0200
-Message-ID: <20250826110955.921038956@linuxfoundation.org>
+Subject: [PATCH 6.6 117/587] char: misc: Fix improper and inaccurate error code returned by misc_init()
+Date: Tue, 26 Aug 2025 13:04:26 +0200
+Message-ID: <20250826110955.944808810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
 References: <20250826110952.942403671@linuxfoundation.org>
@@ -67,57 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
+[ Upstream commit 0ef1fe4bc38673db72e39b700b29c50dfcc5a415 ]
 
-The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
-used in the BCM2712, AKA the RPi5. The RPi platforms
-have typically used the ARCH_BCM2835, and the PCIe
-support for this SoC can use this config which depends
-on these drivers so enable building them when just that
-arch option is enabled to ensure the platform works as
-expected.
+misc_init() returns -EIO for __register_chrdev() invocation failure, but:
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+- -EIO is for I/O error normally, but __register_chrdev() does not do I/O.
+- -EIO can not cover various error codes returned by __register_chrdev().
+
+Fix by returning error code of __register_chrdev().
+
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250620-fix_mischar-v1-3-6c2716bbf1fa@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/char/misc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index ccd59ddd7610..9f25eb3aec25 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -51,8 +51,8 @@ config RESET_BERLIN
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index dda466f9181a..30178e20d962 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -314,8 +314,8 @@ static int __init misc_init(void)
+ 	if (err)
+ 		goto fail_remove;
  
- config RESET_BRCMSTB
- 	tristate "Broadcom STB reset controller"
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the reset controller driver for Broadcom STB SoCs using
- 	  a SUN_TOP_CTRL_SW_INIT style controller.
-@@ -60,11 +60,11 @@ config RESET_BRCMSTB
- config RESET_BRCMSTB_RESCAL
- 	tristate "Broadcom STB RESCAL reset controller"
- 	depends on HAS_IOMEM
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
--	  BCM7216.
-+	  BCM7216 or the BCM2712.
+-	err = -EIO;
+-	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
++	err = __register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops);
++	if (err < 0)
+ 		goto fail_printk;
+ 	return 0;
  
- config RESET_HSDK
- 	bool "Synopsys HSDK Reset Driver"
 -- 
 2.39.5
 
