@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A88B367AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB8EB35CEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450894680F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EAD1720EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C78352FDC;
-	Tue, 26 Aug 2025 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A65340D81;
+	Tue, 26 Aug 2025 11:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOqF8QJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAXpb6nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E1D352FC9;
-	Tue, 26 Aug 2025 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CB32D0C61;
+	Tue, 26 Aug 2025 11:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216721; cv=none; b=bFR0IsuJgMmThNiEJbgR/6WNEwi0iu4to55VhP4vvjk0Uz0enNhSAZ5c4kTiW2XudoQIlAT6PI6x6mY+OX5BhKGhefK5iduLUIOPIu+sgRSiJ/QVYz+vjOD8DEX6x0NZAE0dIxs6K5x21DRg5e+qKG6GW4sL5v67Yo/yPeS1cUY=
+	t=1756207810; cv=none; b=Jk8aHMrmx52Xgol8PwqijVNu1RFa8/mxgiKma0g0L44vlexW+2V87FSZ3oOsVeDzegU2ZmWqOZTnHC7mvsaDcz86CuM5oMP4aCNZTiQZQagKRW1KLQ3Zi+MuyEDLGM5Y5G38DDgZONswqxF5jzqpYsdNFhrzNSq6r5N4ssQoUE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216721; c=relaxed/simple;
-	bh=u5LxUSyjxFNX/6KC4tT1eiGgIxEA2KSkMASjHnD9MGU=;
+	s=arc-20240116; t=1756207810; c=relaxed/simple;
+	bh=jXzg6q4gy0YKGuDKmCGer9ey2ZYKrwyGCZzjxn1bmaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gn40kAsxi81udS8JLSnAzMYh5uxR0+UqJvNSZV8VpQhKJZQBhLht/x8I+B3emaWup99wRM7xJ3cIzhpmZ51a/ABHcdLW4go6VF4QlJoiU3zXlrZ2uQbQfbwT6JiYRKsUvUdbcuozQ16OTN6IY+YjN2/AIRC2wRi+blqCQYiBDaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOqF8QJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3382C4CEF1;
-	Tue, 26 Aug 2025 13:58:40 +0000 (UTC)
+	 MIME-Version; b=beDAP/5jaF1GyK6ZsENNtrwnyCB/8nErw3AQLRtE9xbpvnEf7INmApLzgOhG9q6pWJ9GOh5v1AotGvxXyoccm+BfetrMjSCXyRTF002XP0g7VoKGzN9VwLZRPsN1BtMGo/YBokADMg2p4Iu6ax47k2/de+x5qQDqSS62bFPhkDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAXpb6nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9359C4CEF1;
+	Tue, 26 Aug 2025 11:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216721;
-	bh=u5LxUSyjxFNX/6KC4tT1eiGgIxEA2KSkMASjHnD9MGU=;
+	s=korg; t=1756207810;
+	bh=jXzg6q4gy0YKGuDKmCGer9ey2ZYKrwyGCZzjxn1bmaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOqF8QJTL/+S0UV71LH+je2V2htV755bmpUuVwLMFMmQxID2jSmMH//kobZXePm18
-	 XXaaKgyuKUPTwfu+It4zcLl/dN11DU2wH3A6we1yPbDvjS6rNscLff8IKUwbl8ioUo
-	 ppNDA07W2rROuXsVYkJ7dfx4hmQGoUiAFNG+5qpI=
+	b=jAXpb6nx4j/pkrYUzxeHK7mO0JRyN2Nl5OREG27C3k8j7gp7h/fA1sBh7rZjCYMuR
+	 hqXs+dQYKUFMGEE6AnIwG39/dj4swnJyfN5M7ZiAoZaD8d4+4OtTkMOJXCHTz639Ae
+	 FIJDjcwPKezLNL5kweK1asMURvgaDFccX1xWZUHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 519/644] usb: hub: Dont try to recover devices lost during warm reset.
+Subject: [PATCH 6.16 326/457] tracing: Remove unneeded goto out logic
 Date: Tue, 26 Aug 2025 13:10:10 +0200
-Message-ID: <20250826110959.367846261@linuxfoundation.org>
+Message-ID: <20250826110945.403130175@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 2521106fc732b0b75fd3555c689b1ed1d29d273c ]
+[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
 
-Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-recover a possible connected device. The port reset code correctly
-detects if a connection is lost during reset, but hub driver
-port_event() fails to take this into account in some cases.
-port_event() ends up using stale values and assumes there is a
-connected device, and will try all means to recover it, including
-power-cycling the port.
+Several places in the trace.c file there's a goto out where the out is
+simply a return. There's no reason to jump to the out label if it's not
+doing any more logic but simply returning from the function.
 
-Details:
-This case was triggered when xHC host was suspended with DbC (Debug
-Capability) enabled and connected. DbC turns one xHC port into a simple
-usb debug device, allowing debugging a system with an A-to-A USB debug
-cable.
+Replace the goto outs with a return and remove the out labels.
 
-xhci DbC code disables DbC when xHC is system suspended to D3, and
-enables it back during resume.
-We essentially end up with two hosts connected to each other during
-suspend, and, for a short while during resume, until DbC is enabled back.
-The suspended xHC host notices some activity on the roothub port, but
-can't train the link due to being suspended, so xHC hardware sets a CAS
-(Cold Attach Status) flag for this port to inform xhci host driver that
-the port needs to be warm reset once xHC resumes.
-
-CAS is xHCI specific, and not part of USB specification, so xhci driver
-tells usb core that the port has a connection and link is in compliance
-mode. Recovery from complinace mode is similar to CAS recovery.
-
-xhci CAS driver support that fakes a compliance mode connection was added
-in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-
-Once xHCI resumes and DbC is enabled back, all activity on the xHC
-roothub host side port disappears. The hub driver will anyway think
-port has a connection and link is in compliance mode, and hub driver
-will try to recover it.
-
-The port power-cycle during recovery seems to cause issues to the active
-DbC connection.
-
-Fix this by clearing connect_change flag if hub_port_reset() returns
--ENOTCONN, thus avoiding the whole unnecessary port recovery and
-initialization attempt.
-
-Cc: stable@vger.kernel.org
-Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250623133947.3144608-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/trace/trace.c |   38 +++++++++++++++-----------------------
+ 1 file changed, 15 insertions(+), 23 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5684,6 +5684,7 @@ static void port_event(struct usb_hub *h
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
- 	int i = 0;
-+	int err;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1846,7 +1846,7 @@ int trace_get_user(struct trace_parser *
  
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5776,8 +5777,11 @@ static void port_event(struct usb_hub *h
- 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
- 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
--			if (hub_port_reset(hub, port1, NULL,
--					HUB_BH_RESET_TIME, true) < 0)
-+			err = hub_port_reset(hub, port1, NULL,
-+					     HUB_BH_RESET_TIME, true);
-+			if (!udev && err == -ENOTCONN)
-+				connect_change = 0;
-+			else if (err < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
- 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1860,7 +1860,7 @@ int trace_get_user(struct trace_parser *
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				goto out;
++				return ret;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1870,8 +1870,7 @@ int trace_get_user(struct trace_parser *
+ 		/* only spaces were written */
+ 		if (isspace(ch) || !ch) {
+ 			*ppos += read;
+-			ret = read;
+-			goto out;
++			return read;
+ 		}
+ 	}
+ 
+@@ -1879,13 +1878,12 @@ int trace_get_user(struct trace_parser *
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else
++			return -EINVAL;
++
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1900,15 +1898,11 @@ int trace_get_user(struct trace_parser *
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	*ppos += read;
+-	ret = read;
+-
+-out:
+-	return ret;
++	return read;
+ }
+ 
+ /* TODO add a seq_buf_to_buffer() */
+@@ -2410,10 +2404,10 @@ int __init register_tracer(struct tracer
+ 	mutex_unlock(&trace_types_lock);
+ 
+ 	if (ret || !default_bootup_tracer)
+-		goto out_unlock;
++		return ret;
+ 
+ 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
+-		goto out_unlock;
++		return 0;
+ 
+ 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
+ 	/* Do we want this tracer to start on bootup? */
+@@ -2425,8 +2419,7 @@ int __init register_tracer(struct tracer
+ 	/* disable other selftests, since this will break it. */
+ 	disable_tracing_selftest("running a tracer");
+ 
+- out_unlock:
+-	return ret;
++	return 0;
+ }
+ 
+ static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
+@@ -8954,12 +8947,12 @@ ftrace_trace_snapshot_callback(struct tr
+  out_reg:
+ 	ret = tracing_arm_snapshot(tr);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = register_ftrace_function_probe(glob, tr, ops, count);
+ 	if (ret < 0)
+ 		tracing_disarm_snapshot(tr);
+- out:
++
+ 	return ret < 0 ? ret : 0;
+ }
+ 
+@@ -11057,7 +11050,7 @@ __init static int tracer_alloc_buffers(v
+ 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
+ 
+ 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
+-		goto out;
++		return -ENOMEM;
+ 
+ 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_buffer_mask;
+@@ -11175,7 +11168,6 @@ out_free_cpumask:
+ 	free_cpumask_var(global_trace.tracing_cpumask);
+ out_free_buffer_mask:
+ 	free_cpumask_var(tracing_buffer_mask);
+-out:
+ 	return ret;
+ }
+ 
 
 
 
