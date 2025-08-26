@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFCEB3602E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1446DB368EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A670A1BA7B94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 779D58E3812
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB9B1A9FB0;
-	Tue, 26 Aug 2025 12:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8DE352092;
+	Tue, 26 Aug 2025 14:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrmhEjpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gsgzurax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1835145B3E;
-	Tue, 26 Aug 2025 12:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A974352078;
+	Tue, 26 Aug 2025 14:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212875; cv=none; b=Q56S6hTvl2WPV6bbCe4JJbmsOwGjN12WEJquXBO5HM15J405X3O5aW2t1bVlhMjjaZ3w4rdnkAoCWBWktI0GzvaECnDoy7NZ4atkYFOEGubQqPFgbc0mqOmTK6dJmpeQtZ9WscQWi20g5EXXFy8hJenLsgA2ZylnWakriwZIx6s=
+	t=1756217258; cv=none; b=hSVEIcXliH5zPnsKDuEmDbB4AeR3ZIxPHJN80Y4sp/pHwiGC7vfHcLlUxedqjS5RoibJuEJzTLDZBcQ/nM+Hfcyz9rLxaIF39z9XPwmO2J4VdEHN1NeYX3sbTMyNkJCDdyhyTvQPXN9b3PX2VejT6ffYiKJaA1DxBgIuYYoJqk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212875; c=relaxed/simple;
-	bh=3Vgy52usXlO+wjGBWTnRMajgK4EHmxdy6nQKUc9ZIWU=;
+	s=arc-20240116; t=1756217258; c=relaxed/simple;
+	bh=m3yLK2aV2y8hhi7u96F2ECwyxU8AjAbMKi5nZfjYTus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gqw94pyQNIM5wgNvhsmPyt+ij63MQYIqMQdHBPZhJiyRdrfs5B8x9FWyx8vB2Tp7u3bzgqLF9+an8VTfum/RqgDJqrON8EbJsLTv4aGE963euFSTzC/KDrGyuvwNCasUEQx7vzA5nT5c8qB1uPzumF6+MWuHrmp9CLS/zpCtX84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrmhEjpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F747C4CEF1;
-	Tue, 26 Aug 2025 12:54:35 +0000 (UTC)
+	 MIME-Version; b=DeSWfqiypG96VzJbYSc99fUYz/r7/f+Xw7CIoVgpFZSbPHl/AChbIS9lPfY3eMJ9oD5mkAxM/fccXhtMpwjd1EQzjM5DgiqLocc5pqOrfS8EtWUavhuanS+sF0x3GoQZ5RTGlz+yEl59tlwZhUSw8dyndho8pjsof39GwgI11xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gsgzurax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC97C4CEF1;
+	Tue, 26 Aug 2025 14:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212875;
-	bh=3Vgy52usXlO+wjGBWTnRMajgK4EHmxdy6nQKUc9ZIWU=;
+	s=korg; t=1756217258;
+	bh=m3yLK2aV2y8hhi7u96F2ECwyxU8AjAbMKi5nZfjYTus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrmhEjpISf+UdIZmVEkGQFP9j9FfrdY0eKr7QRPafGiGKv8yVHCP7iNxbcKX7cl0C
-	 VPmQvznr3WaQcCZvtl6KeYltkb4w2Q0txX4EcZOl1mbB/c8q8ErKWsNWUPWzg8mheg
-	 i37V/MIQ/8PWRtx7shGwr6gRaSpE4f36FEuh4v7U=
+	b=GsgzuraxpUoUxqxeOgpLyMpzLod1oQhZQ1FtaCmU7Kl5wJv6NQr1kROB0rPM/wKxb
+	 1XQqCVkNklpBwec1juMWgk+HYqEaaJzCunLOoOYYiDfxmsZF3wQfZuNvE0UD9vjVmB
+	 F0ZQ5BBo952zOtE/WBzqulx2meqVQWDw4vpuQz98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/587] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Tue, 26 Aug 2025 13:04:45 +0200
-Message-ID: <20250826110956.412863723@linuxfoundation.org>
+Subject: [PATCH 5.10 076/523] ASoC: Intel: fix SND_SOC_SOF dependencies
+Date: Tue, 26 Aug 2025 13:04:46 +0200
+Message-ID: <20250826110926.443649834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
+[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+It is currently possible to configure a kernel with all Intel SoC
+configs as loadable modules, but the board config as built-in. This
+causes a link failure in the reference to the snd_soc_sof.ko module:
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
+sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
+sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
+sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
+sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
+sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
+sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
+sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
+sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
+sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
+
+Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
+the SOF support is in a loadable module, none of the board code can be built-in.
+
+This may be be a little heavy-handed, but I also don't see a reason why one would
+want the boards to be built-in but not the SoC, so it shouldn't actually cause
+any usability problems.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ sound/soc/intel/boards/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 967f06cd3f94..e147eaf1a3b1 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -203,6 +203,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- 	return spi_write(st->spi, st->data.d8, 2);
- }
+diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
+index dddb672a6d55..0e1166c4f89b 100644
+--- a/sound/soc/intel/boards/Kconfig
++++ b/sound/soc/intel/boards/Kconfig
+@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
+ 	 kernel: saying N will just cause the configurator to skip all
+ 	 the questions about Intel ASoC machine drivers.
  
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
-+
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -288,10 +306,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
+-if SND_SOC_INTEL_MACH
++if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
  
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
- 
- static int ad7768_set_freq(struct ad7768_state *st,
+ config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
+ 	bool "Use more user friendly long card names"
 -- 
 2.39.5
 
