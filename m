@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6951B35D9E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D37B36780
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD5635E7085
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8D3018935ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2A32F9982;
-	Tue, 26 Aug 2025 11:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A83350D55;
+	Tue, 26 Aug 2025 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x56kWhRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjnBAwYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B772D6E6B;
-	Tue, 26 Aug 2025 11:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B0134F484;
+	Tue, 26 Aug 2025 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208689; cv=none; b=M6uWmGsMq0LmBfVY6UhNUvpl5mol2HSwX2npfVWmJXMukNtxfZTpI4UwMTSGVIGx8ORfIp7qMPRu6AVN0sLj4zEv7UcM3VgeuehfFtDzSRZj2cpNhF0fQV48+cOID6UXlnOcz5/ziInA/GFYWhVqHfycsjmITna3cuYvndmpHNQ=
+	t=1756216695; cv=none; b=X4JsIh2TmUkpJlzumX+Ol0X+agxvhi94ik4Y/i+t0+wa5piY01TLtFCm5tUrdMRjRkhHZSY03zexRLAcFKfq/SafyWrUeYHQAQ+2iLVhgezC3MsA327LKFhs/+AZB5nItzIHMB8FdW5jOJAGD4FAkz/T6idTUBwyHgsbwL+nniM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208689; c=relaxed/simple;
-	bh=Q6OD8UPmnpob6nH7B56kjcz4yM8+IG4Ym5eRiAFPFtE=;
+	s=arc-20240116; t=1756216695; c=relaxed/simple;
+	bh=BQLe7ZBP/lujoJPGaPOqsAtYGXA7iqxuWzUMEcO1Gk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O6BP+ZMYn1KlmEs792+9v5CWs9mrIRLhUhYMYNRmtWJKiP55sj0qjYommMoHLBmt5oXAWzbzb6fQy3/v7GNlZCuS+h/HUMQaAKo7M53PLZ1LOWPPjo+i4qWruAI63jkfm/owMm01/EXRPB16aS+JA545YzHO0m9tCmncJrnLfSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x56kWhRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F95DC4CEF1;
-	Tue, 26 Aug 2025 11:44:48 +0000 (UTC)
+	 MIME-Version; b=ivdkHIKDCj8HqC7idYu2QQkmA5DvMCJVxVHXMc9onSzNDpBaWPMR+eGDkI0VtKf6cDrFDrOT97ViSByBVyp4YnQABhbzdfX7nNsW3Dc9qjsPtDNrU0Z0sqq5Dl4NXL8+D0RpOPZB+3UuaqZQBzXleEZFO6IxD0Fymy1UM8kwDDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjnBAwYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D12DC4CEF1;
+	Tue, 26 Aug 2025 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208688;
-	bh=Q6OD8UPmnpob6nH7B56kjcz4yM8+IG4Ym5eRiAFPFtE=;
+	s=korg; t=1756216695;
+	bh=BQLe7ZBP/lujoJPGaPOqsAtYGXA7iqxuWzUMEcO1Gk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x56kWhRs3NtrAXUcvuzZbV5W7oN9+AS62IHKAldurJsbl/KIUIgVryS41O90eNgZA
-	 8BqIrwCpdWHxFH9xfNzrC8TpyC5VN36JceZUoZuVq+X4gZktozhK3aIMukL/XmG7dy
-	 YhmGeo/289woBJTGgAqrHyeCZ4J/zlYY7tmOCNhA=
+	b=yjnBAwYIDtXapEdMNxqVsmknGqlVPIgCgvkZoT5ecn+cvGUr+w0/Jf5OE2JZ0WFnT
+	 Vo8ZMgTXSR2ccIdvETlcqU7w0w6jLPJEdcFmhiZG0nDlCYOQ23Eok8ruUjFcJRTVby
+	 3ayEK/NbIbd3QSsnc2LtSnDKYLMFhvZaqGjIWNzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 177/322] platform/x86/intel-uncore-freq: Check write blocked for ELC
+	Christoph Paasch <cpaasch@openai.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 501/644] mptcp: drop skb if MPTCP skb extension allocation fails
 Date: Tue, 26 Aug 2025 13:09:52 +0200
-Message-ID: <20250826110920.232712278@linuxfoundation.org>
+Message-ID: <20250826110958.911108772@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-commit dff6f36878799a5ffabd15336ce993dc737374dc upstream.
+commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
 
-Add the missing write_blocked check for updating sysfs related to uncore
-efficiency latency control (ELC). If write operation is blocked return
-error.
+When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
+we used to return true, letting the segment proceed through the TCP
+receive path without a DSS mapping. Such segments can leave inconsistent
+mapping state and trigger a mid-stream fallback to TCP, which in testing
+collapsed (by artificially forcing failures in skb_ext_add) throughput
+to zero.
 
-Fixes: bb516dc79c4a ("platform/x86/intel-uncore-freq: Add support for efficiency latency control")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Return false instead so the TCP input path drops the skb (see
+tcp_data_queue() and step-7 processing). This is the safer choice
+under memory pressure: it preserves MPTCP correctness and provides
+backpressure to the sender.
+
+Control packets remain unaffected: ACK updates and DATA_FIN handling
+happen before attempting the extension allocation, and tcp_reset()
+continues to ignore the return value.
+
+With this change, MPTCP continues to work at high throughput if we
+artificially inject failures into skb_ext_add.
+
+Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250727210513.2898630-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -189,9 +189,14 @@ static int uncore_read_control_freq(stru
- static int write_eff_lat_ctrl(struct uncore_data *data, unsigned int val, enum uncore_index index)
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1074,7 +1074,9 @@ static bool add_addr_hmac_valid(struct m
+ 	return hmac == mp_opt->ahmac;
+ }
+ 
+-/* Return false if a subflow has been reset, else return true */
++/* Return false in case of error (or subflow has been reset),
++ * else return true.
++ */
+ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
  {
- 	struct tpmi_uncore_cluster_info *cluster_info;
-+	struct tpmi_uncore_struct *uncore_root;
- 	u64 control;
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+@@ -1170,7 +1172,7 @@ bool mptcp_incoming_options(struct sock
  
- 	cluster_info = container_of(data, struct tpmi_uncore_cluster_info, uncore_data);
-+	uncore_root = cluster_info->uncore_root;
-+
-+	if (uncore_root->write_blocked)
-+		return -EPERM;
+ 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
+ 	if (!mpext)
+-		return true;
++		return false;
  
- 	if (cluster_info->root_domain)
- 		return -ENODATA;
+ 	memset(mpext, 0, sizeof(*mpext));
+ 
 
 
 
