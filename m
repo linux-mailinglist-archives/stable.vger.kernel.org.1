@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C94B36D1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E1FB35E34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615A48E6ECC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D5DA4637B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32CD352066;
-	Tue, 26 Aug 2025 14:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8057829D27E;
+	Tue, 26 Aug 2025 11:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6n5NfWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs5P6yLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7A3350D72;
-	Tue, 26 Aug 2025 14:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3730117332C;
+	Tue, 26 Aug 2025 11:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218981; cv=none; b=bWwf3pelLQTII0ZCQ5aY0yRbHhMOa0L6RsOmyqM8kxKwpiG2e6oWnYs0j20llTvBCes0xi5Ew83D+nJeiCLXqL7+C3YpwlgMk7vNKSIXif+e9aqYBqNVti41KgBcJ8KTfVrY2jI6ORSjhFD4DnhCfYy/IvoXYhEMuQag0LYfdb4=
+	t=1756208451; cv=none; b=XNPZf2kmD5iZkAApbweurVDMMtJI7CSmHXTOkV3PAxkA/Lecq4wXzZKjghIJB4AReywZ0gnWg7xrqd4LvmqLh5DVxZDPPOL8P/dDF3DZ910TMCpS7Msr+VXFtch3aFmDB6RA22OwMwkDBF4mEc33Leb31t3L6IB6EX+stdV0Kxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218981; c=relaxed/simple;
-	bh=qmOdCx2+wp0jBvP/mS5mNOoGlUMwFLDdoZqvYsSPkik=;
+	s=arc-20240116; t=1756208451; c=relaxed/simple;
+	bh=NhokpoxBbMyDHsUTdixwcCe9OIuki7FOQAX1c1heFY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPF+5XIYbCGdBvfTd6xZG1zxtudFZGcZ8ZK5LD5tXlN+B+zRyiFHTK0avKBDY+URXgO04DsdWLCL3lt7oeFWaNTKZdJnGFQg5VfIC1QZCkmruQSYa1u44wL68g1Pka+b7ZWfkjLuTbN8Ud7Hs5qV9fZUxEmDYY2gcdfJB0qC7xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6n5NfWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16DFC4CEF1;
-	Tue, 26 Aug 2025 14:36:19 +0000 (UTC)
+	 MIME-Version; b=YUmkSgv/4R1goEq2vD/tKlfJgy14M/+gFFR/FzpD2VF5w9Ubh9HeLHzlAc8951bBpW7JMuWbeywgo1+Y/OqLP9NOmN78dX3FMSgIQuJG08Xdd3FZCzjb1OSmVXGz6aA9LruudkLsvLvdd9VLawJtwWEMxwWtf/2XXWL/VSovd94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs5P6yLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA64C4CEF1;
+	Tue, 26 Aug 2025 11:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218980;
-	bh=qmOdCx2+wp0jBvP/mS5mNOoGlUMwFLDdoZqvYsSPkik=;
+	s=korg; t=1756208451;
+	bh=NhokpoxBbMyDHsUTdixwcCe9OIuki7FOQAX1c1heFY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6n5NfWjTLw3xLX/Rj6bkIpBRuVuOj3gfb1eRdfQuA7N8s7ryTpVDZHK5ufu5bqQT
-	 K6nHbKaj2hkhD+PGQZFfBKdnttE77fKMuW8tn81U5ELEntOy/UW0bM97o/Skyi5/+J
-	 x76guX2FQ3ZuIYz5JSSlmm87vB0CoVArx40ua+V4=
+	b=Zs5P6yLX/N+ATUwWdstLmPMPqDHGIj3LlK7StWzNPvWC8RkpXZpi2lsSD6DmHfK6m
+	 I8k16HIJz/emmewafzs91FpKYW7/wQLgHQfLxYVu0JsjBUkzI2wo7RlcEilMJZjrx1
+	 4HF0zbx+IT9BSV2wChBeOTZWCOshGP/gJo/NgSYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"John Warthog9 Hawley" <warthog9@kernel.org>,
-	Dhaval Giani <dhaval.giani@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 206/403] ktest.pl: Prevent recursion of default variable options
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.12 117/322] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
 Date: Tue, 26 Aug 2025 13:08:52 +0200
-Message-ID: <20250826110912.538637809@linuxfoundation.org>
+Message-ID: <20250826110918.685559292@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
+commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
 
-If a default variable contains itself, do not recurse on it.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-For example:
+Clamp the param if the user provides a value that will result in an invalid
+fps.
 
-  ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
-
-The above works because the temp variable ADD_CONFIG (is a temp because it
-is created with ":=") is already defined, it will be substituted in the
-variable option. But if it gets commented out:
-
-  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
-
-Then the above will go into a recursive loop where ${ADD_CONFIG} will
-get replaced with the current definition of ADD_CONFIG which contains the
-${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
-after 100 attempts of recursion and fail.
-
-When replacing a variable with the default variable, if the default
-variable contains itself, do not replace it.
-
-Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/venc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 10b3c5b25b69..964a531e1a65 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1280,7 +1280,10 @@ sub __eval_option {
- 	# If a variable contains itself, use the default var
- 	if (($var eq $name) && defined($opt{$var})) {
- 	    $o = $opt{$var};
--	    $retval = "$retval$o";
-+	    # Only append if the default doesn't contain itself
-+	    if ($o !~ m/\$\{$var\}/) {
-+		$retval = "$retval$o";
-+	    }
- 	} elsif (defined($opt{$o})) {
- 	    $o = $opt{$o};
- 	    $retval = "$retval$o";
--- 
-2.39.5
-
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
+ 
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
 
