@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53233B35B3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E46B36343
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CB077C34D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC60C8A820D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A022D3218C4;
-	Tue, 26 Aug 2025 11:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E7934A307;
+	Tue, 26 Aug 2025 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4XMIJnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5lZKg/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BED82C17A0;
-	Tue, 26 Aug 2025 11:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB226A0B3;
+	Tue, 26 Aug 2025 13:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207193; cv=none; b=lipO/4lWb1ZdC49Uwsd66f4Qo1QiPQbG4djiGUBwIHxLeLwrZMCwKElgfCHOHRZqpv92+R06p2JvFwDnv3zTkizZipexQ75lxuO9jegGHbGjgGcQS9eNfyfSTjVTeLCBlkKZPrcfRwD/RCAeJy/QBzpqaK91K51Zoa5XmY4nMWI=
+	t=1756214366; cv=none; b=b4OJ4zLOkoI4h1d1cNr+m1z5jTzOGJC5dVoy5UioMUnwDFCUTIAqoAhgpaDV756yc/Hy+ETJOOc1FdVgtugvM1DHZkweFKAZiHjXptHb6vei9ejMczCvhVDZNoCSMgVGfwUc40mrsYMFk8IGC9qqEyzrTBFbrLGBUAuygf8smLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207193; c=relaxed/simple;
-	bh=k4pBN6lOdxlQDAi1UrKTQUGN4gXXdwBYdPI2n4SiHD8=;
+	s=arc-20240116; t=1756214366; c=relaxed/simple;
+	bh=yDfi4fYlmwIDrD60c3uOxlo2DH+VuSgl9/LFfMDMivI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDWMPpPpy3+fsH209DdhzYoytdoxDn8CXPD4tZ6XE+o/eCu+HmZv86ZoL6srKKydMCmHExZbk98t63u2aC0qhI5INUr9TBafd/5XwmrU18v+mJw7Sbkz571scunWVzU9ZSx361UE+uUOBBJCVScMFFYkSElM4yexHituBGi02CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4XMIJnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B68C4CEF1;
-	Tue, 26 Aug 2025 11:19:52 +0000 (UTC)
+	 MIME-Version; b=lypUznBY+7/N3sXfyCQCHv2abKFE1ka3GFmFUIXVFSGnn28NdeFPlzBDYzY/ZjqC913UA3wTLxVOsLNfL3sQZaGi8R1CfQC3SNMCjCtJeq5n7XUTahg8eo+6NKHm9pKOIvu+SnEzZeeU2bA7g1aXwcyRgLTDY6fIs/Q094Jdr94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5lZKg/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E90EC4CEF1;
+	Tue, 26 Aug 2025 13:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207193;
-	bh=k4pBN6lOdxlQDAi1UrKTQUGN4gXXdwBYdPI2n4SiHD8=;
+	s=korg; t=1756214366;
+	bh=yDfi4fYlmwIDrD60c3uOxlo2DH+VuSgl9/LFfMDMivI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4XMIJnIzkgtD2eLiOPnK70gaNYoJUoghAl8HFzjMM7TO+hGQ439WDxcd/tuVEt3i
-	 egYhxPaJizTLm/4GirmOsRMAbmnlATTN0+xf1V1muvgABPqbEMsMaJZF5L0KwWIx4d
-	 ZmDzxY9+MxbfwtZ4eDyVhjMnx3Vo/DHUayuRsJZc=
+	b=S5lZKg/98dh/u5VwqAcIE411eHf5AYYIoP7wklOjwT/m3iKPXXv3yFw8MmoBEbMs/
+	 tj3AnKp9rOLZUQ94JcOSuOiriu8zO62p9Xk301Nsx3/iOdCX90JGDgtK+yguWqLrtC
+	 M0q4JvRliKbxHns5e86DFAMfS/dSNNR0lKR9qSuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 079/457] iio: adc: ad7173: fix setting ODR in probe
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/482] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
 Date: Tue, 26 Aug 2025 13:06:03 +0200
-Message-ID: <20250826110939.327599898@linuxfoundation.org>
+Message-ID: <20250826110933.546330983@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 6fa908abd19cc35c205f343b79c67ff38dbc9b76 upstream.
+[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
 
-Fix the setting of the ODR register value in the probe function for
-AD7177. The AD7177 chip has a different ODR value after reset than the
-other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
+Fix all macro related issues identified by checkpatch.pl:
 
-The driver already has this information available in odr_start_value
-and uses it when checking valid values when writing to the
-sampling_frequency attribute, but failed to set the correct initial
-value in the probe function.
+  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
 
-Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7173.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1595,6 +1595,7 @@ static int ad7173_fw_parse_channel_confi
- 		chan_st_priv->cfg.bipolar = false;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		chan_st_priv->cfg.openwire_comp_chan = -1;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
- 		if (st->info->data_reg_only_16bit)
-@@ -1661,7 +1662,7 @@ static int ad7173_fw_parse_channel_confi
- 		chan->scan_index = chan_index;
- 		chan->channel = ain[0];
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
--		chan_st_priv->cfg.odr = 0;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		chan_st_priv->cfg.openwire_comp_chan = -1;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index be0b3c8ac705..f2cce15be4e2 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2150,15 +2150,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_CLK_FREQMUL_SHIFT		18
+ #define SND_RME_CLK_FREQMUL_MASK		0x7
+ #define SND_RME_CLK_SYSTEM(x) \
+-	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
++	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
+ #define SND_RME_CLK_AES(x) \
+-	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SPDIF(x) \
+-	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SYNC(x) \
+-	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
++	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
+ #define SND_RME_CLK_FREQMUL(x) \
+-	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
++	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
+ #define SND_RME_CLK_AES_LOCK			0x1
+ #define SND_RME_CLK_AES_SYNC			0x4
+ #define SND_RME_CLK_SPDIF_LOCK			0x2
+@@ -2167,9 +2167,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_SPDIF_FORMAT_SHIFT		5
+ #define SND_RME_BINARY_MASK			0x1
+ #define SND_RME_SPDIF_IF(x) \
+-	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
+ #define SND_RME_SPDIF_FORMAT(x) \
+-	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
  
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
+ static const u32 snd_rme_rate_table[] = {
+ 	32000, 44100, 48000, 50000,
+-- 
+2.39.5
+
 
 
 
