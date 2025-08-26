@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E049B363C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC36B3613A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3068A5858
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE1D3AA84E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE995312803;
-	Tue, 26 Aug 2025 13:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3304D1D90C8;
+	Tue, 26 Aug 2025 13:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9kbv7py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdHM8fHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C68244667;
-	Tue, 26 Aug 2025 13:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A49238D42;
+	Tue, 26 Aug 2025 13:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214580; cv=none; b=q5WVWkD9BSdicQD4HaK8+OfTtawSbcxDKiNYEL78nzZ+14FjBu+r4x9NjbujS2jJI82tW6Paghn6A9GEDBSfhumhuZOlNV/R1yguQ1/mH/sZWRAjJZ9R4DQ/d2AXWnREgBi82YphuqKPI6iG6A+hJMdxt0aN+v00zgNrjpDQU+0=
+	t=1756213410; cv=none; b=W/vZyURoswARZsvOeH80QqYa9Xiu3y0QKLE1x6sggvKTgmgVpZB6MlR2AQ+Nb+6Rr61eIYOeA9n8h05dD5cDcoc4A3CrIhph9P1jZ1sUX0eDtMCojo8anEVKZuinYqa4RY09eHspXP6jeo3G1m7zF41uHNMGhPyD1laVXW1yg+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214580; c=relaxed/simple;
-	bh=n64Qwo/hJ2GoiKn5Gq9Zm0NrqOs12os5SlMoAObqUZc=;
+	s=arc-20240116; t=1756213410; c=relaxed/simple;
+	bh=38MT39NGE7fN6ObuMtwT9FzpvS5/ChBlp5Dj8EKrFZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4dRIKysUzjH7/kmoGa69zHt4u415ZHySfjzFSWlGKJiUn1tsWvoqmJTIDHASAG9a1OmiemfnSOFPhnn06KkzsH8/AlS8TmZuDVqlCsoEqnoKILbsSZKA9fGekMSzVFlFYLBfO+YkEcRItnjVftBq8sBXbSH5Ki1fxS2FgYLzDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9kbv7py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B6BC4CEF1;
-	Tue, 26 Aug 2025 13:22:59 +0000 (UTC)
+	 MIME-Version; b=PHELooAUfucquq9cIe2PlcqZTskVZTqQk37I3S0jb1CzxJyFkXb9J+J0HZQYQovaQ4llkFRcyJujhpiw4BUrW2zq4lCTJMa8+kUWYnJNIhl6EtTN/QC1HnI3JqOAX37bccLKjpZSZHEPA4mkP2ESWZj8d5Fmfex+MR1/5DBQR8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdHM8fHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19323C4CEF4;
+	Tue, 26 Aug 2025 13:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214580;
-	bh=n64Qwo/hJ2GoiKn5Gq9Zm0NrqOs12os5SlMoAObqUZc=;
+	s=korg; t=1756213409;
+	bh=38MT39NGE7fN6ObuMtwT9FzpvS5/ChBlp5Dj8EKrFZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9kbv7pyETH1v+dnvdQCxQM0DxR6Kihx3SdYN1xTD3iQ+3UlMDYIoky5gQzF81JQv
-	 8lGYlXsNGMo5/F+uDz3sWF7kmzHtvgMak53VMRFbbgILreWAu6hlhF8741vHIs8tAj
-	 8vIASVOuJuD4fLrzMdrfR3bZaNCpK0kOLfaRfkFE=
+	b=OdHM8fHdLztW3yICj7pumLIXEwjb0QISbcAyoQqjM8ehs6qH9Ja6edhVgwqbQ19F0
+	 tB8j7gu8qnb3XFuABlKmLpU2FAyf96n9eUPLW2MTGnm7SoGiKTxosvHTevnQgSR6SA
+	 mVMjMmX+QE6tT+YH/Bn2IKGi2yERJf88BBGNYUvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Adolfsson <johan.adolfsson@axis.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Jack Xiao <Jack.Xiao@amd.com>,
+	Likun Gao <Likun.Gao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/482] leds: leds-lp50xx: Handle reg to get correct multi_index
+Subject: [PATCH 6.6 296/587] drm/amdgpu: fix incorrect vm flags to map bo
 Date: Tue, 26 Aug 2025 13:07:25 +0200
-Message-ID: <20250826110935.546325070@linuxfoundation.org>
+Message-ID: <20250826111000.457031446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Adolfsson <johan.adolfsson@axis.com>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
+[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
 
-mc_subled used for multi_index needs well defined array indexes,
-to guarantee the desired result, use reg for that.
+It should use vm flags instead of pte flags
+to specify bo vm attributes.
 
-If devicetree child nodes is processed in random or reverse order
-you may end up with multi_index "blue green red" instead of the expected
-"red green blue".
-If user space apps uses multi_index to deduce how to control the leds
-they would most likely be broken without this patch if devicetree
-processing is reversed (which it appears to be).
-
-arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
-but I don't see how it can have worked without this change.
-
-If reg is not set, an error is returned,
-If reg is out of range, an error is returned.
-reg within led child nodes starts with 0, to map to the iout in each bank.
-
-Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 28d6b39fa72d..cda62e3d3a3a 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -486,6 +486,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index 720011019741..384834fbd590 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -89,8 +89,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	}
  
- 		fwnode_for_each_child_node(child, led_node) {
-+			int multi_index;
- 			ret = fwnode_property_read_u32(led_node, "color",
- 						       &color_id);
- 			if (ret) {
-@@ -493,8 +494,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 				dev_err(priv->dev, "Cannot read color\n");
- 				goto child_out;
- 			}
-+			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
-+			if (ret != 0) {
-+				dev_err(priv->dev, "reg must be set\n");
-+				return -EINVAL;
-+			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
-+				dev_err(priv->dev, "reg %i out of range\n", multi_index);
-+				return -EINVAL;
-+			}
+ 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
+-			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
+-			     AMDGPU_PTE_EXECUTABLE);
++			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
++			     AMDGPU_VM_PAGE_EXECUTABLE);
  
--			mc_led_info[num_colors].color_index = color_id;
-+			mc_led_info[multi_index].color_index = color_id;
- 			num_colors++;
- 		}
- 
+ 	if (r) {
+ 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
 -- 
-2.39.5
+2.50.1
 
 
 
