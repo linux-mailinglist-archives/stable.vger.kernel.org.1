@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517E1B3617D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9ACB364EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E2D7B9C67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3148A754B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44362C08A8;
-	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF2343D62;
+	Tue, 26 Aug 2025 13:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIE9vtS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9KCxaLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BC523026B;
-	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A813345752;
+	Tue, 26 Aug 2025 13:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213739; cv=none; b=RpKY04BOiOus6nUuwp8W0n82zDrhFDhPUz3/4pVby6hrv4JQyfIxxP0z/b15D0jYsIGrqtJDEbNy5oUaZLkDLvmEZsN0YfJpvU05gICS2lvET0svDYtnhH0UPFC5GRBG8Bm0r6zTRpFNeDKpLevj6KKe6L45cRpyPxxdDKZ5q1U=
+	t=1756215104; cv=none; b=lqF8A5uGYU9GEHXUPRXO6UV3gCT39hm8XI0tJiFNnr4XuIkZnpppXr/qx94z/7eXc3jYJaU0kgSkRQ9S6W8E+M32KhthR7p1+k/Bcm0AvmD1ptB+QMUVbO6rwvy93P5/BtxAvdoOaY5S3VZbOWBD+7ZGRndVIgMGUElDYtOhMCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213739; c=relaxed/simple;
-	bh=b49btHaJNt+mRHvPNS/vCim1+qtXR94DmAzYPmFQGLs=;
+	s=arc-20240116; t=1756215104; c=relaxed/simple;
+	bh=mKXnRxMlu90vQV0e+XdS2AURI19LzlfyZ1nfXYYDuAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgC7vlrPha0QqujTtj+Bq1hBD7gqFcVGymm8tWtQzS5fsyZLJU+AFTzXHF8PX1B/lYjkFrkgii3vuxpZfbq+a7bFzsTZH/vr9+4jh6LoGlYUHBNsehkNZriSKA8SdsztkhM6eYep2ubkP5WLS4O7/P3RreW7JJrLwSFchjKH0r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIE9vtS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33638C4CEF1;
-	Tue, 26 Aug 2025 13:08:59 +0000 (UTC)
+	 MIME-Version; b=Cf3v79LRFkALTjCR7kbxkcfjv8VHEpzBrnaBuxeBvfLXDR19QqqCxy2qe04qZ83D6jCjQTKF9qFHPtiX62DFPKwojjyChbaTD4pwigLJm873x/Htl9tcuUCnrCTczqScW13HnfpP0U6CeMqK31FUmHKFOU9lor94S19QJwdlMk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9KCxaLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E3AC4CEF1;
+	Tue, 26 Aug 2025 13:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213739;
-	bh=b49btHaJNt+mRHvPNS/vCim1+qtXR94DmAzYPmFQGLs=;
+	s=korg; t=1756215104;
+	bh=mKXnRxMlu90vQV0e+XdS2AURI19LzlfyZ1nfXYYDuAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIE9vtS2fbo04s6uhhQDpDGCEdkC4lNWVJdFH66Y5f6jZWdoJ9UtAKTC/t4wdxISY
-	 OtzLvtT+DHxOifVIhZ+DBKXdpaSDll/b9bxSSSrDzbcTX6vYaKdFV3mJtPCY+f8YCD
-	 gADTz+snN4fkXoM4dbIc8pdIVaBbixQinG9JhJU0=
+	b=G9KCxaLLHHGcnOK1Ov6QeYs70zsMJyrJ1LjVyNJTP8z4SXfwu1t5WlRM8+NXCKTz1
+	 QCTlwZ1aTdbAuPmnS0+Reas4vbIdYj8qB02dP3H+qfn7sJz1QX3NKOSv7yxIbyaaXM
+	 bOH5Aw16l0U7+52ePWMjWUz8TlSnixmb/zczWdo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 462/587] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 358/482] cifs: reset iface weights when we cannot find a candidate
 Date: Tue, 26 Aug 2025 13:10:11 +0200
-Message-ID: <20250826111004.730102814@linuxfoundation.org>
+Message-ID: <20250826110939.680025599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit f1fb088d9cecde5c3066d8ff8846789667519b7d upstream.
+[ Upstream commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 ]
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+We now do a weighted selection of server interfaces when allocating
+new channels. The weights are decided based on the speed advertised.
+The fulfilled weight for an interface is a counter that is used to
+track the interface selection. It should be reset back to zero once
+all interfaces fulfilling their weight.
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[sean: account for lack of kvm_x86_call()]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+In cifs_chan_update_iface, this reset logic was missing. As a result
+when the server interface list changes, the client may not be able
+to find a new candidate for other channels after all interfaces have
+been fulfilled.
+
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Kept both int rc and int retry variables ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/smb/client/sess.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13266,16 +13266,22 @@ int kvm_arch_irq_bypass_add_producer(str
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 	int ret;
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -292,6 +292,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	struct cifs_server_iface *last_iface = NULL;
+ 	struct sockaddr_storage ss;
+ 	int rc = 0;
++	int retry = 0;
  
--	irqfd->producer = prod;
- 	kvm_arch_start_assignment(irqfd->kvm);
-+
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = prod;
-+
- 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm,
- 					 prod->irq, irqfd->gsi, 1);
--
- 	if (ret)
- 		kvm_arch_end_assignment(irqfd->kvm);
+ 	spin_lock(&ses->chan_lock);
+ 	chan_index = cifs_ses_get_chan_index(ses, server);
+@@ -320,6 +321,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 		return 0;
+ 	}
  
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	return ret;
- }
++try_again:
+ 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
+ 				     iface_head);
+ 	iface_min_speed = last_iface->speed;
+@@ -358,6 +360,13 @@ cifs_chan_update_iface(struct cifs_ses *
  
-@@ -13285,9 +13291,9 @@ void kvm_arch_irq_bypass_del_producer(st
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -13295,11 +13301,17 @@ void kvm_arch_irq_bypass_del_producer(st
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
+ 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
+ 		rc = 1;
++		list_for_each_entry(iface, &ses->iface_list, iface_head)
++			iface->weight_fulfilled = 0;
 +
- 	ret = static_call(kvm_x86_pi_update_irte)(irqfd->kvm, prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
++		/* see if it can be satisfied in second attempt */
++		if (!retry++)
++			goto try_again;
 +
-+
- 	kvm_arch_end_assignment(irqfd->kvm);
- }
- 
+ 		iface = NULL;
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
 
 
 
