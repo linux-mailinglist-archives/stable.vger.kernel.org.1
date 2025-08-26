@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E57CB36387
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F49CB36B69
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C00188C5E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2E998845A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063302BF019;
-	Tue, 26 Aug 2025 13:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A500535083A;
+	Tue, 26 Aug 2025 14:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4Ugd+rR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txJAPT8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5787393DF2;
-	Tue, 26 Aug 2025 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623AE20DD51;
+	Tue, 26 Aug 2025 14:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214609; cv=none; b=fBzt0CWEdjggGz8hLIO/tbVoQ63wIAPJmJgD+j12wwUb+iR3cBocC8rIBQ4B9er8QMtEXaPqwomV0xp6pWweqTrnokcykBFjD8GaLjZ2hRcIM2vAhs2gbiObHDJMFtMQNkIzABNUNE3Mkt9JYARaPXEN6T4j3vrVdEdrMuAM+Zw=
+	t=1756218775; cv=none; b=m2HhXmlEqFdw5chCxcj6kV1qjR5AvC2amGEV7HcurAHPWsSIU4LD8Y0bF8Uq8DLQ16c2VpD8zzkIMNI6JmD8p5vPuc+hk84JdUemE6l7BWy/cpnBHd31zHaigBau7J56kELcLkX0RKKZiKsKVdXQN0t6c3rnuuIQ+qybTuwhpV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214609; c=relaxed/simple;
-	bh=rZRjRGqdwoIV5o/FrvCZ+Vv4LkHC7LNv9e5oTdDXnjY=;
+	s=arc-20240116; t=1756218775; c=relaxed/simple;
+	bh=pipHSf7fOpqIUnBmCE+gVf3qKiDEUmqAUO7roc6Wqxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9T7K8cS6SP/1Y3FVpuqtiM9JtziLQduYZIVbav+9H+U6f7N8PVZA/n2KipQwTZINhxyQcQ9rCj16Ia/+iL8nfGHB8rlceB+ikBiRy64NZ/alSAR9+4UOc7pTT11N7EuPnaXQJ4eyJJcUFN8lyQCMgHmpcjuEwglwveGmWgxEXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4Ugd+rR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018ABC4CEF1;
-	Tue, 26 Aug 2025 13:23:28 +0000 (UTC)
+	 MIME-Version; b=TEUnNxwyZABP3gLmsQ1fss6rgJfGs/hpSIAM6KLEuXw+BqfGxpuvHb+dkfhYSEOdliAuUKQqlEknuhXTu7scqGjGgQoyrUSDq7GUwx+gnV54aCIc2BTbCmkOuFwSDb0lC2M6JEzWtqbciKJu6iJlmPWZeLqpexxK7UdrCbhfOhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txJAPT8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8489C4CEF1;
+	Tue, 26 Aug 2025 14:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214609;
-	bh=rZRjRGqdwoIV5o/FrvCZ+Vv4LkHC7LNv9e5oTdDXnjY=;
+	s=korg; t=1756218775;
+	bh=pipHSf7fOpqIUnBmCE+gVf3qKiDEUmqAUO7roc6Wqxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4Ugd+rRWAVI7ohjvhBG+CMlngJ7u72x3odVij0Gpg7KRbtksHC2vmwXJdmYAg7vP
-	 do8ntetfN+xjgkKkb09KpF6K9+t8tmrslveC1WUdd8sTIJHmKS2Bc41PWxhH9DBRI1
-	 1NpKkhl803kqu/KIJZ1v1mDx0A9uG1Lb1FnhEkEk=
+	b=txJAPT8NFInxIMrlweq/FUdTiRwEAWGkFzSQbmA5xytEhfrCyRyzJUROuw39rfOWJ
+	 McgTDJu5dqr+GxczxbGs5KHSbDe0DPiIruTcGf20p+1aBTbg40dOuoz/mUeuteznZq
+	 mt0O1Ps020rtChXHX/1HOZWwzYRDQVIYuCJ5MDsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/482] media: tc358743: Increase FIFO trigger level to 374
+Subject: [PATCH 5.4 129/403] bpf: Check flow_dissector ctx accesses are aligned
 Date: Tue, 26 Aug 2025 13:07:35 +0200
-Message-ID: <20250826110935.780146101@linuxfoundation.org>
+Message-ID: <20250826110910.304043212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
+[ Upstream commit ead3d7b2b6afa5ee7958620c4329982a7d9c2b78 ]
 
-The existing fixed value of 16 worked for UYVY 720P60 over
-2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
-1080P60 needs 6 lanes at 594MHz).
-It doesn't allow for lower resolutions to work as the FIFO
-underflows.
+flow_dissector_is_valid_access doesn't check that the context access is
+aligned. As a consequence, an unaligned access within one of the exposed
+field is considered valid and later rejected by
+flow_dissector_convert_ctx_access when we try to convert it.
 
-374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
-972Mbit/s, but >374 means that the FIFO underflows on 1080P50
-UYVY over 2 lanes @ 972Mbit/s.
+The later rejection is problematic because it's reported as a verifier
+bug with a kernel warning and doesn't point to the right instruction in
+verifier logs.
 
-Whilst it would be nice to compute it, the required information
-isn't published by Toshiba.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Reported-by: syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccac90e482b2a81d74aa
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/cc1b036be484c99be45eddf48bd78cc6f72839b1.1754039605.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/core/filter.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 0f9fd9cb77b3..d13e8f19278f 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -1939,8 +1939,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
- 	state->pdata.refclk_hz = clk_get_rate(refclk);
- 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
- 	state->pdata.enable_hdcp = false;
--	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
--	state->pdata.fifo_level = 16;
-+	/*
-+	 * Ideally the FIFO trigger level should be set based on the input and
-+	 * output data rates, but the calculations required are buried in
-+	 * Toshiba's register settings spreadsheet.
-+	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
-+	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
-+	 * is increased, or a lower pixel clock is used that result in CSI
-+	 * reading out faster than the data is arriving.
-+	 *
-+	 * A value of 374 works with both those modes at 594Mbps, and with most
-+	 * modes on 972Mbps.
-+	 */
-+	state->pdata.fifo_level = 374;
- 	/*
- 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
- 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
+diff --git a/net/core/filter.c b/net/core/filter.c
+index e6ec6f013ec0..fd18497977bd 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7282,6 +7282,9 @@ static bool flow_dissector_is_valid_access(int off, int size,
+ 	if (off < 0 || off >= sizeof(struct __sk_buff))
+ 		return false;
+ 
++	if (off % size != 0)
++		return false;
++
+ 	if (type == BPF_WRITE)
+ 		return false;
+ 
 -- 
 2.39.5
 
