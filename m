@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB20B364E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E03BB362D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75ADE8A6455
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1265B2009B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2D02E6106;
-	Tue, 26 Aug 2025 13:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8DE321457;
+	Tue, 26 Aug 2025 13:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRd0gHMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeRhirXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D28265CCD;
-	Tue, 26 Aug 2025 13:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD3527707;
+	Tue, 26 Aug 2025 13:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215319; cv=none; b=tdD6yFV+UeO7PJEnvMK1RIcwJJrbMexM2fIICnek3XgvKwOFwLZf678iaf1o1NXNMrGPumFWGfEJ74HmjkBjVbh8xFuRCYThZOvvVssJ5LePfqlYN07tpD2DWNRfdVjHCSnsXi2mupnakN3Jt+zJiMKTMAztxwS6axAaHhepj1M=
+	t=1756214037; cv=none; b=N4nskC3lrc1lY4cUEU4Kh1AFaDyIphy5FEVRLjVsbdeOQhvXjO4ihMvDAaFzZKBimqX75aVSJ4NjTZAh+bDWf2o/aHsfIQkauKwedRFH5AKRZtwLzNuM0Uxcu6I+BXIwnxNX2laepaKnWqrpLQYx7YYVi1VRG2KOyx2F1ft/YQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215319; c=relaxed/simple;
-	bh=xPI96XjXeNzl7UxvwxEHLsB+c19rctZwJ9q6LxB17oQ=;
+	s=arc-20240116; t=1756214037; c=relaxed/simple;
+	bh=0L/yo2uwXtI2iNQheTtcAK5XrWkmV/EWUaxK5Q4A5aM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKVuOaKNzjSxwURw3RKQGqXmAlhYOLljy/dRNFLymb4hHLkWPtQ0nu/65OmzpDRCIeyL0jPR8NnHzLzPVm0kTUUAmejiInwAy/n1Y/bqs4PsUFEIqibt4DrwUwy7JVWpFmYHrkQvS7O6tCTrnPO+m+1SHyQEoPi7Z6TJ53476cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRd0gHMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE26FC113CF;
-	Tue, 26 Aug 2025 13:35:16 +0000 (UTC)
+	 MIME-Version; b=SnTi1wV3qeHjUKstJu+TNABYKaysfAjyWpppUQbg2pmFoHCE34vqv12MJxI23lIYx1hGwkNKIyvovnxMwJbu/0+C1aswj7xQ6vLbMUhd3moTTqBLAcHyKgdjaL+yRD+6f3WW7fCp20rEByhoQjirBeMgJkbZFq7eIrfx9mRGFwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeRhirXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C287FC4CEF1;
+	Tue, 26 Aug 2025 13:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215317;
-	bh=xPI96XjXeNzl7UxvwxEHLsB+c19rctZwJ9q6LxB17oQ=;
+	s=korg; t=1756214037;
+	bh=0L/yo2uwXtI2iNQheTtcAK5XrWkmV/EWUaxK5Q4A5aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRd0gHMm59onOzH9qWZqLyAT+bJJs/p/ACJNFOJ0cfYgartD0ubds5ALqVVShttvl
-	 yEtkkr/GNZ2EoGZMkFft1qI0fllClPlf2UXpjO+TX3cdXJuEZZjn5iqND/4tcVB3fA
-	 FkP9Xlf4FEj4wHK9bwKaGzoCNgFaeO9F4m/c8fpY=
+	b=YeRhirXrXk479DwZqcLmOsUrYoZiMMjUcAQ9XQtcsy/SX8oLmnvGXJseIy2BIPXdr
+	 +JbFNSkd/D8E0+f5AeZONYEpUzKoJ9oOI5UEj3pzH97BktIHLSorWvnx40OzwXM2P3
+	 0ifHhPIXqM7038VgTCeiORUxXY2VStWV8n7a1bE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 469/482] phy: mscc: Fix timestamping for vsc8584
+Subject: [PATCH 6.6 573/587] LoongArch: Optimize module load time by optimizing PLT/GOT counting
 Date: Tue, 26 Aug 2025 13:12:02 +0200
-Message-ID: <20250826110942.407083719@linuxfoundation.org>
+Message-ID: <20250826111007.610661699@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,218 +62,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Kanglong Wang <wangkanglong@loongson.cn>
 
-[ Upstream commit bc1a59cff9f797bfbf8f3104507584d89e9ecf2e ]
+[ Upstream commit 63dbd8fb2af3a89466538599a9acb2d11ef65c06 ]
 
-There was a problem when we received frames and the frames were
-timestamped. The driver is configured to store the nanosecond part of
-the timestmap in the ptp reserved bits and it would take the second part
-by reading the LTC. The problem is that when reading the LTC we are in
-atomic context and to read the second part will go over mdio bus which
-might sleep, so we get an error.
-The fix consists in actually put all the frames in a queue and start the
-aux work and in that work to read the LTC and then calculate the full
-received time.
+When enabling CONFIG_KASAN, CONFIG_PREEMPT_VOLUNTARY_BUILD and
+CONFIG_PREEMPT_VOLUNTARY at the same time, there will be soft deadlock,
+the relevant logs are as follows:
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250818081029.1300780-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+rcu: INFO: rcu_sched self-detected stall on CPU
+...
+Call Trace:
+[<900000000024f9e4>] show_stack+0x5c/0x180
+[<90000000002482f4>] dump_stack_lvl+0x94/0xbc
+[<9000000000224544>] rcu_dump_cpu_stacks+0x1fc/0x280
+[<900000000037ac80>] rcu_sched_clock_irq+0x720/0xf88
+[<9000000000396c34>] update_process_times+0xb4/0x150
+[<90000000003b2474>] tick_nohz_handler+0xf4/0x250
+[<9000000000397e28>] __hrtimer_run_queues+0x1d0/0x428
+[<9000000000399b2c>] hrtimer_interrupt+0x214/0x538
+[<9000000000253634>] constant_timer_interrupt+0x64/0x80
+[<9000000000349938>] __handle_irq_event_percpu+0x78/0x1a0
+[<9000000000349a78>] handle_irq_event_percpu+0x18/0x88
+[<9000000000354c00>] handle_percpu_irq+0x90/0xf0
+[<9000000000348c74>] handle_irq_desc+0x94/0xb8
+[<9000000001012b28>] handle_cpu_irq+0x68/0xa0
+[<9000000001def8c0>] handle_loongarch_irq+0x30/0x48
+[<9000000001def958>] do_vint+0x80/0xd0
+[<9000000000268a0c>] kasan_mem_to_shadow.part.0+0x2c/0x2a0
+[<90000000006344f4>] __asan_load8+0x4c/0x120
+[<900000000025c0d0>] module_frob_arch_sections+0x5c8/0x6b8
+[<90000000003895f0>] load_module+0x9e0/0x2958
+[<900000000038b770>] __do_sys_init_module+0x208/0x2d0
+[<9000000001df0c34>] do_syscall+0x94/0x190
+[<900000000024d6fc>] handle_syscall+0xbc/0x158
+
+After analysis, this is because the slow speed of loading the amdgpu
+module leads to the long time occupation of the cpu and then the soft
+deadlock.
+
+When loading a module, module_frob_arch_sections() tries to figure out
+the number of PLTs/GOTs that will be needed to handle all the RELAs. It
+will call the count_max_entries() to find in an out-of-order date which
+counting algorithm has O(n^2) complexity.
+
+To make it faster, we sort the relocation list by info and addend. That
+way, to check for a duplicate relocation, it just needs to compare with
+the previous entry. This reduces the complexity of the algorithm to O(n
+ log n), as done in commit d4e0340919fb ("arm64/module: Optimize module
+load time by optimizing PLT counting"). This gives sinificant reduction
+in module load time for modules with large number of relocations.
+
+After applying this patch, the soft deadlock problem has been solved,
+and the kernel starts normally without "Call Trace".
+
+Using the default configuration to test some modules, the results are as
+follows:
+
+Module              Size
+ip_tables           36K
+fat                 143K
+radeon              2.5MB
+amdgpu              16MB
+
+Without this patch:
+Module              Module load time (ms)	Count(PLTs/GOTs)
+ip_tables           18				59/6
+fat                 0				162/14
+radeon              54				1221/84
+amdgpu              1411			4525/1098
+
+With this patch:
+Module              Module load time (ms)	Count(PLTs/GOTs)
+ip_tables           18				59/6
+fat                 0				162/14
+radeon              22				1221/84
+amdgpu              45				4525/1098
+
+Fixes: fcdfe9d22bed ("LoongArch: Add ELF and module support")
+Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc.h      | 12 ++++++++
- drivers/net/phy/mscc/mscc_main.c | 12 ++++++++
- drivers/net/phy/mscc/mscc_ptp.c  | 49 ++++++++++++++++++++++++--------
- 3 files changed, 61 insertions(+), 12 deletions(-)
+ arch/loongarch/kernel/module-sections.c | 36 ++++++++++++-------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 055e4ca5b3b5..878298304430 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -360,6 +360,13 @@ struct vsc85xx_hw_stat {
- 	u16 mask;
- };
+diff --git a/arch/loongarch/kernel/module-sections.c b/arch/loongarch/kernel/module-sections.c
+index e2f30ff9afde..a43ba7f9f987 100644
+--- a/arch/loongarch/kernel/module-sections.c
++++ b/arch/loongarch/kernel/module-sections.c
+@@ -8,6 +8,7 @@
+ #include <linux/module.h>
+ #include <linux/moduleloader.h>
+ #include <linux/ftrace.h>
++#include <linux/sort.h>
  
-+struct vsc8531_skb_cb {
-+	u32 ns;
-+};
-+
-+#define VSC8531_SKB_CB(skb) \
-+	((struct vsc8531_skb_cb *)((skb)->cb))
-+
- struct vsc8531_private {
- 	int rate_magic;
- 	u16 supp_led_modes;
-@@ -408,6 +415,11 @@ struct vsc8531_private {
- 	 */
- 	struct mutex ts_lock;
- 	struct mutex phc_lock;
-+
-+	/* list of skbs that were received and need timestamp information but it
-+	 * didn't received it yet
-+	 */
-+	struct sk_buff_head rx_skbs_list;
- };
- 
- /* Shared structure between the PHYs of the same package.
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 7bd940baec59..36734bb217e4 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2324,6 +2324,13 @@ static int vsc85xx_probe(struct phy_device *phydev)
- 	return vsc85xx_dt_led_modes_get(phydev, default_mode);
+ Elf_Addr module_emit_got_entry(struct module *mod, Elf_Shdr *sechdrs, Elf_Addr val)
+ {
+@@ -61,39 +62,38 @@ Elf_Addr module_emit_plt_entry(struct module *mod, Elf_Shdr *sechdrs, Elf_Addr v
+ 	return (Elf_Addr)&plt[nr];
  }
  
-+static void vsc85xx_remove(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *priv = phydev->priv;
-+
-+	skb_queue_purge(&priv->rx_skbs_list);
-+}
-+
- /* Microsemi VSC85xx PHYs */
- static struct phy_driver vsc85xx_driver[] = {
+-static int is_rela_equal(const Elf_Rela *x, const Elf_Rela *y)
+-{
+-	return x->r_info == y->r_info && x->r_addend == y->r_addend;
+-}
++#define cmp_3way(a, b)  ((a) < (b) ? -1 : (a) > (b))
+ 
+-static bool duplicate_rela(const Elf_Rela *rela, int idx)
++static int compare_rela(const void *x, const void *y)
  {
-@@ -2554,6 +2561,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8574_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
-@@ -2579,6 +2587,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8574_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
-@@ -2604,6 +2613,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-@@ -2627,6 +2637,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-@@ -2650,6 +2661,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index d0bd6ab45ebe..add1a9ee721a 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1193,9 +1193,7 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
- {
- 	struct vsc8531_private *vsc8531 =
- 		container_of(mii_ts, struct vsc8531_private, mii_ts);
--	struct skb_shared_hwtstamps *shhwtstamps = NULL;
- 	struct vsc85xx_ptphdr *ptphdr;
--	struct timespec64 ts;
- 	unsigned long ns;
+-	int i;
++	int ret;
++	const Elf_Rela *rela_x = x, *rela_y = y;
  
- 	if (!vsc8531->ptp->configured)
-@@ -1205,27 +1203,52 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
- 	    type == PTP_CLASS_NONE)
- 		return false;
+-	for (i = 0; i < idx; i++) {
+-		if (is_rela_equal(&rela[i], &rela[idx]))
+-			return true;
+-	}
++	ret = cmp_3way(rela_x->r_info, rela_y->r_info);
++	if (ret == 0)
++		ret = cmp_3way(rela_x->r_addend, rela_y->r_addend);
  
--	vsc85xx_gettime(&vsc8531->ptp->caps, &ts);
--
- 	ptphdr = get_ptp_header_rx(skb, vsc8531->ptp->rx_filter);
- 	if (!ptphdr)
- 		return false;
- 
--	shhwtstamps = skb_hwtstamps(skb);
--	memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
--
- 	ns = ntohl(ptphdr->rsrvd2);
- 
--	/* nsec is in reserved field */
--	if (ts.tv_nsec < ns)
--		ts.tv_sec--;
-+	VSC8531_SKB_CB(skb)->ns = ns;
-+	skb_queue_tail(&vsc8531->rx_skbs_list, skb);
- 
--	shhwtstamps->hwtstamp = ktime_set(ts.tv_sec, ns);
--	netif_rx(skb);
-+	ptp_schedule_worker(vsc8531->ptp->ptp_clock, 0);
- 
- 	return true;
+-	return false;
++	return ret;
  }
  
-+static long vsc85xx_do_aux_work(struct ptp_clock_info *info)
-+{
-+	struct vsc85xx_ptp *ptp = container_of(info, struct vsc85xx_ptp, caps);
-+	struct skb_shared_hwtstamps *shhwtstamps = NULL;
-+	struct phy_device *phydev = ptp->phydev;
-+	struct vsc8531_private *priv = phydev->priv;
-+	struct sk_buff_head received;
-+	struct sk_buff *rx_skb;
-+	struct timespec64 ts;
-+	unsigned long flags;
+ static void count_max_entries(Elf_Rela *relas, int num,
+ 			      unsigned int *plts, unsigned int *gots)
+ {
+-	unsigned int i, type;
++	unsigned int i;
 +
-+	__skb_queue_head_init(&received);
-+	spin_lock_irqsave(&priv->rx_skbs_list.lock, flags);
-+	skb_queue_splice_tail_init(&priv->rx_skbs_list, &received);
-+	spin_unlock_irqrestore(&priv->rx_skbs_list.lock, flags);
-+
-+	vsc85xx_gettime(info, &ts);
-+	while ((rx_skb = __skb_dequeue(&received)) != NULL) {
-+		shhwtstamps = skb_hwtstamps(rx_skb);
-+		memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
-+
-+		if (ts.tv_nsec < VSC8531_SKB_CB(rx_skb)->ns)
-+			ts.tv_sec--;
-+
-+		shhwtstamps->hwtstamp = ktime_set(ts.tv_sec,
-+						  VSC8531_SKB_CB(rx_skb)->ns);
-+		netif_rx(rx_skb);
-+	}
-+
-+	return -1;
-+}
-+
- static const struct ptp_clock_info vsc85xx_clk_caps = {
- 	.owner		= THIS_MODULE,
- 	.name		= "VSC85xx timer",
-@@ -1239,6 +1262,7 @@ static const struct ptp_clock_info vsc85xx_clk_caps = {
- 	.adjfine	= &vsc85xx_adjfine,
- 	.gettime64	= &vsc85xx_gettime,
- 	.settime64	= &vsc85xx_settime,
-+	.do_aux_work	= &vsc85xx_do_aux_work,
- };
++	sort(relas, num, sizeof(Elf_Rela), compare_rela, NULL);
  
- static struct vsc8531_private *vsc8584_base_priv(struct phy_device *phydev)
-@@ -1566,6 +1590,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 
- 	mutex_init(&vsc8531->phc_lock);
- 	mutex_init(&vsc8531->ts_lock);
-+	skb_queue_head_init(&vsc8531->rx_skbs_list);
- 
- 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
- 	 * the same GPIO can be requested by all the PHYs of the same package.
+ 	for (i = 0; i < num; i++) {
+-		type = ELF_R_TYPE(relas[i].r_info);
+-		switch (type) {
++		if (i && !compare_rela(&relas[i-1], &relas[i]))
++			continue;
++
++		switch (ELF_R_TYPE(relas[i].r_info)) {
+ 		case R_LARCH_SOP_PUSH_PLT_PCREL:
+ 		case R_LARCH_B26:
+-			if (!duplicate_rela(relas, i))
+-				(*plts)++;
++			(*plts)++;
+ 			break;
+ 		case R_LARCH_GOT_PC_HI20:
+-			if (!duplicate_rela(relas, i))
+-				(*gots)++;
++			(*gots)++;
+ 			break;
+ 		default:
+ 			break; /* Do nothing. */
 -- 
 2.50.1
 
