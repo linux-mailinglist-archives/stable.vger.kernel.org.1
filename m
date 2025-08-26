@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC349B35B57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CDDB36943
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A16E7C34C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E725565847
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F482BEC34;
-	Tue, 26 Aug 2025 11:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12042352FEB;
+	Tue, 26 Aug 2025 14:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqSkE0w9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onaclEX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7530D30AAC2;
-	Tue, 26 Aug 2025 11:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39C6350831;
+	Tue, 26 Aug 2025 14:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207295; cv=none; b=r6i7Ja9dUUcAw23oyr+EO34W5I4zjeSZB13csgsc9mINfzCa6TbIV/1LIfUgsqO+0gYj1sMK/sfChCvr9u/okWjbscV+BP9p2vUWyopecaFbkYkkaCjQth0aP48Cy9J2nooUpmvPm5I12k3PSn6EBIoYvhFTXSB9VlUC+B+izZY=
+	t=1756217611; cv=none; b=jzavssGfFKI70ngsLL+58jjRAMoaIwl08lgpWtoGaovhyyXcwCes83YSQ8Pu7SxIbiyX4C56fEjABuYYqkzaQ4NMweSX+gqLEuuxBpekRe41AO/5u7ARCXB2v+LOAdtiDd1h7gJQEYOxF/GFnNE3Uif6+iKttnvnm7o0cHMmwUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207295; c=relaxed/simple;
-	bh=nqktC/uQ/oC80ebpkUgtpktI1nwVlCaAGBr1hMIN8Ok=;
+	s=arc-20240116; t=1756217611; c=relaxed/simple;
+	bh=u4jfQ6x1qBa6MLkZM1WjAEd2lBGc+aJ6Wp5Ap5SIb0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDh11F/ZrWEnxsNYshQrR8kBZ2AWYTQFcMmhy5UiV2aZCl6cmcLWTuvlZIG9cahuXOnNVgoSmrOkwbzTITAGj4TDVDzW+fhj/AGRTIxU6RS2f/aBWjeWdYXX0SQWYJJm7ckpHKHKRGm6SujMHkK7ndFfRf9r06wfh58A8sE4N7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqSkE0w9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE616C4CEF1;
-	Tue, 26 Aug 2025 11:21:34 +0000 (UTC)
+	 MIME-Version; b=F6TGO/DA2aKuI8b5+TsMpGfNtBo+eQrzZ+OuFuQPD4jGwrFB4ktjIjXT+aOnERFZl8HXctM9lrYLBj8OVKWO4FGpM2n4V6nV6OPAgPrYPR76Kcdei38B8sEJZv2jyHO8nMoVhbG+eXrrM3IUIDFveykhSMZXmwzeoQ4q+2qePCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onaclEX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C0EC4CEF1;
+	Tue, 26 Aug 2025 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207295;
-	bh=nqktC/uQ/oC80ebpkUgtpktI1nwVlCaAGBr1hMIN8Ok=;
+	s=korg; t=1756217611;
+	bh=u4jfQ6x1qBa6MLkZM1WjAEd2lBGc+aJ6Wp5Ap5SIb0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqSkE0w9h7oibWYvNbz04nNxog6SaaJJuc/biqwwJFaCWnyGZqP7Yfcg8dDetbkZm
-	 7DH+cKBB58JDPI8vEvzsoqFuWo7nW5KVDqqbFPOI5j1WnFinwHpYrQTuF3mWz5X56i
-	 k2OC+RPCuE4Ss2Ma064W2kWFoXK6pcbvMI+9JF+o=
+	b=onaclEX1rj6xE6lRasNjOoLtWi/pJzxDFKlm+9rqh6lUSeerGgQeuEAKnIIkk3fJh
+	 8KLYqRUdy2wEw0njqfl5gE7/WP4ouh/ELsPQzsFAZOu3O46yYyLksfeq9AhPho67Cs
+	 G8CZ88OBlmLRwFRE4H5lnWIBVjlMFxNqcgrxwV7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.16 127/457] parisc: Revise gateway LWS calls to probe user read access
+	Sasha Levin <sashal@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 201/523] fs: Prevent file descriptor table allocations exceeding INT_MAX
 Date: Tue, 26 Aug 2025 13:06:51 +0200
-Message-ID: <20250826110940.513266458@linuxfoundation.org>
+Message-ID: <20250826110929.406125386@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Sasha Levin <sashal@kernel.org>
 
-commit f6334f4ae9a4e962ba74b026e1d965dfdf8cbef8 upstream.
+commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
 
-We use load and stbys,e instructions to trigger memory reference
-interruptions without writing to memory. Because of the way read
-access support is implemented, read access interruptions are only
-triggered at privilege levels 2 and 3. The kernel and gateway
-page execute at privilege level 0, so this code never triggers
-a read access interruption. Thus, it is currently possible for
-user code to execute a LWS compare and swap operation at an
-address that is read protected at privilege level 3 (PRIV_USER).
+When sysctl_nr_open is set to a very high value (for example, 1073741816
+as set by systemd), processes attempting to use file descriptors near
+the limit can trigger massive memory allocation attempts that exceed
+INT_MAX, resulting in a WARNING in mm/slub.c:
 
-Fix this by probing read access rights at privilege level 3 and
-branching to lws_fault if access isn't allowed.
+  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
+This happens because kvmalloc_array() and kvmalloc() check if the
+requested size exceeds INT_MAX and emit a warning when the allocation is
+not flagged with __GFP_NOWARN.
+
+Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+- Multiple bitmaps: ~400MB
+- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+
+Reproducer:
+1. Set /proc/sys/fs/nr_open to 1073741816:
+   # echo 1073741816 > /proc/sys/fs/nr_open
+
+2. Run a program that uses a high file descriptor:
+   #include <unistd.h>
+   #include <sys/resource.h>
+
+   int main() {
+       struct rlimit rlim = {1073741824, 1073741824};
+       setrlimit(RLIMIT_NOFILE, &rlim);
+       dup2(2, 1073741880);  // Triggers the warning
+       return 0;
+   }
+
+3. Observe WARNING in dmesg at mm/slub.c:5027
+
+systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+maximum possible value. The rationale was that systems with memory
+control groups (memcg) no longer need separate file descriptor limits
+since memory is properly accounted. However, this change overlooked
+that:
+
+1. The kernel's allocation functions still enforce INT_MAX as a maximum
+   size regardless of memcg accounting
+2. Programs and tests that legitimately test file descriptor limits can
+   inadvertently trigger massive allocations
+3. The resulting allocations (>8GB) are impractical and will always fail
+
+systemd's algorithm starts with INT_MAX and keeps halving the value
+until the kernel accepts it. On most systems, this results in nr_open
+being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+descriptors.
+
+While processes rarely use file descriptors near this limit in normal
+operation, certain selftests (like
+tools/testing/selftests/core/unshare_test.c) and programs that test file
+descriptor limits can trigger this issue.
+
+Fix this by adding a check in alloc_fdtable() to ensure the requested
+allocation size does not exceed INT_MAX. This causes the operation to
+fail with -EMFILE instead of triggering a kernel warning and avoids the
+impractical >8GB memory allocation request.
+
+Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/syscall.S |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ fs/file.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -613,6 +613,9 @@ lws_compare_and_swap32:
- lws_compare_and_swap:
- 	/* Trigger memory reference interruptions without writing to memory */
- 1:	ldw	0(%r26), %r28
-+	proberi	(%r26), PRIV_USER, %r28
-+	comb,=,n	%r28, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 2:	stbys,e	%r0, 0(%r26)
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
+ 	if (unlikely(nr > sysctl_nr_open))
+ 		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
  
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -767,6 +770,9 @@ cas2_lock_start:
- 	copy	%r26, %r28
- 	depi_safe	0, 31, 2, %r28
- 10:	ldw	0(%r28), %r1
-+	proberi	(%r28), PRIV_USER, %r1
-+	comb,=,n	%r1, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 11:	stbys,e	%r0, 0(%r28)
- 
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -951,41 +957,47 @@ atomic_xchg_begin:
- 
- 	/* 8-bit exchange */
- 1:	ldb	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 2:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 16-bit exchange */
- 3:	ldh	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 4:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 32-bit exchange */
- 5:	ldw	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	b	atomic_xchg_start
- 6:	stbys,e	%r0, 0(%r23)
- 	nop
- 	nop
--	nop
--	nop
--	nop
- 
- 	/* 64-bit exchange */
- #ifdef CONFIG_64BIT
- 7:	ldd	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 8:	stdby,e	%r0, 0(%r23)
- #else
- 7:	ldw	0(%r24), %r20
- 8:	ldw	4(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 9:	stbys,e	%r0, 0(%r20)
++	/*
++	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
++	 * and kvmalloc() will warn if the allocation size is greater than
++	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
++	 *
++	 * This can happen when sysctl_nr_open is set to a very high value and
++	 * a process tries to use a file descriptor near that limit. For example,
++	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
++	 * systemd typically sets it to - then trying to use a file descriptor
++	 * close to that value will require allocating a file descriptor table
++	 * that exceeds 8GB in size.
++	 */
++	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
++		return ERR_PTR(-EMFILE);
++
+ 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+ 	if (!fdt)
+ 		goto out;
 
 
 
