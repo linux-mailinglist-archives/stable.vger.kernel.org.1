@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F2DB35EB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A67B35D79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD625614C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F5D362EF2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A8D26C3A4;
-	Tue, 26 Aug 2025 11:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE3E2F9C23;
+	Tue, 26 Aug 2025 11:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7i5jH9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN1eo6f9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458E220330;
-	Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87624301486;
+	Tue, 26 Aug 2025 11:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208947; cv=none; b=NGcqm//zVnHzGIfoLXoIqJmPJa/1C3Zm6vyvTh8eZ4EfYCkx0fURpvnf/W3LXgTeq0FOPWWuRgu4fBvNeQZe4YLh7/VRr+AVNfK+O87EK3Qz5nAtjZQcO1cC1VTJprFuy86pZj9KYvgQVNVjlxLqLXyy4pFjIdD+l0ujH6AVOYk=
+	t=1756208097; cv=none; b=KRWuTRIa56OcaLQMgK6CLJA/ZHYZEUB/lSeyAJ1kErtVdfmMa+CdCU9N/3QPEzYswPkmjWSmXnMlwAInMaJSNUpZsAMKsZytwkuEKFGEleFE2CuyQ0yb43JW/SSElFJdEH1WlOc9HXSN8SCDuohWFgtIifhioGseAioRWMffsJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208947; c=relaxed/simple;
-	bh=Tjv39MeuglFATuGR3fS9fWNh1u4DfSaWUSJNmc9jzn8=;
+	s=arc-20240116; t=1756208097; c=relaxed/simple;
+	bh=iF5mqqMdo3J6gJ7BfvYlhrgE5ufTJ9rVfthM+gBd8DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVrCira5VDcIROAXeLBxkR0DM2cLiCTemGpq4s6/lSjVBRtWbpFqBHPlZh3aHIf0ObugCRtRcvj1XtUD11B9A6vOlO3qekj7k6SLVoVdqA5SOkN88I8uaSy3ZGhPaC3ZlSjJ+2bI1fMyZMKNv5ZPe2Ls1byGKf7HLiReeKre8ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7i5jH9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C267C4CEF1;
-	Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
+	 MIME-Version; b=daMNZixj5QavKvkabMF4dQ/t+PShYwHhhLudnHKrOBDXxuX61T3rff8QqdseFcye+xoNtJ9Ltw+lrOPdy5F0ltR9LoTc3MdPpH1HHA64bDGAyqLNNrBd5S2E65Lwm+zcvMwZJdSh9+ilndgIbJqKE6v54pmHkco8hJTkRGlAaG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN1eo6f9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21625C4CEF1;
+	Tue, 26 Aug 2025 11:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208946;
-	bh=Tjv39MeuglFATuGR3fS9fWNh1u4DfSaWUSJNmc9jzn8=;
+	s=korg; t=1756208097;
+	bh=iF5mqqMdo3J6gJ7BfvYlhrgE5ufTJ9rVfthM+gBd8DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7i5jH9h1M7u7Evgxy3fiNDiGJydwq7/iBUchGZ/Xpj3OTlAO0NeHuX6nkhJ7yp18
-	 XPGMVbpFRsq8KTv3oLAQIICc1wBnYf0Ip3iyiMbpevquW7/0jWvHTnvKu1z4OzB34u
-	 KYkv2QI3IFf0jHDdD5z59zRPup30EHjTPI9Rm4Sc=
+	b=kN1eo6f9epQyNYGfwcbVZP5w+zWq6gf7It1n4HHvasZGmR2iRkud/nGki3mlxY2Wx
+	 C2kwgKLjteVzBagjnrLYOKT0a1ZGGT89J9rlzoUGk5A6veFMBlVxj01SC4XGhKRpJP
+	 kTBMpjdLpnJqLOGwrQWAuIZw81rFhZ4wdveqPkik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ValdikSS <iam@valdikss.org.ru>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dewei Meng <mengdewei@cqsoftware.com.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/322] igc: fix disabling L1.2 PCI-E link substate on I226 on init
+Subject: [PATCH 6.16 436/457] ALSA: timer: fix ida_free call while not allocated
 Date: Tue, 26 Aug 2025 13:12:00 +0200
-Message-ID: <20250826110923.423075416@linuxfoundation.org>
+Message-ID: <20250826110948.063166851@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ValdikSS <iam@valdikss.org.ru>
+From: Dewei Meng <mengdewei@cqsoftware.com.cn>
 
-[ Upstream commit 1468c1f97cf32418e34dbb40b784ed9333b9e123 ]
+[ Upstream commit 5003a65790ed66be882d1987cc2ca86af0de3db1 ]
 
-Device ID comparison in igc_is_device_id_i226 is performed before
-the ID is set, resulting in always failing check on init.
+In the snd_utimer_create() function, if the kasprintf() function return
+NULL, snd_utimer_put_id() will be called, finally use ida_free()
+to free the unallocated id 0.
 
-Before the patch:
-* L1.2 is not disabled on init
-* L1.2 is properly disabled after suspend-resume cycle
+the syzkaller reported the following information:
+  ------------[ cut here ]------------
+  ida_free called for id=0 which is not allocated.
+  WARNING: CPU: 1 PID: 1286 at lib/idr.c:592 ida_free+0x1fd/0x2f0 lib/idr.c:592
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 1286 Comm: syz-executor164 Not tainted 6.15.8 #3 PREEMPT(lazy)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+  RIP: 0010:ida_free+0x1fd/0x2f0 lib/idr.c:592
+  Code: f8 fc 41 83 fc 3e 76 69 e8 70 b2 f8 (...)
+  RSP: 0018:ffffc900007f79c8 EFLAGS: 00010282
+  RAX: 0000000000000000 RBX: 1ffff920000fef3b RCX: ffffffff872176a5
+  RDX: ffff88800369d200 RSI: 0000000000000000 RDI: ffff88800369d200
+  RBP: 0000000000000000 R08: ffffffff87ba60a5 R09: 0000000000000000
+  R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+  R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f6f1abc1740(0000) GS:ffff8880d76a0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f6f1ad7a784 CR3: 000000007a6e2000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   snd_utimer_put_id sound/core/timer.c:2043 [inline] [snd_timer]
+   snd_utimer_create+0x59b/0x6a0 sound/core/timer.c:2184 [snd_timer]
+   snd_utimer_ioctl_create sound/core/timer.c:2202 [inline] [snd_timer]
+   __snd_timer_user_ioctl.isra.0+0x724/0x1340 sound/core/timer.c:2287 [snd_timer]
+   snd_timer_user_ioctl+0x75/0xc0 sound/core/timer.c:2298 [snd_timer]
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:907 [inline]
+   __se_sys_ioctl fs/ioctl.c:893 [inline]
+   __x64_sys_ioctl+0x198/0x200 fs/ioctl.c:893
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x7b/0x160 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [...]
 
-With the patch:
-* L1.2 is properly disabled both on init and after suspend-resume
+The utimer->id should be set properly before the kasprintf() function,
+ensures the snd_utimer_put_id() function will free the allocated id.
 
-How to test:
-Connect to the 1G link with 300+ mbit/s Internet speed, and run
-the download speed test, such as:
-
-    curl -o /dev/null http://speedtest.selectel.ru/1GB
-
-Without L1.2 disabled, the speed would be no more than ~200 mbit/s.
-With L1.2 disabled, the speed would reach 1 gbit/s.
-Note: it's required that the latency between your host and the remote
-be around 3-5 ms, the test inside LAN (<1 ms latency) won't trigger the
-issue.
-
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
-Signed-off-by: ValdikSS <iam@valdikss.org.ru>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-6-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 37745918e0e75 ("ALSA: timer: Introduce virtual userspace-driven timers")
+Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
+Link: https://patch.msgid.link/20250821014317.40786-1-mengdewei@cqsoftware.com.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/core/timer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 2a0c5a343e47..aadc0667fa04 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6987,6 +6987,13 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+diff --git a/sound/core/timer.c b/sound/core/timer.c
+index 8072183c33d3..a352247519be 100644
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -2139,14 +2139,14 @@ static int snd_utimer_create(struct snd_timer_uinfo *utimer_info,
+ 		goto err_take_id;
+ 	}
  
-+	/* PCI config space info */
-+	hw->vendor_id = pdev->vendor;
-+	hw->device_id = pdev->device;
-+	hw->revision_id = pdev->revision;
-+	hw->subsystem_vendor_id = pdev->subsystem_vendor;
-+	hw->subsystem_device_id = pdev->subsystem_device;
++	utimer->id = utimer_id;
 +
- 	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
- 	if (igc_is_device_id_i226(hw))
- 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-@@ -7013,13 +7020,6 @@ static int igc_probe(struct pci_dev *pdev,
- 	netdev->mem_start = pci_resource_start(pdev, 0);
- 	netdev->mem_end = pci_resource_end(pdev, 0);
+ 	utimer->name = kasprintf(GFP_KERNEL, "snd-utimer%d", utimer_id);
+ 	if (!utimer->name) {
+ 		err = -ENOMEM;
+ 		goto err_get_name;
+ 	}
  
--	/* PCI config space info */
--	hw->vendor_id = pdev->vendor;
--	hw->device_id = pdev->device;
--	hw->revision_id = pdev->revision;
--	hw->subsystem_vendor_id = pdev->subsystem_vendor;
--	hw->subsystem_device_id = pdev->subsystem_device;
+-	utimer->id = utimer_id;
 -
- 	/* Copy the default MAC and PHY function pointers */
- 	memcpy(&hw->mac.ops, ei->mac_ops, sizeof(hw->mac.ops));
- 	memcpy(&hw->phy.ops, ei->phy_ops, sizeof(hw->phy.ops));
+ 	tid.dev_sclass = SNDRV_TIMER_SCLASS_APPLICATION;
+ 	tid.dev_class = SNDRV_TIMER_CLASS_GLOBAL;
+ 	tid.card = -1;
 -- 
 2.50.1
 
