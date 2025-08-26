@@ -1,139 +1,160 @@
-Return-Path: <stable+bounces-172908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E515B350FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:27:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AE2B350FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286D61B26FE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:28:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8BA117C15F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77A225F98A;
-	Tue, 26 Aug 2025 01:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D24257830;
+	Tue, 26 Aug 2025 01:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MPCO9S49"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GwPYWe0s"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B51223338;
-	Tue, 26 Aug 2025 01:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D90D14A8B;
+	Tue, 26 Aug 2025 01:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756171655; cv=none; b=C+unoW/6JmGj3HGwaHh+eGTiKjnaiu17UzYL93De3bJ+qsaGDpQDGqiEBbWwpp7Yuvztf2nonGW2IKaGVFuJuC+Yu9lDqv9j8J0qAOwBcif5OgWRWckENIxUm8+tKn+FRTqeOUfeYiIByAgdWE0lxHgWz0tO5bBgAvmw8fR2/rg=
+	t=1756171521; cv=none; b=BGwX0ochefXAdMhXM1/a80wyH/fDE2LpLymwsNvGnMpiyA/dh+LdP3LZ9AJevyOJG7SP2sAzkmYGk3ll3oW7GP///QDR9D9vq5DvgLRgBsYfHaqBTKTMOs7y4s8A9iACkMYAF2BEzPWmG0FM4bKi2ZsUmVGaWgQTTSI0sjYPiF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756171655; c=relaxed/simple;
-	bh=AdpUiE/wJBetOMVQkBzJaBKwSBZOYbe+QTmNwnaCSQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JHh7umgEJP70HMP65shWTGbfGkHUnB6QcUsO9/vqn4B+ckeO9+TGwSEvOdFq/cPmCqzaCdxPpRr1fKZbbiXT2PlkJuLF5+udEUZ7PKh+1wu7DWTnq+EHXTnbbI1i/dV+CuwGl9KU6lawn+Et8BdnFwDvmlEhJEdFOk/p7bPjlsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MPCO9S49; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756171654; x=1787707654;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AdpUiE/wJBetOMVQkBzJaBKwSBZOYbe+QTmNwnaCSQY=;
-  b=MPCO9S49GZdQsI1kKswkFPkBdualcRdG3yv4qop5eRO7upk3P/PO4rPE
-   Reg+sQbYmMgK7QmN8gzuldAIq4vqIAvwgdVVbGSLBgHQ6rjA8vu2FnOy5
-   oL2qVAXu2v8oyMaWAEnTQ7LzFf4P8nIbUXfY9fUYtcuOZGBhd0q7BWri4
-   yp9U56XV2q83J1ojtkhU5fpsuFnWBRa9JzYRyLY8sXTZ9DARE2IgzUljr
-   LLaTQc9KYh5TOJ/IHHrUcSPSCPGW98uu5JZOFWR8x0lrxY/pYvJRB+p1H
-   e/Viq9z/ceZ3qve4DfYFBYdFT1NQopUk1PBd2xWYLYO2AnBGzxXINn5VA
-   Q==;
-X-CSE-ConnectionGUID: /ee054CfSDOtQj3cDmHDEQ==
-X-CSE-MsgGUID: pLZfGXMeSma8SyJrj8LWog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="75847554"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="75847554"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 18:27:33 -0700
-X-CSE-ConnectionGUID: tIGsR0QISxaWhVKMXaVS4g==
-X-CSE-MsgGUID: znpgCPBKTXW8CYZBlzEZYw==
-X-ExtLoop1: 1
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 18:27:29 -0700
-Message-ID: <b0f613ce-7aad-4b1d-b6a1-4acc1d6c489e@linux.intel.com>
-Date: Tue, 26 Aug 2025 09:25:03 +0800
+	s=arc-20240116; t=1756171521; c=relaxed/simple;
+	bh=XaKsFiCrpF4WOiot84HlAt1C0T379kQZxh2FFYt8aaY=;
+	h=Date:To:From:Subject:Message-Id; b=CDzp2iwa1UX2xVJSu9EtjKWWXd/tSPLQKYocNvx9JLF3IVYKPL8Kbow7Ka+1ajDIv0QIo4imzmwd6kNQW+ncSJzExYNmbVPRl3d+K4BjaF1KvXQxgZ5e2N4cVTRdapqnqNx6VKMI5Mmf+QAvpjmjLKH/fLLxTKRnmSEm8iWN5v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GwPYWe0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F95AC4CEED;
+	Tue, 26 Aug 2025 01:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756171518;
+	bh=XaKsFiCrpF4WOiot84HlAt1C0T379kQZxh2FFYt8aaY=;
+	h=Date:To:From:Subject:From;
+	b=GwPYWe0sFRoEehylGO6c2dn/xd+cYbbUf8gg2cShl8w07YYMYeXZZ69erB0DSCUJZ
+	 Vt0tCsff15fXFFvtms2uCIF5qTOZpSFpq27iAA2uBNhSAmgi3AScnTcetw9po2SDcX
+	 VUPtELWeUWUq0ONcXejrECnQow4nZTZlTMcTBodU=
+Date: Mon, 25 Aug 2025 18:25:18 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,leitao@debian.org,david@redhat.com,aha310510@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250826012518.9F95AC4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
- flush
-To: Dave Hansen <dave.hansen@intel.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "security@kernel.org" <security@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
- <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
- <20250806155223.GV184255@nvidia.com>
- <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
- <20250806160904.GX184255@nvidia.com>
- <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
- <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
- <20250807195154.GO184255@nvidia.com>
- <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
- <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
- <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
- <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 8/26/25 06:36, Dave Hansen wrote:
-> On 8/22/25 20:26, Baolu Lu wrote:
->> +static struct {
->> +    /* list for pagetable_dtor_free() */
->> +    struct list_head dtor;
->> +    /* list for __free_page() */
->> +    struct list_head page;
->> +    /* list for free_pages() */
->> +    struct list_head pages;
->> +    /* protect all the ptdesc lists */
->> +    spinlock_t lock;
->> +    struct work_struct work;
-> 
-> Could you explain a bit why this now needs three separate lists? Seems
-> like pure overkill.
 
-Yes, sure.
+The patch titled
+     Subject: mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
 
-The three separate lists are needed because we're handling three
-distinct types of page deallocation. Grouping the pages this way allows
-the workqueue handler to free each type using the correct function.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
 
-- pagetable_dtor_free(): This is for freeing PTE pages, which require
-   specific cleanup of a ptdesc structure.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-  - __free_page(): This is for freeing a single page.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-  - free_pages(): This is for freeing a contiguous block of pages that
-    were allocated together.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Using separate lists for each type ensures that every page is handled
-correctly without having to check the page's type at runtime.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-This seems like overkill, it was chosen to ensure functional
-correctness. Any better solution?
+------------------------------------------------------
+From: Jeongjun Park <aha310510@gmail.com>
+Subject: mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
+Date: Sun, 24 Aug 2025 03:21:15 +0900
 
-Thanks,
-baolu
+When restoring a reservation for an anonymous page, we need to check to
+freeing a surplus.  However, __unmap_hugepage_range() causes data race
+because it reads h->surplus_huge_pages without the protection of
+hugetlb_lock.
+
+And adjust_reservation is a boolean variable that indicates whether
+reservations for anonymous pages in each folio should be restored. 
+Therefore, it should be initialized to false for each round of the loop. 
+However, this variable is not initialized to false except when defining
+the current adjust_reservation variable.
+
+This means that once adjust_reservation is set to true even once within
+the loop, reservations for anonymous pages will be restored
+unconditionally in all subsequent rounds, regardless of the folio's state.
+
+To fix this, we need to add the missing hugetlb_lock, unlock the
+page_table_lock earlier so that we don't lock the hugetlb_lock inside the
+page_table_lock lock, and initialize adjust_reservation to false on each
+round within the loop.
+
+Link: https://lkml.kernel.org/r/20250823182115.1193563-1-aha310510@gmail.com
+Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
+Cc: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+--- a/mm/hugetlb.c~mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range
++++ a/mm/hugetlb.c
+@@ -5851,7 +5851,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 	spinlock_t *ptl;
+ 	struct hstate *h = hstate_vma(vma);
+ 	unsigned long sz = huge_page_size(h);
+-	bool adjust_reservation = false;
++	bool adjust_reservation;
+ 	unsigned long last_addr_mask;
+ 	bool force_flush = false;
+ 
+@@ -5944,6 +5944,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 					sz);
+ 		hugetlb_count_sub(pages_per_huge_page(h), mm);
+ 		hugetlb_remove_rmap(folio);
++		spin_unlock(ptl);
+ 
+ 		/*
+ 		 * Restore the reservation for anonymous page, otherwise the
+@@ -5951,14 +5952,16 @@ void __unmap_hugepage_range(struct mmu_g
+ 		 * If there we are freeing a surplus, do not set the restore
+ 		 * reservation bit.
+ 		 */
++		adjust_reservation = false;
++
++		spin_lock_irq(&hugetlb_lock);
+ 		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+ 		    folio_test_anon(folio)) {
+ 			folio_set_hugetlb_restore_reserve(folio);
+ 			/* Reservation to be adjusted after the spin lock */
+ 			adjust_reservation = true;
+ 		}
+-
+-		spin_unlock(ptl);
++		spin_unlock_irq(&hugetlb_lock);
+ 
+ 		/*
+ 		 * Adjust the reservation for the region that will have the
+_
+
+Patches currently in -mm which might be from aha310510@gmail.com are
+
+mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
+
 
