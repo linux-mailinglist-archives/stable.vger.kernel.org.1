@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4B1B369A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DB0B35D92
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63791C413D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D7F1BC083A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A15F34AB0D;
-	Tue, 26 Aug 2025 14:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503EE322754;
+	Tue, 26 Aug 2025 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2l1VC4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQf5my3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086182C0F60;
-	Tue, 26 Aug 2025 14:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E30C2FD7DE;
+	Tue, 26 Aug 2025 11:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217715; cv=none; b=UeQA1HZsdQcGoANXQ1Xl0vHXsBvMRwBJfgj9DWE2aXxcmDGXrQVcHhlVSC9bUROVSD2kB7mfeN7j86vcA8fCLeUtgZvA2X6KzqONanxegGGDLYx2c4cmGXKtmUjly1oOF/94gwSOmch3q8U6K6hzJilE6KBs1WDZ3fRvPUCzimQ=
+	t=1756208343; cv=none; b=lqRwWx/zsjx/jUSe1tCyCpjgFO/2aCBlOwF12DuF+4FXXdBkQNVIbYWMRVDsWN46wrYlsUDLTfVFy9i9a3PuJIfd3XWL8OKSlcDsFLchiDAkdamwYsphriI7GHEomjdE3Q7LtkHy7MIpJVS7mPCa4CsAruZkkM41jVdMxULA/wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217715; c=relaxed/simple;
-	bh=g7lUmQQm/+8q1LH1JvLI7Zg5hLGofxiFgdpAEOMocgY=;
+	s=arc-20240116; t=1756208343; c=relaxed/simple;
+	bh=Z2shb8HHeAnjHC4hY0DE1GDAmPVwhhEPimAUMbkPfTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COdz4SN8H3zoV44fsBbVkopXjBpBKvbAbC0MYvlpeh3EFk6b9JnsgTgt5axnr/lQOeEtMJu/UOdpUB4y7uJ+/9/fKWgDhlX2bJTToc/htPKImL6qeroCwIInbfdFLi0coSA8CDEoavHiE3763hiT9Ywsu5G+1fCq2gMTzzG3+Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2l1VC4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEC7C113D0;
-	Tue, 26 Aug 2025 14:15:14 +0000 (UTC)
+	 MIME-Version; b=OxPphil+M7Z2hdpUobvZTJjCV8CM3zNxj6s7VJTZDiHzST9mkZPdXIQC3lxSNLbW577SZqjdY+tqlsbfGuBc50utt5Kz1vZhaHE2+OISxscj9SqXG7v5Ug+v1y2vFjDctdMrwXUzV89Utp+MSLMP/gkyoKphqKUjcp9Y8AJzek0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQf5my3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F58AC4CEF1;
+	Tue, 26 Aug 2025 11:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217714;
-	bh=g7lUmQQm/+8q1LH1JvLI7Zg5hLGofxiFgdpAEOMocgY=;
+	s=korg; t=1756208342;
+	bh=Z2shb8HHeAnjHC4hY0DE1GDAmPVwhhEPimAUMbkPfTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2l1VC4O2vnVtS4wQQjJsLcyVDm/BGwxVingkrXhc8zppgLh4CmyNmuZbreUrZhz3
-	 6SiiwKmPtJz/iR11JVsutp1abiOYYsCJjEVBYauHvAYMoe//B/tLKKwnrEd9GH9bGf
-	 M1GM5rr/BjKINgyvSPla9tKnEjSPJDTFzols1tK8=
+	b=lQf5my3Gk+/Z6MOjbhzqAS6toL3R0qLiPQisYYL/mJqS//dYd272NEpQ3Nc0M/DlV
+	 H1pdObguLem9Dr0tgbmb8+h5BJOAW6+FJIucCkuIONrT10BY0Va5/HAwllFRjAnKUt
+	 e45s/qNWi0rL86Rw2yBvutUska8zIqGqmTRkg+RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Michalec <tmichalec@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 248/523] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.12 043/322] arm64: dts: ti: k3-am62-verdin: Enable pull-ups on I2C buses
 Date: Tue, 26 Aug 2025 13:07:38 +0200
-Message-ID: <20250826110930.550974677@linuxfoundation.org>
+Message-ID: <20250826110916.445419400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Michalec <tmichalec@google.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
+commit bdf4252f736cc1d2a8e3e633c70fe6c728f0756e upstream.
 
-If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
-will fail.
+Enable internal bias pull-ups on the SoC-side I2C buses that do not have
+external pull resistors populated on the SoM. This ensures proper
+default line levels.
 
-Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
-the probe function can be called again after SCU IPC is initialized.
-
-Signed-off-by: Tomasz Michalec <tmichalec@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
+Cc: stable@vger.kernel.org
+Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20250528110741.262336-1-ghidoliemanuele@gmail.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
-index 1276112edeff..9b4963450fe8 100644
---- a/drivers/usb/typec/mux/intel_pmc_mux.c
-+++ b/drivers/usb/typec/mux/intel_pmc_mux.c
-@@ -644,7 +644,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -507,16 +507,16 @@
+ 	/* Verdin I2C_2_DSI */
+ 	pinctrl_i2c2: main-i2c2-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62X_IOPAD(0x00b0, PIN_INPUT, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
+-			AM62X_IOPAD(0x00b4, PIN_INPUT, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
++			AM62X_IOPAD(0x00b0, PIN_INPUT_PULLUP, 1) /* (K22) GPMC0_CSn2.I2C2_SCL */ /* SODIMM 55 */
++			AM62X_IOPAD(0x00b4, PIN_INPUT_PULLUP, 1) /* (K24) GPMC0_CSn3.I2C2_SDA */ /* SODIMM 53 */
+ 		>;
+ 	};
  
- 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
- 	if (!pmc->ipc)
--		return -ENODEV;
-+		return -EPROBE_DEFER;
+ 	/* Verdin I2C_4_CSI */
+ 	pinctrl_i2c3: main-i2c3-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62X_IOPAD(0x01d0, PIN_INPUT, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
+-			AM62X_IOPAD(0x01d4, PIN_INPUT, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
++			AM62X_IOPAD(0x01d0, PIN_INPUT_PULLUP, 2) /* (A15) UART0_CTSn.I2C3_SCL */ /* SODIMM 95 */
++			AM62X_IOPAD(0x01d4, PIN_INPUT_PULLUP, 2) /* (B15) UART0_RTSn.I2C3_SDA */ /* SODIMM 93 */
+ 		>;
+ 	};
  
- 	pmc->dev = &pdev->dev;
+@@ -786,8 +786,8 @@
+ 	/* Verdin I2C_3_HDMI */
+ 	pinctrl_mcu_i2c0: mcu-i2c0-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
+-			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
++			AM62X_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /*  (A8) MCU_I2C0_SCL */ /* SODIMM 59 */
++			AM62X_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (D10) MCU_I2C0_SDA */ /* SODIMM 57 */
+ 		>;
+ 	};
  
--- 
-2.39.5
-
 
 
 
