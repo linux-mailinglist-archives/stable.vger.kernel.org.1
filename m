@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-176059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71320B36B6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6ABB369FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2981C8168D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B631C40E65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD2135CED0;
-	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6103570A6;
+	Tue, 26 Aug 2025 14:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgXWRhAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT9kbE5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CBC353368;
-	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83905356919;
+	Tue, 26 Aug 2025 14:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218676; cv=none; b=IhNMyAKNQgvBZ8RJthkuEPjf28pwX3Acg4ZJSJJ/1KwxB5pDrOtnu00QxHAaxLuojvhj6kZRRD79uXdvU+/TukPHpSgw7aeYLTINk48Zmoq2fqjTXQu7bHiMiZFv1mqwQYCfRgoEnhQU94syNIdWDXMmU7W2DED28O5eqU5KTxc=
+	t=1756217687; cv=none; b=UvTCLaDrfqzwKc+0yuoGWaEQRl/GAeNX0tFZxErlvGngQv8wGMffjmxl7xpZD1rrJEcZs2YNfkBt5l8PXBdm6fJzbBWCuL7OizVi4+fyeqVz+RVDl6GofN6v36rvtZpDX7CBQqKEF+ZWomOlp3zNj7KEqmgWAHgqmbOm7aa4r2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218676; c=relaxed/simple;
-	bh=VUgys3ckiuyf6wKH7ZW/GQp9afnOLSTBKvJVgVKY2bs=;
+	s=arc-20240116; t=1756217687; c=relaxed/simple;
+	bh=rWcKNwWAm1zfG6nNCOCEQTKD2QYyXt3wzcrgc0pwlNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBEGsdqjtHt7JGyZiu+XkYc26KjzWWcyUBtx9s4NFShroY2QwOEgs9GvLOHdxvz7lxmY8zBJ9pBmmm0uGqdLDgWlU1leCWQj0ELkQn/OU630lVboFbcR0ZbqU6TvxIRIqy89m5Luocuexx7XhmZANmFyki526EiFlAYTEvJblMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgXWRhAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE8AC4CEF1;
-	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
+	 MIME-Version; b=LL7TKchfpYIM25BXgJGpDTX43t0LNBUZF/i3ZsIlsUw03c7NyQeSdxEaDnO1ssZbtjpPpDfpR6KM1cBUz+FHclr7ppGw/8rs86Tzjm58o6AUEi2jYbH6TT0RjPPeqI1gZ2yY32Sga8rYiJa6k6o2ykZTQrbxfhymyzgJzABM4aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT9kbE5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1530AC113CF;
+	Tue, 26 Aug 2025 14:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218676;
-	bh=VUgys3ckiuyf6wKH7ZW/GQp9afnOLSTBKvJVgVKY2bs=;
+	s=korg; t=1756217687;
+	bh=rWcKNwWAm1zfG6nNCOCEQTKD2QYyXt3wzcrgc0pwlNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgXWRhAjj1gusk/kKgzqnxCYs44EZlk/wLlWUM2KSBMdIPrDZiFnIxSKpbB9T0K1b
-	 W1xFh5VNPXLwLHjoHcJ8bGBQ3kfkHai10V176np/h9aDUAyLPiQMivSq+ZWurBjStN
-	 guIhlTiTBknpBTvUavhzAPkBPkdtb5kdKskxm/8g=
+	b=vT9kbE5qY6aTjLYEDCeo4Psl12uxCPSX2ukzcUTe8o7NhMw/p06jiiJ0iee9fYsNT
+	 xYymSXAAGT4LV94DZoZuorYmWz01fDPt0CYsQzm/GOmGsB4eUcq4Hb2HyO1tOin4Wq
+	 Ev7Tw337PXLrU7zyw0J/EUEJLfeTZJq7N8JC/lrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com,
+	syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/403] m68k: Dont unregister boot console needlessly
+Subject: [PATCH 5.10 207/523] sctp: linearize cloned gso packets in sctp_rcv
 Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110909.181612722@linuxfoundation.org>
+Message-ID: <20250826110929.551523276@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
+[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
 
-When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
-generate console output. That will continue to work even after
-debug_cons_nputs() becomes unavailable so there's no need to
-unregister the boot console.
+A cloned head skb still shares these frag skbs in fraglist with the
+original head skb. It's not safe to access these frag skbs.
 
-Take the opportunity to remove a repeated MACH_IS_* test. Use the
-actual .write method (instead of a wrapper) and test that pointer
-instead. This means adding an unused parameter to debug_cons_nputs() for
-consistency with the struct console API.
+syzbot reported two use-of-uninitialized-memory bugs caused by this:
 
-early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
-head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
-depend on the latter, to obviate some ifdef conditionals.
+  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
+   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
+   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
+   __release_sock+0x1da/0x330 net/core/sock.c:3106
+   release_sock+0x6b/0x250 net/core/sock.c:3660
+   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
+   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
+   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
+   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:718 [inline]
 
-Cc: Daniel Palmer <daniel@0x0f.com>
-Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+and
+
+  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
+   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+   __release_sock+0x1d3/0x330 net/core/sock.c:3213
+   release_sock+0x6b/0x270 net/core/sock.c:3767
+   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
+   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
+   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
+   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:712 [inline]
+
+This patch fixes it by linearizing cloned gso packets in sctp_rcv().
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
+Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/Kconfig.debug         |  2 +-
- arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
- arch/m68k/kernel/head.S         |  8 +++----
- 3 files changed, 19 insertions(+), 33 deletions(-)
+ net/sctp/input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
-index f43643111eaf..f9fa89ba259d 100644
---- a/arch/m68k/Kconfig.debug
-+++ b/arch/m68k/Kconfig.debug
-@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 8fe1a74f0618..079b1bfc7d31 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -114,7 +114,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 	 * it's better to just linearize it otherwise crc computing
+ 	 * takes longer.
+ 	 */
+-	if ((!is_gso && skb_linearize(skb)) ||
++	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
+ 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
+ 		goto discard_it;
  
- config EARLY_PRINTK
- 	bool "Early printk"
--	depends on !(SUN3 || M68000 || COLDFIRE)
-+	depends on MMU_MOTOROLA
- 	help
-           Write kernel log output directly to a serial port.
-           Where implemented, output goes to the framebuffer as well.
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index f11ef9f1f56f..521cbb8a150c 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -16,25 +16,10 @@
- #include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
- 
--asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
--
--static void __ref debug_cons_write(struct console *c,
--				   const char *s, unsigned n)
--{
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME147)
--		mvme147_scc_write(c, s, n);
--	else if (MACH_IS_MVME16x)
--		mvme16x_cons_write(c, s, n);
--	else
--		debug_cons_nputs(s, n);
--#endif
--}
-+asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
- 
- static struct console early_console_instance = {
- 	.name  = "debug",
--	.write = debug_cons_write,
- 	.flags = CON_PRINTBUFFER | CON_BOOT,
- 	.index = -1
- };
-@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
- 	if (early_console || buf)
- 		return 0;
- 
-+	if (MACH_IS_MVME147)
-+		early_console_instance.write = mvme147_scc_write;
-+	else if (MACH_IS_MVME16x)
-+		early_console_instance.write = mvme16x_cons_write;
-+	else
-+		early_console_instance.write = debug_cons_nputs;
- 	early_console = &early_console_instance;
- 	register_console(early_console);
- 
-@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
- }
- early_param("earlyprintk", setup_early_printk);
- 
--/*
-- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
-- * after init sections are discarded (for platforms that use it).
-- */
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--
- static int __init unregister_early_console(void)
- {
--	if (!early_console || MACH_IS_MVME16x)
--		return 0;
-+	/*
-+	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
-+	 * called after init sections are discarded (for platforms that use it).
-+	 */
-+	if (early_console && early_console->write == debug_cons_nputs)
-+		return unregister_console(early_console);
- 
--	return unregister_console(early_console);
-+	return 0;
- }
- late_initcall(unregister_early_console);
--
--#endif
-diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-index a54788458ca3..692cdcfb3520 100644
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3242,8 +3242,8 @@ func_return	putn
-  *	turns around and calls the internal routines.  This routine
-  *	is used by the boot console.
-  *
-- *	The calling parameters are:
-- *		void debug_cons_nputs(const char *str, unsigned length)
-+ *	The function signature is -
-+ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
-  *
-  *	This routine does NOT understand variable arguments only
-  *	simple strings!
-@@ -3252,8 +3252,8 @@ ENTRY(debug_cons_nputs)
- 	moveml	%d0/%d1/%a0,%sp@-
- 	movew	%sr,%sp@-
- 	ori	#0x0700,%sr
--	movel	%sp@(18),%a0		/* fetch parameter */
--	movel	%sp@(22),%d1		/* fetch parameter */
-+	movel	%sp@(22),%a0		/* char *s */
-+	movel	%sp@(26),%d1		/* unsigned int n */
- 	jra	2f
- 1:
- #ifdef CONSOLE_DEBUG
 -- 
-2.39.5
+2.50.1
 
 
 
