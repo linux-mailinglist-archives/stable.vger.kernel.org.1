@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B10BB35D83
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 850BEB364F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C353674B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598D48A65CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060A529D27E;
-	Tue, 26 Aug 2025 11:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1041334164F;
+	Tue, 26 Aug 2025 13:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyVgD/S9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu0VCNHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B755718DF9D;
-	Tue, 26 Aug 2025 11:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18502BDC2F;
+	Tue, 26 Aug 2025 13:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208118; cv=none; b=gF9u3K+rZWeCYm6Q9aMJ0gP5E+7TnfZWmzsJJKei28UCKkK4cDbLJ+IeoFXOkGJHhH19EK/FDMmHQbspyWtCfTcdzL0LQm8UqT0Hg8W7KHv8dArYFEubtpHzXc0mIv0uv/c9Iauss/mL9OtkE/p/Q03dZxUwfZRfp7OYAoXVvkg=
+	t=1756215265; cv=none; b=dOWAsLWkUvLYTWElmMvRfElg7By9y7q9i/nB3akIHdYcr91X4S1eeI3S2xGZFTJxJr4onQ7UWpmYp7CEPxhwI+o0VIksOV9GDRXDq9fDKbzUJUiU5SBqBer3B7nsurkxYHn4zlAMsLnYgsx9mZsYydZpUvxGN4w1kZk6jhTu/yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208118; c=relaxed/simple;
-	bh=z0iHdEifPBUbkLFyUokutelBdFn0AaB3U2Z0jZivJcE=;
+	s=arc-20240116; t=1756215265; c=relaxed/simple;
+	bh=Tqk5XRRwfAO+Y/BsvSJFVIduzyHbn6KYHNXSv0pG2/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLH9WkPEByGQ9gXeNLoxXEU8KLoZwkSHAtBireiXa5TZV/1FPu5VqJ2o9fX7ja2dMrvlw6O1o6+paNEq+FPYHCh2v0oVsMXYzlGhBkfYd9V5onI6aWNb8+hRsPO3jBij0r7ln5uMNaqG85zdkBV5CkK38n+1Dc2O5nvjx7ptRj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyVgD/S9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DD6C4CEF1;
-	Tue, 26 Aug 2025 11:35:17 +0000 (UTC)
+	 MIME-Version; b=OiEzzIiGP7btVvq2IJ0uW8qV+kHZs05V/HrA7mgzAYJ/XUr/Z0qBoWksjNw5zxE/gE2EeG1OXcE5eK1z7WPbtr7byoGT67VOc69SXHvCxXYHtSDRw05LFfWAHQrNrXApz6RESz4vtdr0A5Pwt/0KivjgPpf6Li2Ll2zG+S9C0Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu0VCNHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5072CC4CEF1;
+	Tue, 26 Aug 2025 13:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208118;
-	bh=z0iHdEifPBUbkLFyUokutelBdFn0AaB3U2Z0jZivJcE=;
+	s=korg; t=1756215265;
+	bh=Tqk5XRRwfAO+Y/BsvSJFVIduzyHbn6KYHNXSv0pG2/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyVgD/S9BXarcSxA95/LcnF+Uml/VmLDdgq6JMDnThjNrMWCSbo6vZ1Q9wPpXC4Fz
-	 V5xS+MPAJNA4S3GUAl3v1GaYQ9sbWTIl/eCM9s5zNkqlNAs8Yg+HocgCGrlVg6BVOv
-	 tYkF8D+R8FWv/6wZXkwds+nNnCkMUP3lYSFtX6eQ=
+	b=Tu0VCNHSfLD6gVQXNON58ujQtFmsJX+1PDKtqyQ1dOV0My1kWvWmiN2ypTwDvjEEp
+	 tT+jBi20Unyx5rGDsC4ZmDs/+c/vHInYRSGXn8uPwApzwYLJ4PigK+quBPIA4++5wZ
+	 RBsf+oInwsSW5TJrAnD6D0gR2fDpid5V+9Raycw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Vlad Dogaru <vdogaru@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 417/457] net/mlx5: HWS, fix complex rules rehash error flow
+Subject: [PATCH 6.1 448/482] tracing: Limit access to parser->buffer when trace_get_user failed
 Date: Tue, 26 Aug 2025 13:11:41 +0200
-Message-ID: <20250826110947.599147971@linuxfoundation.org>
+Message-ID: <20250826110941.897184108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 4a842b1bf18a32ee0c25dd6dd98728b786a76fe4 ]
+[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
 
-Moving rules from matcher to matcher should not fail.
-However, if it does fail due to various reasons, the error flow
-should allow the kernel to continue functioning (albeit with broken
-steering rules) instead of going into series of soft lock-ups or
-some other problematic behaviour.
+When the length of the string written to set_ftrace_filter exceeds
+FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
 
-Similar to the simple rules, complex rules rehash logic suffers
-from the same problems. This patch fixes the error flow for moving
-complex rules:
- - If new rule creation fails before it was even enqeued, do not
-   poll for completion
- - If TIMEOUT happened while moving the rule, no point trying
-   to poll for completions for other rules. Something is broken,
-   completion won't come, just abort the rehash sequence.
- - If some other completion with error received, don't give up.
-   Continue handling rest of the rules to minimize the damage.
- - Make sure that the first error code that was received will
-   be actually returned to the caller instead of replacing it
-   with the generic error code.
+BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
+Read of size 1 at addr ffff0000d00bd5ba by task ash/165
 
-All the aforementioned issues stem from the same bad error flow,
-so no point fixing them one by one and leaving partially broken
-code - fixing them in one patch.
+CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x34/0x50 (C)
+ dump_stack_lvl+0xa0/0x158
+ print_address_description.constprop.0+0x88/0x398
+ print_report+0xb0/0x280
+ kasan_report+0xa4/0xf0
+ __asan_report_load1_noabort+0x20/0x30
+ strsep+0x18c/0x1b0
+ ftrace_process_regex.isra.0+0x100/0x2d8
+ ftrace_regex_release+0x484/0x618
+ __fput+0x364/0xa58
+ ____fput+0x28/0x40
+ task_work_run+0x154/0x278
+ do_notify_resume+0x1f0/0x220
+ el0_svc+0xec/0xf0
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1ac/0x1b0
 
-Fixes: 17e0accac577 ("net/mlx5: HWS, support complex matchers")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Vlad Dogaru <vdogaru@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250817202323.308604-4-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The reason is that trace_get_user will fail when processing a string
+longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
+Then an OOB access will be triggered in ftrace_regex_release->
+ftrace_process_regex->strsep->strpbrk. We can solve this problem by
+limiting access to parser->buffer when trace_get_user failed.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
+Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mlx5/core/steering/hws/bwc_complex.c      | 41 +++++++++++++------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ kernel/trace/trace.c |   18 ++++++++++++------
+ kernel/trace/trace.h |    8 +++++++-
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-index ca7501c57468..14e79579c719 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc_complex.c
-@@ -1328,11 +1328,11 @@ mlx5hws_bwc_matcher_move_all_complex(struct mlx5hws_bwc_matcher *bwc_matcher)
- {
- 	struct mlx5hws_context *ctx = bwc_matcher->matcher->tbl->ctx;
- 	struct mlx5hws_matcher *matcher = bwc_matcher->matcher;
--	bool move_error = false, poll_error = false;
- 	u16 bwc_queues = mlx5hws_bwc_queues(ctx);
- 	struct mlx5hws_bwc_rule *tmp_bwc_rule;
- 	struct mlx5hws_rule_attr rule_attr;
- 	struct mlx5hws_table *isolated_tbl;
-+	int move_error = 0, poll_error = 0;
- 	struct mlx5hws_rule *tmp_rule;
- 	struct list_head *rules_list;
- 	u32 expected_completions = 1;
-@@ -1391,11 +1391,15 @@ mlx5hws_bwc_matcher_move_all_complex(struct mlx5hws_bwc_matcher *bwc_matcher)
- 			ret = mlx5hws_matcher_resize_rule_move(matcher,
- 							       tmp_rule,
- 							       &rule_attr);
--			if (unlikely(ret && !move_error)) {
--				mlx5hws_err(ctx,
--					    "Moving complex BWC rule failed (%d), attempting to move rest of the rules\n",
--					    ret);
--				move_error = true;
-+			if (unlikely(ret)) {
-+				if (!move_error) {
-+					mlx5hws_err(ctx,
-+						    "Moving complex BWC rule: move failed (%d), attempting to move rest of the rules\n",
-+						    ret);
-+					move_error = ret;
-+				}
-+				/* Rule wasn't queued, no need to poll */
-+				continue;
- 			}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1618,7 +1618,7 @@ int trace_get_user(struct trace_parser *
  
- 			expected_completions = 1;
-@@ -1403,11 +1407,19 @@ mlx5hws_bwc_matcher_move_all_complex(struct mlx5hws_bwc_matcher *bwc_matcher)
- 						     rule_attr.queue_id,
- 						     &expected_completions,
- 						     true);
--			if (unlikely(ret && !poll_error)) {
--				mlx5hws_err(ctx,
--					    "Moving complex BWC rule: poll failed (%d), attempting to move rest of the rules\n",
--					    ret);
--				poll_error = true;
-+			if (unlikely(ret)) {
-+				if (ret == -ETIMEDOUT) {
-+					mlx5hws_err(ctx,
-+						    "Moving complex BWC rule: timeout polling for completions (%d), aborting rehash\n",
-+						    ret);
-+					return ret;
-+				}
-+				if (!poll_error) {
-+					mlx5hws_err(ctx,
-+						    "Moving complex BWC rule: polling for completions failed (%d), attempting to move rest of the rules\n",
-+						    ret);
-+					poll_error = ret;
-+				}
- 			}
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		return ret;
++		goto fail;
  
- 			/* Done moving the rule to the new matcher,
-@@ -1422,8 +1434,11 @@ mlx5hws_bwc_matcher_move_all_complex(struct mlx5hws_bwc_matcher *bwc_matcher)
+ 	read++;
+ 	cnt--;
+@@ -1632,7 +1632,7 @@ int trace_get_user(struct trace_parser *
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				return ret;
++				goto fail;
+ 			read++;
+ 			cnt--;
  		}
+@@ -1650,12 +1650,14 @@ int trace_get_user(struct trace_parser *
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else
+-			return -EINVAL;
++		else {
++			ret = -EINVAL;
++			goto fail;
++		}
+ 
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			return ret;
++			goto fail;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1670,11 +1672,15 @@ int trace_get_user(struct trace_parser *
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
  	}
  
--	if (move_error || poll_error)
--		ret = -EINVAL;
-+	/* Return the first error that happened */
-+	if (unlikely(move_error))
-+		return move_error;
-+	if (unlikely(poll_error))
-+		return poll_error;
- 
- 	return ret;
+ 	*ppos += read;
+ 	return read;
++fail:
++	trace_parser_fail(parser);
++	return ret;
  }
--- 
-2.50.1
-
+ 
+ /* TODO add a seq_buf_to_buffer() */
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1131,6 +1131,7 @@ bool ftrace_event_is_function(struct tra
+  */
+ struct trace_parser {
+ 	bool		cont;
++	bool		fail;
+ 	char		*buffer;
+ 	unsigned	idx;
+ 	unsigned	size;
+@@ -1138,7 +1139,7 @@ struct trace_parser {
+ 
+ static inline bool trace_parser_loaded(struct trace_parser *parser)
+ {
+-	return (parser->idx != 0);
++	return !parser->fail && parser->idx != 0;
+ }
+ 
+ static inline bool trace_parser_cont(struct trace_parser *parser)
+@@ -1152,6 +1153,11 @@ static inline void trace_parser_clear(st
+ 	parser->idx = 0;
+ }
+ 
++static inline void trace_parser_fail(struct trace_parser *parser)
++{
++	parser->fail = true;
++}
++
+ extern int trace_parser_get_init(struct trace_parser *parser, int size);
+ extern void trace_parser_put(struct trace_parser *parser);
+ extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
 
 
 
