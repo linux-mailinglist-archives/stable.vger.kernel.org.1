@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A88FB362B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C62B365DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE8B1884F9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3171C2150D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5529A2512C8;
-	Tue, 26 Aug 2025 13:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAB6318151;
+	Tue, 26 Aug 2025 13:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2kn8Acx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neppza1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B061917ED;
-	Tue, 26 Aug 2025 13:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9987428314A;
+	Tue, 26 Aug 2025 13:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214187; cv=none; b=MsGIBFCrgDVw1EsKg5RwYmgBTcm2jhN8hloFTU4+PePPR4PfxNpqeA1/Kv/G4ZDNdy0lLqqI480KDNVebpwUjXIjkH8R/VpmjekOWgjZrT3RoCT0xqWyzNUwNTpQ4WtmqoV9UWwOjPQSo2hoAJ6MUouTYbOULt57xOc676RruWU=
+	t=1756215886; cv=none; b=B7Oa9Peu+1IqY1NQgEDlUg0bQKQGoy8eTR6Y3gvNkkofdZ46tPjalSKzyLKwE1AsiIF/0GaZ0+ANIA9zyk5HCx9c1rc7hODMmWLnVHqL43v6mHJzX6XyOdZk2Lz1wroRbvsILPD+XERZAXL63jR2RzdpwOqkTmFQItq3goxWqhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214187; c=relaxed/simple;
-	bh=GDK3TDB6gILvVBzDxBV9zMbInztVnkUMIG6c2aR+1pM=;
+	s=arc-20240116; t=1756215886; c=relaxed/simple;
+	bh=Yz94jz0/0Hbs/tuoX7BIsALLuN1RKTkwhlAlzHScjSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bN5kqKOUymFwM7H8agRyvO9yvMWUotOUo8QhywjPesvQePGZmNnOe4552C1KYgv0s7ADxc4h5XFa09e+fuOGyvLlV6LRvWWvjIZYl7qKnyBOcZG+FXhyZAmpnPeVcvkvGHmoIZW8xzmjayxZPF9kJ7yGBkS8rXrS8axNIOXnwjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2kn8Acx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969ABC113CF;
-	Tue, 26 Aug 2025 13:16:26 +0000 (UTC)
+	 MIME-Version; b=ioHl6QKaxOaCF/Ba/grNuV0CvDJ1pFET8gjAjApxJh99q75AZnVtuF1O7axjihsAhRmqtZ/1770/+uDwEg0N7QUHDZAHxY/lSLpUGWF9+JqwvUH9nt/veVm8G5aq9p+03euxg+TB1IZbyU4QMfqF2QrHDmRv8JWvVW0+ptfKoME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neppza1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED46C116B1;
+	Tue, 26 Aug 2025 13:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214186;
-	bh=GDK3TDB6gILvVBzDxBV9zMbInztVnkUMIG6c2aR+1pM=;
+	s=korg; t=1756215886;
+	bh=Yz94jz0/0Hbs/tuoX7BIsALLuN1RKTkwhlAlzHScjSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2kn8AcxZS1gVIjz1+IthwH5wGTyQdrMnS+Raf6ObWljW3oyhFl8FBs3oNBx7a7Jj
-	 YdTmLr/fxQzUKl198DPZ2u64nKuYsBaVacrfbQNOuAckDM1fmoNe6wXtyn09VCdAet
-	 wGfFU58CWFJXP/r9K1llci2qP5m1uGhCjzOCoDVk=
+	b=neppza1o0AFAehAcE8ZFwzJzuP+Sp2owhPWcLbr1W0LEBvpYOdRW7KIR50aN3GDr2
+	 0ocz+o5NMrE3Esw198YXC0JaGlxzec9H1AwHMuFj9sBHIR3hss6GeHQ889kbNBTy17
+	 TTT8kTNCC/e0Vol83dUqFcCtuxMdSJ6MRymqS6gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 042/482] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 204/644] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
 Date: Tue, 26 Aug 2025 13:04:55 +0200
-Message-ID: <20250826110931.851788411@linuxfoundation.org>
+Message-ID: <20250826110951.489793478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
-guest CPUID model, as debug support is supposed to be available if RTM is
-supported, and there are no known downsides to letting the guest debug RTM
-aborts.
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-Note, there are no known bug reports related to RTM_DEBUG, the primary
-motivation is to reduce the probability of breaking existing guests when a
-future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
-(KVM currently lets L2 run with whatever hardware supports; whoops).
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
 
-Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
-DR7.RTM.
-
-Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h | 1 +
- arch/x86/kvm/vmx/vmx.c           | 4 ++++
- 2 files changed, 5 insertions(+)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 727947ed5e5e..afd65c815043 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -379,6 +379,7 @@
- #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
- #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
- #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
-+#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 884489590588..29306ec87fd1 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -141,7 +141,8 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
  
- #define MSR_PEBS_FRONTEND		0x000003f7
+ void aa_dfa_free_kref(struct kref *kref);
  
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 60d1ff3fca45..9445def2b3d2 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2064,6 +2064,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
- 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index 3e9e1eaf990e..0e683ee323e3 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -672,6 +672,7 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
  
-+	if (boot_cpu_has(X86_FEATURE_RTM) &&
-+	    (host_initiated || guest_cpuid_has(vcpu, X86_FEATURE_RTM)))
-+		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
-+
- 	return debugctl;
- }
- 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
-2.50.1
+2.39.5
 
 
 
