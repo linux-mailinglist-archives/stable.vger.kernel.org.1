@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D44B36104
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85893B35C33
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88E0F7B81A3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE93B16FAFB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270923875D;
-	Tue, 26 Aug 2025 13:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647C82F619C;
+	Tue, 26 Aug 2025 11:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9qMNc9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajEju7zC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6A23D28F;
-	Tue, 26 Aug 2025 13:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8512BE653;
+	Tue, 26 Aug 2025 11:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213530; cv=none; b=my9S7bl1HfQGy/ybLub1onfh5TbIENEDQoYIWJMcuV/vVZdaRXPjxnBTc8+faR3yeEAjeaw1WYY9MQEKoIXxnnm3NHZ7RNktc6wgTVgpgd2bnArnCYG5VpwE7XCIZ7kKqjPjMQHaxQgTqLFbjsrSPcjTDwrCYGxMxvqJaEuTxg0=
+	t=1756207589; cv=none; b=XPsPAR4vT6gNW0BRrMNrnNUiR7M9N+kcsb6sdnmU2IQZ2e5guAGLnYDZCo6GkzwgE5xdPgCVk0e6hkcwMjYw+ZQHFVhlYMfXPJyFx/rNstxb1VBYlLG34Exhb7OeRUqPz5ER2+Dt+ff69+Oh4GQ7/Hr8yAoA2sfdJuQvUVrnpLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213530; c=relaxed/simple;
-	bh=vTJ599uXLQH8A+bqocKJr2GbxSw2jp+23Gjc4mgwJQo=;
+	s=arc-20240116; t=1756207589; c=relaxed/simple;
+	bh=8+JJez/RZK4EAPWjZd05Vnhl4eEnLFNb+4XUooc9xF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YV4ydyAqaks//xfmFKMFEvnBtRWk8hNXDIdFRKRj6TLLbYOqrErsrsIhXX7/E1e4lkeh4XhVXr1tbvrWZofJQpKimqcU/899TlMrfJ6JdkIOFSvUk0YLTa5hDMKqg9UUeVTstMPMOzBsfeza8L36SGSb57a8n8yZFKOiKexn6XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9qMNc9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C50C4CEF1;
-	Tue, 26 Aug 2025 13:05:30 +0000 (UTC)
+	 MIME-Version; b=mX1KzjNLxWU5s9CELtczgzRs9sctK/2iaWqma/ic2cWWAEKK1wLFVuJEQqT8Qz7oa5EK4d/QiU7Qr8R7cl+HZYyVRGJ3RKSCP2eHVKpSgTHH3SV83+06mc4EGPVe5std+TL+AHAawD7rCfFXwgMphZgXLAUcDXzTYId/dL1oyZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajEju7zC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFD1C4CEF1;
+	Tue, 26 Aug 2025 11:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213530;
-	bh=vTJ599uXLQH8A+bqocKJr2GbxSw2jp+23Gjc4mgwJQo=;
+	s=korg; t=1756207589;
+	bh=8+JJez/RZK4EAPWjZd05Vnhl4eEnLFNb+4XUooc9xF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9qMNc9kdRO6b/rM4CYAkgkGG3aTgWXcIq1Sdr7nTutvwkjfe6OMK11BYPMzHnpmM
-	 QFRu1zHmPpz0KhbTjpP4f3iPLZFf0VYD4q/WG2RDqOYc0VpXtmLsbaRpcDC64hzTZJ
-	 6k891jZs2hKsvq/gexKNJZCKCUJf8kPMczmdbdWs=
+	b=ajEju7zCdSCT+71rpQl9Clhe5O/3fSW5w6LXIgoJWfpw+tQZK/9zppVBilGh3MSYF
+	 942vn6oWHZ6TqCx+f1bmab4f7s0YUweAbvvyCSb/rN/dkHG3wp/XteOzWgI/Z/R3rX
+	 /c2q038FRM8t1/aZBltjWcbEWs/gMzFAMT7JG9aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.6 375/587] wifi: ath11k: fix dest ring-buffer corruption when ring is full
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.16 240/457] memstick: Fix deadlock by moving removing flag earlier
 Date: Tue, 26 Aug 2025 13:08:44 +0200
-Message-ID: <20250826111002.445233949@linuxfoundation.org>
+Message-ID: <20250826110943.306139408@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-Add the missing memory barriers to make sure that destination ring
-descriptors are read before updating the tail pointer (and passing
-ownership to the device) to avoid memory corruption on weakly ordered
-architectures like aarch64 when the ring is full.
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+In the rtsx_usb_ms driver, the problematic sequence is:
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
+
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -827,7 +827,6 @@ void ath11k_hal_srng_access_end(struct a
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -555,7 +555,6 @@ EXPORT_SYMBOL(memstick_add_host);
+  */
+ void memstick_remove_host(struct memstick_host *host)
  {
- 	lockdep_assert_held(&srng->lock);
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static void rtsx_usb_ms_drv_remove(struc
+ 	int err;
  
--	/* TODO: See if we need a write memory barrier here */
- 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
- 		/* For LMAC rings, ring pointer updates are done through FW and
- 		 * hence written to a shared memory location that is read by FW
-@@ -842,7 +841,11 @@ void ath11k_hal_srng_access_end(struct a
- 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
--			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			dma_mb();
-+			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
- 		}
- 	} else {
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-@@ -858,6 +861,10 @@ void ath11k_hal_srng_access_end(struct a
- 					   srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			mb();
- 			ath11k_hif_write32(ab,
- 					   (unsigned long)srng->u.dst_ring.tp_addr -
- 					   (unsigned long)ab->mem,
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
+ 
 
 
 
