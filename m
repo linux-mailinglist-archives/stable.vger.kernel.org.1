@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161A6B3600F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E417B368C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE855464A0D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC011897CEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920201DD0D4;
-	Tue, 26 Aug 2025 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44B2FFDEB;
+	Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA/8d2X0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vE5qNoq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5092338DEC;
-	Tue, 26 Aug 2025 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C1A2B9A7;
+	Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212814; cv=none; b=gq18qESzbD8SJcHKxOHtaBc7br5XvSRdYuxiaTY3sI8WOK6ZxI/pwPIiBlHVWmTi/oZ/i46V96KQNGx9sf5MhjOc/B6MPtg5eoZ5kh/0Hmr75ppn5UPukWfbkfEmf7a+/XFOfVpakrcVhJtttHW/2deqEXP8B4C3a0OHrdXsQTo=
+	t=1756217195; cv=none; b=p0r9eCLE7Je/0NxQk1govGZ9QpHqTAYc+vIUyaE3BPZktThPwAYuIwdYRleDqXTuXSOuH4Fm6ye8u5R/fx+JH9MQ3tNyblqj4FlmkFAFrr9kme3gZ6OxO0ugiz8Or1h9tjD9vAK+pOu3w+4zXCtDMKu70SZ5xV/uDyAl04YZmiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212814; c=relaxed/simple;
-	bh=09t4o7puzMB1m7xAmZ8aSMn1lMHXEBLR/y8J1zmM4/M=;
+	s=arc-20240116; t=1756217195; c=relaxed/simple;
+	bh=SfAV9CxseHC0+BDK1Rt6z4vSVhwp0/8JkcrEen6UpDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLucjn2cgEK2OyMVQXLAOcf0iJfbNpfUM5wDGPd+8D631bS5zYhRC9UC19hkjRj79KuWLQOYete6D42nyGadSO3/Fd0ay0KF62tmvWo0A56bz1QCydjESu8aoF01hbljsYzeLZApfnNObAuolFPHqWuXWKLXGgafafxYUpsvrhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JA/8d2X0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD16C4CEF1;
-	Tue, 26 Aug 2025 12:53:33 +0000 (UTC)
+	 MIME-Version; b=croWfXo2Is6pvC94zf0EFCeHPyUHgxuT15e8wEhMlsOkZjEUqRo427FZIflTr8iEBA96me9TvhEOVV23tgX8MBPveaKg3jFsOx6RvnFu9iGd/6bwhnJ2h5RgNANlarDtsXmx2WZ/X76iF9qTeEXgqN8yqWhdgkM2zuEb9gHvCi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vE5qNoq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A3CC4CEF1;
+	Tue, 26 Aug 2025 14:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212814;
-	bh=09t4o7puzMB1m7xAmZ8aSMn1lMHXEBLR/y8J1zmM4/M=;
+	s=korg; t=1756217195;
+	bh=SfAV9CxseHC0+BDK1Rt6z4vSVhwp0/8JkcrEen6UpDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JA/8d2X021wNbu+HjtWZFQkL46/TSSaCk/Hk1d9g5CP8R8b2TQ5T2o6dIqbXGaOfb
-	 2CqA8bXaZjUaLjS8xq3dn9nEu+oM70quxUZl9PllQ0siUGp2UrAeCdKLs6xQ2cuEoC
-	 u8B25PhqdAqwNwlbSMiDwhBsvjyotwP3ed4Qzq7w=
+	b=vE5qNoq43XUfPzzH1PI0q1bajQDyscCJRKkesfG4PJvZgM+ng8dYWG7J1M0M79JOn
+	 jNk+h2zU1+GSKT1SWCBrldmQYRhQ0dqZdN9PL+z5JgUdkOANZgmM9+Jg9WQo4+TaEk
+	 EzudefS2pfPath49bJ+Wpkf6HS1gZPTfBAU4tkgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/587] ACPI: processor: fix acpi_object initialization
+	Arun Raghavan <arun@asymptotic.io>,
+	Pieterjan Camerlynck <p.camerlynck@televic.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 051/523] ASoC: fsl_sai: Force a software reset when starting in consumer mode
 Date: Tue, 26 Aug 2025 13:04:21 +0200
-Message-ID: <20250826110955.789906268@linuxfoundation.org>
+Message-ID: <20250826110925.856793801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Arun Raghavan <arun@asymptotic.io>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+commit dc78f7e59169d3f0e6c3c95d23dc8e55e95741e2 upstream.
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+On an imx8mm platform with an external clock provider, when running the
+receiver (arecord) and triggering an xrun with xrun_injection, we see a
+channel swap/offset. This happens sometimes when running only the
+receiver, but occurs reliably if a transmitter (aplay) is also
+concurrently running.
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
+It seems that the SAI loses track of frame sync during the trigger stop
+-> trigger start cycle that occurs during an xrun. Doing just a FIFO
+reset in this case does not suffice, and only a software reset seems to
+get it back on track.
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This looks like the same h/w bug that is already handled for the
+producer case, so we now do the reset unconditionally on config disable.
+
+Signed-off-by: Arun Raghavan <arun@asymptotic.io>
+Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
+Fixes: 3e3f8bd56955 ("ASoC: fsl_sai: fix no frame clk in master mode")
+Cc: stable@vger.kernel.org
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://patch.msgid.link/20250626130858.163825-1-arun@arunraghavan.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_sai.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7053f1b9fc1d..c0f9cf9768ea 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -250,7 +250,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -572,13 +572,15 @@ static void fsl_sai_config_disable(struc
+ 	 * anymore. Add software reset to fix this issue.
+ 	 * This is a hardware bug, and will be fix in the
+ 	 * next sai version.
++	 *
++	 * In consumer mode, this can happen even after a
++	 * single open/close, especially if both tx and rx
++	 * are running concurrently.
+ 	 */
+-	if (!sai->is_slave_mode) {
+-		/* Software Reset */
+-		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
+-		/* Clear SR bit to finish the reset */
+-		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+-	}
++	/* Software Reset */
++	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	/* Clear SR bit to finish the reset */
++	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+ }
  
- static int acpi_processor_get_info(struct acpi_device *device)
- {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
--- 
-2.39.5
-
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
 
 
 
