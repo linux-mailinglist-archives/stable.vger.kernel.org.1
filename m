@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807C8B3669C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF4FB36119
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 715C57B8429
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74A6E7B8292
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0C834A338;
-	Tue, 26 Aug 2025 13:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F03238149;
+	Tue, 26 Aug 2025 13:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4/QoOuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzixOckZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18E022083;
-	Tue, 26 Aug 2025 13:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30911ACEDA;
+	Tue, 26 Aug 2025 13:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216559; cv=none; b=k/zunCQxsLLSmQF4Wm1edWbAMnl7OIHcknO3Vg0oH7nHniV4J8Dx2vpNlbt2y77dLh5pQXViPLwEsLKwZWD5eOFMxlIWUZCO8hQSfADBtMg+9FKEzeDte48qdL+8nsaqKfyLumnujuAHvwHQLT9SqiFG+2oP2ywT++LqPdO4wCs=
+	t=1756213573; cv=none; b=NlYOekNV2eHQTX9jEziM3OeT4PRg8CLoo3F4FvdGpWpbSK+WfJr5GDL674+0hLf0LDyatAYLMBnm6x4Wqe7Hx1cNcZakvM99jSVGgaT7GC+YdJzZY/Srt0j1EUPtwyUUR49jE7e8+78GXuGYo4MiH6uE4IZp6vJcC+g84zAaIzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216559; c=relaxed/simple;
-	bh=vnU0OpZ4FEmZAHsne9XsmpC/VUEqitOjhmH4Eqa+GJk=;
+	s=arc-20240116; t=1756213573; c=relaxed/simple;
+	bh=p1C8thFd/cGFQBN6qQi38H0H/mXXDqZQuacZIHBYy9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hubP+bXnOIkHACFuFL22KepikWcn3N8yTK2Y7iBaPNW1mwvs6sfbC9P6fSt20+1l/rexp1suHoDVFQOvkvo4rFT6WLfMaouphOpisV/Vkq2w1/SWm6RrPwt1py607+WungPHKXOunRRd4L1Ud37G5Z8kmK4Ex/BWO0I7isY3IGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4/QoOuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BDBC4CEF1;
-	Tue, 26 Aug 2025 13:55:58 +0000 (UTC)
+	 MIME-Version; b=cA38jsptbHUWXma5r9tDBtt1NrEjPEIlHsSqkgUX91auDfuA1hPIVEbPRXdvYNdOstlKdkyuCj9CYb30+1CHSydeLiJw5izFE1lVCNvR40d/+MvKK+iSkXSgG9sCmnpSwexkB3Zjg4BWnrriL75LqWJFkMHRfJHPGCZOA2P0JFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzixOckZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7464DC4CEF1;
+	Tue, 26 Aug 2025 13:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216559;
-	bh=vnU0OpZ4FEmZAHsne9XsmpC/VUEqitOjhmH4Eqa+GJk=;
+	s=korg; t=1756213572;
+	bh=p1C8thFd/cGFQBN6qQi38H0H/mXXDqZQuacZIHBYy9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4/QoOuQHcP31SJ8abaip2Q7gPCi9UFAU9/mlnoPvXMNnG2sNX+BzXdlsaj7BSQr3
-	 Zgl5WvI70KUTXz1Db0pgv4YzfOYERO+XM0JymfUfIldii00KYOw6aOw6J/5/MT41sm
-	 jCHqeNT/qK0rBFEo+G3YY9OrlmqNrmJBEvqSs+hs=
+	b=AzixOckZwuNrFlqPyeiqZ1LoCW10VPSZkEX+m3wRhlBcBPMRXmSkLmJ6Ea9HEkWb3
+	 QPGB15PZM53mvNYf5ouedQRJqEZ9YvFzWA1PNvIbiVlABKkrmEecRVFnPcpCsk4IFA
+	 REickzeE3diYL4cm4xA2w2lO6k9D+wdQYN/DXUxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	stable <stable@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 456/644] serial: 8250: fix panic due to PSLVERR
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 398/587] parisc: Revise gateway LWS calls to probe user read access
 Date: Tue, 26 Aug 2025 13:09:07 +0200
-Message-ID: <20250826110957.776429706@linuxfoundation.org>
+Message-ID: <20250826111003.048734621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
+commit f6334f4ae9a4e962ba74b026e1d965dfdf8cbef8 upstream.
 
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
+We use load and stbys,e instructions to trigger memory reference
+interruptions without writing to memory. Because of the way read
+access support is implemented, read access interruptions are only
+triggered at privilege levels 2 and 3. The kernel and gateway
+page execute at privilege level 0, so this code never triggers
+a read access interruption. Thus, it is currently possible for
+user code to execute a LWS compare and swap operation at an
+address that is read protected at privilege level 3 (PRIV_USER).
 
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
+Fix this by probing read access rights at privilege level 3 and
+branching to lws_fault if access isn't allowed.
 
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
-
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
-
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-[ Applied fix to serial8250_do_startup() instead of serial8250_initialize() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/parisc/kernel/syscall.S |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2332,9 +2332,8 @@ int serial8250_do_startup(struct uart_po
- 	/*
- 	 * Now, initialize the UART
- 	 */
--	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
--
- 	spin_lock_irqsave(&port->lock, flags);
-+	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 	if (up->port.flags & UPF_FOURPORT) {
- 		if (!up->port.irq)
- 			up->port.mctrl |= TIOCM_OUT1;
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -613,6 +613,9 @@ lws_compare_and_swap32:
+ lws_compare_and_swap:
+ 	/* Trigger memory reference interruptions without writing to memory */
+ 1:	ldw	0(%r26), %r28
++	proberi	(%r26), PRIV_USER, %r28
++	comb,=,n	%r28, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 2:	stbys,e	%r0, 0(%r26)
+ 
+ 	/* Calculate 8-bit hash index from virtual address */
+@@ -767,6 +770,9 @@ cas2_lock_start:
+ 	copy	%r26, %r28
+ 	depi_safe	0, 31, 2, %r28
+ 10:	ldw	0(%r28), %r1
++	proberi	(%r28), PRIV_USER, %r1
++	comb,=,n	%r1, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 11:	stbys,e	%r0, 0(%r28)
+ 
+ 	/* Calculate 8-bit hash index from virtual address */
+@@ -951,41 +957,47 @@ atomic_xchg_begin:
+ 
+ 	/* 8-bit exchange */
+ 1:	ldb	0(%r24), %r20
++	proberi	(%r24), PRIV_USER, %r20
++	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 	b	atomic_xchg_start
+ 2:	stbys,e	%r0, 0(%r20)
+-	nop
+-	nop
+-	nop
+ 
+ 	/* 16-bit exchange */
+ 3:	ldh	0(%r24), %r20
++	proberi	(%r24), PRIV_USER, %r20
++	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 	b	atomic_xchg_start
+ 4:	stbys,e	%r0, 0(%r20)
+-	nop
+-	nop
+-	nop
+ 
+ 	/* 32-bit exchange */
+ 5:	ldw	0(%r24), %r20
++	proberi	(%r24), PRIV_USER, %r20
++	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	b	atomic_xchg_start
+ 6:	stbys,e	%r0, 0(%r23)
+ 	nop
+ 	nop
+-	nop
+-	nop
+-	nop
+ 
+ 	/* 64-bit exchange */
+ #ifdef CONFIG_64BIT
+ 7:	ldd	0(%r24), %r20
++	proberi	(%r24), PRIV_USER, %r20
++	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 8:	stdby,e	%r0, 0(%r23)
+ #else
+ 7:	ldw	0(%r24), %r20
+ 8:	ldw	4(%r24), %r20
++	proberi	(%r24), PRIV_USER, %r20
++	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 9:	stbys,e	%r0, 0(%r20)
 
 
 
