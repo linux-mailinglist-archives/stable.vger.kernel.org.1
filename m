@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FEEB36838
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A82B3640F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EDC581690
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E1DA7B83C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C97356910;
-	Tue, 26 Aug 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E4D2FFDF2;
+	Tue, 26 Aug 2025 13:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjRVVBd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ab68Lh+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE81302CA6;
-	Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FA92BDC2F;
+	Tue, 26 Aug 2025 13:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217045; cv=none; b=Itf3Griyx8uZj3Ae3RCyA6lt7gv0anfXoGgCx5iX8VLRRwBieJcsG+QE/HbtYqLnEgTCEKje254CT0P76gTrQCnM17RyPPlkU/vVy1l62sMuPQF47vHvm0i1dG9nAS6mAd92/YVyPBwu6dcDf5VQRIf+Xuxwm2iUCiyksJdu0V0=
+	t=1756215260; cv=none; b=bt6BtTB7UzUQv0ByUd7Tp0Q9SBRmkevq7C1ZrcEDP9jDA1raFZ7flL+MJOHOyEoEPU5jY9dU/VRfE7kzQG5giHWzmDMxf29Dv6RPVaCz3r9Tu7Q4dbWkF7WcergMianr7inmiVU7raVDvhdnlwBxmbA6G7UYCR0gXAiXJwUVICE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217045; c=relaxed/simple;
-	bh=T/B76OhovgdMVEyOkDhrURQqtNYkcrvzyV1KPJlPFJk=;
+	s=arc-20240116; t=1756215260; c=relaxed/simple;
+	bh=EnNsZnTEtd/3FtJcexJW1sQhjA7yLooV1hfzDex+eKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JWJhKZOrjUIazIv4fTe2Q+ZP7vYcIEI0mbz0Ck29w8+NJ6fYdRghqgjHvMbOthtRdrMIML0BYpiVvTZ4q25R1FynpdmNi60bINdqZ323pk/4K7RT3RD4EkvlHFRUUFBLsKrXwKfBYVNzTPitoSiS4cjjgKARrk8eR6lWtjtKxZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjRVVBd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87328C113CF;
-	Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
+	 MIME-Version; b=smzjc71Gmjm1oNLxfuchDYQQbYhOU7/bP5vm+yePsc4ojwRDhSDG66JH5hiwAPzJUsmd6StKZHe8Q1CmdUP+4/NXXDELTJgJQ+8+mqukEMF6BpqDMLbjVvvaMpYlKvX8h6lSuIdw8nHzhub7AlCyh7qleyvXQBxs92wKrZ9vU00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ab68Lh+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079B6C4CEF1;
+	Tue, 26 Aug 2025 13:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217044;
-	bh=T/B76OhovgdMVEyOkDhrURQqtNYkcrvzyV1KPJlPFJk=;
+	s=korg; t=1756215260;
+	bh=EnNsZnTEtd/3FtJcexJW1sQhjA7yLooV1hfzDex+eKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjRVVBd7IDOwaRrnPLRoWhhD2PzMpazWdCO629xTslYkJmKNx22LlGgBJcxYS6I0F
-	 4E0GkGOqIdZjG+76gGudpVFQD5+6a+0IszaYInJAtRpz4nCdp4V7Vs2eHnsL9l/ycq
-	 FQrzYHLtW11i/OH4PDyYs90Z35pumPjq42ludQQg=
+	b=ab68Lh+IXuLuBqDzLxoHq4yVu1ryG4PLbrPsyS3Qu6DEAvwBIjp4n1KoQtrqHQbCO
+	 pDxGRF0+TjbgvvEGAjll1+LsQvmJ3JHPWIEVeMNmebxayaKg0k426BE6BvNMZzydkn
+	 0t5Mb6xile+/bcw41xzDDRn7FOTCdf7cKQ4OICJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 608/644] pwm: mediatek: Implement .apply() callback
+Subject: [PATCH 6.1 446/482] iio: imu: inv_icm42600: change invalid data error to -EBUSY
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826111001.617622443@linuxfoundation.org>
+Message-ID: <20250826110941.847459215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 758de66f4bd2cac2b1d71db917c65c3d611d4e74 ]
+[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
 
-To eventually get rid of all legacy drivers convert this driver to the
-modern world implementing .apply().
-This just pushed a variant of pwm_apply_legacy() into the driver that was
-slightly simplified because the driver doesn't provide a .set_polarity()
-callback.
+Temperature sensor returns the temperature of the mechanical parts
+of the chip. If both accel and gyro are off, the temperature sensor is
+also automatically turned off and returns invalid data.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
+In this case, returning -EBUSY error code is better then -EINVAL and
+indicates userspace that it needs to retry reading temperature in
+another context.
+
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -205,10 +205,33 @@ static void pwm_mediatek_disable(struct
- 	pwm_mediatek_clk_disable(chip, pwm);
- }
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
+ 		goto exit;
  
-+static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
-+			      const struct pwm_state *state)
-+{
-+	int err;
-+
-+	if (state->polarity != PWM_POLARITY_NORMAL)
-+		return -EINVAL;
-+
-+	if (!state->enabled) {
-+		if (pwm->state.enabled)
-+			pwm_mediatek_disable(chip, pwm);
-+
-+		return 0;
-+	}
-+
-+	err = pwm_mediatek_config(pwm->chip, pwm, state->duty_cycle, state->period);
-+	if (err)
-+		return err;
-+
-+	if (!pwm->state.enabled)
-+		err = pwm_mediatek_enable(chip, pwm);
-+
-+	return err;
-+}
-+
- static const struct pwm_ops pwm_mediatek_ops = {
--	.config = pwm_mediatek_config,
--	.enable = pwm_mediatek_enable,
--	.disable = pwm_mediatek_disable,
-+	.apply = pwm_mediatek_apply,
- 	.owner = THIS_MODULE,
- };
+ 	*temp = (int16_t)be16_to_cpup(raw);
++	/*
++	 * Temperature data is invalid if both accel and gyro are off.
++	 * Return -EBUSY in this case.
++	 */
+ 	if (*temp == INV_ICM42600_DATA_INVALID)
+-		ret = -EINVAL;
++		ret = -EBUSY;
  
+ exit:
+ 	mutex_unlock(&st->lock);
 
 
 
