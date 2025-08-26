@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50FDB36789
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02967B35DFC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2329E9824D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2527F3638B3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B753374C4;
-	Tue, 26 Aug 2025 13:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73CB2820B1;
+	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUfOlIGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIMawy56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766634DCC4;
-	Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C59393DD1;
+	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216549; cv=none; b=mbsg1BbMDvH7nxls3CTu1i0K+OzjIFZLl/LMJM5GMH5nYxe/+wvuVsbzO2vAoi2YE0yB5FaVDna3c4XrUu2i0wcSLMWKXgfXwzVLbcRtn63QfAbImd/l7aLfa6eCpflrv82Igc1ZMx80ovj67+Ad/yOmp0kkt11O4UK/ZICZTQc=
+	t=1756208482; cv=none; b=dyZDWLc0ybVOSrkwRkYi92TxzbWYpE0MRAcmMrPjvsatuAzRpIme2d8aU2Zb+hOX3uogF3z2MULIFqtwQY2lbIx+A66z6jDdHaZ3wdH/W48/XCHlKZ9KUnJPaUUjkIx2louj4xbmTSRdxFzPJr/S5OqErRlkuxyS3AESuuZcBxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216549; c=relaxed/simple;
-	bh=fVrQyOICJEvVOj2RoI6uA+J1RdjJQov/UQyZ/anMzGw=;
+	s=arc-20240116; t=1756208482; c=relaxed/simple;
+	bh=yAxXU9t8Rw0O1oPRPDTxYktdeSKjr94luINAahIfgMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZVr+bYp7d68q+tZm6tOKK2Qgvi8igbPeujwXrILGyPR14dAwb5z9OAXJZF8iTEN9+1zYzSLVtH+14LjteUhEm9Azq9h/1ugUv7t/ONxfmjP+p8vWjvqCHr4S0Or7qGIkjjx4IHTWK19xkdnwfPGc9BF5Ouu4ECesTGczqmKDHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUfOlIGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667A7C4CEF1;
-	Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
+	 MIME-Version; b=npLGBZJxelgzPURD8p419GlH8ZUdVNlhDghJ4WUJ/aroF9b8GnzLjNVZ1oNBJGJvU39z2gfDgq76nBVEk+apHzT0XuAMHeCIqMcq20rXk6ZV0XBOrwQkexGx7Poq9LSgE9N9OPrVYZJlMuyy1oT8ZPdYh1wMHr1UpF+8bnTxnug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIMawy56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CC3C4CEF1;
+	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216548;
-	bh=fVrQyOICJEvVOj2RoI6uA+J1RdjJQov/UQyZ/anMzGw=;
+	s=korg; t=1756208482;
+	bh=yAxXU9t8Rw0O1oPRPDTxYktdeSKjr94luINAahIfgMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUfOlIGnRtp5K6lCWpZRFjQP/WX4s+CDezu2jULJUZLDHxR0SKJ2dUQvoW6VFUF3Z
-	 wCFIZWPFzhoniQ3mcYaQ17texAbE4P7oCFLPwdUB0QoowdQh8rYRP+yieJIPhO4nCY
-	 IKv17MpOtagW8yjxpFJ3zhdXybbnI35R352ew880=
+	b=GIMawy56X2+ljBYrYdveNI3xGdJ7+yzpxzZ0Fsx2tLC9klpdhGc0OUIoOLmKuPlTv
+	 tPwbcUa3pu0M1igeJ3dUIXa7yPm7qTRrPw5N40pPvw4PPwR2jCw9VHdwmESgnr8Exw
+	 YTGa3MSC66HYddqITAhne3G4ZZunj4bbQMOleG4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 452/644] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Siyang Liu <Security@tencent.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 128/322] drm/amd/display: fix a Null pointer dereference vulnerability
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826110957.674656620@linuxfoundation.org>
+Message-ID: <20250826110918.960699926@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Siyang Liu <Security@tencent.com>
 
-commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
+commit 1bcf63a44381691d6192872801f830ce3250e367 upstream.
 
-When netpoll is enabled, calling pr_warn_once() while holding
-kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
-inversion with the netconsole subsystem.  This occurs because
-pr_warn_once() may trigger netpoll, which eventually leads to
-__alloc_skb() and back into kmemleak code, attempting to reacquire
-kmemleak_lock.
+[Why]
+A null pointer dereference vulnerability exists in the AMD display driver's
+(DC module) cleanup function dc_destruct().
+When display control context (dc->ctx) construction fails
+(due to memory allocation failure), this pointer remains NULL.
+During subsequent error handling when dc_destruct() is called,
+there's no NULL check before dereferencing the perf_trace member
+(dc->ctx->perf_trace), causing a kernel null pointer dereference crash.
 
-This is the path for the deadlock.
+[How]
+Check if dc->ctx is non-NULL before dereferencing.
 
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn_once()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-
-Fix this by setting a flag and issuing the pr_warn_once() after
-kmemleak_lock is released.
-
-Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/tencent_54FF4252EDFB6533090A491A25EEF3EDBF06@qq.com
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+(Updated commit text and removed unnecessary error message)
+Signed-off-by: Siyang Liu <Security@tencent.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9dd8e2ba268c636c240a918e0a31e6feaee19404)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -419,6 +419,7 @@ static struct kmemleak_object *mem_pool_
- {
- 	unsigned long flags;
- 	struct kmemleak_object *object;
-+	bool warn = false;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -890,17 +890,18 @@ static void dc_destruct(struct dc *dc)
+ 	if (dc->link_srv)
+ 		link_destroy_link_service(&dc->link_srv);
  
- 	/* try the slab allocator first */
- 	if (object_cache) {
-@@ -436,8 +437,10 @@ static struct kmemleak_object *mem_pool_
- 	else if (mem_pool_free_count)
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
--		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-+		warn = true;
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-+	if (warn)
-+		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+-	if (dc->ctx->gpio_service)
+-		dal_gpio_service_destroy(&dc->ctx->gpio_service);
++	if (dc->ctx) {
++		if (dc->ctx->gpio_service)
++			dal_gpio_service_destroy(&dc->ctx->gpio_service);
  
- 	return object;
- }
+-	if (dc->ctx->created_bios)
+-		dal_bios_parser_destroy(&dc->ctx->dc_bios);
++		if (dc->ctx->created_bios)
++			dal_bios_parser_destroy(&dc->ctx->dc_bios);
++		kfree(dc->ctx->logger);
++		dc_perf_trace_destroy(&dc->ctx->perf_trace);
+ 
+-	kfree(dc->ctx->logger);
+-	dc_perf_trace_destroy(&dc->ctx->perf_trace);
+-
+-	kfree(dc->ctx);
+-	dc->ctx = NULL;
++		kfree(dc->ctx);
++		dc->ctx = NULL;
++	}
+ 
+ 	kfree(dc->bw_vbios);
+ 	dc->bw_vbios = NULL;
 
 
 
