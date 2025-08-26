@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B794B3683C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E5AB36573
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942D95667DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF81D5647B5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D16345726;
-	Tue, 26 Aug 2025 14:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F7B221290;
+	Tue, 26 Aug 2025 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6fVFEp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqD12r7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49813126D6;
-	Tue, 26 Aug 2025 14:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6469B2139C9;
+	Tue, 26 Aug 2025 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217086; cv=none; b=CewCNspwMhNr6hOUvllKTUA5MIRgqJ+GSWw4Z4FhO/toU0goWadRsrc6ZAT/hJwSn7AUKhkJXW0aV1KG/l2FQykPEjWCFiFmpIIHQwZcOobQc6ouWSbL72y3z4T6DUsg2HJTQYRrwC4oPWCepuo2Reps0iZyfDPQnFHmHq23PvA=
+	t=1756215676; cv=none; b=XpbN8cAPmx0j1jgGvA4qQk1U1J8EbY/TfsF2RYs0ipCrXVSsxTeQ3mnDmxEn42QDsXbGpqMADqyRQKOwtSAfa+hhT5uOets/tAvaNt8oJA1KHpjOK6HC3KmJ9d01O/2vN0L2PAFr4DgL+SyWippaB/cmwBRY8X+UBk6GttcMRTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217086; c=relaxed/simple;
-	bh=bolk9TXC/2cQB5SaZOk74qAFxBCa0/UXot/wjEm8wJU=;
+	s=arc-20240116; t=1756215676; c=relaxed/simple;
+	bh=/kf5xct5pyw/s188KBVOE4KDlxWeHtk8AB8Q952iUws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VM/hzmDzeHlsK3RF+7XOyO40+m/Q6Ei0dZexV8YKSSpTjP9gG5hQRdgHbrGXI4i3eRZrjBGkxtGNPpaK3Kfpa63FU5JO+hcRmhKAC+53c/wQX4mRaITRGs2Tvj6mFdc1YGRye9haqvjssz5IYJ6iOBin2tpKotG98/7Q1j+YbAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6fVFEp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3527C4CEF1;
-	Tue, 26 Aug 2025 14:04:45 +0000 (UTC)
+	 MIME-Version; b=NfpqyrJy4D6NbUNRUIZI+PpG96oSqN7n+Yzsgbg3xDNeMpxyQw+ue4WRQLJZWKB+7Q8P1jw2VY9Wr94L9wCo7PlTSWb8AFTE/CaewSfyb71wI4z4FclYV8QWigr7Gwh260rwx6t8OtGmbNSCrHvenBS8mcdldzCVyJle69fG5q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqD12r7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E165AC4CEF1;
+	Tue, 26 Aug 2025 13:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217086;
-	bh=bolk9TXC/2cQB5SaZOk74qAFxBCa0/UXot/wjEm8wJU=;
+	s=korg; t=1756215676;
+	bh=/kf5xct5pyw/s188KBVOE4KDlxWeHtk8AB8Q952iUws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6fVFEp3H/nNH1oYH1tYt+VzbxHmD43JpEMhvfVtIMD83lfwftzdwDyguYagp/3Cm
-	 2UYBlaOnamGLw/z0Vw5ANPaPEyasi8xUreubGOsT4SEYFqAWVBUVZT9chNjGRGdNPB
-	 uvsrx0vhN+luBpikxgSGmftrBsrMgyDUKsUeZyX0=
+	b=YqD12r7Awof51eWptYC29W3p5vw1LOqtVTcPiOTKFu1SK1OSiomxfJBUBu7mwZ1xI
+	 m0HSrRAgNk//jcxpJT9HKqqzxzYZRT4CuNlCnIKCCz6y5FYbF/JT1Rm52jq5xwtC34
+	 TqPLmZbIbuUsrp/HPukMRUaTisSWtIG/ZlGKhoD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 003/523] USB: serial: option: add Foxconn T99W640
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 122/644] Revert "vmci: Prevent the dispatching of uninitialized payloads"
 Date: Tue, 26 Aug 2025 13:03:33 +0200
-Message-ID: <20250826110924.655196220@linuxfoundation.org>
+Message-ID: <20250826110949.542233978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 08f49cdb71f3759368fded4dbc9dde35a404ec2b upstream.
+[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
 
-T99W640 is designed based on Qualconn SDX72 chip. There are 3
-serial ports to be enumerated: Diag, NMEA and AT.
+This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
 
-Test evidence as below:
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=0489 ProdID=e167 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXPINNL USB WWAN Adapter
-S:  SerialNumber=cc1f1d92
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+While the code "looks" correct, the compiler has no way to know that
+doing "fun" pointer math like this really isn't a write off the end of
+the structure as there is no hint anywhere that the structure has data
+at the end of it.
 
-0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
+This causes the following build warning:
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+In function 'fortify_memset_chk',
+    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
+include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  480 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So revert it for now and it can come back in the future in a "sane" way
+that either correctly makes the structure know that there is trailing
+data, OR just the payload structure is properly referenced and zeroed
+out.
+
+Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index a8df60b9301c..c0b5e339d5a1 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
+-		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
+-			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
+ 
+-- 
+2.39.5
+
 
 
 
