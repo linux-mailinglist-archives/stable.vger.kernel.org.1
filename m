@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E48B36A89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461ECB3632C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 148E67A35BF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7098E7A452F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7898F340D95;
-	Tue, 26 Aug 2025 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9A227EA8;
+	Tue, 26 Aug 2025 13:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+bnbPBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQ4Jj3Se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350CE341AA6;
-	Tue, 26 Aug 2025 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B68137932;
+	Tue, 26 Aug 2025 13:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218941; cv=none; b=sY+M5oFLqAOD9WBZzVW8TjVByJ7Go8sOGkVXQXYESTA+DWbcBwuRVqRy92WrYbmVnQ3H1sotLaNJF2Wq/BqjF1UHnMyqtAWef6jB6ns0ziVA5HboSwagMrz0C8M1sGReFivjEk1yDNRUXLyWOmAY6RjUAPB6HO4x5tGG40E3Qv8=
+	t=1756214777; cv=none; b=QAPNgMUsUfA7BLoRpPlNY3T24gYKTTkG0Z1Vm+etdKm/A0JR1h7PmG1v6X2AMyXCu+mxbMGhojPUllmyrOKf7LUwZXa9zdrCwsE3tb/ULToY3bmYwqT6lH0LZ/QIC+s7UOjqGHMQrqt3cCTL7JxjHrFDmEJcfFUmKHbX+u1UCF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218941; c=relaxed/simple;
-	bh=muiacT+Sxw0WrGlgz+0RZ8rvQdHtXAEtFJTg5+OymVY=;
+	s=arc-20240116; t=1756214777; c=relaxed/simple;
+	bh=Mlzt0YmEe3t1a+XoA5Ez2AN5RtD6RbiOmkS9c0t95P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCBr3oLBf+hClEWsTgcJ6zyzqp4YghDjcKOLOTIb1iO4/x7Vbjz05PP4Nvg2u39oT/MgaKFzNrODuUBZCL7pCTa9kwGgnerwkm//ysJGvoXbL5LhXu/Z39rR2UJITrMwjPE65A2HzWt4abxdw/ma53sGqWJLESPXJaBC1R2C2pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+bnbPBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA628C19423;
-	Tue, 26 Aug 2025 14:35:40 +0000 (UTC)
+	 MIME-Version; b=jOYF7163AvmaxXbwvtRW3S0ZtC3wGjK2hqIeUQ7dr7y7/Cw6efrY1KhtplKZ/b//CS+ufPYCJGLBY762KloSnxuRxMnDtzScCGFx9/u5BtnKY8OihzybLTNQy82LcoaZzeLv17ihEg52MWRnjB1BxAwVp59uPp0JxpuSHlYgNH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQ4Jj3Se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A42C4CEF1;
+	Tue, 26 Aug 2025 13:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218941;
-	bh=muiacT+Sxw0WrGlgz+0RZ8rvQdHtXAEtFJTg5+OymVY=;
+	s=korg; t=1756214777;
+	bh=Mlzt0YmEe3t1a+XoA5Ez2AN5RtD6RbiOmkS9c0t95P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+bnbPBjvXs3HY7Gt/yArJpESyIe5xI7pQj7NQto8ezb89QAOdGL/R7AAUqvi89S9
-	 ukQi9mWWzprrdomC+2Gv7rxbSjEnMiZiAO0cG4e1dCtsVWUUh2Phz9i0UHm379hADx
-	 DKLQmiwjZgrd33IYR5ulsvHgl1dvfdvm56TDnBUk=
+	b=mQ4Jj3SeWYlSMQHtyz+1jW9onDduWSNzX5sldtGIizD+GByY6DjAVkWOEqmoDZa3M
+	 1cTbHfuoMegjqr19DlL0dbUstpf+4XiYEyP6T+X5h7eagr2j9G9RK0ycRcF6AiFGFb
+	 vt6mBG26rZe6lCEvrtO6Y2eEGg6cxMkq9I+IcXnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 193/403] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 266/482] HID: apple: avoid setting up battery timer for devices without battery
 Date: Tue, 26 Aug 2025 13:08:39 +0200
-Message-ID: <20250826110912.203007729@linuxfoundation.org>
+Message-ID: <20250826110937.338591221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
+commit c061046fe9ce3ff31fb9a807144a2630ad349c17 upstream.
 
-According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
-means the read would block. Hence, the common implementation in
-nonblocking model will poll the file when the nonblocking read returns
-EAGAIN. However, when the target file is thermal zone, this mechanism
-will totally malfunction because thermal zone doesn't implement sysfs
-notification and thus the poll will never return.
+Currently, the battery timer is set up for all devices using hid-apple,
+irrespective of whether they actually have a battery or not.
 
-For example, the read in Golang implemnts such method and sometimes
-hangs at reading some thermal zones via sysfs.
+APPLE_RDESC_BATTERY is a quirk that indicates the device has a battery
+and needs the battery timer. This patch checks for this quirk before
+setting up the timer, ensuring that only devices with a battery will
+have the timer set up.
 
-Change to return -ENODATA instead of -EAGAIN to userspace.
-
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6e143293e17a ("HID: apple: Report Magic Keyboard battery over USB")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/hid/hid-apple.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index 17b2361bc8f2..fc768b61f483 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -39,10 +39,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -824,10 +824,12 @@ static int apple_probe(struct hid_device
+ 		return ret;
+ 	}
  
- 	ret = thermal_zone_get_temp(tz, &temperature);
+-	timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
+-	mod_timer(&asc->battery_timer,
+-		  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
+-	apple_fetch_battery(hdev);
++	if (quirks & APPLE_RDESC_BATTERY) {
++		timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
++		mod_timer(&asc->battery_timer,
++			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
++		apple_fetch_battery(hdev);
++	}
  
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return sprintf(buf, "%d\n", temperature);
+ 	if (quirks & APPLE_BACKLIGHT_CTL)
+ 		apple_backlight_init(hdev);
+@@ -839,7 +841,8 @@ static void apple_remove(struct hid_devi
+ {
+ 	struct apple_sc *asc = hid_get_drvdata(hdev);
  
--	return sprintf(buf, "%d\n", temperature);
-+	if (ret == -EAGAIN)
-+		return -ENODATA;
-+
-+	return ret;
+-	del_timer_sync(&asc->battery_timer);
++	if (asc->quirks & APPLE_RDESC_BATTERY)
++		del_timer_sync(&asc->battery_timer);
+ 
+ 	hid_hw_stop(hdev);
  }
- 
- static ssize_t
--- 
-2.39.5
-
 
 
 
