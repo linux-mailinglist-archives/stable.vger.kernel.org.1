@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4C1B36BED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1127AB35CC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3470B5A078E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326117A535F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A315835AAAC;
-	Tue, 26 Aug 2025 14:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7397531813A;
+	Tue, 26 Aug 2025 11:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObbeAMdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCDN+Sf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6087835E4EC;
-	Tue, 26 Aug 2025 14:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31460338F26;
+	Tue, 26 Aug 2025 11:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218731; cv=none; b=nP/nCYLQx67rbZyxtNEz00eWYIyxNZ2jTwUsVcmWaFAbZgfOVWiZNxsfs0La4zm/+9slVQQ0oIgi6U6nRZmy1KLmbx7fxF//TgmJuNTo54MaTji8u2R8BQJqXpGzrOuIJcDvIi0VGyUOrY8SQCNC3suBv4+VmUtoI/JrgcORhNw=
+	t=1756208203; cv=none; b=cCWWiW6XeXrd2mcXBuYsPpsWT/yYyxXpy1ibSk0nhEjPDnWF7EgldJMMN5pE50ffQjo//ynxW8KJleIEzSJXa9TlfrjURv5mn9o9bdJ3u1IFdfyCpVop+VnG+kg7OCkNDEEy9AUc6kzjlidjpDPpEnokgNXSg/hxEuJL8zA/1uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218731; c=relaxed/simple;
-	bh=rWo3uozOukjiDTGfF1mQEu5Yu3rhDX7wopu3HjPbEBs=;
+	s=arc-20240116; t=1756208203; c=relaxed/simple;
+	bh=SKK4QumqQxAV3O1Ecdsow51ch2qZILIiQBZoNmxXBZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdtYqjveUW+GBH2l/qLtilOpQKp9XRP03KYyyFSG3e/saY7gTm8uxvUdzWyAjvqsOER5qvrX3lTNN8gjyevveFzikUqe38KkFpK9moQfnHy3+LZ+6XEDueNycqJWsfRPt8d2+zXt8IuG9iUq+ffGs5ZQokM6XVzk0flimGaqWbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObbeAMdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F4FC4CEF1;
-	Tue, 26 Aug 2025 14:32:10 +0000 (UTC)
+	 MIME-Version; b=fEEE4opj7pZ9k2G3gDzAMUXTnK9rlNATfV52ari0j+HFYh6tj2uX4Ps2WvhbyoZ6qHs2N1VA/S3cQRPaSv5U15Ymi9eS9QNSryrphR3RV9wWy0dwL6e8tWECxgOVwI/u73ZJokIC0ZLE8N1cWxsxyA09hxvHOyx1Fz6M9dnR3Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCDN+Sf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B422BC4CEF1;
+	Tue, 26 Aug 2025 11:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218731;
-	bh=rWo3uozOukjiDTGfF1mQEu5Yu3rhDX7wopu3HjPbEBs=;
+	s=korg; t=1756208203;
+	bh=SKK4QumqQxAV3O1Ecdsow51ch2qZILIiQBZoNmxXBZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObbeAMdZpBfrYbjGC4g7bywpAU6a5eQh5UMdUHpo3d1HmnOqNd0DvaUyGJL5n9QY7
-	 RlB21lemF+hfiWDKMVwO6WdknWrvT5Bz8vtZkXBT9t9flu1soKhwMW8WG22uqeiz9p
-	 tdPZHQNbLSH5hdumXOx2GecDzB2WhvmTwGdG3EXU=
+	b=MCDN+Sf9axFrSd/+0vGtlXI+uFXePwCHGjysSdAOSrjm9uu/ibXHtYXCiy47d3uxz
+	 kQf5EI+h9wlj6Lz4vypgeb8lF3VCfySbF6/g2dSUxqRJI4WbYlC0KIp2ylJVMTFTtK
+	 ZlmsLZuwydRtRrYe/cOSs1+LNg/KvLYzjMDRjvqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 110/403] pinctrl: sunxi: Fix memory leak on krealloc failure
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 021/322] crypto: qat - flush misc workqueue during device shutdown
 Date: Tue, 26 Aug 2025 13:07:16 +0200
-Message-ID: <20250826110909.725497750@linuxfoundation.org>
+Message-ID: <20250826110915.796599038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
+commit 3d4df408ba9bad2b205c7fb8afc1836a6a4ca88a upstream.
 
-In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
-the pinctrl_map array, the function returns -ENOMEM directly
-without freeing the previously allocated *map buffer. This results
-in a memory leak of the original kmalloc_array allocation.
+Repeated loading and unloading of a device specific QAT driver, for
+example qat_4xxx, in a tight loop can lead to a crash due to a
+use-after-free scenario. This occurs when a power management (PM)
+interrupt triggers just before the device-specific driver (e.g.,
+qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
+loaded.
 
-Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since the driver uses a shared workqueue (`qat_misc_wq`) across all
+devices and owned by intel_qat.ko, a deferred routine from the
+device-specific driver may still be pending in the queue. If this
+routine executes after the driver is unloaded, it can dereference freed
+memory, resulting in a page fault and kernel crash like the following:
+
+    BUG: unable to handle page fault for address: ffa000002e50a01c
+    #PF: supervisor read access in kernel mode
+    RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
+    Call Trace:
+      pm_bh_handler+0x1d2/0x250 [intel_qat]
+      process_one_work+0x171/0x340
+      worker_thread+0x277/0x3a0
+      kthread+0xf0/0x120
+      ret_from_fork+0x2d/0x50
+
+To prevent this, flush the misc workqueue during device shutdown to
+ensure that all pending work items are completed before the driver is
+unloaded.
+
+Note: This approach may slightly increase shutdown latency if the
+workqueue contains jobs from other devices, but it ensures correctness
+and stability.
+
+Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_common_drv.h |    1 +
+ drivers/crypto/intel/qat/qat_common/adf_init.c       |    1 +
+ drivers/crypto/intel/qat/qat_common/adf_isr.c        |    5 +++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-index 8c41f8b818b2..83775dd12cfa 100644
---- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-+++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-@@ -327,6 +327,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	const char *function, *pin_prop;
- 	const char *group;
- 	int ret, npins, nmaps, configlen = 0, i = 0;
-+	struct pinctrl_map *new_map;
+--- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+@@ -190,6 +190,7 @@ void adf_exit_misc_wq(void);
+ bool adf_misc_wq_queue_work(struct work_struct *work);
+ bool adf_misc_wq_queue_delayed_work(struct delayed_work *work,
+ 				    unsigned long delay);
++void adf_misc_wq_flush(void);
+ #if defined(CONFIG_PCI_IOV)
+ int adf_sriov_configure(struct pci_dev *pdev, int numvfs);
+ void adf_disable_sriov(struct adf_accel_dev *accel_dev);
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -404,6 +404,7 @@ static void adf_dev_shutdown(struct adf_
+ 		hw_data->exit_admin_comms(accel_dev);
  
- 	*map = NULL;
- 	*num_maps = 0;
-@@ -401,9 +402,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	 * We know have the number of maps we need, we can resize our
- 	 * map array
- 	 */
--	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
--	if (!*map)
--		return -ENOMEM;
-+	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
-+	if (!new_map) {
-+		ret = -ENOMEM;
-+		goto err_free_map;
-+	}
+ 	adf_cleanup_etr_data(accel_dev);
++	adf_misc_wq_flush();
+ 	adf_dev_restore(accel_dev);
+ }
+ 
+--- a/drivers/crypto/intel/qat/qat_common/adf_isr.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+@@ -407,3 +407,8 @@ bool adf_misc_wq_queue_delayed_work(stru
+ {
+ 	return queue_delayed_work(adf_misc_wq, work, delay);
+ }
 +
-+	*map = new_map;
- 
- 	return 0;
- 
--- 
-2.39.5
-
++void adf_misc_wq_flush(void)
++{
++	flush_workqueue(adf_misc_wq);
++}
 
 
 
