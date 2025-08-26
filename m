@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE95B3667B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14497B36C61
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26EAF1C25282
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A79B5A00829
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6933A350D57;
-	Tue, 26 Aug 2025 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428C1280CC9;
+	Tue, 26 Aug 2025 14:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5PcS9Ay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igc2RYNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25887350D52;
-	Tue, 26 Aug 2025 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F369435A299;
+	Tue, 26 Aug 2025 14:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216179; cv=none; b=VGGNZDzvxqizoHyrFk/ih1ovkR2EhXwO1TAQgodoyk9G4wBVJO0LWB1Tke0cHdFCV8rqgb+zav9tQRcDarKbHgvyDCuaNrtDkIzt+7JPUFJEfoURF9x4dbEhFEGQBVZhOmqnrpZx+pSNOxLg09R0vVndm4qvX+vnUPGub50qh1o=
+	t=1756218757; cv=none; b=m1JpVHdC7Y1+vGtZzkx2gX0cEwruSQx3SCw1pyzIul4hvIwG3AP2jei7aNu6ZBhqCvsQhBXddKesUZjkRmMK/sWC6BifRl5ZkxVsExQoBowLWjyUEBrH2Na7VNnZzo4+eTQkglJVw120Ueb8BouU+U/gOEHJdccv5+9rtXInUao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216179; c=relaxed/simple;
-	bh=nyjnx5EdbYfXuOZkozfU+Fv/EFhHkQBG2a0d7aPu2dM=;
+	s=arc-20240116; t=1756218757; c=relaxed/simple;
+	bh=VbpUXZF1LZ9yGeh4PJWMHgL8n1QEUGSD3551q/HjqyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8H3//S8EwROfx9VmKgkqb90012yuLStv7ldfI9T4dPfSjG94Ha+ruOi+F3/4qwXfGCkv81qRfr/4OGtifewn2WKGlklr/1wE56jaO/ZuyNUbv3Kv3HCwHw1F9tmj90xbbVmYyTIXOdBfXfhkfWlWDlQRjY7k7zhwXlKRLpUn2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5PcS9Ay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB04CC4CEF1;
-	Tue, 26 Aug 2025 13:49:38 +0000 (UTC)
+	 MIME-Version; b=r/2uJ4ueNdbe6BYP3AfrXRd/SCWbgadToCh5IBftd/5WpyWRDvYz8//4z2UUm5Rbs2+PHhhhgD/HOYJHqRGIQ+fMSwMlz0voPupq1FZZWMEvIJm33z+QA7Xcaj/e5vNTUcCcu7fM5yK7HpDARLs50Kh3D/8tgu3TvTsYVobUhww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igc2RYNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8481FC4CEF1;
+	Tue, 26 Aug 2025 14:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216179;
-	bh=nyjnx5EdbYfXuOZkozfU+Fv/EFhHkQBG2a0d7aPu2dM=;
+	s=korg; t=1756218756;
+	bh=VbpUXZF1LZ9yGeh4PJWMHgL8n1QEUGSD3551q/HjqyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5PcS9Ayfq4U9NPyWVbtSkAgFIRntd+95UT93sNZAfmXOJXGb9dSy9nqFD4XYJqdI
-	 pJIKN3sVIoII50ov3652fi6DH9AyM3BXGLJmjI3oVHiOiredfP8MpaQjJCnr1tQEET
-	 B6jr8E3wCSkkA+YWrQYO1bWNdrNsPLn2WknyrVeA=
+	b=igc2RYNWJ9rekJIgameIm9T593vo3EKkuhmKV4NYSxX4r1ZRoq7H7Vrz4LtAjKmzl
+	 fsjuX55PkYdaIjtbLnM1yz3H22QrNMvepMn1jOoWICfwXoRK/U5Xb604HWevjO9sqB
+	 E2Z4cBf0nowNesXj+icv6nyoHK0oUyBqCaPz3dfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 315/644] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+Subject: [PATCH 5.4 080/403] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
 Date: Tue, 26 Aug 2025 13:06:46 +0200
-Message-ID: <20250826110954.191246847@linuxfoundation.org>
+Message-ID: <20250826110908.691117094@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
+[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
 
-According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
-means the read would block. Hence, the common implementation in
-nonblocking model will poll the file when the nonblocking read returns
-EAGAIN. However, when the target file is thermal zone, this mechanism
-will totally malfunction because thermal zone doesn't implement sysfs
-notification and thus the poll will never return.
+The polarity of the DE signal of the transceiver is active-high for
+sending. Therefore rs485-rts-active-low is wrong and needs to be
+removed to make RS485 transmissions work.
 
-For example, the read in Golang implemnts such method and sometimes
-hangs at reading some thermal zones via sysfs.
-
-Change to return -ENODATA instead of -EAGAIN to userspace.
-
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/imx6ul-kontron-n6310-s.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index de7cdec3db90..a21af02f6347 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -39,10 +39,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
- 
- 	ret = thermal_zone_get_temp(tz, &temperature);
- 
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return sprintf(buf, "%d\n", temperature);
- 
--	return sprintf(buf, "%d\n", temperature);
-+	if (ret == -EAGAIN)
-+		return -ENODATA;
-+
-+	return ret;
- }
- 
- static ssize_t
+diff --git a/arch/arm/boot/dts/imx6ul-kontron-n6310-s.dts b/arch/arm/boot/dts/imx6ul-kontron-n6310-s.dts
+index 4e99e6c79a68..9b347029c2f6 100644
+--- a/arch/arm/boot/dts/imx6ul-kontron-n6310-s.dts
++++ b/arch/arm/boot/dts/imx6ul-kontron-n6310-s.dts
+@@ -168,7 +168,6 @@ &uart2 {
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
+ 	rs485-rx-during-tx;
+-	rs485-rts-active-low;
+ 	uart-has-rtscts;
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
