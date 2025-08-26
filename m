@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71D8B367B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1947B35C0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033558A4C01
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86E2188DAC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8139634F481;
-	Tue, 26 Aug 2025 13:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E482C15A8;
+	Tue, 26 Aug 2025 11:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuyyKdBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7Fa7Y9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F95134DCFE;
-	Tue, 26 Aug 2025 13:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707229D273;
+	Tue, 26 Aug 2025 11:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216481; cv=none; b=gQGu1qfN3bsYUPFuK3toh2jqFtLlNAmA6RGULylBqKQypZpfVC0s3Wk/JksRfMi9dwX4CPJ1s6MdpOkTh6/kaDB0E9I/vdx1KH7ovU8XD7yZMS7z3++jmfxsKXs1o5O0jtwgH8BbVbn5zUMzH6k0WPk/ATz4sFNLs/PveE6XFd4=
+	t=1756207571; cv=none; b=NE1iJfk1QlGeh1/XIe7zZEJW4u+oWnT7LywBj/skIPJCUdwxB9k7N9j36wnoUpozvXElK0/0UUIN/2iw7aXBFJVR7g9CZL24SMsez7yG6FrNzdJP7gptxXaB5d6bH1MgaoXW+biQydV+65cTXT17TvZgR8vhR38rH7lPKoHliGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216481; c=relaxed/simple;
-	bh=b69E9ObIV+VDr14UfVfTKIMJRR8PeRWw9h8z/zv1/so=;
+	s=arc-20240116; t=1756207571; c=relaxed/simple;
+	bh=vj0xebZVJS8xaXu7ecdcpbtztkoRsPsZ8NXBLDNFEvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfC9GfNAFy2Xw4LYxXLQ6abNXaj3aZytlLA+XXwAAzRHvdwbCm/NckUEODMLENQbeOqB8Zw4Rfm/jkM2Z3DyOeG3Gtfy9q7dpzEJEanISb+qAurD7zdZm5lXJltHHn3GpyC0WkiEzBd3cGg4Thl+g6uP/cVTjo5l5b/MToWeP0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuyyKdBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38B8C4CEF1;
-	Tue, 26 Aug 2025 13:54:40 +0000 (UTC)
+	 MIME-Version; b=S/JO+SSjMSB8D1ZNBwh1VqX+wMcajZlwQbbiv/DaN18WbZT2FwiFtpFjHcFtFArbvdR4PM2bDOj/jLQOjrAxECE1gPsMU8h8NsOCo3Ekfd/6trNWGn7dAXRMV9RBQp5kCp5igJwH52SYiNZTil8RidsM2Bcd0OoSMqP/Ze/w4nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7Fa7Y9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0752DC4CEF1;
+	Tue, 26 Aug 2025 11:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216481;
-	bh=b69E9ObIV+VDr14UfVfTKIMJRR8PeRWw9h8z/zv1/so=;
+	s=korg; t=1756207571;
+	bh=vj0xebZVJS8xaXu7ecdcpbtztkoRsPsZ8NXBLDNFEvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VuyyKdBisXLommqnLvfpPxC39o4GhNGaL6mOhiMh79NW72QL3INUCSuuI5F45MqCy
-	 dRCo2IUrGQvQIFGe3p8tkUJSnw8TTecEI3SYD7SXOiNSkxUZC4DQYp7RYDaqYjcBMU
-	 j9kUQT0gcICdvIRMdnIcDxLo63XtExnHxQHMIMvk=
+	b=X7Fa7Y9GQiEIsvNGCbBoJuHYYOTvRJTQmVuy/xDeff7ht1fNJ1LO9ihH8r45UErUV
+	 rQwTAm09K/NHvljbJjb1optsGXn1CF47zZ/0L7nUXC4Ex41ICupjPaHfxP9HaoyFcG
+	 KEXFcWwOegv6eVLIIWrtNls72ykUbrP/1DFNPjFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yann E. MORIN" <yann.morin.1998@free.fr>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Cherniaev Andrei <dungeonlords789@naver.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 426/644] kconfig: lxdialog: fix space to (de)select options
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.16 233/457] iommu/arm-smmu-v3: Fix smmu_domain->nr_ats_masters decrement
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826110957.015476984@linuxfoundation.org>
+Message-ID: <20250826110943.132732354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yann E. MORIN <yann.morin.1998@free.fr>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
+commit 685ca577b408ffd9c5a4057a2acc0cd3e6978b36 upstream.
 
-In case a menu has comment without letters/numbers (eg. characters
-matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
-hitting space will cycle through those comments, rather than
-selecting/deselecting the currently-highlighted option.
+The arm_smmu_attach_commit() updates master->ats_enabled before calling
+arm_smmu_remove_master_domain() that is supposed to clean up everything
+in the old domain, including the old domain's nr_ats_masters. So, it is
+supposed to use the old ats_enabled state of the device, not an updated
+state.
 
-This is the behaviour of hitting any letter/digit: jump to the next
-option which prompt starts with that letter. The only letters that
-do not behave as such are 'y' 'm' and 'n'. Prompts that start with
-one of those three letters are instead matched on the first letter
-that is not 'y', 'm' or 'n'.
+This isn't a problem if switching between two domains where:
+ - old ats_enabled = false; new ats_enabled = false
+ - old ats_enabled = true;  new ats_enabled = true
+but can fail cases where:
+ - old ats_enabled = false; new ats_enabled = true
+   (old domain should keep the counter but incorrectly decreased it)
+ - old ats_enabled = true;  new ats_enabled = false
+   (old domain needed to decrease the counter but incorrectly missed it)
 
-Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
-not as shortcut to jump to  prompt.
+Update master->ats_enabled after arm_smmu_remove_master_domain() to fix
+this.
 
-Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
-[masahiro: took from Buildroot, adjusted the commit subject]
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Link: https://lore.kernel.org/r/20250801030127.2006979-1-nicolinc@nvidia.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/lxdialog/menubox.c | 2 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
-index 58c2f8afe59b..7e10e919fbdc 100644
---- a/scripts/kconfig/lxdialog/menubox.c
-+++ b/scripts/kconfig/lxdialog/menubox.c
-@@ -272,7 +272,7 @@ int dialog_menu(const char *title, const char *prompt,
- 		if (key < 256 && isalpha(key))
- 			key = tolower(key);
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2997,9 +2997,9 @@ void arm_smmu_attach_commit(struct arm_s
+ 		/* ATS is being switched off, invalidate the entire ATC */
+ 		arm_smmu_atc_inv_master(master, IOMMU_NO_PASID);
+ 	}
+-	master->ats_enabled = state->ats_enabled;
  
--		if (strchr("ynmh", key))
-+		if (strchr("ynmh ", key))
- 			i = max_choice;
- 		else {
- 			for (i = choice + 1; i < max_choice; i++) {
--- 
-2.39.5
-
+ 	arm_smmu_remove_master_domain(master, state->old_domain, state->ssid);
++	master->ats_enabled = state->ats_enabled;
+ }
+ 
+ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 
 
