@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF725B368AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F33B366DA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B761E563141
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4AD8A36BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EF435209D;
-	Tue, 26 Aug 2025 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FFA34DCF5;
+	Tue, 26 Aug 2025 13:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+kzXN7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdKxtHy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB87352FC8;
-	Tue, 26 Aug 2025 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6192FDC44;
+	Tue, 26 Aug 2025 13:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217364; cv=none; b=sH1ia4/26txUFmiGFMqXYjtUW4Q0HyhpZgdZkTSRrM1iz2ddU2ddCwjMHq39yHTmfZhNjz95xhaBmLFcPFNmg9wu1gsPaNB0Y3tJ9YgyPgUR/EK8eWXOYwz64rcrpBgGFX6+AhCZ52hdlDkyM64bvGiins73//t57dGsWor/xaY=
+	t=1756216057; cv=none; b=UgvS0kS4ZP6f52iuQqYZ+WSdgKfuza+rMs5019DWh2ce1yfhl4cFMlj/7G3NnWkW6/VCGJnbWz9Clv53uoQZbRnVgLpucwCMrhOQLVeeYxmjo6GgR4ZftJ1gJoUYNo3+fTdtwNTwT/PKsL8f6jeUMz3HA/OgoLly0mc6sL5Tp50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217364; c=relaxed/simple;
-	bh=BhuKs2WTLtG2f1X7uzMMADeHgX9kPd/vT+5ZEztFPeo=;
+	s=arc-20240116; t=1756216057; c=relaxed/simple;
+	bh=X2cjouK95oHTAKmp3u9ObP2ZmKrcP1UB5gnlnc9A8PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOqvzgytGsYiooeaePjZK2Oo59vxOUs5syOoAqPmKDvISmD5b7lEVj4bNVuSEXOUP/ONGRm4bK4uT/8VU37oUDE/+X9R+SosgsbicxGH4nxH+KLr5tP9ExgEroyGHKLwaU1U7APXGEHK1Bz3DO9dVAUI2psQDE1Stef0YoKEVho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+kzXN7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D39C19422;
-	Tue, 26 Aug 2025 14:09:23 +0000 (UTC)
+	 MIME-Version; b=SBJh0JjMzinzs6BpORQsu0Iit6VuG4Saz+i44IDXj8PfxIe4yQmZet5fumYDKqTuDV/mzArQjPtg4sVw74+T8WinzzQjFLyrgOyJUtvWERUjxHz+E5dmRNFXTkRtW1vc0a0ZYliH25Gi+gZu3DvY5xLHpQqYP63IBKBZHX7Suz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdKxtHy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF5DC4CEF1;
+	Tue, 26 Aug 2025 13:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217364;
-	bh=BhuKs2WTLtG2f1X7uzMMADeHgX9kPd/vT+5ZEztFPeo=;
+	s=korg; t=1756216055;
+	bh=X2cjouK95oHTAKmp3u9ObP2ZmKrcP1UB5gnlnc9A8PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+kzXN7RL19mJph8HBHuhICcSmQ+BIfGkm8P9JHTg4yO3c8P9gbumDi2SuJXRHEhb
-	 pSLUaE2gTTj5t/ImCnSc3SBME5EL3QDUv9T0BFAWVwOCsQDR0EepPnMcv1E16ArHzp
-	 T3UAHRH8yiEUVx04TRgC4CQPIxurDz6z3R/+9UG0=
+	b=LdKxtHy23RigZTFY8UcFjhpJ1nvVDIqYluqPPfBIBD0Q6Pe91VlO0nXbY6ct6YGvb
+	 /yy2lM1CcdCHNwDvsRmbmpdqBy/ymVRy0/g2NXmrcsmp8wYatQ/53UKGqbVmsitntW
+	 Wh5nPLEusHjseFrQFAgl2XJWuXx7Rs3HHpi7sZcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/523] can: kvaser_usb: Assign netdev.dev_port based on device channel index
+Subject: [PATCH 5.15 235/644] ipv6: reject malicious packets in ipv6_gso_segment()
 Date: Tue, 26 Aug 2025 13:05:26 +0200
-Message-ID: <20250826110927.383034562@linuxfoundation.org>
+Message-ID: <20250826110952.230502353@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c151b06a087a61c7a1790b75ee2f1d6edb6a8a45 ]
+[ Upstream commit d45cf1e7d7180256e17c9ce88e32e8061a7887fe ]
 
-Assign netdev.dev_port based on the device channel index, to indicate the
-port number of the network device.
-While this driver already uses netdev.dev_id for that purpose, dev_port is
-more appropriate. However, retain dev_id to avoid potential regressions.
+syzbot was able to craft a packet with very long IPv6 extension headers
+leading to an overflow of skb->transport_header.
 
-Fixes: 3e66d0138c05 ("can: populate netdev::dev_id for udev discrimination")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-4-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+This 16bit field has a limited range.
+
+Add skb_reset_transport_header_careful() helper and use it
+from ipv6_gso_segment()
+
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 0 UID: 0 PID: 5871 Comm: syz-executor211 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+ RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Call Trace:
+ <TASK>
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+  skb_gso_segment include/net/gso.h:83 [inline]
+  validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+  validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+  sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+  __dev_xmit_skb net/core/dev.c:4102 [inline]
+  __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
+
+Fixes: d1da932ed4ec ("ipv6: Separate ipv6 offload support")
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/688a1a05.050a0220.5d226.0008.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730131738.3385939-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/skbuff.h | 23 +++++++++++++++++++++++
+ net/ipv6/ip6_offload.c |  4 +++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index a96b22398407..602f0b3bbcdf 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -813,6 +813,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 7f52562fac19..9155d0d7f706 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2646,6 +2646,29 @@ static inline void skb_reset_transport_header(struct sk_buff *skb)
+ 	skb->transport_header = skb->data - skb->head;
+ }
  
- 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
- 	netdev->dev_id = channel;
-+	netdev->dev_port = channel;
++/**
++ * skb_reset_transport_header_careful - conditionally reset transport header
++ * @skb: buffer to alter
++ *
++ * Hardened version of skb_reset_transport_header().
++ *
++ * Returns: true if the operation was a success.
++ */
++static inline bool __must_check
++skb_reset_transport_header_careful(struct sk_buff *skb)
++{
++	long offset = skb->data - skb->head;
++
++	if (unlikely(offset != (typeof(skb->transport_header))offset))
++		return false;
++
++	if (unlikely(offset == (typeof(skb->transport_header))~0U))
++		return false;
++
++	skb->transport_header = offset;
++	return true;
++}
++
+ static inline void skb_set_transport_header(struct sk_buff *skb,
+ 					    const int offset)
+ {
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index 30c56143d79b..0de54467ee84 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -112,7 +112,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
  
- 	dev->nets[channel] = priv;
- 
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		skb_reset_transport_header(skb);
++		if (!skb_reset_transport_header_careful(skb))
++			goto out;
++
+ 		segs = ops->callbacks.gso_segment(skb, features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
 -- 
 2.39.5
 
