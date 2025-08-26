@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EB0B3645C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CD3B35C39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEA9B8A6B4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF19B7AE175
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00271C860A;
-	Tue, 26 Aug 2025 13:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4F932143D;
+	Tue, 26 Aug 2025 11:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpRTv6Yu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpF6o3I0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAEE196C7C;
-	Tue, 26 Aug 2025 13:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C601227599;
+	Tue, 26 Aug 2025 11:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214906; cv=none; b=TL6jioDuonwLzG1UOwhqz2TdqZaQaNiTTAFjVWnG+tJT7ifQEEZ6oS0j/54Zcy+tXJgpzBpaPQP81TWO6yJf6CnHAbynj5Ekc/ckOA6QLjjOGvryplmAimj4m9dU+WzmWERmlnhkEIUyTCyk+PNIJcFXxcBkEKCwDFN6EBuMSTs=
+	t=1756207770; cv=none; b=ZVmjMTv+7oGGZFcIrJXrfPO3AgOMMKkioo+5Xp9tfuWFTlYwP2uZ/44ZpqCeMBejOa9x8BCES6EejzUPIfTd8skm/X6PRA6GO8D66KBrRdjNtYefpJYASY7xj7XfcSax+JYVFc2G1vmP6EnHOxWRWZDypMT5r0ia1xPPAt3AfdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214906; c=relaxed/simple;
-	bh=SmTgT6AHVvRlLtZm1Lf7fBca+OuD0bu38cRw4q8iYQA=;
+	s=arc-20240116; t=1756207770; c=relaxed/simple;
+	bh=YZWPnhNTjowTmlPHfebG01vuJoGwaz3XPGDTWK0LAsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmcn6TSwzG69SYvBWNKs6cEN6nLJrBz6wuJRukHBuVIRX/jxZ2ShgF4EBdpxyfdr4/PKxsPO4ckw6N6+YmRe4j4Oa1JVViVLtJNKLO6pbObXrwVJlEoQM1NPa311jRPzSiDg4wdQetZyV9HCs/fqjHOSmgcapoyW3KfPV/gOlaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpRTv6Yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE982C4CEF1;
-	Tue, 26 Aug 2025 13:28:25 +0000 (UTC)
+	 MIME-Version; b=Y5GHCSWo/tsz/0RB8I3thgUO7uqA+K7nKVDTINDhANHR1XW1dpT3CANr02FJvEMB4jbc1XatVZ9WF4u9GV/eS4xJG+bOvA/YukjuGAFj28+WNtTHAbQl4b7QR571iyslpDldZONp5upe/w+Q5SdFpkX9qJZbl3lznlGtOB8XoqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpF6o3I0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30C3C4CEF1;
+	Tue, 26 Aug 2025 11:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214906;
-	bh=SmTgT6AHVvRlLtZm1Lf7fBca+OuD0bu38cRw4q8iYQA=;
+	s=korg; t=1756207770;
+	bh=YZWPnhNTjowTmlPHfebG01vuJoGwaz3XPGDTWK0LAsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpRTv6Yu/LwkfMmyUCmxW2RD5Ml0+aK6wXOBJbjvtthq5ln88+JsbuIIVupKqMDyV
-	 rfC+X7hMyUFmOfptqJJ5H7/w5BSRvsUzpTpMgn9/oB4hcOHBVeDPy+LgHGPD5cWWCR
-	 bZguV5sPjCv0Be1cbGq1CS6Re1s0YUURvzAOnB3E=
+	b=rpF6o3I0VR5kSMS5UZ3+tF4NUP+WD93+f3KcOZ6sDsMOntfmdh96xgvusobIgIPdw
+	 Slds1K3Exu9gdNjQpZmcg3NV+or1n4uQ+OewL5FjIMXJSgl8hRyrNrRzjbyVUOXDB0
+	 zKbAQYO4I+I33cGisGY8UJIbFp77LE3Il3N4dUc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 313/482] parisc: Check region is readable by user in raw_copy_from_user()
-Date: Tue, 26 Aug 2025 13:09:26 +0200
-Message-ID: <20250826110938.535723438@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 283/457] btrfs: zoned: fix data relocation block group reservation
+Date: Tue, 26 Aug 2025 13:09:27 +0200
+Message-ID: <20250826110944.372048240@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
+[ Upstream commit daa0fde322350b467bc62bc1b141bf62df6123f8 ]
 
-Because of the way the _PAGE_READ is handled in the parisc PTE, an
-access interruption is not generated when the kernel reads from a
-region where the _PAGE_READ is zero. The current code was written
-assuming read access faults would also occur in the kernel.
+btrfs_zoned_reserve_data_reloc_bg() is called on mount and at that point,
+all data block groups belong to the primary data space_info. So, we don't
+find anything in the data relocation space_info.
 
-This change adds user access checks to raw_copy_from_user().  The
-prober_user() define checks whether user code has read access to
-a virtual address. Note that page faults are not handled in the
-exception support for the probe instruction. For this reason, we
-precede the probe by a ldb access check.
+Also, the condition "bg->used > 0" can select a block group with full of
+zone_unusable bytes for the candidate. As we cannot allocate from the block
+group, it is useless to reserve it as the data relocation block group.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, because of the space_info separation, we need to migrate the
+selected block group to the data relocation space_info. If not, the extent
+allocator cannot use the block group to do the allocation.
+
+This commit fixes these three issues.
+
+Fixes: e606ff985ec7 ("btrfs: zoned: reserve data_reloc block group on mount")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
- arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
- 2 files changed, 46 insertions(+), 1 deletion(-)
+ fs/btrfs/zoned.c | 55 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 8 deletions(-)
 
---- a/arch/parisc/include/asm/special_insns.h
-+++ b/arch/parisc/include/asm/special_insns.h
-@@ -32,6 +32,34 @@
- 	pa;						\
- })
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 936448b1f716..af5ba3ad2eb8 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -18,6 +18,7 @@
+ #include "accessors.h"
+ #include "bio.h"
+ #include "transaction.h"
++#include "sysfs.h"
  
-+/**
-+ * prober_user() - Probe user read access
-+ * @sr:		Space regster.
-+ * @va:		Virtual address.
-+ *
-+ * Return: Non-zero if address is accessible.
-+ *
-+ * Due to the way _PAGE_READ is handled in TLB entries, we need
-+ * a special check to determine whether a user address is accessible.
-+ * The ldb instruction does the initial access check. If it is
-+ * successful, the probe instruction checks user access rights.
-+ */
-+#define prober_user(sr, va)	({			\
-+	unsigned long read_allowed;			\
-+	__asm__ __volatile__(				\
-+		"copy %%r0,%0\n"			\
-+		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
-+		"\tproberi (%%sr%1,%2),%3,%0\n"		\
-+		"9:\n"					\
-+		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
-+				"or %%r0,%%r0,%%r0")	\
-+		: "=&r" (read_allowed)			\
-+		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
-+		: "memory"				\
-+	);						\
-+	read_allowed;					\
-+})
-+
- #define CR_EIEM 15	/* External Interrupt Enable Mask */
- #define CR_CR16 16	/* CR16 Interval Timer */
- #define CR_EIRR 23	/* External Interrupt Request Register */
---- a/arch/parisc/lib/memcpy.c
-+++ b/arch/parisc/lib/memcpy.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-+#include <linux/mm.h>
- 
- #define get_user_space()	mfsp(SR_USER)
- #define get_kernel_space()	SR_KERNEL
-@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
- unsigned long raw_copy_from_user(void *dst, const void __user *src,
- 			       unsigned long len)
+ /* Maximum number of zones to report per blkdev_report_zones() call */
+ #define BTRFS_REPORT_NR_ZONES   4096
+@@ -2510,12 +2511,12 @@ void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg)
+ void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
  {
-+	unsigned long start = (unsigned long) src;
-+	unsigned long end = start + len;
-+	unsigned long newlen = len;
-+
- 	mtsp(get_user_space(), SR_TEMP1);
- 	mtsp(get_kernel_space(), SR_TEMP2);
--	return pa_memcpy(dst, (void __force *)src, len);
-+
-+	/* Check region is user accessible */
-+	if (start)
-+	while (start < end) {
-+		if (!prober_user(SR_TEMP1, start)) {
-+			newlen = (start - (unsigned long) src);
-+			break;
-+		}
-+		start += PAGE_SIZE;
-+		/* align to page boundry which may have different permission */
-+		start = PAGE_ALIGN_DOWN(start);
-+	}
-+	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
- }
- EXPORT_SYMBOL(raw_copy_from_user);
+ 	struct btrfs_space_info *data_sinfo = fs_info->data_sinfo;
+-	struct btrfs_space_info *space_info = data_sinfo->sub_group[0];
++	struct btrfs_space_info *space_info = data_sinfo;
+ 	struct btrfs_trans_handle *trans;
+ 	struct btrfs_block_group *bg;
+ 	struct list_head *bg_list;
+ 	u64 alloc_flags;
+-	bool initial = false;
++	bool first = true;
+ 	bool did_chunk_alloc = false;
+ 	int index;
+ 	int ret;
+@@ -2529,21 +2530,52 @@ void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
+ 	if (sb_rdonly(fs_info->sb))
+ 		return;
  
+-	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
+ 	alloc_flags = btrfs_get_alloc_profile(fs_info, space_info->flags);
+ 	index = btrfs_bg_flags_to_raid_index(alloc_flags);
+ 
+-	bg_list = &data_sinfo->block_groups[index];
++	/* Scan the data space_info to find empty block groups. Take the second one. */
+ again:
++	bg_list = &space_info->block_groups[index];
+ 	list_for_each_entry(bg, bg_list, list) {
+-		if (bg->used > 0)
++		if (bg->alloc_offset != 0)
+ 			continue;
+ 
+-		if (!initial) {
+-			initial = true;
++		if (first) {
++			first = false;
+ 			continue;
+ 		}
+ 
++		if (space_info == data_sinfo) {
++			/* Migrate the block group to the data relocation space_info. */
++			struct btrfs_space_info *reloc_sinfo = data_sinfo->sub_group[0];
++			int factor;
++
++			ASSERT(reloc_sinfo->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
++			factor = btrfs_bg_type_to_factor(bg->flags);
++
++			down_write(&space_info->groups_sem);
++			list_del_init(&bg->list);
++			/* We can assume this as we choose the second empty one. */
++			ASSERT(!list_empty(&space_info->block_groups[index]));
++			up_write(&space_info->groups_sem);
++
++			spin_lock(&space_info->lock);
++			space_info->total_bytes -= bg->length;
++			space_info->disk_total -= bg->length * factor;
++			/* There is no allocation ever happened. */
++			ASSERT(bg->used == 0);
++			ASSERT(bg->zone_unusable == 0);
++			/* No super block in a block group on the zoned setup. */
++			ASSERT(bg->bytes_super == 0);
++			spin_unlock(&space_info->lock);
++
++			bg->space_info = reloc_sinfo;
++			if (reloc_sinfo->block_group_kobjs[index] == NULL)
++				btrfs_sysfs_add_block_group_type(bg);
++
++			btrfs_add_bg_to_space_info(fs_info, bg);
++		}
++
+ 		fs_info->data_reloc_bg = bg->start;
+ 		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &bg->runtime_flags);
+ 		btrfs_zone_activate(bg);
+@@ -2558,11 +2590,18 @@ void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
+ 	if (IS_ERR(trans))
+ 		return;
+ 
++	/* Allocate new BG in the data relocation space_info. */
++	space_info = data_sinfo->sub_group[0];
++	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
+ 	ret = btrfs_chunk_alloc(trans, space_info, alloc_flags, CHUNK_ALLOC_FORCE);
+ 	btrfs_end_transaction(trans);
+ 	if (ret == 1) {
++		/*
++		 * We allocated a new block group in the data relocation space_info. We
++		 * can take that one.
++		 */
++		first = false;
+ 		did_chunk_alloc = true;
+-		bg_list = &space_info->block_groups[index];
+ 		goto again;
+ 	}
+ }
+-- 
+2.50.1
+
 
 
 
