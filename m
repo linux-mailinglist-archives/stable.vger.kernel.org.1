@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40E5B36639
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A07FB36974
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4006567FA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F9CC3A3896
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8698329D291;
-	Tue, 26 Aug 2025 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3792FFDEB;
+	Tue, 26 Aug 2025 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvsDTYPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9WkWfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0CD2FDC5C;
-	Tue, 26 Aug 2025 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25826286881;
+	Tue, 26 Aug 2025 14:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215842; cv=none; b=aItp/rvR5VwmH3XUinkDHxJIudDi9zTzj2lwFUtg5vVWorY4rIcibHzff6CqtquA4Dy65vY8YyCtoZJ5NIO0m8176gdAZ0nI8ixCU1wcsxkpt4eBhpKwpcAeSjCMMkxSB/Nr8T/5IJMW7ugdccZp4R0AWd38Ut4M4b44K0LFYc0=
+	t=1756217309; cv=none; b=JNIzJNq3iQg1nKsJixlVVbZDWAesHI8t0gLwfspE9No9hvBRDyOlKxgvNodjOQF6yQULo7uweL4GuDeZZh/B9KocYdRuRlGWxthRiXEim9kLryfUg7QK7Aos3/taL3OLepsyVrrrZUcXwtwIzlCY9t1C0TqKaBZq/PSYRe9K/rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215842; c=relaxed/simple;
-	bh=Ut6u+hGDHqIJ5eMznf8wVnJGWUaonHy6+C63LWxnTNk=;
+	s=arc-20240116; t=1756217309; c=relaxed/simple;
+	bh=qoHc4H2alG9tr+b5dJlgvd2E7Af+ikPtn6Jom3dyzkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDseD3DNjNkGMAB5yAjM2dlKbWoSKDe1X+C2CAzMXdQTl8mZ9P9Mwn8a2dAIporBx2oQzLvoWm7ctyKqCa71IoIwDFRYDaMfFXrDjbnP7woCJ0SNYK71sHPRBxltYTziI66YfSgB3VSSk0JUYt0o9QiN/8a6u9Kpnr38edGoajA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvsDTYPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B664C4CEF1;
-	Tue, 26 Aug 2025 13:44:01 +0000 (UTC)
+	 MIME-Version; b=THhkofp6hnTSrJT9xBpLkWp0jALZQQk8HQCVkRCMuPAVelJLRFUnzfqyzjR2V9HKN80RuP/PSZGydqedXspOV9ocs/lqxp5Pagkg1bq3nb4lQGJ9QQNkcogPgu4c0NI7Vk8FIqpw91Pj+pzKbGSbseVaEQXH5ya/5kHUf3S3ONw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9WkWfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E661C4CEF1;
+	Tue, 26 Aug 2025 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215841;
-	bh=Ut6u+hGDHqIJ5eMznf8wVnJGWUaonHy6+C63LWxnTNk=;
+	s=korg; t=1756217308;
+	bh=qoHc4H2alG9tr+b5dJlgvd2E7Af+ikPtn6Jom3dyzkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvsDTYPOEdXoHBIzqsBzPAo27K4ugSG6OoXs0R9m91uthakHMh/U0NA37+fWsMd6/
-	 8m5ZLZui/sx2X3dffq8c781PGQ3p/7eg2/Vea6KIw0wz3XR63oBhW1c2cxNxoN7Q8x
-	 WpcsBvieHLGBnDaMyL6OFL9EZNPmfu+uALqsBLH0=
+	b=Gn9WkWfcUtx5dpGb4jADAESFn+R23smeIlHHHAulu2jpngt2cvZoITPJYGZNO3CGb
+	 82iClU6UEYmHa+SRMgNeY0v3TyYOvgRPN/OZ0esbck86RxoQX+6tQCxG4ctrvDKADV
+	 vHi841lS/bkm/VSNIPCuSnI7yTXqrDM0sjttdNfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 186/644] watchdog: ziirave_wdt: check record length in ziirave_firm_verify()
+	Jacek Kowalski <jacek@jacekk.info>,
+	Vlad URSU <vlad@ursu.me>,
+	Simon Horman <horms@kernel.org>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.10 067/523] e1000e: ignore uninitialized checksum word on tgp
 Date: Tue, 26 Aug 2025 13:04:37 +0200
-Message-ID: <20250826110951.069335535@linuxfoundation.org>
+Message-ID: <20250826110926.229254832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jacek Kowalski <jacek@jacekk.info>
 
-[ Upstream commit 8b61d8ca751bc15875b50e0ff6ac3ba0cf95a529 ]
+commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
 
-The "rec->len" value comes from the firmware.  We generally do
-trust firmware, but it's always better to double check.  If
-the length value is too large it would lead to memory corruption
-when we set "data[i] = ret;"
+As described by Vitaly Lifshits:
 
-Fixes: 217209db0204 ("watchdog: ziirave_wdt: Add support to upload the firmware.")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/3b58b453f0faa8b968c90523f52c11908b56c346.1748463049.git.dan.carpenter@linaro.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
+> driver cannot perform checksum validation and correction. This means
+> that all NVM images must leave the factory with correct checksum and
+> checksum valid bit set.
+
+Unfortunately some systems have left the factory with an uninitialized
+value of 0xFFFF at register address 0x3F (checksum word location).
+So on Tiger Lake platform we ignore the computed checksum when such
+condition is encountered.
+
+Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
+Tested-by: Vlad URSU <vlad@ursu.me>
+Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/ziirave_wdt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
+ drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/watchdog/ziirave_wdt.c b/drivers/watchdog/ziirave_wdt.c
-index c5a9b820d43a..48c68c66e530 100644
---- a/drivers/watchdog/ziirave_wdt.c
-+++ b/drivers/watchdog/ziirave_wdt.c
-@@ -302,6 +302,9 @@ static int ziirave_firm_verify(struct watchdog_device *wdd,
- 		const u16 len = be16_to_cpu(rec->len);
- 		const u32 addr = be32_to_cpu(rec->addr);
+--- a/drivers/net/ethernet/intel/e1000e/defines.h
++++ b/drivers/net/ethernet/intel/e1000e/defines.h
+@@ -638,6 +638,9 @@
+ /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
+ #define NVM_SUM                    0xBABA
  
-+		if (len > sizeof(data))
-+			return -EINVAL;
++/* Uninitialized ("empty") checksum word value */
++#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
 +
- 		if (ziirave_firm_addr_readonly(addr))
- 			continue;
+ /* PBA (printed board assembly) number words */
+ #define NVM_PBA_OFFSET_0           8
+ #define NVM_PBA_OFFSET_1           9
+--- a/drivers/net/ethernet/intel/e1000e/nvm.c
++++ b/drivers/net/ethernet/intel/e1000e/nvm.c
+@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
+ 		checksum += nvm_data;
+ 	}
  
--- 
-2.39.5
-
++	if (hw->mac.type == e1000_pch_tgp &&
++	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
++		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
++		return 0;
++	}
++
+ 	if (checksum != (u16)NVM_SUM) {
+ 		e_dbg("NVM Checksum Invalid\n");
+ 		return -E1000_ERR_NVM;
 
 
 
