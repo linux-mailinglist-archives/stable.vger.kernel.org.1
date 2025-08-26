@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E3FB36102
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667B9B36C80
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FAB81BA73D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BF36582C87
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C2B1D47B4;
-	Tue, 26 Aug 2025 13:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF3D341650;
+	Tue, 26 Aug 2025 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo57DXqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jSgLTUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644FA1A8F84;
-	Tue, 26 Aug 2025 13:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EAB239E8B;
+	Tue, 26 Aug 2025 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213378; cv=none; b=aEkwGA4dO3UsOBHgVcJi4lKLJvNg5FStYg8GhFLLamx3W/dBCE/6kFZIPzsD8G4euKeA6kPy2ORiszt8LNr/yFYJqxaggcGH1kWoLix+Ijd+TlJMNbtSYFaT4zzJJwWx/6nWjpxEipPQ0LZ3jLWk1bcyEIwh5E+rrMKGjT5OfFA=
+	t=1756218933; cv=none; b=i+HQncDkU6w8Q/ZsEVN87Wgmpg5cMzGAoC7JM9Nu+R/0u8I88UbvaVW9V+Lsw+b7wbtVhf6uJHoDBvgqNojCxTPpo2+kGE8L61r0EbOU/sUh/K+5EXrw4FCLrunYVWsCRqlWBZrT+KbTgGllcpatKiE3Ea7b5HyJntqaw1INqdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213378; c=relaxed/simple;
-	bh=e//mKeeXZ9E7TrBks+96fAO+9//IayJM5rRfXbBsGco=;
+	s=arc-20240116; t=1756218933; c=relaxed/simple;
+	bh=TeutQ8YMQed8xqbHiTr+YrgDnwabVXap3Q2tHkPVmI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nFDBlPQ4GreQXmbdCxerFiMDmNgZk6boiVuuyZjcRL9j8yKTYnXONxvl5+lhdgVLhTmmt2JHvOmFCNE79XI/eBpcpoPhuPAuHZfAuAZ0i8KFrRENUhPxSw1glIqIe/hbxJYwKbbi+ujcJCxS1zLNtOERqYCtR3IttiIWOfB8Eus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo57DXqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C16EC4CEF1;
-	Tue, 26 Aug 2025 13:02:57 +0000 (UTC)
+	 MIME-Version; b=sObZrNI/oZ2O82SYIhsJ367kNGa+c0uBVSdQoku38nZ5iexhUq4l8MwFrGD8KmXrCoPxJPIgMrm3KAG0KPeuUd0TJuXYqFpiSNIeZ0NezOEs6FaA84dFcrPn2wi8cytYoq5arTSYcJf2/r//H9o4ZaE2RgHv+Ox5m4MXJinxuyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jSgLTUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00AA3C4CEF1;
+	Tue, 26 Aug 2025 14:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213377;
-	bh=e//mKeeXZ9E7TrBks+96fAO+9//IayJM5rRfXbBsGco=;
+	s=korg; t=1756218933;
+	bh=TeutQ8YMQed8xqbHiTr+YrgDnwabVXap3Q2tHkPVmI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zo57DXqcOpABbbHOBve0MnNtOBvj5YXDUUpO31MYaQfmXY5qlXU9x+25mvt5sRZiQ
-	 LKmtQSqSPXUI9nT7Pjk4Fq9nayDL8WcGlS94v2Hj9Is8q4j9f+pAOVWxZPY0VLkFyP
-	 ZYDN3kxDXtYF6bHfFLdNy1r8q7fM33Y53zUMvkus=
+	b=2jSgLTUYC8vP9iz2LbRHXvSANLc6lUC5tJXVcXv6Ytb67AzoQR2cfC4GAqheIhW13
+	 iqPoepNDoGxfWfhzZRLs0ghPcL0W3cP3aGqdDoaXKJMAgXecA0dLKMetQ8Pr1l9/l0
+	 FFeYWIABTN26TO9WI68jcRYfh5CLXFQkgVYMCbVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 6.6 324/587] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
-Date: Tue, 26 Aug 2025 13:07:53 +0200
-Message-ID: <20250826111001.159904618@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 5.4 148/403] perf/core: Dont leak AUX buffer refcount on allocation failure
+Date: Tue, 26 Aug 2025 13:07:54 +0200
+Message-ID: <20250826110910.934202666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willy Tarreau <w@1wt.eu>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit a477629baa2a0e9991f640af418e8c973a1c08e3 upstream.
+commit 5468c0fbccbb9d156522c50832244a8b722374fb upstream.
 
-While nolibc-test does test syscalls, it doesn't test as much the rest
-of the macros, and a wrong spelling of FD_SETBITMASK in commit
-feaf75658783a broke programs using either FD_SET() or FD_CLR() without
-being noticed. Let's fix these macros.
+Failure of the AUX buffer allocation leaks the reference count.
 
-Fixes: feaf75658783a ("nolibc: fix fd_set type")
-Cc: stable@vger.kernel.org # v6.2+
-Acked-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
+Set the reference count to 1 only when the allocation succeeds.
+
+Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/nolibc/types.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/events/core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/include/nolibc/types.h
-+++ b/tools/include/nolibc/types.h
-@@ -128,7 +128,7 @@ typedef struct {
- 		int __fd = (fd);					\
- 		if (__fd >= 0)						\
- 			__set->fds[__fd / FD_SETIDXMASK] &=		\
--				~(1U << (__fd & FX_SETBITMASK));	\
-+				~(1U << (__fd & FD_SETBITMASK));	\
- 	} while (0)
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5877,9 +5877,7 @@ static int perf_mmap(struct file *file,
+ 			goto unlock;
+ 		}
  
- #define FD_SET(fd, set) do {						\
-@@ -145,7 +145,7 @@ typedef struct {
- 		int __r = 0;						\
- 		if (__fd >= 0)						\
- 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
--1U << (__fd & FD_SET_BITMASK));						\
-+1U << (__fd & FD_SETBITMASK));						\
- 		__r;							\
- 	})
+-		atomic_set(&rb->aux_mmap_count, 1);
+ 		user_extra = nr_pages;
+-
+ 		goto accounting;
+ 	}
  
+@@ -5986,8 +5984,10 @@ accounting:
+ 	} else {
+ 		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
+ 				   event->attr.aux_watermark, flags);
+-		if (!ret)
++		if (!ret) {
++			atomic_set(&rb->aux_mmap_count, 1);
+ 			rb->aux_mmap_locked = extra;
++		}
+ 	}
+ 
+ unlock:
+@@ -5997,6 +5997,7 @@ unlock:
+ 
+ 		atomic_inc(&event->mmap_count);
+ 	} else if (rb) {
++		/* AUX allocation failed */
+ 		atomic_dec(&rb->mmap_count);
+ 	}
+ aux_unlock:
 
 
 
