@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1370B3616F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D296DB36BFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DBC189A247
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FBCA05F8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17A422DFA7;
-	Tue, 26 Aug 2025 13:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CC835209A;
+	Tue, 26 Aug 2025 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqRMabvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsWQchTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5941ADFFE;
-	Tue, 26 Aug 2025 13:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301053570B0;
+	Tue, 26 Aug 2025 14:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213562; cv=none; b=Oz2LbrRMxnEp+FI+FQqaeqzvfiFQbyo2E/0OfxJ1HHXz9HxzMk5NwmoSBUr7SYo7pfHuw1xhD2ojtcwOK10K8QujczR8lFVtwa0CD4RUlrXF35mmu1Vi8GiWa6a+6k/Nd/GwQ1onK/28q5VbFyd0gPsFag+eaozGqCjnvLui9hA=
+	t=1756219027; cv=none; b=UmR6ghSSYeyC79ImJJTmX6opzsGYwVYtHqzfpPg7V+88uPJYsFSXupbc0MBiAkKTZ4aVCVlf83ahzy+3upNuZOP4cPaPbmida+yKwcDaS6ODGwOgqZ8LIWvj+rNmN7t/W+FTrIBgBh/KwL4E2M/4VXmbvE42EjnyNIlaw2oz9fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213562; c=relaxed/simple;
-	bh=n54EaMana1nSSufti4BdL51Sscv1IKK7kFf1VwBsLLM=;
+	s=arc-20240116; t=1756219027; c=relaxed/simple;
+	bh=QC2zZuDuUaVWS/62hnhlN5ROYWtEA4kND+6XoC16maA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd3gl9vdfpRz0J3Ikrll02M47H+ax109+DyfmPntb14LGEBCyHTC13PGfl7qg0pG2IxjPAJg97/5V2RU3am1JoSO5s45rJN5Uov6fVy3DkQIEpQ0b9vNZlzGfbBvOjaD+sPqlcBzgDL9hWJLKguG94CcyQWSin9ZOBOWmvLITkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqRMabvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21031C4CEF1;
-	Tue, 26 Aug 2025 13:06:01 +0000 (UTC)
+	 MIME-Version; b=aCOWw+x6QCmJp1X7GKNv2H5SI9pcusQicffdX32ryfaO3hnrvxPvtMHYtGTpbbZpQD/D7NsxYqLjX548heGDMNQm5p21LRu8zJf57Rd6t6iPwjEoDYJaJAP0D876vbPAC17K0JJSYUwk5sYh2XZ5eZ1iaosff9C4U3deLcNMbxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsWQchTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD52C4CEF1;
+	Tue, 26 Aug 2025 14:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213562;
-	bh=n54EaMana1nSSufti4BdL51Sscv1IKK7kFf1VwBsLLM=;
+	s=korg; t=1756219026;
+	bh=QC2zZuDuUaVWS/62hnhlN5ROYWtEA4kND+6XoC16maA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqRMabvhgQ2LHypG25uIl4ZDmzxu6SqpZIIKTAM5pWZ8zhiu0FPdDxJXqNZZDRIKF
-	 thCgViRWpBAxJs8QEhrY2r08WwWQsWbtD5zHE4YsASYHIJRbtV8YOuqOgXugUlGobW
-	 X+mczC54twSLDj+l17hg9TnVsC5CnSynkJNYfvJo=
+	b=NsWQchTGTvcz4dRfbE/R3Yq0YPdYqjaO1oDECCBK5Nl5Ezv7iXUdwlOAk2A+WcMZL
+	 CEF1gXEL8VxPjPEc6uFrGykneBtuwU+FDPVb7vH5keMjTlOKQ6r5r4jGQ1wI3E7+Bs
+	 MZqzj7XwyLlabu7IJLPJBY1hioP4wmi9tlxqnjcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 394/587] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 217/403] s390/stp: Remove udelay from stp_sync_clock()
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826111002.944113478@linuxfoundation.org>
+Message-ID: <20250826110912.833225600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 4eab1c27ce1f0e89ab67b01bf1e4e4c75215708a upstream.
+[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
 
-I have observed warning to occassionally trigger.
+When an stp sync check is handled on a system with multiple
+cpus each cpu gets a machine check but only the first one
+actually handles the sync operation. All other CPUs spin
+waiting for the first one to finish with a short udelay().
+But udelay can't be used here as the first CPU modifies tod_clock_base
+before performing the sync op. During this timeframe
+get_tod_clock_monotonic() might return a non-monotonic time.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The time spent waiting should be very short and udelay is a busy loop
+anyways, therefore simply remove the udelay.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/cache.c |    2 +-
+ arch/s390/kernel/time.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -841,7 +841,7 @@ void flush_cache_vmap(unsigned long star
+diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+index 11c32b228f51..0e1925104fcf 100644
+--- a/arch/s390/kernel/time.c
++++ b/arch/s390/kernel/time.c
+@@ -642,7 +642,7 @@ static int stp_sync_clock(void *data)
+ 		atomic_dec(&sync->cpus);
+ 		/* Wait for in_sync to be set. */
+ 		while (READ_ONCE(sync->in_sync) == 0)
+-			__udelay(1);
++			;
  	}
- 
- 	vm = find_vm_area((void *)start);
--	if (WARN_ON_ONCE(!vm)) {
-+	if (!vm) {
- 		flush_cache_all();
- 		return;
- 	}
+ 	if (sync->in_sync != 1)
+ 		/* Didn't work. Clear per-cpu in sync bit again. */
+-- 
+2.39.5
+
 
 
 
