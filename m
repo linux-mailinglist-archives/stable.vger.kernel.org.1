@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44FE3B36B51
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2B2B35E14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D33BB1C4479D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 615B9462C58
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D7835A29E;
-	Tue, 26 Aug 2025 14:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFB521D3C0;
+	Tue, 26 Aug 2025 11:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBEe6dp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO1O8oKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C3035A294;
-	Tue, 26 Aug 2025 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5901F560B;
+	Tue, 26 Aug 2025 11:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218876; cv=none; b=TnT9mNiaY+WT61ZBebGyc84rjXMP0mhG6dq9oM4lZeFXjJjUJjYezovgpqxbiukZhCJGZnSkMnShBLY42eDNDR6o1ENf0EV9C6q0l94kSPG+JKuJTrYwApq8GrAwHqJqTH9RWqSzgvXxW/IniS59lWRNrxGL+ZAd7kczoTJhNVI=
+	t=1756208307; cv=none; b=GaxL1jmSRrDpJoMCz3KMsiOUTtEgwI4qF6n0OURvSAhluzz6TDqmU38mNRtSWpmilcis3iIbJoIEPai7NmKX8FuMrUzPjnc7e6BZDyq2evpcpM3rtOWZjS3+4EEI+AibuApkEKVjCEqr0uLhE0iounpYfOsKrri0PBnLNK2Hu1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218876; c=relaxed/simple;
-	bh=MzNT13mVYf5CFashlrNlvDN9alaOE8xlz8qMjpGWyq8=;
+	s=arc-20240116; t=1756208307; c=relaxed/simple;
+	bh=dS7UhcuMlzen88NMEKgNHQtzuVkx4lwLNQdbkYSI9RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aao3J/o1xXo9h/LY8kb+M8kQNA8jzAeDW4cfv6Qf3ZL/8myVvFu7KzgmCZnnO2YTZ7eOZIEKR8uUIzcwj6YXOz54gvc28bH1Tth2Yx5qyBC3oER3boDBm6tnfjWOHoAmgOBsEA0Kvno4EZ3n5ec8o50H6JuTmY6DKcak/vO4wvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBEe6dp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55375C4CEF1;
-	Tue, 26 Aug 2025 14:34:36 +0000 (UTC)
+	 MIME-Version; b=FpCylTeYf6Usn3pqPN+LotpUXxJUGtHOqcmskbsPCxI1QHxQtd6jC8vYdDvZBaVi6Yl9+zKDdMsS6ONYGauyJAQ6cK9DQ9roV6tmA8WEav4uPd6Mmz2FtiQZq92MmwHETav/PlfGl1xuDKgmkbFuQDLW8/OUgKDgKwmEgQtzynE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO1O8oKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F79BC4CEF1;
+	Tue, 26 Aug 2025 11:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218876;
-	bh=MzNT13mVYf5CFashlrNlvDN9alaOE8xlz8qMjpGWyq8=;
+	s=korg; t=1756208307;
+	bh=dS7UhcuMlzen88NMEKgNHQtzuVkx4lwLNQdbkYSI9RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBEe6dp2qpsSp6XR2y0QMKbtW40FAqfqKMbQTngxMxjYRKTyhn6w03/2YKWIiwK1l
-	 uzqCFXxZMxTmhWnfaNk5B3Wjay2OBjunvrneyEMNSC154JnCAjHMsSU3UFQXMMVlos
-	 4XmR7iEtxn24mIobaZwOHav3r8AZLbjNH1oMazVI=
+	b=FO1O8oKLbx1T2oDp6upO2/+IUDLUOV+BRbokX5l5c50UvBPZq/U9nLGvNT44N1pAc
+	 MCCbA7Bk/O88cRAePrkY6QWgTu6YXZIOnNxApFITJCWMWYm6brycRBBGCGSgXHhu9d
+	 6QIL6uVDiDMKOrMo8YzQ2wIu23YTrC5Leb4Fh5Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 5.4 150/403] perf/core: Prevent VMA split of buffer mappings
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 061/322] wifi: ath12k: fix dest ring-buffer corruption when ring is full
 Date: Tue, 26 Aug 2025 13:07:56 +0200
-Message-ID: <20250826110911.011384939@linuxfoundation.org>
+Message-ID: <20250826110917.048710703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit b024d7b56c77191cde544f838debb7f8451cd0d6 upstream.
+commit ed32169be1ccb9b1a295275ba7746dc6bf103e80 upstream.
 
-The perf mmap code is careful about mmap()'ing the user page with the
-ringbuffer and additionally the auxiliary buffer, when the event supports
-it. Once the first mapping is established, subsequent mapping have to use
-the same offset and the same size in both cases. The reference counting for
-the ringbuffer and the auxiliary buffer depends on this being correct.
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-Though perf does not prevent that a related mapping is split via mmap(2),
-munmap(2) or mremap(2). A split of a VMA results in perf_mmap_open() calls,
-which take reference counts, but then the subsequent perf_mmap_close()
-calls are not longer fulfilling the offset and size checks. This leads to
-reference count leaks.
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-As perf already has the requirement for subsequent mappings to match the
-initial mapping, the obvious consequence is that VMA splits, caused by
-resizing of a mapping or partial unmapping, have to be prevented.
-
-Implement the vm_operations_struct::may_split() callback and return
-unconditionally -EINVAL.
-
-That ensures that the mapping offsets and sizes cannot be changed after the
-fact. Remapping to a different fixed address with the same size is still
-possible as it takes the references for the new mapping and drops those of
-the old mapping.
-
-Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27504
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: stable@vger.kernel.org
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org      # 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250617084402.14475-5-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath12k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5789,11 +5789,21 @@ out_put:
- 	ring_buffer_put(rb); /* could be last */
- }
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -2134,7 +2134,6 @@ void ath12k_hal_srng_access_end(struct a
+ {
+ 	lockdep_assert_held(&srng->lock);
  
-+static int perf_mmap_may_split(struct vm_area_struct *vma, unsigned long addr)
-+{
-+	/*
-+	 * Forbid splitting perf mappings to prevent refcount leaks due to
-+	 * the resulting non-matching offsets and sizes. See open()/close().
-+	 */
-+	return -EINVAL;
-+}
-+
- static const struct vm_operations_struct perf_mmap_vmops = {
- 	.open		= perf_mmap_open,
- 	.close		= perf_mmap_close, /* non mergeable */
- 	.fault		= perf_mmap_fault,
- 	.page_mkwrite	= perf_mmap_fault,
-+	.split		= perf_mmap_may_split,
- };
- 
- static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -2149,7 +2148,11 @@ void ath12k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -2165,6 +2168,10 @@ void ath12k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath12k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
