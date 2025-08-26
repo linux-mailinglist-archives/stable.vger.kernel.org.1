@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD54B36A15
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFE5B36BD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E20B564202
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A939854EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1160434AAE3;
-	Tue, 26 Aug 2025 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C0B2C0F9C;
+	Tue, 26 Aug 2025 14:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzjMirnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnaC9/uC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285D31985C;
-	Tue, 26 Aug 2025 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E190306D3F;
+	Tue, 26 Aug 2025 14:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218033; cv=none; b=j0Zsv41DfQS5ZsxQDf0OqEAuFBGAGcC7L0euD2MUh/xtuc0H6mHX5fr6r/mUW1yMKEucsdR8ELY7Cnq4hHM61Mbd/MS65Cu1WT/CE7umQ6/b2MKxzZV0wbY8Qal06/1hUPObYi6KpI9JnZKVI9sKJ5WjJacq0wD0kuloOyzGx7c=
+	t=1756219115; cv=none; b=AUYdQLi7aJ4SW2/PvXem30XYtZxlcRKz0doUS3B+N+Xo4pMT1NqfjooLjMgYDy6LRLrtt2AvFVQBtSHI5MJf51Z+CGblBK4K/f9lioMmAl2AIwA5vnkPLfVnq2ueej3VGTW/Yfy+giVacxgLNMiEKpYTHBb2JOCzd1nK9WSujaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218033; c=relaxed/simple;
-	bh=tl416Ah0lDjYbk5M6fNQ0SRXampkSE2J6GyKlT0HPn4=;
+	s=arc-20240116; t=1756219115; c=relaxed/simple;
+	bh=o91LiZDMEpclgAP1lNjkoNWgokebjK8Vb33V9ehpooY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfM+p7jnv8FsuKdI65RsXInFp0EcCfXtAGgqYO9nA0oLxXfYZE5IQ/LLApmaV/B9luMJWn04mBy/q0dabTs5ysl30atFeICHyZ0kiK/sv8afNlBMaDQWTi7vFZwQ2WgWf60B4aziVJsOxUH0soV6Gbzm3kk1l8qMTBvbj3Phceo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzjMirnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5283DC4CEF1;
-	Tue, 26 Aug 2025 14:20:33 +0000 (UTC)
+	 MIME-Version; b=ULbgk+fpbujFyK+hYPUgZo2jD/EsJuwjTVtQtThMMA4ltccymp7HAivERLerbWR/pJApxRFdnGOTsmN1+nm0X2Y7o5lMop5bDMstFMMNuN1nI/A8ol34HwscJekeehV5zg5CnAcdaBxfLSbJs7xOET6Dto66ULnnfyPTk/H60CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnaC9/uC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BFBC4CEF1;
+	Tue, 26 Aug 2025 14:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218033;
-	bh=tl416Ah0lDjYbk5M6fNQ0SRXampkSE2J6GyKlT0HPn4=;
+	s=korg; t=1756219115;
+	bh=o91LiZDMEpclgAP1lNjkoNWgokebjK8Vb33V9ehpooY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzjMirnQwaqiX0ztfWwt30GshnfLJtt+38lGNcNvzrBP0uSe8Ik9hNBsZI6g6XFTu
-	 Co1GHHtSw6Dfzywl1mfQ/qRQ+zblitqPDCnxuEanJ18lWy4YM/c5rULJ+l74fzUfJD
-	 qTnFdHubpFB4CVNhjoyGm6iWzYiEZOmivcAo9Wek=
+	b=QnaC9/uCQjaxCqouNwBtbB6QYs05y/EZdVPv5b5BnQx56bNPGiRSZqsSQXakZ+O/J
+	 T2S3nm4wurzcqvojEV85AxbzVZwGHaaPn3eEIeEvNIyBKVjC8PJOMIWzBt6Qg1etcC
+	 6L05sMsfY3yFs8kH4PJ5PKuaFBhfShJgWju9vjQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 5.10 367/523] zynq_fpga: use sgtable-based scatterlist wrappers
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 251/403] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
 Date: Tue, 26 Aug 2025 13:09:37 +0200
-Message-ID: <20250826110933.520441847@linuxfoundation.org>
+Message-ID: <20250826110913.754912844@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
+[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of statterlists related calls. dma_unmap_sg() function
-has to be called with the number of elements originally passed to the
-dma_map_sg() function, not the one returned in sgtable's nents.
+In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
+msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
+msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash. Similar issue occurs when access
+msg[1].buf[0] and msg[1].buf[1].
 
-CC: stable@vger.kernel.org
-Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/zynq-fpga.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
- 	}
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index fd08a851a452..d31ce5c7104d 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
+ 	u16 word;
  
- 	priv->dma_nelms =
--	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	if (priv->dma_nelms == 0) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
- 		return -ENOMEM;
-@@ -478,7 +478,7 @@ out_clk:
- 	clk_disable(priv->clk);
- 
- out_free:
--	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	return err;
- }
- 
+ 	if (num == 1) {		/* write */
++		if (msg[0].len < 3)
++			return -EOPNOTSUPP;
+ 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
+ 	} else {
++		if (msg[1].len < 2)
++			return -EOPNOTSUPP;
+ 		word = dib7000p_read_word(state, apb_address);
+ 		msg[1].buf[0] = (word >> 8) & 0xff;
+ 		msg[1].buf[1] = (word) & 0xff;
+-- 
+2.39.5
+
 
 
 
