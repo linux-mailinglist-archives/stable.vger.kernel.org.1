@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A138B3665A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AA6B3640E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F00C34E458C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E37648A7ED5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D1734F49C;
-	Tue, 26 Aug 2025 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470BC230BDF;
+	Tue, 26 Aug 2025 13:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5ryBeVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBpZHbbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56801EEA55;
-	Tue, 26 Aug 2025 13:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135017A2EA;
+	Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216492; cv=none; b=Kf6EqJcf9umQw6nBvxm+6KA5OcZajQWdksL6y3CUrxd6R7dB8QTIXFQ/ED7EJCY/3IEfrjVLj+Ri+egaB8+KZUaNeDsY+FO3iuoA/jNlXFi5T3JRrAgKxTsyDjKo+cy+FEvbcZf0V+ydr/nIDi7nNl5ZrRi7XGyV1JZkOmgVnwE=
+	t=1756214785; cv=none; b=cgS7wSEdGsks+WYcTvUFQwphRCUK3tIobiGB/goUjYAsCTPazJE5RvoWZryh3jPFOZnHdVB5+gudCvIpWHn3nmxkLmTlNx9lR6T157KxstVpCd6nlDfSb/WEr/QPDKs2xNLRV2EzFCYNt9eLzBwNqALhxLH5/bUEp9Tci12ZPVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216492; c=relaxed/simple;
-	bh=L8Ng7aNo0pGzGnKux3FlRX1Xj35IJi1HRTbmMPkQ1ZU=;
+	s=arc-20240116; t=1756214785; c=relaxed/simple;
+	bh=UJqvyY/dtkPHwcgGNHfcLsbRGfMzfPWPTt8Djx4pwQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsLMHu/mzgi5QIeIoczbds2EbNfwci/P+VAdd2DpfxqEuf9y2L8MiheSmm6LocqXxszXvSFDZ1W05t1WC21yKK9cn54KCj9DGSy227qaEd+xe5AypfqBnoykYh8iU7rfuwRdUg1TliKpLq2yyQPO+zkDxYRSuqmTUJSY6VDA6Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5ryBeVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1EBC4CEF1;
-	Tue, 26 Aug 2025 13:54:51 +0000 (UTC)
+	 MIME-Version; b=XZSyS/U7O9W10qHecGCtKjRopOU1XqUxGELAY20Ak6sB/jNGSU4YDbnJjaLBN4Kjo2QLyDAcD/kvu/lPhfLRJh1q2MegJ4W60DmW4eZjoXSrUS7TBheDwxUcJxscLT7NNGfwsljo7ugJmyDZCzc6mxyRMaJYFNAqG0DNBWYrDhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBpZHbbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CC6C4CEF1;
+	Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216491;
-	bh=L8Ng7aNo0pGzGnKux3FlRX1Xj35IJi1HRTbmMPkQ1ZU=;
+	s=korg; t=1756214784;
+	bh=UJqvyY/dtkPHwcgGNHfcLsbRGfMzfPWPTt8Djx4pwQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5ryBeVTo+x0spz4Bt93gaGsFhmTBq7s80esvYS5pfE0onOoHkRJG1ORyj1dwmIbs
-	 N1HDPPQ9Ry0agkAZhtEImHpR2Ex8wEMzu8leT0ZHVGM0C5csv7MvEd4I/FCRgfE1a4
-	 ZB/mkaaGB393JeuXlBeFRjGJpt1o3JnUyzdEcT+8=
+	b=lBpZHbbUp1bxzASlFvepSlgJwLBjan8mqV3CAFhhnWZVbxqwZ9o0VKsG4t8X+V1w4
+	 iN3w2rC/ab2yu0f994OSyWKDvQLaRf84CZ2tL9mAN6TAHlL18xEaI30VrrixVD+14h
+	 yL6p6zqRyicBeiEbn4R2jG+VYv50p+1sgL7Dwhpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 430/644] pNFS: Fix stripe mapping in block/scsi layout
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.1 268/482] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
 Date: Tue, 26 Aug 2025 13:08:41 +0200
-Message-ID: <20250826110957.117791169@linuxfoundation.org>
+Message-ID: <20250826110937.387914806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
+commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
 
-Because of integer division, we need to carefully calculate the
-disk offset. Consider the example below for a stripe of 6 volumes,
-a chunk size of 4096, and an offset of 70000.
+The freq_tables[] array has num_possible_cpus() elements so, to avoid an
+out of bounds access, this loop should be capped at "< nb_cpus" instead
+of "<= nb_cpus".  The freq_tables[] array is allocated in
+armada_8k_cpufreq_init().
 
-chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
-offset = chunk * dev->chunk_size = 17 * 4096 = 69632
-disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
-disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
-disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
-
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/dev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index 16412d6636e8..4e176d7d704d 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	struct pnfs_block_dev *child;
- 	u64 chunk;
- 	u32 chunk_idx;
-+	u64 disk_chunk;
- 	u64 disk_offset;
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -96,7 +96,7 @@ static void armada_8k_cpufreq_free_table
+ {
+ 	int opps_index, nb_cpus = num_possible_cpus();
  
- 	chunk = div_u64(offset, dev->chunk_size);
--	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
-+	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+-	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
++	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
+ 		int i;
  
- 	if (chunk_idx >= dev->nr_children) {
- 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
-@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	offset = chunk * dev->chunk_size;
- 
- 	/* disk offset of the stripe */
--	disk_offset = div_u64(offset, dev->nr_children);
-+	disk_offset = disk_chunk * dev->chunk_size;
- 
- 	child = &dev->children[chunk_idx];
- 	child->map(child, disk_offset, map);
--- 
-2.39.5
-
+ 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
