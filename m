@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9BDB35DAA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB77B35B59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 263E916FCA7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A327D7A9800
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7493D3090E8;
-	Tue, 26 Aug 2025 11:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29DA2BF3E2;
+	Tue, 26 Aug 2025 11:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKwmvRCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cH0SkYHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FD02135B8;
-	Tue, 26 Aug 2025 11:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB28245012;
+	Tue, 26 Aug 2025 11:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208226; cv=none; b=PI/Zk9ympeUSdNXTxLxuEJbChje2fsMlT6tL71Yd73hj9C4BfqdV8hSAnAAvBLPi4vvVE/mONJ7WbqQNtB8ni3/+z5H9WCnWo0owBVpDGGabwpP2/Q2w5w/5EksgW7dD9j4CHo5e7Aw6VYl7IPyNnfJ2PaiVfeyYcQT8TlLjrqA=
+	t=1756207380; cv=none; b=DdXKcqlLbwq/5fAmqY7D77jj2Xb+GowNbkj8CKkNS0j+Uv0WvIJZnYxWUCeohqHW5M+dFT4bmS7JIazd2IZ2QHXJ1ejCMQfnl5lPRXLx+O4otev+rIbwl9SM/l1v5iSnhu7VHdHn0GYzl3YUij2IJOfrRsIWhvoz0tLbNPUr/kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208226; c=relaxed/simple;
-	bh=OT3spIFvaH9UrkxrY9x5taAQTKs5gWvVvdIPkatvuCU=;
+	s=arc-20240116; t=1756207380; c=relaxed/simple;
+	bh=71E+72rFAJchUVrXzPGywQvOwNJOYwNRfk6cCX58viI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bsCju9xlYH/DJqyYCbNDAd9QWED+dqFVI6XVCCUyWyvyPoPb/Destrjki9Kl89RC7KhwznjvlZpHZdYwKarbm1gRZ09WKu4WvLqD0UX/bWaHUxR4nl/mnXl41k0N8xUBbcqra1UNjPF1oQuqfsaTHmzrEIDasODfRRdolhje/rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKwmvRCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B733AC4CEF1;
-	Tue, 26 Aug 2025 11:37:05 +0000 (UTC)
+	 MIME-Version; b=q0mWV4n42qa1jiDD+7cv7/4GtyTn8KqBdjdc+nIEw7S4qTmEy3VzPKS0IcmQNwzLou+cxm6asIoN9pwAVCMhNfsXVWaz4Zd34y55csPjsa6An7GPgyA6ErKe/uFOpCdMIogtZBvsF0A19JN95tQJQn2N3nIjRj0vBN0eGqj4VrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cH0SkYHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B33AC4CEF1;
+	Tue, 26 Aug 2025 11:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208226;
-	bh=OT3spIFvaH9UrkxrY9x5taAQTKs5gWvVvdIPkatvuCU=;
+	s=korg; t=1756207380;
+	bh=71E+72rFAJchUVrXzPGywQvOwNJOYwNRfk6cCX58viI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKwmvRCXurWQAHxndjh/9DpRxghPVXBGBXFkwCExveJMTuf86GArISL8PaXgZ5tI7
-	 amOF81mp0o1mSjNr7d5TesCOt2k3QUPZGz3neAMRilmsYxXLSJNubD/Z5u7YuW9G4a
-	 JmZ+o680c9VBzSnELJ5tiB/2mXvOpsrbGAusaRkA=
+	b=cH0SkYHjP01fkSJodf2n94y30TtPWDLFNdfFrqlh2R0YFHxs8HGwCC5QfsASEv0I9
+	 02v+M5YF5XJ7BQXzUTO6I9M39syXy45KyknWDqhGJLI9lnwp3FiS0Rgnc2Ec1Xv41S
+	 tdsd2z/pBU3pvOXgMbT5cJRw2fpzxuMrhFVXvTIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Dilger <adilger@whamcloud.com>,
-	Li Dongyang <dongyangli@ddn.com>,
-	Alex Zhuravlev <bzzz@whamcloud.com>,
-	Oleg Drokin <green@whamcloud.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 029/322] ext4: check fast symlink for ea_inode correctly
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>
+Subject: [PATCH 6.16 160/457] media: iris: Remove error check for non-zero v4l2 controls
 Date: Tue, 26 Aug 2025 13:07:24 +0200
-Message-ID: <20250826110916.042262871@linuxfoundation.org>
+Message-ID: <20250826110941.329954828@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Dilger <adilger@dilger.ca>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
+commit 03e29ab0e94831fcca2f62c96121fd14263b399b upstream.
 
-The check for a fast symlink in the presence of only an
-external xattr inode is incorrect.  If a fast symlink does
-not have an xattr block (i_file_acl == 0), but does have
-an external xattr inode that increases inode i_blocks, then
-the check for a fast symlink will incorrectly fail and
-__ext4_iget()->ext4_ind_check_inode() will report the inode
-is corrupt when it "validates" i_data[] on the next read:
-
-    # ln -s foo /mnt/tmp/bar
-    # setfattr -h -n trusted.test \
-               -v "$(yes | head -n 4000)" /mnt/tmp/bar
-    # umount /mnt/tmp
-    # mount /mnt/tmp
-    # ls -l /mnt/tmp
-    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
-    total 4
-     ? l?????????? ? ?    ?        ?            ? bar
-    # dmesg | tail -1
-    EXT4-fs error (device dm-8): __ext4_iget:5098:
-        inode #24578: block 7303014: comm ls: invalid block
-
-(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
-
-ext4_inode_is_fast_symlink() should check the superblock
-EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
-EXT4_EA_INODE_FL, since the latter is only set on the xattr
-inode itself, and not on the inode that uses this xattr.
+Remove the check for non-zero number of v4l2 controls as some SOCs might
+not expose any capability which requires v4l2 control.
 
 Cc: stable@vger.kernel.org
-Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
-Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
-Reviewed-by: Li Dongyang <dongyangli@ddn.com>
-Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
-Reviewed-by: Oleg Drokin <green@whamcloud.com>
-Reviewed-on: https://review.whamcloud.com/59879
-Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
-Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 33be1dde17e3 ("media: iris: implement iris v4l2_ctrl_ops")
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_ctrls.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -151,7 +151,7 @@ static int ext4_meta_trans_blocks(struct
-  */
- int ext4_inode_is_fast_symlink(struct inode *inode)
- {
--	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
- 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
- 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+--- a/drivers/media/platform/qcom/iris/iris_ctrls.c
++++ b/drivers/media/platform/qcom/iris/iris_ctrls.c
+@@ -80,8 +80,6 @@ int iris_ctrls_init(struct iris_inst *in
+ 		if (iris_get_v4l2_id(cap[idx].cap_id))
+ 			num_ctrls++;
+ 	}
+-	if (!num_ctrls)
+-		return -EINVAL;
+ 
+ 	/* Adding 1 to num_ctrls to include V4L2_CID_MIN_BUFFERS_FOR_CAPTURE */
  
 
 
