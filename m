@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CAFB3619E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD72B35DD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 145D88A2C34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD637188FE9E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E440223D7DD;
-	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED71523D7FA;
+	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nv38SIiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXC/8O4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15B8223DE5;
-	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFBE393DD1;
+	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213575; cv=none; b=Eu29A1S5fmn1lZKKWYDElUTXQBoBZgbU9/bJYC6Pm7LAq8knpTBikIkK7M7tu89NCDrjwjfIQ7I2pr3zuB5CAfHLUyywbL5WFtCE7gRIuUrqGpGpgKCfLS3eEP6tzylWFM2BTqWDzTDE8Tq2uoa1WcXvMQcvlWHN4AqQ9NdyjbQ=
+	t=1756208495; cv=none; b=ouV3XrCa/791wd3VCCEwGHLQQ/rMXPbZlQXvH6xOwtpThdTh+x+boIzJioiHv1zA8CrvxGAz7e7/ZG8wYjgR4PvSxMB54xc+/9R1Xq9a2KvfNUzPzJXImRG/aAFV/3obTX6RZP5OT99fUtPBe3KyQ6Ejp86hDYWgdLZhoL+GHLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213575; c=relaxed/simple;
-	bh=qKThOXvO/DrLiTUJ9+aCSPA1+6dfSSN4zh8RP+/jU6c=;
+	s=arc-20240116; t=1756208495; c=relaxed/simple;
+	bh=Q08WXDafU4pVzOK1n45X45NtyOnutR+BuVdHgJ7DMdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbbw31t6ygoPJZUKUj0Cok8iF77PZtI7GUxgowlqxXw/qr+o+CoBWxS2KCKfF/3TJyuzbW4FBCJ0mTS/L8U7eUNPM+6Ar3d+hbq5vfw3jiVXt5F/Sdz34fH6MM0lr9Md7HyuB2Te23RYM3Mf0MyqQWRjWIUByssiu3Q2CniN2ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nv38SIiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332DAC4CEF1;
-	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
+	 MIME-Version; b=iduN8SV10ua69st9K7n3iRoRLLmxFu8WiSQnH4XHqmEmD3Roy/aKuKD2NZBMHHirEkTHSFcDmTFOUHvim4+qJbk7fB4zWMe9tCzURH67KbJZchSKlSA1UWT6s3DcNEHEGw7m2zt7zChiTtrDtVkYf5kDaur1U9sXp7EdmCzj70U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXC/8O4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F6FC4CEF4;
+	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213575;
-	bh=qKThOXvO/DrLiTUJ9+aCSPA1+6dfSSN4zh8RP+/jU6c=;
+	s=korg; t=1756208495;
+	bh=Q08WXDafU4pVzOK1n45X45NtyOnutR+BuVdHgJ7DMdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nv38SIiTPmK6KHWCji9niaDKpqPewtbEdPiRN7JrpdgD7vKIupI5obNBofry28j47
-	 g31Pe6K4TU7PiAZ3GONeKvVoPTAtWtuRW/eQKBs/3irUX83jVbTaEHiXlrq6DVTgFr
-	 K7VCijWgOg6LpxQSSqo9KVP9opOFScy+nchjo3QM=
+	b=kXC/8O4xRtkpt+OVl1I9ysKb+3Vf9gWk+IOiVRJ+Wo0W+PbpqABReNrXXrcfCc68M
+	 LDExCM2PMMWG3ilI2jJsOm7ei2vWlKxawi03w5YAWXYRqCQLjschvQClobRIRguIDx
+	 0+IwlOGG1hJUkxSTf4c/dTFUe8Grey8lachW0YqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 399/587] parisc: Try to fixup kernel exception in bad_area_nosemaphore path of do_page_fault()
+	Eric Biggers <ebiggers@kernel.org>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 133/322] ipv6: sr: Fix MAC comparison to be constant-time
 Date: Tue, 26 Aug 2025 13:09:08 +0200
-Message-ID: <20250826111003.073777533@linuxfoundation.org>
+Message-ID: <20250826110919.083630254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit f92a5e36b0c45cd12ac0d1bc44680c0dfae34543 upstream.
+commit a458b2902115b26a25d67393b12ddd57d1216aaa upstream.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
+
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/mm/fault.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv6/seg6_hmac.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -363,6 +363,10 @@ bad_area:
- 	mmap_read_unlock(mm);
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -35,6 +35,7 @@
+ #include <net/xfrm.h>
  
- bad_area_nosemaphore:
-+	if (!user_mode(regs) && fixup_exception(regs)) {
-+		return;
-+	}
-+
- 	if (user_mode(regs)) {
- 		int signo, si_code;
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <net/seg6.h>
+ #include <net/genetlink.h>
+ #include <net/seg6_hmac.h>
+@@ -271,7 +272,7 @@ bool seg6_hmac_validate_skb(struct sk_bu
+ 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+ 		return false;
  
+-	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
++	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+ 		return false;
+ 
+ 	return true;
 
 
 
