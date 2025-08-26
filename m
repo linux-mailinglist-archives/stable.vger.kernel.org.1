@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-175418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64FCB36805
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C3AB36D3C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51149848EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42ADF983278
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5FF34AAE3;
-	Tue, 26 Aug 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038F235CEB6;
+	Tue, 26 Aug 2025 14:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/k3H1Qi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ya48iZ96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9611DE8BE;
-	Tue, 26 Aug 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5216260586;
+	Tue, 26 Aug 2025 14:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216990; cv=none; b=EsOb2k0kio/qGSLQpyj8LnctwGvSj5rpFzt5aayrCSVQucLlaDBb1FL+rh9OFHHXmx9LulQnWw7+jRz4BKwK3nFX4Wr1ejAm4KedfmLpiCfIsKfJzwMGM+Y4lUNTL8Lh/9tGErGS/Bxkqt9swjEMyZhsjdqei6cFNURpui4BuXw=
+	t=1756219445; cv=none; b=tAXNABwByluaPG9RVPVn+eWLzS6LuX6crTp0/uxietUeP6aLvuEnQm5eNPwWaZqfpGKwjVRTtW71wqu3Uy4pFTLp2HT+cEeOoOdQ3wBJR1DgdQBTlK1Ecy5GAokR+T70DWjU5i7+xm0Wvael+7nXYBAAS8UIYwRpE2mIZHGNtSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216990; c=relaxed/simple;
-	bh=BxQBnPvBDPQH5IKGCJ8iomiCeb4XWfCoU+GHhuSPGIo=;
+	s=arc-20240116; t=1756219445; c=relaxed/simple;
+	bh=KGjXnGspEwswb2xyNCdnd5DpH/aYPy4Pkj+RMv9aYY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMRF7JGP4z30t4NDHRh/CA/mDC7TGEDPDaOP/W0bE05ktKA8gwYVcaASEOlhw7f0U+UTMuv/Oit+WbX67IDGNazEhDI4iGCKGzyHKq4NdbaN7JnCgnKOWxUrFz3LZthIzHfofKd8z0KHO2fqm0RFGf6McDQFRUwlNqm2YpPjjOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/k3H1Qi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF22C4CEF1;
-	Tue, 26 Aug 2025 14:03:09 +0000 (UTC)
+	 MIME-Version; b=qTngloBhFcwwl4dC5oWPBLxzfYgnDT3oI3j+MY99jLvT8u+oCtJfmtb/y/JC+WmLHIlOY2lPn2vPNkgK2ThlRbXikd/a2Ber2omjYSmOtF8nNVgWGFuGBJStbi9xSWSqMT2enMXj4qUUC1+9feeQeOtp7CBMcX0PLduEoxvflfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ya48iZ96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435C3C4CEF1;
+	Tue, 26 Aug 2025 14:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216990;
-	bh=BxQBnPvBDPQH5IKGCJ8iomiCeb4XWfCoU+GHhuSPGIo=;
+	s=korg; t=1756219445;
+	bh=KGjXnGspEwswb2xyNCdnd5DpH/aYPy4Pkj+RMv9aYY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/k3H1QibKxViDFPE33nOpad/2Ma9bwLQpDrBaZN5FxJM1iBJINPM+8sSWfjMPVNt
-	 5YjegpmUNSAXxB2os7go5u4Cm/N+Vfyx/z+BCmOEinqxNHZSN/O9i9h5Io7/igRKT3
-	 49b3JISIxbIu1GDS10i4MJEKN0G4R3TV4nYmWdgQ=
+	b=ya48iZ961SYY5xFjzuYUS+LT0RgC+30VqXGVA6SnNNzy6ZyI+pHpof+VUA1NEk+/T
+	 867+jUjRZhhp8QxeMT30suLH3IxjeM+ShIbiDR726zI3oPmTxOZXPAF46iNxvHNPtE
+	 Tl4nkTWUvpsxFSej5mZSfJ2UHMScPffOTpn9i7mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 618/644] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
+	Vlad Buslov <vladbu@mellanox.com>,
+	Jiri Pirko <jiri@mellanox.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 383/403] net: sched: extract bstats update code into function
 Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826111001.869802737@linuxfoundation.org>
+Message-ID: <20250826110917.598400661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Vlad Buslov <vladbu@mellanox.com>
 
-[ Upstream commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c ]
+[ Upstream commit 5e1ad95b630e652d3467d1fd1f0b5e5ea2c441e2 ]
 
-When memory_failure() is called for a already hwpoisoned pfn,
-kill_accessing_process() will be called to kill current task.  However, if
-the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
-the vma in walk_page_test() and return 0.
+Extract common code that increments cpu_bstats counter into standalone act
+API function. Change hardware offloaded actions that use percpu counter
+allocation to use the new function instead of incrementing cpu_bstats
+directly.
 
-Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
-with recovered clean pages"), kill_accessing_process() will return EFAULT.
-For x86, the current task will be killed in kill_me_maybe().
+This commit doesn't change functionality.
 
-However, after this commit, kill_accessing_process() simplies return 0,
-that means UCE is handled properly, but it doesn't actually.  In such
-case, the user task will trigger UCE infinitely.
-
-To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
-
-Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
-Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vlad Buslov <vladbu@mellanox.com>
+Acked-by: Jiri Pirko <jiri@mellanox.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/net/act_api.h      |    7 +++++++
+ net/sched/act_csum.c       |    2 +-
+ net/sched/act_ct.c         |    2 +-
+ net/sched/act_gact.c       |    2 +-
+ net/sched/act_mirred.c     |    2 +-
+ net/sched/act_tunnel_key.c |    2 +-
+ net/sched/act_vlan.c       |    2 +-
+ 7 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -674,9 +674,17 @@ static int hwpoison_hugetlb_range(pte_t
- #define hwpoison_hugetlb_range	NULL
- #endif
- 
-+static int hwpoison_test_walk(unsigned long start, unsigned long end,
-+			     struct mm_walk *walk)
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -186,6 +186,13 @@ int tcf_action_dump(struct sk_buff *skb,
+ 		    int ref);
+ int tcf_action_dump_old(struct sk_buff *skb, struct tc_action *a, int, int);
+ int tcf_action_dump_1(struct sk_buff *skb, struct tc_action *a, int, int);
++
++static inline void tcf_action_update_bstats(struct tc_action *a,
++					    struct sk_buff *skb)
 +{
-+	/* We also want to consider pages mapped into VM_PFNMAP. */
-+	return 0;
++	bstats_cpu_update(this_cpu_ptr(a->cpu_bstats), skb);
 +}
 +
- static struct mm_walk_ops hwp_walk_ops = {
- 	.pmd_entry = hwpoison_pte_range,
- 	.hugetlb_entry = hwpoison_hugetlb_range,
-+	.test_walk = hwpoison_test_walk,
- };
+ void tcf_action_update_stats(struct tc_action *a, u64 bytes, u32 packets,
+ 			     bool drop, bool hw);
+ int tcf_action_copy_stats(struct sk_buff *, struct tc_action *, int);
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -577,7 +577,7 @@ static int tcf_csum_act(struct sk_buff *
+ 	params = rcu_dereference_bh(p->params);
  
- /*
+ 	tcf_lastuse_update(&p->tcf_tm);
+-	bstats_cpu_update(this_cpu_ptr(p->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&p->common, skb);
+ 
+ 	action = READ_ONCE(p->tcf_action);
+ 	if (unlikely(action == TC_ACT_SHOT))
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -482,7 +482,7 @@ out_push:
+ 	skb_push_rcsum(skb, nh_ofs);
+ 
+ out:
+-	bstats_cpu_update(this_cpu_ptr(a->cpu_bstats), skb);
++	tcf_action_update_bstats(&c->common, skb);
+ 	return retval;
+ 
+ drop:
+--- a/net/sched/act_gact.c
++++ b/net/sched/act_gact.c
+@@ -159,7 +159,7 @@ static int tcf_gact_act(struct sk_buff *
+ 		action = gact_rand[ptype](gact);
+ 	}
+ #endif
+-	bstats_cpu_update(this_cpu_ptr(gact->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&gact->common, skb);
+ 	if (action == TC_ACT_SHOT)
+ 		qstats_drop_inc(this_cpu_ptr(gact->common.cpu_qstats));
+ 
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -233,7 +233,7 @@ static int tcf_mirred_act(struct sk_buff
+ 	}
+ 
+ 	tcf_lastuse_update(&m->tcf_tm);
+-	bstats_cpu_update(this_cpu_ptr(m->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&m->common, skb);
+ 
+ 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
+ 	m_eaction = READ_ONCE(m->tcfm_eaction);
+--- a/net/sched/act_tunnel_key.c
++++ b/net/sched/act_tunnel_key.c
+@@ -31,7 +31,7 @@ static int tunnel_key_act(struct sk_buff
+ 	params = rcu_dereference_bh(t->params);
+ 
+ 	tcf_lastuse_update(&t->tcf_tm);
+-	bstats_cpu_update(this_cpu_ptr(t->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&t->common, skb);
+ 	action = READ_ONCE(t->tcf_action);
+ 
+ 	switch (params->tcft_action) {
+--- a/net/sched/act_vlan.c
++++ b/net/sched/act_vlan.c
+@@ -29,7 +29,7 @@ static int tcf_vlan_act(struct sk_buff *
+ 	u16 tci;
+ 
+ 	tcf_lastuse_update(&v->tcf_tm);
+-	bstats_cpu_update(this_cpu_ptr(v->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&v->common, skb);
+ 
+ 	/* Ensure 'data' points at mac_header prior calling vlan manipulating
+ 	 * functions.
 
 
 
