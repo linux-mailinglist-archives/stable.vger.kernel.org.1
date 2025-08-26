@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA65B3667D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193C7B360C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5AA46848E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAF361BA5AF9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8963451A0;
-	Tue, 26 Aug 2025 13:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE2F1D61A3;
+	Tue, 26 Aug 2025 13:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLtRvMqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8Bf1Tep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF704350D53;
-	Tue, 26 Aug 2025 13:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED93A221DA5;
+	Tue, 26 Aug 2025 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216105; cv=none; b=pT5Lu3DzPVrfyGyz0Fe4kvHokvGaxnePVNnDOg+Kvx1zttL8XZxG27IkkFfSEUc62Vl0TihNCEhmFhDyF2VKRfNSKm4ngmSk54LnV2tVSvi8bkmtcJvtIh/QP0WzPV//ksFgGJjNIgxBmAF3gVrNC+vV42r5EHMCci/v3IPT5Lo=
+	t=1756213204; cv=none; b=ErbdWO0GmdaxRmvBxsBmoC7ZnuT6+GO8U6xLnBzqRsehanXqVzi+AQavPpKt0Y/HPcvudJbHHJA9ivTcQnKlXZIwn8z9vSydJfYCFH5SM067CJrR4fZzxLQ54LOus7c4Yod2+U760I3C9slULPSIx02OrbafpnQTGcmEF6oqpzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216105; c=relaxed/simple;
-	bh=N4Xf91yeCVS5jnUa4HSf3G6z16csF3RYpzLUWRvH9OU=;
+	s=arc-20240116; t=1756213204; c=relaxed/simple;
+	bh=Y1xTduzIJX35Rdno7Yk8mzGvtjqXC05UXGz8sRcaTtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xxu24gvDcnlWRbzlk2+USjxRyYzNeiH0vcVYBIEk5msELpIiVrHx3UoE4vlXye3pvzF2yjYWKYoEjJttq08+Wih8U15kbQjspqkX+ln8MM6yGkqQSs28EniM6bSLVLyZDHX0FJGEUZaRTaBQtFwLvU2lDvgt89rMdV7bmnUapqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLtRvMqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62668C4CEF1;
-	Tue, 26 Aug 2025 13:48:25 +0000 (UTC)
+	 MIME-Version; b=J8JFSJljuSVePpNPlHxG+H/0GueHCxHwRydd/FVCfnxoCb5J7e5yD+bH54iU2E02wOFHlWsGGUnHVFBNPHfLKqsoe4yvCv67jbZH47C2bri1x816YYr/3XrsfYtecC1dZn/h7u27yeA4f5s4dldWdehDL6IH8bACXqL1GKdx1Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8Bf1Tep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD66C113CF;
+	Tue, 26 Aug 2025 13:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216105;
-	bh=N4Xf91yeCVS5jnUa4HSf3G6z16csF3RYpzLUWRvH9OU=;
+	s=korg; t=1756213203;
+	bh=Y1xTduzIJX35Rdno7Yk8mzGvtjqXC05UXGz8sRcaTtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLtRvMqy1RTFum3g0F3wlQbfxO6k3c4kqXwfB/uHbtbq3QrPZYujwNkn8wZn7zEMM
-	 JZosfuc6ZNt+MNEPGVMMrti67ECOuUB/i6dPqDp3dAK8VyYQ4vYYaJhUe/uNaYkUBl
-	 M4w4CbsmwEbq6BNFlg2XEeEqu5vU83opMPQ58Azg=
+	b=v8Bf1Tepn8r206TnCtOVROHhXXNsO7IBkAuaYgZQYJwP4DP2HzH1z9qJbs06HS8iF
+	 H3JiDxUPDfTgXbfgb3/U7jJBzDIBiUKdv8n+efQvEzCJKbvaH6KtoseKXi9L2yBMp2
+	 7r0vElNJOvfm91i57PMN7d3DimEPnxWC1YoGPvpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/644] udf: Verify partition map count
+Subject: [PATCH 6.6 228/587] fs/orangefs: use snprintf() instead of sprintf()
 Date: Tue, 26 Aug 2025 13:06:17 +0200
-Message-ID: <20250826110953.469436461@linuxfoundation.org>
+Message-ID: <20250826110958.734123154@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
+[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
 
-Verify that number of partition maps isn't insanely high which can lead
-to large allocation in udf_sb_alloc_partition_maps(). All partition maps
-have to fit in the LVD which is in a single block.
+sprintf() is discouraged for use with bounded destination buffers
+as it does not prevent buffer overflows when the formatted output
+exceeds the destination buffer size. snprintf() is a safer
+alternative as it limits the number of bytes written and ensures
+NUL-termination.
 
-Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Replace sprintf() with snprintf() for copying the debug string
+into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
+the maximum size to ensure safe formatting and prevent memory
+corruption in edge cases.
+
+EDIT: After this patch sat on linux-next for a few days, Dan
+Carpenter saw it and suggested that I use scnprintf instead of
+snprintf. I made the change and retested.
+
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/orangefs/orangefs-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 4275d2bc0c36..69e4f00ce791 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1411,7 +1411,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 	struct genericPartitionMap *gpm;
- 	uint16_t ident;
- 	struct buffer_head *bh;
--	unsigned int table_len;
-+	unsigned int table_len, part_map_count;
- 	int ret;
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index b57140ebfad0..cd4bfd92ebd6 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
+ 		goto out;
  
- 	bh = udf_read_tagged(sb, block, block, &ident);
-@@ -1432,7 +1432,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 					   "logical volume");
- 	if (ret)
- 		goto out_bh;
--	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
-+
-+	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
-+	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
-+		udf_err(sb, "error loading logical volume descriptor: "
-+			"Too many partition maps (%u > %u)\n", part_map_count,
-+			table_len / (unsigned)sizeof(struct genericPartitionMap1));
-+		ret = -EIO;
-+		goto out_bh;
-+	}
-+	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
- 	if (ret)
- 		goto out_bh;
+ 	mutex_lock(&orangefs_debug_lock);
+-	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
++	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
+ 	mutex_unlock(&orangefs_debug_lock);
  
+ 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
 -- 
 2.39.5
 
