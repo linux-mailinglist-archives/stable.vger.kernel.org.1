@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC26B35E3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9831FB35C99
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31B781BC0F6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 053647B91FF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11DD29D280;
-	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00E8343218;
+	Tue, 26 Aug 2025 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbRBrqhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+qua+1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0C629BD98;
-	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F00343205;
+	Tue, 26 Aug 2025 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208811; cv=none; b=pMiZ4vqxrELSDljCSC/cEVEkLnPnLd9Z9rkT6baY/nNupI0x0BCheZokoVri0n3H4RJcVstTph7b65AzuaEZE+Ng+aMIeLeUcpUtgLunlBYnifA5dV6BicHXDmzBpaVZDrwtpxTkBdaldJKSd4Oovj6vlo1760OpMRKObKnq/VA=
+	t=1756208048; cv=none; b=AMqSOONnPnmGxGJV/IJ9WlulHTCE/LZaGVTkB+xmUGIKCs+5gkchVnopKIPnGwym66BasZMDRsGZK7OUtgaj8mBAhr0nfEkambiUn9UBNJBgvgaZIoCd+SRSLPR1N7JOnZS5WQhRwT8kcTkNuFlsoRxgfjgxfgFPHJrvFKoVulg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208811; c=relaxed/simple;
-	bh=oKgIT+k7S214UgybvZ/v3Pmcb0rW7rm9GuUUezmKWj0=;
+	s=arc-20240116; t=1756208048; c=relaxed/simple;
+	bh=1FRMdDfpDOHY0/8N+h2som1WipNzyn4RMBv/d6g9NF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGCpKU0iCppWyTNKadZmAxH3ULsOMDR1UlQ2+uKvR4iaAHyWcMMV+Xs9mP/D3SU28z2RynWFRBLIWKODIfIh83qQGuA/MJML7nj8sO3xKBo8gOnoTleZPSKPF+qLM8t4vEbZOM/p/I7A4wAwUF1kliigMX/u8o9bq5KeGNujDOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbRBrqhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324EFC4CEF1;
-	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
+	 MIME-Version; b=ZJwCg9da1DfL24rnV1Jx9M2MT/9Gmqzc0I7XnE/Pz3gzjo5tWDIYQJ4UJBan4TG7mBLkfZS6LyObM5QnJ8sfjbaRIeB6pCBTuLakUzwTaNxCReQmCtM+dC9bs3IOixlonqCEmmIJBV6jcnrSAYJZtTKslaFsSN0LLs+MUSh1j30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+qua+1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F32CC4CEF1;
+	Tue, 26 Aug 2025 11:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208811;
-	bh=oKgIT+k7S214UgybvZ/v3Pmcb0rW7rm9GuUUezmKWj0=;
+	s=korg; t=1756208048;
+	bh=1FRMdDfpDOHY0/8N+h2som1WipNzyn4RMBv/d6g9NF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbRBrqhyQk325mUztuinprpqjSUkxqzpUk+4/MYTz04AtyWJZW4iD9E669KGvoJNR
-	 49QPX6ABHkPOeWXWyCYf6eIlTGKtYRBwzqqYHkEHT3f4xSfEpY/tov4rMgVnKai7A0
-	 5e/yXdW7P6EJoRZ8EbiBK91rpACmE4xMgw31P+ZQ=
+	b=W+qua+1bJ8aM5EU6V+KvioEGPQag8Kf2+1opc1LOdHpwbkwti9m6KD5mtxi01vG9B
+	 nLd6vDLZZ6kYZFYr2O2xfOlEAY3ksL9W/2p8uZyb98beheDqCSxfmDdGsBIei7OTDj
+	 Pq8BBhbEuQjtLIpppzSTRspIeVjXNMBzLV+uBy+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/322] cgroup/cpuset: Fix a partition error with CPU hotplug
+Subject: [PATCH 6.16 386/457] md: fix sync_action incorrect display during resync
 Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826110922.232827737@linuxfoundation.org>
+Message-ID: <20250826110946.839104859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 150e298ae0ccbecff2357a72fbabd80f8849ea6e ]
+[ Upstream commit b7ee30f0efd12f42735ae233071015389407966c ]
 
-It was found during testing that an invalid leaf partition with an
-empty effective exclusive CPU list can become a valid empty partition
-with no CPU afer an offline/online operation of an unrelated CPU. An
-empty partition root is allowed in the special case that it has no
-task in its cgroup and has distributed out all its CPUs to its child
-partitions. That is certainly not the case here.
+During raid resync, if a disk becomes faulty, the operation is
+briefly interrupted. The MD_RECOVERY_RECOVER flag triggered by
+the disk failure causes sync_action to incorrectly show "recover"
+instead of "resync". The same issue affects reshape operations.
 
-The problem is in the cpumask_subsets() test in the hotplug case
-(update with no new mask) of update_parent_effective_cpumask() as it
-also returns true if the effective exclusive CPU list is empty. Fix that
-by addding the cpumask_empty() test to root out this exception case.
-Also add the cpumask_empty() test in cpuset_hotplug_update_tasks()
-to avoid calling update_parent_effective_cpumask() for this special case.
+Reproduction steps:
+  mdadm -Cv /dev/md1 -l1 -n4 -e1.2 /dev/sd{a..d} // -> resync happened
+  mdadm -f /dev/md1 /dev/sda                     // -> resync interrupted
+  cat sync_action
+  -> recover
 
-Fixes: 0c7f293efc87 ("cgroup/cpuset: Add cpuset.cpus.exclusive.effective for v2")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Add progress checks in md_sync_action() for resync/recover/reshape
+to ensure the interface correctly reports the actual operation type.
+
+Fixes: 4b10a3bc67c1 ("md: ensure resync is prioritized over recovery")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250816002534.1754356-3-zhengqixing@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/md/md.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index af5dc30bfe4b..25f9565f798d 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1771,7 +1771,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
- 			if (is_partition_valid(cs))
- 				adding = cpumask_and(tmp->addmask,
- 						xcpus, parent->effective_xcpus);
--		} else if (is_partition_invalid(cs) &&
-+		} else if (is_partition_invalid(cs) && !cpumask_empty(xcpus) &&
- 			   cpumask_subset(xcpus, parent->effective_xcpus)) {
- 			struct cgroup_subsys_state *css;
- 			struct cpuset *child;
-@@ -3792,9 +3792,10 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
- 		partcmd = partcmd_invalidate;
- 	/*
- 	 * On the other hand, an invalid partition root may be transitioned
--	 * back to a regular one.
-+	 * back to a regular one with a non-empty effective xcpus.
- 	 */
--	else if (is_partition_valid(parent) && is_partition_invalid(cs))
-+	else if (is_partition_valid(parent) && is_partition_invalid(cs) &&
-+		 !cpumask_empty(cs->effective_xcpus))
- 		partcmd = partcmd_update;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 0348b5f3adc5..8746b22060a7 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -4831,9 +4831,33 @@ static bool rdev_needs_recovery(struct md_rdev *rdev, sector_t sectors)
+ 	       rdev->recovery_offset < sectors;
+ }
  
- 	if (partcmd >= 0) {
++static enum sync_action md_get_active_sync_action(struct mddev *mddev)
++{
++	struct md_rdev *rdev;
++	bool is_recover = false;
++
++	if (mddev->resync_offset < MaxSector)
++		return ACTION_RESYNC;
++
++	if (mddev->reshape_position != MaxSector)
++		return ACTION_RESHAPE;
++
++	rcu_read_lock();
++	rdev_for_each_rcu(rdev, mddev) {
++		if (rdev_needs_recovery(rdev, MaxSector)) {
++			is_recover = true;
++			break;
++		}
++	}
++	rcu_read_unlock();
++
++	return is_recover ? ACTION_RECOVER : ACTION_IDLE;
++}
++
+ enum sync_action md_sync_action(struct mddev *mddev)
+ {
+ 	unsigned long recovery = mddev->recovery;
++	enum sync_action active_action;
+ 
+ 	/*
+ 	 * frozen has the highest priority, means running sync_thread will be
+@@ -4857,8 +4881,17 @@ enum sync_action md_sync_action(struct mddev *mddev)
+ 	    !test_bit(MD_RECOVERY_NEEDED, &recovery))
+ 		return ACTION_IDLE;
+ 
+-	if (test_bit(MD_RECOVERY_RESHAPE, &recovery) ||
+-	    mddev->reshape_position != MaxSector)
++	/*
++	 * Check if any sync operation (resync/recover/reshape) is
++	 * currently active. This ensures that only one sync operation
++	 * can run at a time. Returns the type of active operation, or
++	 * ACTION_IDLE if none are active.
++	 */
++	active_action = md_get_active_sync_action(mddev);
++	if (active_action != ACTION_IDLE)
++		return active_action;
++
++	if (test_bit(MD_RECOVERY_RESHAPE, &recovery))
+ 		return ACTION_RESHAPE;
+ 
+ 	if (test_bit(MD_RECOVERY_RECOVER, &recovery))
 -- 
 2.50.1
 
