@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-173715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B441B35E67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB20B364E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133DB561A7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75ADE8A6455
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35563093AB;
-	Tue, 26 Aug 2025 11:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2D02E6106;
+	Tue, 26 Aug 2025 13:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cRFfRWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRd0gHMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA73002D2;
-	Tue, 26 Aug 2025 11:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D28265CCD;
+	Tue, 26 Aug 2025 13:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208969; cv=none; b=Ww6QNTGQNH27Xy4UKRM61hcp2cuNR+MZIWjIFa2x7CkXBXXG9mH7JC3pqVhSW9wu1LQ+Odg63nW+fxmSZOoxjCjCr/GxsD0gKL2MvTOQjNFpV5eHKSohUrhvbGpViFdmpTCfslYmnBUZzhLPazzgXk8DrGwY0L7Vh8VDKabK0io=
+	t=1756215319; cv=none; b=tdD6yFV+UeO7PJEnvMK1RIcwJJrbMexM2fIICnek3XgvKwOFwLZf678iaf1o1NXNMrGPumFWGfEJ74HmjkBjVbh8xFuRCYThZOvvVssJ5LePfqlYN07tpD2DWNRfdVjHCSnsXi2mupnakN3Jt+zJiMKTMAztxwS6axAaHhepj1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208969; c=relaxed/simple;
-	bh=tO9GkSWm+vG4MtI+b1sqpWOXbuybEwMsMxmt7/RC6QY=;
+	s=arc-20240116; t=1756215319; c=relaxed/simple;
+	bh=xPI96XjXeNzl7UxvwxEHLsB+c19rctZwJ9q6LxB17oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hXBj5ziBQ6Uzm2jwuhUvKE+w13dkO8UvOnHX+pDVVq8a+j7kPpIZeXrysaCWg+u1z7FYVJDn9rkVGy8ez6QwWBtkleb8KVr815w8Pq1+ny4zJ05O0Pa8Hw2bM2CJra/boFE8BWrH+4jakXjSeqn35rfSkRVHzc2VhjHdRusKCyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cRFfRWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41EBC4CEF4;
-	Tue, 26 Aug 2025 11:49:28 +0000 (UTC)
+	 MIME-Version; b=cKVuOaKNzjSxwURw3RKQGqXmAlhYOLljy/dRNFLymb4hHLkWPtQ0nu/65OmzpDRCIeyL0jPR8NnHzLzPVm0kTUUAmejiInwAy/n1Y/bqs4PsUFEIqibt4DrwUwy7JVWpFmYHrkQvS7O6tCTrnPO+m+1SHyQEoPi7Z6TJ53476cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRd0gHMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE26FC113CF;
+	Tue, 26 Aug 2025 13:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208969;
-	bh=tO9GkSWm+vG4MtI+b1sqpWOXbuybEwMsMxmt7/RC6QY=;
+	s=korg; t=1756215317;
+	bh=xPI96XjXeNzl7UxvwxEHLsB+c19rctZwJ9q6LxB17oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cRFfRWwoCvs4YJu44pRVLRr5eWIDqv4gFso8+JtaSqn134TcOTRpgBZ2Whwj8w6j
-	 g4QjywKhDZBKGep17ROe14XlEJXeEOzTBEg9pooIPUXSk6BFi8gQgreTp+ZdP8kOpt
-	 eOT+ZiwETNbGpzEIY7Th9PTWBz10APrHcrNrF/Zc=
+	b=GRd0gHMm59onOzH9qWZqLyAT+bJJs/p/ACJNFOJ0cfYgartD0ubds5ALqVVShttvl
+	 yEtkkr/GNZ2EoGZMkFft1qI0fllClPlf2UXpjO+TX3cdXJuEZZjn5iqND/4tcVB3fA
+	 FkP9Xlf4FEj4wHK9bwKaGzoCNgFaeO9F4m/c8fpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/322] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
+Subject: [PATCH 6.1 469/482] phy: mscc: Fix timestamping for vsc8584
 Date: Tue, 26 Aug 2025 13:12:02 +0200
-Message-ID: <20250826110923.472302851@linuxfoundation.org>
+Message-ID: <20250826110942.407083719@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 15de71d06a400f7fdc15bf377a2552b0ec437cf5 ]
+[ Upstream commit bc1a59cff9f797bfbf8f3104507584d89e9ecf2e ]
 
-The following setup can trigger a WARNING in htb_activate due to
-the condition: !cl->leaf.q->q.qlen
+There was a problem when we received frames and the frames were
+timestamped. The driver is configured to store the nanosecond part of
+the timestmap in the ptp reserved bits and it would take the second part
+by reading the LTC. The problem is that when reading the LTC we are in
+atomic context and to read the second part will go over mdio bus which
+might sleep, so we get an error.
+The fix consists in actually put all the frames in a queue and start the
+aux work and in that work to read the LTC and then calculate the full
+received time.
 
-tc qdisc del dev lo root
-tc qdisc add dev lo root handle 1: htb default 1
-tc class add dev lo parent 1: classid 1:1 \
-       htb rate 64bit
-tc qdisc add dev lo parent 1:1 handle f: \
-       cake memlimit 1b
-ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
-
-This is because the low memlimit leads to a low buffer_limit, which
-causes packet dropping. However, cake_enqueue still returns
-NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
-empty child qdisc. We should return NET_XMIT_CN when packets are
-dropped from the same tin and flow.
-
-I do not believe return value of NET_XMIT_CN is necessary for packet
-drops in the case of ack filtering, as that is meant to optimize
-performance, not to signal congestion.
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: William Liu <will@willsroot.io>
-Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250819033601.579821-1-will@willsroot.io
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250818081029.1300780-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/phy/mscc/mscc.h      | 12 ++++++++
+ drivers/net/phy/mscc/mscc_main.c | 12 ++++++++
+ drivers/net/phy/mscc/mscc_ptp.c  | 49 ++++++++++++++++++++++++--------
+ 3 files changed, 61 insertions(+), 12 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 2c2e2a67f3b2..6cbe8a7a0e5c 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1745,7 +1745,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	ktime_t now = ktime_get();
- 	struct cake_tin_data *b;
- 	struct cake_flow *flow;
--	u32 idx;
-+	u32 idx, tin;
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index 055e4ca5b3b5..878298304430 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -360,6 +360,13 @@ struct vsc85xx_hw_stat {
+ 	u16 mask;
+ };
  
- 	/* choose flow to insert into */
- 	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
-@@ -1755,6 +1755,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		__qdisc_drop(skb, to_free);
- 		return ret;
- 	}
-+	tin = (u32)(b - q->tins);
- 	idx--;
- 	flow = &b->flows[idx];
- 
-@@ -1922,13 +1923,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		q->buffer_max_used = q->buffer_used;
- 
- 	if (q->buffer_used > q->buffer_limit) {
-+		bool same_flow = false;
- 		u32 dropped = 0;
-+		u32 drop_id;
- 
- 		while (q->buffer_used > q->buffer_limit) {
- 			dropped++;
--			cake_drop(sch, to_free);
-+			drop_id = cake_drop(sch, to_free);
++struct vsc8531_skb_cb {
++	u32 ns;
++};
 +
-+			if ((drop_id >> 16) == tin &&
-+			    (drop_id & 0xFFFF) == idx)
-+				same_flow = true;
- 		}
- 		b->drop_overlimit += dropped;
++#define VSC8531_SKB_CB(skb) \
++	((struct vsc8531_skb_cb *)((skb)->cb))
 +
-+		if (same_flow)
-+			return NET_XMIT_CN;
- 	}
- 	return NET_XMIT_SUCCESS;
+ struct vsc8531_private {
+ 	int rate_magic;
+ 	u16 supp_led_modes;
+@@ -408,6 +415,11 @@ struct vsc8531_private {
+ 	 */
+ 	struct mutex ts_lock;
+ 	struct mutex phc_lock;
++
++	/* list of skbs that were received and need timestamp information but it
++	 * didn't received it yet
++	 */
++	struct sk_buff_head rx_skbs_list;
+ };
+ 
+ /* Shared structure between the PHYs of the same package.
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 7bd940baec59..36734bb217e4 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2324,6 +2324,13 @@ static int vsc85xx_probe(struct phy_device *phydev)
+ 	return vsc85xx_dt_led_modes_get(phydev, default_mode);
  }
+ 
++static void vsc85xx_remove(struct phy_device *phydev)
++{
++	struct vsc8531_private *priv = phydev->priv;
++
++	skb_queue_purge(&priv->rx_skbs_list);
++}
++
+ /* Microsemi VSC85xx PHYs */
+ static struct phy_driver vsc85xx_driver[] = {
+ {
+@@ -2554,6 +2561,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8574_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+@@ -2579,6 +2587,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8574_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+@@ -2604,6 +2613,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+@@ -2627,6 +2637,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+@@ -2650,6 +2661,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index d0bd6ab45ebe..add1a9ee721a 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -1193,9 +1193,7 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
+ {
+ 	struct vsc8531_private *vsc8531 =
+ 		container_of(mii_ts, struct vsc8531_private, mii_ts);
+-	struct skb_shared_hwtstamps *shhwtstamps = NULL;
+ 	struct vsc85xx_ptphdr *ptphdr;
+-	struct timespec64 ts;
+ 	unsigned long ns;
+ 
+ 	if (!vsc8531->ptp->configured)
+@@ -1205,27 +1203,52 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
+ 	    type == PTP_CLASS_NONE)
+ 		return false;
+ 
+-	vsc85xx_gettime(&vsc8531->ptp->caps, &ts);
+-
+ 	ptphdr = get_ptp_header_rx(skb, vsc8531->ptp->rx_filter);
+ 	if (!ptphdr)
+ 		return false;
+ 
+-	shhwtstamps = skb_hwtstamps(skb);
+-	memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
+-
+ 	ns = ntohl(ptphdr->rsrvd2);
+ 
+-	/* nsec is in reserved field */
+-	if (ts.tv_nsec < ns)
+-		ts.tv_sec--;
++	VSC8531_SKB_CB(skb)->ns = ns;
++	skb_queue_tail(&vsc8531->rx_skbs_list, skb);
+ 
+-	shhwtstamps->hwtstamp = ktime_set(ts.tv_sec, ns);
+-	netif_rx(skb);
++	ptp_schedule_worker(vsc8531->ptp->ptp_clock, 0);
+ 
+ 	return true;
+ }
+ 
++static long vsc85xx_do_aux_work(struct ptp_clock_info *info)
++{
++	struct vsc85xx_ptp *ptp = container_of(info, struct vsc85xx_ptp, caps);
++	struct skb_shared_hwtstamps *shhwtstamps = NULL;
++	struct phy_device *phydev = ptp->phydev;
++	struct vsc8531_private *priv = phydev->priv;
++	struct sk_buff_head received;
++	struct sk_buff *rx_skb;
++	struct timespec64 ts;
++	unsigned long flags;
++
++	__skb_queue_head_init(&received);
++	spin_lock_irqsave(&priv->rx_skbs_list.lock, flags);
++	skb_queue_splice_tail_init(&priv->rx_skbs_list, &received);
++	spin_unlock_irqrestore(&priv->rx_skbs_list.lock, flags);
++
++	vsc85xx_gettime(info, &ts);
++	while ((rx_skb = __skb_dequeue(&received)) != NULL) {
++		shhwtstamps = skb_hwtstamps(rx_skb);
++		memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
++
++		if (ts.tv_nsec < VSC8531_SKB_CB(rx_skb)->ns)
++			ts.tv_sec--;
++
++		shhwtstamps->hwtstamp = ktime_set(ts.tv_sec,
++						  VSC8531_SKB_CB(rx_skb)->ns);
++		netif_rx(rx_skb);
++	}
++
++	return -1;
++}
++
+ static const struct ptp_clock_info vsc85xx_clk_caps = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "VSC85xx timer",
+@@ -1239,6 +1262,7 @@ static const struct ptp_clock_info vsc85xx_clk_caps = {
+ 	.adjfine	= &vsc85xx_adjfine,
+ 	.gettime64	= &vsc85xx_gettime,
+ 	.settime64	= &vsc85xx_settime,
++	.do_aux_work	= &vsc85xx_do_aux_work,
+ };
+ 
+ static struct vsc8531_private *vsc8584_base_priv(struct phy_device *phydev)
+@@ -1566,6 +1590,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 
+ 	mutex_init(&vsc8531->phc_lock);
+ 	mutex_init(&vsc8531->ts_lock);
++	skb_queue_head_init(&vsc8531->rx_skbs_list);
+ 
+ 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
+ 	 * the same GPIO can be requested by all the PHYs of the same package.
 -- 
 2.50.1
 
