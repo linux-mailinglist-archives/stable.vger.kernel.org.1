@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-176028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C2BB36B9C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BC3B3636B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33554A03D06
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51F08A6CEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F7134DCCE;
-	Tue, 26 Aug 2025 14:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C2034F467;
+	Tue, 26 Aug 2025 13:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZZE9ZB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAms//C9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC8D223338;
-	Tue, 26 Aug 2025 14:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D0A1A239A;
+	Tue, 26 Aug 2025 13:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218596; cv=none; b=uDnwmGTSSa7lSlGeu8wWtuxvpA7xdzIp6Gj3DTFfbf+cNx8lTtmO/OLpyjgzuFowqvkdaKg/5z4TTo5hy1C/tQVxXK0BVpY9aGldiclXrVFkzB7y4XNBmZmMGE0bG8eLIycja6vNLmMvLG1DNVcUWmHkiLxAQuSm6mpeLAUzlW4=
+	t=1756214429; cv=none; b=ndcB9xuMOz485gqSfVl+R2qtRy3W3w1MDX0DYTrGQD48KLfHFWwITiJu3OnMx/fNTGLJ7JfLmyIvV3uRAs1CCSmyZ5IAnbMJbQDT7+JHqsQtgezYQkv0330wraaVriHuDi4hxJ1o2vJmWNbfNYfWN3px6xZVo9OPQYBrEzoA+co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218596; c=relaxed/simple;
-	bh=smsbEMSMg9O8xl5Qg2wiuofZj0TPLGrZobyGHpYL9LY=;
+	s=arc-20240116; t=1756214429; c=relaxed/simple;
+	bh=M6KlV/U955VwfbovDMSbOU+ffOgpKfXK2lGwSAOKEwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkRheVF2cUikdb7ttWf1kzdIcgueB+rgcbAIfoITD0WOkT+aG2W3RtbZV4Q1QCbUpTrVh3AaeNbfv/EjZSk3XRyGQWEDO9m+bMUDL55Gabb4csWASkCfP/KLpP4dGXEXFj58NRiz5an4ssy54Zv1nQMg6AJ9McVWgUxqJdrT5Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZZE9ZB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC15C4CEF1;
-	Tue, 26 Aug 2025 14:29:55 +0000 (UTC)
+	 MIME-Version; b=sGeGUDLrA/aJ7PHgQWPRE+E41XnUY3nli9lp4V8klmaf4ppm2FgE2KBY+HdgZLaq6cVEEoNpetb9ucFGxpPtGCmTrGDEzV+iTlrWz0ed9TG4F9qylstm8IuLVAdg9JIi0TK4cmwpUSVdgYYzcyr9+hyJjoyAiVtp00jiHiOhk90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAms//C9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21430C4CEF1;
+	Tue, 26 Aug 2025 13:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218596;
-	bh=smsbEMSMg9O8xl5Qg2wiuofZj0TPLGrZobyGHpYL9LY=;
+	s=korg; t=1756214429;
+	bh=M6KlV/U955VwfbovDMSbOU+ffOgpKfXK2lGwSAOKEwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZZE9ZB3rtQ4FAaBziJgb/HcPCMu5vXJxhJOcZZThgweXZD8/Fc1M7fNw3uHlv4jN
-	 oGlZSBI5YVwcB8WL1z54BsYMVS3OiZ/8BjGyU7X+AOvlcv2XiVeXIgG6TIprpx06o1
-	 FCYe6RfZ5cUuT8EAlENEpzkdWyHIqu4HHYCvAY5s=
+	b=hAms//C9lIrSfBypxgTP0s1OsY0l+M/snSaAzpF38UbnkTLy1aWGmrdYqqOLgrUKg
+	 iMQXO7PkeCmYPTrq+XhEXo3hVFa+aUb2/NFuecQMMKJibQith69BQBGgvWOXPcuhKn
+	 RoK3JrqVjmFvsYWFYsnp4leoTKU27t1P3vH4ySu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.4 061/403] i2c: qup: jump out of the loop in case of timeout
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/482] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
 Date: Tue, 26 Aug 2025 13:06:27 +0200
-Message-ID: <20250826110907.551078643@linuxfoundation.org>
+Message-ID: <20250826110934.128796930@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
+[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
 
-Original logic only sets the return value but doesn't jump out of the
-loop if the bus is kept active by a client. This is not expected. A
-malicious or buggy i2c client can hang the kernel in this case and
-should be avoided. This is observed during a long time test with a
-PCA953x GPIO extender.
+If the device configuration fails (if `dma_dev->device_config()`),
+`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
+leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
 
-Fix it by changing the logic to not only sets the return value, but also
-jumps out of the loop and return to the caller with -ETIMEDOUT.
-
-Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: <stable@vger.kernel.org> # v4.17+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qup.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -449,8 +449,10 @@ static int qup_i2c_bus_active(struct qup
- 		if (!(status & I2C_STATUS_BUS_ACTIVE))
- 			break;
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 04bf6ecf7d55..85e0fa7d902b 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
+ 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
  
--		if (time_after(jiffies, timeout))
-+		if (time_after(jiffies, timeout)) {
- 			ret = -ETIMEDOUT;
-+			break;
-+		}
+ 	/* Make DMA channel work with LPB FIFO data register */
+-	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
+-		ret = -EINVAL;
+-		goto err_dma_prep;
+-	}
++	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
++		return -EINVAL;
  
- 		usleep_range(len, len * 2);
- 	}
+ 	sg_init_table(&sg, 1);
+ 
+-- 
+2.39.5
+
 
 
 
