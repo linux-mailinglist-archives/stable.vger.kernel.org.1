@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-176136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AA7B36BF1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AC0B35B8D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42A11C46890
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF0453AB4BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792EB35A29B;
-	Tue, 26 Aug 2025 14:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBF42BEC2B;
+	Tue, 26 Aug 2025 11:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHqsjkZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSOtZVnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365EA34DCD2;
-	Tue, 26 Aug 2025 14:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280AB239573;
+	Tue, 26 Aug 2025 11:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218874; cv=none; b=AG+j7YaT0RmjGom9wfMrn28RmQq9W9ThvlF0QDhu8nPnrik/dEHJX3Pw7czrj9J8B0DZbH8iT7uKnHH6Fo6vQ9TXUzs192T45F5aAaa5grau/00aM+wSaL4+RwHBau8pYgjVX7QCVxvsyMInrfFDtyZU06HlbjiGooaEYs5vjno=
+	t=1756207515; cv=none; b=ed0hD7/cIN5Q2oEZey3oWTzauKoElZcfKrg+UqcSOXs1Eqv/fKhKkAnjnUjYuETQd5Wa/dkXjd0Mk99WtkUyxjinWYrgouMe1a9nuV8D87QM4wlj1J+pGkvwLo91U/yzBiXzZMni6LdlsFUDtPTrK3aDtkllUGDQMrbSZQpk5KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218874; c=relaxed/simple;
-	bh=kBiADs6ypt3UL+HKpzOh8oEdD76p4qT2RdMzZwsktvs=;
+	s=arc-20240116; t=1756207515; c=relaxed/simple;
+	bh=ii2wuVG4FHxO5R/lJ/3dya0/u59AoVgOTIpNyURFgVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDWjZ0FGIEghKBZGGUvCDaNYAoCfh3kac3YUafE0s3BEh0kIlPrvSGEl2Un3WI2in5Ye8IFPwaOSGp4CZjcxcVlTahvKvABw5K5Y2z5n1oHhOPvhh8fA1p2ovTZl1ntElQ/4cjIz494nFI/mlOwQEv69Il1mydUBz6SOSwWjdX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHqsjkZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE93AC4CEF1;
-	Tue, 26 Aug 2025 14:34:33 +0000 (UTC)
+	 MIME-Version; b=lnhITkr7XgAIkPLUUj+54m4CNk32cxxzYtFyZkTaT5loXgEeRFDQ8M70BKAIxlPlf+FqQuAWAeFcguJ/f75Y0sSAgnd3ubr2Cht2FvNq4nsQQr6kTVG9dIWhngsbC9oMZKfKtU7JP+6ipW8flXzU2p8OXR4A1uwIqkqmqVmDapA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSOtZVnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CF7C4CEF1;
+	Tue, 26 Aug 2025 11:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218874;
-	bh=kBiADs6ypt3UL+HKpzOh8oEdD76p4qT2RdMzZwsktvs=;
+	s=korg; t=1756207515;
+	bh=ii2wuVG4FHxO5R/lJ/3dya0/u59AoVgOTIpNyURFgVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHqsjkZHVmw3+5e5Q+BWSubZqyekYzi1ZW9hwsd1S76s+Q0dxvWdWGFM9wNdCu7Oa
-	 vJL3O0Pwv4BAZEn55ArqMMZ0lE8sSYkg2tZYAaXBvcRdxwsX1J/fZrHHPRWIlWG6rd
-	 /DSyD9kEaDclqhEU7GC7X5v5Wa4W3BxiR53ErDe0=
+	b=ZSOtZVnNp/hJNj+yPI3oLHcK+UML/SSZkrvZ5ab4JlUM4sO1+VyIf9ls2TNTdo6Ti
+	 1KOz6szv25kfs9cVthmmzvDRhn5JE+Aa9+eIhrgdUvphvTG699hbKdbMaFULFoDbmW
+	 wMHwywMCN4rlVoa4+HTOQdf/GTIvADl69KoJY6lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 167/403] ACPI: processor: perflib: Move problematic pr->performance check
-Date: Tue, 26 Aug 2025 13:08:13 +0200
-Message-ID: <20250826110911.502037228@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 210/457] selftests: mptcp: sockopt: fix C23 extension warning
+Date: Tue, 26 Aug 2025 13:08:14 +0200
+Message-ID: <20250826110942.554333367@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
+commit 3259889fd3c0cc165b7e9ee375c789875dd32326 upstream.
 
-Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
-application") added a pr->performance check that prevents the frequency
-QoS request from being added when the given processor has no performance
-object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
-to trigger on an attempt to take the given CPU offline later because the
-frequency QoS object has not been added for it due to the missing
-performance object.
+GCC was complaining about the new label:
 
-Address this by moving the pr->performance check before calling
-acpi_processor_get_platform_limit() so it only prevents a limit from
-being set for the CPU if the performance object is not present.  This
-way, the frequency QoS request is added as it was before the above
-commit and it is present all the time along with the CPU's cpufreq
-policy regardless of whether or not the CPU is online.
+  mptcp_inq.c:79:2: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+     79 |         int err = getaddrinfo(node, service, hints, res);
+        |         ^
 
-Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
-Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
+  mptcp_sockopt.c:166:2: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+    166 |         int err = getaddrinfo(node, service, hints, res);
+        |         ^
+
+Simply declare 'err' before the label to avoid this warning.
+
+Fixes: dd367e81b79a ("selftests: mptcp: sockopt: use IPPROTO_MPTCP for getaddrinfo")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-8-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_inq.c     |    5 +++--
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -183,7 +183,7 @@ void acpi_processor_ppc_init(struct cpuf
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
+--- a/tools/testing/selftests/net/mptcp/mptcp_inq.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_inq.c
+@@ -75,9 +75,10 @@ static void xgetaddrinfo(const char *nod
+ 			 struct addrinfo *hints,
+ 			 struct addrinfo **res)
+ {
+-again:
+-	int err = getaddrinfo(node, service, hints, res);
++	int err;
  
--		if (!pr || !pr->performance)
-+		if (!pr)
- 			continue;
++again:
++	err = getaddrinfo(node, service, hints, res);
+ 	if (err) {
+ 		const char *errstr;
  
- 		/*
-@@ -200,6 +200,9 @@ void acpi_processor_ppc_init(struct cpuf
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+@@ -162,9 +162,10 @@ static void xgetaddrinfo(const char *nod
+ 			 struct addrinfo *hints,
+ 			 struct addrinfo **res)
+ {
+-again:
+-	int err = getaddrinfo(node, service, hints, res);
++	int err;
  
-+		if (!pr->performance)
-+			continue;
-+
- 		ret = acpi_processor_get_platform_limit(pr);
- 		if (ret)
- 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++again:
++	err = getaddrinfo(node, service, hints, res);
+ 	if (err) {
+ 		const char *errstr;
+ 
 
 
 
