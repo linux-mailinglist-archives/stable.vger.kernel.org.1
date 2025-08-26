@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48BDB35D58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6019EB3655B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C9B3610B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91577463E77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB90335BAA;
-	Tue, 26 Aug 2025 11:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04CC3009D5;
+	Tue, 26 Aug 2025 13:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFwU6K+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OK7qG3Wk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADFE341659;
-	Tue, 26 Aug 2025 11:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4D61EF39E;
+	Tue, 26 Aug 2025 13:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208018; cv=none; b=VlIQ/chtgER0IORA6YZ/sKZi76Qv9Up5Okk1LFkPh2fdo6D3LhsTAqy5K4rQT8cWPSDvKuzHLz+8IVVhpeCmCftceOouuScoMJX3EEAqmqI8GWDFRZP6XUXUJ+KRySjKTxymd1ppuoK44Iq0EunkqLj5SV5zlo5nR4712wYfYfk=
+	t=1756215231; cv=none; b=G1nC/kDlgdm6idzocwuJvKD6nEnPQj9xLHyEkYamcM0F/ZEfG962JeqspsuTZyKvy9GaoB5K58XCJ/7L53v4wfc/YXbmhQBvirafuQzSkMu/6/kE8aKApw4Yb4hH4pc4J7g27GJpIelq7e5xNcs5S38une1l2LYIbWDnryjbhvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208018; c=relaxed/simple;
-	bh=Yw7erqmMwLDTaDWdYm5Lt/6FWmswBUWZUkvFMu9BSsg=;
+	s=arc-20240116; t=1756215231; c=relaxed/simple;
+	bh=C2CxFTc+T5YcAYW/hztnpk6cVB78xZ1horICN2KAh6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=to1MNuOOlHj7ssLt3QtZlQbTK6hSUPkND0FQ60aOy91mtPrlVWWSEcBwY1Qaosx26+ulTf9R0yVx86FjHFtPV6+kksMjcfy/xHJ8bfp12COTq5VAZiEoTw52QrjJYt5lY6Z7xjZtZ4eAdDmziFs0+pbhA7SY09JdQrHssYCTfT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFwU6K+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A7BC4CEF4;
-	Tue, 26 Aug 2025 11:33:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZHtDgFVVWkf+/Mf8xJT9LvwL1EepsoAf+EGH6Fcyj+Zxu9SLNKNHXoSnYCmT8MeIB9UvWjEMgrHRIQZogn3KUEcahxfnM712/MSnLEZqR99gaby0oX0oBYVcvuLU/l8E7LYbD+J+dvjwtcf3g24gW1tz+jaXSCx/AY6Ez0n5Gxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OK7qG3Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1508C4CEF1;
+	Tue, 26 Aug 2025 13:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208015;
-	bh=Yw7erqmMwLDTaDWdYm5Lt/6FWmswBUWZUkvFMu9BSsg=;
+	s=korg; t=1756215231;
+	bh=C2CxFTc+T5YcAYW/hztnpk6cVB78xZ1horICN2KAh6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFwU6K+lI5n1HQrttZg1fEA0K6OoF0icJdgxOmWxa9IjS35nnESJuQ3TOVqhCWClO
-	 a48H44iWSLt0HN+0zx3Q5+wHigZ8ZIqId7OKUcHUxkTmBG3nhJxHY7NXMkKqvyxIjS
-	 IVgTOt/yPpkXVZDs3yiSS4M2jlfWD3jwclX0pfEg=
+	b=OK7qG3WkOodlD7fcv6STF+3HRDpxKIwqLLkBRhPYVb1s0Fm0l9sPKw+leDXvHcee3
+	 DOwiawqMCkYwtmFRlk8wHJhCGjjWD2RPHb0l3MZ1820y76e0V1GFiRchZlXCajPoM0
+	 ZPIOGvnrRoKulxNORKvH9d4BEOUs3t+nR8l881hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 405/457] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
+Subject: [PATCH 6.1 436/482] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Tue, 26 Aug 2025 13:11:29 +0200
-Message-ID: <20250826110947.304291685@linuxfoundation.org>
+Message-ID: <20250826110941.601617887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-Ensure ndo_fill_forward_path() is called with RCU lock held.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
+
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index c855fb799ce1..e9bd32741983 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
- 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
- 		return -1;
- 
-+	rcu_read_lock();
- 	err = dev_fill_forward_path(dev, addr, &stack);
-+	rcu_read_unlock();
- 	if (err)
- 		return err;
- 
--- 
-2.50.1
-
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
++		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
