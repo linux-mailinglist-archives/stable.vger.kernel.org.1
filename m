@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38541B36577
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE7BB35FC3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567658E2671
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31A71BA5276
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BB1227EA8;
-	Tue, 26 Aug 2025 13:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7371C701F;
+	Tue, 26 Aug 2025 12:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ0UnkU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ2117S3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7051DB127;
-	Tue, 26 Aug 2025 13:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3DA1547CC;
+	Tue, 26 Aug 2025 12:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215559; cv=none; b=JDlrN9lnZUUf4DNrdb0dBaH29GijwQf2xMjYn5S7vxTK3my4Y+9Qm7vzP6mpe8xvuFnVyXyzKyX5akGfVO7Y7sLDyiiQmFhdRZLK0o9w2B+NK78hSCmnsaNSDHuqNjW88dY7g2odoBnzf9uFZH2HWnUJILm9mGoWA/LqjV+Pq1Q=
+	t=1756212680; cv=none; b=KnptV1dMHGgfcI9Jrxn0DHDf7ru3BeKV25G8MbpDeQNkD0MC8IaZJSAW/RM9jPhRBsQsylFxvCrDRy7zmfXh6ISZMw2mVn9+SP1lm142ZsFdADrDRb7W/CYh89/9ZCLLpzShtOz+TaDfgnRKrvUHJjiAVtDlBh1z3Gn26hVjoaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215559; c=relaxed/simple;
-	bh=/MD4zmlpTiXKV9rJVSwaS+j51LzygHOijN8gOagfRRk=;
+	s=arc-20240116; t=1756212680; c=relaxed/simple;
+	bh=eBIjTZOIUxStgdfhAiCYdgJ2TXKLTol8cZZPalhQTZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oep14ecHBMx17pLQ4Mdy/HvC5CK8ElwGpRcC5/F8hB5/qiGFYVBXd+rmB/2huSdt9aT+d6M5PLXEh3XM9LFbp4CwXWUm/7ZlXTGmK7o8QxT0ya3Yioh+OeXHvkOIP9Bm4Ee3zB6q+xspbmMZQGoKQzMLMTRkLOwZGgPNUGRmVUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZ0UnkU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1083C4CEF1;
-	Tue, 26 Aug 2025 13:39:18 +0000 (UTC)
+	 MIME-Version; b=XUD9dxGVma2/FBUP03IpAxVeLBF8OqqNPVh7/jajuiTdbbb8L2N+Qi74H8bUya9UDAZHRsnm1wmt2NZHI22qNi6p3HM+2kiKpVrv7WXVdS7dp8EwQbe26NDdASl2qEgcSoE4bZPqTCp11UBOYx1zAIO2PeAj3D1Jkv4VEI+XkeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ2117S3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D30C4CEF1;
+	Tue, 26 Aug 2025 12:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215559;
-	bh=/MD4zmlpTiXKV9rJVSwaS+j51LzygHOijN8gOagfRRk=;
+	s=korg; t=1756212679;
+	bh=eBIjTZOIUxStgdfhAiCYdgJ2TXKLTol8cZZPalhQTZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZ0UnkU5FzApoOPF/gnKjC0UXfZZMbDqvw48iRipqMoIc9A3nG6beJPuWHgLRmziZ
-	 9yMRUybf75nsG0UJTHjxKWMpplsOWhM4xI85Ydw/nN4K+Z3xy10S2q4yfeTAZqXW2u
-	 ui0CMpa5NM9QhfHevpUG2A0qg4dEo0waVkw8hz74=
+	b=SQ2117S318HaxNMtL73iW+QWxtCiE+/9xULHdh/2JiXR8HiNuh/OMgViSEfT+R2JS
+	 +Ox7Zx7R9l3vD80EviuE7AyTw3Uw3bStbIYuWylVIFi7nWykupHwMqW8lPRvPJ8o5P
+	 k+3UXChb1q7iHxzYuskIQnPOD2OynLfkt6ZsWO0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xilin Wu <sophon@radxa.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/644] interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
+	pt x <superman.xpt@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 021/587] io_uring/net: commit partial buffers on retry
 Date: Tue, 26 Aug 2025 13:02:50 +0200
-Message-ID: <20250826110948.455114476@linuxfoundation.org>
+Message-ID: <20250826110953.496245735@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xilin Wu <sophon@radxa.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 886a94f008dd1a1702ee66dd035c266f70fd9e90 ]
+Commit 41b70df5b38bc80967d2e0ed55cc3c3896bba781 upstream.
 
-This allows adding interconnect paths for PCIe 1 in device tree later.
+Ring provided buffers are potentially only valid within the single
+execution context in which they were acquired. io_uring deals with this
+and invalidates them on retry. But on the networking side, if
+MSG_WAITALL is set, or if the socket is of the streaming type and too
+little was processed, then it will hang on to the buffer rather than
+recycle or commit it. This is problematic for two reasons:
 
-Fixes: 46bdcac533cc ("interconnect: qcom: Add SC7280 interconnect provider driver")
-Signed-off-by: Xilin Wu <sophon@radxa.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250613-sc7280-icc-pcie1-fix-v1-1-0b09813e3b09@radxa.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) If someone unregisters the provided buffer ring before a later retry,
+   then the req->buf_list will no longer be valid.
+
+2) If multiple sockers are using the same buffer group, then multiple
+   receives can consume the same memory. This can cause data corruption
+   in the application, as either receive could land in the same
+   userspace buffer.
+
+Fix this by disallowing partial retries from pinning a provided buffer
+across multiple executions, if ring provided buffers are used.
+
+Cc: stable@vger.kernel.org
+Reported-by: pt x <superman.xpt@gmail.com>
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/sc7280.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/net.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/sc7280.c b/drivers/interconnect/qcom/sc7280.c
-index f8b34f6cbb0d1..cd5efeb764044 100644
---- a/drivers/interconnect/qcom/sc7280.c
-+++ b/drivers/interconnect/qcom/sc7280.c
-@@ -164,6 +164,7 @@ static struct qcom_icc_node xm_pcie3_1 = {
- 	.id = SC7280_MASTER_PCIE_1,
- 	.channels = 1,
- 	.buswidth = 8,
-+	.num_links = 1,
- 	.links = { SC7280_SLAVE_ANOC_PCIE_GEM_NOC },
- };
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -351,6 +351,13 @@ static int io_setup_async_addr(struct io
+ 	return -EAGAIN;
+ }
  
--- 
-2.39.5
-
++static void io_net_kbuf_recyle(struct io_kiocb *req)
++{
++	req->flags |= REQ_F_PARTIAL_IO;
++	if (req->flags & REQ_F_BUFFER_RING)
++		io_kbuf_recycle_ring(req);
++}
++
+ int io_sendmsg_prep_async(struct io_kiocb *req)
+ {
+ 	int ret;
+@@ -442,7 +449,7 @@ int io_sendmsg(struct io_kiocb *req, uns
+ 			kmsg->msg.msg_controllen = 0;
+ 			kmsg->msg.msg_control = NULL;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return io_setup_async_msg(req, kmsg, issue_flags);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -521,7 +528,7 @@ int io_send(struct io_kiocb *req, unsign
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return io_setup_async_addr(req, &__address, issue_flags);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -891,7 +898,7 @@ retry_multishot:
+ 		}
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return io_setup_async_msg(req, kmsg, issue_flags);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -991,7 +998,7 @@ retry_multishot:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return -EAGAIN;
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -1235,7 +1242,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 			zc->len -= ret;
+ 			zc->buf += ret;
+ 			zc->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return io_setup_async_addr(req, &__address, issue_flags);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -1306,7 +1313,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
+ 
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_PARTIAL_IO;
++			io_net_kbuf_recyle(req);
+ 			return io_setup_async_msg(req, kmsg, issue_flags);
+ 		}
+ 		if (ret == -ERESTARTSYS)
 
 
 
