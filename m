@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2846EB36AC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAC6B35D3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A6EA4E236F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49B9D7C35BC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6973335CEBB;
-	Tue, 26 Aug 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFFA29BDB8;
+	Tue, 26 Aug 2025 11:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7Yw6kVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEIn62l3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258622FC89C;
-	Tue, 26 Aug 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEA923D7FA;
+	Tue, 26 Aug 2025 11:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219063; cv=none; b=SMG4gH7E5rt21v7XGrKRycb8Nb8syfmhV290Fubk35cV8epGzzpz/BrZWxsIjVUJmKlsqRlnN1JC7uJUhHta7FzUzwFD1/gpBbWVK6t6ntvQESYeznGEZOqOxhvFkGHsMisqhfQTOxO/bysacy4SQHsd+ybBWLNqoB/S7usPE3s=
+	t=1756208535; cv=none; b=q6GNZvsooyVqwDbBXhRCZFtVfStOOOZkQDWp2xGvO2jtB7Rpw9PJda7L55ZESTpAto3Tk4Fd7+PgV+c06cOEoYc32NKrFi0gIcyZLQElFhJMw0zIkkahSCrzaxo2l21yClFGPqb7vULDc5dPKtR7kOY7k+w4GMoJZBycTCAXNbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219063; c=relaxed/simple;
-	bh=+N8TTiyzbvBN21cRR2sg/RUKXPNmUJyXMqe9JNkzPTk=;
+	s=arc-20240116; t=1756208535; c=relaxed/simple;
+	bh=jSqW7/60qVkNya74Us+95Y/AdgHp5UdtWi1pYAzl20c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfJIripSq3XDD3Nh+KrVfk2WEZX4X832FhLQtFNMBWaHholaAStwSuc6cd/io1ZdtMyu56f3xDF078ifWhmtZGPj/YEPOPJu0rnjeVD98Kyv4449QIoJ8xcTeq4/CmZWLr85QXHsNL7vcXuSgKTRGz7y9JNAY0rCmkjOvhdIHPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7Yw6kVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1CBC113CF;
-	Tue, 26 Aug 2025 14:37:42 +0000 (UTC)
+	 MIME-Version; b=Ju6owWS4fjamlQcWzdXn/lWg3Bye7GiSBnTSGXSiTICx8NQ0tTkllPUnCLzsvYPhoFo5cT/ZXFSH6Z9nBFDddrFDmewQDdKJOhPHB1m6Wrm0nVzz+RyRtQTq13gEmEoXQXPSKD+5xmquyKGxHB10duQ0BNT8vKCZTnldtg7rqP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEIn62l3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71960C4CEF1;
+	Tue, 26 Aug 2025 11:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219063;
-	bh=+N8TTiyzbvBN21cRR2sg/RUKXPNmUJyXMqe9JNkzPTk=;
+	s=korg; t=1756208534;
+	bh=jSqW7/60qVkNya74Us+95Y/AdgHp5UdtWi1pYAzl20c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7Yw6kVi+z6DTlqggm4ZJo0DWTs6RXtwYPnH+yeU3IDoKkzWJzp058lMcKtbprLZf
-	 2QXXm/Ak14J706q7p1OnPJItAol+Q0Abh0JVzNev6pSotRFQqWA7+J+j1RaDZh6kL6
-	 cxCIgIb2Tbut7AlGTTwp7Fl34xw9zk7QlGdt2X3w=
+	b=BEIn62l3Z3dPX1CYix/mO+JkjnWUTRYFAKCP3lOF1jJplLB1E+klYga0s6+7IsBN/
+	 qPCTCZkR6HNHiolwDn8OFwVgVn6CRLNyIypaqcCI7PZvZ+xaWTuDNqdyhs5cioa5DY
+	 uqLMl1sGwdQCb/WxiJYW5frKe3DMgG4fyjh/oX88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jackysliu <1972843537@qq.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 238/403] scsi: bfa: Double-free fix
+Subject: [PATCH 6.12 149/322] btrfs: zoned: requeue to unused block group list if zone finish failed
 Date: Tue, 26 Aug 2025 13:09:24 +0200
-Message-ID: <20250826110913.409457595@linuxfoundation.org>
+Message-ID: <20250826110919.488107052@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: jackysliu <1972843537@qq.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit add4c4850363d7c1b72e8fce9ccb21fdd2cf5dc9 ]
+[ Upstream commit 62be7afcc13b2727bdc6a4c91aefed6b452e6ecc ]
 
-When the bfad_im_probe() function fails during initialization, the memory
-pointed to by bfad->im is freed without setting bfad->im to NULL.
+btrfs_zone_finish() can fail for several reason. If it is -EAGAIN, we need
+to try it again later. So, put the block group to the retry list properly.
 
-Subsequently, during driver uninstallation, when the state machine enters
-the bfad_sm_stopping state and calls the bfad_im_probe_undo() function,
-it attempts to free the memory pointed to by bfad->im again, thereby
-triggering a double-free vulnerability.
+Failing to do so will keep the removable block group intact until remount
+and can causes unnecessary ENOSPC.
 
-Set bfad->im to NULL if probing fails.
-
-Signed-off-by: jackysliu <1972843537@qq.com>
-Link: https://lore.kernel.org/r/tencent_3BB950D6D2D470976F55FC879206DE0B9A09@qq.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/bfa/bfad_im.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/block-group.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
-index 22f06be2606f..6dcf1094e01b 100644
---- a/drivers/scsi/bfa/bfad_im.c
-+++ b/drivers/scsi/bfa/bfad_im.c
-@@ -707,6 +707,7 @@ bfad_im_probe(struct bfad_s *bfad)
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1646,8 +1646,10 @@ void btrfs_delete_unused_bgs(struct btrf
+ 		ret = btrfs_zone_finish(block_group);
+ 		if (ret < 0) {
+ 			btrfs_dec_block_group_ro(block_group);
+-			if (ret == -EAGAIN)
++			if (ret == -EAGAIN) {
++				btrfs_link_bg_list(block_group, &retry_list);
+ 				ret = 0;
++			}
+ 			goto next;
+ 		}
  
- 	if (bfad_thread_workq(bfad) != BFA_STATUS_OK) {
- 		kfree(im);
-+		bfad->im = NULL;
- 		return BFA_STATUS_FAILED;
- 	}
- 
--- 
-2.39.5
-
 
 
 
