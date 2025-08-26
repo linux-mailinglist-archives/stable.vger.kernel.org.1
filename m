@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960B7B366B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134C4B3628E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BA9565E48
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B8D7BC2E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7113469EE;
-	Tue, 26 Aug 2025 13:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D21298CA7;
+	Tue, 26 Aug 2025 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCewOloz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE9Lk3Uv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF040343219;
-	Tue, 26 Aug 2025 13:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EC120F079;
+	Tue, 26 Aug 2025 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215906; cv=none; b=JD7L6w88GPzsVsXO6c4t0gF+HCjF80UP1qGzS4t1jUDYuNNlVrWvIhRKJOgnjHmWS7qiUaZdRUmCXKaQCg+YaaRevzvN70u5ixQ8GTQzTRW4ARvnlhgZC6KuRLyvH1Qmb/PgEbCNsrihWG8u8FBKxmmhrWiQTmlPUuRpSo2K+Pc=
+	t=1756214284; cv=none; b=j9cX39X5sE4actBKIGeP+3Dn6b6lvD+cY6AF/uKe1u2TOuc1nYUhrw18oPOMig1jnfce3LMQp3hVVQHEDXIs2X5ndqmnXgyItexWpzPRxpIEb2wPlXbOKwdCjIZH3OEfxefu3ZhHVV38LfOXRg7vLXtmnTsiR2qFKgqr21JbJmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215906; c=relaxed/simple;
-	bh=iN/uTxgqu5098RxegTUldWC6T5YaFUgLecyAEmbGo3U=;
+	s=arc-20240116; t=1756214284; c=relaxed/simple;
+	bh=rUyodEnp3cGEzWb8KRdYy4RRktRwqk/wZbspORGolig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMhBsrfIMEec1LFjZXoKsCwTQxrn6v8g2TkB4rsmvH5tYIZ0BNhy43/P9vMmqyhzy+m+x4NZgfk7Fa3ybxUCrz5JKBBYkhyghrdHnsS57X2kamRlaBeLmLt4ETlFieOXfoXZ6hLd94MJqFHOISWSv9/g2fme45jHs+d3dW7avWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCewOloz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF9AC116B1;
-	Tue, 26 Aug 2025 13:45:05 +0000 (UTC)
+	 MIME-Version; b=ruOrnWvZXKoXfDjuYkrA8/KjqiQ+L+l4hKq99nT27AnhzgKi6wUGt6ob8fleU05bjt0fa0h1JNJEouZcApFZPyjBhWaB9fdmAX/Mo+x5oE7xgtG9y4gKkaMke9U7ApqTWBm9U+86ioaDhtowHB16QnjCmn9rMZsJhNcTrv40BYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE9Lk3Uv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC16C4CEF1;
+	Tue, 26 Aug 2025 13:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215905;
-	bh=iN/uTxgqu5098RxegTUldWC6T5YaFUgLecyAEmbGo3U=;
+	s=korg; t=1756214283;
+	bh=rUyodEnp3cGEzWb8KRdYy4RRktRwqk/wZbspORGolig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCewOlozJ8GMF4vgPmdkN42aYJaI8aSfUoXqtRaVMt8zZibSwHXmmoQMEj+DS6HUJ
-	 QYDYhdXj+arAJo938jFUCM06GS5qE7seyZOevIOY8zLp+yUyNxgSv9/PIxI37aGNUy
-	 K2HYoa42bnBgdZCMpWdP/ic1XMGcikh1x2rB7BQs=
+	b=PE9Lk3UvAtAWi+p/EgoPjtkYlEE7pLYabj+HrvbMR5zb9cCmIjYNUkC93kMBjy6ZK
+	 8557tNhtHVnJpNZvQ4KzkK7D75oDfPIYNfa/IN7grfvR7l6n6lAjn23p7Buqok42n9
+	 CCwuRsicZbshIJxGnXUnpBgUsiOvvsZ538BuumbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 211/644] rtc: rv3028: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.1 049/482] hfs: fix slab-out-of-bounds in hfs_bnode_read()
 Date: Tue, 26 Aug 2025 13:05:02 +0200
-Message-ID: <20250826110951.667030335@linuxfoundation.org>
+Message-ID: <20250826110932.031811259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit b574acb3cf7591d2513a9f29f8c2021ad55fb881 ]
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-When rv3028_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-Fixes: f583c341a515f ("rtc: rv3028: add clkout support")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-6-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-rv3028.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/drivers/rtc/rtc-rv3028.c b/drivers/rtc/rtc-rv3028.c
-index 12c807306893..fdcca4bf1ce2 100644
---- a/drivers/rtc/rtc-rv3028.c
-+++ b/drivers/rtc/rtc-rv3028.c
-@@ -669,7 +669,7 @@ static long rv3028_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index cb823a8a6ba9..1dac5d9c055f 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
  
--	return 0;
-+	return clkout_rates[0];
- }
+ #include "btree.h"
  
- static int rv3028_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_read;
+ 	int bytes_to_read;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
 -- 
 2.39.5
 
