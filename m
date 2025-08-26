@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D455B36920
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CC5B35B71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6151C8216B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C83136323D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABFD34A338;
-	Tue, 26 Aug 2025 14:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199432F9C23;
+	Tue, 26 Aug 2025 11:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSTO0LlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUNg+9Us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C92C0F9C;
-	Tue, 26 Aug 2025 14:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DDF2248A5;
+	Tue, 26 Aug 2025 11:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217401; cv=none; b=gN2B0tLRyH+WwwylBUZUI7w8KUmn/X3ODE0CmaUVEVPsRc438GnBw1jQ1RFugVPq6E8haCsfW2W7uYGkp7yKZJqDrwxLjcDOlKZnJd1QdbigQxhVG2IzKx2127XS4b3C1VX50/f7sX66PEZf8HTQUELRBs+ZAYM+OrlW+e9vXE8=
+	t=1756207106; cv=none; b=k3Yh4NGukgi2qKSbThYqggUUapx9V/giT0LB3xR7WDso5VAMlM/FLBNF07pjh3ataUkp6/t/opWep+Cr+6gm6Uqd1Une3u/uv9Bq6xfqhsjF7yiPFW8ad2IEbOQ6iukVCs10J432LeXDww9jVZch4Ri/XAEOs4o1m60luILUsyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217401; c=relaxed/simple;
-	bh=Vl9wGio45+hr03vqH6dH9fB3bhwMyiLcg71Wy8UNhXo=;
+	s=arc-20240116; t=1756207106; c=relaxed/simple;
+	bh=4QEHNwvO1ndmzJIACCbtDEN7vc77KapDLaNBGbPG32M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rve8V4+m76pLT/qg53Z+PANKTr/v9J55kIhvoOHLntL0Pl34VVk8w7iP9+accABQ87RS3A9Fun9LzzpM3OlK8V6bPe+Cp9wDsCfNXKF/Fr1YDpyYo4t7mHETKemiGJozvyR5M0clDMakBLtAuja6PAN2NExMUAqZT9NvBPR8Kno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSTO0LlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CF8C4CEF1;
-	Tue, 26 Aug 2025 14:10:00 +0000 (UTC)
+	 MIME-Version; b=AKDr8fU1hmXZ9tj5zGyr3F8avB9avWYVRsl2Z1kggclA78rgd/srr0wI0YrFe1gFAWU80vKMqiAY04Ql0zdJ76Ip+rCIel3Ef3r/V9SH4PWaihGbwDVTLDG0A9XW4WBWHp1YF1bLkVB7dZpxF3BLLTx58rZwedE0lEDfa9AHrkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUNg+9Us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11416C4CEF1;
+	Tue, 26 Aug 2025 11:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217401;
-	bh=Vl9wGio45+hr03vqH6dH9fB3bhwMyiLcg71Wy8UNhXo=;
+	s=korg; t=1756207106;
+	bh=4QEHNwvO1ndmzJIACCbtDEN7vc77KapDLaNBGbPG32M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSTO0LlDQS1NRMu7dyFY1QKeULC1R97bWoq0oWT87USa1QjNVJNpsSxNecBT8ZZF1
-	 lS0b9SUlZFpR3JNIrGstwRc7FMWnOCwgo6EY56Gk+s90srm8VuH6dkc/4Stq5iaFM3
-	 Xsr4VMAetPGkcE//dgpXWeumxtyhQ4Z32yxO2ANk=
+	b=pUNg+9Us76yijPq7ziPcy7tYu+LytBoVSJVmgl0ClndA5MRMfjjaYo8z5CXho+ezx
+	 mnJuGCrnCeEbjDY0Iyp0a4tWe+dgq2R3zAmrKYQA6KTwrmq3CSE+tZw4tSY7i1r7DQ
+	 lpqLs/RfJIffqJBvaavIFXj9yKdcMkWK2x5KfaBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/523] perf tests bp_account: Fix leaked file descriptor
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.16 054/457] arm64: dts: rockchip: Enable HDMI PHY clk provider on rk3576
 Date: Tue, 26 Aug 2025 13:05:38 +0200
-Message-ID: <20250826110927.666430181@linuxfoundation.org>
+Message-ID: <20250826110938.689725897@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+commit aba7987a536cee67fb0cb724099096fd8f8f5350 upstream.
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+As with the RK3588 SoC, the HDMI PHY PLL on RK3576 can be used as a more
+accurate pixel clock source for VOP2, which is actually mandatory to
+ensure proper support for display modes handling.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
+Add the missing #clock-cells property to allow using the clock provider
+functionality of HDMI PHY.
 
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
-
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ad0ea230ab2a ("arm64: dts: rockchip: Add hdmi for rk3576")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Link: https://lore.kernel.org/r/20250612-rk3576-hdmitx-fix-v1-2-4b11007d8675@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 489b50604cf2..ac39f4947fd8 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -89,6 +89,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
- 	}
- 
- 	for (i = 0; i < wp_cnt; i++)
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+@@ -2393,6 +2393,7 @@
+ 			reg = <0x0 0x2b000000 0x0 0x2000>;
+ 			clocks = <&cru CLK_PHY_REF_SRC>, <&cru PCLK_HDPTX_APB>;
+ 			clock-names = "ref", "apb";
++			#clock-cells = <0>;
+ 			resets = <&cru SRST_P_HDPTX_APB>, <&cru SRST_HDPTX_INIT>,
+ 				 <&cru SRST_HDPTX_CMN>, <&cru SRST_HDPTX_LANE>;
+ 			reset-names = "apb", "init", "cmn", "lane";
 
 
 
