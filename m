@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BED2B36140
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65558B35D55
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 206815E117A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560891BA7A0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549921B85F8;
-	Tue, 26 Aug 2025 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD5330F55C;
+	Tue, 26 Aug 2025 11:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uC8xIImc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG/ibw/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A0D2253F3;
-	Tue, 26 Aug 2025 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578212F9C23;
+	Tue, 26 Aug 2025 11:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213420; cv=none; b=CxZIUdZqo4+hH1CfYpZ/aFiKGPxAJluWFh4Hwr7/pd8O35OrVFJVfXnoiVigEflibJ0jO7L1a93xwnQxhWjI+aSqUrp8ZNiToVjb1sY87moq+Itx1RGE6w8eVOGPyCfE3Py82+fRFcrsqvoCkCwrajoAf6NfU6XGnCzVtXM/Xxo=
+	t=1756208216; cv=none; b=Wv4mwQ+kYAbwUxES6WEBsJvLlJ2hGeVK9mMdwxxJojFBegtZA+ES8E8j3VQfCLU6PDuFu6yRJtkWrZVF470tXKCDWL8DDB1+/jPGSRF7BiSTNIYJZ34CkJtqzlcNoD1U4u2AqP4ZanDnP1/nt4fHzL9YofKkoEJR/sA+jYtkTgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213420; c=relaxed/simple;
-	bh=IecXPk6HNNS9LqQbaVyye8jyznXEJtrBFlagQsCA9d4=;
+	s=arc-20240116; t=1756208216; c=relaxed/simple;
+	bh=rUrUNt6V83h+yNUBVDyHVZnO0/RDGtvd8hIhNoAfqZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkN1J5O5fXgqDrAojQlTBVwMKVJQjDgkaTz1kK/2ihqyLQv2D2rTOgW5hoRgGc7kuZvzDwUpfAP2nZCh8iL5yoGQ8bHwgBaCy55y0NuUuAxKNAxEuwMorGgtgmG4wsUsTUvrBJy55znJ5Si0n0G9HksK6wAcpN/8itgth8fREdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uC8xIImc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FF4C4CEF1;
-	Tue, 26 Aug 2025 13:03:39 +0000 (UTC)
+	 MIME-Version; b=TntEsnFtvDIDtn4VY6OIaNGQt5GTAF25NuGlwt8ms7Bc84o8bHGTbdEwYKXYPc/f5GYoUUycce1NaQtGog524YXRmGtD8M5wHHCoBkfioVfxokp2eWLMIRP2DztPpvegrgby1SzOhlo0s26ytqWlyv9JJKdJnlG8yh8p6Gpwcx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG/ibw/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EEAC4CEF1;
+	Tue, 26 Aug 2025 11:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213419;
-	bh=IecXPk6HNNS9LqQbaVyye8jyznXEJtrBFlagQsCA9d4=;
+	s=korg; t=1756208215;
+	bh=rUrUNt6V83h+yNUBVDyHVZnO0/RDGtvd8hIhNoAfqZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uC8xIImc6rspXTIJNUT82RtpIJS8CvMIJ+uvESR4cftGm6CI2f7QxTea2Zmkbb309
-	 n/6J6Bxq+XttLuME3D2bearOqEEyKxSut3PnkvAJUAk1dveQA51T9XWcCHq3gq0/wy
-	 r+GP4q0k982YZnLRNyxR3cyzZqeitkD5OBtWCUe0=
+	b=UG/ibw/nM8K+tWxnYKnNao7VK8NQi3gksKXeDIGF4cXRVOqvGgqN/IaUndXtGvUqN
+	 TwFiP+SJRx5mBr7WkPpCUOgdKcFJu8oZu4rgUvgel+H5wpYxMKxmeQ7wiYCk2nOr9v
+	 JP1kB68BbyW/bADHTcvgkqSSjYAQSOTSMr8t3gk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/587] pNFS: Fix disk addr range check in block/scsi layout
-Date: Tue, 26 Aug 2025 13:07:19 +0200
-Message-ID: <20250826111000.305517953@linuxfoundation.org>
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Yi Yang <yiyang13@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 025/322] Revert "vgacon: Add check for vc_origin address range in vgacon_scroll()"
+Date: Tue, 26 Aug 2025 13:07:20 +0200
+Message-ID: <20250826110915.918914483@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
+commit e4fc307d8e24f122402907ebf585248cad52841d upstream.
 
-At the end of the isect translation, disc_addr represents the physical
-disk offset. Thus, end calculated from disk_addr is also a physical disk
-offset. Therefore, range checking should be done using map->disk_offset,
-not map->start.
+This reverts commit 864f9963ec6b4b76d104d595ba28110b87158003.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The patch is wrong as it checks vc_origin against vc_screenbuf,
+while in text mode it should compare against vga_vram_base.
+
+As such it broke VGA text scrolling, which can be reproduced like this:
+(1) boot a kernel that is configured to use text mode VGA-console
+(2) type commands:  ls -l /usr/bin | less -S
+(3) scroll up/down with cursor-down/up keys
+
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Cc: stable@vger.kernel.org
+Cc: Yi Yang <yiyang13@huawei.com>
+Cc: GONG Ruiqi <gongruiqi1@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/console/vgacon.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 6be13e0ec170..e498aade8c47 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -149,8 +149,8 @@ do_add_page_to_bio(struct bio *bio, int npg, enum req_op op, sector_t isect,
- 
- 	/* limit length to what the device mapping allows */
- 	end = disk_addr + *len;
--	if (end >= map->start + map->len)
--		*len = map->start + map->len - disk_addr;
-+	if (end >= map->disk_offset + map->len)
-+		*len = map->disk_offset + map->len - disk_addr;
- 
- retry:
- 	if (!bio) {
--- 
-2.39.5
-
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1168,7 +1168,7 @@ static bool vgacon_scroll(struct vc_data
+ 				     c->vc_screenbuf_size - delta);
+ 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
+ 			vga_rolled_over = 0;
+-		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
++		} else
+ 			c->vc_origin -= delta;
+ 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+ 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
 
 
 
