@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-173690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFB4B35DE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D3B36CA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34FA27C6FF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 202391C25F39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFE9749C;
-	Tue, 26 Aug 2025 11:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E355135CEBC;
+	Tue, 26 Aug 2025 14:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCGLn25f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5CR1en2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9889A288511;
-	Tue, 26 Aug 2025 11:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03653376BD;
+	Tue, 26 Aug 2025 14:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208903; cv=none; b=rHbZo5c6szxuhwVvAJDKFO54ixD4Y92xtWEsvElUgsxbwOTuadR1BXJjrepcL10BHZKnnc3V7ZUT0PwbcWbtdBNFA6RLTVTaEXKazs9uKt3PoJIjRWFUoclU5kbyr8yrTMznEY12eZvkNFyxPr8yXYTGTDXmNy6BURxIYTxU7Ro=
+	t=1756219432; cv=none; b=sAXRZOiv38YOFM2I7yudUxOTGeMZCI2gX0wpL417LAyQe7saCqilqVdc8aHxxV58d4GCGKgkyifaeSy6J7puWDZSiqrAci4xl2KYLYdilEXMiktwcjgKZ+6Je9aatgtt9bMdvuRSFxiTzEONM+VTBgABlY85zRkKy9kzF8yjevo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208903; c=relaxed/simple;
-	bh=POZPtKh/ywJBmGs0jOjzLns7cXtkLuqy1KkDSw0MyeQ=;
+	s=arc-20240116; t=1756219432; c=relaxed/simple;
+	bh=Wpj2mdy4mFvpKOPIIPE43S87tHnOR8M7coJTT3PtXWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMm7jJtn/GgEyNwQIMHQWoOWQfh6tqnoDS0BI+6NtzJunTD5XAmL4U+PTjpH6s6r8cvq1sHF3Ih5gQcjc9GDaLcd79EzIsvxFKKAEw0qBf2RvaA6sUoaZb2cSQsI92x2tWN8O8zEKIohPdxr5hYuVkKfP7Hk9c8RlzjjjYDYWcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCGLn25f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E737C4CEF1;
-	Tue, 26 Aug 2025 11:48:22 +0000 (UTC)
+	 MIME-Version; b=URPDRTY97FKWQc4ajXr+g/Y+Be/RUcpSGeiTxUt/kD/FGZgRzYYdo1ienmOlkDdoPRgTQ133dXQJC/XkQ6FSSqpv2C/YV2Hu7KV+LPwa7ZhRz/9FyRWV0+Uovryqd79yB6uFboVhuqC/KkXetP0p+oJY2lJPCYKTWBDhKwmFxk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5CR1en2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC58C4CEF1;
+	Tue, 26 Aug 2025 14:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208903;
-	bh=POZPtKh/ywJBmGs0jOjzLns7cXtkLuqy1KkDSw0MyeQ=;
+	s=korg; t=1756219432;
+	bh=Wpj2mdy4mFvpKOPIIPE43S87tHnOR8M7coJTT3PtXWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCGLn25fOabaqpm371FuRQRCv8DWwSDL4G+r+NIcIPHpb35fX4K32tUulbq/IP3Mf
-	 bVCBW1enca7XnGQNEl4NmUFyuKM7WtAw+z8QvnEZwyfdJkNpzphobFZ0E6XfX6m99Z
-	 mibg0AweyfNRGukxaFn0dft48hjwS3+28/4/DM3k=
+	b=U5CR1en2caAnjEBeeWi7R4jiHtIMW/4BVB+iTkXcEFRz2yPmJ2F7uadqO99ZJcMjS
+	 0F92VIFiZkSIxFtVPK73T7eFOY6FwcUfXyylzdzx1z3rKkYtdX4uYzVjWwsUtKqzMw
+	 TXR/Wo3+UKwIKZ3YVXubSzFvmYe962fuBC08Axcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianhao Zhao <tizhao@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jakub Ramaseuski <jramaseu@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 290/322] net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 5.4 379/403] mm: drop the assumption that VM_SHARED always implies writable
 Date: Tue, 26 Aug 2025 13:11:45 +0200
-Message-ID: <20250826110923.072055811@linuxfoundation.org>
+Message-ID: <20250826110917.488092324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +70,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Ramaseuski <jramaseu@redhat.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 864e3396976ef41de6cc7bc366276bf4e084fff2 ]
+[ Upstream commit e8e17ee90eaf650c855adb0a3e5e965fd6692ff1 ]
 
-When performing Generic Segmentation Offload (GSO) on an IPv6 packet that
-contains extension headers, the kernel incorrectly requests checksum offload
-if the egress device only advertises NETIF_F_IPV6_CSUM feature, which has
-a strict contract: it supports checksum offload only for plain TCP or UDP
-over IPv6 and explicitly does not support packets with extension headers.
-The current GSO logic violates this contract by failing to disable the feature
-for packets with extension headers, such as those used in GREoIPv6 tunnels.
+Patch series "permit write-sealed memfd read-only shared mappings", v4.
 
-This violation results in the device being asked to perform an operation
-it cannot support, leading to a `skb_warn_bad_offload` warning and a collapse
-of network throughput. While device TSO/USO is correctly bypassed in favor
-of software GSO for these packets, the GSO stack must be explicitly told not
-to request checksum offload.
+The man page for fcntl() describing memfd file seals states the following
+about F_SEAL_WRITE:-
 
-Mask NETIF_F_IPV6_CSUM, NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4
-in gso_features_check if the IPv6 header contains extension headers to compute
-checksum in software.
+    Furthermore, trying to create new shared, writable memory-mappings via
+    mmap(2) will also fail with EPERM.
 
-The exception is a BIG TCP extension, which, as stated in commit
-68e068cabd2c6c53 ("net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets"):
-"The feature is only enabled on devices that support BIG TCP TSO.
-The header is only present for PF_PACKET taps like tcpdump,
-and not transmitted by physical devices."
+With emphasis on 'writable'.  In turns out in fact that currently the
+kernel simply disallows all new shared memory mappings for a memfd with
+F_SEAL_WRITE applied, rendering this documentation inaccurate.
 
-kernel log output (truncated):
-WARNING: CPU: 1 PID: 5273 at net/core/dev.c:3535 skb_warn_bad_offload+0x81/0x140
-...
-Call Trace:
- <TASK>
- skb_checksum_help+0x12a/0x1f0
- validate_xmit_skb+0x1a3/0x2d0
- validate_xmit_skb_list+0x4f/0x80
- sch_direct_xmit+0x1a2/0x380
- __dev_xmit_skb+0x242/0x670
- __dev_queue_xmit+0x3fc/0x7f0
- ip6_finish_output2+0x25e/0x5d0
- ip6_finish_output+0x1fc/0x3f0
- ip6_tnl_xmit+0x608/0xc00 [ip6_tunnel]
- ip6gre_tunnel_xmit+0x1c0/0x390 [ip6_gre]
- dev_hard_start_xmit+0x63/0x1c0
- __dev_queue_xmit+0x6d0/0x7f0
- ip6_finish_output2+0x214/0x5d0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- inet6_csk_xmit+0xeb/0x150
- __tcp_transmit_skb+0x555/0xa80
- tcp_write_xmit+0x32a/0xe90
- tcp_sendmsg_locked+0x437/0x1110
- tcp_sendmsg+0x2f/0x50
-...
-skb linear:   00000000: e4 3d 1a 7d ec 30 e4 3d 1a 7e 5d 90 86 dd 60 0e
-skb linear:   00000010: 00 0a 1b 34 3c 40 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000020: 00 00 00 00 00 12 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000030: 00 00 00 00 00 11 2f 00 04 01 04 01 01 00 00 00
-skb linear:   00000040: 86 dd 60 0e 00 0a 1b 00 06 40 20 23 00 00 00 00
-skb linear:   00000050: 00 00 00 00 00 00 00 00 00 12 20 23 00 00 00 00
-skb linear:   00000060: 00 00 00 00 00 00 00 00 00 11 bf 96 14 51 13 f9
-skb linear:   00000070: ae 27 a0 a8 2b e3 80 18 00 40 5b 6f 00 00 01 01
-skb linear:   00000080: 08 0a 42 d4 50 d5 4b 70 f8 1a
+This matters because users are therefore unable to obtain a shared mapping
+to a memfd after write sealing altogether, which limits their usefulness.
+This was reported in the discussion thread [1] originating from a bug
+report [2].
 
-Fixes: 04c20a9356f283da ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Reported-by: Tianhao Zhao <tizhao@redhat.com>
-Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250814105119.1525687-1-jramaseu@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a product of both using the struct address_space->i_mmap_writable
+atomic counter to determine whether writing may be permitted, and the
+kernel adjusting this counter when any VM_SHARED mapping is performed and
+more generally implicitly assuming VM_SHARED implies writable.
+
+It seems sensible that we should only update this mapping if VM_MAYWRITE
+is specified, i.e.  whether it is possible that this mapping could at any
+point be written to.
+
+If we do so then all we need to do to permit write seals to function as
+documented is to clear VM_MAYWRITE when mapping read-only.  It turns out
+this functionality already exists for F_SEAL_FUTURE_WRITE - we can
+therefore simply adapt this logic to do the same for F_SEAL_WRITE.
+
+We then hit a chicken and egg situation in mmap_region() where the check
+for VM_MAYWRITE occurs before we are able to clear this flag.  To work
+around this, perform this check after we invoke call_mmap(), with careful
+consideration of error paths.
+
+Thanks to Andy Lutomirski for the suggestion!
+
+[1]:https://lore.kernel.org/all/20230324133646.16101dfa666f253c4715d965@linux-foundation.org/
+[2]:https://bugzilla.kernel.org/show_bug.cgi?id=217238
+
+This patch (of 3):
+
+There is a general assumption that VMAs with the VM_SHARED flag set are
+writable.  If the VM_MAYWRITE flag is not set, then this is simply not the
+case.
+
+Update those checks which affect the struct address_space->i_mmap_writable
+field to explicitly test for this by introducing
+[vma_]is_shared_maywrite() helper functions.
+
+This remains entirely conservative, as the lack of VM_MAYWRITE guarantees
+that the VMA cannot be written to.
+
+Link: https://lkml.kernel.org/r/cover.1697116581.git.lstoakes@gmail.com
+Link: https://lkml.kernel.org/r/d978aefefa83ec42d18dfa964ad180dbcde34795.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/linux/fs.h |    4 ++--
+ include/linux/mm.h |   11 +++++++++++
+ kernel/fork.c      |    2 +-
+ mm/filemap.c       |    2 +-
+ mm/madvise.c       |    2 +-
+ mm/mmap.c          |   10 +++++-----
+ 6 files changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 2ba2160dd093..cfd32bd02a69 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3603,6 +3603,18 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 			features &= ~NETIF_F_TSO_MANGLEID;
- 	}
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -430,7 +430,7 @@ int pagecache_write_end(struct file *, s
+  * @host: Owner, either the inode or the block_device.
+  * @i_pages: Cached pages.
+  * @gfp_mask: Memory allocation flags to use for allocating pages.
+- * @i_mmap_writable: Number of VM_SHARED mappings.
++ * @i_mmap_writable: Number of VM_SHARED, VM_MAYWRITE mappings.
+  * @nr_thps: Number of THPs in the pagecache (non-shmem only).
+  * @i_mmap: Tree of private and shared mappings.
+  * @i_mmap_rwsem: Protects @i_mmap and @i_mmap_writable.
+@@ -553,7 +553,7 @@ static inline int mapping_mapped(struct
  
-+	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-+	 * so neither does TSO that depends on it.
-+	 */
-+	if (features & NETIF_F_IPV6_CSUM &&
-+	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+	    skb_transport_header_was_set(skb) &&
-+	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+	    !ipv6_has_hopopt_jumbo(skb))
-+		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
-+
- 	return features;
+ /*
+  * Might pages of this file have been modified in userspace?
+- * Note that i_mmap_writable counts all VM_SHARED vmas: do_mmap_pgoff
++ * Note that i_mmap_writable counts all VM_SHARED, VM_MAYWRITE vmas: do_mmap_pgoff
+  * marks vma as VM_SHARED if it is shared, and the file was opened for
+  * writing i.e. vma may be mprotected writable even if now readonly.
+  *
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -549,6 +549,17 @@ static inline bool vma_is_anonymous(stru
+ 	return !vma->vm_ops;
  }
  
--- 
-2.50.1
-
++static inline bool is_shared_maywrite(vm_flags_t vm_flags)
++{
++	return (vm_flags & (VM_SHARED | VM_MAYWRITE)) ==
++		(VM_SHARED | VM_MAYWRITE);
++}
++
++static inline bool vma_is_shared_maywrite(struct vm_area_struct *vma)
++{
++	return is_shared_maywrite(vma->vm_flags);
++}
++
+ #ifdef CONFIG_SHMEM
+ /*
+  * The vma_is_shmem is not inline because it is used only by slow
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -566,7 +566,7 @@ static __latent_entropy int dup_mmap(str
+ 			if (tmp->vm_flags & VM_DENYWRITE)
+ 				atomic_dec(&inode->i_writecount);
+ 			i_mmap_lock_write(mapping);
+-			if (tmp->vm_flags & VM_SHARED)
++			if (vma_is_shared_maywrite(tmp))
+ 				atomic_inc(&mapping->i_mmap_writable);
+ 			flush_dcache_mmap_lock(mapping);
+ 			/* insert tmp into the share list, just after mpnt */
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2876,7 +2876,7 @@ int generic_file_mmap(struct file * file
+  */
+ int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+-	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
++	if (vma_is_shared_maywrite(vma))
+ 		return -EINVAL;
+ 	return generic_file_mmap(file, vma);
+ }
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -839,7 +839,7 @@ static long madvise_remove(struct vm_are
+ 			return -EINVAL;
+ 	}
+ 
+-	if ((vma->vm_flags & (VM_SHARED|VM_WRITE)) != (VM_SHARED|VM_WRITE))
++	if (!vma_is_shared_maywrite(vma))
+ 		return -EACCES;
+ 
+ 	offset = (loff_t)(start - vma->vm_start)
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -141,7 +141,7 @@ static void __remove_shared_vm_struct(st
+ {
+ 	if (vma->vm_flags & VM_DENYWRITE)
+ 		atomic_inc(&file_inode(file)->i_writecount);
+-	if (vma->vm_flags & VM_SHARED)
++	if (vma_is_shared_maywrite(vma))
+ 		mapping_unmap_writable(mapping);
+ 
+ 	flush_dcache_mmap_lock(mapping);
+@@ -619,7 +619,7 @@ static void __vma_link_file(struct vm_ar
+ 
+ 		if (vma->vm_flags & VM_DENYWRITE)
+ 			atomic_dec(&file_inode(file)->i_writecount);
+-		if (vma->vm_flags & VM_SHARED)
++		if (vma_is_shared_maywrite(vma))
+ 			atomic_inc(&mapping->i_mmap_writable);
+ 
+ 		flush_dcache_mmap_lock(mapping);
+@@ -1785,7 +1785,7 @@ unsigned long mmap_region(struct file *f
+ 			if (error)
+ 				goto free_vma;
+ 		}
+-		if (vm_flags & VM_SHARED) {
++		if (is_shared_maywrite(vm_flags)) {
+ 			error = mapping_map_writable(file->f_mapping);
+ 			if (error)
+ 				goto allow_write_and_free_vma;
+@@ -1823,7 +1823,7 @@ unsigned long mmap_region(struct file *f
+ 	vma_link(mm, vma, prev, rb_link, rb_parent);
+ 	/* Once vma denies write, undo our temporary denial count */
+ 	if (file) {
+-		if (vm_flags & VM_SHARED)
++		if (is_shared_maywrite(vm_flags))
+ 			mapping_unmap_writable(file->f_mapping);
+ 		if (vm_flags & VM_DENYWRITE)
+ 			allow_write_access(file);
+@@ -1864,7 +1864,7 @@ unmap_and_free_vma:
+ 
+ 	/* Undo any partial mapping done by a device driver. */
+ 	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
+-	if (vm_flags & VM_SHARED)
++	if (is_shared_maywrite(vm_flags))
+ 		mapping_unmap_writable(file->f_mapping);
+ allow_write_and_free_vma:
+ 	if (vm_flags & VM_DENYWRITE)
 
 
 
