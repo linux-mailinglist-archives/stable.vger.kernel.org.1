@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924CBB36A18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61651B36781
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC7A1C4392F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27070467C44
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B652F49EA;
-	Tue, 26 Aug 2025 14:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7C8350D67;
+	Tue, 26 Aug 2025 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeuBosOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwh7aUGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614A334DCED;
-	Tue, 26 Aug 2025 14:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6623034F486;
+	Tue, 26 Aug 2025 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218002; cv=none; b=SrD22uNWcNzNVTKPE6mhCFLhekfnHaPKsHEF16oVbmosSP70giYaoThYtjnMcrKI0LHpiPyCwL8cnmdLp1+iVMTtMj57rN7bJO0NEuSMIEqXZDNNjdkz9Bt4mNF9td/VVtWi5VRrpG10azPeS54y/eifH8Ka3A735VqvOSWbLX4=
+	t=1756216690; cv=none; b=AehGaeDRSALJjUYcbzwcgre2g70fVHDkwO3nU0KaT4bHzhsXDqekIcPkpvpf/9MOfiK+NdCa20GjkKgdZhcScwlqsbwfRDMfDtyTdARnwGlqO8cU/xcRHgIwI81FbMhvn4/XSPVVhvTER4U3sk41oIBr+H9wcdBbE+FcnVNof+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218002; c=relaxed/simple;
-	bh=rEqgJ3pncP/8R7LeOyhqtwd/hNlXQ5jSl1hF/Y2Vo5g=;
+	s=arc-20240116; t=1756216690; c=relaxed/simple;
+	bh=WsZVPhqxQ00nForpI4Dt/CnR7O5Zmqh/CgJGA6rxGj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7P5QGJyKlUvBi26sEmAjaELFY3z2alJmW5k3PNXTOvmHGJwR1h+RbOrIUpon5O0rO2FE04HYsyvNoSq0dCtPXJvhwo4/JhyUYmZ9ZKBjo1zW3DBGGFZTzw3RsdzyLuuvyaqZLpCZHrF0M/zPES1iww0X1RcVAtx1arNG4E15uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeuBosOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6154C4CEF1;
-	Tue, 26 Aug 2025 14:20:01 +0000 (UTC)
+	 MIME-Version; b=t6E1sQnaoJEtrLr3GRiidMQwaP1/L5/Jd4PyYsWgudZJcX8py5H7bBEYfACj/eBjM0+xP0cYwRC9lRcUq8fC5kMcRDETqb5I63luboBcybdr78rfHd5mcBDDyuR8fqIpacRFa7n+zPW/udY4JQsiz61YQkFeI0DXXGXiMUkcWJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwh7aUGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFC6C4CEF1;
+	Tue, 26 Aug 2025 13:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218002;
-	bh=rEqgJ3pncP/8R7LeOyhqtwd/hNlXQ5jSl1hF/Y2Vo5g=;
+	s=korg; t=1756216690;
+	bh=WsZVPhqxQ00nForpI4Dt/CnR7O5Zmqh/CgJGA6rxGj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeuBosOIpZ5t4H5L+ZUb9+Kcj98oJxFHxDyZx/l6sCc9wYxfQPcXMCAzMGgAP8HQh
-	 x58Ig7aLaYjtBAW3ZdONYfcjVq73WUbz7Cl3K1BL9lUCUBxXke2XS6YIZm23Yu2xeh
-	 84PGIVnZG6mg+hEJm2uqvhzEZIiqkN50ULWjgyNw=
+	b=kwh7aUGQLsr9PMPSYCjI2kG54FfHsWpFe/JTmUp34sEb4jdtF29DG6E9E9AptzdFO
+	 RKnKyx1Q+sgBhUOXdI3tlK20EAoeeByrTfAjFeNmtGc4q2lQ2Jyd/QGTEXzcfhNez/
+	 ckcwtMmJpDuGj+DyPFyeOBjwamhYS4TagsC2mi2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 356/523] usb: gadget: udc: renesas_usb3: fix device leak at unbind
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 5.15 475/644] zynq_fpga: use sgtable-based scatterlist wrappers
 Date: Tue, 26 Aug 2025 13:09:26 +0200
-Message-ID: <20250826110933.248072756@linuxfoundation.org>
+Message-ID: <20250826110958.254859985@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
+commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of statterlists related calls. dma_unmap_sg() function
+has to be called with the number of elements originally passed to the
+dma_map_sg() function, not the one returned in sgtable's nents.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
+CC: stable@vger.kernel.org
+Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/fpga/zynq-fpga.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2566,6 +2566,7 @@ static int renesas_usb3_remove(struct pl
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
+ 	}
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+ 	priv->dma_nelms =
+-	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	if (priv->dma_nelms == 0) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+ 		return -ENOMEM;
+@@ -478,7 +478,7 @@ out_clk:
+ 	clk_disable(priv->clk);
  
- 	cancel_work_sync(&usb3->role_work);
+ out_free:
+-	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	return err;
+ }
+ 
 
 
 
