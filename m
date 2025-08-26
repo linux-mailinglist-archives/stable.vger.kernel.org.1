@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BC9B36164
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B2CB36BE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4860A4E4465
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E92614681B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396B222AE5D;
-	Tue, 26 Aug 2025 13:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E0835CEDF;
+	Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X17dfBQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZPk7g2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8E218F2FC;
-	Tue, 26 Aug 2025 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D18B239E8B;
+	Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213713; cv=none; b=myab8YdwBveC296E8HrLh4+3vq8WZEM42cVIrMeW6fe5mYXJn7mOTWzmDr6UsWRxtup37dlHzEH/xLU8dq5r8po+kJ3Dz7HtehSgR/Z8oqXskyoO/OQM6PbjFfCp9jy64uiwShccMtH2XdSs5TMOpG5y+c6wS9d+QsLSodEq0sM=
+	t=1756219136; cv=none; b=cnse2LrecNB3pA0AjAfnNO844nbK1QfIm7UEAmahZve+iTgDyrr9bN+qO5gabi4pU2o/7FucfOREQFPoJNaam7k24wqahOHrWHK+SRjtwqFxplWXxdDYrHT5atO2ozoAEk0mZZ/x5jP+SE5CIpSOrzeDcPgiAotFHd8V3gyIV+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213713; c=relaxed/simple;
-	bh=jfPdBYrQkkZ5/a/O3BkbtwZczuPeTiyUxG+BwtH6CEs=;
+	s=arc-20240116; t=1756219136; c=relaxed/simple;
+	bh=+i9a+WWHrI4ixR8iaZx/IZTobwGPi8hqedAaZ6IYWaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7beguCOIKaTU5VDhRn6ZbLZhks7RphDN3yFkRZj0e+pyNzU6wOFyBYphVRtrMi/VeJga3IqKihseO+Bdh1omQln9XT3AiHtMVEbF+pCb9so38Rc4sNhJ8/tWNuOm/FqnigIrpbQkd/OY+VUeuqLRlj6+T++svrSGqL2pzi4dao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X17dfBQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1B8C4CEF1;
-	Tue, 26 Aug 2025 13:08:32 +0000 (UTC)
+	 MIME-Version; b=evBplre6Wn5E6T8bGMplN4pOoqwWTEkKki1dAI9jYVhK7Z9Ga+ge7jlS8VUvN9W0GYuYxBJ5J6ZRg2mT6lezt0uc/iD1HNpBR7Bk8D+KCL8rWkR5rCHuTRmbBVoxe9v1QSg41we9wmx9GKsCkdrp8mePDIA7odm2sB0Mdv7RBs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZPk7g2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2448C4CEF1;
+	Tue, 26 Aug 2025 14:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213712;
-	bh=jfPdBYrQkkZ5/a/O3BkbtwZczuPeTiyUxG+BwtH6CEs=;
+	s=korg; t=1756219136;
+	bh=+i9a+WWHrI4ixR8iaZx/IZTobwGPi8hqedAaZ6IYWaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X17dfBQ2Lh9gHq1aMSW6VVnDo7WMCFrO9Ccs1FZKAh1RilU+wq+88TccTllrmZHhJ
-	 fH8VJXrSE70ywJR+xNOcrCFQTDj20UXI1jHQqGEAKcPc6US5pTSoDEAWBRoH6e5f18
-	 uhNwv2o2ndlCeE4JnG3UCGXhS7wxZ8dGKeLsgqd0=
+	b=UZPk7g2v7la4nKOvn4Hjn2AMrWJA2z13f1sWPvXwyJce35EGyFFEHG4On4rr/fKhz
+	 9gHFK1gS+Qq4AGShp2Ig4e/o1S6cbIsaeejT3tIAKFJUu6oIwhvo4U+kVblItLlO/N
+	 wIL5DC9yJWFZf8ZiV6Ww5DOH+nIWbVax52Nt/N7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 444/587] btrfs: dont ignore inode missing when replaying log tree
+Subject: [PATCH 5.4 267/403] pNFS: Fix stripe mapping in block/scsi layout
 Date: Tue, 26 Aug 2025 13:09:53 +0200
-Message-ID: <20250826111004.250775573@linuxfoundation.org>
+Message-ID: <20250826110914.181640237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit 7ebf381a69421a88265d3c49cd0f007ba7336c9d ]
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-During log replay, at add_inode_ref(), we return -ENOENT if our current
-inode isn't found on the subvolume tree or if a parent directory isn't
-found. The error comes from btrfs_iget_logging() <- btrfs_iget() <-
-btrfs_read_locked_inode().
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-The single caller of add_inode_ref(), replay_one_buffer(), ignores an
--ENOENT error because it expects that error to mean only that a parent
-directory wasn't found and that is ok.
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
 
-Before commit 5f61b961599a ("btrfs: fix inode lookup error handling during
-log replay") we were converting any error when getting a parent directory
-to -ENOENT and any error when getting the current inode to -EIO, so our
-caller would fail log replay in case we can't find the current inode.
-After that commit however in case the current inode is not found we return
--ENOENT to the caller and therefore it ignores the critical fact that the
-current inode was not found in the subvolume tree.
-
-Fix this by converting -ENOENT to 0 when we don't find a parent directory,
-returning -ENOENT when we don't find the current inode and making the
-caller, replay_one_buffer(), not ignore -ENOENT anymore.
-
-Fixes: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
-CC: stable@vger.kernel.org # 6.16
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted btrfs_inode pointer usage to older inode API ]
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1422,6 +1422,8 @@ static noinline int add_inode_ref(struct
- 		btrfs_dir = btrfs_iget_logging(parent_objectid, root);
- 		if (IS_ERR(btrfs_dir)) {
- 			ret = PTR_ERR(btrfs_dir);
-+			if (ret == -ENOENT)
-+				ret = 0;
- 			dir = NULL;
- 			goto out;
- 		}
-@@ -1455,6 +1457,15 @@ static noinline int add_inode_ref(struct
- 				if (IS_ERR(btrfs_dir)) {
- 					ret = PTR_ERR(btrfs_dir);
- 					dir = NULL;
-+					/*
-+					 * A new parent dir may have not been
-+					 * logged and not exist in the subvolume
-+					 * tree, see the comment above before
-+					 * the loop when getting the first
-+					 * parent dir.
-+					 */
-+					if (ret == -ENOENT)
-+						ret = 0;
- 					goto out;
- 				}
- 				dir = &btrfs_dir->vfs_inode;
-@@ -2623,9 +2634,8 @@ static int replay_one_buffer(struct btrf
- 			   key.type == BTRFS_INODE_EXTREF_KEY) {
- 			ret = add_inode_ref(wc->trans, root, log, path,
- 					    eb, i, &key);
--			if (ret && ret != -ENOENT)
-+			if (ret)
- 				break;
--			ret = 0;
- 		} else if (key.type == BTRFS_EXTENT_DATA_KEY) {
- 			ret = replay_one_extent(wc->trans, root, path,
- 						eb, i, &key);
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index 6e3a14fdff9c..007d68a3a616 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
+ 
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+ 
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
+ 
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
+ 
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
+-- 
+2.39.5
+
 
 
 
