@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2406B36044
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE34B362A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238B417E6F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CEA188DD4D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FB61DE4F6;
-	Tue, 26 Aug 2025 12:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D02241673;
+	Tue, 26 Aug 2025 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkZpAg0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOwOry7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318E414883F;
-	Tue, 26 Aug 2025 12:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D5334A30A;
+	Tue, 26 Aug 2025 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212941; cv=none; b=dp9ZoY2P+cvp5FHWwkO6C3q0/0WaEqWX4mz5SfmgorERTchd0i/sb18lMS4bqlqS/3pnYVG8JMgbwdLjNKhYuAEw07gr0PRCTP3UtFpmDsvERdYRdK44Yr8sN33g7Z6TcPNRaH5bV1olLldrn7xuC8lBESbMucObECfpKPcIiUI=
+	t=1756214142; cv=none; b=Fez+WNRnczI6ML6DXvJQUKrrENgjMCly/KSgxCODhCzbM0ALjcNq/CU3mpfrPFUiufodjg/qW9etLn4hM1j0ftBLhYX0kBI1wBeZkPuP/163wq8oOgivLxJGVZVBer/yGfhLaUECWyFHPt4FOwI7a6b7eyiiCfY9ICVuue9hMLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212941; c=relaxed/simple;
-	bh=O0+T5/f65bXMiNyTs9su2pRr6au5cyjTA+8d3l0J/28=;
+	s=arc-20240116; t=1756214142; c=relaxed/simple;
+	bh=vt5rmSqVE66Jb3E8rzCkyn6bBr/EEx3fQtiaCSd15AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l51xrgju67hST1GWBaMhm1HuEPqmELqb1YrU9xJ9KzsFqQnEUbaI6W68hOY3LBlWJGGn9MUWs/A+pCVPqGsB2MDpgViN4iecgciJWxRrq893mb4yonkAChs6FIpmqNOVfL4jlojXochPK3Aqe7vmC80bHNpwSrtxyK/bnbOYT88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkZpAg0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46FBC4CEF1;
-	Tue, 26 Aug 2025 12:55:40 +0000 (UTC)
+	 MIME-Version; b=RK7cu//85IYDQABT5BrDyT7YB1mvGqpdcMpm4siQidAeQXth1c14z3l8exdtLDaKjp1cry+XT0WJkr0fYWlBnxYemj+19AYStRFtVZZ6eHvxjakPPGmqaLRCSZBMxGAUkWTs88ML1zqGomufjyTlPRMbRhe34LXTpt9ktRV+FGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOwOry7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822B0C4CEF1;
+	Tue, 26 Aug 2025 13:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212941;
-	bh=O0+T5/f65bXMiNyTs9su2pRr6au5cyjTA+8d3l0J/28=;
+	s=korg; t=1756214142;
+	bh=vt5rmSqVE66Jb3E8rzCkyn6bBr/EEx3fQtiaCSd15AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkZpAg0CQ5ro0U6kYbGn9aG2dt75cgeWnJICg3YSeeuummxqaGPrEFJJ9d7Z22l/C
-	 jsdmssjWFkm14JBFJOYcx/b2plOkbwK8oI/nBXQgpUKTAm155kenAa7tDsotUWqHIR
-	 BPAnY4wo5ZQfHqpfGTbnCJA0ca5brRWJSdNU1JqU=
+	b=MOwOry7t0Oz9mWpbOGuBxlnFzngRYYKawjiQ5zL1xohHp7xow3Nm4wFChZWSV+AOu
+	 fRH5hoebx/St5Tt3mxt6FKkQztnFp7lZ7aFvZ+ee+/E9WR1fROwFmZaMHuU98GQSXb
+	 UfoFck1FQRUrjsE321ZCDaNhYOXjqy3smxgidhmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Doug Covelli <doug.covelli@broadcom.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/587] soc: qcom: mdt_loader: Actually use the e_phoff
-Date: Tue, 26 Aug 2025 13:04:39 +0200
-Message-ID: <20250826110956.263813162@linuxfoundation.org>
+Subject: [PATCH 6.1 027/482] KVM: SVM: Set RFLAGS.IF=1 in C code, to get VMRUN out of the STI shadow
+Date: Tue, 26 Aug 2025 13:04:40 +0200
+Message-ID: <20250826110931.471035362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 47e339cac89143709e84a3b71ba8bd9b2fdd2368 ]
+[ Upstream commit be45bc4eff33d9a7dae84a2150f242a91a617402 ]
 
-Rather than relying/assuming that the tools generating the firmware
-places the program headers immediately following the ELF header, use
-e_phoff as intended to find the program headers.
+Enable/disable local IRQs, i.e. set/clear RFLAGS.IF, in the common
+svm_vcpu_enter_exit() just after/before guest_state_{enter,exit}_irqoff()
+so that VMRUN is not executed in an STI shadow.  AMD CPUs have a quirk
+(some would say "bug"), where the STI shadow bleeds into the guest's
+intr_state field if a #VMEXIT occurs during injection of an event, i.e. if
+the VMRUN doesn't complete before the subsequent #VMEXIT.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-3-f7073e9ab899@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The spurious "interrupts masked" state is relatively benign, as it only
+occurs during event injection and is transient.  Because KVM is already
+injecting an event, the guest can't be in HLT, and if KVM is querying IRQ
+blocking for injection, then KVM would need to force an immediate exit
+anyways since injecting multiple events is impossible.
+
+However, because KVM copies int_state verbatim from vmcb02 to vmcb12, the
+spurious STI shadow is visible to L1 when running a nested VM, which can
+trip sanity checks, e.g. in VMware's VMM.
+
+Hoist the STI+CLI all the way to C code, as the aforementioned calls to
+guest_state_{enter,exit}_irqoff() already inform lockdep that IRQs are
+enabled/disabled, and taking a fault on VMRUN with RFLAGS.IF=1 is already
+possible.  I.e. if there's kernel code that is confused by running with
+RFLAGS.IF=1, then it's already a problem.  In practice, since GIF=0 also
+blocks NMIs, the only change in exposure to non-KVM code (relative to
+surrounding VMRUN with STI+CLI) is exception handling code, and except for
+the kvm_rebooting=1 case, all exception in the core VM-Enter/VM-Exit path
+are fatal.
+
+Use the "raw" variants to enable/disable IRQs to avoid tracing in the
+"no instrumentation" code; the guest state helpers also take care of
+tracing IRQ state.
+
+Oppurtunstically document why KVM needs to do STI in the first place.
+
+Reported-by: Doug Covelli <doug.covelli@broadcom.com>
+Closes: https://lore.kernel.org/all/CADH9ctBs1YPmE4aCfGPNBwA10cA8RuAk2gO7542DjMZgs4uzJQ@mail.gmail.com
+Fixes: f14eec0a3203 ("KVM: SVM: move more vmentry code to assembly")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250224165442.2338294-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: resolve minor syntatic conflict in __svm_sev_es_vcpu_run()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/mdt_loader.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/svm.c     | 14 ++++++++++++++
+ arch/x86/kvm/svm/vmenter.S |  9 +--------
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-index 6f177e46fa0f..8de1d478bec2 100644
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -85,7 +85,7 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
- 	int i;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index b6bbd0dc4e65..c95a84afc35f 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3982,6 +3982,18 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
  
- 	ehdr = (struct elf32_hdr *)fw->data;
--	phdrs = (struct elf32_phdr *)(ehdr + 1);
-+	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 	guest_state_enter_irqoff();
  
- 	for (i = 0; i < ehdr->e_phnum; i++) {
- 		phdr = &phdrs[i];
-@@ -137,7 +137,7 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
- 	void *data;
++	/*
++	 * Set RFLAGS.IF prior to VMRUN, as the host's RFLAGS.IF at the time of
++	 * VMRUN controls whether or not physical IRQs are masked (KVM always
++	 * runs with V_INTR_MASKING_MASK).  Toggle RFLAGS.IF here to avoid the
++	 * temptation to do STI+VMRUN+CLI, as AMD CPUs bleed the STI shadow
++	 * into guest state if delivery of an event during VMRUN triggers a
++	 * #VMEXIT, and the guest_state transitions already tell lockdep that
++	 * IRQs are being enabled/disabled.  Note!  GIF=0 for the entirety of
++	 * this path, so IRQs aren't actually unmasked while running host code.
++	 */
++	raw_local_irq_enable();
++
+ 	amd_clear_divider();
  
- 	ehdr = (struct elf32_hdr *)fw->data;
--	phdrs = (struct elf32_phdr *)(ehdr + 1);
-+	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 	if (sev_es_guest(vcpu->kvm))
+@@ -3989,6 +4001,8 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
+ 	else
+ 		__svm_vcpu_run(svm, spec_ctrl_intercepted);
  
- 	if (ehdr->e_phnum < 2)
- 		return ERR_PTR(-EINVAL);
-@@ -217,7 +217,7 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
- 	int i;
++	raw_local_irq_disable();
++
+ 	guest_state_exit_irqoff();
+ }
  
- 	ehdr = (struct elf32_hdr *)fw->data;
--	phdrs = (struct elf32_phdr *)(ehdr + 1);
-+	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
+index 42824f9b06a2..48b72625cc45 100644
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -170,12 +170,8 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	VM_CLEAR_CPU_BUFFERS
  
- 	for (i = 0; i < ehdr->e_phnum; i++) {
- 		phdr = &phdrs[i];
-@@ -272,7 +272,7 @@ static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_na
- 	int i;
+ 	/* Enter guest mode */
+-	sti
+-
+ 3:	vmrun %_ASM_AX
+ 4:
+-	cli
+-
+ 	/* Pop @svm to RAX while it's the only available register. */
+ 	pop %_ASM_AX
  
- 	ehdr = (struct elf32_hdr *)fw->data;
--	phdrs = (struct elf32_phdr *)(ehdr + 1);
-+	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+@@ -343,11 +339,8 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	VM_CLEAR_CPU_BUFFERS
  
- 	for (i = 0; i < ehdr->e_phnum; i++) {
- 		/*
-@@ -314,7 +314,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 	/* Enter guest mode */
+-	sti
+-
+ 1:	vmrun %_ASM_AX
+-
+-2:	cli
++2:
  
- 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
- 	ehdr = (struct elf32_hdr *)fw->data;
--	phdrs = (struct elf32_phdr *)(ehdr + 1);
-+	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
- 	for (i = 0; i < ehdr->e_phnum; i++) {
- 		phdr = &phdrs[i];
+ 	/* Pop @svm to RDI, guest registers have been saved already. */
+ 	pop %_ASM_DI
 -- 
-2.39.5
+2.50.1
 
 
 
