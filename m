@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BA0B36700
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA009B36492
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B77981D8D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B59562DA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF70A352060;
-	Tue, 26 Aug 2025 13:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A171494D9;
+	Tue, 26 Aug 2025 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcL4Lxpm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIKlemnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B58A34320F;
-	Tue, 26 Aug 2025 13:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A952857D2;
+	Tue, 26 Aug 2025 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216442; cv=none; b=jUP7b3/TvbwGt3pEDFRaOyrRLpbauaRpgGRpoQm1W5SpadX6wnKSKUz9LZ5uQMoR5c0zeuuS6fcY6JRzLNGYUYqRsnWTXCt7B12pWXnk/ypelbMvnX2+OrPHtkk6xGGnfUCCJz/VR1TTPrDbu37kaT3ubKu+e3ecgfKHnpfOUdo=
+	t=1756214811; cv=none; b=NXv0P5ED7M3n/MvRl/o1DUTEJF+JpMytrfzi+RiNKhvI0IC0+gJ+7GyGScXLE6bbjcxqZWX70351AhMDHTeZZZs3NFErY1hj+cYSGtsMbdzvpzCI8oq2m+0KTPcIin9dyb2bNfRh4Or0I3503ESLACwr62JojA19+apHr8oHZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216442; c=relaxed/simple;
-	bh=k6SlhydMQT+BFLzQwH1pj4urcutpXL31L7O38s1HSm4=;
+	s=arc-20240116; t=1756214811; c=relaxed/simple;
+	bh=mZrVOWj6SxNyhScPPCq57GCxnUu5hpjNbXSpdgnC+1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsOh2yxNmHjkOTtV+PGVowk+azlGtjPy46CLqNQhHGTg0t92dXfIVwnyDXcYU9nk6h0mYaoRUB7bABXAdvsiEOou4OwVxcG7Tj4X4ve8RV16JAdozOhjxuX+m1egAedmPfhWawmtpSFKBOMAsA/z26P0tVV47Yby+HjHJnw28kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcL4Lxpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2913C4CEF1;
-	Tue, 26 Aug 2025 13:54:01 +0000 (UTC)
+	 MIME-Version; b=cIpC7Ir3ShbjXICBAUMme39Bn9852t78cSGpebBakkzFLrAjns03sbS2d1kvXzznP32NIsdfHHoxq9j0oogxujpo/7qfH/d8ONCVNouuB3oqO9Wax/6Ecjf8oBAqkQSgkfLOX5TzYtZ3t/ewjSP0Pb7CHOHVCrzYGkk8DfYPNRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIKlemnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15125C113CF;
+	Tue, 26 Aug 2025 13:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216442;
-	bh=k6SlhydMQT+BFLzQwH1pj4urcutpXL31L7O38s1HSm4=;
+	s=korg; t=1756214811;
+	bh=mZrVOWj6SxNyhScPPCq57GCxnUu5hpjNbXSpdgnC+1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcL4Lxpm4Yj+Z3rjzLrE+3RTX6iXbsvQGhA0zRy1bchZAPFqdZ3T9QU/FmS5k+ugW
-	 3Zd8ErWgw0u7uUn8hJqpdwdt0iV8oqMtTYaX+kyE6T+YJaC74Ryc92iDch1pmrf3LK
-	 GeWk1J1W31vFUcsY0eqdL7ooRECXT7nC1kZFG+gY=
+	b=TIKlemnq0SHUdUO9JrW3pp205P66my1AYTTZRIwV8sZHQXiLCfZGNYBf5pczQb3be
+	 d/OWQm2fmWvNAPW9KIMccgNwqjWGCPchJksQ/bVIRv7PmxWwjnoYXtUEw4et/+SPfp
+	 dgJ+NXPTvDtkJzDeShW8CPqPawIMGKcaZVEsAZh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 413/644] i3c: add missing include to internal header
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.1 251/482] cdc-acm: fix race between initial clearing halt and open
 Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826110956.691354139@linuxfoundation.org>
+Message-ID: <20250826110936.969045813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+On the devices that need their endpoints to get an
+initial clear_halt, this needs to be done before
+the devices can be opened. That means it needs to be
+before the devices are registered.
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
-
-Add the proper header to where the IO accessors are used.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/class/cdc-acm.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 86b7b44cfca2..1906c711f38a 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1496,6 +1496,12 @@ skip_countries:
+ 			goto err_remove_files;
+ 	}
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
++	if (quirks & CLEAR_HALT_CONDITIONS) {
++		/* errors intentionally ignored */
++		usb_clear_halt(usb_dev, acm->in);
++		usb_clear_halt(usb_dev, acm->out);
++	}
++
+ 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
+ 			&control_interface->dev);
+ 	if (IS_ERR(tty_dev)) {
+@@ -1503,11 +1509,6 @@ skip_countries:
+ 		goto err_release_data_interface;
+ 	}
  
- extern struct bus_type i3c_bus_type;
+-	if (quirks & CLEAR_HALT_CONDITIONS) {
+-		usb_clear_halt(usb_dev, acm->in);
+-		usb_clear_halt(usb_dev, acm->out);
+-	}
+-
+ 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
  
--- 
-2.39.5
-
+ 	return 0;
 
 
 
