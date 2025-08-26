@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8543AB36D1A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4F9B35C46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED50BA06B45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDEB87B78F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2506135206D;
-	Tue, 26 Aug 2025 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93A4301486;
+	Tue, 26 Aug 2025 11:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Kp2DujO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XAxPNlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2850350851;
-	Tue, 26 Aug 2025 14:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6787732144F;
+	Tue, 26 Aug 2025 11:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219151; cv=none; b=tFwb+nEfvhfYNWTv+5A0mM/jtjaDqet8IWGXmTEfqQSC5I4f3I2gc/mjGNjip0W6phxWgqQcp2DPJstlj10qhLjYNH677roVhIhDgfRNnOUmvKKVpYvGX3ffHjS7UleyrQ4PNIu+FJuAwMAdhV/bJ70VnYRNjw57IBE74nR5uGA=
+	t=1756207799; cv=none; b=BrCRMmNZ94bzZMUI769BzAQ4MPCqmpPIBu/VYr/xG9hDXoWhbnRgukLQyY4VIgzIi1RiREF6bME2fmMZKi85CJKNZ2Xs34D9hdlaf7x5rwV3amMaooZT+b5F51iACVitfWy8hoyCdNgZdfK+BVyYt9sing7kOyo63hqi3ZrbC3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219151; c=relaxed/simple;
-	bh=BwuEV/LUHjhNKK3UJTNbGAF/6HQ6CsrJ5VHtQSMb2Tg=;
+	s=arc-20240116; t=1756207799; c=relaxed/simple;
+	bh=BPkMZuIWuco2pyGPWmdfQ16c4QhJ+qt6IpC/nx403i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgqfDZoAiEh+YC0N490bulKT0jdMq0joT7wHPStN8K5n2TLuWG/hK8L4x2JTv3BC+SUEUE/tQoBVv2PueMLRiL1Bb3g13VXnyjV243MgO63i8BqVSLezh8Z+Wbs8O6cClnAXFzx7N8PmJJ81nWtJnCuq6YllW244AFdefLHyvgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Kp2DujO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56478C4CEF1;
-	Tue, 26 Aug 2025 14:39:11 +0000 (UTC)
+	 MIME-Version; b=oUpq2NHnFJSJc4w+k1UMsCMEpo4WEZeJkryX9HP2sRbC4bQhZrhkSyJ3k3OcohQVOle09DI1rWdfHKNOaEX2UtSiWDbTutClIHdNawbFpmsDIF6r9BOG6YHs3H4t7PG20cpS6qluWWRoiF8gAD1F/lirE8BeD1ZDGtBvWHaXWz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XAxPNlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC84BC4CEF1;
+	Tue, 26 Aug 2025 11:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219151;
-	bh=BwuEV/LUHjhNKK3UJTNbGAF/6HQ6CsrJ5VHtQSMb2Tg=;
+	s=korg; t=1756207799;
+	bh=BPkMZuIWuco2pyGPWmdfQ16c4QhJ+qt6IpC/nx403i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Kp2DujOmVRY5+ndBVAeWW1PQ/YdYBU/t2qRXI5Yq525S7O4blBB7j8uS1DTahgnf
-	 lMtHGJ35LMO5Sf1e7qJSpYRa1sdeZEnlptlL4vu+8DZ36pSqGHoRLe3Ca3hK8oHPrr
-	 PF00/JgVmg8ltumx57wxVomdz7Kj9h9NywloNFXs=
+	b=0XAxPNlEAOOEJ7/kF4814JTmdGJJZJd4arzi7xx+FuwtT48hVUSsRPBp+Coiq2/zU
+	 FyI3sBmzEWiQMVYeaxoJBbOXApfOEZYqXtjsmeKxSJaOH9FpWw+HwG4Slu+DdSxCoh
+	 ce4mL5p9L8nD3aKixLXruhsDi0oQS7EE67y8SQb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 272/403] scsi: lpfc: Remove redundant assignment to avoid memory leak
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.16 314/457] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
 Date: Tue, 26 Aug 2025 13:09:58 +0200
-Message-ID: <20250826110914.317869789@linuxfoundation.org>
+Message-ID: <20250826110945.120158170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
+commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
 
-Remove the redundant assignment if kzalloc() succeeds to avoid memory
-leak.
+The USB core will unmap urb->transfer_dma after SETUP stage completes.
+Then the USB controller will access unmapped memory when it received
+device descriptor. If iommu is equipped, the entire test can't be
+completed due to the memory accessing is blocked.
 
-Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by calling map_urb_for_dma() again for IN stage. To reduce
+redundant map for urb->transfer_buffer, this will also set
+URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
+dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
+flag before second map_urb_for_dma().
+
+Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/core/hcd.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index 291fccf02d45..f75431a948f3 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -5886,7 +5886,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 			}
- 			phba->nvmeio_trc_on = 1;
- 			phba->nvmeio_trc_output_idx = 0;
--			phba->nvmeio_trc = NULL;
- 		} else {
- nvmeio_off:
- 			phba->nvmeio_trc_size = 0;
--- 
-2.50.1
-
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -2151,7 +2151,7 @@ static struct urb *request_single_step_s
+ 	urb->complete = usb_ehset_completion;
+ 	urb->status = -EINPROGRESS;
+ 	urb->actual_length = 0;
+-	urb->transfer_flags = URB_DIR_IN;
++	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
+@@ -2215,9 +2215,15 @@ int ehset_single_step_set_feature(struct
+ 
+ 	/* Complete remaining DATA and STATUS stages using the same URB */
+ 	urb->status = -EINPROGRESS;
++	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
++	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
++		usb_put_urb(urb);
++		goto out1;
++	}
++
+ 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
+ 	if (!retval && !wait_for_completion_timeout(&done,
+ 						msecs_to_jiffies(2000))) {
 
 
 
