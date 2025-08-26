@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-173951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93274B36036
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8996FB36B68
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B51887AB119
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E16ED1C26A54
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CCD1DD9D3;
-	Tue, 26 Aug 2025 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD5735AAA5;
+	Tue, 26 Aug 2025 14:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghWDnIkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKu1FMCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634A21A00F0;
-	Tue, 26 Aug 2025 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1742535AAA0;
+	Tue, 26 Aug 2025 14:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213095; cv=none; b=sP6Ao2uFFJauZAkQFsyiSXIoT0+bYzXnKTj19YxXP7RKY0jjxHO/CPgAK2RNCfB3wSEzU+Ap1HSutLPLIsFPB7E5DfKzS0BKZfsbu7SppsBvZ/cdTRuwsJjhM+6pB0W90L9ugdZWZzOWCHGvA0Fj5TAuMDXndXmQBC71ET4lEPI=
+	t=1756218547; cv=none; b=TPyzr/BHhoKr45nBUxno2hdzwnqNTC5qJYbngTRVJYL0DnD+8gdhvCMu4ecsTT0u/nEOZRt6NMAX9AHCT67inJiJHecGVsebDlHnfuxa0vbJ7XVkQs3cTR4esi7QLoHKEZ9ghvB/v8JVqqk/UQM+ocQcKC9f2r1UDdMnHNL++qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213095; c=relaxed/simple;
-	bh=AZ7o7r+b/WNY9JkPpOAXJvDwhRp5XRKfa191T6weFmQ=;
+	s=arc-20240116; t=1756218547; c=relaxed/simple;
+	bh=exjGq1/LYSZsA07whiENH5a/OVHcOQFoJaUat3TNRi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r09OuBFb3Bx/G8QsINgjKCzW+eA90v3ki8BVUUiqyPRoNrE+3NXuHddxR1EZEPUSOPXoFJJizXXvsWSmezOz1bo9GmrROshPAY3QabidqtHFCWzcjaUd/si1yXX6A3yjoWtU9NQTz7bVthKgV01LgrIgrkyLvD+1OanSg7haeUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghWDnIkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D52C4CEF1;
-	Tue, 26 Aug 2025 12:58:14 +0000 (UTC)
+	 MIME-Version; b=AG6+BiqazkLIs418j9fBYgxKgZwP9ZEBLr7Kwb1rcl1tsFRe2OI9nPMUWdtH0OgWptQnZb3hHQeHAd3z7wvPdAGGKjp4VOy54l2Atoa9d/qJboUTqd4ulifTTp6cGgABJZOuP3ORiVwgC2jcqanyOY2hXXwZFmEjRpFOTH25xkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKu1FMCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B07CC4CEF1;
+	Tue, 26 Aug 2025 14:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213095;
-	bh=AZ7o7r+b/WNY9JkPpOAXJvDwhRp5XRKfa191T6weFmQ=;
+	s=korg; t=1756218546;
+	bh=exjGq1/LYSZsA07whiENH5a/OVHcOQFoJaUat3TNRi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghWDnIkU5V9Isim3P2Ixk67Q6uY6fZkqS8Xd8txiIox3Kuox2BaGAduzVZIEFLyC9
-	 oZnQ9maGCUImhP6PEdTOOa3TzsnxkC3Vi98FknmG2x2Ds3YV4ySocGnlIZ/tqsuB3J
-	 DQOVJEB/U/azKdEvngPkjNNWtAfxJTyliC+NyMW0=
+	b=QKu1FMCF/UtwrL2NS4wN3N1m5Ob+xpy3KEEV0dq4YN/75PWPmR26ZC8Fn/dUi6TG6
+	 UGfFT0TKFbg8RFmtBB8Gbb8yyKWtaHkYNEf7M9SrZyh6Cak53bjM2vgQnGP/8O6sl7
+	 yYKBjPMOx8VW+sGv2d/jbEYSeJ/E/f0w4LPOrS7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/587] drm/amd/display: Avoid configuring PSR granularity if PSR-SU not supported
+Subject: [PATCH 5.4 041/403] usb: dwc3: qcom: Dont leave BCR asserted
 Date: Tue, 26 Aug 2025 13:06:07 +0200
-Message-ID: <20250826110958.481120069@linuxfoundation.org>
+Message-ID: <20250826110906.952744251@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-[ Upstream commit a5ce8695d6d1b40d6960d2d298b579042c158f25 ]
+commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 upstream.
 
-[Why]
-If PSR-SU is disabled on the link, then configuring su_y granularity in
-mod_power_calc_psr_configs() can lead to assertions in
-psr_su_set_dsc_slice_height().
+Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
+blocks any subsequent attempts of probing the device, e.g. after a probe
+deferral, with the following showing in the log:
 
-[How]
-Check the PSR version in amdgpu_dm_link_setup_psr() to determine whether
-or not to configure granularity.
+[    1.332226] usb30_prim_gdsc status stuck at 'off'
 
-Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Leave the BCR deasserted when exiting the driver to avoid this issue.
+
+Cc: stable <stable@kernel.org>
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
+[ adapted to individual clock management API instead of bulk clock operations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-index fe96bab7d05d..67972d25366e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-@@ -124,8 +124,10 @@ bool amdgpu_dm_link_setup_psr(struct dc_stream_state *stream)
- 		psr_config.allow_multi_disp_optimizations =
- 			(amdgpu_dc_feature_mask & DC_PSR_ALLOW_MULTI_DISP_OPT);
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -615,13 +615,13 @@ static int dwc3_qcom_probe(struct platfo
+ 	ret = reset_control_deassert(qcom->resets);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
+-		goto reset_assert;
++		return ret;
+ 	}
  
--		if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
--			return false;
-+		if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1) {
-+			if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
-+				return false;
-+		}
+ 	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
+ 	if (ret) {
+ 		dev_err(dev, "failed to get clocks\n");
+-		goto reset_assert;
++		return ret;
+ 	}
  
- 		ret = dc_link_setup_psr(link, stream, &psr_config, &psr_context);
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -700,8 +700,6 @@ clk_disable:
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
+ 	}
+-reset_assert:
+-	reset_control_assert(qcom->resets);
  
--- 
-2.39.5
-
+ 	return ret;
+ }
+@@ -725,8 +723,6 @@ static int dwc3_qcom_remove(struct platf
+ 	}
+ 	qcom->num_clocks = 0;
+ 
+-	reset_control_assert(qcom->resets);
+-
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_disable(dev);
+ 
 
 
 
