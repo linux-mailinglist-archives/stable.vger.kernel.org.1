@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1617FB36ACC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A372B3680A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39DC5580CA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5E7366C21
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D582F83BA;
-	Tue, 26 Aug 2025 14:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1100345758;
+	Tue, 26 Aug 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqW+N5qQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCpv/+iM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BA7352071;
-	Tue, 26 Aug 2025 14:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFF21DE8BE;
+	Tue, 26 Aug 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218330; cv=none; b=g+NpzCj4Xc8NgLphd4+7vo5WVPXiTyB75DSJPXc168WVd7vO/4+lREh+s8KJhWoc+ZeLuAfBxUgQQ0iz1czjJE665W21vJk9PNgPB6wp8+8e+1w4/gkfRUhIS3bjtY1EhmsTLSJcek081pyXhDTZ3LvUVjSgGeBNU0geFEvYPic=
+	t=1756216969; cv=none; b=AK9hlipOlvptTWrS78O3OXwtEZy+B9FCOZA32KgU/AD2ssXAkwxG+PTamcdF4cDKbWd0m1ChToUpi6vS04YcA++l5CpplF9NBkHmaMFY2KUZlgFz6B9H+0G0/RbEXPk7BOyU/NYhnyoz+PZ9KmmGwi4inpbysygcoyft12Kxs4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218330; c=relaxed/simple;
-	bh=arHZagiNgOh76IbkJycol58ky1jjJWlQVHWUHDlIuWM=;
+	s=arc-20240116; t=1756216969; c=relaxed/simple;
+	bh=nx18LAo5tVWIJlCYOzwsxVUvvouIxOy37ioRGZvPBSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yj9T6pvlrKHB+YICZwrDEsU7mP3gitYOtjk6Q0WBs3XxEv/zGBVHN+UaSTQst1hHT3J9hz+yzAxuVAr0dIQKqrvvYy2x8fWvG07He/oUrWLdAB2g0emjcJbR62/RWz1tSmxzdINcEeqeniXDpc62DkuNe3QyuaBVmI9yvUFMM3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqW+N5qQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44266C4CEF1;
-	Tue, 26 Aug 2025 14:25:30 +0000 (UTC)
+	 MIME-Version; b=n5T1aEdnN6oL16GEsAvkapk1qcKCrL8RVryctpW8atS9g7pPxdpDLiv2eVq6PqMU/mROgqk5ID1Jq5pYKTRqmdXOdAyvjIZ+kRVveY89FwTBikYf7l9uALxWwNr2IUhfVWQcPCx0Rh+1ZTfzhZ6zpbv7QpD51AYIQgM08wD/EZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCpv/+iM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF205C4CEF1;
+	Tue, 26 Aug 2025 14:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218330;
-	bh=arHZagiNgOh76IbkJycol58ky1jjJWlQVHWUHDlIuWM=;
+	s=korg; t=1756216969;
+	bh=nx18LAo5tVWIJlCYOzwsxVUvvouIxOy37ioRGZvPBSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqW+N5qQ17j09Jv3Ch72hk4c/1QUtMjOH1T9ovtgLHFm762toc8c3WJ1P2PNT+5gD
-	 hCslWmwpsBZtzAxo8EBkq4KExuEuQS71OZJmRVwUTZst0e4BGwyrlfUMXro0ffOPyP
-	 kaID3QOgyQjYD1kq+kC0wbrxlwfEFfcx9G+2Mdz4=
+	b=TCpv/+iMKukHaUsquCatVBht6XiHYiLZuOY1++09QYPh3iPSZsOI1Yqw2xHz+JMRB
+	 ysa8tUmwgb2OM7saPMQOgcZu3ScdPAlSY6sbOVxyL/v6ImJbNbeHqBSil8z33ZOWxX
+	 brGi1A/zgNLqug+7xqbwtHbUy7iI7r/jC2spmNws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 482/523] media: v4l2-ctrls: always copy the controls on completion
-Date: Tue, 26 Aug 2025 13:11:32 +0200
-Message-ID: <20250826110936.334777577@linuxfoundation.org>
+Subject: [PATCH 5.15 602/644] wifi: ath11k: fix dest ring-buffer corruption when ring is full
+Date: Tue, 26 Aug 2025 13:11:33 +0200
+Message-ID: <20250826111001.466560949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c3bf5129f33923c92bf3bddaf4359b7b25ecb4ba ]
+[ Upstream commit aa6956150f820e6a6deba44be325ddfcb5b10f88 ]
 
-When v4l2_ctrl_request_complete() is called and there is no control
-handler object found in the request, then create such an object so
-that all controls at completion state can be stored and are available
-to userspace.
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-Otherwise any attempt by userspace to read the completed request data
-will fail.
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-If allocating the control handler object failed, then indicate that
-by returning ENOMEM when attempting to get the controls from the
-completed request instead of returning ENOENT.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 5a0400aca5fa ("media: v4l2-ctrls: Don't reset handler's error in v4l2_ctrl_handler_free()")
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls.c |   36 +++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls.c
-@@ -3767,8 +3767,19 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
- 	obj = media_request_object_find(req, &req_ops, hdl);
- 	if (obj)
- 		return obj;
-+	/*
-+	 * If there are no controls in this completed request,
-+	 * then that can only happen if:
-+	 *
-+	 * 1) no controls were present in the queued request, and
-+	 * 2) v4l2_ctrl_request_complete() could not allocate a
-+	 *    control handler object to store the completed state in.
-+	 *
-+	 * So return ENOMEM to indicate that there was an out-of-memory
-+	 * error.
-+	 */
- 	if (!set)
--		return ERR_PTR(-ENOENT);
-+		return ERR_PTR(-ENOMEM);
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -789,7 +789,6 @@ void ath11k_hal_srng_access_end(struct a
+ {
+ 	lockdep_assert_held(&srng->lock);
  
- 	new_hdl = kzalloc(sizeof(*new_hdl), GFP_KERNEL);
- 	if (!new_hdl)
-@@ -3779,8 +3790,8 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
- 	if (!ret)
- 		ret = v4l2_ctrl_request_bind(req, new_hdl, hdl);
- 	if (ret) {
-+		v4l2_ctrl_handler_free(new_hdl);
- 		kfree(new_hdl);
--
- 		return ERR_PTR(ret);
- 	}
- 
-@@ -4369,8 +4380,25 @@ void v4l2_ctrl_request_complete(struct m
- 	 * wants to leave the controls unchanged.
- 	 */
- 	obj = media_request_object_find(req, &req_ops, main_hdl);
--	if (!obj)
--		return;
-+	if (!obj) {
-+		int ret;
-+
-+		/* Create a new request so the driver can return controls */
-+		hdl = kzalloc(sizeof(*hdl), GFP_KERNEL);
-+		if (!hdl)
-+			return;
-+
-+		ret = v4l2_ctrl_handler_init(hdl, (main_hdl->nr_of_buckets - 1) * 8);
-+		if (!ret)
-+			ret = v4l2_ctrl_request_bind(req, hdl, main_hdl);
-+		if (ret) {
-+			v4l2_ctrl_handler_free(hdl);
-+			kfree(hdl);
-+			return;
-+		}
-+		hdl->request_is_queued = true;
-+		obj = media_request_object_find(req, &req_ops, main_hdl);
-+	}
- 	hdl = container_of(obj, struct v4l2_ctrl_handler, req_obj);
- 
- 	list_for_each_entry(ref, &hdl->ctrl_refs, node) {
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -804,7 +803,11 @@ void ath11k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -820,6 +823,10 @@ void ath11k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
