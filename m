@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE4FB35D6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE93B36B38
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74C771BA4EF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAA31C4664F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F34D301486;
-	Tue, 26 Aug 2025 11:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFC92135B8;
+	Tue, 26 Aug 2025 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvIBXX/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxeM/6Qi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7FB2135B8;
-	Tue, 26 Aug 2025 11:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51435208B;
+	Tue, 26 Aug 2025 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208231; cv=none; b=Ts/kzxNPcy9QUzE1V2akewthE9OrZk8a8qCCwDGQvbGv8CbKdi8lDIXKK7vjjM2ywlobYuIQ6mqzKUD6520tu7pKlg6iJxCY8ZeNDgu5EvNsAzs11Vg9K/aXFwyJVuJu5f4FJAi7dbFf+22p44NFMQyC1ibjeZevrKLBoQqnpAA=
+	t=1756218835; cv=none; b=Y+esKSdN/XA3ViKwtmBTarQb8SSd1HJ3tQF6YroiWzDmXnaIQi7saZKn/0kjeJ9g+/mjja2g93kmyLPN50XOxxWZPMinDegdhrs62hB8INEH27eAM3RVMAGBGEbjoh2DCtAj5WnfuOeSYOzVl3aW5rpXEE6Z1R9B7qeIV7xdLOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208231; c=relaxed/simple;
-	bh=DFquoXEJzH6RDc76dJCoMU/nhRQMrkmhAEBuaYieb8w=;
+	s=arc-20240116; t=1756218835; c=relaxed/simple;
+	bh=oaYjI6oVFfD23Fn6Toz6wNpGYQK/SonMs7/8vBFkAzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hi9RrpB8c09TKiKEJE5XW1tohx8bC9TAYbjLiVRQw7KbzsF8aU6pBttexxfz38sEVjT59v10me1MWiuX956M3QXB2mQp2oJU3bFurxx/dqJbdi5wvYH64/BhB0iHJPwsqLaFubL+uEWtLjyi2u0IysIpkAcXunrojCu0P/99JbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvIBXX/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3651C4CEF1;
-	Tue, 26 Aug 2025 11:37:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q67YUw1MnB6HJfRzSEyEulQOo95yJlnFHjJUhI1kt0dM/id/XRfkhKv4aGytkF6H4LSvHm5wWeNPOgb44GkSq42coSISHHBCS8WCWnSIYZEiG11yxctBdtM6q05qt0LO/OMsNXzLILMGMnnXidDx1nkNWZfmj4YrDpaYUjnVf8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxeM/6Qi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC171C4CEF1;
+	Tue, 26 Aug 2025 14:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208231;
-	bh=DFquoXEJzH6RDc76dJCoMU/nhRQMrkmhAEBuaYieb8w=;
+	s=korg; t=1756218835;
+	bh=oaYjI6oVFfD23Fn6Toz6wNpGYQK/SonMs7/8vBFkAzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvIBXX/Kyk24+IhjpFlLV+uI39gBZqW+QdwjIVpmQb6xKPTSQFC058ec9sIx26r3h
-	 NgaSkyPo/NNE6VPEa+LurQN6Qr/+M0r8vHScD8X7+CqMrLapswQvKX9jmXAcVSEZc+
-	 Vu5rQO1X9CQySRKiVqT0dxgKLDWGNrAqalBrpwkc=
+	b=pxeM/6Qid2xA7MNIlo/ToZTFvESQcOOO+tMDAyDM/cL4zfoVw196HWbzecpGi/lxJ
+	 Es1oX02cRs9tni5yjDuASYyBsbBhFQ+8lt7i0VrjF7yweVmeezy5Sv7Sqzq4kUo/Eh
+	 QkfXaSM8t41lZtYhpzy1lhA0s7JA2GIsPQnpJ1ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 031/322] ext4: fix reserved gdt blocks handling in fsmap
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 120/403] soundwire: stream: restore params when prepare ports fail
 Date: Tue, 26 Aug 2025 13:07:26 +0200
-Message-ID: <20250826110916.101690815@linuxfoundation.org>
+Message-ID: <20250826110910.051104930@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
+[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
 
-In some cases like small FSes with no meta_bg and where the resize
-doesn't need extra gdt blocks as it can fit in the current one,
-s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
-length entry, which is incorrect.
+The bus->params should be restored if the stream is failed to prepare.
+The issue exists since beginning. The Fixes tag just indicates the
+first commit that the commit can be applied to.
 
-  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
-  $ mount /dev/sda /mnt/scratch
-  $ xfs_io -c "fsmap -d" /mnt/scartch
-
-        0: 253:48 [0..127]: static fs metadata 128
-        1: 253:48 [128..255]: special 102:1 128
-        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
-        3: 253:48 [256..383]: special 102:3 128
-
-Fix this by adding a check for this case.
-
-Cc: stable@kernel.org
-Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsmap.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/soundwire/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
- 	/* Reserved GDT blocks */
- 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
- 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
-+
-+		/*
-+		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
-+		 * check for that.
-+		 */
-+		if (!len)
-+			return 0;
-+
- 		error = ext4_getfsmap_fill(meta_list, fsb, len,
- 					   EXT4_FMR_OWN_RESV_GDT);
- 		if (error)
+diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+index 3b3f909407c3..6e4c7bf9eb0d 100644
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1532,7 +1532,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream)
+ 		if (ret < 0) {
+ 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
+ 				ret);
+-			return ret;
++			goto restore_params;
+ 		}
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
