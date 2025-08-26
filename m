@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C641B3601D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC4CB36A5E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A9D57AA942
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AFFA03151
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B57D1F09A8;
-	Tue, 26 Aug 2025 12:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943D3350843;
+	Tue, 26 Aug 2025 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6O5xTvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxHQ9Btz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38150187554;
-	Tue, 26 Aug 2025 12:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5101434F47D;
+	Tue, 26 Aug 2025 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213001; cv=none; b=tpC4iQSwr7agm2E8WlnfUbK7FhatxSmWsdcrMs1weXdbFd3/yvR6ri/S2sH5GPKigy/P7njsN9GtYtnzzivq2H364TJDF5EGKDfBYONZw2b2+/vQVB3ZatniqlMTjV7NRBf4tK8HbGK7e1w6QKMWnY2b2DWHwgzictezGKu7Nyw=
+	t=1756218473; cv=none; b=fJejEfDM7+1/QOrBN/tdbQERCHu+8HvbfevL12uVAVGJwlzZbEOehuEIu/vhxPktj1di0KjpxMfjYHFd9COHJa6VTMCP6HrLwnqbQpmyvTEyzg8bFjSn2UwAIYfU4dpaDfQsYLBUIeKivnsx8xCodSFuuDvRtND40eOlEA7NFRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213001; c=relaxed/simple;
-	bh=5u+XWO80XN+bdA6a9bfneou5xWgon2NEJFX383ohxIU=;
+	s=arc-20240116; t=1756218473; c=relaxed/simple;
+	bh=KovAFvefE7/JQG3c4s1Gne+JdIglarhCdRPwwanIbCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=buLYq0Ye3TDoNsEbLA6WQ5o1pgkX8oVXrWPVdR6BZMiIHvisXG76B2OpbHOWgVvEI78Gk+QbulmcraTNfiquSgzoLCUhDMkDqvs9Jws2tNlULlPZ5BxXx+DeW0BYpwK/5Rrzwao6Sy41Jsv7gQ+vSkDqI0Q0G3vD6voaZSYc8nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6O5xTvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EA1C4CEF1;
-	Tue, 26 Aug 2025 12:56:40 +0000 (UTC)
+	 MIME-Version; b=JJZbH8Ah0QquPtJnXxKLicRP9gUMPSsvvrYSpcwppjeMpvuQvYsB32wnT7NVMZYn4JihpXG2yyThIY3Xe3amdAHUKaH/gGvEsOCe2SmENJuosnrt3Ygfn0FvrA/OaTUXnC0QXdCL1/qYgmKJY2gWpq7UivSlCQNDim2WO8dUF40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxHQ9Btz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D874BC4CEF1;
+	Tue, 26 Aug 2025 14:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213001;
-	bh=5u+XWO80XN+bdA6a9bfneou5xWgon2NEJFX383ohxIU=;
+	s=korg; t=1756218473;
+	bh=KovAFvefE7/JQG3c4s1Gne+JdIglarhCdRPwwanIbCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6O5xTvTMUjizrvCG10ujkvrTQ7kWi6T7pUGbeQAoPfBlGc8ZN+sTH0PSU8hX8pbN
-	 GgSGYvWTHvA4o3QeT3Ua2FgE+OX564O7Emx7vsMO7Mcprq1i91rmFnxjPRGTtxDyiJ
-	 q5RwK3qewx7RZ+NZfRpTyM3tRyfQz8xBBqtvnsDo=
+	b=fxHQ9BtzH+GFiLWonDHwTxgdUCxBsTz2gSMbSpQX5cd5UqLtF6VassLaTTSuN4lva
+	 g6Wx07GKR74Zo3/iGo9sIMKLmhdB7M2z8l76W5oFnxENDbScOlhY+nkmZaalQhgrEK
+	 Z9rtMFrdiLgwq1YaqE6eJ3vKZI45Vl+y0LQC6iqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wen Chen <Wen.Chen3@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/587] drm/amd/display: Fix failed to blank crtc!
+	Vicki Pfau <vi@endrift.com>,
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 006/403] Input: xpad - set correct controller type for Acer NGR200
 Date: Tue, 26 Aug 2025 13:05:32 +0200
-Message-ID: <20250826110957.597768155@linuxfoundation.org>
+Message-ID: <20250826110905.810000216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Chen <Wen.Chen3@amd.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
+commit bcce05041b21888f10b80ea903dcfe51a25c586e upstream.
 
-[why]
-DCN35 is having “DC: failed to blank crtc!” when running HPO
-test cases. It's caused by not having sufficient udelay time.
+The controller should have been set as XTYPE_XBOX360 and not XTYPE_XBOX.
+Also the entry is in the wrong place. Fix it.
 
-[how]
-Replace the old wait_for_blank_complete function with fsleep function to
-sleep just until the next frame should come up. This way it doesn't poll
-in case the pixel clock or other clock was bugged or until vactive and
-the vblank are hit again.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Link: https://lore.kernel.org/r/20250708033126.26216-2-niltonperimneto@gmail.com
+Fixes: 22c69d786ef8 ("Input: xpad - support Acer NGR 200 Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 2 +-
+ drivers/input/joystick/xpad.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index f3c682c7fbe6..f0b472e84a53 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -781,7 +781,7 @@ enum dc_status dcn20_enable_stream_timing(
- 		return DC_ERROR_UNEXPECTED;
- 	}
- 
--	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
-+	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
- 
- 	params.vertical_total_min = stream->adjust.v_total_min;
- 	params.vertical_total_max = stream->adjust.v_total_max;
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -142,12 +142,12 @@ static const struct xpad_device {
+ 	{ 0x046d, 0xca88, "Logitech Compact Controller for Xbox", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xca8a, "Logitech Precision Vibration Feedback Wheel", 0, XTYPE_XBOX },
+ 	{ 0x046d, 0xcaa3, "Logitech DriveFx Racing Wheel", 0, XTYPE_XBOX360 },
++	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX360 },
+ 	{ 0x056e, 0x2004, "Elecom JC-U3613M", 0, XTYPE_XBOX360 },
+ 	{ 0x05fd, 0x1007, "Mad Catz Controller (unverified)", 0, XTYPE_XBOX },
+ 	{ 0x05fd, 0x107a, "InterAct 'PowerPad Pro' X-Box pad (Germany)", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3030, "Chic Controller", 0, XTYPE_XBOX },
+ 	{ 0x05fe, 0x3031, "Chic Controller", 0, XTYPE_XBOX },
+-	{ 0x0502, 0x1305, "Acer NGR200", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0020, "Logic3 Xbox GamePad", 0, XTYPE_XBOX },
+ 	{ 0x062a, 0x0033, "Competition Pro Steering Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
 
 
 
