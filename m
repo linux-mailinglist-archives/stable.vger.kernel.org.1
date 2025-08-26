@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-175906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CBEB36AD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B94B3620B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44FB6A018DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552A81892488
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327A5352FDC;
-	Tue, 26 Aug 2025 14:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F41124A066;
+	Tue, 26 Aug 2025 13:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxsjku2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pujPGAEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BC9350D46;
-	Tue, 26 Aug 2025 14:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B876221704;
+	Tue, 26 Aug 2025 13:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218279; cv=none; b=lWeQAvQUEKuvEwoMdeqOIUyFbFaY++v4eCZ3jhTHmzELSyHXtqR0Cy+xx68I513Ya5gQx13EVhc5yPhK9Z+KcnwIc7Or4RcOVMM4B8+YaLSaHyiKjUdPQ118FECI9262wGSPmt4OpxNknDHYK6xdfzIXPWHxIEFK44+bo2dLRk0=
+	t=1756213899; cv=none; b=GVeuP0nQMzQoUsZsTxWdi4nSAXcuriPnRsTPoFXubZlN3PXjAIb1Jz6VJFMMPQc+iigfKdTh7mTYEPHAOXLW0bARxbCf7wEcpYSITa+RQ4ncX1j34KMKiOuYGdUpoLcrmBPYag3ZbFX+YWr/V5ehW+pZCdcC2Ze7dVHlc0csraQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218279; c=relaxed/simple;
-	bh=W2Dm5IF1SUk8PTmpbpE4t/7MvnIZniro4T3DOvNfRIg=;
+	s=arc-20240116; t=1756213899; c=relaxed/simple;
+	bh=BFFImIJSLPvQ2ApktTqGOTr9aL4tv8B8h6GeX5dMzpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1TcCqz0tdnzLCzwB779FHFC+FXDjD/B5k2RdQCh7nWmFTmb8f9NAJMBoPzLc7jjexGsTlN+M915kfSKXoCNqV8maysMHKYwNJBdSotdF2HNqVXFdCN1d0tUjRpPG4CorekJzCLqNmnae4dDmFg8cHVGeEd/QvELuy11TCFtDOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxsjku2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B51C4CEF1;
-	Tue, 26 Aug 2025 14:24:38 +0000 (UTC)
+	 MIME-Version; b=jvXMRxjvgbIsb1EYZPH3ZDUD/DZ/myVpOgwqToi4khLqFA79v0VI2Y9JNhOne9HXUCjdEHaHunmtQpuQZHpY9Txol7po90xKj686msHAYVNXJ9FJ/1bLnn64rSYNzlwSlfJteGj0m3v6RmRm89Vs11PhHmbtdbJ9rrEEXYpWyQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pujPGAEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0B5C4CEF1;
+	Tue, 26 Aug 2025 13:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218278;
-	bh=W2Dm5IF1SUk8PTmpbpE4t/7MvnIZniro4T3DOvNfRIg=;
+	s=korg; t=1756213898;
+	bh=BFFImIJSLPvQ2ApktTqGOTr9aL4tv8B8h6GeX5dMzpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxsjku2WEMchxH/moXamxIPiGUYM8eqF4eYMOYUfs3yyjlvcGgoBJv2+IA1JYdSTl
-	 cBzSyX8nt9DBTc0rvFJcIzNsgzO/ouWWi+sd1RHONzXiw9XL5qotAS9NvXl1o8jRJ7
-	 FZDdckOEHvIpp78CkSaKVgxtClNZV+1MXg87Qh3A=
+	b=pujPGAEbp0O2A3r0cQSG5AbyzrC+5zXNYbfVdQOZinE2QI05Tm/sbhEvCzEQmTaUv
+	 9bOnRAyyHNivco5BE8kYUvaA4p1pSqyHyveC12bFJ6TF+FGeoO/PMnQDEhyrDPKWvB
+	 pJfX5siDvPvAxXJEOw9wKsppaTwl+QikdMgUk65w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 461/523] net/sched: ets: use old nbands while purging unused classes
+	syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com,
+	syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 522/587] comedi: Fix use of uninitialized memory in do_insn_ioctl() and do_insnlist_ioctl()
 Date: Tue, 26 Aug 2025 13:11:11 +0200
-Message-ID: <20250826110935.817311777@linuxfoundation.org>
+Message-ID: <20250826111006.276383670@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
+commit 3cd212e895ca2d58963fdc6422502b10dd3966bb upstream.
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+syzbot reports a KMSAN kernel-infoleak in `do_insn_ioctl()`.  A kernel
+buffer is allocated to hold `insn->n` samples (each of which is an
+`unsigned int`).  For some instruction types, `insn->n` samples are
+copied back to user-space, unless an error code is being returned.  The
+problem is that not all the instruction handlers that need to return
+data to userspace fill in the whole `insn->n` samples, so that there is
+an information leak.  There is a similar syzbot report for
+`do_insnlist_ioctl()`, although it does not have a reproducer for it at
+the time of writing.
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+One culprit is `insn_rw_emulate_bits()` which is used as the handler for
+`INSN_READ` or `INSN_WRITE` instructions for subdevices that do not have
+a specific handler for that instruction, but do have an `INSN_BITS`
+handler.  For `INSN_READ` it only fills in at most 1 sample, so if
+`insn->n` is greater than 1, the remaining `insn->n - 1` samples copied
+to userspace will be uninitialized kernel data.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
+Another culprit is `vm80xx_ai_insn_read()` in the "vm80xx" driver.  It
+never returns an error, even if it fails to fill the buffer.
 
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+Fix it in `do_insn_ioctl()` and `do_insnlist_ioctl()` by making sure
+that uninitialized parts of the allocated buffer are zeroed before
+handling each instruction.
 
-Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thanks to Arnaud Lecomte for their fix to `do_insn_ioctl()`.  That fix
+replaced the call to `kmalloc_array()` with `kcalloc()`, but it is not
+always necessary to clear the whole buffer.
+
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Reported-by: syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a5e45f768aab5892da5d
+Reported-by: syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fb4362a104d45ab09cf9
+Cc: stable <stable@kernel.org> # 5.13+
+Cc: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250725125324.80276-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/comedi/comedi_fops.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -664,6 +664,12 @@ static int ets_qdisc_change(struct Qdisc
- 
- 	sch_tree_lock(sch);
- 
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
-+	}
-+
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -671,11 +677,6 @@ static int ets_qdisc_change(struct Qdisc
- 			q->classes[i].deficit = quanta[i];
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1587,6 +1587,9 @@ static int do_insnlist_ioctl(struct come
+ 				memset(&data[n], 0, (MIN_SAMPLES - n) *
+ 						    sizeof(unsigned int));
+ 			}
++		} else {
++			memset(data, 0, max_t(unsigned int, n, MIN_SAMPLES) *
++					sizeof(unsigned int));
  		}
+ 		ret = parse_insn(dev, insns + i, data, file);
+ 		if (ret < 0)
+@@ -1670,6 +1673,8 @@ static int do_insn_ioctl(struct comedi_d
+ 			memset(&data[insn->n], 0,
+ 			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
+ 		}
++	} else {
++		memset(data, 0, n_data * sizeof(unsigned int));
  	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
+ 	ret = parse_insn(dev, insn, data, file);
+ 	if (ret < 0)
 
 
 
