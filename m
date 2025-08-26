@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88793B35D0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92719B36CE4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A3B1BA6452
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B6C91C26CC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB0533CE94;
-	Tue, 26 Aug 2025 11:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AF835E4D9;
+	Tue, 26 Aug 2025 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpI2PNlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu/BH0Cu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F231726B747;
-	Tue, 26 Aug 2025 11:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C0352081;
+	Tue, 26 Aug 2025 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207993; cv=none; b=Zol4mcV7qfIExqCkvGx+pORZJa2k1Ifd3kuUDcMxpLlX2d96utRJZPCkTBALD4QfIVa5X3K5CLhtdBmOMRRh/W2GzI0JHFh3+LR7vpsXVP5edNUgyvQF+VihNh9dEMs12bQUsbXLJRt+UjIUyQHrjSeODkyvSrYFENhQ/27MXhk=
+	t=1756219448; cv=none; b=Wp9Ofcl+kMGp/0b+UnL9/WqCVxITpnhXSeewPMlJ1xFJBJ1M/DfhuAuzuU7HeaNrcQW3zCJrUORslCBFIzSbyAgcEyPaJvpXb2M6cZ4nEUaeahQ4n0VqFo9anXuQplS0aZBr+9hiTSng15X1M7BI+1s298q1wRbklgxg9NK1MLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207993; c=relaxed/simple;
-	bh=6Dr8fo4Usb522AfGKvurcuuSpUZc6Fl7RbfpqamxiG0=;
+	s=arc-20240116; t=1756219448; c=relaxed/simple;
+	bh=E+DDqpL4NImO2NKgx+JNXq9Y0i2oOaCGkVzVZkgIlDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mQyAyWN0Po8IOwmiY5feCKSzGkg/p4mAG6mZreeBrE9dpaaMpgyovW9cQsFcxrQx/OGLZ/NI4+NQpZcy1espNuoIyxw4iiTbRdqG9VuJIEStVTYY/QjSt5t1j91FHe4PxKvPCc/2pbIMK1+gRQ7pKCAHYxXIzrVA6HtmvWvE0oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpI2PNlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285B8C4CEF1;
-	Tue, 26 Aug 2025 11:33:12 +0000 (UTC)
+	 MIME-Version; b=iSSj3b9Vo3yxeoVSotWm2GcPklntMH9aBckl0wwupxqU0l3FTzqDLHPsfSmlbcDqYGtCxLrm5IzJTgMv+u1XsnWjtWznrMF86QGu7KBw6U//D4md+S2v1W5+0Po54vEjib7kmtBVn5iwuCmKfKKSeIbjnLnTviRx57otEATF0s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu/BH0Cu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD04C4CEF1;
+	Tue, 26 Aug 2025 14:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207992;
-	bh=6Dr8fo4Usb522AfGKvurcuuSpUZc6Fl7RbfpqamxiG0=;
+	s=korg; t=1756219448;
+	bh=E+DDqpL4NImO2NKgx+JNXq9Y0i2oOaCGkVzVZkgIlDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpI2PNlkDwgIFpBthxanwmOdlr6ycmTVtgd6YWd6aclPZ95RoS9mFXQjwvXE8Ai+L
-	 Md90qKofR0a0QD8MI5Uw0GsQN5tST8ZbKPy7Nd1SsIEqRt+zRChKHshZ9n6VunJ9kA
-	 z1BjlxPTDCVknmqmQpuXJVjZmHDUgsJfXTeFEDM0=
+	b=Eu/BH0CuVKWu/EjOz0IKshg43Oj09799u7mcqDJl5Jsmy4UOAeJW8IRbQyJnynMnO
+	 aRwoUABEAvXG3Tr77ZDoPdFELiwvfdaTgyT6OKTswxSqBiwV6JPLXm5aiS8RlOW9EV
+	 +LUarnYnkI+P34B25wfCVQ9zg6CJmGJHBAnNyTvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 397/457] drm/amd/display: Dont print errors for nonexistent connectors
+Subject: [PATCH 5.4 355/403] NFSv4: Fix nfs4_bitmap_copy_adjust()
 Date: Tue, 26 Aug 2025 13:11:21 +0200
-Message-ID: <20250826110947.107348601@linuxfoundation.org>
+Message-ID: <20250826110916.683270446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +59,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f14ee2e7a86c5e57295b48b8e198cae7189b3b93 ]
+[ Upstream commit a71029b86752e8d40301af235a6bbf4896cc1402 ]
 
-When getting the number of connectors, the VBIOS reports
-the number of valid indices, but it doesn't say which indices
-are valid, and not every valid index has an actual connector.
-If we don't find a connector on an index, that is not an error.
+Don't remove flags from the set retrieved from the cache_validity.
+We do want to retrieve all attributes that are listed as being
+invalid, whether or not there is a delegation set.
 
-Considering these are not actual errors, don't litter the logs.
-
-Fixes: 60df5628144b ("drm/amd/display: handle invalid connector indices")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 249d4bc5f1935f04bb45b3b63c0f8922565124f7)
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c |  5 +----
- drivers/gpu/drm/amd/display/dc/core/dc.c          | 15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ fs/nfs/nfs4proc.c |   33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 67f08495b7e6..154fd2c18e88 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -174,11 +174,8 @@ static struct graphics_object_id bios_parser_get_connector_id(
- 		return object_id;
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -282,7 +282,7 @@ const u32 nfs4_fs_locations_bitmap[3] =
+ };
+ 
+ static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
+-		struct inode *inode)
++				    struct inode *inode, unsigned long flags)
+ {
+ 	unsigned long cache_validity;
+ 
+@@ -290,22 +290,19 @@ static void nfs4_bitmap_copy_adjust(__u3
+ 	if (!inode || !nfs4_have_delegation(inode, FMODE_READ))
+ 		return;
+ 
+-	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity);
+-	if (!(cache_validity & NFS_INO_REVAL_FORCED))
+-		cache_validity &= ~(NFS_INO_INVALID_CHANGE
+-				| NFS_INO_INVALID_SIZE);
++	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity) | flags;
+ 
++	/* Remove the attributes over which we have full control */
++	dst[1] &= ~FATTR4_WORD1_RAWDEV;
+ 	if (!(cache_validity & NFS_INO_INVALID_SIZE))
+ 		dst[0] &= ~FATTR4_WORD0_SIZE;
+ 
+ 	if (!(cache_validity & NFS_INO_INVALID_CHANGE))
+ 		dst[0] &= ~FATTR4_WORD0_CHANGE;
+-}
+ 
+-static void nfs4_bitmap_copy_adjust_setattr(__u32 *dst,
+-		const __u32 *src, struct inode *inode)
+-{
+-	nfs4_bitmap_copy_adjust(dst, src, inode);
++	if (!(cache_validity & NFS_INO_INVALID_OTHER))
++		dst[1] &= ~(FATTR4_WORD1_MODE | FATTR4_WORD1_OWNER |
++			    FATTR4_WORD1_OWNER_GROUP);
+ }
+ 
+ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dentry,
+@@ -3333,12 +3330,15 @@ static int nfs4_do_setattr(struct inode
+ 		.inode = inode,
+ 		.stateid = &arg.stateid,
+ 	};
++	unsigned long adjust_flags = NFS_INO_INVALID_CHANGE;
+ 	int err;
+ 
++	if (sattr->ia_valid & (ATTR_MODE|ATTR_UID|ATTR_GID))
++		adjust_flags |= NFS_INO_INVALID_OTHER;
++
+ 	do {
+-		nfs4_bitmap_copy_adjust_setattr(bitmask,
+-				nfs4_bitmask(server, olabel),
+-				inode);
++		nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, olabel),
++					inode, adjust_flags);
+ 
+ 		err = _nfs4_do_setattr(inode, &arg, &res, cred, ctx);
+ 		switch (err) {
+@@ -4143,8 +4143,7 @@ static int _nfs4_proc_getattr(struct nfs
+ 		.rpc_resp = &res,
+ 	};
+ 
+-	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode);
+-
++	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode, 0);
+ 	nfs_fattr_init(fattr);
+ 	return nfs4_call_sync(server->client, server, &msg, &args.seq_args, &res.seq_res, 0);
+ }
+@@ -4732,8 +4731,8 @@ static int _nfs4_proc_link(struct inode
  	}
  
--	if (tbl->ucNumberOfObjects <= i) {
--		dm_error("Can't find connector id %d in connector table of size %d.\n",
--			 i, tbl->ucNumberOfObjects);
-+	if (tbl->ucNumberOfObjects <= i)
- 		return object_id;
--	}
- 
- 	id = le16_to_cpu(tbl->asObjects[i].usObjectID);
- 	object_id = object_id_from_bios_object_id(id);
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index aab1f8c9d717..eb76611a42a5 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -217,11 +217,24 @@ static bool create_links(
- 		connectors_num,
- 		num_virtual_links);
- 
--	// condition loop on link_count to allow skipping invalid indices
-+	/* When getting the number of connectors, the VBIOS reports the number of valid indices,
-+	 * but it doesn't say which indices are valid, and not every index has an actual connector.
-+	 * So, if we don't find a connector on an index, that is not an error.
-+	 *
-+	 * - There is no guarantee that the first N indices will be valid
-+	 * - VBIOS may report a higher amount of valid indices than there are actual connectors
-+	 * - Some VBIOS have valid configurations for more connectors than there actually are
-+	 *   on the card. This may be because the manufacturer used the same VBIOS for different
-+	 *   variants of the same card.
-+	 */
- 	for (i = 0; dc->link_count < connectors_num && i < MAX_LINKS; i++) {
-+		struct graphics_object_id connector_id = bios->funcs->get_connector_id(bios, i);
- 		struct link_init_data link_init_params = {0};
- 		struct dc_link *link;
- 
-+		if (connector_id.id == CONNECTOR_ID_UNKNOWN)
-+			continue;
-+
- 		DC_LOG_DC("BIOS object table - printing link object info for connector number: %d, link_index: %d", i, dc->link_count);
- 
- 		link_init_params.ctx = dc->ctx;
--- 
-2.50.1
-
+ 	nfs4_inode_make_writeable(inode);
+-	nfs4_bitmap_copy_adjust_setattr(bitmask, nfs4_bitmask(server, res.label), inode);
+-
++	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, res.label), inode,
++				NFS_INO_INVALID_CHANGE);
+ 	status = nfs4_call_sync(server->client, server, &msg, &arg.seq_args, &res.seq_res, 1);
+ 	if (!status) {
+ 		update_changeattr(dir, &res.cinfo, res.fattr->time_start, 0);
 
 
 
