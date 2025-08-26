@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-176284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08BEB36CCF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E27B3648C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E785835D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19351C21B57
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5994834F46F;
-	Tue, 26 Aug 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4EB2FDC5C;
+	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzvA0mP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXzPEmBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A821E0E08;
-	Tue, 26 Aug 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978F61E502;
+	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219256; cv=none; b=D9Y91ckFHPJyY1xth1Nl9mqeZiqBq4MGODU9DskYrhTqzrSJ5spoluCNFWHO21gQt7T+BF169jFwL7LqllHO/Byr7qSMW1VQD8cG2O/buuY/3zkSIJRUT3FvblOxMOxzkKCDinRaezUX/YenGvZesYpH86FbN1DQQLmm4HBDrcQ=
+	t=1756215141; cv=none; b=Pr/k3G6xRGxa+MCVachMYnoue6FDXk13JQWtsaw/RXczSgy9mD9IFAOWuxTdIV+KKYCNfVe3kLGLjAKWJCVFgwcaRdrMyraQcRxA4GlQuoOF5xgg7wOYePxJroPHk+ZEliSgU5kZNkpsO/uXb91tTtICRKN5vj122JCOb+NEH4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219256; c=relaxed/simple;
-	bh=xjTeQd17avjDyN+VnypBo0FwcPKio0MZq8HELqs52HY=;
+	s=arc-20240116; t=1756215141; c=relaxed/simple;
+	bh=YosTZs+prh/NV4AOH4NstFwRUxfK5qC2JCt2AEUtDsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eb+5lQfu1A9b40/CMRfyucOOLmUz/cozcuEQM7P9WA3BzCMHjTlm0pSpckAZuYInS470L1fzoX/p35p0Ats2NR0deGrs9reS7N1w69ysgiJgnz/queqiBCORgUypSRKnQXyXYDDvcJRG2KeZP4GxZ0iWZXTBnrCb/xKUduNID4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzvA0mP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B0DC4CEF1;
-	Tue, 26 Aug 2025 14:40:55 +0000 (UTC)
+	 MIME-Version; b=YjbQIZ4RyiZRRh2i9aZd0ngnNcXyjmPu4WJ+p50QuXVNatLdkI+GM/7qZDUlYcw5GLIxtIvYqfwQuCtcZ6ieBxIqBxlmKBjfC+sjAtFUF8KrXQZV7rVcJ0Gq924BhIED1q86uSxcyl6k0UCAS04h3kFWhNsmV2x08FAJiGu/7ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXzPEmBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0528DC4CEF1;
+	Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219255;
-	bh=xjTeQd17avjDyN+VnypBo0FwcPKio0MZq8HELqs52HY=;
+	s=korg; t=1756215141;
+	bh=YosTZs+prh/NV4AOH4NstFwRUxfK5qC2JCt2AEUtDsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzvA0mP8s7zGHnQgR/oHP/utNj/WjTrXOH2E/BAxIcW5IIWyCIcPFxphI7yGeG6Hg
-	 7OdBXd5NxNxVSjU83jEyY7ymgob6IkMPgDbpRxYTOI8mio/DymZ+ztOEWWi8uWY9Zh
-	 xZmDy+KvK6l79+5DNelH+SblbqTwRtP/OMpim8iA=
+	b=eXzPEmBUIRVSxJ7AR34Ibq5+1Jvb3KTaBFmC2HH3vMs3WygitJVEUFj2YF+ZRlIx8
+	 NgJA8n4vXsEhQZbuC75nSBKgPGRKLgkKwB0AnaxM6OLkq/4j+X4oN8Ga3XGjNbyPL6
+	 LKr6NlZdBfm1CsP4euzIyJPD/o1W2mDDwfUGLC6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@kernel.org>,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 312/403] fs/buffer: fix use-after-free when call bh_read() helper
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 6.1 385/482] mm: update memfd seal write check to include F_SEAL_WRITE
 Date: Tue, 26 Aug 2025 13:10:38 +0200
-Message-ID: <20250826110915.437209772@linuxfoundation.org>
+Message-ID: <20250826110940.340396010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +70,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
+[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
 
-There's issue as follows:
-BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
-Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
-CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_address_description.constprop.0+0x2c/0x390
- print_report+0xb4/0x270
- kasan_report+0xb8/0xf0
- end_buffer_read_sync+0xe3/0x110
- end_bio_bh_io_sync+0x56/0x80
- blk_update_request+0x30a/0x720
- scsi_end_request+0x51/0x2b0
- scsi_io_completion+0xe3/0x480
- ? scsi_device_unbusy+0x11e/0x160
- blk_complete_reqs+0x7b/0x90
- handle_softirqs+0xef/0x370
- irq_exit_rcu+0xa5/0xd0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
+The seal_check_future_write() function is called by shmem_mmap() or
+hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
+sealed this way.
 
- Above issue happens when do ntfs3 filesystem mount, issue may happens
- as follows:
-           mount                            IRQ
-ntfs_fill_super
-  read_cache_page
-    do_read_cache_folio
-      filemap_read_folio
-        mpage_read_folio
-	 do_mpage_readpage
-	  ntfs_get_block_vbo
-	   bh_read
-	     submit_bh
-	     wait_on_buffer(bh);
-	                            blk_complete_reqs
-				     scsi_io_completion
-				      scsi_end_request
-				       blk_update_request
-				        end_bio_bh_io_sync
-					 end_buffer_read_sync
-					  __end_buffer_read_notouch
-					   unlock_buffer
+The F_SEAL_WRITE flag is not checked here, as that is handled via the
+mapping->i_mmap_writable mechanism and so any attempt at a mapping would
+fail before this could be run.
 
-            wait_on_buffer(bh);--> return will return to caller
+However we intend to change this, meaning this check can be performed for
+F_SEAL_WRITE mappings also.
 
-					  put_bh
-					    --> trigger stack-out-of-bounds
-In the mpage_read_folio() function, the stack variable 'map_bh' is
-passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
-wait_on_buffer() returns to continue processing, the stack variable
-is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
-process, calling put_bh() may result in stack overrun.
+The logic here is equally applicable to both flags, so update this
+function to accommodate both and rename it accordingly.
 
-If the bh is not allocated on the stack, it belongs to a folio.  Freeing
-a buffer head which belongs to a folio is done by drop_buffers() which
-will fail to free buffers which are still locked.  So it is safe to call
-put_bh() before __end_buffer_read_notouch().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hugetlbfs/inode.c |    2 +-
+ include/linux/mm.h   |   15 ++++++++-------
+ mm/shmem.c           |    2 +-
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 4ec88d08d04e..e0da5e56e499 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -161,8 +161,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
-  */
- void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
- {
--	__end_buffer_read_notouch(bh, uptodate);
- 	put_bh(bh);
-+	__end_buffer_read_notouch(bh, uptodate);
- }
- EXPORT_SYMBOL(end_buffer_read_sync);
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -136,7 +136,7 @@ static int hugetlbfs_file_mmap(struct fi
+ 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
+ 	vma->vm_ops = &hugetlb_vm_ops;
  
--- 
-2.50.1
-
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
+ 
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3526,25 +3526,26 @@ static inline void mem_dump_obj(void *ob
+ #endif
+ 
+ /**
+- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
++ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
++ *                    handle them.
+  * @seals: the seals to check
+  * @vma: the vma to operate on
+  *
+- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
+- * the vma flags.  Return 0 if check pass, or <0 for errors.
++ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
++ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
+  */
+-static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
++static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+ {
+-	if (seals & F_SEAL_FUTURE_WRITE) {
++	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+ 		/*
+ 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * "future write" seal active.
++		 * write seals are active.
+ 		 */
+ 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+ 			return -EPERM;
+ 
+ 		/*
+-		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
++		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+ 		 * MAP_SHARED and read-only, take care to not allow mprotect to
+ 		 * revert protections on such mappings. Do this only for shared
+ 		 * mappings. For private mappings, don't need to mask
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2302,7 +2302,7 @@ static int shmem_mmap(struct file *file,
+ 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
+ 	int ret;
+ 
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
