@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B839B364C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE8CB3627F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 729531C205ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B4D18A1A3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10841303CA1;
-	Tue, 26 Aug 2025 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A126158C;
+	Tue, 26 Aug 2025 13:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdZjKHnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdojZWuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ADE1ADFFE;
-	Tue, 26 Aug 2025 13:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2795E22AE5D;
+	Tue, 26 Aug 2025 13:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215225; cv=none; b=diqD54natp+BxMVgF428ynZyGITnKgKp/a67P+Pl1L1sj63riIej0Xyvedblu+pQfCMprG0G5H844bgz5ZIKqyU6Gf68QZgobdoBg3BQpHroaaXghkdr3gtveYU9AO7asCp9AF5ON5XxJlvlDtDCkcJpjYwPQf7ICjSa2VYlX9s=
+	t=1756213949; cv=none; b=jdtNlJU9J8ImAxe8QfdE81g3l/Bf2wUPvGR1onIdsX0cen5WHTRWdcUcbJJqHAKybdeZAvmZKrYtV0ZmsI74pnakKv61ql/8T/cGA5XRuAnyJEPg0GlgFcxs46U1/z1s1+979sqGIurmfU7ZP/jWd49uaWFRyzCqJD1yZnBm/IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215225; c=relaxed/simple;
-	bh=BnLjIobkcfxYaGyFq6uGY5v5ne9BmvKIK31gvrjJ+TU=;
+	s=arc-20240116; t=1756213949; c=relaxed/simple;
+	bh=sd1HSxeivHce7wp92uxyG7RNHxcAFaPao6D39NIpWWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llyakRg6Xa+jsgVKJxw0BxvwmkF9zLloQor5SVBGIvPZCfmTMXFCvGNX7CwyF2E2a2vISNWE/QgsCv+0hSvc4CbGtKiAy8Eb5VU7TBvrTprpiWxW7cpV+zfukt+65rr0CmfyrG/gpSslVheTcfmpQJBqc5Z8mrrWxY26fKW4j10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdZjKHnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558ADC4CEF1;
-	Tue, 26 Aug 2025 13:33:45 +0000 (UTC)
+	 MIME-Version; b=f9tl23U4BEWk1TCyIaTadbF8gN1pFTLPDRun2MJBLjC43RFzZ55VBnCBHfKCb3tqIbhV82vHu+hVFgUobJmE9NYZbhh6gHLD7idojF+ja9TWmZqA9M0IfLNF+bs9objt+u9H72HqkblV6BIx4j3sbAtWoSdD69BODh+1YrDtV/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdojZWuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B069FC4CEF4;
+	Tue, 26 Aug 2025 13:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215225;
-	bh=BnLjIobkcfxYaGyFq6uGY5v5ne9BmvKIK31gvrjJ+TU=;
+	s=korg; t=1756213949;
+	bh=sd1HSxeivHce7wp92uxyG7RNHxcAFaPao6D39NIpWWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdZjKHnrRuXEC6lqDTP/SFG6YgJjuAvRBGMuZMWPMEo8icKY6eLU2yEI/xx2/0Nmm
-	 7pBLMIYv9BVJ4hr8WjwAXQm20rPfCCoGN0TW1JVfNNM2ZQh6aO8t6c8eINPAKxdHze
-	 UuD6VktGAniYe2iZwiM3F14SqSzN2dAQCkR1ZzgE=
+	b=CdojZWuDd38RdLa1mytkc03be9cnMfXgBAX2K36+5KJR+hBwmTJnFC3zFufPHSohC
+	 2+lfkeJk7yBOL58g9WsAkNYjqAMyyLd+3QypXNgu/TKq0GGScjvlKD9o7+u+xCFIN/
+	 hkVExWX2s5TkoBVlAJJlxISyRZu7pyBtcSY43npU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 435/482] mptcp: disable add_addr retransmission when timeout is 0
-Date: Tue, 26 Aug 2025 13:11:28 +0200
-Message-ID: <20250826110941.577071436@linuxfoundation.org>
+Subject: [PATCH 6.6 540/587] iio: imu: inv_icm42600: switch timestamp type from int64_t __aligned(8) to aligned_s64
+Date: Tue, 26 Aug 2025 13:11:29 +0200
+Message-ID: <20250826111006.752579628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit f5ce0714623cffd00bf2a83e890d09c609b7f50a ]
+[ Upstream commit 27e6ddf291b1c05bfcc3534e8212ed6c46447c60 ]
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+The vast majority of IIO drivers use aligned_s64 for the type of the
+timestamp field.  It is not a bug to use int64_t and until this series
+iio_push_to_buffers_with_timestamp() took and int64_t timestamp, it
+is inconsistent.  This change is to remove that inconsistency and
+ensure there is one obvious choice for future drivers.
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
-
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
-Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Apply to net/mptcp/pm_netlink.c , structural changes in mptcp_pm_alloc_anno_list ]
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20241215182912.481706-19-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: dfdc31e7ccf3 ("iio: imu: inv_icm42600: change invalid data error to -EBUSY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/mptcp-sysctl.rst |    2 ++
- net/mptcp/pm_netlink.c                    |   18 ++++++++++++------
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_ic
+ struct inv_icm42600_accel_buffer {
+ 	struct inv_icm42600_fifo_sensor_data accel;
+ 	int16_t temp;
+-	int64_t timestamp __aligned(8);
++	aligned_s64 timestamp;
+ };
  
-+	Do not retransmit if set to 0.
-+
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
+ #define INV_ICM42600_SCAN_MASK_ACCEL_3AXIS				\
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_ic
+ struct inv_icm42600_gyro_buffer {
+ 	struct inv_icm42600_fifo_sensor_data gyro;
+ 	int16_t temp;
+-	int64_t timestamp __aligned(8);
++	aligned_s64 timestamp;
+ };
  
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -304,6 +304,7 @@ static void mptcp_pm_add_timer(struct ti
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
- 
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -321,6 +322,10 @@ static void mptcp_pm_add_timer(struct ti
- 		goto out;
- 	}
- 
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -332,7 +337,7 @@ static void mptcp_pm_add_timer(struct ti
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -374,6 +379,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -383,9 +389,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
- 
--		sk_reset_timer(sk, &add_entry->add_timer,
--			       jiffies + mptcp_get_add_addr_timeout(net));
--		return true;
-+		goto reset_timer;
- 	}
- 
- 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
-@@ -399,8 +403,10 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	add_entry->retrans_times = 0;
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+reset_timer:
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
- }
+ #define INV_ICM42600_SCAN_MASK_GYRO_3AXIS				\
 
 
 
