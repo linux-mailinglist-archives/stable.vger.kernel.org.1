@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BD9B35B9C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25A9B360DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EA15188C1AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6AD13BB097
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16E5322A1E;
-	Tue, 26 Aug 2025 11:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7226A220F5D;
+	Tue, 26 Aug 2025 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3c/5Avc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZIOTiT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85418321438;
-	Tue, 26 Aug 2025 11:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316FA1E5B88;
+	Tue, 26 Aug 2025 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207318; cv=none; b=fNJL+X0KbZKaQz4qMpENA2CkACTX3fEse/BWc540ifSm4P7F9q0T03ZQLaUGoXBgZANC5AD/lkZ9O70oPQbFFWqNr+jD8S0xN/Br4cgxuTzvj0W1nIRiXbXle4uXFJD/MGSmZ6AFGiijJmareqEwQ1WTSLx8E2y5xp+t+umsbQ8=
+	t=1756213230; cv=none; b=fpyG/pZHuZKfMmHEIzQsWyjGvIecg05AUBPV8VzbmDH4c+y3hfE1c5gIcUBTsLXwmrfkK24LX3j7wM/ZWW9DfTAzPb+loFmKFFbdByjzVdvuhnWdFynkbLopM11dJN5Tt2x0Lo0cFFLEieIOO4vuEIB34llKxPopMM6HFi0jJtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207318; c=relaxed/simple;
-	bh=LqeyKk6kugEMKza6ZV2u9IR7Jx/bfb1DMHyXFS+zLaw=;
+	s=arc-20240116; t=1756213230; c=relaxed/simple;
+	bh=8ryxCbZGak5bUn21FTNots4p5piHp844vk01gA3F9NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKsS7seg69uXH7rWBRPrPGtiI0FcwI9WAvYn+T76/qSFMQ3vyXmeXvgHdZ66CYA/xWeWIfyN840TX8F7dbIUmOsarq+Fa1asQXCUvYElGW/LNbbKzoiXl5kh+DKVdxNZwPGwXOycVgFoqBE8LCeuYTZryYKpXswYhPT503lY7pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3c/5Avc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175EFC4CEF1;
-	Tue, 26 Aug 2025 11:21:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FNKfVuZ4ruhtUZIiYdvFC4rka2lnQAJzZgPJFoa2Uk1VA44JOZJ1WX07gUFYdMXQRxtZ0LZ9bb9BUzFP5VMmxsoIQW7ls+43r2IoJTHr6T7utUq+vj51oXgiaZmAaGlCXbgeBwIwGvcYPkmPR+RXMNKGixDpDc7DV1DwffePsIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZIOTiT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BDDC4CEF1;
+	Tue, 26 Aug 2025 13:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207318;
-	bh=LqeyKk6kugEMKza6ZV2u9IR7Jx/bfb1DMHyXFS+zLaw=;
+	s=korg; t=1756213230;
+	bh=8ryxCbZGak5bUn21FTNots4p5piHp844vk01gA3F9NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3c/5AvcTe/l1GyOZV2erektWOIU6RqBD5SqoeOAcj+gP3GF8FMbkhg7Y/hjTkVHk
-	 XSAoPIAZ39LH1nPhfH2BKYo5VmUCKkFs5EHgeGc+DsVRMkKuZLWB/vn0N3Bs3Ai1fY
-	 LagevaNGt9YA9IyS2ghtnCwooNmfDmklvpGRw6oI=
+	b=cZIOTiT3+xB20eC44IJ28eNoGu7je5v6DoPRF+pSv3EWNqW0NacJ8gJumW5mQ2X3Z
+	 ISVzhOCwDf2MmY9l4AfOePR1sNgl0D6Nrc99QCv4qmdlFxwFZgHXnRE3xjCPw1FZtc
+	 fuZmEUtwmWwYSNZkHdse4xhfB2UteT95T/WXpphM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 135/457] media: verisilicon: Fix AV1 decoder clock frequency
+	Mateusz Guzik <mjguzik@gmail.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 270/587] apparmor: use the condition in AA_BUG_FMT even with debug disabled
 Date: Tue, 26 Aug 2025 13:06:59 +0200
-Message-ID: <20250826110940.709981677@linuxfoundation.org>
+Message-ID: <20250826110959.797362159@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Mateusz Guzik <mjguzik@gmail.com>
 
-commit 01350185fe02ae3ea2c12d578e06af0d5186f33e upstream.
+[ Upstream commit 67e370aa7f968f6a4f3573ed61a77b36d1b26475 ]
 
-The desired clock frequency was correctly set to 400MHz in the device tree
-but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
-Fix the issue by removing the driver call to clk_set_rate(), which reduce
-the amount of board specific code.
+This follows the established practice and fixes a build failure for me:
+security/apparmor/file.c: In function ‘__file_sock_perm’:
+security/apparmor/file.c:544:24: error: unused variable ‘sock’ [-Werror=unused-variable]
+  544 |         struct socket *sock = (struct socket *) file->private_data;
+      |                        ^~~~
 
-Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/rockchip_vpu_hw.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ security/apparmor/include/lib.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-@@ -17,7 +17,6 @@
+diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
+index 73c8a32c6861..6e88e99da80f 100644
+--- a/security/apparmor/include/lib.h
++++ b/security/apparmor/include/lib.h
+@@ -46,7 +46,11 @@
+ #define AA_BUG_FMT(X, fmt, args...)					\
+ 	WARN((X), "AppArmor WARN %s: (" #X "): " fmt, __func__, ##args)
+ #else
+-#define AA_BUG_FMT(X, fmt, args...) no_printk(fmt, ##args)
++#define AA_BUG_FMT(X, fmt, args...)					\
++	do {								\
++		BUILD_BUG_ON_INVALID(X);				\
++		no_printk(fmt, ##args);					\
++	} while (0)
+ #endif
  
- #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
- #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
--#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
- 
- #define ROCKCHIP_VPU981_MIN_SIZE 64
- 
-@@ -454,13 +453,6 @@ static int rk3066_vpu_hw_init(struct han
- 	return 0;
- }
- 
--static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
--{
--	/* Bump ACLKs to max. possible freq. to improve performance. */
--	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
--	return 0;
--}
--
- static int rockchip_vpu_hw_init(struct hantro_dev *vpu)
- {
- 	/* Bump ACLK to max. possible freq. to improve performance. */
-@@ -821,7 +813,6 @@ const struct hantro_variant rk3588_vpu98
- 	.codec_ops = rk3588_vpu981_codec_ops,
- 	.irqs = rk3588_vpu981_irqs,
- 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
--	.init = rk3588_vpu981_hw_init,
- 	.clk_names = rk3588_vpu981_vpu_clk_names,
- 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
- };
+ #define AA_ERROR(fmt, args...)						\
+-- 
+2.39.5
+
 
 
 
