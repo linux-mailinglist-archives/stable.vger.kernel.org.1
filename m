@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-175039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F89B36602
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF11B35B5A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D3B1C23814
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AF461899A4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150A4343D87;
-	Tue, 26 Aug 2025 13:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811F92248A5;
+	Tue, 26 Aug 2025 11:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQw2Rzv7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKyBOKbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B60393DC0;
-	Tue, 26 Aug 2025 13:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE56334392;
+	Tue, 26 Aug 2025 11:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215979; cv=none; b=jCtSVAIJ5b1dpCHSMRqsKV3+VFxcWR2WuPc0C1U5YfgMtlq7AZwtTgh1+vgSq8JiSAdujqBvm1IYz/5hAm1fECcytD37RMN4W+niqzvAB3qIIIhyVyqC1ViDaknhJlaTOpRJ8ZXeQ448dWIQw3jook8Lv/lml/aSvaJzZu89qDM=
+	t=1756207134; cv=none; b=hL91UWYEJjeY/BmriyyHLLaTsQw6aRCQl9tu5T/uTpg7VK08fzvvSHZM19Tbnt5O/w4DtGMkbs1ifV3V6xYWt6lnjmdWUFkd/Og92g4G5OMRzJlBOb+BC91eNmbLZ5/o4oVT9SDlxgnze0A+55GgOsrdCJ7SCfI11cePt9RiyyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215979; c=relaxed/simple;
-	bh=jBd32yUU/8ZwdxsO7Uj08eANt8mo9ZuUcNDxPl8Bk2Q=;
+	s=arc-20240116; t=1756207134; c=relaxed/simple;
+	bh=AmTCbfkbA49drqTDcg0YAKzrqrq4579xIpc+c/yp0dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCR9mq776xLdHPqquyGD/B0yZvQ8i3ULoVuT1ec2ynWK9FWW+nEjNuBRNEsZUuSWyfFM22EZruDqhCAJ0niK3mZkDEnn0VCzyRFQ8/S8N/nT67CntxsD/TO5VKe9A6MHlMmlIITz3a/swxJ9CVdYEs3vwNpVmdWyTIRrmNF1sa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQw2Rzv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A610C4CEF1;
-	Tue, 26 Aug 2025 13:46:19 +0000 (UTC)
+	 MIME-Version; b=EIKZVK+noBuZlofaQuA3SVG5GRc1vpeKo57oCr+22c8T+pjhqEwDGv80gvpNo06wV5pg9bXBZ/OiQRaFBe0blw+qdjmYr9XlMO4cttjcu7FBk+WV7IQ/tVDSlKHsFoyH8Tp7lePsD4AXdMpL679W/aoaFvs/9RCUNjewrBKfHdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKyBOKbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DCDC4CEF1;
+	Tue, 26 Aug 2025 11:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215979;
-	bh=jBd32yUU/8ZwdxsO7Uj08eANt8mo9ZuUcNDxPl8Bk2Q=;
+	s=korg; t=1756207134;
+	bh=AmTCbfkbA49drqTDcg0YAKzrqrq4579xIpc+c/yp0dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQw2Rzv7/qb7mOOGwtq344kmTb/353ocOItDSBDd6U0FItneWp9r5y65p/fQa2OSo
-	 HSZZG3MTNIcLcB/Fl4SHXMnVARI/QUVtNtOORY6WmL7P2IQadTDNUX9KMbzIqj4brY
-	 /A2lrN9xTo+ZnaUlg5jZj3aOPAG6A965oQA6pvqI=
+	b=IKyBOKbpT3WgtKMzaSVXp/qMg9rVgMY4wgSp4v05/TxNektOibRXA5WsG7gXOyvca
+	 SQis3pXNolMsH4GWxI/D6dbWC7xWmHIToK3OyaV9tBEj8jWH4IjKxqLpj+XY0TM0vK
+	 Q5ON9hDEJp/8sCCib3G/9llYpmv8RkX4qMpU3NY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/644] smb: server: remove separate empty_recvmsg_queue
+	Qu Wenruo <wqu@suse.com>,
+	Kyoji Ogasawara <sawara04.o@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.16 046/457] btrfs: restore mount option info messages during mount
 Date: Tue, 26 Aug 2025 13:05:30 +0200
-Message-ID: <20250826110952.324314803@linuxfoundation.org>
+Message-ID: <20250826110938.485504608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,174 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Kyoji Ogasawara <sawara04.o@gmail.com>
 
-[ Upstream commit 01027a62b508c48c762096f347de925eedcbd008 ]
+commit b435ab556bea875c088485f271ef2709ca1d75f5 upstream.
 
-There's no need to maintain two lists, we can just
-have a single list of receive buffers, which are free to use.
+After the fsconfig migration in 6.8, mount option info messages are no
+longer displayed during mount operations because btrfs_emit_options() is
+only called during remount, not during initial mount.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by calling btrfs_emit_options() in btrfs_fill_super() after
+open_ctree() succeeds. Additionally, prevent log duplication by ensuring
+btrfs_check_options() handles validation with warn-level and err-level
+messages, while btrfs_emit_options() provides info-level messages.
+
+Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
+CC: stable@vger.kernel.org # 6.8+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_rdma.c | 60 ++++++---------------------------------
- 1 file changed, 8 insertions(+), 52 deletions(-)
+ fs/btrfs/super.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
-index 91e663d5d5bc..2644117305c2 100644
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -128,9 +128,6 @@ struct smb_direct_transport {
- 	spinlock_t		recvmsg_queue_lock;
- 	struct list_head	recvmsg_queue;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -88,6 +88,9 @@ struct btrfs_fs_context {
+ 	refcount_t refs;
+ };
  
--	spinlock_t		empty_recvmsg_queue_lock;
--	struct list_head	empty_recvmsg_queue;
--
- 	int			send_credit_target;
- 	atomic_t		send_credits;
- 	spinlock_t		lock_new_recv_credits;
-@@ -274,32 +271,6 @@ static void put_recvmsg(struct smb_direct_transport *t,
- 	spin_unlock(&t->recvmsg_queue_lock);
- }
++static void btrfs_emit_options(struct btrfs_fs_info *info,
++			       struct btrfs_fs_context *old);
++
+ enum {
+ 	Opt_acl,
+ 	Opt_clear_cache,
+@@ -689,12 +692,9 @@ bool btrfs_check_options(const struct bt
  
--static struct
--smb_direct_recvmsg *get_empty_recvmsg(struct smb_direct_transport *t)
--{
--	struct smb_direct_recvmsg *recvmsg = NULL;
--
--	spin_lock(&t->empty_recvmsg_queue_lock);
--	if (!list_empty(&t->empty_recvmsg_queue)) {
--		recvmsg = list_first_entry(&t->empty_recvmsg_queue,
--					   struct smb_direct_recvmsg, list);
--		list_del(&recvmsg->list);
--	}
--	spin_unlock(&t->empty_recvmsg_queue_lock);
--	return recvmsg;
--}
--
--static void put_empty_recvmsg(struct smb_direct_transport *t,
--			      struct smb_direct_recvmsg *recvmsg)
--{
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
--
--	spin_lock(&t->empty_recvmsg_queue_lock);
--	list_add_tail(&recvmsg->list, &t->empty_recvmsg_queue);
--	spin_unlock(&t->empty_recvmsg_queue_lock);
--}
--
- static void enqueue_reassembly(struct smb_direct_transport *t,
- 			       struct smb_direct_recvmsg *recvmsg,
- 			       int data_length)
-@@ -384,9 +355,6 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 	spin_lock_init(&t->recvmsg_queue_lock);
- 	INIT_LIST_HEAD(&t->recvmsg_queue);
- 
--	spin_lock_init(&t->empty_recvmsg_queue_lock);
--	INIT_LIST_HEAD(&t->empty_recvmsg_queue);
--
- 	init_waitqueue_head(&t->wait_send_pending);
- 	atomic_set(&t->send_pending, 0);
- 
-@@ -548,7 +516,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			       wc->opcode);
- 			smb_direct_disconnect_rdma_connection(t);
+ 	if (!test_bit(BTRFS_FS_STATE_REMOUNTING, &info->fs_state)) {
+ 		if (btrfs_raw_test_opt(*mount_opt, SPACE_CACHE)) {
+-			btrfs_info(info, "disk space caching is enabled");
+ 			btrfs_warn(info,
+ "space cache v1 is being deprecated and will be removed in a future release, please use -o space_cache=v2");
  		}
--		put_empty_recvmsg(t, recvmsg);
-+		put_recvmsg(t, recvmsg);
- 		return;
+-		if (btrfs_raw_test_opt(*mount_opt, FREE_SPACE_TREE))
+-			btrfs_info(info, "using free-space-tree");
  	}
  
-@@ -562,7 +530,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	switch (recvmsg->type) {
- 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
- 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 			return;
- 		}
- 		t->negotiation_requested = true;
-@@ -579,7 +547,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	return ret;
+@@ -971,6 +971,8 @@ static int btrfs_fill_super(struct super
+ 		return err;
+ 	}
  
- 		if (wc->byte_len <
- 		    offsetof(struct smb_direct_data_transfer, padding)) {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 			return;
- 		}
- 
-@@ -587,7 +555,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (data_length) {
- 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
- 			    (u64)data_length) {
--				put_empty_recvmsg(t, recvmsg);
-+				put_recvmsg(t, recvmsg);
- 				return;
- 			}
- 
-@@ -607,7 +575,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			avail_recvmsg_count = t->count_avail_recvmsg;
- 			spin_unlock(&t->receive_credit_lock);
- 		} else {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
-@@ -805,7 +773,6 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
- 	struct smb_direct_recvmsg *recvmsg;
- 	int receive_credits, credits = 0;
- 	int ret;
--	int use_free = 1;
- 
- 	spin_lock(&t->receive_credit_lock);
- 	receive_credits = t->recv_credits;
-@@ -813,18 +780,9 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
- 
- 	if (receive_credits < t->recv_credit_target) {
- 		while (true) {
--			if (use_free)
--				recvmsg = get_free_recvmsg(t);
--			else
--				recvmsg = get_empty_recvmsg(t);
--			if (!recvmsg) {
--				if (use_free) {
--					use_free = 0;
--					continue;
--				} else {
--					break;
--				}
--			}
-+			recvmsg = get_free_recvmsg(t);
-+			if (!recvmsg)
-+				break;
- 
- 			recvmsg->type = SMB_DIRECT_MSG_DATA_TRANSFER;
- 			recvmsg->first_segment = false;
-@@ -1800,8 +1758,6 @@ static void smb_direct_destroy_pools(struct smb_direct_transport *t)
- 
- 	while ((recvmsg = get_free_recvmsg(t)))
- 		mempool_free(recvmsg, t->recvmsg_mempool);
--	while ((recvmsg = get_empty_recvmsg(t)))
--		mempool_free(recvmsg, t->recvmsg_mempool);
- 
- 	mempool_destroy(t->recvmsg_mempool);
- 	t->recvmsg_mempool = NULL;
--- 
-2.39.5
-
++	btrfs_emit_options(fs_info, NULL);
++
+ 	inode = btrfs_iget(BTRFS_FIRST_FREE_OBJECTID, fs_info->fs_root);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
 
 
 
