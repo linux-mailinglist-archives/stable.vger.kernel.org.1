@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-176275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F98B36CB8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BC2B35D94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB50984456
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBBAC4E40E3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91ED35E4E0;
-	Tue, 26 Aug 2025 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE893277A4;
+	Tue, 26 Aug 2025 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEuty4R2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWf+2uKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D7F352FFC;
-	Tue, 26 Aug 2025 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3124321459;
+	Tue, 26 Aug 2025 11:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219232; cv=none; b=c+JtJgSItFFrGfeSkSUPeq2p5eLsCZdJijLiYeG0Aps/F+JigqxlyTMoPyFLCiF7jdAhv8EcZFior52jJWPuAS14nsJX/R1SVDP0ZZn34HPHp3i8Ydj20XkQpy3uJR9rlCOzUP2jSpRpzVFv12p0HN/XxyRYkBVVjFgnitFZPIg=
+	t=1756208707; cv=none; b=q2cq+eyxi4EgFnwbyfIpXoGoB5BrwmbdPTpI9NPC7M/IJ8fe3YAfym7x/I9QRLClkjg0q8BfTQPXpG5Oqu8UFsSwWcWxbMN5fCY22BUtHzyaTap9A0c46xLEiMr2VLrwBcYMW6HdYxNhL/sklME6aR1XS/OfrZuN+JRFZZHtjwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219232; c=relaxed/simple;
-	bh=TyUDVZw2ycnJVYdmcP8QZczFU1hJl2r5nPYWxYoilE0=;
+	s=arc-20240116; t=1756208707; c=relaxed/simple;
+	bh=eonc+YTQcAvmFph/X10/P4V3qM8083B8oU+bRDgOurE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUyqhxjztPKK87AvxMKNvbQIYwGpXlWsw+JNSx9C38aE/EpC+HhpcKz2H2qfI/a/Jg8Rjg35PtW779IRCwA/XWLcG+Q68JX5rItq+dXSFRgcBEqrKjSFy/maKHoSwoYeda4OOfdwxcLdjAL8FIH2Us03SCxPJ9h+SAIHyxCgnTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEuty4R2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A73EC4CEF1;
-	Tue, 26 Aug 2025 14:40:32 +0000 (UTC)
+	 MIME-Version; b=ISIu11Ts6Dn+qp3DWd/KXDKlbtx3nPNxQqv01GEcXc17Wvt8l3GIDV0kRns/VRvL6s8RNGNcWDAyb7/F9VrPCSh81xxN9Ee+r3eeq4y8sH167+B3W4vaU4TM1oneNzYtdV30eT3Xz1bncPlQlObIcmmrHY7agxV3TfObcvRlP2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWf+2uKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426E9C4CEF1;
+	Tue, 26 Aug 2025 11:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219232;
-	bh=TyUDVZw2ycnJVYdmcP8QZczFU1hJl2r5nPYWxYoilE0=;
+	s=korg; t=1756208707;
+	bh=eonc+YTQcAvmFph/X10/P4V3qM8083B8oU+bRDgOurE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEuty4R2Gn7MOdbDRswMPxvCWOG0g6/p5ON5NzNOyDfB/vOFEPdRzMiMCw0uEZcnG
-	 6qxFrNYNvjWEjkN3WQFPKSS8RzrQ9pI2nO3UxrYYFIfw/PW/OvnFr652F+NgYQ5KSh
-	 dg1X0g0Jh039LZJXIniSxqS6KZ4aAcLwJZv3ljxI=
+	b=VWf+2uKWcjySTDk6QMByYvThYQk4GsjMxiMMJU8jxgFdf5bqjFnYPPDGQx2u6o/0D
+	 nriIFXycQUEzPoR1g/Jmu1ZqxBjVN4P2py/XN2JCKqTvw9WVyStda6K72ZX16yBz2+
+	 6Ak1nZvn0bFgVAHYgetnvTKEyL8EA+lu5IVzq3RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 303/403] media: gspca: Add bounds checking to firmware parser
-Date: Tue, 26 Aug 2025 13:10:29 +0200
-Message-ID: <20250826110915.186328923@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 215/322] ftrace: Also allocate and copy hash for reading of filter files
+Date: Tue, 26 Aug 2025 13:10:30 +0200
+Message-ID: <20250826110921.187994313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
+commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
 
-This sd_init() function reads the firmware.  The firmware data holds a
-series of records and the function reads each record and sends the data
-to the device.  The request_ihex_firmware() function
-calls ihex_validate_fw() which ensures that the total length of all the
-records won't read out of bounds of the fw->data[].
+Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
+the pointer to the global tracer hash to its iterator. Unlike the writer
+that allocates a copy of the hash, the reader keeps the pointer to the
+filter hashes. This is problematic because this pointer is static across
+function calls that release the locks that can update the global tracer
+hashes. This can cause UAF and similar bugs.
 
-However, a potential issue is if there is a single very large
-record (larger than PAGE_SIZE) and that would result in memory
-corruption.  Generally we trust the firmware, but it's always better to
-double check.
+Allocate and copy the hash for reading the filter files like it is done
+for the writers. This not only fixes UAF bugs, but also makes the code a
+bit simpler as it doesn't have to differentiate when to free the
+iterator's hash between writers and readers.
 
-Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
+Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
+Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
+Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
+Reported-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/vicam.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/media/usb/gspca/vicam.c
-+++ b/drivers/media/usb/gspca/vicam.c
-@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
- 	const struct ihex_binrec *rec;
- 	const struct firmware *fw;
- 	u8 *firmware_buf;
-+	int len;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -4569,13 +4569,17 @@ ftrace_regex_open(struct ftrace_ops *ops
+ 	        } else {
+ 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
+ 		}
++	} else {
++		if (hash)
++			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
++		else
++			iter->hash = EMPTY_HASH;
++	}
  
- 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
- 				    &gspca_dev->dev->dev);
-@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
- 		goto exit;
+-		if (!iter->hash) {
+-			trace_parser_put(&iter->parser);
+-			goto out_unlock;
+-		}
+-	} else
+-		iter->hash = hash;
++	if (!iter->hash) {
++		trace_parser_put(&iter->parser);
++		goto out_unlock;
++	}
+ 
+ 	ret = 0;
+ 
+@@ -6445,9 +6449,6 @@ int ftrace_regex_release(struct inode *i
+ 		ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
+ 						      iter->hash, filter_hash);
+ 		mutex_unlock(&ftrace_lock);
+-	} else {
+-		/* For read only, the hash is the ops hash */
+-		iter->hash = NULL;
  	}
- 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
--		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
-+		len = be16_to_cpu(rec->len);
-+		if (len > PAGE_SIZE) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		memcpy(firmware_buf, rec->data, len);
- 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
--					be16_to_cpu(rec->len));
-+					len);
- 		if (ret < 0)
- 			break;
- 	}
+ 
+ 	mutex_unlock(&iter->ops->func_hash->regex_lock);
 
 
 
