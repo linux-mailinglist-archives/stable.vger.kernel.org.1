@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9669AB35BD7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBD0B36690
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26562A496C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C983F1C25423
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FB120B7EE;
-	Tue, 26 Aug 2025 11:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F54B34AB15;
+	Tue, 26 Aug 2025 13:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCZz3dXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaV6CtrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F799227599;
-	Tue, 26 Aug 2025 11:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0282F350D5F;
+	Tue, 26 Aug 2025 13:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207305; cv=none; b=ndU7oCyv54Eey6JKnQQgIKg5XG9hfvWuejFB36akzszonNIc5tEMPb2R8KwxtA3WV42tXMmUJqxhDbmxRy0vHroTENPqPEYTFyg+gv2iVAoxuI9QA1WpLOnmgcS6Ecq4hrNt69AUNyApdDNttDXqLcJV61oUpFAfzBPx+PoBAZo=
+	t=1756216206; cv=none; b=oWoVyoESvF6BEEwD8BExGp11O/VUy1wxMklxTdB0Q7TuDAdD8tZZ7+suhpH5b6YKg5kmmRLH9R0Ue1LoLZqF2HrLxf/O9uRy/tYb9KPfvaySMdud0ALMXvituWA8evxrJ6jvNOAdxpjBCCoCPjaLyzPwT097QjPYpfWKB5Z6Qwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207305; c=relaxed/simple;
-	bh=pcimo9Vih8kNHZT5bQQK3I8DKOvN91H3qXry6oaWcxs=;
+	s=arc-20240116; t=1756216206; c=relaxed/simple;
+	bh=9ZtGcK8fRFbvlKeS9Pa7i191OzWy/s9hxRZmbk5FsRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3zlRZHcM40mYlO1s5r932+X75zYsEppk6+/boh8rolGL4274oC0YrWt6U8mgjDTe7C9yEqHDqxO4lEUUjCqsfS65+G/RF0D05Jhk+yW1SCvRh38Q25gozEgujC9kxD0p3wM4ViAiU5yiQlCg9uMkyn2BKOiXYsjRPgBWiJkD3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCZz3dXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F0EC4CEF1;
-	Tue, 26 Aug 2025 11:21:45 +0000 (UTC)
+	 MIME-Version; b=A2RwLDzKlF5t+u6MWzuNkLrDa14Dgfreo568DVDzutu5e9W87KcP8w/OsbRVSPFlQOmStnsRlVVKFIYqQTLoFx/GgbTtrp7M/XYD+VCCpN1ddCmCOjB7W25jFxsM7hhcmLOGvwbYEerHAF/USZRl/ugzm3kpOUyA/XnR2KJbV1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaV6CtrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AE8C4CEF1;
+	Tue, 26 Aug 2025 13:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207305;
-	bh=pcimo9Vih8kNHZT5bQQK3I8DKOvN91H3qXry6oaWcxs=;
+	s=korg; t=1756216205;
+	bh=9ZtGcK8fRFbvlKeS9Pa7i191OzWy/s9hxRZmbk5FsRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCZz3dXDk2789D4GaMlffmQUa9pPjuxqb1IOry7TmHj+iQyD+ha/orL/TNBX33Hta
-	 hsoAaVqBqEM6JNypkG3q8esENXoRjEDwnq+J+PzHvKFT4cxJ++IqHnAhphKlNBdNTy
-	 RS6VigoIg/wIqgfHLCAe+ZAn8GAJ2soB55dw+CKU=
+	b=iaV6CtrMhCekdm5dchToEvjfv2Zqc0ZSRRvPVshk237nMHaQR+w2i+tgHs/whkFLA
+	 IyKJSje1eo+vIyMVse3eYhDWHhGbrh1V5M1u2AYYOAZPvK58ubp6Bbyo6zbhxYbY5Q
+	 tEn7pPuHwVIE7QueMxTcw9xitzkLpvEP/NS1EmPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 131/457] media: hi556: correct the test pattern configuration
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 324/644] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Tue, 26 Aug 2025 13:06:55 +0200
-Message-ID: <20250826110940.609861030@linuxfoundation.org>
+Message-ID: <20250826110954.416757731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-Hynix hi556 support 8 test pattern modes:
-hi556_test_pattern_menu[] = {
-{
-	"Disabled",
-	"Solid Colour",
-	"100% Colour Bars",
-	"Fade To Grey Colour Bars",
-	"PN9",
-	"Gradient Horizontal",
-	"Gradient Vertical",
-	"Check Board",
-	"Slant Pattern",
-}
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-The test pattern is set by a 8-bit register according to the
-specification.
-+--------+-------------------------------+
-| BIT[0] |  Solid color                  |
-+--------+-------------------------------+
-| BIT[1] |  Color bar                    |
-+--------+-------------------------------+
-| BIT[2] |  Fade to grey color bar       |
-+--------+-------------------------------+
-| BIT[3] |  PN9                          |
-+--------+-------------------------------+
-| BIT[4] |  Gradient horizontal          |
-+--------+-------------------------------+
-| BIT[5] |  Gradient vertical            |
-+--------+-------------------------------+
-| BIT[6] |  Check board                  |
-+--------+-------------------------------+
-| BIT[7] |  Slant pattern                |
-+--------+-------------------------------+
-Based on function above, current test pattern programming is wrong.
-This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
-will disable the test pattern generation and set the pattern to 0.
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
+
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -756,21 +756,23 @@ static int hi556_test_pattern(struct hi5
- 	int ret;
- 	u32 val;
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 1acd82f81ba0..bafdaedbee86 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1230,7 +1230,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
  
--	if (pattern) {
--		ret = hi556_read_reg(hi556, HI556_REG_ISP,
--				     HI556_REG_VALUE_08BIT, &val);
--		if (ret)
--			return ret;
--
--		ret = hi556_write_reg(hi556, HI556_REG_ISP,
--				      HI556_REG_VALUE_08BIT,
--				      val | HI556_REG_ISP_TPG_EN);
--		if (ret)
--			return ret;
--	}
-+	ret = hi556_read_reg(hi556, HI556_REG_ISP,
-+			     HI556_REG_VALUE_08BIT, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
-+		(val & ~HI556_REG_ISP_TPG_EN);
-+
-+	ret = hi556_write_reg(hi556, HI556_REG_ISP,
-+			      HI556_REG_VALUE_08BIT, val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? BIT(pattern - 1) : 0;
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
+ 	}
  
- 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
--			       HI556_REG_VALUE_08BIT, pattern);
-+			       HI556_REG_VALUE_08BIT, val);
- }
+@@ -1238,7 +1239,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
  
- static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1297,8 +1299,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
+ 
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
+ 
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
+ 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
+-- 
+2.39.5
+
 
 
 
