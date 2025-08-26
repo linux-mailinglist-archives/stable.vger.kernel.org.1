@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-176016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E18B36B94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF718B3631E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33499583702
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90DB6808B5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B05C3568E3;
-	Tue, 26 Aug 2025 14:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F224B2F6564;
+	Tue, 26 Aug 2025 13:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcyOL7xo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gp3nZA6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF71352060;
-	Tue, 26 Aug 2025 14:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D441B87E8;
+	Tue, 26 Aug 2025 13:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218564; cv=none; b=G2l6ydbmUuoBXxbjiNlNRgxlqfQiyXnKhj+/PpMW8QxHqli+Y0ta46icsw8fV7TVmuJKH2JnUGA4XNkehhlX4hiZ7wQt86uiPjDbjQTMwROOQ8za+Kwtese3n777qU2y11b73u4y47HdYzaifWyuoNRF2F7qj3NUlXgUVyWSboQ=
+	t=1756214310; cv=none; b=e35DzsdrQBujciPFYjOYTtWgfSUbDvBg+uzoIyWjLiIm3hapmz0Bo7Kk1mQkPDR6LWBB2o4SJ8mBbWmv3Ogs69EjDHhGVTZVtlQ6D3MDPa5PlduyQIe27gtsa8PBALyU5Q87ItdMkWoGNDQX/YpxCHX+EACQfrt5YNNnTIrvsO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218564; c=relaxed/simple;
-	bh=8H2C+UkANpHaCfmq/8yT7wgzwyAGjinqozPhIMX2+gc=;
+	s=arc-20240116; t=1756214310; c=relaxed/simple;
+	bh=en0IVSjDUY3jSp7fY4rDxKkZ7j+wsfsOUX+DK5ofo6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmy07eoM0EriVrHfoyrseYdwZg/lGLdP4HkXbym3BSfrfnbbP11fDMBYmEe97/CVHp3y3G9BKO7jf9J4MV6TMdxkKC9946EcV87LPYXCYLZaCXlUaw08hbmAP9pbxIHiD7ZJCcQKSY2tsif4FiRMVDc5KKgC8DI3xH+HBja4KR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcyOL7xo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6411EC4CEF1;
-	Tue, 26 Aug 2025 14:29:24 +0000 (UTC)
+	 MIME-Version; b=Hw/fjTmr5m5QkCzdiwe9EIaEW7mn0KH+g5cCa8u14f82np00g168TcalRBQGNx8k6YTI5dXv98F0LjZ/AjOO6e7fiZxpsgXjd6HVm3N/YmrJZDnlVGOlIX9vdvotQFH7LrcmXRXZ1ZaSpcfy2NpuDtN4QRs/+VCzKOVeROdzDuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gp3nZA6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EEEC113CF;
+	Tue, 26 Aug 2025 13:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218564;
-	bh=8H2C+UkANpHaCfmq/8yT7wgzwyAGjinqozPhIMX2+gc=;
+	s=korg; t=1756214310;
+	bh=en0IVSjDUY3jSp7fY4rDxKkZ7j+wsfsOUX+DK5ofo6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jcyOL7xocvlrL9wOw9wwAlyJlMr7pZsz2cfBZGNDSDA5gqmnYFKOShA+Xl8rJDHj+
-	 DmCnJutDwN/U/EtuCxkMU/XlWC1P5UaSXuJA3qA+XFIy6lCzwTb0d1aPiysYknQx1M
-	 3+/iwCwxkd82qgKBSqK7mLBramA1HLPeeSj3uCgI=
+	b=gp3nZA6cemxccIfQQ+HvohBccSYBIyj/nSHzxbJGV/ekBl+9Vp7SWyZgUq57z968g
+	 /sLshyCjhbuZbcpi5TW+iwWQiilEuGI2GBCH5enIU+K8094Zw6YCcNcYWz1u9yzWG7
+	 4cAxhO/+KGnSCG7Pg8FTTv3JRrirh8aehk4EtfLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 017/403] mmc: bcm2835: Fix dma_unmap_sg() nents value
-Date: Tue, 26 Aug 2025 13:05:43 +0200
-Message-ID: <20250826110906.241271742@linuxfoundation.org>
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/482] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
+Date: Tue, 26 Aug 2025 13:05:44 +0200
+Message-ID: <20250826110933.076425674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-commit ff09b71bf9daeca4f21d6e5e449641c9fad75b53 upstream.
+[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Many mobile phones feature multi-card tray designs, where the same
+tray is used for both SD and SIM cards. If the SD card is placed
+at the outermost location in the tray, the SIM card may come in
+contact with SD card power-supply while removing the tray, possibly
+resulting in SIM damage.
 
-Fixes: 2f5da678351f ("mmc: bcm2835: Properly handle dmaengine_prep_slave_sg")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250630093510.82871-2-fourier.thomas@gmail.com
+To prevent that, make sure the SD card is really inserted by reading
+the Card Detect pin state. If it's not, turn off the power in
+sdhci_msm_check_power_status() and also set the BUS_FAIL power state
+on the controller as part of pwr_irq handling for BUS_ON request.
+
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/bcm2835.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -507,7 +507,8 @@ void bcm2835_prepare_dma(struct bcm2835_
- 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 
- 	if (!desc) {
--		dma_unmap_sg(dma_chan->device->dev, data->sg, sg_len, dir_data);
-+		dma_unmap_sg(dma_chan->device->dev, data->sg, data->sg_len,
-+			     dir_data);
- 		return;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index c8488b8e2073..f507fa491c58 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -1560,6 +1560,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	struct mmc_host *mmc = host->mmc;
+ 	bool done = false;
+ 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
+ 	const struct sdhci_msm_offset *msm_offset =
+@@ -1617,6 +1618,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ 				 "%s: pwr_irq for req: (%d) timed out\n",
+ 				 mmc_hostname(host->mmc), req_type);
+ 	}
++
++	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++		host->pwr = 0;
++	}
++
+ 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
+ 			__func__, req_type);
+ }
+@@ -1675,6 +1682,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
+ 		udelay(10);
  	}
  
++	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
++	    !mmc->ops->get_cd(mmc)) {
++		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
++				msm_offset->core_pwrctl_ctl);
++		return;
++	}
++
+ 	/* Handle BUS ON/OFF*/
+ 	if (irq_status & CORE_PWRCTL_BUS_ON) {
+ 		pwr_state = REQ_BUS_ON;
+-- 
+2.39.5
+
 
 
 
