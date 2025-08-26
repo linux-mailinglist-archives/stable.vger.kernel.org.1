@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-173761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2921B35F8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5BAB36545
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777863AC954
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D3A1188C5CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5ED13DDAA;
-	Tue, 26 Aug 2025 12:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F201DB127;
+	Tue, 26 Aug 2025 13:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8zrQdr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqHdLj2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C57128816;
-	Tue, 26 Aug 2025 12:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFCD21A420;
+	Tue, 26 Aug 2025 13:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212601; cv=none; b=kF3EP/mjCQZH+KFJZhflP7Bvg1z6+7fmBsu0oMF0jmemyK6bPJw9XoQRaLXz0YE1kLzpUOQ9hdf+tt3vIhbd+58mDJJiRBmP3lk+D/+2VhO5g25b38F0hAC5JZGFoV2Gy3GtxnzuPnDB2kmGujIf+rMN6qqXIqLKy6j81zdJWW8=
+	t=1756215590; cv=none; b=kP0LoCj9yLKjVHEic0uOZKhnSVHoVb0ruJMNT++GaV8VcjgILBSRqUiuNkE1Rb0qyWuZ/BNUs16URSnQvV3pOAirjOs3qNS5OE28oTwLuMau5C1uUHJ5eBHqhZG5s1sTr7iRnYGJWXfubhxRiA2SL9bgpx6uktUk5Ll/Adws+EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212601; c=relaxed/simple;
-	bh=avrj+QOJu0OCm3tOrkSt3ZpHxVlv3spHXXI8I2h0d0k=;
+	s=arc-20240116; t=1756215590; c=relaxed/simple;
+	bh=LKybsQZKx4EhQfeXtnPrStZq1nlTVYXgcqW33GyX4f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTsOw+k1xkBzZzoMCUb1c42qDioqiepbNd0SPH9rlGdjnsGiKsTgTIHQDMo/Nd63y1qjB1AVTNeIh6jtSYtShtxXqK4ArQZcKMGjJxdvN9pJwxwRGniHAJQV5aa/5xYsB1gT92d+mIFWl3qzxvZc4106WDTjVGIc6xWwfSUCKxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8zrQdr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A92C4CEF1;
-	Tue, 26 Aug 2025 12:50:01 +0000 (UTC)
+	 MIME-Version; b=YsUZxANnRmArt+8WOwnusCKRvqG5r8CjZAx6E4Z85TBbCZbpzXBQRnlNiUu1Z407Kz7yaWPcTAjWnC8O4XV9yDLhmDxr22zkxxlhW/rR1eADQfIkSnCZL/eD0pFIY4tjtn2c2Yxcx7SZ6tcnAvUriDF/s12d/d+OJMdZqrvihow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqHdLj2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB13C4CEF1;
+	Tue, 26 Aug 2025 13:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212601;
-	bh=avrj+QOJu0OCm3tOrkSt3ZpHxVlv3spHXXI8I2h0d0k=;
+	s=korg; t=1756215590;
+	bh=LKybsQZKx4EhQfeXtnPrStZq1nlTVYXgcqW33GyX4f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8zrQdr3Yd8WpSxpXw1Ezx72tKbJecsrNPByINUCx9doEae04JI23IsVSxsxR43SW
-	 vpPXt4xl1A9hPPDhkgVLR+6AZF13GKjH4cDD2U2b+XWdAvooFqdyPQJ93soUDbZvfl
-	 MVS5h8sIuutWJJcemE0/M1f/uUelFU+Naf/qd5P8=
+	b=zqHdLj2+VoAhjkDKJ7aKy4Ppf4K5KIBLFwmyWJhgsvHJDqQ1pQtrO4EgDyW5wAFhD
+	 vCrb7WzOMEN9OTwb4Z3syVuD0B/AagKd9qZcZ9572MN6rYgPDdq+aPxuFpKVhMat8e
+	 NADEamlRzlt86Na1wBaVBFMs3YHBV1hMyKZaviBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 032/587] ACPI: processor: perflib: Move problematic pr->performance check
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.15 090/644] i2c: virtio: Avoid hang by using interruptible completion wait
 Date: Tue, 26 Aug 2025 13:03:01 +0200
-Message-ID: <20250826110953.771145063@linuxfoundation.org>
+Message-ID: <20250826110948.731085535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
+commit a663b3c47ab10f66130818cf94eb59c971541c3f upstream.
 
-Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
-application") added a pr->performance check that prevents the frequency
-QoS request from being added when the given processor has no performance
-object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
-to trigger on an attempt to take the given CPU offline later because the
-frequency QoS object has not been added for it due to the missing
-performance object.
+The current implementation uses wait_for_completion(), which can cause
+the caller to hang indefinitely if the transfer never completes.
 
-Address this by moving the pr->performance check before calling
-acpi_processor_get_platform_limit() so it only prevents a limit from
-being set for the CPU if the performance object is not present.  This
-way, the frequency QoS request is added as it was before the above
-commit and it is present all the time along with the CPU's cpufreq
-policy regardless of whether or not the CPU is online.
+Switch to wait_for_completion_interruptible() so that the operation can
+be interrupted by signals.
 
-Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
-Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
+Fixes: 84e1d0bf1d71 ("i2c: virtio: disable timeout handling")
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: <stable@vger.kernel.org> # v5.16+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/b8944e9cab8eb959d888ae80add6f2a686159ba2.1751541962.git.viresh.kumar@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-virtio.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -181,7 +181,7 @@ void acpi_processor_ppc_init(struct cpuf
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
+--- a/drivers/i2c/busses/i2c-virtio.c
++++ b/drivers/i2c/busses/i2c-virtio.c
+@@ -118,15 +118,16 @@ static int virtio_i2c_complete_reqs(stru
+ 	for (i = 0; i < num; i++) {
+ 		struct virtio_i2c_req *req = &reqs[i];
  
--		if (!pr || !pr->performance)
-+		if (!pr)
- 			continue;
+-		wait_for_completion(&req->completion);
+-
+-		if (!failed && req->in_hdr.status != VIRTIO_I2C_MSG_OK)
+-			failed = true;
++		if (!failed) {
++			if (wait_for_completion_interruptible(&req->completion))
++				failed = true;
++			else if (req->in_hdr.status != VIRTIO_I2C_MSG_OK)
++				failed = true;
++			else
++				j++;
++		}
  
- 		/*
-@@ -198,6 +198,9 @@ void acpi_processor_ppc_init(struct cpuf
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+ 		i2c_put_dma_safe_msg_buf(reqs[i].buf, &msgs[i], !failed);
+-
+-		if (!failed)
+-			j++;
+ 	}
  
-+		if (!pr->performance)
-+			continue;
-+
- 		ret = acpi_processor_get_platform_limit(pr);
- 		if (ret)
- 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
+ 	return j;
 
 
 
