@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBDBB35CB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03FDB36A76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7D57C5089
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B9BA582C5D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEDC3093BA;
-	Tue, 26 Aug 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E9134DCC3;
+	Tue, 26 Aug 2025 14:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ly5ytDr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0YSskjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592CD33768D;
-	Tue, 26 Aug 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ECA2192F2;
+	Tue, 26 Aug 2025 14:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208152; cv=none; b=BUnOmjVH4GwBusyAA0gQevAwpbgSFMpY75+vxmbSm0kXB8Zi/j9S4VnhP5hpah3HBojUhlPvk/vQMWfHOrZT+VqECQt+sdKtupT5MFUY9k4mEfuEqgGkQr4br2PsMwG9EjGpod5eUEeBS9MkBlVbw5GxH4WkQhT/mtNG5wdZW0w=
+	t=1756218442; cv=none; b=nuI4tOzxASmLhNLuPSCMJxYJ5WeY3ewLsI2fSypRDxreyUjTKj8ZlAuRjF2Saywh13MB9RmD2KYHbRPc+z/G290KdqBQmTg4tHxdhTjOulV7gEpDsZaiJn08RuQ/i+MMcycagcDMuJd+zIEvdegrQfYEcbp5ZQTELYZ2CyfdL64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208152; c=relaxed/simple;
-	bh=GFeD4+KORpGa4iRSr6hbJ1IzqdyrgdU/a6tG3rYTCRk=;
+	s=arc-20240116; t=1756218442; c=relaxed/simple;
+	bh=nCRFBH3vu1h2sIn+8ofInNmtnhrItilCaMiJ9lIE92I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qW0CzGZrRghUdc8M0VCWO+Oc5r6BESEhYSbTkBlJxAthjhpitX5Ndeo3p5zLEYfRC0Zx3MzaHUrfzuedo4cACb5nSDL9spqzom6kEU4I86mqX201dXWrQdWHx4j2x1da9Xv+YV9ZTVl8bZtDhw2rU82t6WXMH5nR9AA1Uisn/kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ly5ytDr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C50C4CEF1;
-	Tue, 26 Aug 2025 11:35:51 +0000 (UTC)
+	 MIME-Version; b=PgVx2tBb1g3VZyy8NEsbNeGyoNThUw1VLeKrPXIlcbo/FuU8dNuHcCoCCDV3AdowvDmcoZCOc4Q4HoKvrSluSLcVO5B6QFYIrscn8M12sY36KkERl6UIysFhkHko/zTWyZCe+uMlGsQKNCQzzU7wAZPE8ZGJ2e9CSAyh7a1G6Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0YSskjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F1DC4CEF1;
+	Tue, 26 Aug 2025 14:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208152;
-	bh=GFeD4+KORpGa4iRSr6hbJ1IzqdyrgdU/a6tG3rYTCRk=;
+	s=korg; t=1756218442;
+	bh=nCRFBH3vu1h2sIn+8ofInNmtnhrItilCaMiJ9lIE92I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ly5ytDr1WNwBH1Gk2eJa4pTZgafA2LJqApWrUzqBhJroY4e0zTsSQSDCqVDcgNI4h
-	 zaANb47EszoWLEYDdKDB4GxzXayTEqsnNe+jsHLDUdxstKYjxBl1YmNdh2KSr8Hnpc
-	 /oXtIuGAcuysaO7m99wzWdnWW7RwARfxZ15PZN1Y=
+	b=D0YSskjnTYziRMBV/hdcGyoa2HQrVwplv0ImksQ4zlJVHUZ8p0oiMwb+ny1nSAx7k
+	 XFoykGm6Hf7w/0VnnRWVry71n8mLloqOIGa9rZHyRAOQ9KTq6cJW8v88zWRXLd//1V
+	 A/GI6R52Bqk7zPihd0Ytq9jR1nGr0stoKh8IrFeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oren Sidi <osidi@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 449/457] net/mlx5: Add IFC bits and enums for buf_ownership
+Subject: [PATCH 5.10 523/523] netfilter: nf_reject: dont leak dst refcount for loopback packets
 Date: Tue, 26 Aug 2025 13:12:13 +0200
-Message-ID: <20250826110948.384121274@linuxfoundation.org>
+Message-ID: <20250826110937.339124694@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oren Sidi <osidi@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6f09ee0b583cad4f2b6a82842c26235bee3d5c2e ]
+[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
 
-Extend structure layouts and defines buf_ownership.
-buf_ownership indicates whether the buffer is managed by SW or FW.
+recent patches to add a WARN() when replacing skb dst entry found an
+old bug:
 
-Signed-off-by: Oren Sidi <osidi@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1752734895-257735-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 451d2849ea66 ("net/mlx5e: Query FW for buffer ownership")
+WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
+WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
+WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
+[..]
+Call Trace:
+ nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
+ nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ ..
+
+This is because blamed commit forgot about loopback packets.
+Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
+
+Instead of checking hook just check if the skb already has a route
+attached to it.
+
+Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
+ net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 2c09df4ee574..83288df7bb45 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -10460,8 +10460,16 @@ struct mlx5_ifc_pifr_reg_bits {
- 	u8         port_filter_update_en[8][0x20];
- };
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index d232e0251142..e89a4cbd9f5d 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -125,8 +125,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (!oth)
+ 		return;
  
-+enum {
-+	MLX5_BUF_OWNERSHIP_UNKNOWN	= 0x0,
-+	MLX5_BUF_OWNERSHIP_FW_OWNED	= 0x1,
-+	MLX5_BUF_OWNERSHIP_SW_OWNED	= 0x2,
-+};
-+
- struct mlx5_ifc_pfcc_reg_bits {
--	u8         reserved_at_0[0x8];
-+	u8         reserved_at_0[0x4];
-+	u8	   buf_ownership[0x2];
-+	u8	   reserved_at_6[0x2];
- 	u8         local_port[0x8];
- 	u8         reserved_at_10[0xb];
- 	u8         ppan_mask_n[0x1];
-@@ -10597,7 +10605,9 @@ struct mlx5_ifc_pcam_enhanced_features_bits {
- 	u8         fec_200G_per_lane_in_pplm[0x1];
- 	u8         reserved_at_1e[0x2a];
- 	u8         fec_100G_per_lane_in_pplm[0x1];
--	u8         reserved_at_49[0x1f];
-+	u8         reserved_at_49[0xa];
-+	u8	   buffer_ownership[0x1];
-+	u8	   resereved_at_54[0x14];
- 	u8         fec_50G_per_lane_in_pplm[0x1];
- 	u8         reserved_at_69[0x4];
- 	u8         rx_icrc_encapsulated_counter[0x1];
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(oldskb) < 0)
++	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
+ 		return;
+ 
+ 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+@@ -194,8 +193,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+ 	if (iph->frag_off & htons(IP_OFFSET))
+ 		return;
+ 
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+ 		return;
+ 
+ 	if (skb_csum_unnecessary(skb_in) || !nf_reject_verify_csum(proto)) {
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index b396559f68b4..5384b73e318e 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -161,7 +161,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	fl6.fl6_sport = otcph->dest;
+ 	fl6.fl6_dport = otcph->source;
+ 
+-	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
++	if (!skb_dst(oldskb)) {
+ 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
+ 		if (!dst)
+ 			return;
+@@ -259,8 +259,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+ 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+ 		skb_in->dev = net->loopback_dev;
+ 
+-	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
+-	    nf_reject6_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+ 		return;
+ 
+ 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
 -- 
 2.50.1
 
