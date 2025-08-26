@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1530B367BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F970B35C8B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5168A9840A7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D16E77BC612
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C2134AAE3;
-	Tue, 26 Aug 2025 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE4284B5B;
+	Tue, 26 Aug 2025 11:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPwKat0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svo/kwp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DB02FDC44;
-	Tue, 26 Aug 2025 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B2823D7FA;
+	Tue, 26 Aug 2025 11:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216893; cv=none; b=Ky9ij8P6oUNlTN/zCmVOclAtcj9RzYsRvvvwIQUs1WaxNIfINXQNTdP1mE1oyR8sNQN/PymAytHWN8R3ja+XUb4M1g9qHL7LdKm5H6vI5mQX3d/IuRRs9nkt9g5rq7r+h1U2yM6ETYKgHoBWwDuYjzbigrqGCaREeKIKwNGRGSY=
+	t=1756207974; cv=none; b=aDGE8DBglR2WeOF9ZPHc6P6mVWj9pZ8yn8UFG40k6P2RRHGvJVjfH8h0rO7tOi6AEp2grer7y5OZSBorryqwA1wJi0yDBsKj3Rn74+YsmEQBDFhTeqlmiKIUotYb9jb/7I2MKUu1M2nO090y09ZD6i5rW98b9Ce50a+5GtjfJBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216893; c=relaxed/simple;
-	bh=YLG4lUru4EHVLeYLRsrv1eHpkpxd+NIR8Fh5ngMY77Y=;
+	s=arc-20240116; t=1756207974; c=relaxed/simple;
+	bh=bL28PWZFzZyMsWC6zlEKyJR+ZfOcY1gl+XeA6DvlzNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnlQaetlMP4C5BjSmJwnUXqUsxVPrQfYVgvo/XY0nDzqle/hfyRe3QwyUyoVZIHgOTubL1EqX1nRBIWLwl0tSio8b8oUQ9wIoqDcxhAu/4LsZxFcK5UKrJMIe7fls2/I27e9kqT+psrDkKg9nhviCdTStJrkBjwM4vrcwCibum0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPwKat0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00799C4CEF1;
-	Tue, 26 Aug 2025 14:01:32 +0000 (UTC)
+	 MIME-Version; b=C1SAokntt36JWS4vtuknfA5qZrnOaCuTqoMzQTJIDnmppUMKPZ08pqXiKBg9CJupj4zzqSoz6oG/hEBtRWUCDSGLmT12Wl2kReqbC4KoU2w307jNiC5BT7E4/KyJ5inzCW6sGaAKLmFgv/706sGPQDTryasLreOprJQ0gTIf1QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svo/kwp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F65C4CEF1;
+	Tue, 26 Aug 2025 11:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216893;
-	bh=YLG4lUru4EHVLeYLRsrv1eHpkpxd+NIR8Fh5ngMY77Y=;
+	s=korg; t=1756207974;
+	bh=bL28PWZFzZyMsWC6zlEKyJR+ZfOcY1gl+XeA6DvlzNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPwKat0TLm3HgQcJDw/0gRQ0J63gG6DbYuyN5HbPDNDKvZlBjqRt1voQOWpWi4KmS
-	 jay/F8oLH6FMUZ0IiodpjZgrXoK/ZzYsD3alq3s4dX8FfOxOSg5RxENctRsLVbN9e0
-	 X1ZRtNpwG4DyETL6OdDVcqFeteoEFynqkCkS4mMA=
+	b=Svo/kwp9o3M1SowLnzpZor66BiQvTVlWy+sEnz87oHIxtXYgkK122wgahCh4J7qKu
+	 /dnKe1V5Tg+2Dh48Dmu/cLi0LwumfsAfQJ197IxpSsqtXErrPFzsDB/hf/QPynNRW9
+	 PfnQJ2R4ElEYa1AwwO/kGj25fY/7GVtr4jYVZHgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 583/644] comedi: pcl726: Prevent invalid irq number
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 390/457] drm/hisilicon/hibmc: fix the hibmc loaded failed bug
 Date: Tue, 26 Aug 2025 13:11:14 +0200
-Message-ID: <20250826111000.979809522@linuxfoundation.org>
+Message-ID: <20250826110946.935005642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Baihan Li <libaihan@huawei.com>
 
-commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
+[ Upstream commit 93a08f856fcc5aaeeecad01f71bef3088588216a ]
 
-The reproducer passed in an irq number(0x80008000) that was too large,
-which triggered the oob.
+When hibmc loaded failed, the driver use hibmc_unload to free the
+resource, but the mutexes in mode.config are not init, which will
+access an NULL pointer. Just change goto statement to return, because
+hibnc_hw_init() doesn't need to free anything.
 
-Added an interrupt number check to prevent users from passing in an irq
-number that was too large.
-
-If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
-because it shifts a 1-bit into the sign bit (which is UB in C).
-Possible solutions include reducing the upper bound on the
-`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
-
-The old code would just not attempt to request the IRQ if the
-`options[1]` value were invalid.  And it would still configure the
-device without interrupts even if the call to `request_irq` returned an
-error.  So it would be better to combine this test with the test below.
-
-Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
-Cc: stable <stable@kernel.org> # 5.13+
-Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
-Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b3df5e65cc03 ("drm/hibmc: Drop drm_vblank_cleanup")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-5-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/pcl726.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/drivers/pcl726.c
-+++ b/drivers/comedi/drivers/pcl726.c
-@@ -329,7 +329,8 @@ static int pcl726_attach(struct comedi_d
- 	 * Hook up the external trigger source interrupt only if the
- 	 * user config option is valid and the board supports interrupts.
- 	 */
--	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (board->irq_mask & (1U << it->options[1]))) {
- 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+index 4cdcc34070ee..ac552c339671 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+@@ -319,13 +319,13 @@ static int hibmc_load(struct drm_device *dev)
+ 
+ 	ret = hibmc_hw_init(priv);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	ret = drmm_vram_helper_init(dev, pci_resource_start(pdev, 0),
+ 				    pci_resource_len(pdev, 0));
+ 	if (ret) {
+ 		drm_err(dev, "Error initializing VRAM MM; %d\n", ret);
+-		goto err;
++		return ret;
+ 	}
+ 
+ 	ret = hibmc_kms_init(priv);
+-- 
+2.50.1
+
 
 
 
