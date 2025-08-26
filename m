@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134C4B3628E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247FEB36075
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B8D7BC2E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17007C6221
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D21298CA7;
-	Tue, 26 Aug 2025 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEF41B87C9;
+	Tue, 26 Aug 2025 12:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE9Lk3Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aReAeJPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EC120F079;
-	Tue, 26 Aug 2025 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B01A0BD0;
+	Tue, 26 Aug 2025 12:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214284; cv=none; b=j9cX39X5sE4actBKIGeP+3Dn6b6lvD+cY6AF/uKe1u2TOuc1nYUhrw18oPOMig1jnfce3LMQp3hVVQHEDXIs2X5ndqmnXgyItexWpzPRxpIEb2wPlXbOKwdCjIZH3OEfxefu3ZhHVV38LfOXRg7vLXtmnTsiR2qFKgqr21JbJmk=
+	t=1756213029; cv=none; b=Z7ObgGEavd+8GfsnVFiZk7nCl9TqPdNrlwZo8nT/XfELiw3YFkbZoWSsmb2VjjmFnr2fr2bE18MIh9NCSvb+HUV2LLxGLR5dMdK2UObxSxZuGbITtX8/05OnKwr46I47RSrktadOVSvABgF0auppmg9pqJZRf5vJrHMLVHDI0V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214284; c=relaxed/simple;
-	bh=rUyodEnp3cGEzWb8KRdYy4RRktRwqk/wZbspORGolig=;
+	s=arc-20240116; t=1756213029; c=relaxed/simple;
+	bh=mIaazettDwWgxMxCqsOe++y8UNKGtTVtfSPMHDOZIdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruOrnWvZXKoXfDjuYkrA8/KjqiQ+L+l4hKq99nT27AnhzgKi6wUGt6ob8fleU05bjt0fa0h1JNJEouZcApFZPyjBhWaB9fdmAX/Mo+x5oE7xgtG9y4gKkaMke9U7ApqTWBm9U+86ioaDhtowHB16QnjCmn9rMZsJhNcTrv40BYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE9Lk3Uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC16C4CEF1;
-	Tue, 26 Aug 2025 13:18:03 +0000 (UTC)
+	 MIME-Version; b=SlFKuoeZWcACqyaqdTvjLP0JbqgljzNz6WyxynBwQ4V959Z8akc5w1UpO/e4C7v5W9Jodr6g8sZgHRZZn6eytj+iJtm47JSnbNcp63ypxINrfl7IGsNnk1pOjUECK+ZrDBcBJ9pd78ue7hkLNOX044CY2ESEfvt0d3feGxqnhnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aReAeJPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5219FC4CEF1;
+	Tue, 26 Aug 2025 12:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214283;
-	bh=rUyodEnp3cGEzWb8KRdYy4RRktRwqk/wZbspORGolig=;
+	s=korg; t=1756213029;
+	bh=mIaazettDwWgxMxCqsOe++y8UNKGtTVtfSPMHDOZIdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PE9Lk3UvAtAWi+p/EgoPjtkYlEE7pLYabj+HrvbMR5zb9cCmIjYNUkC93kMBjy6ZK
-	 8557tNhtHVnJpNZvQ4KzkK7D75oDfPIYNfa/IN7grfvR7l6n6lAjn23p7Buqok42n9
-	 CCwuRsicZbshIJxGnXUnpBgUsiOvvsZ538BuumbM=
+	b=aReAeJPI77koUk73Jd0+6GLVN9qC+4pLCeqeuSXiMqRczB3bv/8RRwTva4wlBctHX
+	 QlwpvebtvWbW305e2xo/Qy/ixk6apYeKcXi8zInCezMuNEfx/+KK4RBP8A1J/Ii3m6
+	 aXLSrszMhDFpXTySlWKpiCAkxZpJQCgjQ/6tOMAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/482] hfs: fix slab-out-of-bounds in hfs_bnode_read()
-Date: Tue, 26 Aug 2025 13:05:02 +0200
-Message-ID: <20250826110932.031811259@linuxfoundation.org>
+Subject: [PATCH 6.6 154/587] net: mctp: Prevent duplicate binds
+Date: Tue, 26 Aug 2025 13:05:03 +0200
+Message-ID: <20250826110956.865295244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
+[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
 
-This patch introduces is_bnode_offset_valid() method that checks
-the requested offset value. Also, it introduces
-check_and_correct_requested_length() method that checks and
-correct the requested length (if it is necessary). These methods
-are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
-hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
-the access out of allocated memory and triggering the crash.
+Disallow bind() calls that have the same arguments as existing bound
+sockets.  Previously multiple sockets could bind() to the same
+type/local address, with an arbitrary socket receiving matched messages.
 
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+This is only a partial fix, a future commit will define precedence order
+for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
+together.
+
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index cb823a8a6ba9..1dac5d9c055f 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -15,6 +15,48 @@
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 8032cfba22d1..5f9592fb57ad 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
  
- #include "btree.h"
+ 	lock_sock(sk);
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
-+	}
-+
-+	return is_valid;
-+}
-+
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
-+}
-+
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+-	/* TODO: allow rebind */
+ 	if (sk_hashed(sk)) {
+ 		rc = -EADDRINUSE;
+ 		goto out_release;
+@@ -549,15 +548,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
+ static int mctp_sk_hash(struct sock *sk)
  {
- 	struct page *page;
-@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- 	int bytes_read;
- 	int bytes_to_read;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
+ 	struct net *net = sock_net(sk);
++	struct sock *existing;
++	struct mctp_sock *msk;
++	int rc;
 +
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
++	msk = container_of(sk, struct mctp_sock, sk);
+ 
+ 	/* Bind lookup runs under RCU, remain live during that. */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
++
++	/* Prevent duplicate binds. */
++	sk_for_each(existing, &net->mctp.binds) {
++		struct mctp_sock *mex =
++			container_of(existing, struct mctp_sock, sk);
++
++		if (mex->bind_type == msk->bind_type &&
++		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_net == msk->bind_net) {
++			rc = -EADDRINUSE;
++			goto out;
++		}
 +	}
 +
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagenum = off >> PAGE_SHIFT;
- 	off &= ~PAGE_MASK; /* compute page offset for the first page */
-@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page *page;
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+-	mutex_unlock(&net->mctp.bind_lock);
++	rc = 0;
  
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
+-	return 0;
++out:
++	mutex_unlock(&net->mctp.bind_lock);
++	return rc;
+ }
  
-@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
- {
- 	struct page *page;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
- 
-@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
- 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(src_node, src, len);
-+	len = check_and_correct_requested_length(dst_node, dst, len);
-+
- 	src += src_node->page_offset;
- 	dst += dst_node->page_offset;
- 	src_page = src_node->page[0];
-@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
- 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(node, src, len);
-+	len = check_and_correct_requested_length(node, dst, len);
-+
- 	src += node->page_offset;
- 	dst += node->page_offset;
- 	page = node->page[0];
+ static void mctp_sk_unhash(struct sock *sk)
 -- 
 2.39.5
 
