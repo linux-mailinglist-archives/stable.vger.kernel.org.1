@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-174670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE34CB36464
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA1AB35DE4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 850A8188D9D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F162C189561B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3E30AAD8;
-	Tue, 26 Aug 2025 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67C429D292;
+	Tue, 26 Aug 2025 11:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZCOKH1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IcShUiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7609233EAF9;
-	Tue, 26 Aug 2025 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AD8283FDF;
+	Tue, 26 Aug 2025 11:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215006; cv=none; b=bKhePP9N7wVPZjOmDwSHi+5ZwlESWfHgIcylUNyxz1NDquoIam3J7MjBGeoeXwoYvpI1EMhAK49+kl+oyFqbIcJWun56rj627wBwvPxjey/GAQbClatbSGqtiECTss/7nn5RczJKAD57wPSzm73ovzW/WTgfyYAnzFlHpphfTGw=
+	t=1756208561; cv=none; b=X/gMA8IxL5zWLhONwg9c29sb/pCJR7pFfuk4RbrbcxreY9wHroluUxKS7PyJvDLxQH7A/r7rbvLLh9z9t4nr2VUkA9YvCzuI3CJ+s23qx7OOPW1ml9T2Zgw3GjhxygXMBIiXY4K7mEYZdijAqdC0gPUx0tNopmG1mR+jO69BV9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215006; c=relaxed/simple;
-	bh=dLjjpO2J6B+TH/4QIlpNE3VAOxWSE1D+baM1g4UL4pY=;
+	s=arc-20240116; t=1756208561; c=relaxed/simple;
+	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdATDPB5AbM1xaAMrNUAXnYxowKCjkCCcrlA8uRFTLolwzYat/FLNcGeSpi7WIeFhNAmAvd6iDs9MItJnPS3cYlY5kdGUULL/JDynm062j3Uk3ONO8ieaGyu6T1UTjNz/L9q9Yr3a7q0lhKWgbt6A6bFCY+Fki2OqaMDmn5BwEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZCOKH1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03267C4CEF1;
-	Tue, 26 Aug 2025 13:30:05 +0000 (UTC)
+	 MIME-Version; b=uiHtvUTx6PMp1mF1VdyNErgPrSSEUsz9BH/pSO1dy33aPXTF7FBS7FO9MXlspdp4zZqShuyiq0KVLFOiASAtvfGfWnnbvfWHjFedZW+6+nFwie4cL5b86BSyL7JIMJC2qYFkj6YP+5QEqy2LlNg72FInN7MWhCVQ0xW0n9p9G/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IcShUiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C137BC113CF;
+	Tue, 26 Aug 2025 11:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215006;
-	bh=dLjjpO2J6B+TH/4QIlpNE3VAOxWSE1D+baM1g4UL4pY=;
+	s=korg; t=1756208561;
+	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZCOKH1V3q+H+Ao8bG9TWjmpiry4w9JehuIZBcNeRaAuZIQspVzFHx82loHzZFVQs
-	 xqUpC4Y0qWRhZXwfZuyaSPL+LiTj3AG0Bz53yakcpl5zN/JhHKHe2LG3bxzpGuK3n+
-	 yCb8ue8X327RtwgiF5HdF+RuiGoBQOJx1Pc040Ks=
+	b=0IcShUiIAk3SHPTiazIopS5Q6E30InM7jNMhlYO8I96FtIvWD522ACrrIJ9IjdaAB
+	 K9ZQ2Lq1TGM1b4902VAJ7/WFCc9NkGnzGdOn2h/qWXjMAVXObtxw8eghabtqnQD+fi
+	 u2zTR/SG/lVGyhnq39B31ZOrRoElmoAvGn3tabws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 320/482] media: hi556: correct the test pattern configuration
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 158/322] netfs: Fix unbuffered write error handling
 Date: Tue, 26 Aug 2025 13:09:33 +0200
-Message-ID: <20250826110938.713135919@linuxfoundation.org>
+Message-ID: <20250826110919.721484270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +69,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
+[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
 
-Hynix hi556 support 8 test pattern modes:
-hi556_test_pattern_menu[] = {
-{
-	"Disabled",
-	"Solid Colour",
-	"100% Colour Bars",
-	"Fade To Grey Colour Bars",
-	"PN9",
-	"Gradient Horizontal",
-	"Gradient Vertical",
-	"Check Board",
-	"Slant Pattern",
-}
+If all the subrequests in an unbuffered write stream fail, the subrequest
+collector doesn't update the stream->transferred value and it retains its
+initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
+take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
+in wreq->transferred - which is then returned from ->write_iter().
 
-The test pattern is set by a 8-bit register according to the
-specification.
-+--------+-------------------------------+
-| BIT[0] |  Solid color                  |
-+--------+-------------------------------+
-| BIT[1] |  Color bar                    |
-+--------+-------------------------------+
-| BIT[2] |  Fade to grey color bar       |
-+--------+-------------------------------+
-| BIT[3] |  PN9                          |
-+--------+-------------------------------+
-| BIT[4] |  Gradient horizontal          |
-+--------+-------------------------------+
-| BIT[5] |  Gradient vertical            |
-+--------+-------------------------------+
-| BIT[6] |  Check board                  |
-+--------+-------------------------------+
-| BIT[7] |  Slant pattern                |
-+--------+-------------------------------+
-Based on function above, current test pattern programming is wrong.
-This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
-will disable the test pattern generation and set the pattern to 0.
+LONG_MAX was chosen as the initial value so that all the streams can be
+quickly assessed by taking the smallest value of all stream->transferred -
+but this only works if we've set any of them.
 
-Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fix this by adding a flag to indicate whether the value in
+stream->transferred is valid and checking that when we integrate the
+values.  stream->transferred can then be initialised to zero.
+
+This was found by running the generic/750 xfstest against cifs with
+cache=none.  It splices data to the target file.  Once (if) it has used up
+all the available scratch space, the writes start failing with ENOSPC.
+This causes ->write_iter() to fail.  However, it was returning
+wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
+the amount transferred was non-zero) and iter_file_splice_write() would
+then try to clean up that amount of pipe bufferage - leading to an oops
+when it overran.  The kernel log showed:
+
+    CIFS: VFS: Send error in write = -28
+
+followed by:
+
+    BUG: kernel NULL pointer dereference, address: 0000000000000008
+
+with:
+
+    RIP: 0010:iter_file_splice_write+0x3a4/0x520
+    do_splice+0x197/0x4e0
+
+or:
+
+    RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
+    iter_file_splice_write (fs/splice.c:755)
+
+Also put a warning check into splice to announce if ->write_iter() returned
+that it had written more than it was asked to.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/915443.1755207950@warthog.procyon.org.uk
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Dropped read_collect.c hunk ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ fs/netfs/write_collect.c |   10 ++++++++--
+ fs/netfs/write_issue.c   |    4 ++--
+ fs/splice.c              |    3 +++
+ include/linux/netfs.h    |    1 +
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -605,21 +605,23 @@ static int hi556_test_pattern(struct hi5
- 	int ret;
- 	u32 val;
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -433,6 +433,7 @@ reassess_streams:
+ 			if (front->start + front->transferred > stream->collected_to) {
+ 				stream->collected_to = front->start + front->transferred;
+ 				stream->transferred = stream->collected_to - wreq->start;
++				stream->transferred_valid = true;
+ 				notes |= MADE_PROGRESS;
+ 			}
+ 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
+@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struc
+ 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
+ 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
+ 	size_t transferred;
++	bool transferred_valid = false;
+ 	int s;
  
--	if (pattern) {
--		ret = hi556_read_reg(hi556, HI556_REG_ISP,
--				     HI556_REG_VALUE_08BIT, &val);
--		if (ret)
--			return ret;
--
--		ret = hi556_write_reg(hi556, HI556_REG_ISP,
--				      HI556_REG_VALUE_08BIT,
--				      val | HI556_REG_ISP_TPG_EN);
--		if (ret)
--			return ret;
--	}
-+	ret = hi556_read_reg(hi556, HI556_REG_ISP,
-+			     HI556_REG_VALUE_08BIT, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
-+		(val & ~HI556_REG_ISP_TPG_EN);
-+
-+	ret = hi556_write_reg(hi556, HI556_REG_ISP,
-+			      HI556_REG_VALUE_08BIT, val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? BIT(pattern - 1) : 0;
+ 	_enter("R=%x", wreq->debug_id);
+@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struc
+ 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
+ 			return;
+ 		}
+-		if (stream->transferred < transferred)
++		if (stream->transferred_valid &&
++		    stream->transferred < transferred) {
+ 			transferred = stream->transferred;
++			transferred_valid = true;
++		}
+ 	}
  
- 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
--			       HI556_REG_VALUE_08BIT, pattern);
-+			       HI556_REG_VALUE_08BIT, val);
- }
+ 	/* Okay, declare that all I/O is complete. */
+-	wreq->transferred = transferred;
++	if (transferred_valid)
++		wreq->transferred = transferred;
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
- static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
+ 	if (wreq->io_streams[1].active &&
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_wr
+ 	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
+ 	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
+ 	wreq->io_streams[0].collected_to	= start;
+-	wreq->io_streams[0].transferred		= LONG_MAX;
++	wreq->io_streams[0].transferred		= 0;
+ 
+ 	wreq->io_streams[1].stream_nr		= 1;
+ 	wreq->io_streams[1].source		= NETFS_WRITE_TO_CACHE;
+ 	wreq->io_streams[1].collected_to	= start;
+-	wreq->io_streams[1].transferred		= LONG_MAX;
++	wreq->io_streams[1].transferred		= 0;
+ 	if (fscache_resources_valid(&wreq->cache_resources)) {
+ 		wreq->io_streams[1].avail	= true;
+ 		wreq->io_streams[1].active	= true;
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode
+ 		sd.pos = kiocb.ki_pos;
+ 		if (ret <= 0)
+ 			break;
++		WARN_ONCE(ret > sd.total_len - left,
++			  "Splice Exceeded! ret=%zd tot=%zu left=%zu\n",
++			  ret, sd.total_len, left);
+ 
+ 		sd.num_spliced += ret;
+ 		sd.total_len -= ret;
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -150,6 +150,7 @@ struct netfs_io_stream {
+ 	bool			active;		/* T if stream is active */
+ 	bool			need_retry;	/* T if this stream needs retrying */
+ 	bool			failed;		/* T if this stream failed */
++	bool			transferred_valid; /* T is ->transferred is valid */
+ };
+ 
+ /*
 
 
 
