@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D403B35E51
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DFCB367DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC83B4651A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A71F467409
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABE233EAEB;
-	Tue, 26 Aug 2025 11:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4743469F4;
+	Tue, 26 Aug 2025 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVOU9h/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+ihDsKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA8333CE90;
-	Tue, 26 Aug 2025 11:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C1B352FC7;
+	Tue, 26 Aug 2025 14:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208716; cv=none; b=MrgVldHs7VS3Mh3Zemw14hrb3m/f3Rj26bPRRaz8cCoruNxcHrtSFjnscaBHct5QueZBEuQt5/Czcbg3ioKJX72bvbWluuSeMVsCx0M6nXaLbYlWKU7XULPRMDdOWo1g60jz9xnqyyZmnnq9JYVDEVwR5q+h+/DUAvM6tkUSGMo=
+	t=1756216870; cv=none; b=IOlBn4KWaxyeDt4F4PIXHmyl6JqANy6N/jMov0Dc9cDAKHrY+XzzukPAQUnUjaKqJq+ulriMTrmMM1TKG3CUVOpW1PfhvuI2I42/HmqlgeNIYjjV18i5kKWp3lERAfvQcundaG5DlO/jjZ05hw8F+/ceyx7d8H355b1Ter1+PBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208716; c=relaxed/simple;
-	bh=7bDDgzmOAgfZhKeApk01+K0b3BZnAhvHfYZCMfAbPDU=;
+	s=arc-20240116; t=1756216870; c=relaxed/simple;
+	bh=ibmhUqpCmqgneio3Dq5qwsdl+MPjTdgHSpa7s/DpQxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9KXv/wHQTqdJ1oCHJfytHEjKHVlkrPzu70+h1hutVKrZhGMZiIwKQqgxh20iyIlkNklz67Stccaz3DpyW2hy5pgZcTADK/mX2JfD/+W4IxguMlxCz//f6hB2kfjbuaXlxgYDRjc6vPGfolEitW9MzS6f6YLHbL3cVSaOJmtSJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVOU9h/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17510C4CEF1;
-	Tue, 26 Aug 2025 11:45:14 +0000 (UTC)
+	 MIME-Version; b=vAPnbDZwYmZ6KI84PFMxbGMHkZMwoqKUak9WK4SXqta2OIsSTSc0XiRLVO90PRwN14tuoZynVXP594usc2OTwvZ9M/GgqNd0d7ZP0iy2ea6/+M1CgiXghP2myMk43OXgbTV1aFILbnPcDW7L1febAchY6SK/cf3IpKsw3qU2WIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+ihDsKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60384C4CEF1;
+	Tue, 26 Aug 2025 14:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208715;
-	bh=7bDDgzmOAgfZhKeApk01+K0b3BZnAhvHfYZCMfAbPDU=;
+	s=korg; t=1756216869;
+	bh=ibmhUqpCmqgneio3Dq5qwsdl+MPjTdgHSpa7s/DpQxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVOU9h/SslIsBaOdD6yWAWhPvLNhEoVqYnntMuri7l+aZVLnVhkmmmx6izPWWIn3f
-	 9dZjCrXenUyzzzWD62KsYJMLkjtp5NuDsa9LlxNlLkAoB7CePXQWDTlekU6TXuck6W
-	 fjtuJVRX8kf3qiXKw1mR0pP7Q2nbWHttwgjW0C3w=
+	b=N+ihDsKjVxP5q2abZDRD3FsEcxmgROjsRnOhLxehgMz7zV0d3rAasmk3jnDZYqChm
+	 OFEZSS5BZroEyCqRv7Q3somC9C5AkvHF2o7E475RreQxnmTv1ndiBVClXTUi06OYRo
+	 TifrdgAr4S6ZOn+ihp4ocdS0IYY3zi6THALaTGHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: [PATCH 6.12 218/322] most: core: Drop device reference after usage in get_channel()
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 542/644] net_sched: sch_ets: implement lockless ets_dump()
 Date: Tue, 26 Aug 2025 13:10:33 +0200
-Message-ID: <20250826110921.269656515@linuxfoundation.org>
+Message-ID: <20250826110959.950302446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b47b493d6387ae437098112936f32be27f73516c upstream.
+[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
 
-In get_channel(), the reference obtained by bus_find_device_by_name()
-was dropped via put_device() before accessing the device's driver data
-Move put_device() after usage to avoid potential issues.
+Instead of relying on RTNL, ets_dump() can use READ_ONCE()
+annotations, paired with WRITE_ONCE() ones in ets_change().
 
-Fixes: 2485055394be ("staging: most: core: drop device reference")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_ets.c |   25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
---- a/drivers/most/core.c
-+++ b/drivers/most/core.c
-@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
- 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
- 	if (!dev)
- 		return NULL;
--	put_device(dev);
- 	iface = dev_get_drvdata(dev);
-+	put_device(dev);
- 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
- 		if (!strcmp(dev_name(&c->dev), mdev_ch))
- 			return c;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -664,7 +664,7 @@ static int ets_qdisc_change(struct Qdisc
+ 
+ 	sch_tree_lock(sch);
+ 
+-	q->nbands = nbands;
++	WRITE_ONCE(q->nbands, nbands);
+ 	for (i = nstrict; i < q->nstrict; i++) {
+ 		if (q->classes[i].qdisc->q.qlen) {
+ 			list_add_tail(&q->classes[i].alist, &q->active);
+@@ -676,11 +676,11 @@ static int ets_qdisc_change(struct Qdisc
+ 			list_del_init(&q->classes[i].alist);
+ 		qdisc_purge_queue(q->classes[i].qdisc);
+ 	}
+-	q->nstrict = nstrict;
++	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
+ 
+ 	for (i = 0; i < q->nbands; i++)
+-		q->classes[i].quantum = quanta[i];
++		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
+ 
+ 	for (i = oldbands; i < q->nbands; i++) {
+ 		q->classes[i].qdisc = queues[i];
+@@ -694,7 +694,7 @@ static int ets_qdisc_change(struct Qdisc
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		qdisc_put(q->classes[i].qdisc);
+ 		q->classes[i].qdisc = NULL;
+-		q->classes[i].quantum = 0;
++		WRITE_ONCE(q->classes[i].quantum, 0);
+ 		q->classes[i].deficit = 0;
+ 		memset(&q->classes[i].bstats, 0, sizeof(q->classes[i].bstats));
+ 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
+@@ -751,6 +751,7 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct nlattr *opts;
+ 	struct nlattr *nest;
++	u8 nbands, nstrict;
+ 	int band;
+ 	int prio;
+ 	int err;
+@@ -763,21 +764,22 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	if (!opts)
+ 		goto nla_err;
+ 
+-	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
++	nbands = READ_ONCE(q->nbands);
++	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
+ 		goto nla_err;
+ 
+-	if (q->nstrict &&
+-	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
++	nstrict = READ_ONCE(q->nstrict);
++	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
+ 		goto nla_err;
+ 
+-	if (q->nbands > q->nstrict) {
++	if (nbands > nstrict) {
+ 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
+ 		if (!nest)
+ 			goto nla_err;
+ 
+-		for (band = q->nstrict; band < q->nbands; band++) {
++		for (band = nstrict; band < nbands; band++) {
+ 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
+-					q->classes[band].quantum))
++					READ_ONCE(q->classes[band].quantum)))
+ 				goto nla_err;
+ 		}
+ 
+@@ -789,7 +791,8 @@ static int ets_qdisc_dump(struct Qdisc *
+ 		goto nla_err;
+ 
+ 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
+-		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
++		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
++			       READ_ONCE(q->prio2band[prio])))
+ 			goto nla_err;
+ 	}
+ 
 
 
 
