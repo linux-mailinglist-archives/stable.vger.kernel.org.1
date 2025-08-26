@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BC0B3612D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562A9B3697C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00FE917D6A7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CD6686D77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8989E20DD51;
-	Tue, 26 Aug 2025 13:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36C72AE7F;
+	Tue, 26 Aug 2025 14:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x56XsJJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCcsNutK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B3E1ADFFE;
-	Tue, 26 Aug 2025 13:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B921662E7;
+	Tue, 26 Aug 2025 14:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213412; cv=none; b=S53EqEgU5m4R949jgWDGBgTWd89P3b5b/9JJSsKsmW9BS/d3FG6Zhn5e4asgGUmKDSP74L5bAdz1vrzxNXfFnZ/61Xv7ExAqUPAj5UgNuxsOnR5UZ2x1RS7SRNhpXpDxlIdwtumEEu4NtYZV6XSVkCNtVu+FTaYkEgCfpVyMU94=
+	t=1756217758; cv=none; b=ivXXvemCE1ntro7a6SQHrwfWWzkt9rNC4eRUER1pJ3NBbQ9Y/Vo4ORnz0mjtgtcT+ttUMl8UBmyAQA9Vmj9FJ8bEt6v5zUfktVP459U7vGKQyM7cu6Z30j1PJYk4AQ90yZoMQiuyj4qXWZXibjI4HYlKOKXKi30cDefhJg4lnxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213412; c=relaxed/simple;
-	bh=cz3El37PXu5SkIkgmk8r/dcCEpMBlTlqdAjv/g98BqA=;
+	s=arc-20240116; t=1756217758; c=relaxed/simple;
+	bh=Q8BZyhrTQWgHj5eMlZIqidad/ejmu1rKQ3qiolb7Eec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIobpoj+P+jmqmhSWMsKtwbEYmOZWp1JpOGV3ZoT7pRUUq28mjEgIVCNEgDMbGcfOWLBcU0QHos9nD8RELu2CGPfbRF8QH8tQvJq116MVxjB0Cgsvw6g7vwkEw+zSW0gq2FO8oBogiVoe+6yxLZSR8j64sjb/jaIJ5GYCrEgZjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x56XsJJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6B2C4CEF4;
-	Tue, 26 Aug 2025 13:03:31 +0000 (UTC)
+	 MIME-Version; b=ohiz5pOC+uqcQDjfostw7JB1vEVEFrAXtt8gS2245mYrgbvJ9vzsLfi6LFpntF27AFHtkQ6AXyjtBxrijp0IiP6w02wksySlaNjq7Yue6O2lYyjy7gmf07NKu2UiDOMaVr03+8mJTp6jwzLSCUSiONiMCPY4xA4SzTpRE2G3DPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCcsNutK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D689C4CEF1;
+	Tue, 26 Aug 2025 14:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213412;
-	bh=cz3El37PXu5SkIkgmk8r/dcCEpMBlTlqdAjv/g98BqA=;
+	s=korg; t=1756217758;
+	bh=Q8BZyhrTQWgHj5eMlZIqidad/ejmu1rKQ3qiolb7Eec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x56XsJJmmWgXk0GXDUNQ4tQ7qeUTPUNIIlS7VqpHcbE6Mlfvp+mbAZMAtS2jvjZyZ
-	 r78xbHOe8CWb/HeXSRzyGkERAPGO0r7DM2/S4sALa6JnlViiSqrlt+h7FRNKWjhN4m
-	 pZ/WdweUB98vyOcXqtIXR4ChK8zHzEjwI1/bE+/g=
+	b=gCcsNutKe/xJ5yVeKWmRGd0b4gabIFNc9HcZXDNi38mCOXrN6B3XwNC5D/c0Pg5yZ
+	 mFX+sm2jc6kX+COV0xfDjEZWB96bBCj84s6PLVVPDiLsofRwX1Oxbly1voYUS8VIm5
+	 QstmTnfSqTJvha+aKBL2dA2p43x0WoFZFdhhns+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 297/587] cifs: reset iface weights when we cannot find a candidate
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 236/523] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
 Date: Tue, 26 Aug 2025 13:07:26 +0200
-Message-ID: <20250826111000.482332644@linuxfoundation.org>
+Message-ID: <20250826110930.268163968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
+[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
 
-We now do a weighted selection of server interfaces when allocating
-new channels. The weights are decided based on the speed advertised.
-The fulfilled weight for an interface is a counter that is used to
-track the interface selection. It should be reset back to zero once
-all interfaces fulfilling their weight.
+Clear power.needs_force_resume in pm_runtime_reinit() in case it has
+been set by pm_runtime_force_suspend() invoked from a driver remove
+callback.
 
-In cifs_chan_update_iface, this reset logic was missing. As a result
-when the server interface list changes, the client may not be able
-to find a new candidate for other channels after all interfaces have
-been fulfilled.
-
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/base/power/runtime.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -372,6 +372,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
- 	struct sockaddr_storage ss;
-+	int retry = 0;
- 
- 	spin_lock(&ses->chan_lock);
- 	chan_index = cifs_ses_get_chan_index(ses, server);
-@@ -400,6 +401,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 		return;
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 58d376b1cd68..7e912d2ed427 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1716,6 +1716,11 @@ void pm_runtime_reinit(struct device *dev)
+ 				pm_runtime_put(dev->parent);
+ 		}
  	}
++	/*
++	 * Clear power.needs_force_resume in case it has been set by
++	 * pm_runtime_force_suspend() invoked from a driver remove callback.
++	 */
++	dev->power.needs_force_resume = false;
+ }
  
-+try_again:
- 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
- 				     iface_head);
- 	iface_min_speed = last_iface->speed;
-@@ -437,6 +439,13 @@ cifs_chan_update_iface(struct cifs_ses *
- 	}
- 
- 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
-+		list_for_each_entry(iface, &ses->iface_list, iface_head)
-+			iface->weight_fulfilled = 0;
-+
-+		/* see if it can be satisfied in second attempt */
-+		if (!retry++)
-+			goto try_again;
-+
- 		iface = NULL;
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
+ /**
+-- 
+2.39.5
+
 
 
 
