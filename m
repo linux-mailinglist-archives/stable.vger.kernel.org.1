@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF06B35C7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D31B36B20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2EBD3A8CE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67BA91C24F66
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3C4322C80;
-	Tue, 26 Aug 2025 11:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C123350D5D;
+	Tue, 26 Aug 2025 14:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziAFDUSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am4Sc5mR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20238284B5B;
-	Tue, 26 Aug 2025 11:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A75E306D3F;
+	Tue, 26 Aug 2025 14:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207967; cv=none; b=NEIHTWkhGtl6a6SdnIiaf3uX2lF0mINEuLJa48Mtc1FV7gLPuBU4a4w7TRoowzQBvo1QEMqoD5fTlHz3VZGMULAO6ihv71J1HJILGfWWuPw/jimaW8m4LbYqYXBuOtnt1uAWDBnwJWO42xiAyvy9C08yw+aHV1Q5ssn/KJcpyko=
+	t=1756218196; cv=none; b=bBX4NqXkqygItdZKURmO61/bewa7uttMI6TiOKhOihnKGe/F+dAj+m4YN18vLa3Q3AeUTORPnxcTtleRfRUtr8S7dvSb+Xw6Y9mLl2nfrGhFuQAacgsFZH24Kjb4RN/R1GL8fcDRuVG/XeRnfkruS+9jA7XWZp8I4lVylouhaBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207967; c=relaxed/simple;
-	bh=eMoDdcx8K1J4qftOqdXoEgIoXaS0veK7DX3Mqyu/7Fw=;
+	s=arc-20240116; t=1756218196; c=relaxed/simple;
+	bh=R/pweSUh+99glOD47I5Y1pP55Y8dXmkAENo2uKTjeqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHHI6g8ompLDSX9Ew84egnIgxp6aUalST6Uk4HXTLYID0pIIJy9FgsV1Ue062cFiq7pWspRuOdvNr0y6qtDtsD8u/pCvikqt7OC1Lvbc2X4ge2ASqo0rtjRrwGLcn9HbkqARaupQ3ALqPNo9emODh3V5rlJQB4MerT5bv3Ac8ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziAFDUSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD39C4CEF1;
-	Tue, 26 Aug 2025 11:32:46 +0000 (UTC)
+	 MIME-Version; b=HJIvk6iidUWPfJ5xi4mb+blTO2JVoX4y6JmbaVWonieNAHWOjQkWWsH3iKk/PtNY+gJxt2dGCEuPuj7A32GQAFri84QbNAYeThuciRokFsyBA42l8YlbI8cQ0q0Tx5egvcns8ge9ZsLXDixl32nHg2l2/O7PsEE1dgb2B35SLzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am4Sc5mR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C9C4CEF1;
+	Tue, 26 Aug 2025 14:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207967;
-	bh=eMoDdcx8K1J4qftOqdXoEgIoXaS0veK7DX3Mqyu/7Fw=;
+	s=korg; t=1756218196;
+	bh=R/pweSUh+99glOD47I5Y1pP55Y8dXmkAENo2uKTjeqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziAFDUSrPvPTXT3bAp6D+AiDlCWBRS9cTiecfhnWYHTuNHtF3DFj4DudskIj7btW3
-	 pRBvrHKHPyV/GKxO+JJxTuK9A+rlcemhzlY7rmyvKzb/d4wubUhDpflRZ5fNtfJkB6
-	 0d61UKFOujICaRx9I5NAg7hl2A3jFZjcvp3rLQVA=
+	b=Am4Sc5mR4og9IckbmZj5wK25nX6JtXeCiigErQ1PqUD3OWnFThHZVdShV+79TmtQu
+	 h2hST8OxZgRaHxgegkv+mhnkHGZNLvz/2h+lnBTyccES7df3PkRmugxKCA1wZfKRHn
+	 Dq54eCSACGGIO56/XRxYU5kOlX7hd48B9pLHO+IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 355/457] rust: drm: dont pass the address of drm::Device to drm_dev_put()
+Subject: [PATCH 5.10 429/523] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
 Date: Tue, 26 Aug 2025 13:10:39 +0200
-Message-ID: <20250826110946.091541320@linuxfoundation.org>
+Message-ID: <20250826110935.036748900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-[ Upstream commit 360077278ba62e81310080f075a1a3028e778ef9 ]
+[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
 
-In drm_dev_put() call in AlwaysRefCounted::dec_ref() we rely on struct
-drm_device to be the first field in drm::Device, whereas everywhere
-else we correctly obtain the address of the actual struct drm_device.
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
 
-Analogous to the from_drm_device() helper, provide the
-into_drm_device() helper in order to address this.
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
 
-Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250731154919.4132-5-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Applied retry logic directly in scarlett2_usb() instead of scarlett2_usb_tx() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/drm/device.rs | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index cb6bbd024a1e..3832779f439f 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -120,9 +120,13 @@ impl<T: drm::Driver> Device<T> {
-         // - `raw_data` is a valid pointer to uninitialized memory.
-         // - `raw_data` will not move until it is dropped.
-         unsafe { data.__pinned_init(raw_data) }.inspect_err(|_| {
--            // SAFETY: `__drm_dev_alloc()` was successful, hence `raw_drm` must be valid and the
-+            // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
-+            // successful.
-+            let drm_dev = unsafe { Self::into_drm_device(raw_drm) };
-+
-+            // SAFETY: `__drm_dev_alloc()` was successful, hence `drm_dev` must be valid and the
-             // refcount must be non-zero.
--            unsafe { bindings::drm_dev_put(ptr::addr_of_mut!((*raw_drm.as_ptr()).dev).cast()) };
-+            unsafe { bindings::drm_dev_put(drm_dev) };
-         })?;
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -95,6 +95,7 @@
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+ #include <linux/moduleparam.h>
++#include <linux/delay.h>
  
-         // SAFETY: The reference count is one, and now we take ownership of that reference as a
-@@ -145,6 +149,14 @@ impl<T: drm::Driver> Device<T> {
-         unsafe { crate::container_of!(ptr, Self, dev) }.cast_mut()
-     }
+ #include <sound/control.h>
+ #include <sound/tlv.h>
+@@ -591,6 +592,8 @@ static int scarlett2_usb(
+ 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
+ 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
+ 	struct scarlett2_usb_packet *req = NULL, *resp = NULL;
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err = 0;
  
-+    /// # Safety
-+    ///
-+    /// `ptr` must be a valid pointer to `Self`.
-+    unsafe fn into_drm_device(ptr: NonNull<Self>) -> *mut bindings::drm_device {
-+        // SAFETY: By the safety requirements of this function, `ptr` is a valid pointer to `Self`.
-+        unsafe { &raw mut (*ptr.as_ptr()).dev }.cast()
-+    }
-+
-     /// Not intended to be called externally, except via declare_drm_ioctls!()
-     ///
-     /// # Safety
-@@ -194,8 +206,11 @@ unsafe impl<T: drm::Driver> AlwaysRefCounted for Device<T> {
-     }
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -614,6 +617,7 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
  
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: `obj` is a valid pointer to `Self`.
-+        let drm_dev = unsafe { Self::into_drm_device(obj) };
-+
-         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
--        unsafe { bindings::drm_dev_put(obj.cast().as_ptr()) };
-+        unsafe { bindings::drm_dev_put(drm_dev) };
-     }
- }
++retry:
+ 	err = snd_usb_ctl_msg(mixer->chip->dev,
+ 			usb_sndctrlpipe(mixer->chip->dev, 0),
+ 			SCARLETT2_USB_VENDOR_SPECIFIC_CMD_REQ,
+@@ -624,6 +628,10 @@ static int scarlett2_usb(
+ 			req_buf_size);
  
--- 
-2.50.1
-
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"Scarlett Gen 2 USB request result cmd %x was %d\n",
 
 
 
