@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635CFB36C32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B03AB3678A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDA361C46502
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323FD1BC6F59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCC635CED0;
-	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30742353373;
+	Tue, 26 Aug 2025 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrgxAMue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz5DToBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F635A2B2;
-	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECB434DCC3;
+	Tue, 26 Aug 2025 13:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219086; cv=none; b=MT0Ot5sZnoN5ifjLVQxu4dqyewOUaMRPqI4Dptm43EOdjBBVOM1YtlCM+sf5NtqfsxbZZTiLhSc06zkkWYpiYr02RkmK44rOB4fq9j7SLq0FDnnA3Eied6yUPOQffFOkTmyqjJHyBEdfI98y4KJHVtHX36ZSrkQYIM1UqJwRLDQ=
+	t=1756216625; cv=none; b=fUBU6B3QSvu5CSLTOs5qA16TpPcBVFYfoGrYVEgLndm44gEIuvY1+r/t7EMBXTlgz0EvXkfXzlmRFUDrmB+fG17iX/hSJrHUKm1ojuspii5EVqVmy1zpBJE8Cubc+OecIO8rdcPv6g+aqimjmRXP1XusYj4agfsPP9W2T7ELR3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219086; c=relaxed/simple;
-	bh=Ub+W8vgQctU/F9Tfi1eeIEJR2BwF/MtEFOZvVIO1qwc=;
+	s=arc-20240116; t=1756216625; c=relaxed/simple;
+	bh=2mRogVjEvW7YIZP4hGukKUqyAUTDpxDispERX8nLckU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7u7XK7F5JkTQB/J5Mtgv0Q4jr4zq6A1TYATy26oomcyuvNyHPpiEyEa/nzwN/QndxsemcMJxbll7m2Q1t9sue6M2uU4fgdT1VPoRNlbtcMBqTNV2Quwhe0ixiiUUWa5tvoAJQmgGQdXCAZ/28i1vXqNd064wbqdGOHmw2jnjdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrgxAMue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1E4C113CF;
-	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
+	 MIME-Version; b=XgGEZY0LrditNxVQneH7yNduo+ZmXjmBJlF9zDKcn/eQGGtXC01JVfkyMWDaiEYelj2Q8Bt57PByXWFplwcY5oLehY/bXG8oky9gJgudy0dnSntm7iwlAoE57aPBMXHemMqK0wzGb1ZrxgjPfTOXPp01n5kJ9t9BMSUecng0ep0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz5DToBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA9AC113CF;
+	Tue, 26 Aug 2025 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219086;
-	bh=Ub+W8vgQctU/F9Tfi1eeIEJR2BwF/MtEFOZvVIO1qwc=;
+	s=korg; t=1756216624;
+	bh=2mRogVjEvW7YIZP4hGukKUqyAUTDpxDispERX8nLckU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrgxAMue30J/tVMR2WbjhxWpNrF0/jjsWr9QSvI0iuejbMvYXTihkefmgyZV10Abc
-	 xsOTJzIVzvWXblIgUXU6nk1p1OcQrI1n2lHbqrwsm0FeOOvIoG9ykzl/WphOQWio0/
-	 YZr/0KLAz2E1Klajt95bASYUjR1KSTOcu8vHu9sc=
+	b=Wz5DToBkBgbQ5GTlOFbNfy7eyx0tPtlVsbbzc/1nOurJnc3ADxhR4kr1FQZwt51v3
+	 2puKyFGX0xgrn8dEuKYCSMpXDuELEDOA+VvhEW6f/V0vcP/9JOkfot77QUpzb3S1ti
+	 xpLuNS1uTN8NXyCcyQKUby/FbaP0lePHl6992XfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheick Traore <cheick.traore@foss.st.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 246/403] pinctrl: stm32: Manage irq affinity settings
-Date: Tue, 26 Aug 2025 13:09:32 +0200
-Message-ID: <20250826110913.621034668@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.15 482/644] PCI: endpoint: Fix configfs group list head handling
+Date: Tue, 26 Aug 2025 13:09:33 +0200
+Message-ID: <20250826110958.429689727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
+commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
 
-Trying to set the affinity of the interrupts associated to stm32
-pinctrl results in a write error.
+Doing a list_del() on the epf_group field of struct pci_epf_driver in
+pci_epf_remove_cfs() is not correct as this field is a list head, not
+a list entry. This list_del() call triggers a KASAN warning when an
+endpoint function driver which has a configfs attribute group is torn
+down:
 
-Fill struct irq_chip::irq_set_affinity to use the default helper
-function.
+==================================================================
+BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
+Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
 
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
+Hardware name: Radxa ROCK 5B (DT)
+Call trace:
+show_stack+0x2c/0x84 (C)
+dump_stack_lvl+0x70/0x98
+print_report+0x17c/0x538
+kasan_report+0xb8/0x190
+__asan_report_store8_noabort+0x20/0x2c
+pci_epf_remove_cfs+0x17c/0x198
+pci_epf_unregister_driver+0x18/0x30
+nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
+__arm64_sys_delete_module+0x264/0x424
+invoke_syscall+0x70/0x260
+el0_svc_common.constprop.0+0xac/0x230
+do_el0_svc+0x40/0x58
+el0_svc+0x48/0xdc
+el0t_64_sync_handler+0x10c/0x138
+el0t_64_sync+0x198/0x19c
+...
+
+Remove this incorrect list_del() call from pci_epf_remove_cfs().
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/endpoint/pci-epf-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 10595b43360b..2a9c2d94eb55 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -340,6 +340,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
-+	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
- };
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -343,7 +343,6 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
+-	list_del(&driver->epf_group);
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
- static int stm32_gpio_domain_translate(struct irq_domain *d,
--- 
-2.39.5
-
 
 
 
