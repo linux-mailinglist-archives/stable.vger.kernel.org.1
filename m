@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2B2B35E14
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B173B35BD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 615B9462C58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56DD81884064
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFB521D3C0;
-	Tue, 26 Aug 2025 11:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBDE2BEC2B;
+	Tue, 26 Aug 2025 11:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO1O8oKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+aCboWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5901F560B;
-	Tue, 26 Aug 2025 11:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC473239573;
+	Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208307; cv=none; b=GaxL1jmSRrDpJoMCz3KMsiOUTtEgwI4qF6n0OURvSAhluzz6TDqmU38mNRtSWpmilcis3iIbJoIEPai7NmKX8FuMrUzPjnc7e6BZDyq2evpcpM3rtOWZjS3+4EEI+AibuApkEKVjCEqr0uLhE0iounpYfOsKrri0PBnLNK2Hu1c=
+	t=1756207463; cv=none; b=bhIadOvY2IvEf3ab7RYKnt6zrpWoy40sdvxM52Tav1F++M+mgdtnnFY6v4ZIhJE9xZoxz+3ftAHNX4F05pPXfOz7sTRC5OqYkScwRMujRJWmjetotM+JWnmxOtijmQTJHZC7+9div31EkGhvY2CHaGpqvtROdlnRKRfuBTm8uKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208307; c=relaxed/simple;
-	bh=dS7UhcuMlzen88NMEKgNHQtzuVkx4lwLNQdbkYSI9RA=;
+	s=arc-20240116; t=1756207463; c=relaxed/simple;
+	bh=F/6V6O/XPkSVCskivI3grjoI4I890u3Z7txUp+Ov4FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpCylTeYf6Usn3pqPN+LotpUXxJUGtHOqcmskbsPCxI1QHxQtd6jC8vYdDvZBaVi6Yl9+zKDdMsS6ONYGauyJAQ6cK9DQ9roV6tmA8WEav4uPd6Mmz2FtiQZq92MmwHETav/PlfGl1xuDKgmkbFuQDLW8/OUgKDgKwmEgQtzynE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO1O8oKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F79BC4CEF1;
-	Tue, 26 Aug 2025 11:38:26 +0000 (UTC)
+	 MIME-Version; b=KPflrd9YTvnG+oEzKxPqcQ4GugJPW1LbLg+S/q5H+wXrMJqV15LWAnsa+eFqXv0dILasYTT+u+m+0977YeR9LU3j3sqZMckHgwO9/yHDD71LigmK7cEp+xF+w82pMjQRQiqc3XnCY3bgwWmhygiqVew0iVAX6ueFqp68sO4tu5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+aCboWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF4EC4CEF1;
+	Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208307;
-	bh=dS7UhcuMlzen88NMEKgNHQtzuVkx4lwLNQdbkYSI9RA=;
+	s=korg; t=1756207463;
+	bh=F/6V6O/XPkSVCskivI3grjoI4I890u3Z7txUp+Ov4FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO1O8oKLbx1T2oDp6upO2/+IUDLUOV+BRbokX5l5c50UvBPZq/U9nLGvNT44N1pAc
-	 MCCbA7Bk/O88cRAePrkY6QWgTu6YXZIOnNxApFITJCWMWYm6brycRBBGCGSgXHhu9d
-	 6QIL6uVDiDMKOrMo8YzQ2wIu23YTrC5Leb4Fh5Mo=
+	b=L+aCboWgCbqavpaC5pRniWPTG8KshoNOprE5sEGCpWhPv6vevqAqA0eyVcVaYvzH3
+	 02++Oj42yta1qtux6qLwQ2MBLvrluUUZqIrnCum5x0nTamJTFzSNEoqBdBWcHnyH4F
+	 Vemk4Ui+YmYpe7jlsY0/gYSnPNV0G/rotZ7aJ1jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 061/322] wifi: ath12k: fix dest ring-buffer corruption when ring is full
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 192/457] drm/amd/display: Revert "drm/amd/display: Fix AMDGPU_MAX_BL_LEVEL value"
 Date: Tue, 26 Aug 2025 13:07:56 +0200
-Message-ID: <20250826110917.048710703@linuxfoundation.org>
+Message-ID: <20250826110942.113134487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ed32169be1ccb9b1a295275ba7746dc6bf103e80 upstream.
+commit 8e6a18cbf3ee2c1e3d0afd8d3debd0ba8738ad0c upstream.
 
-Add the missing memory barriers to make sure that destination ring
-descriptors are read before updating the tail pointer (and passing
-ownership to the device) to avoid memory corruption on weakly ordered
-architectures like aarch64 when the ring is full.
+This reverts commit 66abb996999de0d440a02583a6e70c2c24deab45.
+This broke custom brightness curves but it wasn't obvious because
+of other related changes. Custom brightness curves are always
+from a 0-255 input signal. The correct fix was to fix the default
+value which was done by [1].
 
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org      # 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250617084402.14475-5-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4412
+Link: https://lore.kernel.org/amd-gfx/0f094c4b-d2a3-42cd-824c-dc2858a5618d@kernel.org/T/#m69f875a7e69aa22df3370b3e3a9e69f4a61fdaf2
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6ec8a5cbec751625133461600d0d4950ffd3a214)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -2134,7 +2134,6 @@ void ath12k_hal_srng_access_end(struct a
- {
- 	lockdep_assert_held(&srng->lock);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4733,16 +4733,16 @@ static int get_brightness_range(const st
+ 	return 1;
+ }
  
--	/* TODO: See if we need a write memory barrier here */
- 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
- 		/* For LMAC rings, ring pointer updates are done through FW and
- 		 * hence written to a shared memory location that is read by FW
-@@ -2149,7 +2148,11 @@ void ath12k_hal_srng_access_end(struct a
- 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
--			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			dma_mb();
-+			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
- 		}
- 	} else {
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-@@ -2165,6 +2168,10 @@ void ath12k_hal_srng_access_end(struct a
- 					   srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			mb();
- 			ath12k_hif_write32(ab,
- 					   (unsigned long)srng->u.dst_ring.tp_addr -
- 					   (unsigned long)ab->mem,
+-/* Rescale from [min..max] to [0..MAX_BACKLIGHT_LEVEL] */
++/* Rescale from [min..max] to [0..AMDGPU_MAX_BL_LEVEL] */
+ static inline u32 scale_input_to_fw(int min, int max, u64 input)
+ {
+-	return DIV_ROUND_CLOSEST_ULL(input * MAX_BACKLIGHT_LEVEL, max - min);
++	return DIV_ROUND_CLOSEST_ULL(input * AMDGPU_MAX_BL_LEVEL, max - min);
+ }
+ 
+-/* Rescale from [0..MAX_BACKLIGHT_LEVEL] to [min..max] */
++/* Rescale from [0..AMDGPU_MAX_BL_LEVEL] to [min..max] */
+ static inline u32 scale_fw_to_input(int min, int max, u64 input)
+ {
+-	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), MAX_BACKLIGHT_LEVEL);
++	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), AMDGPU_MAX_BL_LEVEL);
+ }
+ 
+ static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
 
 
 
