@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B36B3686F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE628B365CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEEF0564155
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBC708A67CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F43345741;
-	Tue, 26 Aug 2025 14:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628032F49EA;
+	Tue, 26 Aug 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAnSRQzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/eHgGlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6A02192F2;
-	Tue, 26 Aug 2025 14:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDEC216E1B;
+	Tue, 26 Aug 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217203; cv=none; b=gfWhc0YUXWgbXiqdsqBQKgueOSUBq6DUhg5QU9NKaKW2LNBB/WR63WQrLiUkErX9eUR+Nmy5HbaEYG0cLra8qnIG0yvCOZAR3u5Qqrxfx8/+T4ky4goYaaty/lpMYVMaWoOd2RhX3SviTSrSuB+ZDrgJrDy/+kmOnH55ypyGwyg=
+	t=1756215805; cv=none; b=OTOeVa+0hYKaT1+zrGiaig5ryCsMVHlz0GlQDbuago/oQ34xkoCH8YpAzWmao6YJOr5Tzj6Ofd1AVCulNTzgzeyBYHhFThLdUy3+lHibDf5U4MCH0bC7AFBVaHfI8jMOBAg1iYaFwN3hjwU0hx4ZlLY1ylai7zvMTgJA9sGVnMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217203; c=relaxed/simple;
-	bh=rBGhkHQxER1aoksRykyr1tLPa86nGemMV9vEwewxWH4=;
+	s=arc-20240116; t=1756215805; c=relaxed/simple;
+	bh=M3y1KKPfnxw06+kLUMB8wwAg6Jp1g/PZpF2HxoQfygc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmDbi5l7exl7o5Gy2B/n6kYxeQT72DEe6y6njX0BCc7O05jm7/ZvyHFLV5LF3TUwjB+/0Ugnv+t/pud7CSARygwK200IQW6dGD9K4mbo0NrwGummTyHgGCDawTJlHKw2bxR6sW2V7+gn8t1NIEb5vaKOeaaIyTySVyz1twQV7fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAnSRQzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0E1C4CEF1;
-	Tue, 26 Aug 2025 14:06:42 +0000 (UTC)
+	 MIME-Version; b=ntdqyAZUpCY8IOulW4ErnnLohRZdkQW55bWkt1fTOiM4dE3NfWewWfyzheJYX2mRf9gH9TzNZsmHSnpPjKaSYOt8UNAKx6A6cHVZXZkVMHnMUCo5VMHXrc8qJXYhwdgA8NlJm/2/wHDfZ5k2TrXWpsqvuGS2VQfhwDZOuj/WoCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/eHgGlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D7CC4CEF1;
+	Tue, 26 Aug 2025 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217202;
-	bh=rBGhkHQxER1aoksRykyr1tLPa86nGemMV9vEwewxWH4=;
+	s=korg; t=1756215804;
+	bh=M3y1KKPfnxw06+kLUMB8wwAg6Jp1g/PZpF2HxoQfygc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAnSRQzFbGlnRCWqo+nvdCGLburpiHTcSy/+Mt+1VhvjHkAQlq4KgXd5x7GocOW3B
-	 nAr9PzRxkFxA7iu6aOAGVkfGdLa9pSviv8QUcdqW6Ysm7QrobmkrCFgn1Sr12DISH4
-	 0q0vygZtQzeONIVPWFmo1RKUKQNZhZNYCLVNFzUY=
+	b=n/eHgGlP2zO8LveHX/CDvRgpCA3ILdXuJOeAtiBK+uhGhmP6sRiVYMv2Iqi0EKL9o
+	 vi9J53YjsYXO9nhdQ98NUknWB5nQdWHArDrsh9gCHDQ/O+4fVE3wm7HCgeElmxFEs+
+	 bDQ9oII3FlfDX8XyuImn3U0aG6Vulkzbgt6eXLfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/523] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
+Subject: [PATCH 5.15 173/644] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
 Date: Tue, 26 Aug 2025 13:04:24 +0200
-Message-ID: <20250826110925.927190020@linuxfoundation.org>
+Message-ID: <20250826110950.759768815@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
+[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
 
-Disable stream for platform xHC controller with broken stream.
+According the function documentation of epf_ntb_init_epc_bar(), the
+function should return an error code on error. However, it returns -1 when
+no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
-[ removed xhci_get_usb3_hcd() call ]
+Return -ENOENT instead.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+[mani: changed err code to -ENOENT]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-plat.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -361,7 +361,8 @@ static int xhci_plat_probe(struct platfo
- 	if (ret)
- 		goto disable_usb_phy;
- 
--	if (HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		xhci->shared_hcd->can_do_streams = 1;
- 
- 	ret = usb_add_hcd(xhci->shared_hcd, irq, IRQF_SHARED);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index fb926b300c95..5cc0d2014ed8 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -686,7 +686,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
+ 		barno = pci_epc_get_next_free_bar(epc_features, barno);
+ 		if (barno < 0) {
+ 			dev_err(dev, "Fail to get NTB function BAR\n");
+-			return barno;
++			return -ENOENT;
+ 		}
+ 		ntb->epf_ntb_bar[bar] = barno;
+ 	}
+-- 
+2.39.5
+
 
 
 
