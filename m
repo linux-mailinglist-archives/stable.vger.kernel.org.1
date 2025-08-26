@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E46B36343
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242DDB36AEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC60C8A820D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABE51BC850F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E7934A307;
-	Tue, 26 Aug 2025 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C045134AAFE;
+	Tue, 26 Aug 2025 14:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5lZKg/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5cL3CPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB226A0B3;
-	Tue, 26 Aug 2025 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF5735334E;
+	Tue, 26 Aug 2025 14:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214366; cv=none; b=b4OJ4zLOkoI4h1d1cNr+m1z5jTzOGJC5dVoy5UioMUnwDFCUTIAqoAhgpaDV756yc/Hy+ETJOOc1FdVgtugvM1DHZkweFKAZiHjXptHb6vei9ejMczCvhVDZNoCSMgVGfwUc40mrsYMFk8IGC9qqEyzrTBFbrLGBUAuygf8smLs=
+	t=1756218536; cv=none; b=qXBKIYVmHdejNS8cKIaFVWn4fhEX0cceo7HPiZNoPYsaFm/ANWERanJlrjfFM+uJ+Htgo79PvibWlK73aWUF6BUCF3RGqeoFgI4zenW6w14Y5l87p8DaNjOODqR7hYfGis9ZopRAx1INAWFx8zrAmCmIOrqrbIKShTgccMgs1dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214366; c=relaxed/simple;
-	bh=yDfi4fYlmwIDrD60c3uOxlo2DH+VuSgl9/LFfMDMivI=;
+	s=arc-20240116; t=1756218536; c=relaxed/simple;
+	bh=Kbg+FpA2YNzlnucto3Eem1+b2gcC60BF64+RAtsOR8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lypUznBY+7/N3sXfyCQCHv2abKFE1ka3GFmFUIXVFSGnn28NdeFPlzBDYzY/ZjqC913UA3wTLxVOsLNfL3sQZaGi8R1CfQC3SNMCjCtJeq5n7XUTahg8eo+6NKHm9pKOIvu+SnEzZeeU2bA7g1aXwcyRgLTDY6fIs/Q094Jdr94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5lZKg/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E90EC4CEF1;
-	Tue, 26 Aug 2025 13:19:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UZjMsEWTSROqx4NaEBYu7duhqZm6s9u9WlkCvGJLizod8ofh6ue+zanJvi/mB4UWDoO0h4kFW10GtnJcG6AdTBH8H0X3N6IGh6aTKPZCI8BS63pf3jlKPUT7fd+LuL6glR5B7hjbCya067UqNDKyrAtmmwqqH1dB2QmllLHtySw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5cL3CPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8228C4CEF1;
+	Tue, 26 Aug 2025 14:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214366;
-	bh=yDfi4fYlmwIDrD60c3uOxlo2DH+VuSgl9/LFfMDMivI=;
+	s=korg; t=1756218536;
+	bh=Kbg+FpA2YNzlnucto3Eem1+b2gcC60BF64+RAtsOR8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5lZKg/98dh/u5VwqAcIE411eHf5AYYIoP7wklOjwT/m3iKPXXv3yFw8MmoBEbMs/
-	 tj3AnKp9rOLZUQ94JcOSuOiriu8zO62p9Xk301Nsx3/iOdCX90JGDgtK+yguWqLrtC
-	 M0q4JvRliKbxHns5e86DFAMfS/dSNNR0lKR9qSuc=
+	b=G5cL3CPj7yEacNxdfQyCglE9vutJzr7oPcOmcjEypkixoNZgfZBmP8a4O+HWcn4w8
+	 xdR/D49ePdUhIoQ8rsbZfpYtKBa7/9VOLeIszTTi8JjOuANGkJViOaoYqXpwOEBOvq
+	 jOJ01Nsj6zAG+cbvHdUBux6PTRhmEKFUjL7mtmOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/482] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
+Subject: [PATCH 5.4 037/403] Bluetooth: L2CAP: Fix attempting to adjust outgoing MTU
 Date: Tue, 26 Aug 2025 13:06:03 +0200
-Message-ID: <20250826110933.546330983@linuxfoundation.org>
+Message-ID: <20250826110906.843770792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
+[ Upstream commit d24e4a7fedae121d33fb32ad785b87046527eedb ]
 
-Fix all macro related issues identified by checkpatch.pl:
+Configuration request only configure the incoming direction of the peer
+initiating the request, so using the MTU is the other direction shall
+not be used, that said the spec allows the peer responding to adjust:
 
-  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
+Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
+ 'Each configuration parameter value (if any is present) in an
+ L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
+ configuration parameter value that has been sent (or, in case of
+ default values, implied) in the corresponding
+ L2CAP_CONFIGURATION_REQ packet.'
+
+That said adjusting the MTU in the response shall be limited to ERTM
+channels only as for older modes the remote stack may not be able to
+detect the adjustment causing it to silently drop packets.
+
+Link: https://github.com/bluez/bluez/issues/1422
+Link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/149
+Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4793
+Fixes: 042bb9603c44 ("Bluetooth: L2CAP: Fix L2CAP MTU negotiation")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/bluetooth/l2cap_core.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index be0b3c8ac705..f2cce15be4e2 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2150,15 +2150,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_CLK_FREQMUL_SHIFT		18
- #define SND_RME_CLK_FREQMUL_MASK		0x7
- #define SND_RME_CLK_SYSTEM(x) \
--	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
-+	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
- #define SND_RME_CLK_AES(x) \
--	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SPDIF(x) \
--	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SYNC(x) \
--	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
-+	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
- #define SND_RME_CLK_FREQMUL(x) \
--	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
-+	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
- #define SND_RME_CLK_AES_LOCK			0x1
- #define SND_RME_CLK_AES_SYNC			0x4
- #define SND_RME_CLK_SPDIF_LOCK			0x2
-@@ -2167,9 +2167,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_SPDIF_FORMAT_SHIFT		5
- #define SND_RME_BINARY_MASK			0x1
- #define SND_RME_SPDIF_IF(x) \
--	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
- #define SND_RME_SPDIF_FORMAT(x) \
--	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 4939152f6adc4..1272ad73e4011 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3484,12 +3484,28 @@ static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data
+ 		/* Configure output options and let the other side know
+ 		 * which ones we don't like. */
  
- static const u32 snd_rme_rate_table[] = {
- 	32000, 44100, 48000, 50000,
+-		/* If MTU is not provided in configure request, use the most recently
+-		 * explicitly or implicitly accepted value for the other direction,
+-		 * or the default value.
++		/* If MTU is not provided in configure request, try adjusting it
++		 * to the current output MTU if it has been set
++		 *
++		 * Bluetooth Core 6.1, Vol 3, Part A, Section 4.5
++		 *
++		 * Each configuration parameter value (if any is present) in an
++		 * L2CAP_CONFIGURATION_RSP packet reflects an ‘adjustment’ to a
++		 * configuration parameter value that has been sent (or, in case
++		 * of default values, implied) in the corresponding
++		 * L2CAP_CONFIGURATION_REQ packet.
+ 		 */
+-		if (mtu == 0)
+-			mtu = chan->imtu ? chan->imtu : L2CAP_DEFAULT_MTU;
++		if (!mtu) {
++			/* Only adjust for ERTM channels as for older modes the
++			 * remote stack may not be able to detect that the
++			 * adjustment causing it to silently drop packets.
++			 */
++			if (chan->mode == L2CAP_MODE_ERTM &&
++			    chan->omtu && chan->omtu != L2CAP_DEFAULT_MTU)
++				mtu = chan->omtu;
++			else
++				mtu = L2CAP_DEFAULT_MTU;
++		}
+ 
+ 		if (mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			result = L2CAP_CONF_UNACCEPT;
 -- 
 2.39.5
 
