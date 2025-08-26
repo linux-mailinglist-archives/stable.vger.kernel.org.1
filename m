@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DC1B35E62
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3A7B36AE9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 254E01BC1396
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FBC05658A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38C284B5B;
-	Tue, 26 Aug 2025 11:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE539352FEB;
+	Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yas+L+LD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DiKxQZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C07200112;
-	Tue, 26 Aug 2025 11:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2F12E88B7;
+	Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208885; cv=none; b=riGRKovopUr+/ETFigaGUpio/yEsCWWkD2sPoIYZNV2+34pVtG9WsaaZ4hOgPKq2xivO6H2FAf6cMD/z2qyF+fGkUcH5+2Wns/hrOpB4zpfHPlh7gbUB98CWcwE9TMQU0Bq42HP+u8NfRWKEUTRl8qJ9UIA9mLj1l7POVBot/Hc=
+	t=1756218346; cv=none; b=ipeFfJvuQ4wpWb0secKoDz1ZhBqwzuw2VnWmhK4BoRqRFTIrpwbh6f0+4RCAMdmdjhuLyluZZdrKKEpZ11ccDK1ztofWyi6OufTze6BajlpRdIHRG6tT0HUAWA1C+JhLrSBSUmBgPFaIqHsjYAwTLRVC6tPp2jQL1aTRvRk3Nl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208885; c=relaxed/simple;
-	bh=OI4Q8ElkOcT15UjbFAf4sk6bgPWfzwWT7PwqZrwXpds=;
+	s=arc-20240116; t=1756218346; c=relaxed/simple;
+	bh=IyoCQXwMvhc4hdhjaJS3ebmhXqyfYTCQ3KkuUospKpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu3ykRTMCZE+QhXBt7lRoUnZn682WS7+0aKd3waEEWY0x0oNFJuM0AdAzIydMcPTXSdQ3TvVuu/L/ACMbxd1+qEUlpLcQ4jLt6PzdSEXDXQY+Le+0RNZZiM7AXBswcEs4i9DJ3lszmm9TsQCOv6JKWD2Ej7OlsT58XC7acN/dgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yas+L+LD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C72EC4CEF1;
-	Tue, 26 Aug 2025 11:48:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ouzEhfvj50rY5L2J1U+MiZ1dvfAf4mCm+sxdXb7UU1LxqSlQjYSQX8xmCq7weUaTi4xyKspTbdpnsqNNX+YjK68P9C5yrXgmLk3KqhuYWMXM+j6y8x9dBJ5A8RlHOONWthG2k3rI0vwN2Fs2Bs1ka2tBpTWWs5LO8FC32b9GizI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DiKxQZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3008C4CEF1;
+	Tue, 26 Aug 2025 14:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208884;
-	bh=OI4Q8ElkOcT15UjbFAf4sk6bgPWfzwWT7PwqZrwXpds=;
+	s=korg; t=1756218346;
+	bh=IyoCQXwMvhc4hdhjaJS3ebmhXqyfYTCQ3KkuUospKpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yas+L+LDtu8ng0EzMGuqb/9+cZh5zqk/7S4dpzBi9wcrAw0t55PmZjWiegtp1WZ5+
-	 YU6IW9GQ01qh6XKS8IkBCU2PyxJlhpPKNIOfhJjO9jrQo30XV1rKrveJIvuez5zdCa
-	 GhTn19c5IReG4YqIdHGvPA2YjFFJm0FNT6CJwHUE=
+	b=0DiKxQZn06mBOB45Y0bYdm5Sm7/hnmcGl0q7MgRVT8hilgA0CbxV+nE0IqPA5pWhd
+	 wqciciShvc24gvnVhq7QuAW9QhWkZaDDucFhLnXzuLXjCCCDwJ7uOxBZH1dYg9LhvN
+	 TxqfKn5Q+UZ4589RbI8lagInllLkk0cd59WErdfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/322] rust: alloc: fix `rusttest` by providing `Cmalloc::aligned_layout` too
+Subject: [PATCH 5.10 488/523] drm/amd/display: Dont overclock DCE 6 by 15%
 Date: Tue, 26 Aug 2025 13:11:38 +0200
-Message-ID: <20250826110922.908766318@linuxfoundation.org>
+Message-ID: <20250826110936.482958738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0f580d5d3d9d9cd0953695cd32e43aac3a946338 ]
+[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
 
-Commit fde578c86281 ("rust: alloc: replace aligned_size() with
-Kmalloc::aligned_layout()") provides a public `aligned_layout` function
-in `Kamlloc`, but not in `Cmalloc`, and thus uses of it will trigger an
-error in `rusttest`.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-Such a user appeared in the following commit 22ab0641b939 ("rust: drm:
-ensure kmalloc() compatible Layout"):
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-    error[E0599]: no function or associated item named `aligned_layout` found for struct `alloc::allocator_test::Cmalloc` in the current scope
-       --> rust/kernel/drm/device.rs:100:31
-        |
-    100 |         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
-        |                               ^^^^^^^^^^^^^^ function or associated item not found in `Cmalloc`
-        |
-       ::: rust/kernel/alloc/allocator_test.rs:19:1
-        |
-    19  | pub struct Cmalloc;
-        | ------------------ function or associated item `aligned_layout` not found for this struct
-
-Thus add an equivalent one for `Cmalloc`.
-
-Fixes: fde578c86281 ("rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20250816204215.2719559-1-ojeda@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Cc: stable@vger.kernel.org
+[ `MIN` => `min` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/allocator_test.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index c37d4c0c64e9..ec13385489df 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -22,6 +22,17 @@ pub type Kmalloc = Cmalloc;
- pub type Vmalloc = Kmalloc;
- pub type KVmalloc = Kmalloc;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -112,11 +112,9 @@ static void dce60_update_clocks(struct c
+ {
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
-+impl Cmalloc {
-+    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requested size and alignment of
-+    /// `layout`.
-+    pub fn aligned_layout(layout: Layout) -> Layout {
-+        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
-+        // `layout.align()` which together with the slab guarantees means that `Kmalloc` will return
-+        // a properly aligned object (see comments in `kmalloc()` for more information).
-+        layout.pad_to_align()
-+    }
-+}
-+
- extern "C" {
-     #[link_name = "aligned_alloc"]
-     fn libc_aligned_alloc(align: usize, size: usize) -> *mut crate::ffi::c_void;
--- 
-2.50.1
-
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
 
