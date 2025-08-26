@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-176158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809AAB36BA3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32E0B35E11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE26582D56
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 807ED367F18
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320443431FE;
-	Tue, 26 Aug 2025 14:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5222720330;
+	Tue, 26 Aug 2025 11:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gcyu674"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4C2uxua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D334DCC3;
-	Tue, 26 Aug 2025 14:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE1D29BDBA;
+	Tue, 26 Aug 2025 11:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218931; cv=none; b=Y3Iv3pLUa5EQB51JA+hU8x8iYG7X15fwZwsQN10FS5wV9HPUInpultlEw9aZr24xFgzkUKXFdyUD1II9WcobJJEdayVIVT7uxQiqcJlLQnAJIknseB4dbuhQ65pjdMBY0duA3/x3yHd8bMDBsYzWOhb+I0xOCyX0CtaOBqLCZvA=
+	t=1756208328; cv=none; b=ljANcG4h+SQQsE4WdDhGByX2ELiXNQK2EUPYDimROOyjfodke3v0q2xxWMoGhGFN7QokDS0b5YrIo0jV60HQ/3Xohkf84z7VpcO8efw2VfSnLGkfbFxwxAEe+Z0FbaZtudsrq46dMzWX2rndeda5wj8U3CMvwahvJBX7z7NxyiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218931; c=relaxed/simple;
-	bh=MKR2ae4VlA894Jp6CfeCLuEJHQvSieeHlix0PSSGiPI=;
+	s=arc-20240116; t=1756208328; c=relaxed/simple;
+	bh=X6TFNQrNTKyfA0V1Vqq0B0Rkt3URPoMwG+9UMedB2r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSjnuBNLEh6CDZcoQc51qdrCd9vUTT6Qza8rufeCl3Q0SyTIt48G9RBbL0NBIy9hSAqMw+ZIT46AAyp9uNuheOwLSJkMX/B5PzXJTtY3YLTLF7KDRz6WBMQHl01hZCvgVxhlLeSFOgdAedFzv9TZ398rC41kNgnxX99O+32Qzo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gcyu674; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7723CC4CEF1;
-	Tue, 26 Aug 2025 14:35:30 +0000 (UTC)
+	 MIME-Version; b=n4D3XE3hlp3/uO/MwQkxZ3VebE35oym+0X0HZcjixQYO0+gQ19UBK7TCPWphkrq62nLLGJo+1RBMH9RIssWwGcWcl9G9Un5jitqoC4raq57WdYpc1R8GbXlmqBF0/AU/nX7RiREK2eN+aE+kU2d808yb0Nt8qej314Yq+4LRrvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4C2uxua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC58C4CEF1;
+	Tue, 26 Aug 2025 11:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218930;
-	bh=MKR2ae4VlA894Jp6CfeCLuEJHQvSieeHlix0PSSGiPI=;
+	s=korg; t=1756208327;
+	bh=X6TFNQrNTKyfA0V1Vqq0B0Rkt3URPoMwG+9UMedB2r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gcyu674B0Fv87LT7jMDwj0KqzNXX8ZLLirQPMPlyZXgaVERDxJBnEFJdcD1SKeCV
-	 3MA1d3oWfMcpaqp9Ff7LXJhfebs+dYdOuCkabQVKjgQ7FIJuon1j7s0m4fA3l90yCx
-	 oEoU5CPbNDqhwTCvMtWC1acvVuN+f8FsgSesKF6c=
+	b=F4C2uxuayCgWN+xzSs6eaCknqCclAQ/NNQwKhAG6Q4/gLig/Rmf3CmY7/CDR4KaRd
+	 TyDeZVLFx/4gNsKXITjM20Dx9HB6fiUdgSJDIYCPyyhRAmAdpirp2z+vVe+lj9OQRg
+	 HrH0mXqlDWKK5A+FE431WUJul4KfEpEIvHbQlpMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 5.4 157/403] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
+	Tim Harvey <tharvey@gateworks.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 068/322] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
 Date: Tue, 26 Aug 2025 13:08:03 +0200
-Message-ID: <20250826110911.218818802@linuxfoundation.org>
+Message-ID: <20250826110917.249708272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Tim Harvey <tharvey@gateworks.com>
 
-commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
+commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
 
-UAC3 power domain descriptors need to be verified with its variable
-bLength for avoiding the unexpected OOB accesses by malicious
-firmware, too.
+The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
+integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
+represent millidegrees Celcius.
 
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
+scaling") properly addressed the incorrect scaling in the
+pwm_auto_point_temp_store implementation but erroneously scaled
+the pwm_auto_point_pwm_show (pwm value) instead of the
+pwm_auto_point_temp_show (temp value) resulting in:
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
+ 25500
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
+ 4500
+
+Fix the scaling of these attributes:
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
+ 255
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
+ 45000
+
+Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/validate.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/hwmon/gsc-hwmon.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
- 	return d->bLength >= sizeof(*d) + 4 + 2;
+--- a/drivers/hwmon/gsc-hwmon.c
++++ b/drivers/hwmon/gsc-hwmon.c
+@@ -65,7 +65,7 @@ static ssize_t pwm_auto_point_temp_show(
+ 		return ret;
+ 
+ 	ret = regs[0] | regs[1] << 8;
+-	return sprintf(buf, "%d\n", ret * 10);
++	return sprintf(buf, "%d\n", ret * 100);
  }
  
-+static bool validate_uac3_power_domain_unit(const void *p,
-+					    const struct usb_desc_validator *v)
-+{
-+	const struct uac3_power_domain_descriptor *d = p;
-+
-+	if (d->bLength < sizeof(*d))
-+		return false;
-+	/* baEntities[] + wPDomainDescrStr */
-+	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
-+}
-+
- static bool validate_midi_out_jack(const void *p,
- 				   const struct usb_desc_validator *v)
+ static ssize_t pwm_auto_point_temp_store(struct device *dev,
+@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(s
  {
-@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
- 	      struct uac3_clock_multiplier_descriptor),
- 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
- 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
-+	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
- 	{ } /* terminator */
- };
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
  
+-	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
++	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
+ }
+ 
+ static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
 
 
 
