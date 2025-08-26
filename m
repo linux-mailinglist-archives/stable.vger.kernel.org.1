@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81862B368A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F22B36ADC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFAFE3BEF35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F163464F96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F6F34A325;
-	Tue, 26 Aug 2025 14:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BE5350D7B;
+	Tue, 26 Aug 2025 14:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdGpbdA1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bBp5qfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309E81ADFFE;
-	Tue, 26 Aug 2025 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B5F343D63;
+	Tue, 26 Aug 2025 14:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216980; cv=none; b=iceQ7Iyug6lVm2uEDwQXpkSgNKIGlliMWELbr7Cwp1mrnwC71HXHAawHyak0ZEmEK0asUr+TD+s+xtGDjs+XOdCxRIjjDB44LOV4MZ0Xxr1zuKO0tOie/VktNlFpCTXTveNFfDuJHqaGFeC2VxzHvgQ6OGCZkR+5+NIAf4sgyWI=
+	t=1756218369; cv=none; b=qOMZIcWP4Cna4h+o+gOhMfC7niM4ZCxysZdJgVB6sYHnUXAVgGq3g6nibFAe5vyAKIn1AMCYF3fTJ9y7hFz71a57nkorcNKABEsFY9BfhOf49Zys6NGJ4bJVF6kDuSoJKlI79QoONuhM8q2Fkp8LSlCeUz3aYk1ReR/cgob+5iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216980; c=relaxed/simple;
-	bh=zOEW84rhogKyqnZrtlAVH+n6loJKyMbEq1qTOd8WRs0=;
+	s=arc-20240116; t=1756218369; c=relaxed/simple;
+	bh=nK7wLgqeNYcQU//KwoFO6pVYaQ6yK94qU16JtX+Q7vU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxU7KNoWwphXkj87JwrmJnvPfFef9dIVe4Kv8Z/OtahHzjOsIIFXwJLxYjdrbjjik+JELkY4R5cse9pU1bLsG8FHogy7WAoPGSHWSMVkaTC8uqTQJw+nPZvFM+PPCKAsR1/l+flfte4QGoIAH3XMpt7ZoV+oGtT0AORxBNVw4Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdGpbdA1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F383C4CEF1;
-	Tue, 26 Aug 2025 14:02:59 +0000 (UTC)
+	 MIME-Version; b=pUMjd3z0ObnSxx0xwNjdcQm0PdcMs0ynpjey5ZyFg7lDol8rf81pSb+KkffPURqj9a13IgqvEOyr9z7QloVZGdnio3+8D5j1JpyNclkH2/CeCQ6Nvylvc3L9zZVeSUG9jamfLQkE20Y8ExWU40L9htq27GJnCB3bRIiXZYoMPYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bBp5qfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86847C4CEF1;
+	Tue, 26 Aug 2025 14:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216979;
-	bh=zOEW84rhogKyqnZrtlAVH+n6loJKyMbEq1qTOd8WRs0=;
+	s=korg; t=1756218368;
+	bh=nK7wLgqeNYcQU//KwoFO6pVYaQ6yK94qU16JtX+Q7vU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdGpbdA1cjTK6tpWTRAOns6pVk1H57N09SI7GNmcHDC1peWABuKFVPtvTtfFMubpb
-	 vnLejeCLH7vJmF3CB3bVvQqjE8Xfp5/DOMSQq2CFf8RZmqcrtmHARo+8zb1ifFGp0c
-	 fsyrPq74sc+SVxZtiITcEtFRjGEEeGTvZcyiJ1lY=
+	b=0bBp5qfB9C2a6Na/fiqsy7h5nVKwNfcrczS9GB4BB9BJnpbnQtPg0NZ2/vgTyI2Iz
+	 kqL0IMBaStm21ZCWP0xXiXWV0u7B2T+nAXvijRSnX8GVCQK2SBU1s3D/cDd3pXeG2b
+	 XM6hpfh/B7uKt+Q69+wXQN5xJawSpmLY6fOiPH/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 614/644] iio: imu: inv_icm42600: change invalid data error to -EBUSY
+	Ming Lei <ming.lei@redhat.com>,
+	Mike Snitzer <snitzer@redhat.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 495/523] dm rq: dont queue request to blk-mq during DM suspend
 Date: Tue, 26 Aug 2025 13:11:45 +0200
-Message-ID: <20250826111001.767873813@linuxfoundation.org>
+Message-ID: <20250826110936.652958645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
+commit b4459b11e84092658fa195a2587aff3b9637f0e7 upstream.
 
-Temperature sensor returns the temperature of the mechanical parts
-of the chip. If both accel and gyro are off, the temperature sensor is
-also automatically turned off and returns invalid data.
+DM uses blk-mq's quiesce/unquiesce to stop/start device mapper queue.
 
-In this case, returning -EBUSY error code is better then -EINVAL and
-indicates userspace that it needs to retry reading temperature in
-another context.
+But blk-mq's unquiesce may come from outside events, such as elevator
+switch, updating nr_requests or others, and request may come during
+suspend, so simply ask for blk-mq to requeue it.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Fixes one kernel panic issue when running updating nr_requests and
+dm-mpath suspend/resume stress test.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@redhat.com>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/md/dm-rq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
- 		goto exit;
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -490,6 +490,14 @@ static blk_status_t dm_mq_queue_rq(struc
+ 	struct mapped_device *md = tio->md;
+ 	struct dm_target *ti = md->immutable_target;
  
- 	*temp = (int16_t)be16_to_cpup(raw);
 +	/*
-+	 * Temperature data is invalid if both accel and gyro are off.
-+	 * Return -EBUSY in this case.
++	 * blk-mq's unquiesce may come from outside events, such as
++	 * elevator switch, updating nr_requests or others, and request may
++	 * come during suspend, so simply ask for blk-mq to requeue it.
 +	 */
- 	if (*temp == INV_ICM42600_DATA_INVALID)
--		ret = -EINVAL;
-+		ret = -EBUSY;
- 
- exit:
- 	mutex_unlock(&st->lock);
++	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)))
++		return BLK_STS_RESOURCE;
++
+ 	if (unlikely(!ti)) {
+ 		int srcu_idx;
+ 		struct dm_table *map;
 
 
 
