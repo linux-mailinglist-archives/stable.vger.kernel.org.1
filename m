@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AD6B35E8A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119C7B362BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689BE1BC1572
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33294463547
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D7629D280;
-	Tue, 26 Aug 2025 11:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E759A33CE97;
+	Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs+SEHKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRp2AQen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A6A749C;
-	Tue, 26 Aug 2025 11:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52BB33A015;
+	Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208977; cv=none; b=g+JeBM7B2iFxhuPtKynxTt7KZGEe1dTMhOoyqUUKsJ9nG1IRB4Z2bmZ+km5mFxsVRfg3G3UNdwWUPS655EwyeB5f11yAmNVq6SiN4VyAU5VMxFrc/Xo+EHMFBKRgxNF/VCP8sbJSmmOeBkaAaT/4wCGXJF3hKvIIDl2Ka24d5MI=
+	t=1756214086; cv=none; b=fcNvJ7gyE2NjPgLS2zHPdj+p0eLD7UHh4o/C3De+kMVoQo5hCfFC4e93X0UwJUBuIdkedsrJLTzJ2GuPinebB9APIVM8NjDiV29UPQ8EFGwWqruyGMc4HY8vB1V1Zxk8L8UAVa3m7qdqKDKH9BCsMBwfLb7sPJC1jC/WJHXQYvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208977; c=relaxed/simple;
-	bh=8Iiy1BrCpYCqtj0ovWzIwDVRo3Wp/Ezk3oUTE3P8uNo=;
+	s=arc-20240116; t=1756214086; c=relaxed/simple;
+	bh=A+JlO42FZDFZX2MVQ6Gxq6NUBbIq0gG5iemPLm5Mc80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6o2Jg7DKTXhsnN6L3w80LeFgR5AZw6H8+FTqBhvkOKaFlWl/1kngv7ah0C2dAFmlHlKmJJmr/IsjCLviFmeWGG9nb4K3DD4fo22iKqyxSC39+hUNpfDrBr8Z0JTxXAenPGWCzZuFI+aqPxWzTVe7SrU2fLJ7h5fAZxHFOxpbrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs+SEHKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE65C4CEF1;
-	Tue, 26 Aug 2025 11:49:36 +0000 (UTC)
+	 MIME-Version; b=mtkxJLoqcxtQYhGpM518Hk76C0GC4HyzWKBGhjJKCsLtKndLy/JmlkNqGTXqul3gigkQKVFFyzAOg9VQOVP3X4GLCnI/qgnYplu/QthBT0PFOQA6HqY05SxfrAe7O2AIRk3Br9mF2ep3Jx9hqxi4e1ruuBInDkvzr7JAUzxaxs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRp2AQen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2812BC4CEF1;
+	Tue, 26 Aug 2025 13:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208976;
-	bh=8Iiy1BrCpYCqtj0ovWzIwDVRo3Wp/Ezk3oUTE3P8uNo=;
+	s=korg; t=1756214086;
+	bh=A+JlO42FZDFZX2MVQ6Gxq6NUBbIq0gG5iemPLm5Mc80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs+SEHKSy0t4yWouWmvVW1vjm3vOJ9DhfPd1TG1oeGSKQ3weHZ9Orwc47LRR+d65f
-	 ITbfaAfUi4ZCnNvI16wXTDB8aykNh3xPRkT+KP+JYd4B1vK0jqlh35Eq08UG7rqv3+
-	 L0YXMUkzxwDId+kwAFrW5+5+sLzfE/cVxXuQKPRw=
+	b=SRp2AQenoLyBxvIJdl0B0pKc0iu7+KMG0Q7faU9mh2y8X7CZM/OyknLJ4DxugEHpD
+	 iCJZMlbAfBEdzayykLDKc8aDy3g0YNHe/1teCXYtmtQnGFbtfmzYTl9lvXxTuA8F5Z
+	 ShHwboRp4uMwP5F076Kcd2cLNrEnrBPAhg5ZbsIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/322] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
+Subject: [PATCH 6.6 584/587] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
 Date: Tue, 26 Aug 2025 13:12:13 +0200
-Message-ID: <20250826110923.741200517@linuxfoundation.org>
+Message-ID: <20250826111007.891488937@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
