@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0605EB35FDB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE06B364A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCC27C6FBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20D7B7A9A50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9081F9F73;
-	Tue, 26 Aug 2025 12:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB5227EA8;
+	Tue, 26 Aug 2025 13:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHJC4IZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxWT6Ttd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CD61C860A;
-	Tue, 26 Aug 2025 12:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6C8221290;
+	Tue, 26 Aug 2025 13:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212712; cv=none; b=EIDofYIPy33zWBA4jhmZHK1BtklP64RMQW/AlLUAPlbCQLvZml2OFhWcUjDeUL5x/DbznfYLu11iLviO84gb/kTkC4MxEHN3ELsiA/3bJrQWhnr6dKyeACExI7KVQICpMaffwwZ9mw6ovKABUxRU/VimmsjHVdt9AnxpjbqtE90=
+	t=1756215655; cv=none; b=D08nbOKjd6vbSOOSQj6MSsYZXra095+b/EMZoa3GdTU9i4XqN4yiQEBCtX4tfRHGA2E93eULQlversqdKDwCoTYr/5oZsNSJ8gpIGnMYQr4G55C57pgr9Ml5023flQmKIEkiilQiNoE74NZdp/LBAsFP6VOzV5i1+1VudyKfnLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212712; c=relaxed/simple;
-	bh=Oe2dP++GyojWMjza0giB+rnpW/cXlRRyFGsp9yxpEaE=;
+	s=arc-20240116; t=1756215655; c=relaxed/simple;
+	bh=28DhgTSq6/vnU/1cOwTvRZahJDKwkdMTsP9jnU9uvPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9pVPcMPsidX2BRSewpocrxQIzFcWHzKm5MRDuUOAk3DaMESy6xQ/wIOvPNxKbugYam6/HAQu8/tRL6vtaqQRvbOlcupFE1v4gizZf2BHrF6wpXq6t3QvZDNMTMyxC1Wa5Ixy17n6sJOaedr9XppIHA4jKAwtjunyqGUW3cyuR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHJC4IZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5327C4CEF1;
-	Tue, 26 Aug 2025 12:51:51 +0000 (UTC)
+	 MIME-Version; b=iXdwIZJs9Qg7+UxttN+2F1FSZ/Hklk36/xcgxSNEC9vepLHX0PAXIxtK7zogWcGXsbRUCWQGJakNlD6lQjIGVC6pn194OXFVBHYIVT57szgwQBW43sm7r9VneA2XuXJW0Qanp8qKf8BKzpZO+8oDQLWQ/rjgEY298tHOgiSSogc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxWT6Ttd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232B7C4CEF1;
+	Tue, 26 Aug 2025 13:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212712;
-	bh=Oe2dP++GyojWMjza0giB+rnpW/cXlRRyFGsp9yxpEaE=;
+	s=korg; t=1756215655;
+	bh=28DhgTSq6/vnU/1cOwTvRZahJDKwkdMTsP9jnU9uvPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHJC4IZZd13eNRWFCgzVm9Lk9WIihjhVgImdZMw5FZm6qef4sXIgv9K1WU1Ji9jYy
-	 ukveSCmduhe3IVjl3QAR8hScvg6SJzsV50z1giuWSmaX0ha8W+Q+ZjmJ8Qa+clVEiE
-	 Up1aJnlRfB/pvmMcNti13M/G5rzPoewXEyCROR2Q=
+	b=BxWT6TtdnpKItQlibejSTcgQStdg9eFRnFNanSZNMApzN+amG+UhAC+Y01gBDIcvX
+	 Qw9LAIz3MiMKUGGdOE4f2vjxcnFEanFH2fxprEHZm2NvOg+/VSk4OA06hvca3xywh7
+	 5gaNi5Xcdjxf8YS60cfhYcISs6jiFOhH7xMKYguU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/587] net: ti: icss-iep: Fix incorrect type for return value in extts_enable()
-Date: Tue, 26 Aug 2025 13:03:25 +0200
-Message-ID: <20250826110954.365529501@linuxfoundation.org>
+Subject: [PATCH 5.15 115/644] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
+Date: Tue, 26 Aug 2025 13:03:26 +0200
+Message-ID: <20250826110949.377025631@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5f1d1d14db7dabce9c815e7d7cd351f8d58b8585 ]
+[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
 
-The variable ret in icss_iep_extts_enable() was incorrectly declared
-as u32, while the function returns int and may return negative error
-codes. This will cause sign extension issues and incorrect error
-propagation. Update ret to be int to fix error handling.
+This structure is really too larget to be allocated on the stack:
 
-This change corrects the declaration to avoid potential type mismatch.
+sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
 
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250805142323.1949406-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change the function to dynamically allocate it instead.
+
+There is probably a better way to do it since only two integer fields
+inside of that structure are actually used, but this is the simplest
+rework for the moment.
+
+Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/soc-ops.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 8ed72c8b210f..e7306ed52922 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -638,7 +638,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
- 
- static int icss_iep_extts_enable(struct icss_iep *iep, u32 index, int on)
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 9eb4181c6697..7cb3a3f9d3ae 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -624,28 +624,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+ static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
  {
--	u32 val, cap, ret = 0;
-+	u32 val, cap;
-+	int ret = 0;
+ 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+-	struct snd_ctl_elem_value uctl;
++	struct snd_ctl_elem_value *uctl;
+ 	int ret;
  
- 	mutex_lock(&iep->ptp_clk_mutex);
+ 	if (!mc->platform_max)
+ 		return 0;
  
+-	ret = kctl->get(kctl, &uctl);
++	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
++	if (!uctl)
++		return -ENOMEM;
++
++	ret = kctl->get(kctl, uctl);
+ 	if (ret < 0)
+-		return ret;
++		goto out;
+ 
+-	if (uctl.value.integer.value[0] > mc->platform_max)
+-		uctl.value.integer.value[0] = mc->platform_max;
++	if (uctl->value.integer.value[0] > mc->platform_max)
++		uctl->value.integer.value[0] = mc->platform_max;
+ 
+ 	if (snd_soc_volsw_is_stereo(mc) &&
+-	    uctl.value.integer.value[1] > mc->platform_max)
+-		uctl.value.integer.value[1] = mc->platform_max;
++	    uctl->value.integer.value[1] > mc->platform_max)
++		uctl->value.integer.value[1] = mc->platform_max;
+ 
+-	ret = kctl->put(kctl, &uctl);
+-	if (ret < 0)
+-		return ret;
++	ret = kctl->put(kctl, uctl);
+ 
+-	return 0;
++out:
++	kfree(uctl);
++	return ret;
+ }
+ 
+ /**
 -- 
-2.50.1
+2.39.5
 
 
 
