@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-175678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAA5B36967
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F23B36389
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6586C983647
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8127D8E04B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA58A2AE68;
-	Tue, 26 Aug 2025 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92A028314A;
+	Tue, 26 Aug 2025 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECmXassO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZOIj5D3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8737334AAFE;
-	Tue, 26 Aug 2025 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C333093BA;
+	Tue, 26 Aug 2025 13:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217679; cv=none; b=RWmX6J/yroSgmmKeMqaBv0gB3NEuV2gSxCT9jpKsLKVc//wz42X+UZCe2n09lPKhUJYRNSC/M1/S1t1XWs3AHhoBpuQo6PmlNocafjdbAaaIgm+9TxlhkgL5BzSoWbASH5jo+NfCSjzbDTzr0Vd/BNmKU8Z9kPEcGDq114anl1Q=
+	t=1756214498; cv=none; b=MwLhdjKabsu254yF3mavu1zEbqd9Yw6spBwDUy7/pIOn5aeKP3RnXEFT7cqgLobCB1leAlmMBcHxa2bx+OY+NBsM4imp5zzrDB1+FzPB517H5Nrvux4P55dLTp6ZtzCZMdA5gVZaZoVUCYD7NTmn4R7w/MJ8nKWKBHpgxcH8AZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217679; c=relaxed/simple;
-	bh=mYWI1Jhiz+cBa4SwuOTRJDsKqlxk4a4RIUviKcxTevA=;
+	s=arc-20240116; t=1756214498; c=relaxed/simple;
+	bh=f3O/qtmUwZ2BgAbxyITsAtmtw96xzcfVaZ1+3mdoDb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FE5L+SN+Cbuy2Wk2n3sYicGBzc9RWLu2w31ioQw4zDlD/aNHgF0fGW4HWsxYlLh8FTF9TXNE6Kb1XlZ4UBR04nV3wrbTBiFGC4+rL55KjX3SefyIfgzXd+qIChSzBv5sELIQ9yma56xy6+hGCBosBniNEFLH1PvP1OZejn+s8gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECmXassO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178DDC113CF;
-	Tue, 26 Aug 2025 14:14:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y6OCZaI/UGCVzkQXUbop2FDsaQyCqbWnbClnGzu1DgD7oyC3nD3aI7zgq3LPdmZ6L7//fx74Tfbsvrq+gBuBFW4vs5wsKFfZXecBfMYHgFrO3MIycPVs992bZWvQNTbO8k2K63WFBTfJJjDsivLSjDGUGOqTPH5axh16hXQfmQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZOIj5D3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25584C4CEF1;
+	Tue, 26 Aug 2025 13:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217679;
-	bh=mYWI1Jhiz+cBa4SwuOTRJDsKqlxk4a4RIUviKcxTevA=;
+	s=korg; t=1756214498;
+	bh=f3O/qtmUwZ2BgAbxyITsAtmtw96xzcfVaZ1+3mdoDb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECmXassOzhSGcvK6rQUJTxTZGpTf7LDdLop8uqkJEcEnfPHiD84z1mkhCQ2pLvxhX
-	 nzh1QcUM3kH02WuKZDxSP13LmMoq/Pr62lixLjSdz05G8e5cGNv248pmb7NLnCKJDn
-	 sIhF+/OK/aKxLkM4OAsf6mZAc1nFwzFu5xzbzojA=
+	b=RZOIj5D3qFhb1itb/K2OwMTKI0TaxzS3XemMQsDpfC8PADsFlqmoVBX8Se5ODizCb
+	 cnNessjg3lcJnphrOO2OBExwKL3PhDV2W9B+fH1VtTCuxYA8LlhGDEOwnxZLawWFwE
+	 Vzs3OEZzlJCxDq8J2sG2RPeqDCds9mg305SSoyaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 204/523] ACPI: processor: perflib: Move problematic pr->performance check
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 161/482] net: dsa: b53: prevent SWITCH_CTRL access on BCM5325
 Date: Tue, 26 Aug 2025 13:06:54 +0200
-Message-ID: <20250826110929.478161504@linuxfoundation.org>
+Message-ID: <20250826110934.788308642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,62 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
+[ Upstream commit 22ccaaca43440e90a3b68d2183045b42247dc4be ]
 
-Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
-application") added a pr->performance check that prevents the frequency
-QoS request from being added when the given processor has no performance
-object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
-to trigger on an attempt to take the given CPU offline later because the
-frequency QoS object has not been added for it due to the missing
-performance object.
+BCM5325 doesn't implement SWITCH_CTRL register so we should avoid reading
+or writing it.
 
-Address this by moving the pr->performance check before calling
-acpi_processor_get_platform_limit() so it only prevents a limit from
-being set for the CPU if the performance object is not present.  This
-way, the frequency QoS request is added as it was before the above
-commit and it is present all the time along with the CPU's cpufreq
-policy regardless of whether or not the CPU is online.
-
-Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
-Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-8-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_perflib.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -183,7 +183,7 @@ void acpi_processor_ppc_init(struct cpuf
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 5bf390707505..3a1266f535e2 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -339,11 +339,12 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
  
--		if (!pr || !pr->performance)
-+		if (!pr)
- 			continue;
+ 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
  
- 		/*
-@@ -200,6 +200,9 @@ void acpi_processor_ppc_init(struct cpuf
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+-	/* Include IMP port in dumb forwarding mode
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+-	mgmt |= B53_MII_DUMB_FWDG_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
++	if (!is5325(dev)) {
++		/* Include IMP port in dumb forwarding mode */
++		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
++		mgmt |= B53_MII_DUMB_FWDG_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
++	}
  
-+		if (!pr->performance)
-+			continue;
-+
- 		ret = acpi_processor_get_platform_limit(pr);
- 		if (ret)
- 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
+ 	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+ 	 * frames should be flooded or not.
+-- 
+2.39.5
+
 
 
 
