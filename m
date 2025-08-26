@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E9EB36D00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C07FB35DD1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96E2DA012B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95ACF1BA687A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7D1356909;
-	Tue, 26 Aug 2025 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBC8284B5B;
+	Tue, 26 Aug 2025 11:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX37U+Vk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS5BoY8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED60635FC0D;
-	Tue, 26 Aug 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA9F393DD1;
+	Tue, 26 Aug 2025 11:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219108; cv=none; b=fJRVXsAY9ywhWF7V0dJcdSJocpcTHNLkbYIJl7k0598a5Igw3DdHZ0Eq2zkmefjhGQ62hCP8/Cx23UqWT2TsMqNEeacPVOGePDKDP/VZOhtpA7AvPL4VVxSgScjekioQSdjFCuv8p/Uv9ARmaT4raT2cCO/Xcq36Yvm5dUCToUs=
+	t=1756208503; cv=none; b=TQTx6uJyB6gyNGDQRSOsRAqYz99jYvUWQXSbgg/a5mp91zdtNWZjLuFvT8VlGTu2MiagPWo5Vg9NJJhB74RyIhkowjUTr0VxnbQh9sRU+N1LBhhMo8LwTdzbg2vAP9ao+LbXGFGSCIlZLQjtY+BV0Wnr+mkMBa3Cii3/xGFPl38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219108; c=relaxed/simple;
-	bh=kXw2sIolxUsxuos3O3CqDxDY1xaShKBn7Wp3W9iIQ4w=;
+	s=arc-20240116; t=1756208503; c=relaxed/simple;
+	bh=t0tp/LKbCYAyi/pr8ppxKL1Hej57cOU3oCbZqawdCSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdmUCPJXB7P0MPGXP2oUt+oVXIXBpY75e0jfpWTMU2OvIv7ps5/f9ngyl6ZHsn7D3y5o1F2LSXVcrJbWLxDSsNMhEbZ/K9TGStWsibRiCVBStWDDPDowIAC9P9Xranwjj/mjHB58hbQDOV1A9MltK5WczwkWnDzbjtAXbDrrB5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX37U+Vk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F9C4CEF1;
-	Tue, 26 Aug 2025 14:38:27 +0000 (UTC)
+	 MIME-Version; b=hg+VB5B9+iho78RD9chmB8DZmhLdXp3n8M5SRi5guTN0VYJl8XNW7Aj5KDqACJN0DtG0lSmEudrU8CkaiNF7+9QXt217AwpCzoT4yvlhrKie2qxIJLpXOkTXTV4Q5Nxf3LrFxjPUljrUNsSBf0bp+MU+t/K+9ExIkOubojvSPBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS5BoY8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE875C4CEF1;
+	Tue, 26 Aug 2025 11:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219107;
-	bh=kXw2sIolxUsxuos3O3CqDxDY1xaShKBn7Wp3W9iIQ4w=;
+	s=korg; t=1756208503;
+	bh=t0tp/LKbCYAyi/pr8ppxKL1Hej57cOU3oCbZqawdCSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qX37U+VknauHzvkFKm4hV4CY4u/IMG7Qddtuzvr9ly8fq/nuGFKZ0wSPNw/qCHGaA
-	 rkSWufEcBAGSTbP/L6jUerXo+KdPuzTMw2QB2LmY4vVwbkwtywaSmS9PVxJGp/sApt
-	 Rx69cOQ1AlzTlPBqnMmbpqtqbXeCF+W1hFtA+xZc=
+	b=eS5BoY8ZCkt/7TCL45+Ob2ctcTkUiBL9XMOgYcEF3jJo9PohJ+KR1AMg5YtzQVXEz
+	 +NGWQVTnuf9DWcwAy6vHrk3AIHAblaaLewam5nYuNl6+CGBHqjQHYZhZGCkL3OitnM
+	 XDCLJJc96CZB8h4L1up+suX10sQFd9hmmoN5505g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexei Safin <a.safin@rosa.ru>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 224/403] wifi: iwlegacy: Check rate_idx range after addition
+	Christoph Paasch <cpaasch@openai.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 135/322] mptcp: drop skb if MPTCP skb extension allocation fails
 Date: Tue, 26 Aug 2025 13:09:10 +0200
-Message-ID: <20250826110913.018450661@linuxfoundation.org>
+Message-ID: <20250826110919.136148599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
+commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
 
-Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
-the index is incorrect.
+When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
+we used to return true, letting the segment proceed through the TCP
+receive path without a DSS mapping. Such segments can leave inconsistent
+mapping state and trigger a mid-stream fallback to TCP, which in testing
+collapsed (by artificially forcing failures in skb_ext_add) throughput
+to zero.
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Return false instead so the TCP input path drops the skb (see
+tcp_data_queue() and step-7 processing). This is the safer choice
+under memory pressure: it preserves MPTCP correctness and provides
+backpressure to the sender.
+
+Control packets remain unaffected: ACK updates and DATA_FIN handling
+happen before attempting the extension allocation, and tcp_reset()
+continues to ignore the return value.
+
+With this change, MPTCP continues to work at high throughput if we
+artificially inject failures into skb_ext_add.
+
+Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 20c933602f0a..31f1c57450d4 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1573,8 +1573,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	    || rate_idx > RATE_COUNT_LEGACY)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
- 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	if (info->band == NL80211_BAND_5GHZ) {
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+		if (rate_idx > IL_LAST_OFDM_RATE)
-+			rate_idx = IL_LAST_OFDM_RATE;
-+	}
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
--- 
-2.39.5
-
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1118,7 +1118,9 @@ static bool add_addr_hmac_valid(struct m
+ 	return hmac == mp_opt->ahmac;
+ }
+ 
+-/* Return false if a subflow has been reset, else return true */
++/* Return false in case of error (or subflow has been reset),
++ * else return true.
++ */
+ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+@@ -1222,7 +1224,7 @@ bool mptcp_incoming_options(struct sock
+ 
+ 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
+ 	if (!mpext)
+-		return true;
++		return false;
+ 
+ 	memset(mpext, 0, sizeof(*mpext));
+ 
 
 
 
