@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-175181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29514B36638
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A135B36100
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1574A4E4534
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBC8C1BA723D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1735934F48B;
-	Tue, 26 Aug 2025 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AFD1B85F8;
+	Tue, 26 Aug 2025 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7iDzbD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g7d+FEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C864D1E519;
-	Tue, 26 Aug 2025 13:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABA38635D;
+	Tue, 26 Aug 2025 13:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216357; cv=none; b=A/wHcnQdvSd/5e5eNbanA2TRhtr63a9XtTVlHWhjX7KTJQJk/L3TdwIEa3CPUfZ9vg0iu4q1kIQH4w4qkXBGYK35FyDTpM9ObHmLnHHLAKjUCTu5kkEYI6H2uv3rL2l41GSZkvsD9u7Gy2EV0TeVCyEXn0NATKMIyunmTweCDY4=
+	t=1756213372; cv=none; b=Qy7jodfSgUkq0O/aGUIPOi7RWQpt2T10s/91rrra1MAywTSdS34s58n1/tK6NO9CaKLM66xCvi7Iv5iDXfSkf9cfJyHNoz53Npxn3MTW6RMwJ59DHJSP0Ef/KgTEx5W0i2MSokNxBLHWcv0JBunMViiE/KdTXw9Tk3HiNqD1kLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216357; c=relaxed/simple;
-	bh=rCvU0wuEuaE7QPNS5jxnQNj9tx6ezM+i+ir55MCxKTk=;
+	s=arc-20240116; t=1756213372; c=relaxed/simple;
+	bh=WU5XokaUdo4VLbAadhemi0tiJVhBeBOSmgfjxTVg9eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mXjVF06QSMNCOhOJ7IbjxuvkKE4141nhq6FqE3DLnFCsUT6b815Jf8rhjtshVAe+5aZ3I7hFRmsTU6aWHHwboR8U33VNSB3JspUfdCUwHmT0ahpe7cSwLanD9npduZtOcmgvSwwJ3Q8O2PP6sbuFXiYdgRtEmsubiRbKpT9il7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7iDzbD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A194C113CF;
-	Tue, 26 Aug 2025 13:52:37 +0000 (UTC)
+	 MIME-Version; b=dVcBq1IN3QlYmXnqEx0PB/qduh4O4Tf9U9r6BykGEPGDS8SSOaZhE0pzcZkiJigZVBzSiwR56yYew1s+o3wDcqGGcOZLhvhadK/czAU/LIzj+AO/4XU0TcEjhKiwOdLb7MlF0amVxUIwwpU0Wz7Gjvi4ASa2JFsiP8uXp/1MgAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g7d+FEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0B7C4CEF1;
+	Tue, 26 Aug 2025 13:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216357;
-	bh=rCvU0wuEuaE7QPNS5jxnQNj9tx6ezM+i+ir55MCxKTk=;
+	s=korg; t=1756213372;
+	bh=WU5XokaUdo4VLbAadhemi0tiJVhBeBOSmgfjxTVg9eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7iDzbD38gJCvQIaBR65ZptiWifw0a4X9+qTBcQYZb5ukDk06lWxgC1i5iI6M9WnV
-	 LoStHEZq39S+SLmVPFkkjGVo5HUwII1Mm6YCuxRWALv3FllC5oM06f4y/pg3ptI+HJ
-	 jMtJBIsCigK7sObfGhMeWRo6FYHhZuCLkknb0hnE=
+	b=1g7d+FEh+9VN6h9p9aLPnEqbg9DYmMN6vJ6BHYgjlCbvx5JaQz7Nv5DZdsh/IBbaH
+	 SJEvFlQStTwQdrz2UZj3G3W3zgUFc5TAjUAJBByrnxLRrspO0uIfDqSEKyeBbT4F2J
+	 GCtcS7KSFL5Q9NJZSU7E950p2LS93+cPIfbsK568=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 380/644] drm/ttm: Respect the shrinker core free target
+	Vedang Nagar <quic_vnagar@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 322/587] media: venus: Fix OOB read due to missing payload bound check
 Date: Tue, 26 Aug 2025 13:07:51 +0200
-Message-ID: <20250826110955.844315504@linuxfoundation.org>
+Message-ID: <20250826111001.109500705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Vedang Nagar <quic_vnagar@quicinc.com>
 
-[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
+commit 06d6770ff0d8cc8dfd392329a8cc03e2a83e7289 upstream.
 
-Currently the TTM shrinker aborts shrinking as soon as it frees pages from
-any of the page order pools and by doing so it can fail to respect the
-freeing target which was configured by the shrinker core.
+Currently, The event_seq_changed() handler processes a variable number
+of properties sent by the firmware. The number of properties is indicated
+by the firmware and used to iterate over the payload. However, the
+payload size is not being validated against the actual message length.
 
-We use the wording "can fail" because the number of freed pages will
-depend on the presence of pages in the pools and the order of the pools on
-the LRU list. For example if there are no free pages in the high order
-pools the shrinker core may require multiple passes over the TTM shrinker
-before it will free the default target of 128 pages (assuming there are
-free pages in the low order pools). This inefficiency can be compounded by
-the pool LRU where multiple further calls into the TTM shrinker are
-required to end up looking at the pool with pages.
+This can lead to out-of-bounds memory access if the firmware provides a
+property count that exceeds the data available in the payload. Such a
+condition can result in kernel crashes or potential information leaks if
+memory beyond the buffer is accessed.
 
-Improve this by never freeing less than the shrinker core has requested.
+Fix this by properly validating the remaining size of the payload before
+each property access and updating bounds accordingly as properties are
+parsed.
 
-At the same time we start reporting the number of scanned pages (freed in
-this case), which prevents the core shrinker from giving up on the TTM
-shrinker too soon and moving on.
+This ensures that property parsing is safely bounded within the received
+message buffer and protects against malformed or malicious firmware
+behavior.
 
-v2:
- * Simplify loop logic. (Christian)
- * Improve commit message.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_msgs.c |   83 ++++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index 346db24719f9..69968b3cb73d 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -588,7 +588,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
+--- a/drivers/media/platform/qcom/venus/hfi_msgs.c
++++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
+@@ -33,8 +33,9 @@ static void event_seq_changed(struct ven
+ 	struct hfi_buffer_requirements *bufreq;
+ 	struct hfi_extradata_input_crop *crop;
+ 	struct hfi_dpb_counts *dpb_count;
++	u32 ptype, rem_bytes;
++	u32 size_read = 0;
+ 	u8 *data_ptr;
+-	u32 ptype;
+ 
+ 	inst->error = HFI_ERR_NONE;
+ 
+@@ -44,86 +45,118 @@ static void event_seq_changed(struct ven
+ 		break;
+ 	default:
+ 		inst->error = HFI_ERR_SESSION_INVALID_PARAMETER;
+-		goto done;
++		inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
++		return;
  	}
- }
  
--/* As long as pages are available make sure to release at least one */
- static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
- 					    struct shrink_control *sc)
- {
-@@ -596,9 +595,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 	event.event_type = pkt->event_data1;
  
- 	do
- 		num_freed += ttm_pool_shrink();
--	while (!num_freed && atomic_long_read(&allocated_pages));
-+	while (num_freed < sc->nr_to_scan &&
-+	       atomic_long_read(&allocated_pages));
+ 	num_properties_changed = pkt->event_data2;
+-	if (!num_properties_changed) {
+-		inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
+-		goto done;
+-	}
++	if (!num_properties_changed)
++		goto error;
  
--	return num_freed;
-+	sc->nr_scanned = num_freed;
+ 	data_ptr = (u8 *)&pkt->ext_event_data[0];
++	rem_bytes = pkt->shdr.hdr.size - sizeof(*pkt);
 +
-+	return num_freed ?: SHRINK_STOP;
+ 	do {
++		if (rem_bytes < sizeof(u32))
++			goto error;
+ 		ptype = *((u32 *)data_ptr);
++
++		data_ptr += sizeof(u32);
++		rem_bytes -= sizeof(u32);
++
+ 		switch (ptype) {
+ 		case HFI_PROPERTY_PARAM_FRAME_SIZE:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_framesize))
++				goto error;
++
+ 			frame_sz = (struct hfi_framesize *)data_ptr;
+ 			event.width = frame_sz->width;
+ 			event.height = frame_sz->height;
+-			data_ptr += sizeof(*frame_sz);
++			size_read = sizeof(struct hfi_framesize);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_CURRENT:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_profile_level))
++				goto error;
++
+ 			profile_level = (struct hfi_profile_level *)data_ptr;
+ 			event.profile = profile_level->profile;
+ 			event.level = profile_level->level;
+-			data_ptr += sizeof(*profile_level);
++			size_read = sizeof(struct hfi_profile_level);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_PIXEL_BITDEPTH:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_bit_depth))
++				goto error;
++
+ 			pixel_depth = (struct hfi_bit_depth *)data_ptr;
+ 			event.bit_depth = pixel_depth->bit_depth;
+-			data_ptr += sizeof(*pixel_depth);
++			size_read = sizeof(struct hfi_bit_depth);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_PIC_STRUCT:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_pic_struct))
++				goto error;
++
+ 			pic_struct = (struct hfi_pic_struct *)data_ptr;
+ 			event.pic_struct = pic_struct->progressive_only;
+-			data_ptr += sizeof(*pic_struct);
++			size_read = sizeof(struct hfi_pic_struct);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_COLOUR_SPACE:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_colour_space))
++				goto error;
++
+ 			colour_info = (struct hfi_colour_space *)data_ptr;
+ 			event.colour_space = colour_info->colour_space;
+-			data_ptr += sizeof(*colour_info);
++			size_read = sizeof(struct hfi_colour_space);
+ 			break;
+ 		case HFI_PROPERTY_CONFIG_VDEC_ENTROPY:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(u32))
++				goto error;
++
+ 			event.entropy_mode = *(u32 *)data_ptr;
+-			data_ptr += sizeof(u32);
++			size_read = sizeof(u32);
+ 			break;
+ 		case HFI_PROPERTY_CONFIG_BUFFER_REQUIREMENTS:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_buffer_requirements))
++				goto error;
++
+ 			bufreq = (struct hfi_buffer_requirements *)data_ptr;
+ 			event.buf_count = hfi_bufreq_get_count_min(bufreq, ver);
+-			data_ptr += sizeof(*bufreq);
++			size_read = sizeof(struct hfi_buffer_requirements);
+ 			break;
+ 		case HFI_INDEX_EXTRADATA_INPUT_CROP:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_extradata_input_crop))
++				goto error;
++
+ 			crop = (struct hfi_extradata_input_crop *)data_ptr;
+ 			event.input_crop.left = crop->left;
+ 			event.input_crop.top = crop->top;
+ 			event.input_crop.width = crop->width;
+ 			event.input_crop.height = crop->height;
+-			data_ptr += sizeof(*crop);
++			size_read = sizeof(struct hfi_extradata_input_crop);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_DPB_COUNTS:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_dpb_counts))
++				goto error;
++
+ 			dpb_count = (struct hfi_dpb_counts *)data_ptr;
+ 			event.buf_count = dpb_count->fw_min_cnt;
+-			data_ptr += sizeof(*dpb_count);
++			size_read = sizeof(struct hfi_dpb_counts);
+ 			break;
+ 		default:
++			size_read = 0;
+ 			break;
+ 		}
++		data_ptr += size_read;
++		rem_bytes -= size_read;
+ 		num_properties_changed--;
+ 	} while (num_properties_changed > 0);
+ 
+-done:
++	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
++	return;
++
++error:
++	inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
+ 	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
  }
  
- /* Return the number of pages available or SHRINK_EMPTY if we have none */
--- 
-2.39.5
-
 
 
 
