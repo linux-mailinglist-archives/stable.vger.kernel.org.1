@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1A6B36947
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DB1B360E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B42464BDD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29AB17953D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE761350842;
-	Tue, 26 Aug 2025 14:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97402196C7C;
+	Tue, 26 Aug 2025 13:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGc6JNnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5csstKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F7C350825;
-	Tue, 26 Aug 2025 14:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557CD101F2;
+	Tue, 26 Aug 2025 13:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217575; cv=none; b=piDpJ5yRU3xcTUVT84GTpqBVERXigPd/LhDXcCrbrFP0nTtAFniYRMU6hNHg9FM1Fyv0bFQ5tbOmaiZ7VsO31+4i4C+pqMZNHCYsomxk2FcHA3OWDxk8FCwTyDeZx1vHIJvdgnQIwvoRaKn8ohv0MKMkh3hWRUQ7FWToI5okMwM=
+	t=1756213304; cv=none; b=id3KLWwXh57w8FRP2T+RIazm5EAsFu9gVDUfcitOCANNYMu2g2hYr8GgkGMRV3EZuKgbL2dab+zbTQlRxBvEpiRMDOjjqHlmsvaLrDVF8NpLLDvV63vGb2ry5OqpLTWRqOvfT5sBKGYRfRxvT32njU32Djycy8KruzSk3v3GMfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217575; c=relaxed/simple;
-	bh=pOIESQYu+QdvEZc+nuF+vi+/rp2WFqmJMjnZqpQeD0E=;
+	s=arc-20240116; t=1756213304; c=relaxed/simple;
+	bh=bGoRBNvDdeTzo/YdZ9OzUTrWiVyKMW7XEyo6xiEiLhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqCkZjoQ3dGdy/x7e9oOObnPRnHICPTaGqGneJDJ+cEt96yLIbdVKD6lQisksw0i6uGVqwp7+oTQXY2f2kTbfDP59sN+mcwa4TsrY96KAneC2W7owhQuvStmURmilgSTRZJQNQG0uWTUF0clOPIK6ovbruMCzoUunuVpcmfyWXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGc6JNnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999BCC116B1;
-	Tue, 26 Aug 2025 14:12:54 +0000 (UTC)
+	 MIME-Version; b=URXQqr7eKi8OvQdS7Coefv6yO7PiGDxS0tevhkHg9doyhjzbxrYhPaPvdlMMUXfRcnkUjxk9wrNUMTmrKFvkrS+PjoxGBX3gA4zIhLYF1Y3/7r6vFX4o8NJPzvW/RQzshx4PWYlwERRYvSsBYXEheHA67CvrWU4sPJBTv2q8CWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5csstKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4333C4CEF1;
+	Tue, 26 Aug 2025 13:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217574;
-	bh=pOIESQYu+QdvEZc+nuF+vi+/rp2WFqmJMjnZqpQeD0E=;
+	s=korg; t=1756213304;
+	bh=bGoRBNvDdeTzo/YdZ9OzUTrWiVyKMW7XEyo6xiEiLhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGc6JNnQ8G6yjITxGSBzVk7eM7Xu5c4Rn7zXH7mquZ7G1+jIQ0PTq0pTHfgN5lNHD
-	 Qo63RoNeNGyOI1nU3p+XDOPbb0wFfmJYie8xrdPoZF8PhU6pgjXxOGLt4k0n2rNX8R
-	 O35xjdrl0zVn+RRwYLAHpA9o29UkSp+r1a5VYPSA=
+	b=P5csstKLO0dFDsvjGuG23F4D7BjzNfc5OJVNeZrhkUhv7iSHv+KmYSqWT7l7cVOSW
+	 WtDW8uukzlu83r/wRBvLRYsZg5C6GEhTUw10Vwb3fgIp1UhCf7KlkySD3X8oturUxb
+	 xxNkCMm4bcFU6abbAgmbQwJY8SUnAMeRQkT9Iavg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 5.10 194/523] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 255/587] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
 Date: Tue, 26 Aug 2025 13:06:44 +0200
-Message-ID: <20250826110929.233696562@linuxfoundation.org>
+Message-ID: <20250826110959.418510653@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
+[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
 
-UAC3 class segment descriptors need to be verified whether their sizes
-match with the declared lengths and whether they fit with the
-allocated buffer sizes, too.  Otherwise malicious firmware may lead to
-the unexpected OOB accesses.
+In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
+msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
+msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash. Similar issue occurs when access
+msg[1].buf[0] and msg[1].buf[1].
 
-Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -342,20 +342,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index 444fe1c4bf2d..f94660dd9df0 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2261,8 +2261,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
+ 	u16 word;
  
- 	len = le16_to_cpu(cluster->wLength);
- 	c = 0;
--	p += sizeof(struct uac3_cluster_header_descriptor);
-+	p += sizeof(*cluster);
-+	len -= sizeof(*cluster);
- 
--	while (((p - (void *)cluster) < len) && (c < channels)) {
-+	while (len > 0 && (c < channels)) {
- 		struct uac3_cluster_segment_descriptor *cs_desc = p;
- 		u16 cs_len;
- 		u8 cs_type;
- 
-+		if (len < sizeof(*p))
-+			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
-+		if (len < cs_len)
-+			break;
- 		cs_type = cs_desc->bSegmentType;
- 
- 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
- 			struct uac3_cluster_information_segment_descriptor *is = p;
- 			unsigned char map;
- 
-+			if (cs_len < sizeof(*is))
-+				break;
-+
- 			/*
- 			 * TODO: this conversion is not complete, update it
- 			 * after adding UAC3 values to asound.h
-@@ -457,6 +465,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 			chmap->map[c++] = map;
- 		}
- 		p += cs_len;
-+		len -= cs_len;
- 	}
- 
- 	if (channels < c)
-@@ -877,7 +886,7 @@ snd_usb_get_audioformat_uac3(struct snd_
- 	u64 badd_formats = 0;
- 	unsigned int num_channels;
- 	struct audioformat *fp;
--	u16 cluster_id, wLength;
-+	u16 cluster_id, wLength, cluster_wLength;
- 	int clock = 0;
- 	int err;
- 
-@@ -1004,6 +1013,16 @@ snd_usb_get_audioformat_uac3(struct snd_
- 			iface_no, altno);
- 		kfree(cluster);
- 		return ERR_PTR(-EIO);
-+	}
-+
-+	cluster_wLength = le16_to_cpu(cluster->wLength);
-+	if (cluster_wLength < sizeof(*cluster) ||
-+	    cluster_wLength > wLength) {
-+		dev_err(&dev->dev,
-+			"%u:%d : invalid Cluster Descriptor size\n",
-+			iface_no, altno);
-+		kfree(cluster);
-+		return ERR_PTR(-EIO);
- 	}
- 
- 	num_channels = cluster->bNrChannels;
+ 	if (num == 1) {		/* write */
++		if (msg[0].len < 3)
++			return -EOPNOTSUPP;
+ 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
+ 	} else {
++		if (msg[1].len < 2)
++			return -EOPNOTSUPP;
+ 		word = dib7000p_read_word(state, apb_address);
+ 		msg[1].buf[0] = (word >> 8) & 0xff;
+ 		msg[1].buf[1] = (word) & 0xff;
+-- 
+2.39.5
+
 
 
 
