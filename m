@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-175907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DD9B36A71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42CEB35D76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A85858B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB9F361319
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF39F350D46;
-	Tue, 26 Aug 2025 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BA73451A5;
+	Tue, 26 Aug 2025 11:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYyWJPIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wohhelbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871F1341650;
-	Tue, 26 Aug 2025 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A2343D9B;
+	Tue, 26 Aug 2025 11:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218281; cv=none; b=IAQ8QkS7dN3wnnXuaSoyuxaRhZ8HHPn0IadRQHL0bXmAQ2p7qyeV1doOhO9besZ6Fepnnk907WJ9dGQjT2Z7WLfiBcmVPjQFuERZEF2lkiaWz4yIL7A6mLiJX7FsqSEyJrT9hh9DRhk925RFp+3fnSAYf0aEkKo1R/WMsVsC+tU=
+	t=1756208053; cv=none; b=Fi/7AB+APLSoa/r7AJUbt7bX828Xwa4MisGmVpYc5G3+6c0XVApXFlxJY5EdBw7wWFck82zmPOvKtE+6Rkag/vtyHj7hBDBnQCOpyb7CMXwb8BFdLCSm7dSmeztqSwQkuyd9QdIPzVkOt0AGPB/XGrBEghjh3UEPfO6JO15ISDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218281; c=relaxed/simple;
-	bh=1/y4h7qGuIrI3AsjSIxVkC6MHxYQCxVUSXCE/lnVO3o=;
+	s=arc-20240116; t=1756208053; c=relaxed/simple;
+	bh=cJnKDLWdOGveBF25Gd8B6YWQaTyGLf1KaxfoQ9Fz6o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExPyWEIlMe73fhkyDwchYsh7WpMztqltNUyvTb5RECp5Y/eSwiSVEP7xLL+JCl2iia6u+oT1XGt0DojOHA6OHblZRGHbdMwHa4IUB6+htGfUbi1IRG0sNUomv/xJinvEsOj8RVuhsZKtxuSz0LcxwQPH5eX6S9ktNz3Rc2wApu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYyWJPIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5716C4CEF1;
-	Tue, 26 Aug 2025 14:24:40 +0000 (UTC)
+	 MIME-Version; b=I/kmLlKhJ10RIJ4eNR6/neg3RhNRmMX+n8IC5NDFHbL6DGEd3E9xQ5fr+ss0tE7mYdM25Udg+6lARMbTzvtvzSczE02fNDp17fBVfR/LlLABskzhYjbrSjvP1YTuPhe+QnDa6ypTwQ6y79GkMePicmZ+KVDti0JsRT8MzB/2mJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wohhelbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C08C4CEF1;
+	Tue, 26 Aug 2025 11:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218281;
-	bh=1/y4h7qGuIrI3AsjSIxVkC6MHxYQCxVUSXCE/lnVO3o=;
+	s=korg; t=1756208053;
+	bh=cJnKDLWdOGveBF25Gd8B6YWQaTyGLf1KaxfoQ9Fz6o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYyWJPIjWA6arxkgUqjT3BbvSxDIXo1+YJ3czYe0OkprRK+QiyFI1Nf8ZzSnAyc44
-	 gEw6RkmcswyQB7nisOALmZ3oJW4kn4hzMgZUBvXMZqTZ6PoQ3Mvmb7ir9H1gNT+muL
-	 Ebt0wIlDWMfXircvLF8k6K7B10wMbYrxe9ABrk0U=
+	b=wohhelbGq78kLX81gSxUBS9Shu8Tic8pKbgGF4A9gy4gQ07lC+bonPtcU5FmZHqmP
+	 ZjdZl1MRPw68w2w0dvxAO7wFN5wo48ehb4ulo9zqlI4c214tU06j2Q7+P4aMNZKLZ+
+	 X43uRhC6eWiZ5q8H2nYOlS+XxiABJjCtjZPfGk8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 462/523] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+Subject: [PATCH 6.16 388/457] drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed
 Date: Tue, 26 Aug 2025 13:11:12 +0200
-Message-ID: <20250826110935.842048314@linuxfoundation.org>
+Message-ID: <20250826110946.887626400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,116 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
+[ Upstream commit e5f48bfa2ae0806d5f51fb8061afc619a73599a7 ]
 
-Memory hot remove unmaps and tears down various kernel page table regions
-as required.  The ptdump code can race with concurrent modifications of
-the kernel page tables.  When leaf entries are modified concurrently, the
-dump code may log stale or inconsistent information for a VA range, but
-this is otherwise not harmful.
+Currently the driver missed to clean the i2c adapter when vdac init failed.
+It may cause resource leak.
 
-But when intermediate levels of kernel page table are freed, the dump code
-will continue to use memory that has been freed and potentially
-reallocated for another purpose.  In such cases, the ptdump code may
-dereference bogus addresses, leading to a number of potential problems.
-
-To avoid the above mentioned race condition, platforms such as arm64,
-riscv and s390 take memory hotplug lock, while dumping kernel page table
-via the sysfs interface /sys/kernel/debug/kernel_page_tables.
-
-Similar race condition exists while checking for pages that might have
-been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
-which in turn calls ptdump_check_wx().  Instead of solving this race
-condition again, let's just move the memory hotplug lock inside generic
-ptdump_check_wx() which will benefit both the scenarios.
-
-Drop get_online_mems() and put_online_mems() combination from all existing
-platform ptdump code paths.
-
-Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a0d078d06e516 ("drm/hisilicon: Features to support reading resolutions from EDID")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-2-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/ptdump_debugfs.c |    3 ---
- arch/s390/mm/dump_pagetables.c |    2 --
- mm/ptdump.c                    |    2 ++
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h  |  1 +
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c  |  5 +++++
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c | 11 ++++++++---
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/mm/ptdump_debugfs.c
-+++ b/arch/arm64/mm/ptdump_debugfs.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+index 274feabe7df0..ca8502e2760c 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+@@ -69,6 +69,7 @@ int hibmc_de_init(struct hibmc_drm_private *priv);
+ int hibmc_vdac_init(struct hibmc_drm_private *priv);
  
- #include <asm/ptdump.h>
-@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
- {
- 	struct ptdump_info *info = m->private;
+ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
++void hibmc_ddc_del(struct hibmc_vdac *vdac);
  
--	get_online_mems();
- 	ptdump_walk(m, info);
--	put_online_mems();
- 	return 0;
+ int hibmc_dp_init(struct hibmc_drm_private *priv);
+ 
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+index 99b3b77b5445..44860011855e 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+@@ -95,3 +95,8 @@ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
+ 
+ 	return i2c_bit_add_bus(&vdac->adapter);
  }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/arch/s390/mm/dump_pagetables.c
-+++ b/arch/s390/mm/dump_pagetables.c
-@@ -218,11 +218,9 @@ static int ptdump_show(struct seq_file *
- 		.marker = address_markers,
- 	};
- 
--	get_online_mems();
- 	mutex_lock(&cpa_mutex);
- 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 	mutex_unlock(&cpa_mutex);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -141,6 +141,7 @@ void ptdump_walk_pgd(struct ptdump_state
++
++void hibmc_ddc_del(struct hibmc_vdac *vdac)
++{
++	i2c_del_adapter(&vdac->adapter);
++}
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+index e8a527ede854..841e81f47b68 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+@@ -53,7 +53,7 @@ static void hibmc_connector_destroy(struct drm_connector *connector)
  {
- 	const struct ptdump_range *range = st->range;
+ 	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
  
-+	get_online_mems();
- 	mmap_write_lock(mm);
- 	while (range->start != range->end) {
- 		walk_page_range_novma(mm, range->start, range->end,
-@@ -148,6 +149,7 @@ void ptdump_walk_pgd(struct ptdump_state
- 		range++;
+-	i2c_del_adapter(&vdac->adapter);
++	hibmc_ddc_del(vdac);
+ 	drm_connector_cleanup(connector);
+ }
+ 
+@@ -110,7 +110,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init encoder: %d\n", ret);
+-		return ret;
++		goto err;
  	}
- 	mmap_write_unlock(mm);
-+	put_online_mems();
  
- 	/* Flush out the last page */
- 	st->note_page(st, 0, -1, 0);
+ 	drm_encoder_helper_add(encoder, &hibmc_encoder_helper_funcs);
+@@ -121,7 +121,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 					  &vdac->adapter);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init connector: %d\n", ret);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	drm_connector_helper_add(connector, &hibmc_connector_helper_funcs);
+@@ -131,4 +131,9 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
+ 
+ 	return 0;
++
++err:
++	hibmc_ddc_del(vdac);
++
++	return ret;
+ }
+-- 
+2.50.1
+
 
 
 
