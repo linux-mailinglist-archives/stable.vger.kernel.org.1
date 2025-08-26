@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E2FB36CCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EC9B363E8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1214984E0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EBA5562551
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5588035A2BE;
-	Tue, 26 Aug 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA492BF019;
+	Tue, 26 Aug 2025 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbKTKUly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3iE4qC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AF235A2B2;
-	Tue, 26 Aug 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B9C24169D;
+	Tue, 26 Aug 2025 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218882; cv=none; b=ZoJZVSAcDZCu3Q88+D15YRgspe3XqkRZIQBB7fwW6mu6xawKjJY6D/L7/HLWLXiiYqFXz71YpLC5bYzxkdnPusGUsd1ASfGOmft/ntUURFmR8+FJH+/rW/MgcMHg3U9SETvl+hDcD14TDgcTIrNUHsG29LBO10AHv3RGtWCn8h0=
+	t=1756214719; cv=none; b=e1BXoM32YjdfMcoHmjk21KusOlNO/+q1SNQIYLjMGn2hwBCt6tAC/2KW8Z3qbcBamP4Xc2ezS5LXeA+BLhwR/wT96PzyJp9GhF6fKUTRkIeEH6Sczc0WlYl3gri11G9aC4+ApzxkR5s1wlH6imOJfN5S2msCIVtZ0/83SD9Erg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218882; c=relaxed/simple;
-	bh=cRAjslaXH2ZbUQspTXU76SN8AQNcGyv6IBVr7Mm5hUA=;
+	s=arc-20240116; t=1756214719; c=relaxed/simple;
+	bh=QQ756njNW3e8UW5QrT30rjoktgxvFXk0PMkVa/ZhtlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfbF/jc3+mDcExgcCwKxizgvxpOuzvo8tNz5LagGb6YJb+GX6ywtuqk6K/fB4wGXK/KKMWgGFi0//dCItyhsciGop7OYccSQZCXo021XqTkZnW/BBrxXZWJZ2DtpIgoi3vB3ZNe2EwvLeMa2lkzl8jGf7qTqT6lSGX9YyNUsTqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbKTKUly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE3C4CEF1;
-	Tue, 26 Aug 2025 14:34:41 +0000 (UTC)
+	 MIME-Version; b=m+QVbu8RrNbRa/ujOm0llgjgUEYVv1rboKsp2qbkmG5fMY8qvb+Hj71hwmTJj0fHnu0OISaN+oBjFTlP4W+utxzFqNZpWtIRRULz1aL5jwwx7WTbjTzL+GQABGiNPnXWQDaWvMi6YSexGvRd80R6RBD7MLTB+6+SaXY9ZO5u3Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3iE4qC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574F7C4CEF1;
+	Tue, 26 Aug 2025 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218881;
-	bh=cRAjslaXH2ZbUQspTXU76SN8AQNcGyv6IBVr7Mm5hUA=;
+	s=korg; t=1756214719;
+	bh=QQ756njNW3e8UW5QrT30rjoktgxvFXk0PMkVa/ZhtlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbKTKUlyt5Jghee1TD/dwIFzytOFacp09XA86sV5e70VwtKw/ITZsf1Y7hGt+GVBx
-	 aS5oT8vzOwKN0x6w3Tf6Il80dNOwW4nmzMbQ+mIG/PX+nKIBUhbZMZAMRyzFR1r+NU
-	 3MWk2N1DN+i8HSD0n1hUQUP97KovKiodwk0fMblE=
+	b=v3iE4qC0TZ7Mez0CSrlFxPcCnUdmluHYdJWsfdX55hzMwwratI2IycM/V+rGAp+pX
+	 H2QHALeuzVe7mrTG2hQ8E80/CA5eeGmq/oSWxcDqmmZI+kccSIgFSW9PqDyUheoGtx
+	 eQJH+opsTda0i4pHkr18MAJzupUh5GKm3157hVZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jack Xiao <Jack.Xiao@amd.com>,
+	Likun Gao <Likun.Gao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 169/403] netfilter: ctnetlink: fix refcount leak on table dump
-Date: Tue, 26 Aug 2025 13:08:15 +0200
-Message-ID: <20250826110911.562781905@linuxfoundation.org>
+Subject: [PATCH 6.1 243/482] drm/amdgpu: fix incorrect vm flags to map bo
+Date: Tue, 26 Aug 2025 13:08:16 +0200
+Message-ID: <20250826110936.773439691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-[ Upstream commit de788b2e6227462b6dcd0e07474e72c089008f74 ]
+[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
 
-There is a reference count leak in ctnetlink_dump_table():
-      if (res < 0) {
-                nf_conntrack_get(&ct->ct_general); // HERE
-                cb->args[1] = (unsigned long)ct;
-                ...
+It should use vm flags instead of pte flags
+to specify bo vm attributes.
 
-While its very unlikely, its possible that ct == last.
-If this happens, then the refcount of ct was already incremented.
-This 2nd increment is never undone.
-
-This prevents the conntrack object from being released, which in turn
-keeps prevents cnet->count from dropping back to 0.
-
-This will then block the netns dismantle (or conntrack rmmod) as
-nf_conntrack_cleanup_net_list() will wait forever.
-
-This can be reproduced by running conntrack_resize.sh selftest in a loop.
-It takes ~20 minutes for me on a preemptible kernel on average before
-I see a runaway kworker spinning in nf_conntrack_cleanup_net_list.
-
-One fix would to change this to:
-        if (res < 0) {
-		if (ct != last)
-	                nf_conntrack_get(&ct->ct_general);
-
-But this reference counting isn't needed in the first place.
-We can just store a cookie value instead.
-
-A followup patch will do the same for ctnetlink_exp_dump_table,
-it looks to me as if this has the same problem and like
-ctnetlink_dump_table, we only need a 'skip hint', not the actual
-object so we can apply the same cookie strategy there as well.
-
-Fixes: d205dc40798d ("[NETFILTER]: ctnetlink: fix deadlock in table dumping")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index eeb000e41ad7..5d6f9b375c0f 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -808,8 +808,6 @@ ctnetlink_conntrack_event(unsigned int events, struct nf_ct_event *item)
- 
- static int ctnetlink_done(struct netlink_callback *cb)
- {
--	if (cb->args[1])
--		nf_ct_put((struct nf_conn *)cb->args[1]);
- 	kfree(cb->data);
- 	return 0;
- }
-@@ -890,18 +888,25 @@ static int ctnetlink_filter_match(struct nf_conn *ct, void *data)
- 	return 0;
- }
- 
-+static unsigned long ctnetlink_get_id(const struct nf_conn *ct)
-+{
-+	unsigned long id = nf_ct_get_id(ct);
-+
-+	return id ? id : 1;
-+}
-+
- static int
- ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
--	struct nf_conn *ct, *last;
-+	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_tuple_hash *h;
- 	struct hlist_nulls_node *n;
- 	struct nf_conn *nf_ct_evict[8];
-+	struct nf_conn *ct;
- 	int res, i;
- 	spinlock_t *lockp;
- 
--	last = (struct nf_conn *)cb->args[1];
- 	i = 0;
- 
- 	local_bh_disable();
-@@ -936,7 +941,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
- 
- 			if (cb->args[1]) {
--				if (ct != last)
-+				if (ctnetlink_get_id(ct) != last_id)
- 					continue;
- 				cb->args[1] = 0;
- 			}
-@@ -951,8 +956,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 					    ct);
- 			rcu_read_unlock();
- 			if (res < 0) {
--				nf_conntrack_get(&ct->ct_general);
--				cb->args[1] = (unsigned long)ct;
-+				cb->args[1] = ctnetlink_get_id(ct);
- 				spin_unlock(lockp);
- 				goto out;
- 			}
-@@ -965,12 +969,10 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- out:
- 	local_bh_enable();
--	if (last) {
-+	if (last_id) {
- 		/* nf ct hash resize happened, now clear the leftover. */
--		if ((struct nf_conn *)cb->args[1] == last)
-+		if (cb->args[1] == last_id)
- 			cb->args[1] = 0;
--
--		nf_ct_put(last);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index c6d4d41c4393..35e635c833f0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -93,8 +93,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
  	}
  
- 	while (i) {
+ 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
+-			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
+-			     AMDGPU_PTE_EXECUTABLE);
++			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
++			     AMDGPU_VM_PAGE_EXECUTABLE);
+ 
+ 	if (r) {
+ 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
 -- 
 2.50.1
 
