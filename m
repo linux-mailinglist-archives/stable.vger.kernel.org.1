@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F03B35DE9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDD0B35CE3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 492CD1BA71A0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BE61654CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3322D792;
-	Tue, 26 Aug 2025 11:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F8630BF55;
+	Tue, 26 Aug 2025 11:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r61+70FR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd66Yi3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213931FECAB;
-	Tue, 26 Aug 2025 11:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B2A8635C;
+	Tue, 26 Aug 2025 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208572; cv=none; b=QnEmOl3/BDuk1vnKS1SgiESdwO+eFp6ztZ23pH+1H2Uf+hSTedytm1VsKVSOSGh04jhvsp/JzVClunrxoN33tCPsTG3pHrBw3hWhpaY62qzqIb6KDfIVN56pCB76VxnJuZgtBOpRMlxqcbocdO7LQcy0ctMDxIihCGfUrveJREw=
+	t=1756207724; cv=none; b=HUhd1woUrIYnpusczVwmSNrksh4o6nYzREv90MzwFfnfvSwPZbt+jicFRXlcOb2Wj/p5o6qgDkRLnUyU2LtsG6qS183V+0/YViH7SsYupwV/VSS4L/QfeIR8OY43VxMVB5cneLe0JMCBqhSK04uuO5OD78zBrjcbhQNYZiTZzio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208572; c=relaxed/simple;
-	bh=vDfJWoZUrGDRYz/mCLoXR2khibwuGmA9Ex6iNCHEjdk=;
+	s=arc-20240116; t=1756207724; c=relaxed/simple;
+	bh=oXeNhmJYgjBU8vcUiHEq/9UXYmDoA7EzR6SIUS1wH2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSIy3X6wkLB2B9EWDU4KWoxJ4kUaiSNkER7aupZ9MIQt9ttZXh+OH7T3ZH6VkvPkcbj9FBTYN0qS9WYZK/UrVfRGmcBtteah+aUy7yD2XiNnWBmaS/ZRsqfk0TUi6GlWysDAg+r50YzAFRv6ReB+rVB/KE4T6rHQFFQzJmaIdyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r61+70FR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C4FC4CEF1;
-	Tue, 26 Aug 2025 11:42:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GDR1mDzyAqJleQKQoiQWLF4mQysrs0Z3HrrndZZUWYlU2aiNF+5tqiqMhbccPP4W3nWLSOba/lub/3+Hr3DQz1kw6Eu2sz02shNaTRwrPuY6gsv3JCtgb+pT6aE+F3hUuVIv8zGi0WvsIPMdcOY3HSs/otIYhUFad/lOf2w6h94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd66Yi3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C88C116B1;
+	Tue, 26 Aug 2025 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208572;
-	bh=vDfJWoZUrGDRYz/mCLoXR2khibwuGmA9Ex6iNCHEjdk=;
+	s=korg; t=1756207722;
+	bh=oXeNhmJYgjBU8vcUiHEq/9UXYmDoA7EzR6SIUS1wH2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r61+70FRmK9oS0N0Gt1lwSVPAIQ18EjTNMM7mn0dp63+XtUS7/qpXYbcssbk8LOc2
-	 Sau4OiUydHlxzI09K9C0Wiiqjpq3tinNtZfiPQ2vIY1NSh5UgN57AetEpSQ5XkE4Xu
-	 Hf7gPOQC52/zg3ZJ+Cal+ZS4z9CapGmf5rtJ/VHg=
+	b=kd66Yi3ePtofYuoTAD8Hj33wEWi0qcVT1bX67pEbd19Ho1ANCZurYBxqPSvOS5N7k
+	 g7Mu3A/2UC1u2LKHg3vZoh4fpMFNW3n6q2g2d9NFpOTAv7ony9pOgjzm9R4yiDr3vS
+	 wsLnlpyX607///kS3mpJOBbj0LI9UvhNungELGq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 162/322] Revert "can: ti_hecc: fix -Woverflow compiler warning"
+Subject: [PATCH 6.16 293/457] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Tue, 26 Aug 2025 13:09:37 +0200
-Message-ID: <20250826110919.824243796@linuxfoundation.org>
+Message-ID: <20250826110944.623704248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Imre Deak <imre.deak@intel.com>
 
-This reverts commit 1da38b70d90f8529c060dd380d0c18e6d9595463 which is
-commit 7cae4d04717b002cffe41169da3f239c845a0723 upstream.
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/63e25fdb-095a-40eb-b341-75781e71ea95@roeck-us.net
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Sasha Levin <sashal@kernel.org>
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
+
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
+
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+[ DP_TRAINING_PATTERN_SET => DP_LANE0_1_STATUS ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/ti_hecc.c |    2 +-
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/ti_hecc.c
-+++ b/drivers/net/can/ti_hecc.c
-@@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_dev
- 	 * overflows instead of the hardware silently dropping the
- 	 * messages.
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
  	 */
--	mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
-+	mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
- 	hecc_write(priv, HECC_CANOPC, mbx_mask);
- 
- 	/* Enable interrupts */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_TRAINING_PATTERN_SET);
++		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
