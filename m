@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5B8B36AC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0980BB362CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7527F1C23C0D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF502A823E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADCE35337E;
-	Tue, 26 Aug 2025 14:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D846B338F32;
+	Tue, 26 Aug 2025 13:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH14Uh6K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vh7lpsex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA130AAD8;
-	Tue, 26 Aug 2025 14:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D6334A325;
+	Tue, 26 Aug 2025 13:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218408; cv=none; b=rlPlMhA2qI6i2iH0+poOLfAHwKzjLPPewcpwFZek83Wrhp/4YOQoAiK0iiQPnUhL2FUjRnaxsDvxVVbMEFMcX6eH4VmcRho1L4wL+T3iYVitN3UlVxJIgpIT0fCmwLhyH6LZj/Z3AladWqxIP2h3VZ4llvHr5lkag8VRAwsB/Rs=
+	t=1756214010; cv=none; b=iwqbGtirHzE4y9dg9UaiggLiivtI4XBEPAljHJQEiaSFn3AfCGq7KJib6A9S0wuyKrKhTMNxYjvPcMEAi6YBnawf4y5F9c9nUWX5AKSeEY7Tw+bySkueZ+Z4S7A0K11GE/Bvsi1DC56lkJeQno83xh8gz6jt60PopVA8Bv8h1sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218408; c=relaxed/simple;
-	bh=a/GWlP0uyC/zhBRfjrPostSKwANlPPlMfVNJ+7BGQLU=;
+	s=arc-20240116; t=1756214010; c=relaxed/simple;
+	bh=csRwhfgL3wrzcGUbKEC6NLJqn5fbOUB/OMsXiHsQuZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KA/jQAljbvclWf6fpzNPsi0Zatt/Wzj1KWuNwgPqRacuySwBkyJnvs0sfRqwJBMn3n//y9nSSlRbUSlQuaclbgB9baEVjdMpU4Il3rVNM9PKO8UgxZlojWYUNNABaiQtuaUgkYdKsN1UXPrKdOEqkBXJmtbtlgPgg2apqCLAaLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH14Uh6K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99410C4CEF1;
-	Tue, 26 Aug 2025 14:26:47 +0000 (UTC)
+	 MIME-Version; b=usiOBIxLPo8dOPzd08H6unpEQC0XDPlW3WmIqCzAOP+dlZBX6swqUEDaJWjZ6T6fGO2kTyP8TL3VVK0QigvI7ElzZYbU0jnom/d+AtJ0qePhMcxCKJRc8pTQWlGpgA22B5qgJkU3FYZ3Eoe+0MBkddEA+YnzF9s48MCixM0/fGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vh7lpsex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D618DC4CEF4;
+	Tue, 26 Aug 2025 13:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218408;
-	bh=a/GWlP0uyC/zhBRfjrPostSKwANlPPlMfVNJ+7BGQLU=;
+	s=korg; t=1756214010;
+	bh=csRwhfgL3wrzcGUbKEC6NLJqn5fbOUB/OMsXiHsQuZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vH14Uh6KMARTKf8h6/gaDseWADFGqenROjJvYhknJyZOCaTcPY72aqIhIFB9ghGwk
-	 wFA04AVlwWtO4esKhlOBT5R7H4rhS4UjNhWb7yERWOyPlD7vQYzJN2r7kixzpqtDZi
-	 PAJAQsUs9pP7IWVwYxE+jdT05BuiEW2LPAOxQYfI=
+	b=Vh7lpsextrrIeycTD5DpFu1p3AyTMi02Z21DDYdxS7e7qxtIfpX91W28eR9O6sg0v
+	 elpTl0gFnKM5SzjAGRt3lWX3Xqo51jxrdkIpDK8naqoA5jhUiZHlQjeW8xBekcKNau
+	 CpK0uSFaB3mTPSDnJMSmhBa+MRHuUFOHZkxYb1SE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 503/523] iio: imu: inv_icm42600: change invalid data error to -EBUSY
+Subject: [PATCH 6.6 564/587] drm/amd/display: Add null pointer check in mod_hdcp_hdcp1_create_session()
 Date: Tue, 26 Aug 2025 13:11:53 +0200
-Message-ID: <20250826110936.848373147@linuxfoundation.org>
+Message-ID: <20250826111007.375537450@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
+[ Upstream commit 7a2ca2ea64b1b63c8baa94a8f5deb70b2248d119 ]
 
-Temperature sensor returns the temperature of the mechanical parts
-of the chip. If both accel and gyro are off, the temperature sensor is
-also automatically turned off and returns invalid data.
+The function mod_hdcp_hdcp1_create_session() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference.
 
-In this case, returning -EBUSY error code is better then -EINVAL and
-indicates userspace that it needs to retry reading temperature in
-another context.
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+This is similar to the commit c3e9826a2202
+("drm/amd/display: Add null pointer check for get_first_active_display()").
+
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e43eb3cd731649c4f8b9134f857be62a416c893)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
- 		goto exit;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index 7f8f127e7722..ab6964ca1c2b 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -260,6 +260,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_create_session(struct mod_hdcp *hdcp)
+ 		return MOD_HDCP_STATUS_FAILURE;
+ 	}
  
- 	*temp = (int16_t)be16_to_cpup(raw);
-+	/*
-+	 * Temperature data is invalid if both accel and gyro are off.
-+	 * Return -EBUSY in this case.
-+	 */
- 	if (*temp == INV_ICM42600_DATA_INVALID)
--		ret = -EINVAL;
-+		ret = -EBUSY;
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
  
- exit:
- 	mutex_unlock(&st->lock);
+ 	mutex_lock(&psp->hdcp_context.mutex);
+-- 
+2.50.1
+
 
 
 
