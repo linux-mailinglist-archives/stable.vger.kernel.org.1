@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E411B35FE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB456B36840
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1551BA5967
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70E61C41649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54111A00F0;
-	Tue, 26 Aug 2025 12:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA1C34AB15;
+	Tue, 26 Aug 2025 14:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj3bAGOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whQIThBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73474191F98;
-	Tue, 26 Aug 2025 12:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD9834AB0D;
+	Tue, 26 Aug 2025 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212720; cv=none; b=lteUqpb5gMJE7PtPbjbjDvyX28d2LT2x0GGYurlQQwts339pa1ewDqlDIPpJy7EE63dxGfGP7gyVrKxOmvWZ73V5MkbAxRkIWLSC5loqRNJVSsARjvCG6thgKq8teOmgCAqWTHOjgrJuJ6Fpjoa5ytjzUUvX76B2zP5Jg0LAyNs=
+	t=1756217096; cv=none; b=siwg3X21CMYBWkYIdmNts95GGkgPC1Ym46aB1eCS3BW9BvkymFl936w8WloN7CfEmPYeOPMyGnHound2lWHaR/y8f3wyvNl7gppRAVzMyRpWgZ15BLCnVp5ZaWw/6IcSLhsyP4Pjjnu1K2NriqOVqkH/kKLnEkTf0SXsUEIudS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212720; c=relaxed/simple;
-	bh=YanGN13DcQip7C3YjbaMPN9Zwv3Sy9nAHJ9BxImq2Jw=;
+	s=arc-20240116; t=1756217096; c=relaxed/simple;
+	bh=rjriAFOpHUTTGzOp/sKFW28jp0CZ4v0CjIGCNFdre6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdhpRt4tVKvhGQ1na9XOCDW0YKR+0mgGo0nC3mzX3K1TVEwvojhRSuqPigb5TweFw2A1BCjn0HsuXFPvX95UwfrKWN26ggnsUd5dAEPmPC//Aogf/vIHx2IThe7gMWiV12dPj3Lz/ggEYYEEsOHDuw/jT/D1kO8bEsgmylkuOHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj3bAGOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E70AC4CEF1;
-	Tue, 26 Aug 2025 12:51:59 +0000 (UTC)
+	 MIME-Version; b=VNzN7RnbR4W9eWGdehaTSlma31ptUFGXApWN4PcAgv4oezAEAWKTzsazOJQ2L0fXeq4EFaWPCAKD6N+devGufR7keKBew3sEQkKgBuJh1HOPFd6hycxFKyuvyClIsWkXSeXus7Wl2t+LtGrsIa2QwGFb8cZx+VW0FOIssFpVx0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whQIThBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D339C4CEF1;
+	Tue, 26 Aug 2025 14:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212720;
-	bh=YanGN13DcQip7C3YjbaMPN9Zwv3Sy9nAHJ9BxImq2Jw=;
+	s=korg; t=1756217096;
+	bh=rjriAFOpHUTTGzOp/sKFW28jp0CZ4v0CjIGCNFdre6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bj3bAGOoRj+2/cYZGPS7zcm17A4EGFOcbEaIFd1++Liip/SK/dPkHZUf6Y/VlZUcw
-	 vOSab18qmDgce3WfpINonQZX/H5js6i/Kem3GeT1X67F8okj4qQlNgcT8Q1cXJqoxx
-	 +9i8CvX9dV/kKZivATMfhB85OHdMSQfgG7C7WQjw=
+	b=whQIThBzjlcLVm2Ou+8tYE/6DaTAcy5VbKADK7KvTA9jIqqAusfymAbUG929QJHHP
+	 gYCCpL2jBykaeg2CdnKMLERlIP1u/ZTJtsvlDVt+iq0c3CvmkJB6ESdT4dg0VXY7kd
+	 2ZBBh+8503e0AUxB62zge1XduDuWNHssYEgIDR1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/587] ata: libata-sata: Disallow changing LPM state if not supported
+	stable@kernel.org,
+	LongJun Tang <tanglongjun@kylinos.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 015/523] af_packet: fix soft lockup issue caused by tpacket_snd()
 Date: Tue, 26 Aug 2025 13:03:45 +0200
-Message-ID: <20250826110954.868333952@linuxfoundation.org>
+Message-ID: <20250826110924.959992295@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Yun Lu <luyun@kylinos.cn>
 
-[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
+commit 55f0bfc0370539213202f4ce1a07615327ac4713 upstream.
 
-Modify ata_scsi_lpm_store() to return an error if a user attempts to set
-a link power management policy for a port that does not support LPM,
-that is, ports flagged with ATA_FLAG_NO_LPM.
+When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
+pending_refcnt to decrement to zero before returning. The pending_refcnt
+is decremented by 1 when the skb->destructor function is called,
+indicating that the skb has been successfully sent and needs to be
+destroyed.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If an error occurs during this process, the tpacket_snd() function will
+exit and return error, but pending_refcnt may not yet have decremented to
+zero. Assuming the next send operation is executed immediately, but there
+are no available frames to be sent in tx_ring (i.e., packet_current_frame
+returns NULL), and skb is also NULL, the function will not execute
+wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
+will enter a do-while loop, waiting for pending_refcnt to be zero. Even
+if the previous skb has completed transmission, the skb->destructor
+function can only be invoked in the ksoftirqd thread (assuming NAPI
+threading is enabled). When both the ksoftirqd thread and the tpacket_snd
+operation happen to run on the same CPU, and the CPU trapped in the
+do-while loop without yielding, the ksoftirqd thread will not get
+scheduled to run. As a result, pending_refcnt will never be reduced to
+zero, and the do-while loop cannot exit, eventually leading to a CPU soft
+lockup issue.
+
+In fact, skb is true for all but the first iterations of that loop, and
+as long as pending_refcnt is not zero, even if incremented by a previous
+call, wait_for_completion_interruptible_timeout() should be executed to
+yield the CPU, allowing the ksoftirqd thread to be scheduled. Therefore,
+the execution condition of this function should be modified to check if
+pending_refcnt is not zero, instead of check skb.
+
+-	if (need_wait && skb) {
++	if (need_wait && packet_read_pending(&po->tx_ring)) {
+
+As a result, the judgment conditions are duplicated with the end code of
+the while loop, and packet_read_pending() is a very expensive function.
+Actually, this loop can only exit when ph is NULL, so the loop condition
+can be changed to while (1), and in the "ph = NULL" branch, if the
+subsequent condition of if is not met,  the loop can break directly. Now,
+the loop logic remains the same as origin but is clearer and more obvious.
+
+Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
+Cc: stable@kernel.org
+Suggested-by: LongJun Tang <tanglongjun@kylinos.cn>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-sata.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/packet/af_packet.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index be72030a500d..9e0a820d6961 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -817,6 +817,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2800,15 +2800,21 @@ static int tpacket_snd(struct packet_soc
+ 		ph = packet_current_frame(po, &po->tx_ring,
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+-			if (need_wait && skb) {
++			/* Note: packet_read_pending() might be slow if we
++			 * have to call it as it's per_cpu variable, but in
++			 * fast-path we don't have to call it, only when ph
++			 * is NULL, we need to check the pending_refcnt.
++			 */
++			if (need_wait && packet_read_pending(&po->tx_ring)) {
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
+ 					goto out_put;
+ 				}
+-			}
+-			/* check for additional frames */
+-			continue;
++				/* check for additional frames */
++				continue;
++			} else
++				break;
+ 		}
  
- 	spin_lock_irqsave(ap->lock, flags);
+ 		skb = NULL;
+@@ -2898,14 +2904,7 @@ tpacket_error:
+ 		}
+ 		packet_increment_head(&po->tx_ring);
+ 		len_sum += tp_len;
+-	} while (likely((ph != NULL) ||
+-		/* Note: packet_read_pending() might be slow if we have
+-		 * to call it as it's per_cpu variable, but in fast-path
+-		 * we already short-circuit the loop with the first
+-		 * condition, and luckily don't have to go that path
+-		 * anyway.
+-		 */
+-		 (need_wait && packet_read_pending(&po->tx_ring))));
++	} while (1);
  
-+	if (ap->flags & ATA_FLAG_NO_LPM) {
-+		count = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
- 	ata_for_each_link(link, ap, EDGE) {
- 		ata_for_each_dev(dev, &ap->link, ENABLED) {
- 			if (dev->horkage & ATA_HORKAGE_NOLPM) {
--- 
-2.39.5
-
+ 	err = len_sum;
+ 	goto out_put;
 
 
 
