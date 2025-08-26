@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-174653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA000B3645E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAB0B35D7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5568A357C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 124C27BB4C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8257E22AE5D;
-	Tue, 26 Aug 2025 13:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913283314DC;
+	Tue, 26 Aug 2025 11:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY6yT5WY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i60St2ob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411BA1F4CA9;
-	Tue, 26 Aug 2025 13:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D78A327797;
+	Tue, 26 Aug 2025 11:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214959; cv=none; b=JIEe9YJz8a/7B4smfFvv9vHnqNREzg01JndeZfSobi+UebVTh7BmoQ5rAFQalxQv825zra58QB8FWfz65NwlIVCv5mIPQlZT6CXxLRgk4FBGyvu1MyXf2R5oLhWtEqwzigZTTGX2mWbo7PIRSK4mb1h4m447VhgjDPaxkwVZn0s=
+	t=1756208645; cv=none; b=p6UiLs8eATKk9Ra45urSQAjz/ghUVgcCf7H/p/QC1IybNdyrNvMnNnbp+wudiQ3sCKbe9payXc3iL8NITp2VcuEU6QProt6FQjeZVHBHd4Ec8E31++B0EgxqvRCIYnZ1ZSloRWn1DSjRE7OV4U3DtUaLMBxwh/ZDMgpR6RFMnJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214959; c=relaxed/simple;
-	bh=Mi6MqbmuSPDUx2vkGGAFyZZXdadNbTnlLndlnv+pOlY=;
+	s=arc-20240116; t=1756208645; c=relaxed/simple;
+	bh=26knWlcpi9QVXZoZyAaF7owUjqgrrN2ZYN5srZKwRcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUambBydtMryc1eRhrz3S0taeFryuMAhWbaeekUG6troh1O6/iXC9CIIrLYGqrlFRoYWoLi81HSw33E1nEp9ZTnOuMuwXsR/hfnuD94FweJASl3YUsCGipnvtSXDAoorknuWsD8ldXxnqh66Dam+Mey7+qI9vkRNcQGn03DSXxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY6yT5WY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C872AC4CEF1;
-	Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
+	 MIME-Version; b=jOdbeFajVxeUciU/aKPmZ1VJZIpMAZ1im1sax47qAfAYJo1dSgu6tKRfJS6fRpxFRj5HJwrMlL2aOYDhWYyy57sd6fKtKGPMKmqryeSQ8REH+eEYFZETOaLphOyv5CLcJvijfPq03o+bGGZgMWQwGzapF0SMsiRizgocVJpIt3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i60St2ob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B82CC4CEF1;
+	Tue, 26 Aug 2025 11:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214959;
-	bh=Mi6MqbmuSPDUx2vkGGAFyZZXdadNbTnlLndlnv+pOlY=;
+	s=korg; t=1756208645;
+	bh=26knWlcpi9QVXZoZyAaF7owUjqgrrN2ZYN5srZKwRcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AY6yT5WYfxw71g/DCpWsNuOcOiNxVEJ86XmVtM+LnIQtHQyUn7oQCvNmch+NUpsT/
-	 EYlXNQnCJDYaLtpqHrgR4FWsl/uQvkSLlOq9ieOGVIPJikyaMCORgOL6jijyQL8bi9
-	 Sy82HR/bjXg4wVgoaikBijMOkFn0+oQ2qYmZith0=
+	b=i60St2obbpVDk5Za8eESWjWseBDzqn16lfYJ6sjP00/HnCJ9K5fMyCEep3rKHKJmN
+	 ev97peHymBeULGCmJJ8BxbsTGmGNHpDp6h7K9clA1xnK2/D2vP4/bfTlkV5VKNF3G8
+	 3uIlv9cycpOEnfJy9G9ElcALs1jaxgQKV4Af7yXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 335/482] drm/amdgpu: update mmhub 3.0.1 client id mappings
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 173/322] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
 Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826110939.102756830@linuxfoundation.org>
+Message-ID: <20250826110920.130078528@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +69,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
+commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c upstream.
 
-Update the client id mapping so the correct clients
-get printed when there is a mmhub page fault.
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
 
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
-Cc: stable@vger.kernel.org
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
+
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
+
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
+
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ mm/memory-failure.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-@@ -36,40 +36,47 @@
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -845,9 +845,17 @@ static int hwpoison_hugetlb_range(pte_t
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
- static const char *mmhub_client_ids_v3_0_1[][2] = {
- 	[0][0] = "VMC",
-+	[1][0] = "ISPXT",
-+	[2][0] = "ISPIXT",
- 	[4][0] = "DCEDMC",
- 	[5][0] = "DCEVGA",
- 	[6][0] = "MP0",
- 	[7][0] = "MP1",
--	[8][0] = "MPIO",
--	[16][0] = "HDP",
--	[17][0] = "LSDMA",
--	[18][0] = "JPEG",
--	[19][0] = "VCNU0",
--	[21][0] = "VSCH",
--	[22][0] = "VCNU1",
--	[23][0] = "VCN1",
--	[32+20][0] = "VCN0",
--	[2][1] = "DBGUNBIO",
-+	[8][0] = "MPM",
-+	[12][0] = "ISPTNR",
-+	[14][0] = "ISPCRD0",
-+	[15][0] = "ISPCRD1",
-+	[16][0] = "ISPCRD2",
-+	[22][0] = "HDP",
-+	[23][0] = "LSDMA",
-+	[24][0] = "JPEG",
-+	[27][0] = "VSCH",
-+	[28][0] = "VCNU",
-+	[29][0] = "VCN",
-+	[1][1] = "ISPXT",
-+	[2][1] = "ISPIXT",
- 	[3][1] = "DCEDWB",
- 	[4][1] = "DCEDMC",
- 	[5][1] = "DCEVGA",
- 	[6][1] = "MP0",
- 	[7][1] = "MP1",
--	[8][1] = "MPIO",
--	[10][1] = "DBGU0",
--	[11][1] = "DBGU1",
--	[12][1] = "DBGU2",
--	[13][1] = "DBGU3",
--	[14][1] = "XDP",
--	[15][1] = "OSSSYS",
--	[16][1] = "HDP",
--	[17][1] = "LSDMA",
--	[18][1] = "JPEG",
--	[19][1] = "VCNU0",
--	[20][1] = "VCN0",
--	[21][1] = "VSCH",
--	[22][1] = "VCNU1",
--	[23][1] = "VCN1",
-+	[8][1] = "MPM",
-+	[10][1] = "ISPMWR0",
-+	[11][1] = "ISPMWR1",
-+	[12][1] = "ISPTNR",
-+	[13][1] = "ISPSWR",
-+	[14][1] = "ISPCWR0",
-+	[15][1] = "ISPCWR1",
-+	[16][1] = "ISPCWR2",
-+	[17][1] = "ISPCWR3",
-+	[18][1] = "XDP",
-+	[21][1] = "OSSSYS",
-+	[22][1] = "HDP",
-+	[23][1] = "LSDMA",
-+	[24][1] = "JPEG",
-+	[27][1] = "VSCH",
-+	[28][1] = "VCNU",
-+	[29][1] = "VCN",
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
++
+ static const struct mm_walk_ops hwpoison_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ 	.walk_lock = PGWALK_RDLOCK,
  };
  
- static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
 
 
 
