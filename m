@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CE6B362DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4592B366BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C27F467832
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98B50565C2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BDF271475;
-	Tue, 26 Aug 2025 13:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C033D3451CD;
+	Tue, 26 Aug 2025 13:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5O3q0I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBfR4sNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0334C242D6A;
-	Tue, 26 Aug 2025 13:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7873E2BEC45;
+	Tue, 26 Aug 2025 13:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214174; cv=none; b=eh/XXCE+oCGIlPcfL6CNPTAatGv3GQgGaWs39cdJm6urcTXmO1hGnMIYe7UA5V7SjvQCbt/HGWPKuz8Pet9Sox7oQtxLcpycAdO6eAAszq6VPp1dvbFjGUoFVjxakiS88g0oSkwJ0z2J9I2Ga3X0QmFd4LQ6/ootXcZWgW2DQx4=
+	t=1756215961; cv=none; b=kOE5U1kwKACc+qOxmfamvxexe/eErKE4/Y8dG3vLFZIE60Gplbq3FS4/XwolECAGLV4lTj9caRxXU3tp305G4EIDXuJCZ70n5Nbd/o114zbLRpdey9aMxsdohv54emqcE/HqDLunsrIsils4CxsFu+D0bp2nNvPSEOeUVE3jJJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214174; c=relaxed/simple;
-	bh=hpOZI1INiLTxZ4MNQjdhlqaElZ7ze7dez0vAZ1tUCiI=;
+	s=arc-20240116; t=1756215961; c=relaxed/simple;
+	bh=wta2yrMAt+L0+OoNtNno8Bz3q2wDbwbg8piUkN9ssB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwvOTmGpu4WtjKE+1Byn+V5fkT560erAeBgSnylIxcoJcZ7WTHSa70lEzNIQ03JA+oVhn2XxEZVvNwCeSmAQOMpBTw+cnJqAhVVF70wf1CUmzAV3BYS7dp3Zy3XY5HMhw4iAYOpLcURJ5S7637BwA8/1K23ulILmCotxoKr7uKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5O3q0I+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F4CC4CEF1;
-	Tue, 26 Aug 2025 13:16:13 +0000 (UTC)
+	 MIME-Version; b=ov8RsWAG8Y6o2GXbxBI636pKB3+pn2/FmrJVDu/Gv/8vxFZxbpkfDTXUk7550F0uhg4ufMPdJeOfS22y0vOHtsjV1dl/C2fp3A1VnRETDC7zkf1hMwOhnRaGnOBL3T9g2okt5VLgOZo5qQRGTV+WFxpop/ospJ4OUGn+HUR34rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBfR4sNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012FDC4CEF1;
+	Tue, 26 Aug 2025 13:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214173;
-	bh=hpOZI1INiLTxZ4MNQjdhlqaElZ7ze7dez0vAZ1tUCiI=;
+	s=korg; t=1756215961;
+	bh=wta2yrMAt+L0+OoNtNno8Bz3q2wDbwbg8piUkN9ssB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5O3q0I+rIgjMuUF11aBQpYP9Aq0AevSPVLOEyV8y1dt8Th9MG2POLPoBGbnP+A0+
-	 sCT0E78gLAzpsj/FV29tCa8Dhuyma3tscfi+iY2eUrRGQP08eHH8JAtiNluN8dItOu
-	 VZQN2EO57y5zZbEYANRaDB3BdXKOlBQUxlKHJimw=
+	b=MBfR4sNPPnFYB9Tth7kKSFOzkD05RisK5Ve/yYiwyaOwiyycLaFpBR5UQn9sRRu5c
+	 hMvmefJ8xWDaFD7vnZgj2jKMw4Hy3PD3vk1hB3z0bd231m/qxsMlAO4c8C3+7JtEm3
+	 jDfPjKkJyzox87E8AMizhXlQdATLQlxfPENQ8Fxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/482] KVM: VMX: Handle KVM-induced preemption timer exits in fastpath for L2
+Subject: [PATCH 5.15 200/644] mtd: rawnand: rockchip: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:04:51 +0200
-Message-ID: <20250826110931.749782137@linuxfoundation.org>
+Message-ID: <20250826110951.397470482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 7b3d1bbf8d68d76fb21210932a5e8ed8ea80dbcc ]
+[ Upstream commit 3b36f86dc47261828f96f826077131a35dd825fd ]
 
-Eat VMX treemption timer exits in the fastpath regardless of whether L1 or
-L2 is active.  The VM-Exit is 100% KVM-induced, i.e. there is nothing
-directly related to the exit that KVM needs to do on behalf of the guest,
-thus there is no reason to wait until the slow path to do nothing.
+The DMA map functions can fail and should be tested for errors.
 
-Opportunistically add comments explaining why preemption timer exits for
-emulating the guest's APIC timer need to go down the slow path.
-
-Link: https://lore.kernel.org/r/20240110012705.506918-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 18ceed9046a9..4db9d41d988c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5948,13 +5948,26 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
- 	if (vmx->req_immediate_exit)
- 		return EXIT_FASTPATH_EXIT_HANDLED;
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index f45c85a1a5a3..76721a3b3e33 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -657,9 +657,16 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
  
-+	/*
-+	 * If L2 is active, go down the slow path as emulating the guest timer
-+	 * expiration likely requires synthesizing a nested VM-Exit.
-+	 */
-+	if (is_guest_mode(vcpu))
-+		return EXIT_FASTPATH_NONE;
+ 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
+ 				  mtd->writesize, DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
 +
- 	kvm_lapic_expired_hv_timer(vcpu);
- 	return EXIT_FASTPATH_REENTER_GUEST;
- }
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize, DMA_TO_DEVICE);
++		return -ENOMEM;
++	}
  
- static int handle_preemption_timer(struct kvm_vcpu *vcpu)
- {
--	handle_fastpath_preemption_timer(vcpu);
-+	/*
-+	 * This non-fastpath handler is reached if and only if the preemption
-+	 * timer was being used to emulate a guest timer while L2 is active.
-+	 * All other scenarios are supposed to be handled in the fastpath.
-+	 */
-+	WARN_ON_ONCE(!is_guest_mode(vcpu));
-+	kvm_lapic_expired_hv_timer(vcpu);
- 	return 1;
- }
+ 	reinit_completion(&nfc->done);
+ 	writel(INT_DMA, nfc->regs + nfc->cfg->int_en_off);
+@@ -773,9 +780,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
+ 	dma_data = dma_map_single(nfc->dev, nfc->page_buf,
+ 				  mtd->writesize,
+ 				  DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
++
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize,
++				 DMA_FROM_DEVICE);
++		return -ENOMEM;
++	}
  
-@@ -7138,7 +7151,12 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
- 
- static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- {
--	if (is_guest_mode(vcpu))
-+	/*
-+	 * If L2 is active, some VMX preemption timer exits can be handled in
-+	 * the fastpath even, all other exits must use the slow path.
-+	 */
-+	if (is_guest_mode(vcpu) &&
-+	    to_vmx(vcpu)->exit_reason.basic != EXIT_REASON_PREEMPTION_TIMER)
- 		return EXIT_FASTPATH_NONE;
- 
- 	switch (to_vmx(vcpu)->exit_reason.basic) {
+ 	/*
+ 	 * The first blocks (4, 8 or 16 depending on the device)
 -- 
-2.50.1
+2.39.5
 
 
 
