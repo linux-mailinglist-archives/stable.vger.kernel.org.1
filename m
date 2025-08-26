@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7BBB36871
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A88FB362B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05001C2408F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE8B1884F9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3034302CA6;
-	Tue, 26 Aug 2025 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5529A2512C8;
+	Tue, 26 Aug 2025 13:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN98Kye2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2kn8Acx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0BD35206F;
-	Tue, 26 Aug 2025 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B061917ED;
+	Tue, 26 Aug 2025 13:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217284; cv=none; b=It4rYgx0kxV+dO+aVcx3y17Xj8gl82QUljDg3L0RwpBTKPI3C5tr3pWDApYzvnkbfo3s/fWX+KcLgbw/BpUVgI/fwUHHIVoxae2ccgizyLoNJ3ylhedQmMcBt6IDSDnCNVBa30N01gbH2Mw4q+Nr7aEjDKx9+MrbNpFKiJxShFo=
+	t=1756214187; cv=none; b=MsGIBFCrgDVw1EsKg5RwYmgBTcm2jhN8hloFTU4+PePPR4PfxNpqeA1/Kv/G4ZDNdy0lLqqI480KDNVebpwUjXIjkH8R/VpmjekOWgjZrT3RoCT0xqWyzNUwNTpQ4WtmqoV9UWwOjPQSo2hoAJ6MUouTYbOULt57xOc676RruWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217284; c=relaxed/simple;
-	bh=12tWvsLUm6NaR8GK0ABd5tP3r9xxkv1AdlofypKIUYo=;
+	s=arc-20240116; t=1756214187; c=relaxed/simple;
+	bh=GDK3TDB6gILvVBzDxBV9zMbInztVnkUMIG6c2aR+1pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4WxZLVwyBOpMbdxG1eRLdxFLEsGs/mO+t+xrs0xa3BUxbY+iTQNXJFVEEPHAxmq3/rYRLP/N5c/xGDIKevF9F/7ZQHSMw9Rma+nuCE8Tn2SZvuISCco8X9H0V44gg2miOgy3y5GiH9Na5dZuux1w+vGg+C+hGTYjWCE8N37Yck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN98Kye2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20125C116B1;
-	Tue, 26 Aug 2025 14:08:03 +0000 (UTC)
+	 MIME-Version; b=bN5kqKOUymFwM7H8agRyvO9yvMWUotOUo8QhywjPesvQePGZmNnOe4552C1KYgv0s7ADxc4h5XFa09e+fuOGyvLlV6LRvWWvjIZYl7qKnyBOcZG+FXhyZAmpnPeVcvkvGHmoIZW8xzmjayxZPF9kJ7yGBkS8rXrS8axNIOXnwjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2kn8Acx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969ABC113CF;
+	Tue, 26 Aug 2025 13:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217284;
-	bh=12tWvsLUm6NaR8GK0ABd5tP3r9xxkv1AdlofypKIUYo=;
+	s=korg; t=1756214186;
+	bh=GDK3TDB6gILvVBzDxBV9zMbInztVnkUMIG6c2aR+1pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN98Kye2oHLmUhGIClgGB/Q+InNsZx7Hun0WI/zw52zZ8EKQ1bnbMB1cIGpNc3Ax6
-	 tl5p/XKG6GRPkqPbY6HzJ5GNQ8wcEjwPFwB1dEzXhJF/k6BmBfrKfToz9PB1y2U/b/
-	 nX/ozI+2BOsKlAexx+j4MR82uAclRYz8XhaV2ppQ=
+	b=k2kn8AcxZS1gVIjz1+IthwH5wGTyQdrMnS+Raf6ObWljW3oyhFl8FBs3oNBx7a7Jj
+	 YdTmLr/fxQzUKl198DPZ2u64nKuYsBaVacrfbQNOuAckDM1fmoNe6wXtyn09VCdAet
+	 wGfFU58CWFJXP/r9K1llci2qP5m1uGhCjzOCoDVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/523] Revert "vmci: Prevent the dispatching of uninitialized payloads"
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 042/482] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
 Date: Tue, 26 Aug 2025 13:04:55 +0200
-Message-ID: <20250826110926.652660144@linuxfoundation.org>
+Message-ID: <20250826110931.851788411@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
+[ Upstream commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 ]
 
-This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
+Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
+guest CPUID model, as debug support is supposed to be available if RTM is
+supported, and there are no known downsides to letting the guest debug RTM
+aborts.
 
-While the code "looks" correct, the compiler has no way to know that
-doing "fun" pointer math like this really isn't a write off the end of
-the structure as there is no hint anywhere that the structure has data
-at the end of it.
+Note, there are no known bug reports related to RTM_DEBUG, the primary
+motivation is to reduce the probability of breaking existing guests when a
+future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
+(KVM currently lets L2 run with whatever hardware supports; whoops).
 
-This causes the following build warning:
+Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
+DR7.RTM.
 
-In function 'fortify_memset_chk',
-    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
-include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  480 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-So revert it for now and it can come back in the future in a "sane" way
-that either correctly makes the structure know that there is trailing
-data, OR just the payload structure is properly referenced and zeroed
-out.
-
-Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/include/asm/msr-index.h | 1 +
+ arch/x86/kvm/vmx/vmx.c           | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index ccadbc0d8f7d..26ff49fdf0f7 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
--		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
--			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 727947ed5e5e..afd65c815043 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -379,6 +379,7 @@
+ #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
+ #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
+ #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
++#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
+ 
+ #define MSR_PEBS_FRONTEND		0x000003f7
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 60d1ff3fca45..9445def2b3d2 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2064,6 +2064,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
+ 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
+ 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
+ 
++	if (boot_cpu_has(X86_FEATURE_RTM) &&
++	    (host_initiated || guest_cpuid_has(vcpu, X86_FEATURE_RTM)))
++		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
++
+ 	return debugctl;
+ }
  
 -- 
-2.39.5
+2.50.1
 
 
 
