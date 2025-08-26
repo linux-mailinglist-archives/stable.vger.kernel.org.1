@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4044AB3684B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BD2B364B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C80562FE4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C296E7A5A5D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1934352FCC;
-	Tue, 26 Aug 2025 14:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D771123D28F;
+	Tue, 26 Aug 2025 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkZeoguf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7lNyTaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E743352FD2;
-	Tue, 26 Aug 2025 14:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9538C227EA8;
+	Tue, 26 Aug 2025 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217140; cv=none; b=UI2bd/2IvAC1HJ5WdiBGjZsPcD2wAjDHmyFrb3uP44vqqO+BohVqDnyo66T4gl2QSw+MI2YYvkRqL4vbBzfYLb0DSD4ksbF6bgVAyVPMVCZX1jVgJIDOAa4f+foVwAvbVDmAflfHfVhwK0HWGtGgq3qXJNhzIiNA+KL/YCBsIpg=
+	t=1756215681; cv=none; b=gUn7gA/hqHUjAjuu6E6/V1TinzxIVS7L3UbrdpuE9913229ZBBRRtiKhoV7+EzwYx1IQcftuSQ7moZZj1ihyVH/BYEFJDU3vKMrlNMg+jpB9230l8wrqkKFIqQZrbxEReUpbz1hehln8VjrvlCUodbvbqJDvuN9voMV/7XPD5X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217140; c=relaxed/simple;
-	bh=xgMfy3fV7jCv+AxR53VpPRBsAuYkbigCTGgY4BdrjrI=;
+	s=arc-20240116; t=1756215681; c=relaxed/simple;
+	bh=T1hVc8D7X6Lh9AVEQpUjHbw+F3PsIDvjaCe4LftoOjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEnmPa0KwKeSGMQDUXD7qr3e73Zrji3rMGOmhp7IrB/CrV0NSISnnOl0z/v5mrkWb+bSJojQcoXdE1jp6SzAkaldbUgnuruJ/DC4q9qnLBif6WCRMtwIZy//yxwAVKkRJcV3b4cHEFThW+vTe6E7fbNnDZ4ydv19E6c3VKS2Er8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkZeoguf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBFFC4CEF1;
-	Tue, 26 Aug 2025 14:05:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WTPisBG9Z+fRb4zGtXv2Z0LMJzaZXsnDGk3VZ/0AVieBjtGtGe8i1yl9+cAEYxkm8jxDMEKiVrlJPmuY25tNSYyl1aD0z+/6cnzeUHNi6hxuPFPIy+JVKINq5q52qlBHoHFRwrDGis3MrA2Ia36Grnov2JGKHbhBpIWNIi1tdIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7lNyTaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270EFC113CF;
+	Tue, 26 Aug 2025 13:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217140;
-	bh=xgMfy3fV7jCv+AxR53VpPRBsAuYkbigCTGgY4BdrjrI=;
+	s=korg; t=1756215681;
+	bh=T1hVc8D7X6Lh9AVEQpUjHbw+F3PsIDvjaCe4LftoOjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkZeoguf2AHP75pU3ednJKmagPTqSZwlgrQmMuRk4ASEIIaY++PgfH0JU1qBULWVD
-	 PA3bFeNauI675AfsWn7kSgigW3ASBvAHBFBCSnR+6rAtjBbklMvFvcwouIJOtG4Osl
-	 9V9FBbbgkJzyrMCDeO2Eeb9WlR2ueJGFAzXBLCDs=
+	b=S7lNyTaXuj/JSi/rOtv6UIktqu2xeC4cijwNVAdlRaKV5p4AZhSHvJluYEOV79AT3
+	 v8gipd3/6snWcWJ5nUa/yQ4oZgb7Eux3skeOVNhF9TOvNiZrutpE8KRfWDvkEflQQo
+	 HEIyfQEJtj3SjIH/UwgCIcu6ABShuePf1r5PVLmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Liu <katieeliu@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 005/523] usb: gadget: configfs: Fix OOB read on empty string write
+	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 124/644] arm: dts: ti: omap: Fixup pinheader typo
 Date: Tue, 26 Aug 2025 13:03:35 +0200
-Message-ID: <20250826110924.707774542@linuxfoundation.org>
+Message-ID: <20250826110949.591395465@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Liu <1171169449@qq.com>
+From: Albin Törnqvist <albin.tornqvist@codiax.se>
 
-commit 3014168731b7930300aab656085af784edc861f6 upstream.
+[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
 
-When writing an empty string to either 'qw_sign' or 'landingPage'
-sysfs attributes, the store functions attempt to access page[l - 1]
-before validating that the length 'l' is greater than zero.
+This commit fixes a typo introduced in commit
+ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
+gpio0_7 is located on the P9 header on the BBB.
+This was verified with a BeagleBone Black by toggling the pin and
+checking with a multimeter that it corresponds to pin 42 on the P9
+header.
 
-This patch fixes the vulnerability by adding a check at the beginning
-of os_desc_qw_sign_store() and webusb_landingPage_store() to handle
-the zero-length input case gracefully by returning immediately.
-
-Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/tencent_B1C9481688D0E95E7362AB2E999DE8048207@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
+Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
+Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/am335x-boneblack.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -855,6 +855,8 @@ static ssize_t os_desc_qw_sign_store(str
- 	struct gadget_info *gi = os_desc_item_to_gadget_info(item);
- 	int res, l;
- 
-+	if (!len)
-+		return len;
- 	l = min((int)len, OS_STRING_QW_SIGN_LEN >> 1);
- 	if (page[l - 1] == '\n')
- 		--l;
+diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
+index 9312197316f0..db1bf9452e57 100644
+--- a/arch/arm/boot/dts/am335x-boneblack.dts
++++ b/arch/arm/boot/dts/am335x-boneblack.dts
+@@ -34,7 +34,7 @@ &gpio0 {
+ 		"P9_18 [spi0_d1]",
+ 		"P9_17 [spi0_cs0]",
+ 		"[mmc0_cd]",
+-		"P8_42A [ecappwm0]",
++		"P9_42A [ecappwm0]",
+ 		"P8_35 [lcd d12]",
+ 		"P8_33 [lcd d13]",
+ 		"P8_31 [lcd d14]",
+-- 
+2.39.5
+
 
 
 
