@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FF5B36219
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89071B3652B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FABB18841CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C0A6876B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DD238C07;
-	Tue, 26 Aug 2025 13:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DDC23817D;
+	Tue, 26 Aug 2025 13:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTVDkmjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUZgCO7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189B51B85F8;
-	Tue, 26 Aug 2025 13:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2871622DFA7;
+	Tue, 26 Aug 2025 13:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213917; cv=none; b=EkmSNojVCL4yBLaMVagmeA9j+4b96HQaPzn7hQnWKfEeiXvF4mb/t/uvxnAxOAT6m0E2L3yNhqW5Xna0v+IfSdA1SX8BoofVquRaEX4W/FUMbY1WQMGWMxXO91Qm1aEfz2NEts2RCtBPIBOAXO8DdjcGQeeK2CZ5YB5MP+g1Pjg=
+	t=1756215284; cv=none; b=p5TWkOvhG+VgbM0xRr+gbZ1VC0v/yYLxwxtHdiVC+Mrkpp6/dElJxbThwz6rgCxZaNR+EcT2lByp9DqAA/BHZ+is7+83lLCGLMZWOASoIqevKCfGD9STufG9nnhrRVxfc82MkrJQ524qD2bM9lFCpGlLuvC8k5+7IhFkia/nQ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213917; c=relaxed/simple;
-	bh=dKryqYESpxFWyA2Zj2UpthW7AqliIHtATpp4UuawvsQ=;
+	s=arc-20240116; t=1756215284; c=relaxed/simple;
+	bh=ikvB/gZuqZ7Z3Prj5WBKiiDF3R4tBpfr6OgFWmzfUfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ew0kQaQga7YPJw5I9oPDoHX7hSNwrB5uDoNylrWK1VId+M23w1d8D+4id60HzjeQhRG9nUxgxMA/2Q9znPkjcYlbGgPqKSQhxa4TCuaADw2sG39tD74OXim7Xi/pZHFxe8mCrXA2Qw2BqVDjt91Z84agpWns7bRv25Ars709b3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTVDkmjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C90EC116B1;
-	Tue, 26 Aug 2025 13:11:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nUDvGMnJEv7FN2oGu5gPy5kzDxeAS/WUgLjudPT2PRvmFIFL6sq9k+5H4+JSvwpJITYuxLQEgcCng6O3JeXjhh3ZL82ptW116PXao/vEKyFFLpdSwJrS+hqzmOILKBkQd95ICSB7IFQ09/0+NStzKf4bKpytX7q9J+H3Bc/e26U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUZgCO7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC829C4CEF1;
+	Tue, 26 Aug 2025 13:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213917;
-	bh=dKryqYESpxFWyA2Zj2UpthW7AqliIHtATpp4UuawvsQ=;
+	s=korg; t=1756215284;
+	bh=ikvB/gZuqZ7Z3Prj5WBKiiDF3R4tBpfr6OgFWmzfUfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTVDkmjvspuZpmROQ+YMnCCG6vWrIVmyC4Z25x+Fy3INIDKLogSFFj6TH+8I2kvwX
-	 J805M8CBSAuxRxGhybFEDJ6CtHXv+iHXF6Nu43y99aY4/0LpHoOkAUMNR5KSbfCqDl
-	 9x8UdTSQPf2sk6BqJi4os+JuBySlYbPxz6khVepY=
+	b=zUZgCO7S4ki9wKRCuGA6DmqTEtFN4J5Jwu4VEuk8SqulGO1Cf3XTk/nb79MnK8ngl
+	 wLhWylgNCK1+FkTX4FSUxC/mvn6b8mZNu2x8EkwZC0yF/VJz3j7qr7eqfdukHovn9U
+	 VMmgFquLuvgclB9HZM7x29hdqX6cPZuvT0H++Obw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Akash M <akash.m5@samsung.com>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.6 529/587] usb: dwc3: Remove WARN_ON for device endpoint command timeouts
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 425/482] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
 Date: Tue, 26 Aug 2025 13:11:18 +0200
-Message-ID: <20250826111006.459447424@linuxfoundation.org>
+Message-ID: <20250826110941.327995691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 45eae113dccaf8e502090ecf5b3d9e9b805add6f upstream.
+[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
 
-This commit addresses a rarely observed endpoint command timeout
-which causes kernel panic due to warn when 'panic_on_warn' is enabled
-and unnecessary call trace prints when 'panic_on_warn' is disabled.
-It is seen during fast software-controlled connect/disconnect testcases.
-The following is one such endpoint command timeout that we observed:
+On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
+and in this case the driver ends up programming the UTRL_NEXUS_TYPE
+incorrectly as 0.
 
-1. Connect
-   =======
-->dwc3_thread_interrupt
- ->dwc3_ep0_interrupt
-  ->configfs_composite_setup
-   ->composite_setup
-    ->usb_ep_queue
-     ->dwc3_gadget_ep0_queue
-      ->__dwc3_gadget_ep0_queue
-       ->__dwc3_ep0_do_control_data
-        ->dwc3_send_gadget_ep_cmd
+This is because the left hand side of the shift is 1, which is of type
+int, i.e. 31 bits wide. Shifting by more than that width results in
+undefined behaviour.
 
-2. Disconnect
-   ==========
-->dwc3_thread_interrupt
- ->dwc3_gadget_disconnect_interrupt
-  ->dwc3_ep0_reset_state
-   ->dwc3_ep0_end_control_data
-    ->dwc3_send_gadget_ep_cmd
+Fix this by switching to the BIT() macro, which applies correct type
+casting as required. This ensures the correct value is written to
+UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
+warning:
 
-In the issue scenario, in Exynos platforms, we observed that control
-transfers for the previous connect have not yet been completed and end
-transfer command sent as a part of the disconnect sequence and
-processing of USB_ENDPOINT_HALT feature request from the host timeout.
-This maybe an expected scenario since the controller is processing EP
-commands sent as a part of the previous connect. It maybe better to
-remove WARN_ON in all places where device endpoint commands are sent to
-avoid unnecessary kernel panic due to warn.
+    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
+    shift exponent 32 is too large for 32-bit type 'int'
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250808125315.1607-1-selvarasu.g@samsung.com
+For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
+write.
+
+Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Adapted context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/ep0.c    |   20 ++++++++++++++++----
- drivers/usb/dwc3/gadget.c |   10 ++++++++--
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/ufs/host/ufs-exynos.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -288,7 +288,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc
- 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
- 			DWC3_TRBCTL_CONTROL_SETUP, false);
- 	ret = dwc3_ep0_start_trans(dep);
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_err(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
-+
- 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
- 		struct dwc3_ep *dwc3_ep;
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1028,8 +1028,8 @@ static int exynos_ufs_post_link(struct u
+ 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
+ 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
+ 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
+-	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
+-	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
  
-@@ -1061,7 +1063,9 @@ static void __dwc3_ep0_do_control_data(s
- 		ret = dwc3_ep0_start_trans(dep);
- 	}
- 
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_err(dwc->dev,
-+			"ep0 data phase start transfer failed: %d\n", ret);
- }
- 
- static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
-@@ -1078,7 +1082,12 @@ static int dwc3_ep0_start_control_status
- 
- static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
- {
--	WARN_ON(dwc3_ep0_start_control_status(dep));
-+	int	ret;
-+
-+	ret = dwc3_ep0_start_control_status(dep);
-+	if (ret)
-+		dev_err(dwc->dev,
-+			"ep0 status phase start transfer failed: %d\n", ret);
- }
- 
- static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
-@@ -1121,7 +1130,10 @@ void dwc3_ep0_end_control_data(struct dw
- 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
- 	memset(&params, 0, sizeof(params));
- 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
--	WARN_ON_ONCE(ret);
-+	if (ret)
-+		dev_err_ratelimited(dwc->dev,
-+			"ep0 data phase end transfer failed: %d\n", ret);
-+
- 	dep->resource_index = 0;
- }
- 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1765,7 +1765,11 @@ static int __dwc3_stop_active_transfer(s
- 		dep->flags |= DWC3_EP_DELAY_STOP;
- 		return 0;
- 	}
--	WARN_ON_ONCE(ret);
-+
-+	if (ret)
-+		dev_err_ratelimited(dep->dwc->dev,
-+				"end transfer failed: %d\n", ret);
-+
- 	dep->resource_index = 0;
- 
- 	if (!interrupt)
-@@ -4045,7 +4049,9 @@ static void dwc3_clear_stall_all_ep(stru
- 		dep->flags &= ~DWC3_EP_STALL;
- 
- 		ret = dwc3_send_clear_stall_ep_cmd(dep);
--		WARN_ON_ONCE(ret);
-+		if (ret)
-+			dev_err_ratelimited(dwc->dev,
-+				"failed to clear STALL on %s\n", dep->name);
- 	}
- }
- 
+ 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
 
 
 
