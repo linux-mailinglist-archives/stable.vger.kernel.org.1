@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-174420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAB4B3633D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5932B3608E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423F18A8114
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184007C79EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5593451B0;
-	Tue, 26 Aug 2025 13:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652751DE4F6;
+	Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdrIF7y9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVmtH59b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B7C343D83;
-	Tue, 26 Aug 2025 13:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E11B0420;
+	Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214342; cv=none; b=MjZvlG0MlU49oDEuFVNRn28+1ORTDCbiLnhDZN/ttszwaJiUC8kuzAUf4BtPdKbyDpAWaLvfK3EP20UMmaG2jFxX697LcjVmpce1rVW7kIbi5X9/+afB8Db2ZaaxsT41H8pgsmBDFGYX3yNJ7iNJhScsnCJvNjLtB72R0QbfAsk=
+	t=1756213064; cv=none; b=dCnShr+b/z07FOGc+R0c4LaHRn6ja0a3MimGRgBGuk09CUZhf6s3e1kY7MmGIvid/xEPSw84AaC0rsBC7YAenZFRqd78CUNt1zNGzyllqlU7OMoZG42YEaLxPb/yqzO/vKi2SAmS1D16F/7NOa4DH5z+ZSucOnz4vlZcVYIoBw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214342; c=relaxed/simple;
-	bh=Xg0j9SSpv/Dh6PfgpTaLUk/va4Bat8wCK96fW4sfzsU=;
+	s=arc-20240116; t=1756213064; c=relaxed/simple;
+	bh=guvfyCVATM+ek7F70VHSEvUEz+NQa8vrAwk2vz6K1sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/K1Yzm0X8dURsCgC6whp1eedByiISbxFMjrYckq9nLLDb3g8L1lfbEh8iBHbUATBNhTbCuGI5Wne5zn56hGLYE8ZqA4dSIu4Gx7KKGpL4h6jlyeeDDNJpDhbSlYdhTIzR0BkXFQHtDx69dHABTQnNUnEMVujUJLakr6QpxvsEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdrIF7y9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42BDC4CEF1;
-	Tue, 26 Aug 2025 13:19:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NaxW+N2RfsDlRfYnwCJil6XPOdRCdqvXHvriFOy6HobC+j8X7XbdbRs+b1aI7yA6hvB388Z/RGBDQRFiKZP9hLZL2o1FHWPAyEpkPajfqj30rNS1hRnr8ug4ZiXnGpJfTFhvOh6ZCYAW9ByS3G+NzX0NWxbswbliNQGWSmMuwa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVmtH59b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81C2C4CEF1;
+	Tue, 26 Aug 2025 12:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214342;
-	bh=Xg0j9SSpv/Dh6PfgpTaLUk/va4Bat8wCK96fW4sfzsU=;
+	s=korg; t=1756213064;
+	bh=guvfyCVATM+ek7F70VHSEvUEz+NQa8vrAwk2vz6K1sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdrIF7y9STniEvWzcjvotuHvliMHZXmWQjXTviIXKte3ta7Jdv1rsQVXjE7+qlCLt
-	 kHrWFQkAn7dVo8q0fMYQpNbacmUEd1mpu5EkQIN7DlhIcpED/sV51aApiP2pFqAU6C
-	 4YcLK11qwoUNJBQ8j9fsXg76A3Ee/AEA4RuMgUZc=
+	b=LVmtH59bPUUZ+41bpXE3Je4aXGfuHpaJDZg2Yq+BMILW6H+Pld4hC6U0g5SLWg/zh
+	 iSuA5eqzl5I7IPxmGsw4vQSs4biw1msANODPjELy8cVZAAYqvjoXp0C2UPHi8ymlxD
+	 i3S+AreaW7sa//cvvf2yca/2xJv/t3Eo8yOlpfRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Emily Deng <Emily.Deng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/482] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
-Date: Tue, 26 Aug 2025 13:05:55 +0200
-Message-ID: <20250826110933.349669582@linuxfoundation.org>
+Subject: [PATCH 6.6 207/587] drm/ttm: Should to return the evict error
+Date: Tue, 26 Aug 2025 13:05:56 +0200
+Message-ID: <20250826110958.203662771@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
+[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
 
-snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
-leads to null pointer dereference.
-This was reproduced with topology loading and marking a link as ignore
-due to missing hardware component on the system.
-On module removal the soc_tplg_remove_link() would call
-snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
-no runtime was created.
+For the evict fail case, the evict error should be returned.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: Consider ENOENT case.
+
+v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
+ and not wait for the move to finish
+
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
+ drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index b13370d2ec1d..1ff7a0b0a236 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -937,6 +937,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
- void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
- 				struct snd_soc_pcm_runtime *rtd)
- {
-+	if (!rtd)
-+		return;
-+
- 	lockdep_assert_held(&client_mutex);
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 46ff9c75bb12..8f2423a15c71 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -437,6 +437,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
+ 	}
+ 	spin_unlock(&bdev->lru_lock);
  
- 	/* release machine specific resources */
++	if (ret && ret != -ENOENT)
++		return ret;
++
+ 	spin_lock(&man->move_lock);
+ 	fence = dma_fence_get(man->move);
+ 	spin_unlock(&man->move_lock);
 -- 
 2.39.5
 
