@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF71B3646F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB043B36888
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F131BC6689
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4099D9837D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCF1341678;
-	Tue, 26 Aug 2025 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D674352FED;
+	Tue, 26 Aug 2025 13:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTk0hQVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMkOn56l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137C51E51E1;
-	Tue, 26 Aug 2025 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3C5352FDA;
+	Tue, 26 Aug 2025 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215035; cv=none; b=rrqcGTfWrTxJjWmGETBEzgPJTar8si5OyzEJOyZsZ4C49Z8o6Vh07JAlfkX+p8st7+SLWEa2HGS+exR8jY/er5FijgEBEvbu3/y19QO9nSFV+MfY8suhoYsr3vsaf59GanekaFcyLZUwfO6bxILk2Vsd4EcydFJ+c+46gQ5Fj0o=
+	t=1756216740; cv=none; b=MureYTvfQAXatgDWvQTYzDJ2kcAZNE+s8xTw9gcetb+G74tzC/clXn5TEf/S+7/EADXrf/rri8ctt6PqHmbg5EKRq4wPuWNO9Se5zUadTkyM/VQmYG75u1cvkbzoK2i3EJBEpGhqWVVjr4okd+fpLK1K/u4tHOShE/sjnTV8qRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215035; c=relaxed/simple;
-	bh=CX5iv2JKSClvucK/ZtX7NjIl5J235n0YWXMZb23sfzc=;
+	s=arc-20240116; t=1756216740; c=relaxed/simple;
+	bh=Ug3iAEl6GWF3A7iRDDSDMpiu7W+uUSZ73/IaVND/IqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cP5ivaGeRoBnaa8/N0Cx3CmFaM30s3a2fncncSWtmQ/m/vWYDETfp0s5OSGicxF61h7kGw9piCScSDrZW+eyNhHALtugBb6iuhqTkZK+SD8B94tZaiySWfsLvL9DkTIki81u2j++bX1tgJKsL52QvgJTy8FJ3jZQ7DJjoBB68w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTk0hQVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966E6C4CEF1;
-	Tue, 26 Aug 2025 13:30:34 +0000 (UTC)
+	 MIME-Version; b=r/XJ6oV/5W7Xm9b3JMh+CsA+ZD0doyP2SxgWUooa7CZK+SW07sBGEiUUw8PvY6PlOUWuzAqC8toq+AGe5vrQevRQsXIDIGfWs5XLQru0RerTMQUrLRmX4Q4N8FMfsjd+tdllxvoWqJoO/Dj/2bvENV1ZLBV8YT0NTlgvFd0gVuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMkOn56l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCE0C4CEF1;
+	Tue, 26 Aug 2025 13:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215035;
-	bh=CX5iv2JKSClvucK/ZtX7NjIl5J235n0YWXMZb23sfzc=;
+	s=korg; t=1756216739;
+	bh=Ug3iAEl6GWF3A7iRDDSDMpiu7W+uUSZ73/IaVND/IqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTk0hQVi/qtsj+m4RDtfOp9Ez0NDawJT1ENoOWLyrd5AxbUBVooKS+yIUi+g8SKxN
-	 6i8DvXzuusjVnR9JeIXdVMUP/oQ/Xngyr4mkwrPJjbF5wtHo8c6PkQLWEgaACilIy4
-	 mDGMWT2n2F0CjTBl7LhM5GblCv1FG+Sy4TeUQxeE=
+	b=GMkOn56lhcCNvmGONZpIunqAb6hSALyzBcMAdE5bdr5OQgqMsu5QYbTCNyk2rdpIN
+	 CYUOXYM5dhnnyXGNXyNhKh7gJC7t8yEjiqLbRggzYSyzPscI6zyYa06SdjNG4pwLy8
+	 8bQ1EvV4nQQ0eUwX/KzOSmbLTOMpiuTnFfJ68Mvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	stable <stable@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 363/482] btrfs: send: use fallocate for hole punching with send stream v2
+Subject: [PATCH 5.15 525/644] usb: typec: fusb302: cache PD RX state
 Date: Tue, 26 Aug 2025 13:10:16 +0200
-Message-ID: <20250826110939.802451368@linuxfoundation.org>
+Message-ID: <20250826110959.519507270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit 005b0a0c24e1628313e951516b675109a92cacfe ]
+[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
 
-Currently holes are sent as writes full of zeroes, which results in
-unnecessarily using disk space at the receiving end and increasing the
-stream size.
+This patch fixes a race condition communication error, which ends up in
+PD hard resets when losing the race. Some systems, like the Radxa ROCK
+5B are powered through USB-C without any backup power source and use a
+FUSB302 chip to do the PD negotiation. This means it is quite important
+to avoid hard resets, since that effectively kills the system's
+power-supply.
 
-In some cases we avoid sending writes of zeroes, like during a full
-send operation where we just skip writes for holes.
+I've found the following race condition while debugging unplanned power
+loss during booting the board every now and then:
 
-But for some cases we fill previous holes with writes of zeroes too, like
-in this scenario:
+1. lots of TCPM/FUSB302/PD initialization stuff
+2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
+3. the remote PD source does not send anything, so TCPM does a SOFT RESET
+4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
+   (tcpm_set_pd_rx is enabled again, even though it is still on)
 
-1) We have a file with a hole in the range [2M, 3M), we snapshot the
-   subvolume and do a full send. The range [2M, 3M) stays as a hole at
-   the receiver since we skip sending write commands full of zeroes;
+At this point I've seen broken CRC good messages being send by the
+FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
+messages are being lost and things generally going haywire with one of
+the two sides doing a hard reset once a broken CRC good message was send
+to the bus.
 
-2) We punch a hole for the range [3M, 4M) in our file, so that now it
-   has a 2M hole in the range [2M, 4M), and snapshot the subvolume.
-   Now if we do an incremental send, we will send write commands full
-   of zeroes for the range [2M, 4M), removing the hole for [2M, 3M) at
-   the receiver.
+I think the system is running into a race condition, that the FIFOs are
+being cleared and/or the automatic good CRC message generation flag is
+being updated while a message is already arriving.
 
-We could improve cases such as this last one by doing additional
-comparisons of file extent items (or their absence) between the parent
-and send snapshots, but that's a lot of code to add plus additional CPU
-and IO costs.
+Let's avoid this by caching the PD RX enabled state, as we have already
+processed anything in the FIFOs and are in a good state. As a side
+effect that this also optimizes I2C bus usage :)
 
-Since the send stream v2 already has a fallocate command and btrfs-progs
-implements a callback to execute fallocate since the send stream v2
-support was added to it, update the kernel to use fallocate for punching
-holes for V2+ streams.
+As far as I can tell the problem theoretically also exists when TCPM
+enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
+critical for the following reason:
 
-Test coverage is provided by btrfs/284 which is a version of btrfs/007
-that exercises send stream v2 instead of v1, using fsstress with random
-operations and fssum to verify file contents.
+On devices like the ROCK 5B, which are powered through a TCPM backed
+USB-C port, the bootloader must have done some prior PD communication
+(initial communication must happen within 5 seconds after plugging the
+USB-C plug). This means the first time the kernel TCPM state machine
+reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
+actively. On other devices a hard reset simply adds some extra delay and
+things should be good afterwards.
 
-Link: https://github.com/kdave/btrfs-progs/issues/1001
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Replaced get_cur_inode_path() with fs_path_alloc() and get_cur_path() ]
+Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ replaced str_on_off(on) with ternary operator ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |   39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <linux/bsearch.h>
-+#include <linux/falloc.h>
- #include <linux/fs.h>
- #include <linux/file.h>
- #include <linux/sort.h>
-@@ -5231,6 +5232,36 @@ out:
- 	return ret;
- }
- 
-+static int send_fallocate(struct send_ctx *sctx, u32 mode, u64 offset, u64 len)
-+{
-+	struct fs_path *p;
-+	int ret;
-+
-+	p = fs_path_alloc();
-+	if (!p)
-+		return -ENOMEM;
-+
-+	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = begin_cmd(sctx, BTRFS_SEND_C_FALLOCATE);
-+	if (ret < 0)
-+		goto out;
-+
-+	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
-+	TLV_PUT_U32(sctx, BTRFS_SEND_A_FALLOCATE_MODE, mode);
-+	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
-+	TLV_PUT_U64(sctx, BTRFS_SEND_A_SIZE, len);
-+
-+	ret = send_cmd(sctx);
-+
-+tlv_put_failure:
-+out:
-+	fs_path_free(p);
-+	return ret;
-+}
-+
- static int send_hole(struct send_ctx *sctx, u64 end)
- {
- 	struct fs_path *p = NULL;
-@@ -5239,6 +5270,14 @@ static int send_hole(struct send_ctx *sc
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -103,6 +103,7 @@ struct fusb302_chip {
+ 	bool vconn_on;
+ 	bool vbus_on;
+ 	bool charge_on;
++	bool pd_rx_on;
+ 	bool vbus_present;
+ 	enum typec_cc_polarity cc_polarity;
+ 	enum typec_cc_status cc1;
+@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
  	int ret = 0;
  
- 	/*
-+	 * Starting with send stream v2 we have fallocate and can use it to
-+	 * punch holes instead of sending writes full of zeroes.
-+	 */
-+	if (proto_cmd_ok(sctx, BTRFS_SEND_C_FALLOCATE))
-+		return send_fallocate(sctx, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+				      offset, end - offset);
+ 	mutex_lock(&chip->lock);
++	if (chip->pd_rx_on == on) {
++		fusb302_log(chip, "pd is already %s", on ? "on" : "off");
++		goto done;
++	}
 +
-+	/*
- 	 * A hole that starts at EOF or beyond it. Since we do not yet support
- 	 * fallocate (for extent preallocation and hole punching), sending a
- 	 * write of zeroes starting at EOF or beyond would later require issuing
+ 	ret = fusb302_pd_rx_flush(chip);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
+@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 			    on ? "on" : "off", ret);
+ 		goto done;
+ 	}
++
++	chip->pd_rx_on = on;
+ 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
+ done:
+ 	mutex_unlock(&chip->lock);
 
 
 
