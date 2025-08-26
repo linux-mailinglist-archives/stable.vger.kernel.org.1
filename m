@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9DAB35BB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2A7B36926
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F541179F0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B910C5842FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572D322A03;
-	Tue, 26 Aug 2025 11:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE0C352090;
+	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPL5wAOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH6QVcKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DB721D00E;
-	Tue, 26 Aug 2025 11:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A78E352074;
+	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207216; cv=none; b=uJfSvx0I8wRqO+6hgrx+EFxNWZKytBTnvwkGjIoC03AQhLXNRwABMr5TRriVXk8s0QwcIygVJuM7GDzI+RtOWAJt1d1sas6Z4ld24ElzlR7Wi5F2FEgjfvHUjzNXdKP9MCKWf6R/6Ua1EkcfLDZoKsYoZRbe81anLUMFgtfVbfc=
+	t=1756217593; cv=none; b=mhTYLvebSYko9kvYsK4/gFx3gvc24tdEPCrJA3G9b4V1HbF2L3m2GwPezKUQ8TdUoWxHaCgSMtOQQcnKQMe0mZOoggFsL+mbwY2HcBDmtbGmh+3Jt/qwlsaVvs4lVdBgOIi42dWx9aieP0u9T1M6VbJ7Nr20KL+S/SLqlnBkXGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207216; c=relaxed/simple;
-	bh=/sY/2tpCN6npTnUy18LW9l8yytKwSGP9G4A83O7+x9Q=;
+	s=arc-20240116; t=1756217593; c=relaxed/simple;
+	bh=TyanilUoJldmfHhOhg33Tk5SkKrpKU/0O1AoDP2FycE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMcfW21FPOVEe9NW7xaLwJIvbTtkEG4b1nyOgmcs69d43LIxMc+VdxG1nuNaSmjUIxeO98ecn3/jM/+UjxftnSAZF/WRUOoVzMozuMhE2wQQArIprQ4dJ8rsh0+yyQoTgMqR4NTIwTJPHsvZNth7Jqc7BOpxqsZ+ZU8Ulx/iwJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPL5wAOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A20FC4CEF1;
-	Tue, 26 Aug 2025 11:20:15 +0000 (UTC)
+	 MIME-Version; b=ifEVj6w34jQL5UTjvsqrmdkdzInzgLtXVxykU1dboXArRbaAQgxJYuHNyixdMzEaFue52oaQsDvH+L2vP+Bx0tPCUHmq25D+8f44Xm+eJJg23EFoPh19icF4aMlgRu2T59kUkzTYGLvP6xDm1SQ9IBfCSyKH45OwqiNLzDjhECE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH6QVcKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02DC4CEF1;
+	Tue, 26 Aug 2025 14:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207216;
-	bh=/sY/2tpCN6npTnUy18LW9l8yytKwSGP9G4A83O7+x9Q=;
+	s=korg; t=1756217593;
+	bh=TyanilUoJldmfHhOhg33Tk5SkKrpKU/0O1AoDP2FycE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPL5wAOB001IyppZ8tuNZSv5/4zsz4UuTyJTKv9ecFwLzxJpefnOjSF2mvimgo4xY
-	 gClD0KgKfVMEHclg6jUIO0jaiqsai2BrE3sc9kA+6IOC1VHdrH3qfVKdL+TxHBpV69
-	 DnG2rVpAD+qJUI6h393GxLOuDi89ZEE78hVWSdDM=
+	b=UH6QVcKeiwpHifMaqOFCVHdYtX6OeuKCcFxrmjxhgFuc2HNq4N/ojn383/i1f758R
+	 Kkpwl/LC7/5MHXNaMZvigKmeRR6AxUl6DtEldzIw3oT34iyQmmulvxf8pJKLbQtOsV
+	 B4nIJ7M0uTbKpb52qJrZNzS7M27oBldPuuIjSlC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
-	Jan Kara <jack@suse.cz>,
-	Josef Bacik <josef@toxicpanda.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 096/457] readahead: fix return value of page_cache_next_miss() when no hole is found
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 170/523] NFSv4.2: another fix for listxattr
 Date: Tue, 26 Aug 2025 13:06:20 +0200
-Message-ID: <20250826110939.749740107@linuxfoundation.org>
+Message-ID: <20250826110928.660810696@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-commit bbcaee20e03ecaeeecba32a703816a0d4502b6c4 upstream.
+[ Upstream commit 9acb237deff7667b0f6b10fe6b1b70c4429ea049 ]
 
-max_scan in page_cache_next_miss always decreases to zero when no hole is
-found, causing the return value to be index + 0.
+Currently, when the server supports NFS4.1 security labels then
+security.selinux label in included twice. Instead, only add it
+when the server doesn't possess security label support.
 
-Fix this by preserving the max_scan value throughout the loop.
-
-Jan said "From what I know and have seen in the past, wrong responses
-from page_cache_next_miss() can lead to readahead window reduction and
-thus reduced read speeds."
-
-Link: https://lkml.kernel.org/r/20250605054935.2323451-1-chizhiling@163.com
-Fixes: 901a269ff3d5 ("filemap: fix page_cache_next_miss() when no hole found")
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 243fea134633 ("NFSv4.2: fix listxattr to return selinux security label")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Link: https://lore.kernel.org/r/20250722205641.79394-1-okorniev@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1778,8 +1778,9 @@ pgoff_t page_cache_next_miss(struct addr
- 			     pgoff_t index, unsigned long max_scan)
- {
- 	XA_STATE(xas, &mapping->i_pages, index);
-+	unsigned long nr = max_scan;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 77cc1c4219e1..97b5ff9c5c3e 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10378,7 +10378,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
  
--	while (max_scan--) {
-+	while (nr--) {
- 		void *entry = xas_next(&xas);
- 		if (!entry || xa_is_value(entry))
- 			return xas.xa_index;
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ {
+-	ssize_t error, error2, error3, error4;
++	ssize_t error, error2, error3, error4 = 0;
+ 	size_t left = size;
+ 
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10406,9 +10406,11 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 		left -= error3;
+ 	}
+ 
+-	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
+-	if (error4 < 0)
+-		return error4;
++	if (!nfs_server_capable(d_inode(dentry), NFS_CAP_SECURITY_LABEL)) {
++		error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++		if (error4 < 0)
++			return error4;
++	}
+ 
+ 	error += error2 + error3 + error4;
+ 	if (size && error > size)
+-- 
+2.39.5
+
 
 
 
