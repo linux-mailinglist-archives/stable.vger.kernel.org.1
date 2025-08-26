@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D78B35C86
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CC6B36529
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A993B442B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B16467354
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F71F321F30;
-	Tue, 26 Aug 2025 11:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E782F60C1;
+	Tue, 26 Aug 2025 13:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAu5BvnE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxR3+Tkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F5D23D7FA;
-	Tue, 26 Aug 2025 11:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC50224B09;
+	Tue, 26 Aug 2025 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207985; cv=none; b=NryzSm/fHsMPc+LeUVc1/UCcvihxIldDlpOsKVgboz9MAGzStE38GzW1W+r47jmdQD6yLpwCecJUnvIuz/sVbjlA69FBCNwpBJ+dNT4U2K13eDrPuQ1KjvAWifDp1wyt9L3hH8FdAUsRuJFFx6H95WENYm9pNPcUtnLp0FrStC4=
+	t=1756215202; cv=none; b=RXlKC25573nliMsRW6whqnMHd39MAa2Wdx7NBT1/U0QCgiMD9IMEefburrgONwrF+GWpvAOv9nbKvy8d+i38uqnaYJ+7A+rjxvZokMhszXbdK19Dd1WclgH8R4DPz176kmDuj0HodPzJfzs6SDYQ6glf9oHqfZIwfmaGkUzj1JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207985; c=relaxed/simple;
-	bh=vMGhdW61XTeLYLLaEPekexlxdrR3PLgSvV9RCCLxV5E=;
+	s=arc-20240116; t=1756215202; c=relaxed/simple;
+	bh=NwNPQUlewldiqjQXkyOvDQ7VwfXfRiACkNiBRrrgufw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMCtL5z7Hz30Gd4v0LT6o+dz9uowp5X/3oiFBwRTt01n/i+pO3455dBVa//VIq9SHb56TfrjKpFzpiwFwLrwZEFpSGIBwtjKAiNnCEuVUN6bdDJL8k9scKkWQGAwsvPeWq8z8XQkTp0vItPHxUPO0OzZUaalUKwIOzOd+TTOUIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAu5BvnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7276EC4CEF1;
-	Tue, 26 Aug 2025 11:33:04 +0000 (UTC)
+	 MIME-Version; b=DAKyMF1KTw4noMKr2PzNCRzHyQV+XNPNUyQXX0Q/NIr0XJ77I/XOsCISF3jQRbFL9GhcL6zfn9/v8mOsuN63nUIej1gTBqNR9+2DXAKklvyK/B7epOPoNNdmlCcANJEYjDgIdX2G85eE/YfqqCGlnaC8/0M9xkj3jyHdNkg9rtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxR3+Tkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B13C4CEF1;
+	Tue, 26 Aug 2025 13:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207984;
-	bh=vMGhdW61XTeLYLLaEPekexlxdrR3PLgSvV9RCCLxV5E=;
+	s=korg; t=1756215201;
+	bh=NwNPQUlewldiqjQXkyOvDQ7VwfXfRiACkNiBRrrgufw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAu5BvnE2GchHKlIBDRtpt0ywtI9fnBQc/1huECp4lXtY7GoTewQZJa6A6ySlrR0/
-	 bAkPu8/CFm/Vk+D1tJ1lpSl7ZUk/GoMMSPndo73grQWBrkV66ciCuc7wlFJhm34pp7
-	 NYXIEegT78q51jxt80Ajo/x8NiId/AELXkuZF6G8=
+	b=fxR3+TkfBFraWGpr2HvdeZeIWcjVmiWwCkC9jBLzVKLVuXRgRpIG8J6wOuFR6e4Ep
+	 9XAioazNZ+mpKStWCoKySgqzfx5c7A8GOP7JxhUAYeS3/j7NOCakryw+4nr5N7rcl/
+	 Z3/tBYA2FKj+L4SuYPTUwJPUgDUFosJ/bpjh9Dtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 394/457] regulator: pca9450: Use devm_register_sys_off_handler
-Date: Tue, 26 Aug 2025 13:11:18 +0200
-Message-ID: <20250826110947.032210009@linuxfoundation.org>
+Subject: [PATCH 6.1 426/482] ext4: preserve SB_I_VERSION on remount
+Date: Tue, 26 Aug 2025 13:11:19 +0200
+Message-ID: <20250826110941.353282496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 447be50598c05499f7ccc2b1f6ddb3da30f8099a ]
+[ Upstream commit f2326fd14a224e4cccbab89e14c52279ff79b7ec ]
 
-With module test, there is error dump:
-------------[ cut here ]------------
-  notifier callback pca9450_i2c_restart_handler already registered
-  WARNING: kernel/notifier.c:23 at notifier_chain_register+0x5c/0x88,
-  CPU#0: kworker/u16:3/50
-  Call trace:
-  notifier_chain_register+0x5c/0x88 (P)
-  atomic_notifier_chain_register+0x30/0x58
-  register_restart_handler+0x1c/0x28
-  pca9450_i2c_probe+0x418/0x538
-  i2c_device_probe+0x220/0x3d0
-  really_probe+0x114/0x410
-  __driver_probe_device+0xa0/0x150
-  driver_probe_device+0x40/0x114
-  __device_attach_driver+0xd4/0x12c
+IMA testing revealed that after an ext4 remount, file accesses triggered
+full measurements even without modifications, instead of skipping as
+expected when i_version is unchanged.
 
-So use devm_register_sys_off_handler to let kernel handle the resource
-free to avoid kernel dump.
+Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
+remount due to commit 1ff20307393e ("ext4: unconditionally enable the
+i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
+i_version handling on remount").
 
-Fixes: 6157e62b07d9 ("regulator: pca9450: Add restart handler")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20250815-pca9450-v1-1-7748e362dc97@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
+ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
+ensuring it persists across all mounts.
+
+Cc: stable@kernel.org
+Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/pca9450-regulator.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ fs/ext4/super.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index 14d19a6d6655..49ff762eb33e 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -34,7 +34,6 @@ struct pca9450 {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	struct gpio_desc *sd_vsel_gpio;
--	struct notifier_block restart_nb;
- 	enum pca9450_chip_type type;
- 	unsigned int rcnt;
- 	int irq;
-@@ -967,10 +966,9 @@ static irqreturn_t pca9450_irq_handler(int irq, void *data)
- 	return IRQ_HANDLED;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1937,6 +1937,9 @@ int ext4_init_fs_context(struct fs_conte
+ 	fc->fs_private = ctx;
+ 	fc->ops = &ext4_context_ops;
+ 
++	/* i_version is always enabled now */
++	fc->sb_flags |= SB_I_VERSION;
++
+ 	return 0;
  }
  
--static int pca9450_i2c_restart_handler(struct notifier_block *nb,
--				unsigned long action, void *data)
-+static int pca9450_i2c_restart_handler(struct sys_off_data *data)
- {
--	struct pca9450 *pca9450 = container_of(nb, struct pca9450, restart_nb);
-+	struct pca9450 *pca9450 = data->cb_data;
- 	struct i2c_client *i2c = container_of(pca9450->dev, struct i2c_client, dev);
+@@ -5113,9 +5116,6 @@ static int __ext4_fill_super(struct fs_c
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
  
- 	dev_dbg(&i2c->dev, "Restarting device..\n");
-@@ -1128,10 +1126,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
- 	pca9450->sd_vsel_fixed_low =
- 		of_property_read_bool(ldo5->dev.of_node, "nxp,sd-vsel-fixed-low");
- 
--	pca9450->restart_nb.notifier_call = pca9450_i2c_restart_handler;
--	pca9450->restart_nb.priority = PCA9450_RESTART_HANDLER_PRIORITY;
+-	/* i_version is always enabled now */
+-	sb->s_flags |= SB_I_VERSION;
 -
--	if (register_restart_handler(&pca9450->restart_nb))
-+	if (devm_register_sys_off_handler(&i2c->dev, SYS_OFF_MODE_RESTART,
-+					  PCA9450_RESTART_HANDLER_PRIORITY,
-+					  pca9450_i2c_restart_handler, pca9450))
- 		dev_warn(&i2c->dev, "Failed to register restart handler\n");
+ 	if (ext4_check_feature_compatibility(sb, es, silent))
+ 		goto failed_mount;
  
- 	dev_info(&i2c->dev, "%s probed.\n",
--- 
-2.50.1
-
 
 
 
