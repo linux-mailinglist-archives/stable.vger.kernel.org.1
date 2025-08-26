@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1A8B36BBA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7306EB3606D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8981C47C71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1AC5189B1C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B834DCCA;
-	Tue, 26 Aug 2025 14:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA711F461D;
+	Tue, 26 Aug 2025 12:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsKbEPIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkmgAiYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C94922370D;
-	Tue, 26 Aug 2025 14:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3F51F1534;
+	Tue, 26 Aug 2025 12:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218481; cv=none; b=tcrf3PDajestxuL5Pg4NB1m8UBldNml/hLeBdSGUUftSy1/5V+4HY6f8V7YDTbjALzMpqFhC7tR9tXfIQzEPi2/NJ44d7p44pZYr3tbSNQwMNFhCZssU+50Lsg+LzulQRM1+I7TBhgFJ7rE2y+Kfo9OJIXTteIlkvmzCUvIgcug=
+	t=1756213011; cv=none; b=KdJBoD6j/xPHnianRg7Uu2P6o8yidLS8hrOB9vuMVCOHOnA2Y3Avw4uJO5Vb4WOhU7m3iSexnKZbBT4/i7YNFuw1BepmkeVfKyLaWVYZ1rhSW2kdWO7XwDVo3kTl9KA4oK7QVMtIGfq8OCQFYT1SkjFDZZTagN/6xZeE/tpFryA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218481; c=relaxed/simple;
-	bh=YugG7wZhCZF9ipKlyyLTVEJtBrG1npLnMkjTlmU7TSE=;
+	s=arc-20240116; t=1756213011; c=relaxed/simple;
+	bh=EbPS1fczFAqZscfSbt9v4jh1T/otaUSpo0zGKIR/ENI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUec7wuJIPTJOFm3JzLgerRQ+MBfefWl1f1jB/V3CWh3eI/pps4IJjWqNK6Hw5t43PyTnXIGt8xOUdND3FPdhmdeBguO2jwXDixkd2yNmUS/Ta7rKcXC8u2H8pxTZsj87uzzakW+FjmyJ5kc/xk6JGBaeHXZZ+abksTH6w6TniI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsKbEPIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C526BC4CEF1;
-	Tue, 26 Aug 2025 14:28:00 +0000 (UTC)
+	 MIME-Version; b=cgQO3Z7sDFkl0xNRteDf4njRsDwdjAX6HAtYrtUMgJ7l7iW4ovN7W291j6YGwS8yChI9UxtYKnfqHR4dwpPK1faFUx78NBweR6RfUnh42SMkdxIhohgmKi2UUGlNaZr8ROtMKMxXTgS3h757USAyrddgEb+sZlyMYagqfLyb4HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkmgAiYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CAEC116B1;
+	Tue, 26 Aug 2025 12:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218481;
-	bh=YugG7wZhCZF9ipKlyyLTVEJtBrG1npLnMkjTlmU7TSE=;
+	s=korg; t=1756213011;
+	bh=EbPS1fczFAqZscfSbt9v4jh1T/otaUSpo0zGKIR/ENI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsKbEPIWD1UouMjy62MywNgg5VL2b9tplbytCulAvQ8Jbw/aLal0q3DArKkCDpWfr
-	 HRhqsip3vMGTVI0qTWRwJ6thXi8rO+B5qYGPWDHDFngQKrmyhEztYUdrS1YcNQXJH0
-	 YdTK0mEqV+pw4BHS0nAQMZJIypU2W5j+5DtsZ6xk=
+	b=lkmgAiYlKxjyRjTiV7m0+lfJ6RkGedHm6o/sz37rrxRYzLSyUnogVw5VY5XV+5wQJ
+	 Ooa+J4wWYuXZOtyVfJCaR6aMOEsmAIB/7CkDyHHsD8XOclowemS9MPRvfT96axgdNv
+	 dFTv/nlo2R4pkaqdpZq+4d7hE7elqlCruVEPL8kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 5.4 009/403] HID: core: ensure __hid_request reserves the report ID as the first byte
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 186/587] wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0
 Date: Tue, 26 Aug 2025 13:05:35 +0200
-Message-ID: <20250826110905.902489501@linuxfoundation.org>
+Message-ID: <20250826110957.674015804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-commit 0d0777ccaa2d46609d05b66ba0096802a2746193 upstream.
+[ Upstream commit b79742b84e16e41c4a09f3126436f39f36e75c06 ]
 
-The low level transport driver expects the first byte to be the report
-ID, even when the report ID is not use (in which case they just shift
-the buffer).
+The commit 89ac53e96217 ("wifi: ath12k: Enable REO queue lookup table
+feature on QCN9274") originally intended to enable the reoq_lut_support
+hardware parameter flag for both QCN9274 hw1.0 and hw2.0. However,
+it enabled it only for QCN9274 hw1.0.
 
-However, __hid_request() whas not offsetting the buffer it used by one
-in this case, meaning that the raw_request() callback emitted by the
-transport driver would be stripped of the first byte.
+Hence, enable REO queue lookup table feature on QCN9274 hw2.0.
 
-Note: this changes the API for uhid devices when a request is made
-through hid_hw_request. However, several considerations makes me think
-this is fine:
-- every request to a HID device made through hid_hw_request() would see
-  that change, but every request made through hid_hw_raw_request()
-  already has the new behaviour. So that means that the users are
-  already facing situations where they might have or not the first byte
-  being the null report ID when it is 0. We are making things more
-  straightforward in the end.
-- uhid is mainly used for BLE devices
-- uhid is also used for testing, but I don't see that change a big issue
-- for BLE devices, we can check which kernel module is calling
-  hid_hw_request()
-- and in those modules, we can check which are using a Bluetooth device
-- and then we can check if the command is used with a report ID or not.
-- surprise: none of the kernel module are using a report ID 0
-- and finally, bluez, in its function set_report()[0], does the same
-  shift if the report ID is 0 and the given buffer has a size > 0.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-[0] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/profiles/input/hog-lib.c#n879
-
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
-Reported-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8258d5439c49d4c35f43
-Tested-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
-Fixes: 4fa5a7f76cc7 ("HID: core: implement generic .request()")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250710-report-size-null-v2-2-ccf922b7c4e5@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250609-qcn9274-reoq-v1-1-a92c91abc9b9@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1723,7 +1723,7 @@ static struct hid_report *hid_get_report
- int __hid_request(struct hid_device *hid, struct hid_report *report,
- 		int reqtype)
- {
--	char *buf;
-+	char *buf, *data_buf;
- 	int ret;
- 	u32 len;
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index dafd7c34d746..97ed179be228 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -1002,7 +1002,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 		.download_calib = true,
+ 		.supports_suspend = false,
+ 		.tcl_ring_retry = true,
+-		.reoq_lut_support = false,
++		.reoq_lut_support = true,
+ 		.supports_shadow_regs = false,
  
-@@ -1731,10 +1731,17 @@ int __hid_request(struct hid_device *hid
- 	if (!buf)
- 		return -ENOMEM;
- 
-+	data_buf = buf;
- 	len = hid_report_len(report);
- 
-+	if (report->id == 0) {
-+		/* reserve the first byte for the report ID */
-+		data_buf++;
-+		len++;
-+	}
-+
- 	if (reqtype == HID_REQ_SET_REPORT)
--		hid_output_report(report, buf);
-+		hid_output_report(report, data_buf);
- 
- 	ret = hid->ll_driver->raw_request(hid, report->id, buf, len,
- 					  report->type, reqtype);
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9274),
+-- 
+2.39.5
+
 
 
 
