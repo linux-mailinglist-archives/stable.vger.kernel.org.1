@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-175340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6483B367C4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E21B0B35D65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93675804EC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 486AE4E408C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843E0341ABD;
-	Tue, 26 Aug 2025 13:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702AB2E267D;
+	Tue, 26 Aug 2025 11:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNPtnVgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPxphfiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42013374C4;
-	Tue, 26 Aug 2025 13:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACA631CA74;
+	Tue, 26 Aug 2025 11:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216776; cv=none; b=Gz0alZf7R4YEWAWoI4SOhOE36JUFrTgfqu9BZyzd2BExAUIq4UUYTdQNxVI1GzTOACe2p789Fy+bg1c4K+DLQz/P9Kdp8uX3WryKgktQ5NUvnrRI8tHcxTnSimpFcYXz1McWptihkJ99QMoq0DU+s5NJ4vTKWxlN6YdYIfjB8Dc=
+	t=1756208628; cv=none; b=Kg3Wiy9MiRaNhUpbTL6y6huuX6G+zqITOyXXrAkYIBXkf1XJaqI9Yhjq9senOduq0y2y51YoRrpCXYZJ6Od/oXKY13TGHZLRRHhmTavE/xUTI35AQUy5EMJ2dTjf2Iu0XktyQn4qIb7a7BXGT8gjfEClpdANej17xWdwEKH+8+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216776; c=relaxed/simple;
-	bh=jiKvGyENtt3ES68qtpryYq/23+VylirwhO44EjfRV64=;
+	s=arc-20240116; t=1756208628; c=relaxed/simple;
+	bh=qWLEXQ4w/HNTxxQIjMgSUpUf2Jqh+6svBDMksjax+vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1TH7z67jz9pc+MKkX9RA8wJwlQaM5VLLVpX74rdAbU5vpFVCsAwamZ+pnm49xu9udrlumj3CnDQZgk53tFTUgTRtQIZe7N+Nld4GF7iQcWHdt5IiSRlWmnVs0EVTODb/n/EmJYZhx8J1/xl7mmibcnOW1XUWt6YOB7VrnXeeWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNPtnVgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D423C4CEF1;
-	Tue, 26 Aug 2025 13:59:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TgWxrU5pw0d5eni6CEpiiCK9pXQ1fOFLvp6QsPsoKLTxBj3iEEV6MvsU7EOBV8JsXsT4at/Bv89I5F+xZ63+mp5cVSOsm/zVog0soO1oy2vQAcXsEt/+pDMFOdCr80AoX8cfCaw9YQb8izCJ9WHXJKpGWR2unOZaqTghrArbRMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPxphfiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFFFC4CEF1;
+	Tue, 26 Aug 2025 11:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216776;
-	bh=jiKvGyENtt3ES68qtpryYq/23+VylirwhO44EjfRV64=;
+	s=korg; t=1756208628;
+	bh=qWLEXQ4w/HNTxxQIjMgSUpUf2Jqh+6svBDMksjax+vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNPtnVgfks2NjD6qVfiG3xBXASa4MkO5cKYXClAIMJ4SNoUA+qr3feqemoY5I73fV
-	 hWSKL6rfNq+11Ro1js88At8vsdSNuTyYVZLWSKQdj/1i6OR0zTdYr1J39+DosXqlDd
-	 GWNTPUTUGlrH2OKp29fvtawT+MVVjLSV5TJJ3TIM=
+	b=cPxphfiCHG5w8q5NZzlC3QPemhcAW5t0kn2a2a5uP/vtKp16GglNLiJYV9LNHMC4f
+	 qHRTSs9/VlwIPJ3Qa9IsPR3ksIEVDhwhQn4q6sXsPkZkmuJQzgDkZTLC/7ePtjCfhQ
+	 TwCn8fX8LrnEF2OnvN/RGohZ47Sf/gZBeQuhAbSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Julian Orth <ju.orth@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.15 509/644] selftests/memfd: add test for mapping write-sealed memfd read-only
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Subject: [PATCH 6.12 185/322] drm/amd/display: Fix DP audio DTO1 clock source on DCE 6.
 Date: Tue, 26 Aug 2025 13:10:00 +0200
-Message-ID: <20250826110959.115061224@linuxfoundation.org>
+Message-ID: <20250826110920.433076855@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
+commit 297a4833a68aac3316eb808b4123eb016ef242d7 upstream.
 
-Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
-assert that we are able to do this in a test to ensure that we do not
-regress this again.
+On DCE 6, DP audio was not working. However, it worked when an
+HDMI monitor was also plugged in.
 
-Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Julian Orth <ju.orth@gmail.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Looking at dce_aud_wall_dto_setup it seems that the main
+difference is that we use DTO1 when only DP is plugged in.
+
+When programming DTO1, it uses audio_dto_source_clock_in_khz
+which is set from get_dp_ref_freq_khz
+
+The dce60_get_dp_ref_freq_khz implementation looks incorrect,
+because DENTIST_DISPCLK_CNTL seems to be always zero on DCE 6,
+so it isn't usable.
+I compared dce60_get_dp_ref_freq_khz to the legacy display code,
+specifically dce_v6_0_audio_set_dto, and it turns out that in
+case of DCE 6, it needs to use the display clock. With that,
+DP audio started working on Pitcairn, Oland and Cape Verde.
+
+However, it still didn't work on Tahiti. Despite having the
+same DCE version, Tahiti seems to have a different audio device.
+After some trial and error I realized that it works with the
+default display clock as reported by the VBIOS, not the current
+display clock.
+
+The patch was tested on all four SI GPUs:
+
+* Pitcairn (DCE 6.0)
+* Oland (DCE 6.4)
+* Cape Verde (DCE 6.0)
+* Tahiti (DCE 6.0 but different)
+
+The testing was done on Samsung Odyssey G7 LS28BG700EPXEN on
+each of the above GPUs, at the following settings:
+
+* 4K 60 Hz
+* 1080p 60 Hz
+* 1080p 144 Hz
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 645cc7863da5de700547d236697dffd6760cf051)
 Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c |   43 +++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |   21 +++--------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -186,6 +186,24 @@ static void *mfd_assert_mmap_shared(int
- 	return p;
- }
- 
-+static void *mfd_assert_mmap_read_shared(int fd)
-+{
-+	void *p;
-+
-+	p = mmap(NULL,
-+		 mfd_def_size,
-+		 PROT_READ,
-+		 MAP_SHARED,
-+		 fd,
-+		 0);
-+	if (p == MAP_FAILED) {
-+		printf("mmap() failed: %m\n");
-+		abort();
-+	}
-+
-+	return p;
-+}
-+
- static void *mfd_assert_mmap_private(int fd)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -83,22 +83,13 @@ static const struct state_dependent_cloc
+ static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
  {
- 	void *p;
-@@ -802,6 +820,30 @@ static void test_seal_future_write(void)
- 	close(fd);
+ 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+-	int dprefclk_wdivider;
+-	int dp_ref_clk_khz;
+-	int target_div;
++	struct dc_context *ctx = clk_mgr_base->ctx;
++	int dp_ref_clk_khz = 0;
+ 
+-	/* DCE6 has no DPREFCLK_CNTL to read DP Reference Clock source */
+-
+-	/* Read the mmDENTIST_DISPCLK_CNTL to get the currently
+-	 * programmed DID DENTIST_DPREFCLK_WDIVIDER*/
+-	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, &dprefclk_wdivider);
+-
+-	/* Convert DENTIST_DPREFCLK_WDIVIDERto actual divider*/
+-	target_div = dentist_get_divider_from_did(dprefclk_wdivider);
+-
+-	/* Calculate the current DFS clock, in kHz.*/
+-	dp_ref_clk_khz = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
+-		* clk_mgr->base.dentist_vco_freq_khz) / target_div;
++	if (ASIC_REV_IS_TAHITI_P(ctx->asic_id.hw_internal_rev))
++		dp_ref_clk_khz = ctx->dc_bios->fw_info.default_display_engine_pll_frequency;
++	else
++		dp_ref_clk_khz = clk_mgr_base->clks.dispclk_khz;
+ 
+ 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
  }
- 
-+static void test_seal_write_map_read_shared(void)
-+{
-+	int fd;
-+	void *p;
-+
-+	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
-+
-+	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
-+			    mfd_def_size,
-+			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
-+
-+	mfd_assert_add_seals(fd, F_SEAL_WRITE);
-+	mfd_assert_has_seals(fd, F_SEAL_WRITE);
-+
-+	p = mfd_assert_mmap_read_shared(fd);
-+
-+	mfd_assert_read(fd);
-+	mfd_assert_read_shared(fd);
-+	mfd_fail_write(fd);
-+
-+	munmap(p, mfd_def_size);
-+	close(fd);
-+}
-+
- /*
-  * Test SEAL_SHRINK
-  * Test whether SEAL_SHRINK actually prevents shrinking
-@@ -1056,6 +1098,7 @@ int main(int argc, char **argv)
- 
- 	test_seal_write();
- 	test_seal_future_write();
-+	test_seal_write_map_read_shared();
- 	test_seal_shrink();
- 	test_seal_grow();
- 	test_seal_resize();
 
 
 
