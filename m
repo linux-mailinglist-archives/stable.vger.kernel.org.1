@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-175338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9937EB367A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E72EB36A32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4AA1C222FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 753191886445
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496F235083D;
-	Tue, 26 Aug 2025 13:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5FC341650;
+	Tue, 26 Aug 2025 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4gkor7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IP9djklc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0575734DCC3;
-	Tue, 26 Aug 2025 13:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7A31F790F;
+	Tue, 26 Aug 2025 14:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216771; cv=none; b=E5Z9LUvepDoUvfqLhPONHvgYcHKnQp6Pm9XYmJcioZYUFNH1zFSxldb2OzxOD8AeCeedUdv9xNuq+bqSFNMhbSjukYMPyOjrR+YO4hSA1IsGm5ODznMg5rtizGylg7ruASdvcYlUH0cZg4HG9I+BBXrCaAlS5rPdO6IExb2JVdk=
+	t=1756218088; cv=none; b=jgE/2xNS8THRiFGPtnDnQhZrTxJrm70lP4DhhguWduixkfsg3SJUdff7GW2AGy/5hisQ4Vk/Ec9au/lZpMfpbwuyPxCR1QHmjeDcjzbl8nT4xZ1986i8scvyholfwSWWrEDQfb1asNs8C0rxV9FtxI11nLJhHYeHYDSyJKD9Dsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216771; c=relaxed/simple;
-	bh=1rF6PAVFdyQ8cqS4IfXF36w1W3dcdPfBIXKEQ8UDiVY=;
+	s=arc-20240116; t=1756218088; c=relaxed/simple;
+	bh=nMMjJKE3KEWv3U5z8li/Lq4OwdeM8xhajbfDDiX+z4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqROPNmySuamW+uWbQdR26ZmMpx7JcFbBU2ZDzKfN1RPNPxLkX0/gIO4Kse2jW4M92z/ri7t5771PwX5lTyii5Os1Slt0oQH0TQ5wLsmkHb/Qzb26LGeHs9rO2hqJfq9uIZM1nigjr/4bgMLtS8DtpOlgCCkPY6aGHThd++0dq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4gkor7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B4CC113CF;
-	Tue, 26 Aug 2025 13:59:30 +0000 (UTC)
+	 MIME-Version; b=Jfk1t0u9WlipDtqn1ikwf36TiXS59HQJd8VMzWibbBHO41QO9CGKqdM0+Dqh2icx+hoVsOWPsOt+5i6vbopeNaxJA6xUJL7X89M9vJvOjznkblBuQ7H/N8p/GCk6gh03+/ED5XHiXZR4geq8Jj7TbLUNckjaqwonD6yL0f6GskI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IP9djklc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C285C113CF;
+	Tue, 26 Aug 2025 14:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216770;
-	bh=1rF6PAVFdyQ8cqS4IfXF36w1W3dcdPfBIXKEQ8UDiVY=;
+	s=korg; t=1756218087;
+	bh=nMMjJKE3KEWv3U5z8li/Lq4OwdeM8xhajbfDDiX+z4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4gkor7dPXk0I8OemruAtxnLnWtWst8b4pQh1Uh1lrFOoXgIDYHFDPmJR1+yU09hz
-	 uMssB61aOfFBiO0NGmJEyU4w0xlcAnG35guJOn0i5GBiDGkP61XHGAo3bGieu3bArY
-	 dE1I73/3uDHHUf/NQfFnsejz3kLKJNqTU+Gb/uH8=
+	b=IP9djklcRpP1Jgp5eV/O1tyJRSKTe8HsPZR/dIV3lOWZtRZ+7lw+tLN5fwYroduNn
+	 YoSZMfkaKRzxu+2MqykE1gZc3Bh9ZsCgVqhK+WbA2/O/ph90bD7LDc4Ykj4HYOXlP2
+	 iAZZbeZTKCk1XABYnKpDY4f9kIsXtPyb6t40WtzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.15 507/644] mm: update memfd seal write check to include F_SEAL_WRITE
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 388/523] sch_hfsc: make hfsc_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:58 +0200
-Message-ID: <20250826110959.063545441@linuxfoundation.org>
+Message-ID: <20250826110934.028346800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
+commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
 
-The seal_check_future_write() function is called by shmem_mmap() or
-hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
-sealed this way.
+hfsc_qlen_notify() is not idempotent either and not friendly
+to its callers, like fq_codel_dequeue(). Let's make it idempotent
+to ease qdisc_tree_reduce_backlog() callers' life:
 
-The F_SEAL_WRITE flag is not checked here, as that is handled via the
-mapping->i_mmap_writable mechanism and so any attempt at a mapping would
-fail before this could be run.
+1. update_vf() decreases cl->cl_nactive, so we can check whether it is
+non-zero before calling it.
 
-However we intend to change this, meaning this check can be performed for
-F_SEAL_WRITE mappings also.
+2. eltree_remove() always removes RB node cl->el_node, but we can use
+   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
 
-The logic here is equally applicable to both flags, so update this
-function to accommodate both and rename it accordingly.
-
-Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- include/linux/mm.h   |   15 ++++++++-------
- mm/shmem.c           |    2 +-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ net/sched/sch_hfsc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -148,7 +148,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
- 	vma->vm_ops = &hugetlb_vm_ops;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3287,25 +3287,26 @@ static inline void mem_dump_obj(void *ob
- #endif
- 
- /**
-- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
-+ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-+ *                    handle them.
-  * @seals: the seals to check
-  * @vma: the vma to operate on
-  *
-- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
-- * the vma flags.  Return 0 if check pass, or <0 for errors.
-+ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
-+ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
-  */
--static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
-+static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -209,7 +209,10 @@ eltree_insert(struct hfsc_class *cl)
+ static inline void
+ eltree_remove(struct hfsc_class *cl)
  {
--	if (seals & F_SEAL_FUTURE_WRITE) {
-+	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
- 		/*
- 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * "future write" seal active.
-+		 * write seals are active.
- 		 */
- 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
- 			return -EPERM;
+-	rb_erase(&cl->el_node, &cl->sched->eligible);
++	if (!RB_EMPTY_NODE(&cl->el_node)) {
++		rb_erase(&cl->el_node, &cl->sched->eligible);
++		RB_CLEAR_NODE(&cl->el_node);
++	}
+ }
  
- 		/*
--		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
-+		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
- 		 * MAP_SHARED and read-only, take care to not allow mprotect to
- 		 * revert protections on such mappings. Do this only for shared
- 		 * mappings. For private mappings, don't need to mask
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2262,7 +2262,7 @@ static int shmem_mmap(struct file *file,
- 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
- 	int ret;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
+ static inline void
+@@ -1230,7 +1233,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
+ 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
+ 	 * needs to be called explicitly to remove a class from vttree.
+ 	 */
+-	update_vf(cl, 0, 0);
++	if (cl->cl_nactive)
++		update_vf(cl, 0, 0);
+ 	if (cl->cl_flags & HFSC_RSC)
+ 		eltree_remove(cl);
+ }
 
 
 
