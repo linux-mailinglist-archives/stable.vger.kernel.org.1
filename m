@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98133B36A34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D45B3646C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80055E813A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4486A1C2160F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C079A352092;
-	Tue, 26 Aug 2025 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC24E3019A3;
+	Tue, 26 Aug 2025 13:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njYE6n5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0Ilw6z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D73F34AAFE;
-	Tue, 26 Aug 2025 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629CE1FBCB5;
+	Tue, 26 Aug 2025 13:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218224; cv=none; b=p5Pj0I6hsvd24kILr39gCAaiA4+ADLEsPJ/y3+p3ysWnxH33N8vcqBWv5K2P9KZ1BSsNjuk7UjUzbXl70pSJrgxahf+pYIdIZD8aLBTzLDuhLxJtHZ8I14X2zSNTzVodMMdvDAv/bently4euoj7vVBYjNRFmGZscyRLlnVOyJY=
+	t=1756215045; cv=none; b=SpZxQbyntavzesQjx/G7Fh4kdkO4XrY+M6VFVn9F5QsLCUWyrX5HVK8mvVHg2c/5xft9Ja5D1GvhD3662A12WieuofcJAZBPnYWH2T93prf1Q7JkP8LU3tP5Kw3fPJJjMLGoPH6X/QU6MB0MWefttsGTfZ5+w0koHFmAwfiMg/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218224; c=relaxed/simple;
-	bh=btcLGzm3/k3SbMHBAolCanSh6QgoRdeBr5O0IGK1u6c=;
+	s=arc-20240116; t=1756215045; c=relaxed/simple;
+	bh=y9F26Ww+p9yh/T2/HgmkT9+UzNBM2zokm7r1f3M7u5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CjAkqruVWC3LmkSWbVfAGVFdbjoVGv0QQpUtx71VetoyGA8lNf0jgz2cHEqyoVM0khuJHIL2Eue4JWZtSNBYN20xE3tslB8B9AlDiXezko7/yD3g7VOD4LDFQo9geq3WWss2fMJu9jIXzjQXST10L/uh98WX0furPXn+oueXKe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njYE6n5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D23C4CEF1;
-	Tue, 26 Aug 2025 14:23:43 +0000 (UTC)
+	 MIME-Version; b=d/gb5BZyvTiBP1byJKTpo6LavDhLj6vLuIOa9B6b2J4zaZnPrv9sYlO6kUod1yY/51xxBvlUqeU/W3fIsYxeMS1k2F7gbBQYWNqpO+0Xs4JBy6td0MuvXl3D3qNyBuaqVurv1t3QCfcQeI4WFyS/BoB6PsXfcD/3CgdY47N69BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0Ilw6z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0100C4CEF1;
+	Tue, 26 Aug 2025 13:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218224;
-	bh=btcLGzm3/k3SbMHBAolCanSh6QgoRdeBr5O0IGK1u6c=;
+	s=korg; t=1756215045;
+	bh=y9F26Ww+p9yh/T2/HgmkT9+UzNBM2zokm7r1f3M7u5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njYE6n5Cv7l198HvaPTHFT5UuoLvr6ky+jGTyKIJCA+pGhlO4Ga752cnoMhmFbpGF
-	 vtz+qVGRMJjG5dJL+y/BmZkPUUIyLuDxFIkYmcH65XlQHI51BqVW6bFbEz88+pzuAe
-	 QJP6Zg3d5D18o7n+ft0RVOUz6fQmIaZTo14nbX8U=
+	b=f0Ilw6z1+FyFCM7PX2nmVsuT82UoM68FxzdpGfWCLs+32P0819wQACKtGvVzhYHYU
+	 Ybkwz3wZlLW8NBL/15tbrxlqRGHEIs/WPZMEAAALJ9NTfwjJZbsix93pC1VIOz25kA
+	 dvgkqKbblHHpH67uiVMVDhpN/ebTzq+89R9FvCos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 5.10 410/523] usb: renesas-xhci: Fix External ROM access timeouts
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 367/482] media: venus: Introduce accessors for remapped hfi_buffer_reqs members
 Date: Tue, 26 Aug 2025 13:10:20 +0200
-Message-ID: <20250826110934.570511968@linuxfoundation.org>
+Message-ID: <20250826110939.902081070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +62,213 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
+[ Upstream commit bbfc89e6f67ccb1ddefc3e8a284248bcfea58544 ]
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+Currently we have macros to access these, but they don't provide a
+way to override the remapped fields. Replace the macros with actual
+get/set pairs to fix that.
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
-
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
-
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
-
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
-
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
-
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 06d6770ff0d8 ("media: venus: Fix OOB read due to missing payload bound check")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/helpers.c    |    2 
+ drivers/media/platform/qcom/venus/hfi_helper.h |   61 +++++++++++++++++++++----
+ drivers/media/platform/qcom/venus/hfi_msgs.c   |    2 
+ drivers/media/platform/qcom/venus/vdec.c       |    8 +--
+ drivers/media/platform/qcom/venus/vdec_ctrls.c |    2 
+ drivers/media/platform/qcom/venus/venc.c       |    4 -
+ drivers/media/platform/qcom/venus/venc_ctrls.c |    2 
+ 7 files changed, 63 insertions(+), 18 deletions(-)
 
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+--- a/drivers/media/platform/qcom/venus/helpers.c
++++ b/drivers/media/platform/qcom/venus/helpers.c
+@@ -189,7 +189,7 @@ int venus_helper_alloc_dpb_bufs(struct v
+ 	if (ret)
+ 		return ret;
  
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
+-	count = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
++	count = hfi_bufreq_get_count_min(&bufreq, ver);
  
- static int renesas_fw_download_image(struct pci_dev *dev,
- 				     const u32 *fw, size_t step, bool rom)
-@@ -409,7 +410,7 @@ static void renesas_rom_erase(struct pci
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
+ 	for (i = 0; i < count; i++) {
+ 		buf = kzalloc(sizeof(*buf), GFP_KERNEL);
+--- a/drivers/media/platform/qcom/venus/hfi_helper.h
++++ b/drivers/media/platform/qcom/venus/hfi_helper.h
+@@ -1150,14 +1150,6 @@ struct hfi_buffer_display_hold_count_act
+ 	u32 hold_count;
+ };
  
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
+-/* HFI 4XX reorder the fields, use these macros */
+-#define HFI_BUFREQ_HOLD_COUNT(bufreq, ver)	\
+-	((ver) == HFI_VERSION_4XX ? 0 : (bufreq)->hold_count)
+-#define HFI_BUFREQ_COUNT_MIN(bufreq, ver)	\
+-	((ver) == HFI_VERSION_4XX ? (bufreq)->hold_count : (bufreq)->count_min)
+-#define HFI_BUFREQ_COUNT_MIN_HOST(bufreq, ver)	\
+-	((ver) == HFI_VERSION_4XX ? (bufreq)->count_min : 0)
+-
+ struct hfi_buffer_requirements {
+ 	u32 type;
+ 	u32 size;
+@@ -1169,6 +1161,59 @@ struct hfi_buffer_requirements {
+ 	u32 alignment;
+ };
+ 
++/* On HFI 4XX, some of the struct members have been swapped. */
++static inline u32 hfi_bufreq_get_hold_count(struct hfi_buffer_requirements *req,
++					    u32 ver)
++{
++	if (ver == HFI_VERSION_4XX)
++		return 0;
++
++	return req->hold_count;
++};
++
++static inline u32 hfi_bufreq_get_count_min(struct hfi_buffer_requirements *req,
++					   u32 ver)
++{
++	if (ver == HFI_VERSION_4XX)
++		return req->hold_count;
++
++	return req->count_min;
++};
++
++static inline u32 hfi_bufreq_get_count_min_host(struct hfi_buffer_requirements *req,
++						u32 ver)
++{
++	if (ver == HFI_VERSION_4XX)
++		return req->count_min;
++
++	return 0;
++};
++
++static inline void hfi_bufreq_set_hold_count(struct hfi_buffer_requirements *req,
++					     u32 ver, u32 val)
++{
++	if (ver == HFI_VERSION_4XX)
++		return;
++
++	req->hold_count = val;
++};
++
++static inline void hfi_bufreq_set_count_min(struct hfi_buffer_requirements *req,
++					    u32 ver, u32 val)
++{
++	if (ver == HFI_VERSION_4XX)
++		req->hold_count = val;
++
++	req->count_min = val;
++};
++
++static inline void hfi_bufreq_set_count_min_host(struct hfi_buffer_requirements *req,
++						 u32 ver, u32 val)
++{
++	if (ver == HFI_VERSION_4XX)
++		req->count_min = val;
++};
++
+ struct hfi_data_payload {
+ 	u32 size;
+ 	u8 data[1];
+--- a/drivers/media/platform/qcom/venus/hfi_msgs.c
++++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
+@@ -99,7 +99,7 @@ static void event_seq_changed(struct ven
+ 		case HFI_PROPERTY_CONFIG_BUFFER_REQUIREMENTS:
+ 			data_ptr += sizeof(u32);
+ 			bufreq = (struct hfi_buffer_requirements *)data_ptr;
+-			event.buf_count = HFI_BUFREQ_COUNT_MIN(bufreq, ver);
++			event.buf_count = hfi_bufreq_get_count_min(bufreq, ver);
+ 			data_ptr += sizeof(*bufreq);
+ 			break;
+ 		case HFI_INDEX_EXTRADATA_INPUT_CROP:
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -864,13 +864,13 @@ static int vdec_num_buffers(struct venus
+ 	if (ret)
+ 		return ret;
+ 
+-	*in_num = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
++	*in_num = hfi_bufreq_get_count_min(&bufreq, ver);
+ 
+ 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_OUTPUT, &bufreq);
+ 	if (ret)
+ 		return ret;
+ 
+-	*out_num = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
++	*out_num = hfi_bufreq_get_count_min(&bufreq, ver);
+ 
+ 	return 0;
+ }
+@@ -984,14 +984,14 @@ static int vdec_verify_conf(struct venus
+ 		return ret;
+ 
+ 	if (inst->num_output_bufs < bufreq.count_actual ||
+-	    inst->num_output_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
++	    inst->num_output_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
+ 		return -EINVAL;
+ 
+ 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (inst->num_input_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
++	if (inst->num_input_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
+ 		return -EINVAL;
+ 
+ 	return 0;
+--- a/drivers/media/platform/qcom/venus/vdec_ctrls.c
++++ b/drivers/media/platform/qcom/venus/vdec_ctrls.c
+@@ -79,7 +79,7 @@ static int vdec_op_g_volatile_ctrl(struc
+ 	case V4L2_CID_MIN_BUFFERS_FOR_CAPTURE:
+ 		ret = venus_helper_get_bufreq(inst, HFI_BUFFER_OUTPUT, &bufreq);
+ 		if (!ret)
+-			ctrl->val = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
++			ctrl->val = hfi_bufreq_get_count_min(&bufreq, ver);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -1176,7 +1176,7 @@ static int venc_verify_conf(struct venus
+ 		return ret;
+ 
+ 	if (inst->num_output_bufs < bufreq.count_actual ||
+-	    inst->num_output_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
++	    inst->num_output_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
+ 		return -EINVAL;
+ 
+ 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
+@@ -1184,7 +1184,7 @@ static int venc_verify_conf(struct venus
+ 		return ret;
+ 
+ 	if (inst->num_input_bufs < bufreq.count_actual ||
+-	    inst->num_input_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
++	    inst->num_input_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
+ 		return -EINVAL;
+ 
+ 	return 0;
+--- a/drivers/media/platform/qcom/venus/venc_ctrls.c
++++ b/drivers/media/platform/qcom/venus/venc_ctrls.c
+@@ -358,7 +358,7 @@ static int venc_op_g_volatile_ctrl(struc
+ 	case V4L2_CID_MIN_BUFFERS_FOR_OUTPUT:
+ 		ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
+ 		if (!ret)
+-			ctrl->val = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
++			ctrl->val = hfi_bufreq_get_count_min(&bufreq, ver);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 
 
 
