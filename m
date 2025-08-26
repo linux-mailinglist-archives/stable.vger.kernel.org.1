@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE164B36220
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D71B36C7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C431E7B0CEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897FE1C23448
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F866221704;
-	Tue, 26 Aug 2025 13:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752923568E6;
+	Tue, 26 Aug 2025 14:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtLy553c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIoQrgOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FFD26158C;
-	Tue, 26 Aug 2025 13:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A18352060;
+	Tue, 26 Aug 2025 14:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214052; cv=none; b=Dmkz3Lx+MwlGP+R/JAGsJl0Hb6CmS1CkZK6ox3yMA8oklcZ0kKdoWquxP3XTUA0Vv9A1kpeE9aE1BYVST8rr53aiokExrsv0eKOsfQQmhfouzYJUbJY7a5GBp/8zfc1q1rIQsly0nIz6Nd98hVDxV54vkt7dMeSkCgRda7pnxcY=
+	t=1756219487; cv=none; b=I0r4qD1TzT2Miy2M3Mw9Cw2kg05msVzYyB5BGLlAk55PCXMvPSogrQ4uWsTeRbm6Dyy78/3jJzSPWy2BkKKf4kXR3eaOJRryQSalp5AtTbqvVxmzpuDr1sIw2oPk04HI+Hc6ZagMWw/dlwMAiVjXuFMbZ4kmWuTgMezvHPIEiqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214052; c=relaxed/simple;
-	bh=T0kY2/OSQ/5xZy5+Qcl1IbXbl8QpURwmrniVbpMSU88=;
+	s=arc-20240116; t=1756219487; c=relaxed/simple;
+	bh=RgZGRwIf768te9/qumK4BbVxmPUVtNuSrQzyiVO7Mxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOqadamhmrTllvwgYF8+0wUbWJDo7enz6mT4hkMQUYfnspqzk5mnr4LcO2zxfiuHJyfO+Sd3W8DvcvWAUujVp02TTlUEa+DiSdH5XGD57uccjDvgje7YU59lwC1Y5tf/SXu61gsRDBrKleYQsqh9pKraKgNGU6en2P9+dTpuR5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtLy553c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D1AC4CEF1;
-	Tue, 26 Aug 2025 13:14:12 +0000 (UTC)
+	 MIME-Version; b=h92qZJylYmwcePMAVIblx9ZiyDuMq5T1CtPOFLA5YybVYeFAS54nM9atHXHl54Rb4f5+8mX1JNIaDRfIazCN8muxtbvZI5Zi6x/JU1hjDnqrsT+zJiXwco0NjE6t0ngb3QasFuRkBpq/cbj6u8r2zJD6IPa9V4r047TtvAb+CaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIoQrgOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8348C4CEF1;
+	Tue, 26 Aug 2025 14:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214052;
-	bh=T0kY2/OSQ/5xZy5+Qcl1IbXbl8QpURwmrniVbpMSU88=;
+	s=korg; t=1756219487;
+	bh=RgZGRwIf768te9/qumK4BbVxmPUVtNuSrQzyiVO7Mxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtLy553cQnojg8Bqt8q5hxnzqZXj0Z9l+zANL7kQlGRZInGlUr+0IyB38Xn+65cLi
-	 D/17LqFMLMWeUKU5ccTFyg6QpEN0m17EyKzoqp3GPCy68uhoUw4nWrZxtEL1NNLEs4
-	 HROWm8ezxhYadjLw2xZn7K+2s9Jr6ro+nVPopJLU=
+	b=pIoQrgOfXClsQKQPIKlvJttLAMzl+lPRgDO85TZV+fqkNBsNtw9jNw2EMJJc0PU+y
+	 CKSGTv0pHTPpCEBKlxuYHUrafawMtJhxO7yE3fnlqAPOvSK94xnICfHf04rw0MVmr9
+	 XCa6ieO85QXv/ARwYa6gXJSAw6azqC1p8yG06YBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 578/587] bonding: update LACP activity flag after setting lacp_active
+Subject: [PATCH 5.4 401/403] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
 Date: Tue, 26 Aug 2025 13:12:07 +0200
-Message-ID: <20250826111007.741589931@linuxfoundation.org>
+Message-ID: <20250826110918.115186581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit b64d035f77b1f02ab449393342264b44950a75ae ]
+[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
 
-The port's actor_oper_port_state activity flag should be updated immediately
-after changing the lacp_active option to reflect the current mode correctly.
+The entry of the validators table for UAC3 feature unit is defined
+with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
+UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
 
-Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250815062000.22220-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
+Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_3ad.c     | 25 +++++++++++++++++++++++++
- drivers/net/bonding/bond_options.c |  1 +
- include/net/bond_3ad.h             |  1 +
- 3 files changed, 27 insertions(+)
+ sound/usb/validate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index c99ffe6c683a..56b18ab2fa28 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -2734,6 +2734,31 @@ void bond_3ad_update_lacp_rate(struct bonding *bond)
- 	spin_unlock_bh(&bond->mode_lock);
- }
- 
-+/**
-+ * bond_3ad_update_lacp_active - change the lacp active
-+ * @bond: bonding struct
-+ *
-+ * Update actor_oper_port_state when lacp_active is modified.
-+ */
-+void bond_3ad_update_lacp_active(struct bonding *bond)
-+{
-+	struct port *port = NULL;
-+	struct list_head *iter;
-+	struct slave *slave;
-+	int lacp_active;
-+
-+	lacp_active = bond->params.lacp_active;
-+	spin_lock_bh(&bond->mode_lock);
-+	bond_for_each_slave(bond, slave, iter) {
-+		port = &(SLAVE_AD_INFO(slave)->port);
-+		if (lacp_active)
-+			port->actor_oper_port_state |= LACP_STATE_LACP_ACTIVITY;
-+		else
-+			port->actor_oper_port_state &= ~LACP_STATE_LACP_ACTIVITY;
-+	}
-+	spin_unlock_bh(&bond->mode_lock);
-+}
-+
- size_t bond_3ad_stats_size(void)
- {
- 	return nla_total_size_64bit(sizeof(u64)) + /* BOND_3AD_STAT_LACPDU_RX */
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 6d003c0ef669..b282ed5b59a9 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1618,6 +1618,7 @@ static int bond_option_lacp_active_set(struct bonding *bond,
- 	netdev_dbg(bond->dev, "Setting LACP active to %s (%llu)\n",
- 		   newval->string, newval->value);
- 	bond->params.lacp_active = newval->value;
-+	bond_3ad_update_lacp_active(bond);
- 
- 	return 0;
- }
-diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
-index c5e57c6bd873..29f2a681aa14 100644
---- a/include/net/bond_3ad.h
-+++ b/include/net/bond_3ad.h
-@@ -302,6 +302,7 @@ int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
- 			 struct slave *slave);
- int bond_3ad_set_carrier(struct bonding *bond);
- void bond_3ad_update_lacp_rate(struct bonding *bond);
-+void bond_3ad_update_lacp_active(struct bonding *bond);
- void bond_3ad_update_ad_actor_settings(struct bonding *bond);
- int bond_3ad_stats_fill(struct sk_buff *skb, struct bond_3ad_stats *stats);
- size_t bond_3ad_stats_size(void);
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index 4ee2a328cb5b..46cf36ab0acd 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+-	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
++	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+ 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
 -- 
 2.50.1
 
