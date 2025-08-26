@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB043B36888
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA97DB35CC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4099D9837D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E82691BA4EA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D674352FED;
-	Tue, 26 Aug 2025 13:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E11342CA2;
+	Tue, 26 Aug 2025 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMkOn56l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka6pSuu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3C5352FDA;
-	Tue, 26 Aug 2025 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B3A2FD7C8;
+	Tue, 26 Aug 2025 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216740; cv=none; b=MureYTvfQAXatgDWvQTYzDJ2kcAZNE+s8xTw9gcetb+G74tzC/clXn5TEf/S+7/EADXrf/rri8ctt6PqHmbg5EKRq4wPuWNO9Se5zUadTkyM/VQmYG75u1cvkbzoK2i3EJBEpGhqWVVjr4okd+fpLK1K/u4tHOShE/sjnTV8qRQ=
+	t=1756207825; cv=none; b=ipGwb19wZSBMHPTb2PsX6aDJ+4Cj4+Hn7UUV/uCVuHVJV1Gvp8Dz7vCYS6r/22yYjmJ2XrT1B2Tqfi1mtxu+sx6MeZw2rKJAszpFVXtQIWUq02B0v4DjEI1ByLkWyOI+v20xttc0rr3ZA5GYpgavMqIYKTSX1zXBrXMgwLaqWqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216740; c=relaxed/simple;
-	bh=Ug3iAEl6GWF3A7iRDDSDMpiu7W+uUSZ73/IaVND/IqI=;
+	s=arc-20240116; t=1756207825; c=relaxed/simple;
+	bh=9yJi8XkPlIjGzpXZRE5Tn+wCR9xuZunLGtxG03EKwvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/XJ6oV/5W7Xm9b3JMh+CsA+ZD0doyP2SxgWUooa7CZK+SW07sBGEiUUw8PvY6PlOUWuzAqC8toq+AGe5vrQevRQsXIDIGfWs5XLQru0RerTMQUrLRmX4Q4N8FMfsjd+tdllxvoWqJoO/Dj/2bvENV1ZLBV8YT0NTlgvFd0gVuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMkOn56l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCE0C4CEF1;
-	Tue, 26 Aug 2025 13:58:59 +0000 (UTC)
+	 MIME-Version; b=sLzL3BIIpTm1TXBTHeqnZ+AyGyw4gZr+/MmHbc1aaqVflSf4u6/wdnzVzbT1CuTIAPG2K2v7lYSSuvxIaS75lHZ9809NbaJ0Fa5e73sCpTQ/lxnhe8QDI/bBb24mrDiWIhmIY2tcVciSAmI/aEXnk8G8qYcrZ3rz7dRTAq56A70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka6pSuu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D4BC4CEF1;
+	Tue, 26 Aug 2025 11:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216739;
-	bh=Ug3iAEl6GWF3A7iRDDSDMpiu7W+uUSZ73/IaVND/IqI=;
+	s=korg; t=1756207825;
+	bh=9yJi8XkPlIjGzpXZRE5Tn+wCR9xuZunLGtxG03EKwvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMkOn56lhcCNvmGONZpIunqAb6hSALyzBcMAdE5bdr5OQgqMsu5QYbTCNyk2rdpIN
-	 CYUOXYM5dhnnyXGNXyNhKh7gJC7t8yEjiqLbRggzYSyzPscI6zyYa06SdjNG4pwLy8
-	 8bQ1EvV4nQQ0eUwX/KzOSmbLTOMpiuTnFfJ68Mvo=
+	b=ka6pSuu5xM3KDXZyjxkCc0PSVY2iZNAmPhYxkHss2CHpor1Ijwq/t7pJXwYUjS9rQ
+	 M4tJ5xjyw08bDYmyF4frWod+3qyO/mz7WAoXNnfqKh5mrOW55JUVjBuwbtFRD0Wpla
+	 ++KbOcDahgPVKAAdfFS25DFIKfAKCNO8G9LC2MLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 525/644] usb: typec: fusb302: cache PD RX state
+	Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH 6.16 332/457] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
 Date: Tue, 26 Aug 2025 13:10:16 +0200
-Message-ID: <20250826110959.519507270@linuxfoundation.org>
+Message-ID: <20250826110945.544378985@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
+commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
 
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
+Since
 
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
 
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
 
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
 
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
 
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
+  [ bp: Massage commit message. ]
 
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
-
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced str_on_off(on) with ternary operator ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kernel/cpu/hygon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -103,6 +103,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
- 	int ret = 0;
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -16,6 +16,7 @@
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
+ #include <asm/msr.h>
++#include <asm/resctrl.h>
  
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", on ? "on" : "off");
-+		goto done;
-+	}
-+
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
- 			    on ? "on" : "off", ret);
- 		goto done;
+ #include "cpu.h"
+ 
+@@ -117,6 +118,8 @@ static void bsp_init_hygon(struct cpuinf
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
  	}
 +
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
- done:
- 	mutex_unlock(&chip->lock);
++	resctrl_cpu_detect(c);
+ }
+ 
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 
 
 
