@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC52B35B45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96248B360A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 245253ACC89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1556F1BA6ED2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7708632143C;
-	Tue, 26 Aug 2025 11:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F5A1F1538;
+	Tue, 26 Aug 2025 12:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/2L7RVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jo3Ld28u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331D9239573;
-	Tue, 26 Aug 2025 11:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66451A5BBC;
+	Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207232; cv=none; b=pD/Fod/yhRtQlWKwrkCS99FZSS/kYcoDPOwYXjkAJib1NEU/9XHlVbRxainA9+Mqg0dFZRPt9/qP/yNh3eUsG5TgczDk7iIAuzJH0JURHGpd+YMbQtUW99FNTBKzO+LXkPua/rgItNc8d+MZeMMBZXEfzKReFlbgGoxbcifhzjI=
+	t=1756213137; cv=none; b=Idfc/CjRLJISDwJHwQ0npGOtqd+hsps77P7rnwwescsiGygNDP14xG9IMfEvrTPqnGU6Af9pUVKUb6YCu8tVxWKOzlchIGYiHOUXO7XE2fjG45YUC1PIcBH0SjMFf/JXJ6aWW9VOuyLaW6Z45EXpz7Vq9Kbo2bwqy9F/WamXjBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207232; c=relaxed/simple;
-	bh=gmx9hlMVe+MoKcfpAtdKs0EWwy4QGn4i0EwRzi8klBg=;
+	s=arc-20240116; t=1756213137; c=relaxed/simple;
+	bh=tPJbIhB/0FUUDWpXX2Q4Ib0rIjAcHjH51E/VqPwokBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYp72RZ1utW0snfEhNM0NckjwLy0J7VcwuA5Y3cDQ3wuk8W4gLRXMxQwqBIumpAgXABaOvPI5V2Hx1c5s4phZrsNXK7w30dFhLlWwvezxq+C45D+rpHwCn3MqZ9joaf8uax/JvV1s66w+Tl924uxO9ltcTIRhhtClQRIRgCZXCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/2L7RVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A30C4CEF1;
-	Tue, 26 Aug 2025 11:20:31 +0000 (UTC)
+	 MIME-Version; b=Ubllqi//ppmFHXVr8fTSRbLaDh40wlnyxCXxLmE4mL3mwCi2Cgggq71U8mogKuODgwDaqzwX4fzflEfWvEzvyTEhEo07EaPHYhtgYxnQ1udtIZajHPvUUF6nERVoSQ7K4ubN/jLDSF+jmF4VvztP/ic5a8m92tidTx+yLORPaa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jo3Ld28u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C078C4CEF1;
+	Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207231;
-	bh=gmx9hlMVe+MoKcfpAtdKs0EWwy4QGn4i0EwRzi8klBg=;
+	s=korg; t=1756213137;
+	bh=tPJbIhB/0FUUDWpXX2Q4Ib0rIjAcHjH51E/VqPwokBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/2L7RVqDeSdieA18Fq57+hK1qRin2uCVWZKt9arZ8K8xnryEqM2YZ/ieWEbYh2ze
-	 osP5vG3LaIZKlEvEPx5oe46GQNY7rh130lgYovSc3vrAM2D9RPcVaowRaZG394fgSE
-	 UF5Yt7F0akcb+Ob5BAAU/v+D8lZqiIx+7H907JMM=
+	b=jo3Ld28uR+mIlEhS5TDSOhnw4jd79s0VRAgN+zacnraXEbEIqYKKD6lQVdQU1a1a+
+	 qU7D/TiUij3FIbGA0MAeoftJUyYmSlYh1ya6kFFJtN1/JfE3RfXfuS5vxR2EATUEvk
+	 rK7Q9DbjzdzTJb0ZHn2VZjNr+wvjRqpFXctDkD4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.16 101/457] PCI: imx6: Add IMX8MQ_EP third 64-bit BAR in epc_features
+	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 236/587] jfs: Regular file corruption check
 Date: Tue, 26 Aug 2025 13:06:25 +0200
-Message-ID: <20250826110939.872645348@linuxfoundation.org>
+Message-ID: <20250826110958.937624776@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit c523fa63ac1d452abeeb4e699560ec3365037f32 upstream.
+[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
 
-IMX8MQ_EP has three 64-bit BAR0/2/4 capable and programmable BARs. For
-IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4) instead
-of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+The reproducer builds a corrupted file on disk with a negative i_size value.
+Add a check when opening this file to avoid subsequent operation failures.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[bhelgaas: add details in subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250708091003.2582846-2-hongxing.zhu@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
+Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1912,7 +1912,7 @@ static const struct imx_pcie_drvdata drv
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.mode_off[1] = IOMUXC_GPR12,
- 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
--		.epc_features = &imx8m_pcie_epc_features,
-+		.epc_features = &imx8q_pcie_epc_features,
- 		.init_phy = imx8mq_pcie_init_phy,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
- 	},
+diff --git a/fs/jfs/file.c b/fs/jfs/file.c
+index 01b6912e60f8..742cadd1f37e 100644
+--- a/fs/jfs/file.c
++++ b/fs/jfs/file.c
+@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
+ {
+ 	int rc;
+ 
++	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
++		return -EIO;
++
+ 	if ((rc = dquot_file_open(inode, file)))
+ 		return rc;
+ 
+-- 
+2.39.5
+
 
 
 
