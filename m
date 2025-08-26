@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5C1B35DB8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF17BB35C9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8DA7AE571
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 677FF3A8C4A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ACE29BD98;
-	Tue, 26 Aug 2025 11:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E4E341642;
+	Tue, 26 Aug 2025 11:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiGyxYIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ob+z5G+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F29200112;
-	Tue, 26 Aug 2025 11:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D94267386;
+	Tue, 26 Aug 2025 11:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208817; cv=none; b=pfAdNh98Q6SYab9N78Nba27+EH8Wc+Wx9PVAl5M7jck6ygrI+7kA/cQgcNlFY60GYU9tPdhh6w+7RU1AN4o9i/l+L/H1XYjkV2dFqJ2Wo2+XKaCpxMF4fWvBYpUf+0w/m9uK1vFavbIininWqVvTcXAPjhg6v7Sg4+UN0bRF1mo=
+	t=1756208058; cv=none; b=D2h3K+Th7qJaiQdAYgzfOgCurDApqKFrAsoG0ExUKo+9nufnQmcE6R2UXptLogifFw0vKcPXqpKQ7oGDc0VAqSm1GZo0ftS8JgDRpBAjW+8uYXRj2TFU0HTTlAXITunD0vBChx6uhX4xwTK0c0rRDyWD5v41/Pf5Ghj2pgn176w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208817; c=relaxed/simple;
-	bh=CGTt8e73AQ0k3xY5+nB1Yr1jofuot3fbAWV96A4Vtas=;
+	s=arc-20240116; t=1756208058; c=relaxed/simple;
+	bh=MBmP15HQajuJCAK3Inss2wAqLky66xLlKAwiV+y/UsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=On/9dWPpsm00DoCTl4iTUqZc2Hsk8xfF/Ob7CzUxUJKY3DXNyjoI1lZJ0ZXlOyiA9ZgmIpixpf8lH/Qha5bh9DjjX982Q8NHSKYg60PRvWbI/F4/ceOjNZjc8o4FYrP8O5uF6/kgthKAakSOmlZXJ90L1AdH/osmuBJPN0AYhl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiGyxYIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA9CC4CEF1;
-	Tue, 26 Aug 2025 11:46:56 +0000 (UTC)
+	 MIME-Version; b=h3AZ+vUIkN1eqg/M0r/m4s5iNXxj6e9LP+JrUkN2hE7xKPcxHoTGyPL5QOp3sF2+7Vh2qu/QaekncJOSnuUgP5fj0M+K5qszfItWNlwMrmyp8aRUZDQPKbgiPuXZFPjAFc3z7KrE7k8oLvjZojY7AS4EFZxrs6MiDwK7FV0eSbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ob+z5G+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80961C4CEF1;
+	Tue, 26 Aug 2025 11:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208817;
-	bh=CGTt8e73AQ0k3xY5+nB1Yr1jofuot3fbAWV96A4Vtas=;
+	s=korg; t=1756208055;
+	bh=MBmP15HQajuJCAK3Inss2wAqLky66xLlKAwiV+y/UsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiGyxYIjU0f3ZI8waKCZz+usSIrxXNohscwSbtR1G1kEF2R7APiKr4zamhJV5p1aI
-	 nO74ojduQze6hkIzPAUKgOIwmWspWNTSQwEqRZC9aLa0WSSUzPCwHVSJx3X/sV5Vh9
-	 cm8ne5dWfNDgj4OoIP5q/kQO7w3lJ2GjU4l/y4Z4=
+	b=ob+z5G+1zmWF5TUH5lorwJdbGMqeRirJFKCdSpc5rgCDE2T5WsI9E1YD2yLT0p/kc
+	 y1Gap6GtY9OMwc5qZj9h2PT6BSRpAQKoe7ZSyX/JXFc2CSJNjtil/IsK7CTz4IYv28
+	 vicjh313j2DIywzy4Qd3OpL8XNXn3U6kglw5oMyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 257/322] drm/panic: Move drawing functions to drm_draw
-Date: Tue, 26 Aug 2025 13:11:12 +0200
-Message-ID: <20250826110922.282235762@linuxfoundation.org>
+Subject: [PATCH 6.16 389/457] drm/hisilicon/hibmc: fix irq_request()s irq name variable is local
+Date: Tue, 26 Aug 2025 13:11:13 +0200
+Message-ID: <20250826110946.911131995@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,731 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 31fa2c1ca0b239f64eaf682f1685bbbd74fc0181 ]
+[ Upstream commit 8bed4ec42a4e0dc8113172696ff076d1eb6d8bcb ]
 
-Move the color conversions, blit and fill functions to drm_draw.c,
-so that they can be re-used by drm_log.
-drm_draw is internal to the drm subsystem, and shouldn't be used by
-gpu drivers.
+The local variable is passed in request_irq (), and there will be use
+after free problem, which will make request_irq failed. Using the global
+irq name instead of it to fix.
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204160014.1171469-2-jfalempe@redhat.com
-Stable-dep-of: 05663d88fd0b ("drm/tests: Fix drm_test_fb_xrgb8888_to_xrgb2101010() on big-endian")
+Fixes: b11bc1ae4658 ("drm/hisilicon/hibmc: Add MSI irq getting and requesting for HPD")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-4-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/Kconfig             |   5 +
- drivers/gpu/drm/Makefile            |   1 +
- drivers/gpu/drm/drm_draw.c          | 233 ++++++++++++++++++++++++
- drivers/gpu/drm/drm_draw_internal.h |  56 ++++++
- drivers/gpu/drm/drm_panic.c         | 269 +++-------------------------
- 5 files changed, 324 insertions(+), 240 deletions(-)
- create mode 100644 drivers/gpu/drm/drm_draw.c
- create mode 100644 drivers/gpu/drm/drm_draw_internal.h
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 1160a439e92a..0dd0d996e53e 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -105,10 +105,15 @@ config DRM_KMS_HELPER
- 	help
- 	  CRTC helpers for KMS drivers.
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+index 768b97f9e74a..4cdcc34070ee 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+@@ -32,7 +32,7 @@
  
-+config DRM_DRAW
-+	bool
-+	depends on DRM
-+
- config DRM_PANIC
- 	bool "Display a user-friendly message when a kernel panic occurs"
- 	depends on DRM
- 	select FONT_SUPPORT
-+	select DRM_DRAW
- 	help
- 	  Enable a drm panic handler, which will display a user-friendly message
- 	  when a kernel panic occurs. It's useful when using a user-space
-diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index 1ec44529447a..f4a5edf746d2 100644
---- a/drivers/gpu/drm/Makefile
-+++ b/drivers/gpu/drm/Makefile
-@@ -89,6 +89,7 @@ drm-$(CONFIG_DRM_PRIVACY_SCREEN) += \
- 	drm_privacy_screen_x86.o
- drm-$(CONFIG_DRM_ACCEL) += ../../accel/drm_accel.o
- drm-$(CONFIG_DRM_PANIC) += drm_panic.o
-+drm-$(CONFIG_DRM_DRAW) += drm_draw.o
- drm-$(CONFIG_DRM_PANIC_SCREEN_QR_CODE) += drm_panic_qr.o
- obj-$(CONFIG_DRM)	+= drm.o
+ DEFINE_DRM_GEM_FOPS(hibmc_fops);
  
-diff --git a/drivers/gpu/drm/drm_draw.c b/drivers/gpu/drm/drm_draw.c
-new file mode 100644
-index 000000000000..cb2ad12bce57
---- /dev/null
-+++ b/drivers/gpu/drm/drm_draw.c
-@@ -0,0 +1,233 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+/*
-+ * Copyright (c) 2023 Red Hat.
-+ * Author: Jocelyn Falempe <jfalempe@redhat.com>
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/iosys-map.h>
-+#include <linux/types.h>
-+
-+#include <drm/drm_fourcc.h>
-+
-+#include "drm_draw_internal.h"
-+
-+/*
-+ * Conversions from xrgb8888
-+ */
-+
-+static u16 convert_xrgb8888_to_rgb565(u32 pix)
-+{
-+	return ((pix & 0x00F80000) >> 8) |
-+	       ((pix & 0x0000FC00) >> 5) |
-+	       ((pix & 0x000000F8) >> 3);
-+}
-+
-+static u16 convert_xrgb8888_to_rgba5551(u32 pix)
-+{
-+	return ((pix & 0x00f80000) >> 8) |
-+	       ((pix & 0x0000f800) >> 5) |
-+	       ((pix & 0x000000f8) >> 2) |
-+	       BIT(0); /* set alpha bit */
-+}
-+
-+static u16 convert_xrgb8888_to_xrgb1555(u32 pix)
-+{
-+	return ((pix & 0x00f80000) >> 9) |
-+	       ((pix & 0x0000f800) >> 6) |
-+	       ((pix & 0x000000f8) >> 3);
-+}
-+
-+static u16 convert_xrgb8888_to_argb1555(u32 pix)
-+{
-+	return BIT(15) | /* set alpha bit */
-+	       ((pix & 0x00f80000) >> 9) |
-+	       ((pix & 0x0000f800) >> 6) |
-+	       ((pix & 0x000000f8) >> 3);
-+}
-+
-+static u32 convert_xrgb8888_to_argb8888(u32 pix)
-+{
-+	return pix | GENMASK(31, 24); /* fill alpha bits */
-+}
-+
-+static u32 convert_xrgb8888_to_xbgr8888(u32 pix)
-+{
-+	return ((pix & 0x00ff0000) >> 16) <<  0 |
-+	       ((pix & 0x0000ff00) >>  8) <<  8 |
-+	       ((pix & 0x000000ff) >>  0) << 16 |
-+	       ((pix & 0xff000000) >> 24) << 24;
-+}
-+
-+static u32 convert_xrgb8888_to_abgr8888(u32 pix)
-+{
-+	return ((pix & 0x00ff0000) >> 16) <<  0 |
-+	       ((pix & 0x0000ff00) >>  8) <<  8 |
-+	       ((pix & 0x000000ff) >>  0) << 16 |
-+	       GENMASK(31, 24); /* fill alpha bits */
-+}
-+
-+static u32 convert_xrgb8888_to_xrgb2101010(u32 pix)
-+{
-+	pix = ((pix & 0x000000FF) << 2) |
-+	      ((pix & 0x0000FF00) << 4) |
-+	      ((pix & 0x00FF0000) << 6);
-+	return pix | ((pix >> 8) & 0x00300C03);
-+}
-+
-+static u32 convert_xrgb8888_to_argb2101010(u32 pix)
-+{
-+	pix = ((pix & 0x000000FF) << 2) |
-+	      ((pix & 0x0000FF00) << 4) |
-+	      ((pix & 0x00FF0000) << 6);
-+	return GENMASK(31, 30) /* set alpha bits */ | pix | ((pix >> 8) & 0x00300C03);
-+}
-+
-+static u32 convert_xrgb8888_to_abgr2101010(u32 pix)
-+{
-+	pix = ((pix & 0x00FF0000) >> 14) |
-+	      ((pix & 0x0000FF00) << 4) |
-+	      ((pix & 0x000000FF) << 22);
-+	return GENMASK(31, 30) /* set alpha bits */ | pix | ((pix >> 8) & 0x00300C03);
-+}
-+
-+/**
-+ * drm_draw_color_from_xrgb8888 - convert one pixel from xrgb8888 to the desired format
-+ * @color: input color, in xrgb8888 format
-+ * @format: output format
-+ *
-+ * Returns:
-+ * Color in the format specified, casted to u32.
-+ * Or 0 if the format is not supported.
-+ */
-+u32 drm_draw_color_from_xrgb8888(u32 color, u32 format)
-+{
-+	switch (format) {
-+	case DRM_FORMAT_RGB565:
-+		return convert_xrgb8888_to_rgb565(color);
-+	case DRM_FORMAT_RGBA5551:
-+		return convert_xrgb8888_to_rgba5551(color);
-+	case DRM_FORMAT_XRGB1555:
-+		return convert_xrgb8888_to_xrgb1555(color);
-+	case DRM_FORMAT_ARGB1555:
-+		return convert_xrgb8888_to_argb1555(color);
-+	case DRM_FORMAT_RGB888:
-+	case DRM_FORMAT_XRGB8888:
-+		return color;
-+	case DRM_FORMAT_ARGB8888:
-+		return convert_xrgb8888_to_argb8888(color);
-+	case DRM_FORMAT_XBGR8888:
-+		return convert_xrgb8888_to_xbgr8888(color);
-+	case DRM_FORMAT_ABGR8888:
-+		return convert_xrgb8888_to_abgr8888(color);
-+	case DRM_FORMAT_XRGB2101010:
-+		return convert_xrgb8888_to_xrgb2101010(color);
-+	case DRM_FORMAT_ARGB2101010:
-+		return convert_xrgb8888_to_argb2101010(color);
-+	case DRM_FORMAT_ABGR2101010:
-+		return convert_xrgb8888_to_abgr2101010(color);
-+	default:
-+		WARN_ONCE(1, "Can't convert to %p4cc\n", &format);
-+		return 0;
-+	}
-+}
-+EXPORT_SYMBOL(drm_draw_color_from_xrgb8888);
-+
-+/*
-+ * Blit functions
-+ */
-+void drm_draw_blit16(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u16 fg16)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++)
-+		for (x = 0; x < width; x++)
-+			if (drm_draw_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
-+				iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, fg16);
-+}
-+EXPORT_SYMBOL(drm_draw_blit16);
-+
-+void drm_draw_blit24(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u32 fg32)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++) {
-+		for (x = 0; x < width; x++) {
-+			u32 off = y * dpitch + x * 3;
-+
-+			if (drm_draw_is_pixel_fg(sbuf8, spitch, x / scale, y / scale)) {
-+				/* write blue-green-red to output in little endianness */
-+				iosys_map_wr(dmap, off, u8, (fg32 & 0x000000FF) >> 0);
-+				iosys_map_wr(dmap, off + 1, u8, (fg32 & 0x0000FF00) >> 8);
-+				iosys_map_wr(dmap, off + 2, u8, (fg32 & 0x00FF0000) >> 16);
-+			}
-+		}
-+	}
-+}
-+EXPORT_SYMBOL(drm_draw_blit24);
-+
-+void drm_draw_blit32(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u32 fg32)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++)
-+		for (x = 0; x < width; x++)
-+			if (drm_draw_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
-+				iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, fg32);
-+}
-+EXPORT_SYMBOL(drm_draw_blit32);
-+
-+/*
-+ * Fill functions
-+ */
-+void drm_draw_fill16(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u16 color)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++)
-+		for (x = 0; x < width; x++)
-+			iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, color);
-+}
-+EXPORT_SYMBOL(drm_draw_fill16);
-+
-+void drm_draw_fill24(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u16 color)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++) {
-+		for (x = 0; x < width; x++) {
-+			unsigned int off = y * dpitch + x * 3;
-+
-+			/* write blue-green-red to output in little endianness */
-+			iosys_map_wr(dmap, off, u8, (color & 0x000000FF) >> 0);
-+			iosys_map_wr(dmap, off + 1, u8, (color & 0x0000FF00) >> 8);
-+			iosys_map_wr(dmap, off + 2, u8, (color & 0x00FF0000) >> 16);
-+		}
-+	}
-+}
-+EXPORT_SYMBOL(drm_draw_fill24);
-+
-+void drm_draw_fill32(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u32 color)
-+{
-+	unsigned int y, x;
-+
-+	for (y = 0; y < height; y++)
-+		for (x = 0; x < width; x++)
-+			iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, color);
-+}
-+EXPORT_SYMBOL(drm_draw_fill32);
-diff --git a/drivers/gpu/drm/drm_draw_internal.h b/drivers/gpu/drm/drm_draw_internal.h
-new file mode 100644
-index 000000000000..f121ee7339dc
---- /dev/null
-+++ b/drivers/gpu/drm/drm_draw_internal.h
-@@ -0,0 +1,56 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/*
-+ * Copyright (c) 2023 Red Hat.
-+ * Author: Jocelyn Falempe <jfalempe@redhat.com>
-+ */
-+
-+#ifndef __DRM_DRAW_INTERNAL_H__
-+#define __DRM_DRAW_INTERNAL_H__
-+
-+#include <linux/font.h>
-+#include <linux/types.h>
-+
-+struct iosys_map;
-+
-+/* check if the pixel at coord x,y is 1 (foreground) or 0 (background) */
-+static inline bool drm_draw_is_pixel_fg(const u8 *sbuf8, unsigned int spitch, int x, int y)
-+{
-+	return (sbuf8[(y * spitch) + x / 8] & (0x80 >> (x % 8))) != 0;
-+}
-+
-+static inline const u8 *drm_draw_get_char_bitmap(const struct font_desc *font,
-+						 char c, size_t font_pitch)
-+{
-+	return font->data + (c * font->height) * font_pitch;
-+}
-+
-+u32 drm_draw_color_from_xrgb8888(u32 color, u32 format);
-+
-+void drm_draw_blit16(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u16 fg16);
-+
-+void drm_draw_blit24(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u32 fg32);
-+
-+void drm_draw_blit32(struct iosys_map *dmap, unsigned int dpitch,
-+		     const u8 *sbuf8, unsigned int spitch,
-+		     unsigned int height, unsigned int width,
-+		     unsigned int scale, u32 fg32);
-+
-+void drm_draw_fill16(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u16 color);
-+
-+void drm_draw_fill24(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u16 color);
-+
-+void drm_draw_fill32(struct iosys_map *dmap, unsigned int dpitch,
-+		     unsigned int height, unsigned int width,
-+		     u32 color);
-+
-+#endif /* __DRM_DRAW_INTERNAL_H__ */
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index 0a9ecc1380d2..f128d345b16d 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -31,6 +31,7 @@
- #include <drm/drm_rect.h>
+-static const char *g_irqs_names_map[HIBMC_MAX_VECTORS] = { "vblank", "hpd" };
++static const char *g_irqs_names_map[HIBMC_MAX_VECTORS] = { "hibmc-vblank", "hibmc-hpd" };
  
- #include "drm_crtc_internal.h"
-+#include "drm_draw_internal.h"
- 
- MODULE_AUTHOR("Jocelyn Falempe");
- MODULE_DESCRIPTION("DRM panic handler");
-@@ -139,181 +140,8 @@ device_initcall(drm_panic_setup_logo);
- #endif
- 
- /*
-- * Color conversion
-+ *  Blit & Fill functions
-  */
--
--static u16 convert_xrgb8888_to_rgb565(u32 pix)
--{
--	return ((pix & 0x00F80000) >> 8) |
--	       ((pix & 0x0000FC00) >> 5) |
--	       ((pix & 0x000000F8) >> 3);
--}
--
--static u16 convert_xrgb8888_to_rgba5551(u32 pix)
--{
--	return ((pix & 0x00f80000) >> 8) |
--	       ((pix & 0x0000f800) >> 5) |
--	       ((pix & 0x000000f8) >> 2) |
--	       BIT(0); /* set alpha bit */
--}
--
--static u16 convert_xrgb8888_to_xrgb1555(u32 pix)
--{
--	return ((pix & 0x00f80000) >> 9) |
--	       ((pix & 0x0000f800) >> 6) |
--	       ((pix & 0x000000f8) >> 3);
--}
--
--static u16 convert_xrgb8888_to_argb1555(u32 pix)
--{
--	return BIT(15) | /* set alpha bit */
--	       ((pix & 0x00f80000) >> 9) |
--	       ((pix & 0x0000f800) >> 6) |
--	       ((pix & 0x000000f8) >> 3);
--}
--
--static u32 convert_xrgb8888_to_argb8888(u32 pix)
--{
--	return pix | GENMASK(31, 24); /* fill alpha bits */
--}
--
--static u32 convert_xrgb8888_to_xbgr8888(u32 pix)
--{
--	return ((pix & 0x00ff0000) >> 16) <<  0 |
--	       ((pix & 0x0000ff00) >>  8) <<  8 |
--	       ((pix & 0x000000ff) >>  0) << 16 |
--	       ((pix & 0xff000000) >> 24) << 24;
--}
--
--static u32 convert_xrgb8888_to_abgr8888(u32 pix)
--{
--	return ((pix & 0x00ff0000) >> 16) <<  0 |
--	       ((pix & 0x0000ff00) >>  8) <<  8 |
--	       ((pix & 0x000000ff) >>  0) << 16 |
--	       GENMASK(31, 24); /* fill alpha bits */
--}
--
--static u32 convert_xrgb8888_to_xrgb2101010(u32 pix)
--{
--	pix = ((pix & 0x000000FF) << 2) |
--	      ((pix & 0x0000FF00) << 4) |
--	      ((pix & 0x00FF0000) << 6);
--	return pix | ((pix >> 8) & 0x00300C03);
--}
--
--static u32 convert_xrgb8888_to_argb2101010(u32 pix)
--{
--	pix = ((pix & 0x000000FF) << 2) |
--	      ((pix & 0x0000FF00) << 4) |
--	      ((pix & 0x00FF0000) << 6);
--	return GENMASK(31, 30) /* set alpha bits */ | pix | ((pix >> 8) & 0x00300C03);
--}
--
--static u32 convert_xrgb8888_to_abgr2101010(u32 pix)
--{
--	pix = ((pix & 0x00FF0000) >> 14) |
--	      ((pix & 0x0000FF00) << 4) |
--	      ((pix & 0x000000FF) << 22);
--	return GENMASK(31, 30) /* set alpha bits */ | pix | ((pix >> 8) & 0x00300C03);
--}
--
--/*
-- * convert_from_xrgb8888 - convert one pixel from xrgb8888 to the desired format
-- * @color: input color, in xrgb8888 format
-- * @format: output format
-- *
-- * Returns:
-- * Color in the format specified, casted to u32.
-- * Or 0 if the format is not supported.
-- */
--static u32 convert_from_xrgb8888(u32 color, u32 format)
--{
--	switch (format) {
--	case DRM_FORMAT_RGB565:
--		return convert_xrgb8888_to_rgb565(color);
--	case DRM_FORMAT_RGBA5551:
--		return convert_xrgb8888_to_rgba5551(color);
--	case DRM_FORMAT_XRGB1555:
--		return convert_xrgb8888_to_xrgb1555(color);
--	case DRM_FORMAT_ARGB1555:
--		return convert_xrgb8888_to_argb1555(color);
--	case DRM_FORMAT_RGB888:
--	case DRM_FORMAT_XRGB8888:
--		return color;
--	case DRM_FORMAT_ARGB8888:
--		return convert_xrgb8888_to_argb8888(color);
--	case DRM_FORMAT_XBGR8888:
--		return convert_xrgb8888_to_xbgr8888(color);
--	case DRM_FORMAT_ABGR8888:
--		return convert_xrgb8888_to_abgr8888(color);
--	case DRM_FORMAT_XRGB2101010:
--		return convert_xrgb8888_to_xrgb2101010(color);
--	case DRM_FORMAT_ARGB2101010:
--		return convert_xrgb8888_to_argb2101010(color);
--	case DRM_FORMAT_ABGR2101010:
--		return convert_xrgb8888_to_abgr2101010(color);
--	default:
--		WARN_ONCE(1, "Can't convert to %p4cc\n", &format);
--		return 0;
--	}
--}
--
--/*
-- * Blit & Fill
-- */
--/* check if the pixel at coord x,y is 1 (foreground) or 0 (background) */
--static bool drm_panic_is_pixel_fg(const u8 *sbuf8, unsigned int spitch, int x, int y)
--{
--	return (sbuf8[(y * spitch) + x / 8] & (0x80 >> (x % 8))) != 0;
--}
--
--static void drm_panic_blit16(struct iosys_map *dmap, unsigned int dpitch,
--			     const u8 *sbuf8, unsigned int spitch,
--			     unsigned int height, unsigned int width,
--			     unsigned int scale, u16 fg16)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++)
--		for (x = 0; x < width; x++)
--			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
--				iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, fg16);
--}
--
--static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
--			     const u8 *sbuf8, unsigned int spitch,
--			     unsigned int height, unsigned int width,
--			     unsigned int scale, u32 fg32)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++) {
--		for (x = 0; x < width; x++) {
--			u32 off = y * dpitch + x * 3;
--
--			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale)) {
--				/* write blue-green-red to output in little endianness */
--				iosys_map_wr(dmap, off, u8, (fg32 & 0x000000FF) >> 0);
--				iosys_map_wr(dmap, off + 1, u8, (fg32 & 0x0000FF00) >> 8);
--				iosys_map_wr(dmap, off + 2, u8, (fg32 & 0x00FF0000) >> 16);
--			}
--		}
--	}
--}
--
--static void drm_panic_blit32(struct iosys_map *dmap, unsigned int dpitch,
--			     const u8 *sbuf8, unsigned int spitch,
--			     unsigned int height, unsigned int width,
--			     unsigned int scale, u32 fg32)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++)
--		for (x = 0; x < width; x++)
--			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
--				iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, fg32);
--}
--
- static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect *clip,
- 				 const u8 *sbuf8, unsigned int spitch, unsigned int scale,
- 				 u32 fg_color)
-@@ -322,7 +150,7 @@ static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect
- 
- 	for (y = 0; y < drm_rect_height(clip); y++)
- 		for (x = 0; x < drm_rect_width(clip); x++)
--			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
-+			if (drm_draw_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
- 				sb->set_pixel(sb, clip->x1 + x, clip->y1 + y, fg_color);
- }
- 
-@@ -354,62 +182,22 @@ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
- 
- 	switch (sb->format->cpp[0]) {
- 	case 2:
--		drm_panic_blit16(&map, sb->pitch[0], sbuf8, spitch,
--				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
-+		drm_draw_blit16(&map, sb->pitch[0], sbuf8, spitch,
-+				drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
- 	break;
- 	case 3:
--		drm_panic_blit24(&map, sb->pitch[0], sbuf8, spitch,
--				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
-+		drm_draw_blit24(&map, sb->pitch[0], sbuf8, spitch,
-+				drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
- 	break;
- 	case 4:
--		drm_panic_blit32(&map, sb->pitch[0], sbuf8, spitch,
--				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
-+		drm_draw_blit32(&map, sb->pitch[0], sbuf8, spitch,
-+				drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
- 	break;
- 	default:
- 		WARN_ONCE(1, "Can't blit with pixel width %d\n", sb->format->cpp[0]);
- 	}
- }
- 
--static void drm_panic_fill16(struct iosys_map *dmap, unsigned int dpitch,
--			     unsigned int height, unsigned int width,
--			     u16 color)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++)
--		for (x = 0; x < width; x++)
--			iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, color);
--}
--
--static void drm_panic_fill24(struct iosys_map *dmap, unsigned int dpitch,
--			     unsigned int height, unsigned int width,
--			     u32 color)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++) {
--		for (x = 0; x < width; x++) {
--			unsigned int off = y * dpitch + x * 3;
--
--			/* write blue-green-red to output in little endianness */
--			iosys_map_wr(dmap, off, u8, (color & 0x000000FF) >> 0);
--			iosys_map_wr(dmap, off + 1, u8, (color & 0x0000FF00) >> 8);
--			iosys_map_wr(dmap, off + 2, u8, (color & 0x00FF0000) >> 16);
--		}
--	}
--}
--
--static void drm_panic_fill32(struct iosys_map *dmap, unsigned int dpitch,
--			     unsigned int height, unsigned int width,
--			     u32 color)
--{
--	unsigned int y, x;
--
--	for (y = 0; y < height; y++)
--		for (x = 0; x < width; x++)
--			iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, color);
--}
--
- static void drm_panic_fill_pixel(struct drm_scanout_buffer *sb,
- 				 struct drm_rect *clip,
- 				 u32 color)
-@@ -442,27 +230,22 @@ static void drm_panic_fill(struct drm_scanout_buffer *sb, struct drm_rect *clip,
- 
- 	switch (sb->format->cpp[0]) {
- 	case 2:
--		drm_panic_fill16(&map, sb->pitch[0], drm_rect_height(clip),
--				 drm_rect_width(clip), color);
-+		drm_draw_fill16(&map, sb->pitch[0], drm_rect_height(clip),
-+				drm_rect_width(clip), color);
- 	break;
- 	case 3:
--		drm_panic_fill24(&map, sb->pitch[0], drm_rect_height(clip),
--				 drm_rect_width(clip), color);
-+		drm_draw_fill24(&map, sb->pitch[0], drm_rect_height(clip),
-+				drm_rect_width(clip), color);
- 	break;
- 	case 4:
--		drm_panic_fill32(&map, sb->pitch[0], drm_rect_height(clip),
--				 drm_rect_width(clip), color);
-+		drm_draw_fill32(&map, sb->pitch[0], drm_rect_height(clip),
-+				drm_rect_width(clip), color);
- 	break;
- 	default:
- 		WARN_ONCE(1, "Can't fill with pixel width %d\n", sb->format->cpp[0]);
- 	}
- }
- 
--static const u8 *get_char_bitmap(const struct font_desc *font, char c, size_t font_pitch)
--{
--	return font->data + (c * font->height) * font_pitch;
--}
--
- static unsigned int get_max_line_len(const struct drm_panic_line *lines, int len)
+ static irqreturn_t hibmc_interrupt(int irq, void *arg)
  {
- 	int i;
-@@ -501,7 +284,7 @@ static void draw_txt_rectangle(struct drm_scanout_buffer *sb,
- 			rec.x1 += (drm_rect_width(clip) - (line_len * font->width)) / 2;
+@@ -277,7 +277,6 @@ static void hibmc_unload(struct drm_device *dev)
+ static int hibmc_msi_init(struct drm_device *dev)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev->dev);
+-	char name[32] = {0};
+ 	int valid_irq_num;
+ 	int irq;
+ 	int ret;
+@@ -292,9 +291,6 @@ static int hibmc_msi_init(struct drm_device *dev)
+ 	valid_irq_num = ret;
  
- 		for (j = 0; j < line_len; j++) {
--			src = get_char_bitmap(font, msg[i].txt[j], font_pitch);
-+			src = drm_draw_get_char_bitmap(font, msg[i].txt[j], font_pitch);
- 			rec.x2 = rec.x1 + font->width;
- 			drm_panic_blit(sb, &rec, src, font_pitch, 1, color);
- 			rec.x1 += font->width;
-@@ -533,8 +316,10 @@ static void drm_panic_logo_draw(struct drm_scanout_buffer *sb, struct drm_rect *
+ 	for (int i = 0; i < valid_irq_num; i++) {
+-		snprintf(name, ARRAY_SIZE(name) - 1, "%s-%s-%s",
+-			 dev->driver->name, pci_name(pdev), g_irqs_names_map[i]);
+-
+ 		irq = pci_irq_vector(pdev, i);
  
- static void draw_panic_static_user(struct drm_scanout_buffer *sb)
- {
--	u32 fg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR, sb->format->format);
--	u32 bg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR, sb->format->format);
-+	u32 fg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR,
-+						    sb->format->format);
-+	u32 bg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR,
-+						    sb->format->format);
- 	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
- 	struct drm_rect r_screen, r_logo, r_msg;
- 	unsigned int msg_width, msg_height;
-@@ -600,8 +385,10 @@ static int draw_line_with_wrap(struct drm_scanout_buffer *sb, const struct font_
-  */
- static void draw_panic_static_kmsg(struct drm_scanout_buffer *sb)
- {
--	u32 fg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR, sb->format->format);
--	u32 bg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR, sb->format->format);
-+	u32 fg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR,
-+						    sb->format->format);
-+	u32 bg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR,
-+						    sb->format->format);
- 	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
- 	struct drm_rect r_screen = DRM_RECT_INIT(0, 0, sb->width, sb->height);
- 	struct kmsg_dump_iter iter;
-@@ -791,8 +578,10 @@ static int drm_panic_get_qr_code(u8 **qr_image)
-  */
- static int _draw_panic_static_qr_code(struct drm_scanout_buffer *sb)
- {
--	u32 fg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR, sb->format->format);
--	u32 bg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR, sb->format->format);
-+	u32 fg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR,
-+						    sb->format->format);
-+	u32 bg_color = drm_draw_color_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR,
-+						    sb->format->format);
- 	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
- 	struct drm_rect r_screen, r_logo, r_msg, r_qr, r_qr_canvas;
- 	unsigned int max_qr_size, scale;
-@@ -878,7 +667,7 @@ static bool drm_panic_is_format_supported(const struct drm_format_info *format)
- {
- 	if (format->num_planes != 1)
- 		return false;
--	return convert_from_xrgb8888(0xffffff, format->format) != 0;
-+	return drm_draw_color_from_xrgb8888(0xffffff, format->format) != 0;
- }
- 
- static void draw_panic_dispatch(struct drm_scanout_buffer *sb)
+ 		if (i)
+@@ -302,10 +298,10 @@ static int hibmc_msi_init(struct drm_device *dev)
+ 			ret = devm_request_threaded_irq(&pdev->dev, irq,
+ 							hibmc_dp_interrupt,
+ 							hibmc_dp_hpd_isr,
+-							IRQF_SHARED, name, dev);
++							IRQF_SHARED, g_irqs_names_map[i], dev);
+ 		else
+ 			ret = devm_request_irq(&pdev->dev, irq, hibmc_interrupt,
+-					       IRQF_SHARED, name, dev);
++					       IRQF_SHARED, g_irqs_names_map[i], dev);
+ 		if (ret) {
+ 			drm_err(dev, "install irq failed: %d\n", ret);
+ 			return ret;
 -- 
 2.50.1
 
