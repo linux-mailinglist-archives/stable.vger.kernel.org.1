@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F8FB360DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0313B35B7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDDED17E27C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1ADD68019E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D941AB52D;
-	Tue, 26 Aug 2025 13:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E912FE065;
+	Tue, 26 Aug 2025 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjZ1SYhi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg7dJJRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C56B1917ED;
-	Tue, 26 Aug 2025 13:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669F717332C;
+	Tue, 26 Aug 2025 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213286; cv=none; b=CggckjN/503hDlUwq0Mno3n2bSMQMcwYLNM/gvx7PWavpzYdWgCuU14TSjOCdwso9MXAg6g9CGjo5gwjMhtIDvqfw+pf/VpwLYbFWBfyEPYHP8IHwxgpjVMZW8hMJSjGom/LUCsTp7GQBDnMeoXS1A4l5rgZeyajiGmiq3isdzU=
+	t=1756207448; cv=none; b=LP5HX3/80SXPKhkitiHQHJR1GlmDcDUoXs8XE2lJszC8wrUyztvbDHqYDrEtUzL7+0AuT+tWtowZr5gT95a8PXCZ8qGahGIm4AhuseTO3SEAO9fpoSeIZFMS8kWQTrpDZvTnHjMubWKmLV7Gui7f2/YCNJOfLCDXSCBfigTnUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213286; c=relaxed/simple;
-	bh=h7fBPiZ5NPMaKpRwh5ECF2rKV8TPOyBETHxbjR/8mFA=;
+	s=arc-20240116; t=1756207448; c=relaxed/simple;
+	bh=y5ZdgUEiOeZ2+JrOyHp1Bnvbuj9Avk+n4S3qyrRyj7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdKU13O4CuYnevV5rYZm1BPkhIioenuXoQ/OTS2be1PzFmoJZbcpSivqiPy6LxABK0fmElvnZQYWvrfDa7Llu90ncX5LuZ24M8smxJFJafPAzXFwfO7f8agNY0vKFIh95k+X3exDC5GG7WL8YFaEY43ku5pWn7lgCCLxY5g4UxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjZ1SYhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C89C4CEF4;
-	Tue, 26 Aug 2025 13:01:25 +0000 (UTC)
+	 MIME-Version; b=mTMVrPgX0e/MAO4Q4VS3fAG2ODVV8/5EAiqpoGFOX76eeXYM+eaL+LAa23EQymdNBHf0REGjihtJFoXoxOSij0cfrwoK+XcvuubS79w29jJrERfoWohd1QnXld04VMH1qaJptcWu/ueCdu9BPyrOVDldQrJ1+1ByvA7K0MCq0gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg7dJJRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A95C4CEF1;
+	Tue, 26 Aug 2025 11:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213285;
-	bh=h7fBPiZ5NPMaKpRwh5ECF2rKV8TPOyBETHxbjR/8mFA=;
+	s=korg; t=1756207448;
+	bh=y5ZdgUEiOeZ2+JrOyHp1Bnvbuj9Avk+n4S3qyrRyj7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjZ1SYhiJC1pyUlSPLySG+Rlf1XGSBB5piNqAKRh0BX8zLsAAxlskmHgZ3LdZEkJZ
-	 lICkPGHUPxHAMRlXcprDxKZHXM+ifMhrgafnNEkafD8fALf1wzXXTwt4UQIvt31cd2
-	 PMuGa6bYVCyPiU7OzP8yjlS5WU+bb/qLT3Jh379U=
+	b=Wg7dJJRj9MpWBfL3wXYndyb+NVAsmk+7dD3AMiNvr+goznaLAEA/Kk2t3v15SDQmz
+	 cX846TQ7Yjd6V0RaRKvctyNwH6qlgJwuMrSQ/ohADvtPrbj5Ye3qjHnD93M19G6o3M
+	 kNSDH+1+oy139OkPgpUCZY6aRZKIsfas9y448hYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/587] pNFS: Fix stripe mapping in block/scsi layout
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 154/457] media: iris: Fix buffer preparation failure during resolution change
 Date: Tue, 26 Aug 2025 13:07:18 +0200
-Message-ID: <20250826111000.281802450@linuxfoundation.org>
+Message-ID: <20250826110941.180596795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
+commit 91c6d55b477e1b66578c268214e915dff9f5ea57 upstream.
 
-Because of integer division, we need to carefully calculate the
-disk offset. Consider the example below for a stripe of 6 volumes,
-a chunk size of 4096, and an offset of 70000.
+When the resolution changes, the driver internally updates the width and
+height, but the client continue to queue buffers with the older
+resolution until the last flag is received. This results in a mismatch
+when the buffers are prepared, causing failure due to outdated size.
 
-chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
-offset = chunk * dev->chunk_size = 17 * 4096 = 69632
-disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
-disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
-disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
+Introduce a check to prevent size validation during buffer preparation
+if a resolution reconfiguration is in progress, to handle this.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/dev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_vb2.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index 65cbb5607a5f..61ee0b6c0fba 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	struct pnfs_block_dev *child;
- 	u64 chunk;
- 	u32 chunk_idx;
-+	u64 disk_chunk;
- 	u64 disk_offset;
+diff --git a/drivers/media/platform/qcom/iris/iris_vb2.c b/drivers/media/platform/qcom/iris/iris_vb2.c
+index cdf11feb590b..b3bde10eb6d2 100644
+--- a/drivers/media/platform/qcom/iris/iris_vb2.c
++++ b/drivers/media/platform/qcom/iris/iris_vb2.c
+@@ -259,13 +259,14 @@ int iris_vb2_buf_prepare(struct vb2_buffer *vb)
+ 			return -EINVAL;
+ 	}
  
- 	chunk = div_u64(offset, dev->chunk_size);
--	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
-+	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+-	if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
+-	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
+-		return -EINVAL;
+-	if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
+-	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
+-		return -EINVAL;
+-
++	if (!(inst->sub_state & IRIS_INST_SUB_DRC)) {
++		if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
++		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
++			return -EINVAL;
++		if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
++		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
++			return -EINVAL;
++	}
+ 	return 0;
+ }
  
- 	if (chunk_idx >= dev->nr_children) {
- 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
-@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	offset = chunk * dev->chunk_size;
- 
- 	/* disk offset of the stripe */
--	disk_offset = div_u64(offset, dev->nr_children);
-+	disk_offset = disk_chunk * dev->chunk_size;
- 
- 	child = &dev->children[chunk_idx];
- 	child->map(child, disk_offset, map);
 -- 
-2.39.5
+2.50.1
 
 
 
