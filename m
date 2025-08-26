@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3FDB35C6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BF2B36458
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD387B83D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40F71C213AC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568A343215;
-	Tue, 26 Aug 2025 11:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6617A34166C;
+	Tue, 26 Aug 2025 13:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqKCPjV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqmEn+fr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768B343219;
-	Tue, 26 Aug 2025 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E97340DA4;
+	Tue, 26 Aug 2025 13:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207856; cv=none; b=e5+iKTukaik1fF5bCAOTuFaUyyG86MkOcb9izIxLKb+oFbeSfNXHy43+MqONOvaXCft4Wz/utLLHrsV23C7TcMqr6EchVdjVr1ap8QIMsJzTXQIFc/HWGl7TGQAy7HwiN/oq6KG949CqHgYIQmyEn47mgYCDVotNrCiSpjzpvpY=
+	t=1756214998; cv=none; b=aTUOP7hzTI4URV+HYsF5HSITT9UIks/PWH+Cca3ch76BsDwD8xR/lztE53mh7HyzopQTWYl7CktI2aCfUwgJD/A+57V619YUPXFjgv1QzqhsiKxDH3AODSIk1OSBVm0n4s2jr1DHcHTXhO/pQUJAlxysiDce9Db5ayY+r1k+LC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207856; c=relaxed/simple;
-	bh=QcIfy/Jld1ucKH/If/CyA+b6+BQ2D51OhycvwQRX5vo=;
+	s=arc-20240116; t=1756214998; c=relaxed/simple;
+	bh=l8ycecylnMW2GIrfiLViNLKA4P/A7FDpFr1uv7XTlhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PXpKm10dsxeStd2lt5yn46nIlMVxq6VaYqcuU45HEPLyKVVk8Icn6xt4yuI5rUmAnI7kml5J1S0vXknKH0jtxTNvtlMoI/F63P/HCJPcEVft16vg71OSxSXrG/S4bagsf0+O8Xw2FDVYCQZTZ42pCkhUmQAOdBDZYtzymTqbMiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqKCPjV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9FAC4CEF1;
-	Tue, 26 Aug 2025 11:30:56 +0000 (UTC)
+	 MIME-Version; b=U2yesQ3yMrKYaUur/BYWzunP5YmkP5Vz7LrYUvvUpLDP6WNjwvqFNrP7D3ia9ufbQcdEhRlPHI/997ovKFk6e6rX4EdYa+QDBMVeXKiAWr9vCDwX8T4kvcOWqOB8gdRB8ievI92TF2JR+GRXCWnk6+sAuhxfch6nLunSpOdF+nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqmEn+fr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76D6C4CEF1;
+	Tue, 26 Aug 2025 13:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207856;
-	bh=QcIfy/Jld1ucKH/If/CyA+b6+BQ2D51OhycvwQRX5vo=;
+	s=korg; t=1756214998;
+	bh=l8ycecylnMW2GIrfiLViNLKA4P/A7FDpFr1uv7XTlhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqKCPjV1B30VaXrNh1hru8j5SYASF8kblbX+n1Qyt0M75BvW7yZr04R5JllBJbcKp
-	 +OVc1/OxWIKGpTEwxzjryhljr/QZsCGZlqdDxmQe+dw/xktaRbWNp2SMRoVc5zNLO6
-	 ToJ5dH39dCBi7rhu0u9jxBUvL7vwy8tNwn5lxX4o=
+	b=dqmEn+frIlzkP7Z0iCobveQNehK4WP61FlTYR5eEsHrT7hXbQ+5w0npTcpbcF19qt
+	 pPKj0DGBD8Nm5wigN52UcZkfstfm8CEEK5+ZxQ95kiRWGgfgZ3JGdsyepoaORfkPaV
+	 EsnzoqjPmwtpWs8YKamiXk36p3kn51HgzrOb+UlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mael GUERIN <mael.guerin@murena.io>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.16 316/457] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 347/482] x86/mce/amd: Add default names for MCA banks and blocks
 Date: Tue, 26 Aug 2025 13:10:00 +0200
-Message-ID: <20250826110945.167221096@linuxfoundation.org>
+Message-ID: <20250826110939.404151932@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mael GUERIN <mael.guerin@murena.io>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
+[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
 
-Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
-to fix USB resets after sending SCSI vendor commands due to CBW and
-CSW tags difference, leading to undesired slowness while communicating
-with the device.
+Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
+a bank has additional blocks available.
 
-Please find below the copy of /sys/kernel/debug/usb/devices with my
-device plugged in (listed as TechSys USB mass storage here, the
-underlying chipset being the Novatek NTK96550-based camera):
+Most MCA banks have a single thresholding block, so the block takes the same
+name as the bank.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0603 ProdID=8611 Rev= 0.01
-S:  Manufacturer=TechSys
-S:  Product=USB Mass Storage
-S:  SerialNumber=966110000000100
-C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Unified Memory Controllers (UMCs) are a special case where there are two
+blocks and each has a unique name.
 
-Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
-Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
+However, the microarchitecture allows for five blocks. Any new MCA bank types
+with more than one block will be missing names for the extra blocks. The MCE
+sysfs will fail to initialize in this case.
+
+Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_SANE_SENSE ),
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1052,13 +1052,20 @@ static const char *get_name(unsigned int
+ 	}
  
-+/* Added by Maël GUERIN <mael.guerin@murena.io> */
-+UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
-+		"Novatek",
-+		"NTK96550-based camera",
-+		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		US_FL_BULK_IGNORE_TAG ),
+ 	bank_type = smca_get_bank_type(cpu, bank);
+-	if (bank_type >= N_SMCA_BANK_TYPES)
+-		return NULL;
+ 
+ 	if (b && bank_type == SMCA_UMC) {
+ 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
+ 			return smca_umc_block_names[b->block];
+-		return NULL;
++	}
 +
- /*
-  * Reported by Hanno Boeck <hanno@gmx.de>
-  * Taken from the Lycoris Kernel
++	if (b && b->block) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
++		return buf_mcatype;
++	}
++
++	if (bank_type >= N_SMCA_BANK_TYPES) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
++		return buf_mcatype;
+ 	}
+ 
+ 	if (per_cpu(smca_bank_counts, cpu)[bank_type] == 1)
 
 
 
