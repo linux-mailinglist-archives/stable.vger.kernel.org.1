@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B119AB3633C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F93B36AF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95ABC8A8022
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4907A5857A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B8822DF99;
-	Tue, 26 Aug 2025 13:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F633570A0;
+	Tue, 26 Aug 2025 14:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shlQMq/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs/cBqsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404512F7473;
-	Tue, 26 Aug 2025 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E169352094;
+	Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214337; cv=none; b=H7Q3AGGrrIt26oW9bJ+dGGqr0YBMQCqqnVx8KTIAGPFOjlmLkJ17CZVMiJKO832bcjPrFaqosPBsfbe0xNKsEeHTdT9gnRvwP0rAv5xeRvDXCz1dlqU+NGNnFtZouT+CCf4SYweiBJhhtVmYQ0VsWAKxqoBIs7+v1rdEX+9PgUw=
+	t=1756218507; cv=none; b=FUfft1W2VgCiCjUYEvesvJNwIxB6wBe0tB9nmviUXAeodZkTGXQ0pdhwVO3zph99oCt5pgod3MSVFqUpdelYKq+kwXZLiMgGG5im9CaFuk+zWTSt23f5YJlKlUZ4QG5KsjK1MElwz6m1fp3DJseFjNckW/wAnxqLO5fMxzymmXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214337; c=relaxed/simple;
-	bh=RwdIzsvsuR1FP4j0tyO5mx9zzw8MwEVeK1lnqdV8mhE=;
+	s=arc-20240116; t=1756218507; c=relaxed/simple;
+	bh=rXyzydIKHQ42ChXPlQ0wH3aeKzftd/L6F4Pp+8m/ECg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfxPpDGXYt9z4NC5oPCn8Og5U0KllXpjq8IsiHJugO5wwfZ+1G2CCmHMJ8KvbCkbEHvdIX00G3UYTrEueufU7DmcOI811PZNOPTSqgKTaDRngR812N24UFaDxbkTwo6bk+MVjRmTOqNfvZSRd+Ct4wZtaoeUl6cnM2FhJEg2BPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shlQMq/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65105C4CEF1;
-	Tue, 26 Aug 2025 13:18:56 +0000 (UTC)
+	 MIME-Version; b=uPn+KWZ58OwhP8GFcRxfvhAAc25bxP3pYD5Rfu9qXxINaw31id9Gk5x0URH0TvSf/g3+QXlwFjoCsYMhZJiQ4b7xmiszIVshU9jQMaeS/e24otKLc9HLS538wPZhwgaSewRlJ9+gICxpMSIGc7sHaRBHBzyX7gxe7wRIBxymVtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs/cBqsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACDC4CEF1;
+	Tue, 26 Aug 2025 14:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214336;
-	bh=RwdIzsvsuR1FP4j0tyO5mx9zzw8MwEVeK1lnqdV8mhE=;
+	s=korg; t=1756218507;
+	bh=rXyzydIKHQ42ChXPlQ0wH3aeKzftd/L6F4Pp+8m/ECg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=shlQMq/vSHQ95dM8HGn07OV61LyNnLsLkN+qMYWYGwGuIVBV09QBBKd8ljhS05piN
-	 3UpRe9Mh/Ro6cmQvTGjCTMmK/vG7SmlulsWRdxQSpx92StgG7P/NuAd7tlRqtUm2SG
-	 MTSyuLtW5FhHU6+PBqmXLQcSzBwAQJB5KVRH/QJs=
+	b=Zs/cBqsGU2kVwElRkA7EmgcCnY/AobX2WnHkFx3mYuyYjrq7ozN+fIsXj5N1YMQrm
+	 7mboS0FFVu7nwLITKE+DRbPi7t0boibAs14J8CtMh2lHY2EuEwqPv/RPVn2xFOJB+0
+	 ADAziKetgSjW7mNLDNVdPQlqjTnUGS7qQuWi8zAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/482] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+	syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com,
+	"Enju, Kohei" <enjuk@amazon.co.jp>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.4 027/403] comedi: das16m1: Fix bit shift out of bounds
 Date: Tue, 26 Aug 2025 13:05:53 +0200
-Message-ID: <20250826110933.299134590@linuxfoundation.org>
+Message-ID: <20250826110906.546034822@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+commit ed93c6f68a3be06e4e0c331c6e751f462dee3932 upstream.
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+When checking for a supported IRQ number, the following test is used:
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
+	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+	if ((1 << it->options[1]) & 0xdcfc) {
 
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52293513298e0fd9a94
+Fixes: 729988507680 ("staging: comedi: das16m1: tidy up the irq support in das16m1_attach()")
+Tested-by: syzbot+c52293513298e0fd9a94@syzkaller.appspotmail.com
+Suggested-by: "Enju, Kohei" <enjuk@amazon.co.jp>
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707130908.70758-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/staging/comedi/drivers/das16m1.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index d8e83150ea28..90baca4c2b4d 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1230,7 +1230,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+--- a/drivers/staging/comedi/drivers/das16m1.c
++++ b/drivers/staging/comedi/drivers/das16m1.c
+@@ -523,7 +523,8 @@ static int das16m1_attach(struct comedi_
+ 	devpriv->extra_iobase = dev->iobase + DAS16M1_8255_IOBASE;
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
- 	}
- 
-@@ -1238,7 +1239,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
- 
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
- 	}
- 
-@@ -1297,8 +1299,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
- 
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
- 
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
- 
- 		/*
- 		 * PCMs are not registered during device probe, so don't
--- 
-2.39.5
-
+ 	/* only irqs 2, 3, 4, 5, 6, 7, 10, 11, 12, 14, and 15 are valid */
+-	if ((1 << it->options[1]) & 0xdcfc) {
++	if (it->options[1] >= 2 && it->options[1] <= 15 &&
++	    (1 << it->options[1]) & 0xdcfc) {
+ 		ret = request_irq(it->options[1], das16m1_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0)
 
 
 
