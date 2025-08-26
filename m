@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6BAB36812
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A15B35EA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0E7B8E464A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93225606A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7CD350842;
-	Tue, 26 Aug 2025 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AB12FD7C8;
+	Tue, 26 Aug 2025 11:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqnR8DA3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdS8s6g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFCD1DE8BE;
-	Tue, 26 Aug 2025 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C2229BD98;
+	Tue, 26 Aug 2025 11:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216885; cv=none; b=fmRsYLzVe7AEYtFlxVX+haalAquwCirQd0ijjM5aQmB0vigp2UupdtY/29QaQL1sn60wUYFzKSjBaLza8JsHWDzqYUFapvtrm39AafT3xiRD83S6tlJ/CHsfDBmOyppBUs28QsAdqjn3wiXY7M25dz6VJrVFngbal3yY3kl7dEI=
+	t=1756208814; cv=none; b=iYGz+Pn86xf5Ev2mPtSR+sm+J3at6PKsxQH65V+RTbzVtnqtS/QqwEj0tlaVJr6nXtfauNlaXqZ2jy4ll6bvnQ/k+RMsodWaOwZI2lFkeebBieLxtCKwucaI1ngUx40wg97TASuVXW0fWPBajLWbXbhByfIqHEPOM/X65Iy2SHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216885; c=relaxed/simple;
-	bh=PLykwFO3ThDJMlt3RBuefqGN0PDM8LxDMv5ceB4AflA=;
+	s=arc-20240116; t=1756208814; c=relaxed/simple;
+	bh=YrMBqVTdDMrJEl5KV+/03cVAll1tQ00Qj5oYLNI7evs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIL9v4G1u/PNX8IP0Rv96/0nUPduqBaDCaJeHbYAqsg6+jFx2JkGP1XJbJ3tRxe9YxJmVHuQJjcfbCMzVd8FUTfkes3teW8wrONIC5Y33myd2cRTEYbNwTSXz8UkE5GR/LOPziBHfnABqfnlDUZbhDO9792lSZlaTyNZMGqDQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqnR8DA3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7A5C4CEF1;
-	Tue, 26 Aug 2025 14:01:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Clsws2RvN3lIYRpchHi5eaTet9T1t5zwb1zAga7fj+4Gh/8aPtj7kmXLYeLfY1wgKFhcDogV+LVsALaQhWMz8MbUCwKwMR0jEz92TmTNOK8zSu/5m9sSRp8fsEfxI+85xbEhi5hY6W+W8eYgFGX/AnF7JSpF8fOUVKKVOmp+fAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdS8s6g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FAAC4CEF1;
+	Tue, 26 Aug 2025 11:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216885;
-	bh=PLykwFO3ThDJMlt3RBuefqGN0PDM8LxDMv5ceB4AflA=;
+	s=korg; t=1756208814;
+	bh=YrMBqVTdDMrJEl5KV+/03cVAll1tQ00Qj5oYLNI7evs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GqnR8DA3cqmu4zUkTmMekv7l8DIxM+K0te8wNGWz6QNzcJCJG1NQxLygs/sYdo4/C
-	 UlpuXN0PZmj0Y+bQ3AeGouoYD1LXDQpvRoD6AjQ+lmzJwQuraTmMQMPDPldVfzjmMf
-	 9+Mc85hasco+pcaktvt7z61lSq2+sd9na1wBdGA8=
+	b=LdS8s6g6gUgdw3WbfQqAg29EnMCKZnhkZtYDhzsmmFQw2p/r/Fy/0Clm49X/fa5qW
+	 YSe0oNEgrHF5op/zOOtd1vv5YJJXL/eeDLPo3ndhVoBjISjvWdwyo7lB5Eos2pnyb5
+	 I+7wOiPxsgXkJpGEK9+JlY3Uxl4KDI2VGrNZvbuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: [PATCH 5.15 580/644] most: core: Drop device reference after usage in get_channel()
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 256/322] drm/tests: Fix endian warning
 Date: Tue, 26 Aug 2025 13:11:11 +0200
-Message-ID: <20250826111000.904237993@linuxfoundation.org>
+Message-ID: <20250826110922.257577526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-commit b47b493d6387ae437098112936f32be27f73516c upstream.
+[ Upstream commit d28b9d2925b4f773adb21b1fc20260ddc370fb13 ]
 
-In get_channel(), the reference obtained by bus_find_device_by_name()
-was dropped via put_device() before accessing the device's driver data
-Move put_device() after usage to avoid potential issues.
+When compiling with sparse enabled, this warning is thrown:
 
-Fixes: 2485055394be ("staging: most: core: drop device reference")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  warning: incorrect type in argument 2 (different base types)
+     expected restricted __le32 const [usertype] *buf
+     got unsigned int [usertype] *[assigned] buf
+
+Add a cast to fix it.
+
+Fixes: 453114319699 ("drm/format-helper: Add KUnit tests for drm_fb_xrgb8888_to_xrgb2101010()")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250630090054.353246-1-jose.exposito89@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/most/core.c |    2 +-
+ drivers/gpu/drm/tests/drm_format_helper_test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/most/core.c
-+++ b/drivers/most/core.c
-@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
- 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
- 	if (!dev)
- 		return NULL;
--	put_device(dev);
- 	iface = dev_get_drvdata(dev);
-+	put_device(dev);
- 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
- 		if (!strcmp(dev_name(&c->dev), mdev_ch))
- 			return c;
+diff --git a/drivers/gpu/drm/tests/drm_format_helper_test.c b/drivers/gpu/drm/tests/drm_format_helper_test.c
+index 08992636ec05..b4d62fb1d909 100644
+--- a/drivers/gpu/drm/tests/drm_format_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_format_helper_test.c
+@@ -991,7 +991,7 @@ static void drm_test_fb_xrgb8888_to_xrgb2101010(struct kunit *test)
+ 		NULL : &result->dst_pitch;
+ 
+ 	drm_fb_xrgb8888_to_xrgb2101010(&dst, dst_pitch, &src, &fb, &params->clip, &fmtcnv_state);
+-	buf = le32buf_to_cpu(test, buf, dst_size / sizeof(u32));
++	buf = le32buf_to_cpu(test, (__force const __le32 *)buf, dst_size / sizeof(u32));
+ 	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
+ 
+ 	buf = dst.vaddr; /* restore original value of buf */
+-- 
+2.50.1
+
 
 
 
