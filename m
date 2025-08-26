@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C75B361E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:13:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8543AB36D1A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A0318882A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED50BA06B45
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BC81C4609;
-	Tue, 26 Aug 2025 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2506135206D;
+	Tue, 26 Aug 2025 14:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/5z0knc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Kp2DujO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FAE54654;
-	Tue, 26 Aug 2025 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2850350851;
+	Tue, 26 Aug 2025 14:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213791; cv=none; b=ezFTXqcqPw/1Emi6UU8qOdKB9bU08nFqAd9J0sqlmGqmuaFcC1sVksjv7JcJBc4kqY36dncfZv6BXw3GCvdtiW42d28p641H8yfOM+o9WwWX8s+gNw+SwD0BLe02WMxnQKRPwvlbMBR9IrOHh6yI/Pu5n96c5d9uYdnx992UGtg=
+	t=1756219151; cv=none; b=tFwb+nEfvhfYNWTv+5A0mM/jtjaDqet8IWGXmTEfqQSC5I4f3I2gc/mjGNjip0W6phxWgqQcp2DPJstlj10qhLjYNH677roVhIhDgfRNnOUmvKKVpYvGX3ffHjS7UleyrQ4PNIu+FJuAwMAdhV/bJ70VnYRNjw57IBE74nR5uGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213791; c=relaxed/simple;
-	bh=Yc/Ce2N6yVLbn4v2daxfO4awpNv6sEFahrYaN76wElY=;
+	s=arc-20240116; t=1756219151; c=relaxed/simple;
+	bh=BwuEV/LUHjhNKK3UJTNbGAF/6HQ6CsrJ5VHtQSMb2Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvIt7FDlF+XonCCcjgBOH9UTx1qTW1WHKV+Nqeh5AFx/bNuVv5QPR3U6nKflc6Msg2mExDnWdkarmLlP7ioe4mc2WzQabr0LSnV1mG1k4LlMM9/x/octcpHMCJieg5QO0Tz0KXRZh+sjL21rUUY4Vs6YxWedCryOXXrefjmVPuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/5z0knc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5224C4CEF1;
-	Tue, 26 Aug 2025 13:09:50 +0000 (UTC)
+	 MIME-Version; b=AgqfDZoAiEh+YC0N490bulKT0jdMq0joT7wHPStN8K5n2TLuWG/hK8L4x2JTv3BC+SUEUE/tQoBVv2PueMLRiL1Bb3g13VXnyjV243MgO63i8BqVSLezh8Z+Wbs8O6cClnAXFzx7N8PmJJ81nWtJnCuq6YllW244AFdefLHyvgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Kp2DujO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56478C4CEF1;
+	Tue, 26 Aug 2025 14:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213791;
-	bh=Yc/Ce2N6yVLbn4v2daxfO4awpNv6sEFahrYaN76wElY=;
+	s=korg; t=1756219151;
+	bh=BwuEV/LUHjhNKK3UJTNbGAF/6HQ6CsrJ5VHtQSMb2Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/5z0kncQVjhN5+aarDF8DwLNC9PP2/X793dToK4lAsepfU7fx8mI/2M//mFq21sK
-	 DLL9YcCTRZfTxCv55ynBaG3jQdsifBiExHfot1JG/bEAvkr/nCbiwStJiSk8SDKVQh
-	 553s16X0mIBOHMTQJsSHx68Pf4D6B7NQI2+TLbBc=
+	b=2Kp2DujOmVRY5+ndBVAeWW1PQ/YdYBU/t2qRXI5Yq525S7O4blBB7j8uS1DTahgnf
+	 lMtHGJ35LMO5Sf1e7qJSpYRa1sdeZEnlptlL4vu+8DZ36pSqGHoRLe3Ca3hK8oHPrr
+	 PF00/JgVmg8ltumx57wxVomdz7Kj9h9NywloNFXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 449/587] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
+Subject: [PATCH 5.4 272/403] scsi: lpfc: Remove redundant assignment to avoid memory leak
 Date: Tue, 26 Aug 2025 13:09:58 +0200
-Message-ID: <20250826111004.380566460@linuxfoundation.org>
+Message-ID: <20250826110914.317869789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
+[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
 
-Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
-argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
+Remove the redundant assignment if kzalloc() succeeds to avoid memory
+leak.
 
-Currently passing the wrong flags works for non-debug builds because
-the only XFS_IWALK* flag has the same encoding as the corresponding
-XFS_IBULK* flag, but in debug builds it can trigger an assert that no
-incorrect flag is passed.  Instead just extra the relevant flag.
-
-Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
-Cc: <stable@vger.kernel.org> # v5.19
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context ]
+Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_itable.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -422,11 +422,15 @@ xfs_inumbers(
- 		.breq		= breq,
- 	};
- 	struct xfs_trans	*tp;
-+	unsigned int		iwalk_flags = 0;
- 	int			error = 0;
- 
- 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
- 		return 0;
- 
-+	if (breq->flags & XFS_IBULK_SAME_AG)
-+		iwalk_flags |= XFS_IWALK_SAME_AG;
-+
- 	/*
- 	 * Grab an empty transaction so that we can use its recursive buffer
- 	 * locking abilities to detect cycles in the inobt without deadlocking.
-@@ -435,7 +439,7 @@ xfs_inumbers(
- 	if (error)
- 		goto out;
- 
--	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
-+	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
- 			xfs_inumbers_walk, breq->icount, &ic);
- 	xfs_trans_cancel(tp);
- out:
+diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
+index 291fccf02d45..f75431a948f3 100644
+--- a/drivers/scsi/lpfc/lpfc_debugfs.c
++++ b/drivers/scsi/lpfc/lpfc_debugfs.c
+@@ -5886,7 +5886,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			}
+ 			phba->nvmeio_trc_on = 1;
+ 			phba->nvmeio_trc_output_idx = 0;
+-			phba->nvmeio_trc = NULL;
+ 		} else {
+ nvmeio_off:
+ 			phba->nvmeio_trc_size = 0;
+-- 
+2.50.1
+
 
 
 
