@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF12B365F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45226B35FF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2222A7377
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4728F1BA4D61
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F84223A9A0;
-	Tue, 26 Aug 2025 13:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C92165F13;
+	Tue, 26 Aug 2025 12:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmn5PY2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQ+JWrJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEE622AE5D;
-	Tue, 26 Aug 2025 13:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874631DE4C2;
+	Tue, 26 Aug 2025 12:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215663; cv=none; b=lQBD+vFIcuuJOUKpLQ2xv9l3dKraRbF9N9hJRufFnUHmxLlCZ+sZbv3YvKmr3TNUrJGlewpXV46wAZfgwN1n9xqIFeC4flGqb80DtfNDIToU2lHVJIZ+9nmGgKpS9ikB9BDI9QRzN7Kg/7W95KYNB8AWYP7fse1yy4M4mSwehHM=
+	t=1756212759; cv=none; b=a0IqhVdO7PFEbXDshJkIKzaCfBkZ0Jnezw6GPHP6lJdKGrLwPTHAFbk1xeGt2HZ16NEaXCtTF3La24MY9xn0lMIC4cDu8vM3DEfSQ42GIPgUqSAFWmN1gfd1uBF1fCja/4uZFGWKdWQ2HjRiojZljD+uC9bKEKkS9Ga5UbLi+Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215663; c=relaxed/simple;
-	bh=1LtMola5zcum2x8D9yHG1XuVZn5soX1nKoQc0PuxOLc=;
+	s=arc-20240116; t=1756212759; c=relaxed/simple;
+	bh=epI4Ow7afYyc0fKrO73bm7Fbz5ZC7SvKSqx4OQK5hJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPCT0/u7GCNZPkdl8X6+XXHyHdRy8ZbbZeDcZ1yZojF23X8mU9oaGW/jn7WuOh0ZmWjgkWRzf5mxQPDBUcGK03asoPuHRLPcF/PXu+LmKvyOTKsrF8+LC4oZpKyeTW2S2uvkeDHXOPz3b6I/GwoJsl7ANpcPdq27pC+6ubqnQUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmn5PY2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B97C113D0;
-	Tue, 26 Aug 2025 13:41:02 +0000 (UTC)
+	 MIME-Version; b=iqu/h3fQ3YzuEomzqtVVTEe/93xzbeVbpekzEdjk5gRlcBQ1cc8WDWfvqQCE95QFiRq88M0PshQZj/0VBW3rWy453YeOzAnVyvxFOoeodFmc0urJ8oYE3KJh+Xo0rAAb52f0887ET++tnAAVLTImbHJHvbOUQVbk1VAqc6gDHmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQ+JWrJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155FDC4CEF1;
+	Tue, 26 Aug 2025 12:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215663;
-	bh=1LtMola5zcum2x8D9yHG1XuVZn5soX1nKoQc0PuxOLc=;
+	s=korg; t=1756212759;
+	bh=epI4Ow7afYyc0fKrO73bm7Fbz5ZC7SvKSqx4OQK5hJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmn5PY2pZ+xPQwZ0eq1OfnRBDUL6m8mBiLBJuH6zVCQqanV73ce3lchSgAzFt++lP
-	 KYHA3Ht//2lAgwpugrplA3Gs9POqZpog9e2wiP49D0j5Mre7AOd2kMbzleTh0reY11
-	 xuwMQexEvlNBrUez3QQ8GlQ+exd+RxqS/6lc5gHE=
+	b=pQ+JWrJNFfoRkZstUFFVMbUN3sVrMa8Ow9oFYgCfKwfQfzGvUoFCZhSGKNOtrXc5p
+	 VrWQzxDi1JL1zP/TZGkycruccNvHEJMZu+0Mmvh6jNo9NV8VpKO4aXpWnsw/X+tBtN
+	 keX8m1kSOdzumS4uW4pBSkTx7ipdVhMxwFGOBph4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 118/644] usb: misc: apple-mfi-fastcharge: Make power supply names unique
-Date: Tue, 26 Aug 2025 13:03:29 +0200
-Message-ID: <20250826110949.446503652@linuxfoundation.org>
+Subject: [PATCH 6.6 061/587] tls: handle data disappearing from under the TLS ULP
+Date: Tue, 26 Aug 2025 13:03:30 +0200
+Message-ID: <20250826110954.488275645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
+[ Upstream commit 6db015fc4b5d5f63a64a193f65d98da3a7fc811d ]
 
-When multiple Apple devices are connected concurrently, the
-apple-mfi-fastcharge driver fails to probe the subsequent devices with
-the following error:
+TLS expects that it owns the receive queue of the TCP socket.
+This cannot be guaranteed in case the reader of the TCP socket
+entered before the TLS ULP was installed, or uses some non-standard
+read API (eg. zerocopy ones). Replace the WARN_ON() and a buggy
+early exit (which leaves anchor pointing to a freed skb) with real
+error handling. Wipe the parsing state and tell the reader to retry.
 
-    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
-    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
+We already reload the anchor every time we (re)acquire the socket lock,
+so the only condition we need to avoid is an out of bounds read
+(not having enough bytes in the socket for previously parsed record len).
 
-This happens because the driver uses a fixed power supply name
-("apple_mfi_fastcharge") for all devices, causing a sysfs name
-conflict when a second device is connected.
+If some data was read from under TLS but there's enough in the queue
+we'll reload and decrypt what is most likely not a valid TLS record.
+Leading to some undefined behavior from TLS perspective (corrupting
+a stream? missing an alert? missing an attack?) but no kernel crash
+should take place.
 
-Fix this by generating unique names using the USB bus and device
-number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
-connected device gets a unique power supply entry in sysfs.
-
-The change requires storing a copy of the power_supply_desc structure
-in the per-device mfi_device struct, since the name pointer needs to
-remain valid for the lifetime of the power supply registration.
-
-Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJXfIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=@syst3mfailure.io
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250807232907.600366-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ net/tls/tls.h      |  2 +-
+ net/tls/tls_strp.c | 11 ++++++++---
+ net/tls/tls_sw.c   |  3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
-index ac8695195c13..8e852f4b8262 100644
---- a/drivers/usb/misc/apple-mfi-fastcharge.c
-+++ b/drivers/usb/misc/apple-mfi-fastcharge.c
-@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
- struct mfi_device {
- 	struct usb_device *udev;
- 	struct power_supply *battery;
-+	struct power_supply_desc battery_desc;
- 	int charge_type;
- };
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 02038d0381b7..5dc61c85c076 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -192,7 +192,7 @@ void tls_strp_msg_done(struct tls_strparser *strp);
+ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
+ void tls_rx_msg_ready(struct tls_strparser *strp);
  
-@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
- {
- 	struct power_supply_config battery_cfg = {};
- 	struct mfi_device *mfi = NULL;
-+	char *battery_name;
- 	int err;
- 
- 	if (!mfi_fc_match(udev))
-@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
- 	if (!mfi)
- 		return -ENOMEM;
- 
-+	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
-+				 udev->bus->busnum, udev->devnum);
-+	if (!battery_name) {
-+		err = -ENOMEM;
-+		goto err_free_mfi;
-+	}
-+
-+	mfi->battery_desc = apple_mfi_fc_desc;
-+	mfi->battery_desc.name = battery_name;
-+
- 	battery_cfg.drv_data = mfi;
- 
- 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
- 	mfi->battery = power_supply_register(&udev->dev,
--						&apple_mfi_fc_desc,
-+						&mfi->battery_desc,
- 						&battery_cfg);
- 	if (IS_ERR(mfi->battery)) {
- 		dev_err(&udev->dev, "Can't register battery\n");
- 		err = PTR_ERR(mfi->battery);
--		kfree(mfi);
--		return err;
-+		goto err_free_name;
- 	}
- 
- 	mfi->udev = usb_get_dev(udev);
- 	dev_set_drvdata(&udev->dev, mfi);
- 
- 	return 0;
-+
-+err_free_name:
-+	kfree(battery_name);
-+err_free_mfi:
-+	kfree(mfi);
-+	return err;
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
+ int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
+ struct sk_buff *tls_strp_msg_detach(struct tls_sw_context_rx *ctx);
+ int tls_strp_msg_hold(struct tls_strparser *strp, struct sk_buff_head *dst);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index bea60b0160d1..6ce64a6e4495 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -474,7 +474,7 @@ static void tls_strp_load_anchor_with_queue(struct tls_strparser *strp, int len)
+ 	strp->stm.offset = offset;
  }
  
- static void mfi_fc_disconnect(struct usb_device *udev)
-@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
- 	mfi = dev_get_drvdata(&udev->dev);
- 	if (mfi->battery)
- 		power_supply_unregister(mfi->battery);
-+	kfree(mfi->battery_desc.name);
- 	dev_set_drvdata(&udev->dev, NULL);
- 	usb_put_dev(mfi->udev);
- 	kfree(mfi);
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ {
+ 	struct strp_msg *rxm;
+ 	struct tls_msg *tlm;
+@@ -483,8 +483,11 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	DEBUG_NET_WARN_ON_ONCE(!strp->stm.full_len);
+ 
+ 	if (!strp->copy_mode && force_refresh) {
+-		if (WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))
+-			return;
++		if (unlikely(tcp_inq(strp->sk) < strp->stm.full_len)) {
++			WRITE_ONCE(strp->msg_ready, 0);
++			memset(&strp->stm, 0, sizeof(strp->stm));
++			return false;
++		}
+ 
+ 		tls_strp_load_anchor_with_queue(strp, strp->stm.full_len);
+ 	}
+@@ -494,6 +497,8 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	rxm->offset	= strp->stm.offset;
+ 	tlm = tls_msg(strp->anchor);
+ 	tlm->control	= strp->mark;
++
++	return true;
+ }
+ 
+ /* Called with lock held on lower socket */
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 4905a81c4ac1..c9b53472e955 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1380,7 +1380,8 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 			return sock_intr_errno(timeo);
+ 	}
+ 
+-	tls_strp_msg_load(&ctx->strp, released);
++	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
++		return tls_rx_rec_wait(sk, psock, nonblock, false);
+ 
+ 	return 1;
+ }
 -- 
-2.39.5
+2.50.1
 
 
 
