@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC7CB3631A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81AFB35B13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E16468107
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DD9A7A7569
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F46A30146A;
-	Tue, 26 Aug 2025 13:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025663218C9;
+	Tue, 26 Aug 2025 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVIzCnUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6+G5vNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9E12F657F;
-	Tue, 26 Aug 2025 13:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A642432144B;
+	Tue, 26 Aug 2025 11:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214245; cv=none; b=L27HK0CC8OKgNVpPqO+Blme01t1WQgRfF3aWo8P+deZ/cN+VTuWJIDgNiOGkmjD2gBVtvlxjwemxaUetW2NA5CutLBuI0dEZT6O49UstAYnSENpzqjavyN5FOYHUXm8IQEgLFyGLmLncJ3sIhrX/a4F3ZvJmLkeCM4hAchsrC6A=
+	t=1756207057; cv=none; b=TCQY/Lo+6hinyJOehMo5pF+fXAMiapUf2tSIh8pBOsYPY999JyYJ8P11baggj2bTGNt6hikRUaALLnSZUt22qv1R+GBBjcYldGAyTzMwJKqro4T1wYSvmIwWFUrnWpkZ3igVQnCoAXceRPHKA9wciST+1BwZJ/Fn8l5W5werY1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214245; c=relaxed/simple;
-	bh=HlWZap5rM5kvY9YmhjMkNJONjVUtUx8ERfJAF2yB04Y=;
+	s=arc-20240116; t=1756207057; c=relaxed/simple;
+	bh=a/Dcr/ECzc27RN4V/Ncif98amfeDLxXwjyuzV68mpoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii4DW80OEiKtOy4nfJL7SVjqvzv6wSgpDZaui8xN8L4MiIXLNfjiU5MK/aO62xStdGCA0oO9zT3zcGcSKmyqTCTiWPQUQEDyHkaCZillc8EQncy7qx03SytlluiQ33kNQp2ipEA/RKobAj8AqCBNZdPb7hyuBnvpXOLmwPpxJ0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVIzCnUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA46C4CEF1;
-	Tue, 26 Aug 2025 13:17:24 +0000 (UTC)
+	 MIME-Version; b=mtqG/E3rjgq0sh+hcMyzWCTQEAu2c1oPLh/FUf2EX4INlUhNH8VihnI72Mrt7nbGsBadutFVDQYI1ck7dJmW0HyB+2krkKb1Du1SL+Rhj45Gtr1xRD9R5KWLpsC2jqdlnN0RPaS5+M0FuXoPvGp05wgW7qsbRomyN5PJgARDX1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6+G5vNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B40C113CF;
+	Tue, 26 Aug 2025 11:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214244;
-	bh=HlWZap5rM5kvY9YmhjMkNJONjVUtUx8ERfJAF2yB04Y=;
+	s=korg; t=1756207057;
+	bh=a/Dcr/ECzc27RN4V/Ncif98amfeDLxXwjyuzV68mpoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVIzCnUMmVMcNa3T+fZgJt62M3Qfrrhjyiq7PqCFS13tUaGHlnjeHXTHarsFxOrFN
-	 VAhrg0PC6ah8RacuCVxAb0eWewJKTUpsnv+5s/gSN9tJQ3lrGBfgAhPe7o+jwJe8Jb
-	 vHhdnZYjkHzqGp3byDFts1r8KmGC/8cqOSgo/+80=
+	b=m6+G5vNBmrMba6RyqUQkQYGtlFca1xiSvtFuEX92hZFvvRJr2Tg0Atg4qOsbYYJFq
+	 mi2f4D3wHxEkq+XVPUe2VT9tJXg59NqJSbM6JpnNL6mreIdOxCWIW2ozpOS8KTFOPG
+	 5uq5CmJcKXNQc19nNSQhDdQGINE7CSLq7reFG/60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/482] usb: xhci: print xhci->xhc_state when queue_command failed
+	Ziyan Xu <ziyan@securitygossip.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 034/457] ksmbd: fix refcount leak causing resource not released
 Date: Tue, 26 Aug 2025 13:05:18 +0200
-Message-ID: <20250826110932.434114805@linuxfoundation.org>
+Message-ID: <20250826110938.184287364@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Ziyan Xu <ziyan@securitygossip.com>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+commit 89bb430f621124af39bb31763c4a8b504c9651e2 upstream.
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+When ksmbd_conn_releasing(opinfo->conn) returns true,the refcount was not
+decremented properly, causing a refcount leak that prevents the count from
+reaching zero and the memory from being released.
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
-
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Ziyan Xu <ziyan@securitygossip.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/oplock.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 0862fdd3e568..c4880b22f359 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4421,7 +4421,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1102,8 +1102,10 @@ void smb_send_parent_lease_break_noti(st
+ 			if (!atomic_inc_not_zero(&opinfo->refcount))
+ 				continue;
  
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
- 	}
+-			if (ksmbd_conn_releasing(opinfo->conn))
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				opinfo_put(opinfo);
+ 				continue;
++			}
  
--- 
-2.39.5
-
+ 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+@@ -1139,8 +1141,11 @@ void smb_lazy_parent_lease_break_close(s
+ 			if (!atomic_inc_not_zero(&opinfo->refcount))
+ 				continue;
+ 
+-			if (ksmbd_conn_releasing(opinfo->conn))
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				opinfo_put(opinfo);
+ 				continue;
++			}
++
+ 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+ 		}
+@@ -1343,8 +1348,10 @@ void smb_break_all_levII_oplock(struct k
+ 		if (!atomic_inc_not_zero(&brk_op->refcount))
+ 			continue;
+ 
+-		if (ksmbd_conn_releasing(brk_op->conn))
++		if (ksmbd_conn_releasing(brk_op->conn)) {
++			opinfo_put(brk_op);
+ 			continue;
++		}
+ 
+ 		if (brk_op->is_lease && (brk_op->o_lease->state &
+ 		    (~(SMB2_LEASE_READ_CACHING_LE |
 
 
 
