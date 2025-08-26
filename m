@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD603B36B76
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2543B3639A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A01DC5840D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9E78A4F1F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38D3350825;
-	Tue, 26 Aug 2025 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9128341ABD;
+	Tue, 26 Aug 2025 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIxqs5hg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI1NLd4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91706350D7B;
-	Tue, 26 Aug 2025 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BCF30146A;
+	Tue, 26 Aug 2025 13:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218684; cv=none; b=esS+Grz8V3EgJNyvB9R942ufseQMHginDfqCFPgQ+jO5CGldTbT5wlgkwOTXd2BjOoIGBPn8f5Uru/okPa1m6e4dhwWp4pRfMteix9Q2b5++jWPzO2wcmP+fjy2QX1M2UCdKGOyJebhH3DoZWtOg5smuR7eavVOSJSGFHX6Lx5k=
+	t=1756214518; cv=none; b=GwJe92h78frTaZFZGY9nEru/Uj9cU9NBrfmmGsHyFkltEJH93Kvi7mLTAtdnwzpchasbOw3cO062iyB0EmLwHdRaAvxxsk2w5oLNv3d8uIx4q9rHLoiRae8FaS+BU4XOc9Hqw6b7nhX+0E5A8aSgjRpemO81zh/EBDEz9L7kYSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218684; c=relaxed/simple;
-	bh=Z06c/Aff+Vh4tPT1xS2ZBVJIw5DvzQ5ggTDd9BFks1M=;
+	s=arc-20240116; t=1756214518; c=relaxed/simple;
+	bh=4Mg8NTypv0cnLDszsJFSpiuI+5ihfx6eJ6V13whcM5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3L3sF64i6nkrQ1pwEeBYiDkNMGAh+WQGnQcfP3Y4TpBU0vcAPDiBw4MbSQtFF49CRAVaWwkCu44nDENIIzTm37Agcd+e/hmWQXwEA/IM3XkemU2hsC9inRtmpcl58GEQ9azSQSowS2hrYEeHdTCF6yEMbxMcQaIPeQBzAyeyCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIxqs5hg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1C0C4CEF1;
-	Tue, 26 Aug 2025 14:31:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A8FFdkBzPCVi7gvKKPtKJPK+3srKC+0Kxn423JHNSpNkNvxzY2NLk2mArWu1LBNQCJNHe9NEMZ/lAOhbcwkNjMGbB8aUHiyFGFLY3xSfXhE8z5Yh1ew1OG5I0s3Jh2DUbCaxuygw6yt2MlVIaAY4x+Svv+bQaPa5z6d3AGdsV5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI1NLd4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80A3C4CEF1;
+	Tue, 26 Aug 2025 13:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218684;
-	bh=Z06c/Aff+Vh4tPT1xS2ZBVJIw5DvzQ5ggTDd9BFks1M=;
+	s=korg; t=1756214517;
+	bh=4Mg8NTypv0cnLDszsJFSpiuI+5ihfx6eJ6V13whcM5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIxqs5hg7rfyWUkiUBPu1ifptTXBXH2RnYUCVlvoFphCou97kwkBXZQ7O71jHnF9M
-	 7njaMHXjlbGHbSz24ccWid7NvmeyAMx/5cfeIsuSTqA+RUe8tn/iZ3w7pKSMTgnoVn
-	 cVxrsscJYk+YnrmUtm6vMx1DPybhpotckIcLpQzY=
+	b=QI1NLd4E0hbqWbEnZRL+T97T8i+d5zME8Tc9PEu0fXlI3iZqsXqWzzDFWEuTOLBJ9
+	 fiOXY4J0PCT7+WrWC26D2+MHQNf3epyhPXu4gSoQBsllvN4cYvKEniMPPb0GgaLENt
+	 idMe7n6oiUllSQ5OS5afoEP1hZAIUUFjpbUlsgsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/403] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+Subject: [PATCH 6.1 167/482] uapi: in6: restore visibility of most IPv6 socket options
 Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110909.269037763@linuxfoundation.org>
+Message-ID: <20250826110934.937471506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
+[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
+hid the definitions of IPV6 options, because GCC was complaining
+about duplicates. The commit did not list the warnings seen, but
+trying to recreate them now I think they are (building iproute2):
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
+In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
+                 from rdma.h:16,
+                 from res.h:9,
+                 from res-ctx.c:7:
+../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
+  171 | #define IPV6_ADD_MEMBERSHIP     20
+      |         ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/netinet/in.h:37,
+                 from rdma.h:13:
+/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
+  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~
+../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
+  172 | #define IPV6_DROP_MEMBERSHIP    21
+      |         ^~~~~~~~~~~~~~~~~~~~
+/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
+  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~~
+
+Compilers don't complain about redefinition if the defines
+are identical, but here we have the kernel using the literal
+value, and glibc using an indirection (defining to a name
+of another define, with the same numerical value).
+
+Problem is, the commit in question hid all the IPV6 socket
+options, and glibc has a pretty sparse list. For instance
+it lacks Flow Label related options. Willem called this out
+in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
+
+  /* uapi/glibc weirdness may leave this undefined */
+  #ifndef IPV6_FLOWINFO
+  #define IPV6_FLOWINFO 11
+  #endif
+
+More interestingly some applications (socat) use
+a #ifdef IPV6_FLOWINFO to gate compilation of thier
+rudimentary flow label support. (For added confusion
+socat misspells it as IPV4_FLOWINFO in some places.)
+
+Hide only the two defines we know glibc has a problem
+with. If we discover more warnings we can hide more
+but we should avoid covering the entire block of
+defines for "IPV6 socket options".
+
+Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ include/uapi/linux/in6.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index b75b62b094b5..319fe81a4a39 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -274,7 +274,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
+diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
+index ff8d21f9e95b..5a47339ef7d7 100644
+--- a/include/uapi/linux/in6.h
++++ b/include/uapi/linux/in6.h
+@@ -152,7 +152,6 @@ struct in6_flowlabel_req {
+ /*
+  *	IPV6 socket options
+  */
+-#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADDRFORM		1
+ #define IPV6_2292PKTINFO	2
+ #define IPV6_2292HOPOPTS	3
+@@ -169,8 +168,10 @@ struct in6_flowlabel_req {
+ #define IPV6_MULTICAST_IF	17
+ #define IPV6_MULTICAST_HOPS	18
+ #define IPV6_MULTICAST_LOOP	19
++#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADD_MEMBERSHIP	20
+ #define IPV6_DROP_MEMBERSHIP	21
++#endif
+ #define IPV6_ROUTER_ALERT	22
+ #define IPV6_MTU_DISCOVER	23
+ #define IPV6_MTU		24
+@@ -203,7 +204,6 @@ struct in6_flowlabel_req {
+ #define IPV6_IPSEC_POLICY	34
+ #define IPV6_XFRM_POLICY	35
+ #define IPV6_HDRINCL		36
+-#endif
+ 
+ /*
+  * Multicast:
 -- 
 2.39.5
 
