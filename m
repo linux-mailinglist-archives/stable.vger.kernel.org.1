@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-173762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41703B35F88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5376BB3658B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99F6E2087B1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3758C8E5941
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C0E8462;
-	Tue, 26 Aug 2025 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F412AD04;
+	Tue, 26 Aug 2025 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsDXO6VT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vg7UYk2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4EE165F13;
-	Tue, 26 Aug 2025 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B731F4CA9;
+	Tue, 26 Aug 2025 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212604; cv=none; b=lFD5iSrC46mdbpQYByD5Ijp8qDeuauUkaQD74KCaGHl8KXiKpA6BL+m5kBwVjikhziii+wI6U+TlCdoHERS2NIsr9z3vWzhxRIk/auWE/SVKzseznQLLhy0oPFDK6mykoEyhyIO3p50dWFxv4Y9JE07CY5pRlwWsSfvQZ+Nh0pk=
+	t=1756215613; cv=none; b=SdQTsh5LxVRHnSIJnFanJ+s5jQrPNuEMhGjm5/PHXb1JIn74Tc7HFQ37FRVFwDAflhSpxMlF5Kr/7tRocL3nlc/j7OUW6oMKmFN83+aFD6I9cFJhbGlYci/6EjyoznVuDgB4aX+2o4VwgvRlYNiOAI0Nr0+A6k0OIOYoG3BBfdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212604; c=relaxed/simple;
-	bh=RVjeMFhNS54MmlprCIADutXu02Zp659cBE7F14cRVdA=;
+	s=arc-20240116; t=1756215613; c=relaxed/simple;
+	bh=NNHMUlkd8IdHmDjHcqjEpmOQHXaJ+Wt+ScVu1OTYdNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw/bQ1h+DY88TdQxRzfBBRmEfdx7FEET0Jzu5Bo4+DXV/WLdn5MnpYQZ1xrHcCi0ijB9E3/ZR03pGMQNP60vR8ofWsU2ICvUTKNBXrZ95H9ulPYOfIRLzQGfbVZn9RVUyPbHcxA2Z4ulD6YjbWcImx4+dA2GhCkZZFTPrhYEjDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsDXO6VT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6977C113CF;
-	Tue, 26 Aug 2025 12:50:03 +0000 (UTC)
+	 MIME-Version; b=EG8HsIMzAY/ygTv+Xw90UHABTXot5BZck6r8SeLwOZLqsZvCL6rh7Md4WsUlUO7c+SKTH6kiTJ1uf07in67nKpiXtscxBqm+Koy7K8kT8n3L/w2ni5PP/44pXfxZeQxNJ0ZeOk7j5Hx/3LdKWyk8ePp3utTeAMM0dQPigbV/FDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vg7UYk2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1891C4CEF1;
+	Tue, 26 Aug 2025 13:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212604;
-	bh=RVjeMFhNS54MmlprCIADutXu02Zp659cBE7F14cRVdA=;
+	s=korg; t=1756215613;
+	bh=NNHMUlkd8IdHmDjHcqjEpmOQHXaJ+Wt+ScVu1OTYdNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsDXO6VTmX7oYH5TdV8UmNpTMyWo0Rilr/Thv0+mk+b+nHr9dj19jw/yd8MvZE3O0
-	 w/Jdiri/c6YmJeMh88D21NiLLtjk/eSmdB/rY1LHy85++Hu1Dft1kQ9FX01809msqL
-	 KeOvprKKGYs2tvroAZ5jMSAw1gR0obrnGpaQx9PQ=
+	b=vg7UYk2cGsltdaZ9EteMbDSh+b9rLpaMOxE78j4c88Xk7VUmqrWlKMonPXEUqJAsx
+	 IL0wuvT3RGPw1dZvE1xA4c/zW7RcrtDJTP9AKjkFHhPB/CS1S7kg++3BXy5Ov4K36P
+	 2b1dVX2comqeko0N5eM8lQ3eXhOQFJv8QA4VvwS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 033/587] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
-Date: Tue, 26 Aug 2025 13:03:02 +0200
-Message-ID: <20250826110953.795551845@linuxfoundation.org>
+	Dawid Rezler <dawidrezler.patches@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 092/644] ALSA: hda/realtek - Add mute LED support for HP Pavilion 15-eg0xxx
+Date: Tue, 26 Aug 2025 13:03:03 +0200
+Message-ID: <20250826110948.782693124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Dawid Rezler <dawidrezler.patches@gmail.com>
 
-commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
+commit 9744ede7099e8a69c04aa23fbea44c15bc390c04 upstream.
 
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
+The mute LED on the HP Pavilion Laptop 15-eg0xxx,
+which uses the ALC287 codec, didn't work.
+This patch fixes the issue by enabling the ALC287_FIXUP_HP_GPIO_LED quirk.
 
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
+Tested on a physical device, the LED now works as intended.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Dawid Rezler <dawidrezler.patches@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250720154907.80815-2-dawidrezler.patches@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -282,18 +282,20 @@ static void send_done(struct ib_cq *cq,
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
- 
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
- 
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
-+
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9350,6 +9350,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
