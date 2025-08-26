@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CEFB36658
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E07B362B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFDB15800B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6F551885F96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7586A334723;
-	Tue, 26 Aug 2025 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A7D1A23A4;
+	Tue, 26 Aug 2025 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkB4jLvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToP6cyW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149926B747;
-	Tue, 26 Aug 2025 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E3C186E40;
+	Tue, 26 Aug 2025 13:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215889; cv=none; b=QJ5CjDI21O98EGXeaS2/5I6w0lG5TVVES+Z6IK2cyyQHtBWpkr1nAce0SvfYcDNscU/LrdD3djxUlFNygH1Uon4xNhDPuzvxc72sp+DPUuloSPZIZyGfdwaZiC9eCkkS43GZTWqQKt0iEiEBIRPFcFSlaxTnDGYllGwtfFEJZ4I=
+	t=1756214189; cv=none; b=dHmY59EaQ0W6MS1e6sjdlpe866sYKpnUWsvLjKcOqIL3e+VdDoBzZ0twiBOryAp0I1kFiXaOhwaY1A59LI8AsrVZUv2iCKAbe4X0x1uRU+qnsqxOyaYAy84qhme881WaGc+ZhcMqLLYGpqtdpJ1Ob7h+dIrilDSaxXTTqfjkVm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215889; c=relaxed/simple;
-	bh=LboJAlHVSuDYPmyq4CDA18KEjcoGI7gFyIqyYpurE0k=;
+	s=arc-20240116; t=1756214189; c=relaxed/simple;
+	bh=zv+JE3W2H/GoLQX9tbCXdshJ2JVxkIrO1q+I1VpAWNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIiQYm34BCvLCSk2AjXsK2Nutr1mpCd6Xr8t5ufuHIRxFjSnxzkWv+kUmr2YRTkYSExFOajaFi+4RBf+qdQXuVpvxQYZT6pWiycPkO2En4ICHQSKh3yhGnLM3PRZHd63gD6RSLnY8ocFKrIJSipT13vmc27E94Tk3f87aoPQox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkB4jLvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B958AC116B1;
-	Tue, 26 Aug 2025 13:44:48 +0000 (UTC)
+	 MIME-Version; b=eHujoW0eib9p/YGygY++mvDYqbtH59EV7Abw8+zsCPKboi1HDDnrYsCTModiGclriXzqLiip0FIfSg1Pxu+GerVk6RpK1Y26bjEdYWS4jpBuo5GY4U5TGhAC2ta0j9YbDYePcHb44wZ17/fpJ0ABHay0JqW0yINJvCLaQ1wUNNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToP6cyW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496C1C113CF;
+	Tue, 26 Aug 2025 13:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215889;
-	bh=LboJAlHVSuDYPmyq4CDA18KEjcoGI7gFyIqyYpurE0k=;
+	s=korg; t=1756214189;
+	bh=zv+JE3W2H/GoLQX9tbCXdshJ2JVxkIrO1q+I1VpAWNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkB4jLvyyvXgn/3fQo0zHLhvFXVO3aiEEhtxW88S/zCE3MBaBT87hSOO1QutvAzBY
-	 yM3yvz6XqOvBIi/dEJ6J6RxoyYEpYTijrXWL9slpjuxOqXheURuI2jNtLjdmLiG3O+
-	 wkTvtsJ3PyR1LLc+SLr6kUUdzDQANJQpfFHXo4UM=
+	b=ToP6cyW0Xadda4jq6jXr9XqpUvJIAShrMG6s6DtUf3RTHdJ86RtF/KMzuZBiTKFR/
+	 +66rkpcSALllL0QiBf5VX+M2YEdHl7chsqPdW0lbslhcNQUx+5Membkhy0TZ4GYpFI
+	 JXFIH7+80EBvIiQeYYx1uHkTCttnYuTj+3TNhmwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 205/644] module: Restore the moduleparam prefix length check
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 043/482] KVM: VMX: Extract checking of guests DEBUGCTL into helper
 Date: Tue, 26 Aug 2025 13:04:56 +0200
-Message-ID: <20250826110951.514127132@linuxfoundation.org>
+Message-ID: <20250826110931.877356793@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit bdc877ba6b7ff1b6d2ebeff11e63da4a50a54854 ]
+[ Upstream commit 8a4351ac302cd8c19729ba2636acfd0467c22ae8 ]
 
-The moduleparam code allows modules to provide their own definition of
-MODULE_PARAM_PREFIX, instead of using the default KBUILD_MODNAME ".".
+Move VMX's logic to check DEBUGCTL values into a standalone helper so that
+the code can be used by nested VM-Enter to apply the same logic to the
+value being loaded from vmcs12.
 
-Commit 730b69d22525 ("module: check kernel param length at compile time,
-not runtime") added a check to ensure the prefix doesn't exceed
-MODULE_NAME_LEN, as this is what param_sysfs_builtin() expects.
+KVM needs to explicitly check vmcs12->guest_ia32_debugctl on nested
+VM-Enter, as hardware may support features that KVM does not, i.e. relying
+on hardware to detect invalid guest state will result in false negatives.
+Unfortunately, that means applying KVM's funky suppression of BTF and LBR
+to vmcs12 so as not to break existing guests.
 
-Later, commit 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking
-for sysfs perms.") removed this check, but there is no indication this was
-intentional.
+No functional change intended.
 
-Since the check is still useful for param_sysfs_builtin() to function
-properly, reintroduce it in __module_param_call(), but in a modernized form
-using static_assert().
-
-While here, clean up the __module_param_call() comments. In particular,
-remove the comment "Default value instead of permissions?", which comes
-from commit 9774a1f54f17 ("[PATCH] Compile-time check re world-writeable
-module params"). This comment was related to the test variable
-__param_perm_check_##name, which was removed in the previously mentioned
-commit 58f86cc89c33.
-
-Fixes: 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking for sysfs perms.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Link: https://lore.kernel.org/r/20250630143535.267745-4-petr.pavlu@suse.com
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-6-seanjc@google.com
+Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/moduleparam.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 962cd41a2cb5..061e19c94a6b 100644
---- a/include/linux/moduleparam.h
-+++ b/include/linux/moduleparam.h
-@@ -282,10 +282,9 @@ struct kparam_array
- #define __moduleparam_const const
- #endif
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 9445def2b3d2..6517b9d929bf 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2071,6 +2071,19 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
+ 	return debugctl;
+ }
  
--/* This is the fundamental function for registering boot/module
--   parameters. */
-+/* This is the fundamental function for registering boot/module parameters. */
- #define __module_param_call(prefix, name, ops, arg, perm, level, flags)	\
--	/* Default value instead of permissions? */			\
-+	static_assert(sizeof(""prefix) - 1 <= MAX_PARAM_PREFIX_LEN);	\
- 	static const char __param_str_##name[] = prefix #name;		\
- 	static struct kernel_param __moduleparam_const __param_##name	\
- 	__used __section("__param")					\
++static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
++				  bool host_initiated)
++{
++	u64 invalid;
++
++	invalid = data & ~vmx_get_supported_debugctl(vcpu, host_initiated);
++	if (invalid & (DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR)) {
++		kvm_pr_unimpl_wrmsr(vcpu, MSR_IA32_DEBUGCTLMSR, data);
++		invalid &= ~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR);
++	}
++	return !invalid;
++}
++
+ /*
+  * Writes msr value into the appropriate "register".
+  * Returns 0 on success, non-0 otherwise.
+@@ -2139,19 +2152,12 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		}
+ 		vmcs_writel(GUEST_SYSENTER_ESP, data);
+ 		break;
+-	case MSR_IA32_DEBUGCTLMSR: {
+-		u64 invalid;
+-
+-		invalid = data & ~vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
+-		if (invalid & (DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR)) {
+-			kvm_pr_unimpl_wrmsr(vcpu, msr_index, data);
+-			data &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
+-			invalid &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
+-		}
+-
+-		if (invalid)
++	case MSR_IA32_DEBUGCTLMSR:
++		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
+ 			return 1;
+ 
++		data &= vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
++
+ 		if (is_guest_mode(vcpu) && get_vmcs12(vcpu)->vm_exit_controls &
+ 						VM_EXIT_SAVE_DEBUG_CONTROLS)
+ 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
+@@ -2161,7 +2167,6 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		    (data & DEBUGCTLMSR_LBR))
+ 			intel_pmu_create_guest_lbr_event(vcpu);
+ 		return 0;
+-	}
+ 	case MSR_IA32_BNDCFGS:
+ 		if (!kvm_mpx_supported() ||
+ 		    (!msr_info->host_initiated &&
 -- 
-2.39.5
+2.50.1
 
 
 
