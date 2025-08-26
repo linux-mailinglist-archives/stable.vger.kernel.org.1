@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6135FB36043
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA73B35B16
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650C53BC220
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F97169D67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476DC2C033C;
-	Tue, 26 Aug 2025 12:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E2829BDBA;
+	Tue, 26 Aug 2025 11:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHSy9fG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xmg7pqA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D9F299920;
-	Tue, 26 Aug 2025 12:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65582277C8C;
+	Tue, 26 Aug 2025 11:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212894; cv=none; b=QHQ7f41jVyVGPY6aB8BvQbFa4SAYEV5LAlQTJXw5sy8nrFDEAMQ9Nu6db9lIFXK8qO7sSxo52M5ev1O9KuNfbNBlRBbNv2zCcw15mOC7wBYpmQpnrqAQk0e4h3EylKc9/eW5A66OWyDdPqzyd0sG/LriAqE9pHuQRQhCR8veQyE=
+	t=1756207008; cv=none; b=CsYUOw6UnWlcydlDKMhzn+VfyzmQPukFqUoeobzkWgUmBXyMfAIOkVke160HL+cqk0tF7I6/z7JTpksUvzCAsf2LRa84FspnhrXOtv4sxc/zeoDHaFafN7ErO9u0DOqJ8oCIYVgJiDUL8AL1BVqB+ezMPdRUOZo3KqQaxEhhENg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212894; c=relaxed/simple;
-	bh=Opxs6SRnGtInvnf+Osqr0PIMosKIoUoNkLc8ruTctaA=;
+	s=arc-20240116; t=1756207008; c=relaxed/simple;
+	bh=J16su88oVKEnLwXyXZo3NDKFVQwKtTM82InrsiYaZEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVNTRBV5hO7us/xOZplpz7uCyUh7zI1ABNN7EBPiYGZxHkjSUX1JvhqM/oIbiecUvG0JL3ZFgVl1MJa/dR/ZKVInEVXC9IblcXsI/cBkRrHKd94bpfgfq2YA3bE9r1gKNpy+SaOKJsf3J0iEcZwgxrk9JfFESrfz79EFO/tVC/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHSy9fG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88661C116B1;
-	Tue, 26 Aug 2025 12:54:53 +0000 (UTC)
+	 MIME-Version; b=hkXiR4kqzxCeOVNOGa6D5CDt2aIFfI4peFWH0ATZZbRBFgBvJKNbqs8mC0i0Jmz5i/iM44c6nbWsvhs3UkZN3yp5CjmXQujw8RisbxfKhx/MgrUswtjbdGVT/B9uHog+IfJ6nkZZSDKAPN54iC6FDlW9F1F+2p4PhHHi0kKNdiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xmg7pqA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3AEC4CEF1;
+	Tue, 26 Aug 2025 11:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212893;
-	bh=Opxs6SRnGtInvnf+Osqr0PIMosKIoUoNkLc8ruTctaA=;
+	s=korg; t=1756207006;
+	bh=J16su88oVKEnLwXyXZo3NDKFVQwKtTM82InrsiYaZEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHSy9fG429ZvvqSZ6yQoyeETcizHrt/mQnLt3H3NpeTpT/myiT7RH93YF50MgrvGo
-	 GeZl8FcOv50e+y1lBppW+n60Rya/ZLdQo3lTLzn/uwQ4z7jsKZyjrrdDk9NgNcvS0x
-	 u6T9PTwRM3m5YVEHZBjckioF+xUqilgSnlncGh2M=
+	b=Xmg7pqA/OYvHccHgypnfprXAGnVTmDLufwymxx3t+JAuR+nkGm6OKZZxnUivSzC+u
+	 kkjLAR6jaY76yWhNmIWCIUZo0mzU+gP4pQMnc0ijTUAO0WKUG0Sv1T8UzHUH09sAZ5
+	 zr0e9YvEks69fQrIcQs4Ryt7pbqvEMlAyefHGG8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/587] net: usb: cdc-ncm: check for filtering capability
+	Damien Le Moal <dlemoal@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 007/457] dm: Check for forbidden splitting of zone write operations
 Date: Tue, 26 Aug 2025 13:04:51 +0200
-Message-ID: <20250826110956.565401177@linuxfoundation.org>
+Message-ID: <20250826110937.489229085@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
+commit 409f9287dab3b53bffe8d28d883a529028aa6a42 upstream.
 
-If the decice does not support filtering, filtering
-must not be used and all packets delivered for the
-upper layers to sort.
+DM targets must not split zone append and write operations using
+dm_accept_partial_bio() as doing so is forbidden for zone append BIOs,
+breaks zone append emulation using regular write BIOs and potentially
+creates deadlock situations with queue freeze operations.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Modify dm_accept_partial_bio() to add missing BUG_ON() checks for all
+these cases, that is, check that the BIO is a write or write zeroes
+operation. This change packs all the zone related checks together under
+a static_branch_unlikely(&zoned_enabled) and done only if the target is
+a zoned device.
+
+Fixes: f211268ed1f9 ("dm: Use the block layer zone append emulation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Link: https://lore.kernel.org/r/20250625093327.548866-6-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
- include/linux/usb/cdc_ncm.h |  1 +
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/md/dm.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index db05622f1f70..d9792fd515a9 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -893,6 +893,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
- 		}
- 	}
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1293,8 +1293,9 @@ out:
+ /*
+  * A target may call dm_accept_partial_bio only from the map routine.  It is
+  * allowed for all bio types except REQ_PREFLUSH, REQ_OP_ZONE_* zone management
+- * operations, REQ_OP_ZONE_APPEND (zone append writes) and any bio serviced by
+- * __send_duplicate_bios().
++ * operations, zone append writes (native with REQ_OP_ZONE_APPEND or emulated
++ * with write BIOs flagged with BIO_EMULATES_ZONE_APPEND) and any bio serviced
++ * by __send_duplicate_bios().
+  *
+  * dm_accept_partial_bio informs the dm that the target only wants to process
+  * additional n_sectors sectors of the bio and the rest of the data should be
+@@ -1327,11 +1328,19 @@ void dm_accept_partial_bio(struct bio *b
+ 	unsigned int bio_sectors = bio_sectors(bio);
  
-+	if (ctx->func_desc)
-+		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
-+			& USB_CDC_NCM_NCAP_ETH_FILTER);
+ 	BUG_ON(dm_tio_flagged(tio, DM_TIO_IS_DUPLICATE_BIO));
+-	BUG_ON(op_is_zone_mgmt(bio_op(bio)));
+-	BUG_ON(bio_op(bio) == REQ_OP_ZONE_APPEND);
+ 	BUG_ON(bio_sectors > *tio->len_ptr);
+ 	BUG_ON(n_sectors > bio_sectors);
+ 
++	if (static_branch_unlikely(&zoned_enabled) &&
++	    unlikely(bdev_is_zoned(bio->bi_bdev))) {
++		enum req_op op = bio_op(bio);
 +
- 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
- 
- 	/* Device-specific flags */
-@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
- 	}
- }
- 
-+static void cdc_ncm_update_filter(struct usbnet *dev)
-+{
-+	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
++		BUG_ON(op_is_zone_mgmt(op));
++		BUG_ON(op == REQ_OP_WRITE);
++		BUG_ON(op == REQ_OP_WRITE_ZEROES);
++		BUG_ON(op == REQ_OP_ZONE_APPEND);
++	}
 +
-+	if (ctx->filtering_supported)
-+		usbnet_cdc_update_filter(dev);
-+}
-+
- static const struct driver_info cdc_ncm_info = {
- 	.description = "CDC NCM (NO ZLP)",
- 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
-@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
+ 	*tio->len_ptr -= bio_sectors - n_sectors;
+ 	bio->bi_iter.bi_size = n_sectors << SECTOR_SHIFT;
  
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
-@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_WWAN */
-@@ -1936,7 +1948,7 @@ static const struct driver_info wwan_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as wwan_info, but with FLAG_NOARP  */
-@@ -1950,7 +1962,7 @@ static const struct driver_info wwan_noarp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- static const struct usb_device_id cdc_devs[] = {
-diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
-index 2d207cb4837d..4ac082a63173 100644
---- a/include/linux/usb/cdc_ncm.h
-+++ b/include/linux/usb/cdc_ncm.h
-@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
- 	u32 timer_interval;
- 	u32 max_ndp_size;
- 	u8 is_ndp16;
-+	u8 filtering_supported;
- 	union {
- 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
- 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
--- 
-2.39.5
-
 
 
 
