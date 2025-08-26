@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8BCB36C92
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4B1B369A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1392A04B28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63791C413D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9B5352071;
-	Tue, 26 Aug 2025 14:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A15F34AB0D;
+	Tue, 26 Aug 2025 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye35yuQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2l1VC4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD22B350D72;
-	Tue, 26 Aug 2025 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086182C0F60;
+	Tue, 26 Aug 2025 14:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218780; cv=none; b=ZGNNQVC15s8HD5J0WLY7bed8op/L89x+tBCBbgL5FM7oAZj4jB8GgWb5b+9HUy6CPB29hfLcwCsBRQE4ovTRRdrt9Yf6cel4TeEHGLex4kHMmO8CdtWXO+XeV287VFyTScHykJy3UhkRDBQVY+rrSZQ5IvxyeLMZV0FX9+t7p80=
+	t=1756217715; cv=none; b=UeQA1HZsdQcGoANXQ1Xl0vHXsBvMRwBJfgj9DWE2aXxcmDGXrQVcHhlVSC9bUROVSD2kB7mfeN7j86vcA8fCLeUtgZvA2X6KzqONanxegGGDLYx2c4cmGXKtmUjly1oOF/94gwSOmch3q8U6K6hzJilE6KBs1WDZ3fRvPUCzimQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218780; c=relaxed/simple;
-	bh=L/Q5tlezWZsgRXHMM4iZNLuY6TiAoMOWctaSW/WIpw4=;
+	s=arc-20240116; t=1756217715; c=relaxed/simple;
+	bh=g7lUmQQm/+8q1LH1JvLI7Zg5hLGofxiFgdpAEOMocgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+Bqux4qhg5l4AxcE+5ipMMGzJF64s6InslmGykPqN33/iHYbavUXYsLAHd9VHoIY7BqWU/1+31a+vi/VYggsc0ctHocibArZsdp3Ly5IO2wAtHyfieM4UY8ERvaRmTpZqLAcilfMOjFo/CDuUdNHQfIFSmxTtsaaJFzHDfV0yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye35yuQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461FC4CEF1;
-	Tue, 26 Aug 2025 14:32:59 +0000 (UTC)
+	 MIME-Version; b=COdz4SN8H3zoV44fsBbVkopXjBpBKvbAbC0MYvlpeh3EFk6b9JnsgTgt5axnr/lQOeEtMJu/UOdpUB4y7uJ+/9/fKWgDhlX2bJTToc/htPKImL6qeroCwIInbfdFLi0coSA8CDEoavHiE3763hiT9Ywsu5G+1fCq2gMTzzG3+Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2l1VC4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEC7C113D0;
+	Tue, 26 Aug 2025 14:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218780;
-	bh=L/Q5tlezWZsgRXHMM4iZNLuY6TiAoMOWctaSW/WIpw4=;
+	s=korg; t=1756217714;
+	bh=g7lUmQQm/+8q1LH1JvLI7Zg5hLGofxiFgdpAEOMocgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ye35yuQQI6grTBbmHG/0SDxdGzd//jf2RXxrpWrlDilCReXToecHat/cDsc2IKdkn
-	 CyJWQeFZDBqGJAxAc85q2gzRK5CKg70Bq5Zt1yW17IkjvVEfFuozTpGAuJnOMhcnDS
-	 OVWxnSwRxDW36Zec8jVjLIk3p+gbmGb+2bwxq7Ow=
+	b=V2l1VC4O2vnVtS4wQQjJsLcyVDm/BGwxVingkrXhc8zppgLh4CmyNmuZbreUrZhz3
+	 6SiiwKmPtJz/iR11JVsutp1abiOYYsCJjEVBYauHvAYMoe//B/tLKKwnrEd9GH9bGf
+	 M1GM5rr/BjKINgyvSPla9tKnEjSPJDTFzols1tK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 131/403] rtc: ds1307: fix incorrect maximum clock rate handling
-Date: Tue, 26 Aug 2025 13:07:37 +0200
-Message-ID: <20250826110910.360759270@linuxfoundation.org>
+Subject: [PATCH 5.10 248/523] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
+Date: Tue, 26 Aug 2025 13:07:38 +0200
+Message-ID: <20250826110930.550974677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit cf6eb547a24af7ad7bbd2abe9c5327f956bbeae8 ]
+[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
 
-When ds3231_clk_sqw_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
+will fail.
 
-Fixes: 6c6ff145b3346 ("rtc: ds1307: add clock provider support for DS3231")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-1-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
+the probe function can be called again after SCU IPC is initialized.
+
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 2 +-
+ drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 40532a36ae67..b371d1e48942 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1381,7 +1381,7 @@ static long ds3231_clk_sqw_round_rate(struct clk_hw *hw, unsigned long rate,
- 			return ds3231_clk_sqw_rates[i];
- 	}
+diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
+index 1276112edeff..9b4963450fe8 100644
+--- a/drivers/usb/typec/mux/intel_pmc_mux.c
++++ b/drivers/usb/typec/mux/intel_pmc_mux.c
+@@ -644,7 +644,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
  
--	return 0;
-+	return ds3231_clk_sqw_rates[ARRAY_SIZE(ds3231_clk_sqw_rates) - 1];
- }
+ 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
+ 	if (!pmc->ipc)
+-		return -ENODEV;
++		return -EPROBE_DEFER;
  
- static int ds3231_clk_sqw_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	pmc->dev = &pdev->dev;
+ 
 -- 
 2.39.5
 
