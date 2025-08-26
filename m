@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD20BB36013
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FF8B36595
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049DD464A9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0EB1C20E9E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D360A1F9F73;
-	Tue, 26 Aug 2025 12:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71EA2D0621;
+	Tue, 26 Aug 2025 13:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOzsruZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+oLyAfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF0F1E5718;
-	Tue, 26 Aug 2025 12:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B9A1E480;
+	Tue, 26 Aug 2025 13:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212819; cv=none; b=KYx4W1eUdKEYCGwYVUUZcIT4svPT+2uSiPnbb/GkKWoucs89fmyFmHG/dxyhAwLRLGlJ7VyFr8lD6ggeoUQDIPJdOcm6PjKzJmqB1ncvUf3hHFBMhsLPEfNsZvWhZ/oxqsNtgU3nWwinN0cDiHrUJscAACUlJhd0eRMaoqjDY40=
+	t=1756215802; cv=none; b=SVXCH+SmPKn7eC+n/PVgxZkfRarprGGTnQW9jCnMx3BXdnKCRqXmogSKrs96WEAPPI/bySu02e9pdLP0HbvfhGMmtvGpecsoFl/lnAu1MAN0aYeHhoRYYmGQAi9C6KjZKBhFNO3jtgfM0/Eer56ciFfvx09vVdtiynTxx6jDowI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212819; c=relaxed/simple;
-	bh=IVIZUylAxAyD7r8gcHhbtmCqYp6ugG/YHZtKVOFtFek=;
+	s=arc-20240116; t=1756215802; c=relaxed/simple;
+	bh=E4F94PlqugWNCiigEGLJSutgBh3NAiJuyy6yjGyQwZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyXeWUXaCIKmzY86gGpusKNWJavWTr8l0pLDt6rHTIsIEq++rVsojYKgldxWZb2VsY5jAmyAMkh8EHUy5lsGy2vlLAKyX2YE2ECjONeBx9GEythBYSPJfgedfClFHR1ApO35GkLdp+lsV/3JNhH7PKjI2HHgLGDSZeQSffEytr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOzsruZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABF5C4CEF1;
-	Tue, 26 Aug 2025 12:53:38 +0000 (UTC)
+	 MIME-Version; b=QMdRQDDrZk8+rsr6zdu11Yd+kmoW9/5Oo4d6nFxNqsaPWEsylGhwRZkBNiRnXlI5uNF4cpox+ksL890Q9SmAbs21WHqz3KzTH3S0yxnRpPmnve+6EOULvvHpfuFc9H4WgtPQ6U0BSuMMindvco9ZVyB8xqEzW9pi0vPXTn2KBko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+oLyAfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14080C4CEF1;
+	Tue, 26 Aug 2025 13:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212819;
-	bh=IVIZUylAxAyD7r8gcHhbtmCqYp6ugG/YHZtKVOFtFek=;
+	s=korg; t=1756215802;
+	bh=E4F94PlqugWNCiigEGLJSutgBh3NAiJuyy6yjGyQwZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOzsruZRK7hAkTrZWcoVWSW9Y2yX5NyPs41QM2FvFTyaBWrRVnJyYM/DBUJndjv1h
-	 e7mkw350yMT5ohJYiOf0S42JuTn3hljKZl72lKn5HciwbGqoB5LtySvlDZTujZKa3O
-	 NdSSGFYwk0/SvXO0FTOZ8k6BblIp4H1KJFcKEn+0=
+	b=R+oLyAfKiQ1qhvSsCnZildTlzlcCIiN3034ahxVSSRgDykn4O7Iy9KUpnsvuSnMyb
+	 GFrIIUUlzCLhE2RprC3IofPP/jmtTd200QNTet30raa63oYc0U4UQjnYEbVdIhGYG3
+	 Vy1PTjTUydYHG+QhKqhWeEof3FXu/Km2BBAKeUkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/587] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Subject: [PATCH 5.15 172/644] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
 Date: Tue, 26 Aug 2025 13:04:23 +0200
-Message-ID: <20250826110955.844663509@linuxfoundation.org>
+Message-ID: <20250826110950.735984745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
+function returns NULL. Fix the max14577_charger_probe functionby returning
+-ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
+This fixes the below smatch warning:
+max14577_charger_probe() warn: passing zero to 'PTR_ERR'
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/max14577_charger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 22db720b128b..ec364c254112 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -912,6 +912,8 @@ static void __ghes_panic(struct ghes *ghes,
+diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
+index f244cd902eb9..e4461caecea3 100644
+--- a/drivers/power/supply/max14577_charger.c
++++ b/drivers/power/supply/max14577_charger.c
+@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ 		struct platform_device *pdev)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODATA);
+ }
+ #endif /* CONFIG_OF */
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
+ 	chg->max14577 = max14577;
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 	chg->pdata = max14577_charger_dt_init(pdev);
+-	if (IS_ERR_OR_NULL(chg->pdata))
++	if (IS_ERR(chg->pdata))
+ 		return PTR_ERR(chg->pdata);
  
- 	if (!panic_timeout)
+ 	ret = max14577_charger_reg_init(chg);
 -- 
 2.39.5
 
