@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA2B36817
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC2AB35D22
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A392A6F90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BF41888282
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E2034AAFE;
-	Tue, 26 Aug 2025 14:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FA234166C;
+	Tue, 26 Aug 2025 11:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTRTLkN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFynWSVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F133451A0;
-	Tue, 26 Aug 2025 14:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAEF341678;
+	Tue, 26 Aug 2025 11:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216964; cv=none; b=snSnAClMpIxzGsbfYRqtU1NVbU01k1BehHyisYtDzyocqywK5DaoMVbDCCoohG7Wj3S7lOKe2PfG3VHOcc4N7FKXhzyrWIonnSlySSTgSinoWyuew8oWdWAwYTgJatN+OtG8D0sVTvfK96yp35TRGDkZsj9WUKf79CY4ymCbpfE=
+	t=1756208029; cv=none; b=EEhhElzen/0fT7E/zjPoP5/980y0oxyEId92ndOxR/7PlXMBYhxoJXSq0iFZsZCSRvwmCkaaFe2uVJmPDVhZUJs7qCOwTXXm/t0G7nxOVBQ1rfBMzzkd1RosEoplr7BFeEqcCHkNfV3JDJDBqIFbFBwtT/bMv8kgtpVJMZ3R4GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216964; c=relaxed/simple;
-	bh=X/wjVYGPKqyTVgfxj43LxW0dmGK6dbXskaGHy9uBluU=;
+	s=arc-20240116; t=1756208029; c=relaxed/simple;
+	bh=Zs8ji/CKNJDtUxeWQ+nINJFucux5SfzVMAYxy/sq4HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFlqnUaWKWhzh4s3cWaESQXAUNWwsafmsZSqSuZ7q1ScaCIsqzEO/KP0Jc25U9uXzxilIL+SmgL3LKbuINhNYMiMl6xmZqgOFjWoGSUmlfgeEEYawVlMUoHaEhtHcDRwyPZY32v/C6ANhGTopsBzpkqJuS5f+f47IqTKev/P64o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTRTLkN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A03C4CEF1;
-	Tue, 26 Aug 2025 14:02:43 +0000 (UTC)
+	 MIME-Version; b=kwNR32ianVyG16zJSHSRAu8UpjCRWTOTvdZEcRnqOaXoF8Jno3Yv2Wvfe/6f5Yzgf8r6EE8WaM3JEZQxk6X2B2io6o4E822oJiThh/VAOctw8l/JRkaYTedF67MNU3T2IWr5xjhRBlu+x8q1QxI+e7w3tybMnyfb+mKA1q+9j18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFynWSVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72172C4CEF1;
+	Tue, 26 Aug 2025 11:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216963;
-	bh=X/wjVYGPKqyTVgfxj43LxW0dmGK6dbXskaGHy9uBluU=;
+	s=korg; t=1756208028;
+	bh=Zs8ji/CKNJDtUxeWQ+nINJFucux5SfzVMAYxy/sq4HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTRTLkN5jina3YelMbFbCZ5/RhR3mgPHBLfeX6DgmjQwKkUGTMYOTmgS/IMMGI6pf
-	 4HV/C0fGwQls7kAZAbN7/lmsCbPcoj7v45tMYqBGsPmLshU5CBtZKO5hkRZ7nJFGhk
-	 WJE37urni7eq9vQBx4xhoUWbK0+pRCyqhQFlAgT0=
+	b=dFynWSVwr+KCVIH50JE/0yftn6RMxaoYJMRRfn1BIhLnKc/iMD6J+e/LrbWMfAazV
+	 HRHG9EBCr05XMdRNtGkIdsgA4ON+YJrzrq0hNJn2YzJ270XMukv1lAkJKfK+5WpEUs
+	 M8/kFxRplzQwlXbGRdjT2m6TtSCouiNlfAfkUX8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Pisa <pisa@fel.cvut.cz>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 5.15 576/644] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
+	Miguel Ojeda <ojeda@kernel.org>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 383/457] drm: nova-drm: fix 32-bit arm build
 Date: Tue, 26 Aug 2025 13:11:07 +0200
-Message-ID: <20250826111000.804849271@linuxfoundation.org>
+Message-ID: <20250826110946.763089207@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
+[ Upstream commit db2e7bcee11cd57f95fef3c6cbb562d0577eb84a ]
 
-dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
-get the number of mapped segments.
+In 32-bit arm, the build fails with:
 
-Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
-Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
-Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
-Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    error[E0308]: mismatched types
+      --> drivers/gpu/drm/nova/file.rs:42:28
+       |
+    42 |         getparam.set_value(value);
+       |                  --------- ^^^^^ expected `u64`, found `u32`
+       |                  |
+       |                  arguments to this method are incorrect
+       |
+    note: method defined here
+      --> drivers/gpu/drm/nova/uapi.rs:29:12
+       |
+    29 |     pub fn set_value(&self, v: u64) {
+       |            ^^^^^^^^^        ------
+    help: you can convert a `u32` to a `u64`
+       |
+    42 |         getparam.set_value(value.into());
+       |                                 +++++++
+
+The reason is that `Getparam::set_value` takes a `u64` (from the UAPI),
+but `pci::Device::resource_len()` returns a `resource_size_t`, which is a
+`phys_addr_t`, which may be 32- or 64-bit.
+
+Thus add an `into()` call to support the 32-bit case, while allowing the
+Clippy lint that complains in the 64-bit case where the type is the same.
+
+Fixes: cdeaeb9dd762 ("drm: nova-drm: add initial driver skeleton")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Link: https://lore.kernel.org/r/20250724165441.2105632-1-ojeda@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/zynq-fpga.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nova/file.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
- 		}
- 	}
+diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
+index 7e59a34b830d..4fe62cf98a23 100644
+--- a/drivers/gpu/drm/nova/file.rs
++++ b/drivers/gpu/drm/nova/file.rs
+@@ -39,7 +39,8 @@ impl File {
+             _ => return Err(EINVAL),
+         };
  
--	priv->dma_nelms =
--	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
--	if (priv->dma_nelms == 0) {
-+	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
-+	if (err) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
--		return -ENOMEM;
-+		return err;
- 	}
-+	priv->dma_nelms = sgt->nents;
+-        getparam.set_value(value);
++        #[allow(clippy::useless_conversion)]
++        getparam.set_value(value.into());
  
- 	/* enable clock */
- 	err = clk_enable(priv->clk);
+         Ok(0)
+     }
+-- 
+2.50.1
+
 
 
 
