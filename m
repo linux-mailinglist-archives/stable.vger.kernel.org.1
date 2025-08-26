@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF245B36375
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB8AB360D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3D91BC324F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5651BA643A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6705B34AAE8;
-	Tue, 26 Aug 2025 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B143F18A6C4;
+	Tue, 26 Aug 2025 13:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3REiTct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtyelozI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23713345732;
-	Tue, 26 Aug 2025 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8DC101F2;
+	Tue, 26 Aug 2025 13:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214562; cv=none; b=HiE3c9AAZgCUvPAAxiBOZHP6NXB4pugl0MoMaJm2RybAjXnU+JkhEIAWKwyHokD/2t3qj+/MMkXUaDfPciYSaa+aHngbJ2JvTmseSn+etYIlEXAfZqsGPOyp6Ah7vWo8+Oan9Rnux/Dvl38cUL2s8BXyJ0Y6zN4Nge41vzU89ro=
+	t=1756213272; cv=none; b=opXZdk7aOD5hJsWCgva8L8ahDTTYPzz6edFY0XGmMySIFaoT+18aMzdwklqx09CuaZ+dqbhKsQ61HywJW8E7SGM67RK7SlhMrIWhG4UHqAb33eZxxbzMF6ICW2MZkjW3Pc4MrXg5rxLbt2wKiOI7wGu1yWB8L8adDT/7lu+BUd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214562; c=relaxed/simple;
-	bh=boFL3UX8WK4VmwjIFFH6lzt+6nXSF+ebCN7ANebjsnQ=;
+	s=arc-20240116; t=1756213272; c=relaxed/simple;
+	bh=JSxMf92zV17Z/OZCsD1CXG4dYZLOtNpD3zhquWduUtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tt5dx6m2lGCSTbtTrP7JCe2ZS2Dui1lJyW1Imsm25R7ihgTcwAHbwD7YPEpyywNTNS1KZ/i/d1603ZZPtUiMgmowBBERjKhBAUjQiHWXQwj2WUzE/NBIoUxcwNIYJCXCSp9N5BNW3sCbrIgchFfMjOtcfn6C8nvCA8iODJJKtrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3REiTct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A391FC4CEF1;
-	Tue, 26 Aug 2025 13:22:41 +0000 (UTC)
+	 MIME-Version; b=mfrAGHUM/18Z1R6ZeL53ILl3wLvK5tjfQ4T69C95jik4ZxlKXfZXnOyaeqa3sdhV8Rxvbv503NmjgyEBK8SBvZh935r2Oka/G7BZGj6HFMah/tqHFnH7oV0EgM6eTblMmbrGRBhFx1wVmvDZbDTlm6ePfhbp2m2zCt1vVUP6WNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtyelozI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0C7C4CEF1;
+	Tue, 26 Aug 2025 13:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214562;
-	bh=boFL3UX8WK4VmwjIFFH6lzt+6nXSF+ebCN7ANebjsnQ=;
+	s=korg; t=1756213272;
+	bh=JSxMf92zV17Z/OZCsD1CXG4dYZLOtNpD3zhquWduUtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3REiTctzv6jEO/BdVJqw2B3RMVeNU5/5DDoDnAFFIDWqPmJ5LOBHshCoqWRn/Gyx
-	 6m8/j3k8e+Of+DjG4f1IHBBj0pQ9LP4Blay0HzXLrTrr+A/7jnJzHBFT7I3XZvo04Z
-	 NqsuFyh1svGxdN4tMCPB8aCa9PJNCROIxwszwVws=
+	b=HtyelozIKkJGEF720Hl/Mqh64aatcWWGc8xnQm9rZIUAapzDIjeRxeO2wZr9VSyHH
+	 0pj8utQw/oL6jThKwyjFFLIz1J1y/WzVJ4+tpLkSvMlEPEb8F7k3uUT/3XLSTM19RB
+	 tcaBrWEFcs5BgdPXAKO2Cbi1R9t+7bwVsYWFTXak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/482] dpaa_eth: dont use fixed_phy_change_carrier
+Subject: [PATCH 6.6 258/587] crypto: octeontx2 - add timeout for load_fvc completion poll
 Date: Tue, 26 Aug 2025 13:06:47 +0200
-Message-ID: <20250826110934.619008585@linuxfoundation.org>
+Message-ID: <20250826110959.494828815@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-[ Upstream commit d8155c1df5c8b717052567b188455d41fa7a8908 ]
+[ Upstream commit 2157e50f65d2030f07ea27ef7ac4cfba772e98ac ]
 
-This effectively reverts 6e8b0ff1ba4c ("dpaa_eth: Add change_carrier()
-for Fixed PHYs"). Usage of fixed_phy_change_carrier() requires that
-fixed_phy_register() has been called before, directly or indirectly.
-And that's not the case in this driver.
+Adds timeout to exit from possible infinite loop, which polls
+on CPT instruction(load_fvc) completion.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/7eb189b3-d5fd-4be6-8517-a66671a4e4e3@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../crypto/marvell/octeontx2/otx2_cptpf_ucode.c  | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index 6f5c22861dc9..5cf12c27553d 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -27,7 +27,6 @@
- #include <linux/percpu.h>
- #include <linux/dma-mapping.h>
- #include <linux/sort.h>
--#include <linux/phy_fixed.h>
- #include <linux/bpf.h>
- #include <linux/bpf_trace.h>
- #include <soc/fsl/bman.h>
-@@ -3179,7 +3178,6 @@ static const struct net_device_ops dpaa_ops = {
- 	.ndo_stop = dpaa_eth_stop,
- 	.ndo_tx_timeout = dpaa_tx_timeout,
- 	.ndo_get_stats64 = dpaa_get_stats64,
--	.ndo_change_carrier = fixed_phy_change_carrier,
- 	.ndo_set_mac_address = dpaa_set_mac_address,
- 	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_set_rx_mode = dpaa_set_rx_mode,
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index 1958b797a421..682e7d80adb8 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1485,6 +1485,7 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 	dma_addr_t rptr_baddr;
+ 	struct pci_dev *pdev;
+ 	u32 len, compl_rlen;
++	int timeout = 10000;
+ 	int ret, etype;
+ 	void *rptr;
+ 
+@@ -1547,16 +1548,27 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 							 etype);
+ 		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
+ 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
++		timeout = 10000;
+ 
+ 		while (lfs->ops->cpt_get_compcode(result) ==
+-						OTX2_CPT_COMPLETION_CODE_INIT)
++						OTX2_CPT_COMPLETION_CODE_INIT) {
+ 			cpu_relax();
++			udelay(1);
++			timeout--;
++			if (!timeout) {
++				ret = -ENODEV;
++				cptpf->is_eng_caps_discovered = false;
++				dev_warn(&pdev->dev, "Timeout on CPT load_fvc completion poll\n");
++				goto error_no_response;
++			}
++		}
+ 
+ 		cptpf->eng_caps[etype].u = be64_to_cpup(rptr);
+ 	}
+-	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
+ 	cptpf->is_eng_caps_discovered = true;
+ 
++error_no_response:
++	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
+ free_result:
+ 	kfree(result);
+ lf_cleanup:
 -- 
 2.39.5
 
