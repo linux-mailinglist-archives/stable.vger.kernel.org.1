@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62142B35E52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5F3B36AA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64A8464F6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06157A01213
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF5B319858;
-	Tue, 26 Aug 2025 11:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B41A352FFD;
+	Tue, 26 Aug 2025 14:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTmQZnTe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUditx2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD86393DD1;
-	Tue, 26 Aug 2025 11:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA79E35209D;
+	Tue, 26 Aug 2025 14:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208678; cv=none; b=V/Rr6nxOctq3v8C5LbE1quJJiBJeDsVnQbguygV+7dtVBkD3UvhfrQAn41k5yt1+I4Pe/HZePkjOngzKkQxepP/+oI/hofophHbmXI6bsKZzRg+ZcDny7215rrtgc/C6/Z4xDfwdud7Ms6EZi4FC8wjfJpGoTn2ZY7cBNM3nfe4=
+	t=1756218219; cv=none; b=uUQduFVUJZdxoVhNdHdchNt1F/bWwjzheTu++PysOSeBpSijYsr7s3vExd568irzi9MNN6pb/StlfSNzoc/VHI3vGDAH8mrnJCGVv1lj+kjDApw7UB6S2KnPAukewFePeTEtSAOGjw10CKl8/nzqa5MC5vVRlpc+bXfribyFV9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208678; c=relaxed/simple;
-	bh=ClVYT/+zUHrMDaHmVp77iJ21ziy5cExuFUMhCqNbkRQ=;
+	s=arc-20240116; t=1756218219; c=relaxed/simple;
+	bh=HevwML83kkrw+yC/+IBfSoZ99k8uFb34/GHDyx7Zv+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5po+NoDNRwZe25rNan80YlQ3fEYPAw9z6IiBQ9578xjS91lAZSWwZ0hQltMt8ufzzvkB1O6Un8tbi1ZAa1lsWOvnp/18w/qtQdJIr0SgfuKI3n277lCTysmmlZ33AroWL2f74X1QRxA4/FDfdH28CuSbZRP5+Fe4O3qGhlmpGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTmQZnTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5DBC4CEF4;
-	Tue, 26 Aug 2025 11:44:38 +0000 (UTC)
+	 MIME-Version; b=OOZNcbHk/3dVEw5CvfGGUBnXP3XGU0yILjZ95v4KBkvTsqpZG5zzgviFHUqzgz2uzGef3u0YoOhUrsqHwa+V99DTZbcvijiE1qgdWIVdl3avW1EUjbWfH2fPe9f9f6KifbvSUovFnVxUaYbGctfMCKQ8e3U/bAKrQTzaf94BVqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUditx2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD0AC4CEF1;
+	Tue, 26 Aug 2025 14:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208678;
-	bh=ClVYT/+zUHrMDaHmVp77iJ21ziy5cExuFUMhCqNbkRQ=;
+	s=korg; t=1756218219;
+	bh=HevwML83kkrw+yC/+IBfSoZ99k8uFb34/GHDyx7Zv+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTmQZnTeBY2PLK90KkEuMu6Y0mLCoLi6tAzXD2n2FcROPj1+MI7ekEsyeizcgbdNm
-	 SmzUGD9Qk8IzF4MhIcPameJAUdrYtun0QUTtcRIolL5rt/uLJY+R50gkpSESCNJXU9
-	 PGS+2qDeZY2T7rqbaN9EOuSqFv3S7LY3qJJWOjyk=
+	b=NUditx2tNvjgS3saVGPH61MrcdOZ63WUmcyQxDy3ulh4OBEyLCP+UxisD/eiOJUKo
+	 zs3XAqmfO4GnuUB5+OF2F4LEhYEqbzW4VIgoQQF5v+vlDI8YJnVmpu03iPhvxNUK5N
+	 2WxFDIjTITzZ7TGPDsqNAc4uqSZO//WHnEdpLZJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Moteen Shah <m-shah@ti.com>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/322] arm64: dts: ti: k3-am6*: Add boot phase flag to support MMC boot
-Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826110920.856325549@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 5.10 408/523] most: core: Drop device reference after usage in get_channel()
+Date: Tue, 26 Aug 2025 13:10:18 +0200
+Message-ID: <20250826110934.522282914@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit db3cd905b8c8cd40f15a34e30a225704bb8a2fcb ]
+commit b47b493d6387ae437098112936f32be27f73516c upstream.
 
-The bootph-all flag was introduced in dt-schema
-(dtschema/schemas/bootph.yaml) to define node usage across
-different boot phases.
+In get_channel(), the reference obtained by bus_find_device_by_name()
+was dropped via put_device() before accessing the device's driver data
+Move put_device() after usage to avoid potential issues.
 
-For eMMC and SD boot modes, voltage regulator nodes, io-expander
-nodes, gpio nodes, and MMC nodes need to be present in all boot
-stages, so add missing bootph-all phase flag to these nodes to
-support SD boot and eMMC boot.
-
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Moteen Shah <m-shah@ti.com>
-Link: https://lore.kernel.org/r/20250429151454.4160506-2-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Stable-dep-of: a0b8da04153e ("arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2485055394be ("staging: most: core: drop device reference")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts |   12 ++++++++++++
- arch/arm64/boot/dts/ti/k3-am62a7-sk.dts  |    2 ++
- 2 files changed, 14 insertions(+)
+ drivers/most/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-@@ -69,6 +69,7 @@
- 		gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
- 		states = <1800000 0x0>,
- 			 <3300000 0x1>;
-+		bootph-all;
- 	};
- };
- 
-@@ -77,12 +78,14 @@
- 		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
- 		>;
-+		bootph-all;
- 	};
- 
- 	main_gpio1_ioexp_intr_pins_default: main-gpio1-ioexp-intr-default-pins {
- 		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x01d4, PIN_INPUT, 7) /* (C13) UART0_RTSn.GPIO1_23 */
- 		>;
-+		bootph-all;
- 	};
- 
- 	pmic_irq_pins_default: pmic-irq-default-pins {
-@@ -118,6 +121,7 @@
- 
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
-+		bootph-all;
- 	};
- 
- 	exp2: gpio@23 {
-@@ -229,6 +233,14 @@
- 	DVDD-supply = <&buck2_reg>;
- };
- 
-+&main_gpio0 {
-+	bootph-all;
-+};
-+
-+&main_gpio1 {
-+	bootph-all;
-+};
-+
- &gpmc0 {
- 	ranges = <0 0 0x00 0x51000000 0x01000000>; /* CS0 space. Min partition = 16MB */
- };
---- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-@@ -301,6 +301,7 @@
- 			AM62AX_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
- 			AM62AX_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
- 		>;
-+		bootph-all;
- 	};
- 
- 	main_mmc1_pins_default: main-mmc1-default-pins {
-@@ -603,6 +604,7 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&main_mmc0_pins_default>;
- 	disable-wp;
-+	bootph-all;
- };
- 
- &sdhci1 {
+--- a/drivers/most/core.c
++++ b/drivers/most/core.c
+@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
+ 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
+ 	if (!dev)
+ 		return NULL;
+-	put_device(dev);
+ 	iface = dev_get_drvdata(dev);
++	put_device(dev);
+ 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
+ 		if (!strcmp(dev_name(&c->dev), mdev_ch))
+ 			return c;
 
 
 
