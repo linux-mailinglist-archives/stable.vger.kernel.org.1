@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61427B36AA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624EDB36505
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A14D1C41A23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1139F189D441
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C70352FED;
-	Tue, 26 Aug 2025 14:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0A32139C9;
+	Tue, 26 Aug 2025 13:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK9CdFeO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlYK5qIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D6135209D;
-	Tue, 26 Aug 2025 14:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BD2AD04;
+	Tue, 26 Aug 2025 13:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218364; cv=none; b=ayTolsOok6vSckSLi6x3eUorXukD7asbriBtfHt7/swLxVmutk6TQJRtKa/4Qm+yeR3mBn/qAmDzfkihZ5mLUkheHlm/L9LT6+1GAImZaEoVJlOQ131FK1d1+4Zk+j2NTMoJsC7bi9RcEMkXOXabfGkdxdS+U39SJFkF73F+/nU=
+	t=1756215375; cv=none; b=dIZaYr2RglPqtRrlh2wDCkxdnwbF1Zf3MhhejvhqbhG7VdCsPXvdqhiRBCU4YgKSxljjJizKEec4kFxtmiyn7azMr4vNJp07i3iuBpLQh7dTxATCArYF9BDvekngpnrV2Neck9CLhqsnyKpAyY31X8KvFeLvjDGP+pkD0YfebjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218364; c=relaxed/simple;
-	bh=IqMzwS71x1NQRI+nGlbmmmN/jPmznvvD9sm/wpQ4j6w=;
+	s=arc-20240116; t=1756215375; c=relaxed/simple;
+	bh=mpH7G4AAIvj3a2yvNRqDFjiDpCj4hi/2IWNm3DaqT7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFRhy/pTBj0w8eSL6WxI1mJGyTXd5jPau5v7KegrH6lEP/OfHuotq0g3qDOrr7R/6ZNhofXagYRJivbRQo3EGMHXZcQgt+6plkm0DPWd61rKBmJ/OiqNxOlyr28D14QhroNajVQiFSbTA++fcf4hTHff+vmoLMvZ5myBme8NX3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK9CdFeO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59183C4CEF1;
-	Tue, 26 Aug 2025 14:26:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gnOYJuS0eiOKrzOl5Gm8E0CXsZ4t9np5Bd2GI5u1Gq6i8BQrPjGYw/5JJGMBnp5Y4tZK2Eq764HNF6hZR2Ek30txL1w+LhGhe9+SN5E62W4vLMH/HeudKjnodj9mNNPjqEzRtSOanUyf/Yft3vw11+wfvRdhfAXi116V920FcPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlYK5qIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3D3C4CEF1;
+	Tue, 26 Aug 2025 13:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218363;
-	bh=IqMzwS71x1NQRI+nGlbmmmN/jPmznvvD9sm/wpQ4j6w=;
+	s=korg; t=1756215375;
+	bh=mpH7G4AAIvj3a2yvNRqDFjiDpCj4hi/2IWNm3DaqT7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zK9CdFeO7pDsaX1vc2RQmhfNTRIzW0b6zXm754WL7JnfVRkLksL+QXfk2SnVS3gLh
-	 lZv0Gh6M/80wCDLUz/ZJHVJWK3xGc0dc8QL4JO4G4rullW9FQjG8DZNMAfTcuhnMkE
-	 chajPqN9I9TpI8bN6gf19Ixs5EmI7LI+H4GWlM5Q=
+	b=GlYK5qIzFFsN8i5IQZwoyqPSCOu6pD/y+fnKwHQiA1keeBVAcxdaT7LtZcmiOpQQH
+	 4+0+TXUOy3TCVQ/zJk0gDNQOG7LWK1PRyrP5jT53/G8Ewsvt9rVWx6sIHkavsTvhlr
+	 fRRxifyKmfr/+2XWDef7L7ulfUq5ZMtY/xbV5xXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 493/523] uio_hv_generic: Fix another memory leak in error handling paths
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 450/482] iio: temperature: maxim_thermocouple: use DMA-safe buffer for spi_read()
 Date: Tue, 26 Aug 2025 13:11:43 +0200
-Message-ID: <20250826110936.605246904@linuxfoundation.org>
+Message-ID: <20250826110941.946753268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 0b0226be3a52dadd965644bc52a807961c2c26df upstream.
+[ Upstream commit ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 ]
 
-Memory allocated by 'vmbus_alloc_ring()' at the beginning of the probe
-function is never freed in the error handling path.
+Replace using stack-allocated buffers with a DMA-safe buffer for use
+with spi_read(). This allows the driver to be safely used with
+DMA-enabled SPI controllers.
 
-Add the missing 'vmbus_free_ring()' call.
+The buffer array is also converted to a struct with a union to make the
+usage of the memory in the buffer more clear and ensure proper alignment.
 
-Note that it is already freed in the .remove function.
-
-Fixes: cdfa835c6e5e ("uio_hv_generic: defer opening vmbus until first use")
-Cc: stable <stable@vger.kernel.org>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/0d86027b8eeed8e6360bc3d52bcdb328ff9bdca1.1620544055.git.christophe.jaillet@wanadoo.fr
-[Shivani: Modified to apply on 5.10.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ iio_push_to_buffers_with_ts() => iio_push_to_buffers_with_timestamp() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -306,7 +306,7 @@ hv_uio_probe(struct hv_device *dev,
- 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
- 	if (pdata->recv_buf == NULL) {
- 		ret = -ENOMEM;
--		goto fail_close;
-+		goto fail_free_ring;
+ drivers/iio/temperature/maxim_thermocouple.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -12,6 +12,7 @@
+ #include <linux/mutex.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/types.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/trigger.h>
+@@ -122,8 +123,15 @@ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
+ 	char tc_type;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
++	/* Buffer for reading up to 2 hardware channels. */
++	struct {
++		union {
++			__be16 raw16;
++			__be32 raw32;
++			__be16 raw[2];
++		};
++		aligned_s64 timestamp;
++	} buffer __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+@@ -131,18 +139,16 @@ static int maxim_thermocouple_read(struc
+ {
+ 	unsigned int storage_bytes = data->chip->read_size;
+ 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
+-	__be16 buf16;
+-	__be32 buf32;
+ 	int ret;
+ 
+ 	switch (storage_bytes) {
+ 	case 2:
+-		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
+-		*val = be16_to_cpu(buf16);
++		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
++		*val = be16_to_cpu(data->buffer.raw16);
+ 		break;
+ 	case 4:
+-		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
+-		*val = be32_to_cpu(buf32);
++		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
++		*val = be32_to_cpu(data->buffer.raw32);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -167,9 +173,9 @@ static irqreturn_t maxim_thermocouple_tr
+ 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
++	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
++		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+ 						   iio_get_time_ns(indio_dev));
  	}
  
- 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
-@@ -366,6 +366,8 @@ hv_uio_probe(struct hv_device *dev,
- 
- fail_close:
- 	hv_uio_cleanup(dev, pdata);
-+fail_free_ring:
-+	vmbus_free_ring(dev->channel);
- 
- 	return ret;
- }
 
 
 
