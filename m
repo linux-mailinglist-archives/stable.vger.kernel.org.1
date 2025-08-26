@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC64B36ADF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6EBB3601C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A350646557B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FF47A6AC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7FD35083A;
-	Tue, 26 Aug 2025 14:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA761EEA49;
+	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDhk1e+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlYA2qDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396E134F48A;
-	Tue, 26 Aug 2025 14:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA397145B3E;
+	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218471; cv=none; b=kQTgd7HApefOyB/q8pJM09D3Yc1zD0TZ3W1F4xCquxQOOH5fa+vXhy8ph8EUCtFyQZneZRAn3d0brxGL2jGWq2K1acwrNgHhmjbpW+ivhpJe2vOChExz7MxMiWf0u7QKztk4S12+cAc0XP3nAZACRAWfeI40FTitFisn6UtAWtA=
+	t=1756212998; cv=none; b=IVumO2C12PIBLDZGeCxuy16FDvVfSmAWoq/vP5zeHN+ounoXgtmo41CZwKt41jdJXi+E8g5/ZVM78KXAw7K1/2Sn321JMZO+olT9HrsOjJNUmFqnI+vxiXFbaHFs6ZQ20exc7ed3QRybrQWMjJ+JU/3lFcgTajfIl7zAyLkYGcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218471; c=relaxed/simple;
-	bh=G0FvC5IcrAn6ELlvhvI21c9DyZ3p7LLG5Pfg4nnJ+FY=;
+	s=arc-20240116; t=1756212998; c=relaxed/simple;
+	bh=zAOY3dJhmY2x2aVSvrHUBTeg0wjDKX0bK3alxP7sbmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S+5WnHFkJSOLfohoX036abo1IN3RiquIIRVunE7QF3+m71nHyhJ4Jx7nRkB0Rv4E/lmqsdgCO9QEgVqNo+AxqKP4dW8XytDxoBiV6hraM8HNIJuBV8iK34GNaL9Iv5yKJ8d6h02dsvEBReSXFsx3jV7rXCqrOUm6IOPrneEFHa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDhk1e+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5257BC4CEF1;
-	Tue, 26 Aug 2025 14:27:50 +0000 (UTC)
+	 MIME-Version; b=fTaj6mIZHsD/0CHH2KIQN85frKi2CgULUBxNYitZi47ku1FVUP3ZmrMh3WwBKESei9qZsWYRTxi7lSCfUlbkZ0k4oaDjXY4hPx9GsrHQu2h1F5omURYPPqdxS33pmDtBiVKwQYW3Kec5Wii93V45WCbb7KUhmRMIMcoR8QqHXWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlYA2qDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B43EC4CEF1;
+	Tue, 26 Aug 2025 12:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218470;
-	bh=G0FvC5IcrAn6ELlvhvI21c9DyZ3p7LLG5Pfg4nnJ+FY=;
+	s=korg; t=1756212998;
+	bh=zAOY3dJhmY2x2aVSvrHUBTeg0wjDKX0bK3alxP7sbmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDhk1e+6oFDnye70vw1x0a31qS6d/onfzjMh9KuofK62IPcwsGkHKaBVCRCmqtVWG
-	 rqZWYFV7xBx6dEYvLLtNqrjPLzqTXkHY5gYnRmwP52qkXgj08VViE1bZxk2bmOWSJ1
-	 QRpb0aUWc8C5EO1dEwy784LKd67OeNH9BMqvwP0A=
+	b=SlYA2qDdxWeKqtDT5gEPBOU49kadhbR2ckxpRa4M16rjgKMr1PVTteDWBdKsqUI0J
+	 4P1Evjb29P7W6zYx2xOQ6irdv5dYz5+4A0G0cr2JhMU8iB9C8oxvotMZj8T5tTMRKh
+	 yeTkWqqUHk3dGehN+ovzIBnNzwEYJmD6G/3cM2no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.4 005/403] i2c: stm32: fix the device used for the DMA map
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 182/587] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
 Date: Tue, 26 Aug 2025 13:05:31 +0200
-Message-ID: <20250826110905.772959239@linuxfoundation.org>
+Message-ID: <20250826110957.572494480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-commit c870cbbd71fccda71d575f0acd4a8d2b7cd88861 upstream.
+[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
 
-If the DMA mapping failed, it produced an error log with the wrong
-device name:
-"stm32-dma3 40400000.dma-controller: rejecting DMA map of vmalloc memory"
-Fix this issue by replacing the dev with the I2C dev.
+Ensure descriptor is freed on error to avoid memory leak.
 
-Fixes: bb8822cbbc53 ("i2c: i2c-stm32: Add generic DMA API")
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Cc: <stable@vger.kernel.org> # v4.18+
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-1-84a095a2c728@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-stm32.c   |    8 +++-----
- drivers/i2c/busses/i2c-stm32f7.c |    4 ++--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-stm32.c
-+++ b/drivers/i2c/busses/i2c-stm32.c
-@@ -98,7 +98,6 @@ int stm32_i2c_prep_dma_xfer(struct devic
- 			    void *dma_async_param)
- {
- 	struct dma_async_tx_descriptor *txdesc;
--	struct device *chan_dev;
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 0a1f302ad6d3..2deb259615d9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2816,6 +2816,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	struct iwl_fw_dump_desc *desc;
+ 	unsigned int delay = 0;
+ 	bool monitor_only = false;
++	int ret;
  
- 	if (rd_wr) {
-@@ -112,11 +111,10 @@ int stm32_i2c_prep_dma_xfer(struct devic
- 	}
+ 	if (trigger) {
+ 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
+@@ -2846,7 +2847,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	desc->trig_desc.type = cpu_to_le32(trig);
+ 	memcpy(desc->trig_desc.data, str, len);
  
- 	dma->dma_len = len;
--	chan_dev = dma->chan_using->device->dev;
- 
--	dma->dma_buf = dma_map_single(chan_dev, buf, dma->dma_len,
-+	dma->dma_buf = dma_map_single(dev, buf, dma->dma_len,
- 				      dma->dma_data_dir);
--	if (dma_mapping_error(chan_dev, dma->dma_buf)) {
-+	if (dma_mapping_error(dev, dma->dma_buf)) {
- 		dev_err(dev, "DMA mapping failed\n");
- 		return -EINVAL;
- 	}
-@@ -146,7 +144,7 @@ int stm32_i2c_prep_dma_xfer(struct devic
- 	return 0;
- 
- err:
--	dma_unmap_single(chan_dev, dma->dma_buf, dma->dma_len,
-+	dma_unmap_single(dev, dma->dma_buf, dma->dma_len,
- 			 dma->dma_data_dir);
- 	return ret;
+-	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	if (ret)
++		kfree(desc);
++
++	return ret;
  }
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -632,10 +632,10 @@ static void stm32f7_i2c_dma_callback(voi
- {
- 	struct stm32f7_i2c_dev *i2c_dev = (struct stm32f7_i2c_dev *)arg;
- 	struct stm32_i2c_dma *dma = i2c_dev->dma;
--	struct device *dev = dma->chan_using->device->dev;
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
  
- 	stm32f7_i2c_disable_dma_req(i2c_dev);
--	dma_unmap_single(dev, dma->dma_buf, dma->dma_len, dma->dma_data_dir);
-+	dma_unmap_single(i2c_dev->dev, dma->dma_buf, dma->dma_len,
-+			 dma->dma_data_dir);
- 	complete(&dma->dma_complete);
- }
- 
+-- 
+2.39.5
+
 
 
 
