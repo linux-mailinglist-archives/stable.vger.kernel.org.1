@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC853B36052
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1D3B36679
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482945E059A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F45B567F73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7AF1D514B;
-	Tue, 26 Aug 2025 12:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A713B341678;
+	Tue, 26 Aug 2025 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8gLf9Y1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rqzudvxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA32187554;
-	Tue, 26 Aug 2025 12:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643D92BF019;
+	Tue, 26 Aug 2025 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212933; cv=none; b=F5JxZvx42UOl3poDgagbs8IoiLzgMUOrggm54nZRA0xfK8YlkTZAJxUZfYYIfaoO72h/tuywE54sGXUxmvlNrEckFfkp2lR4RYdlixAxVxAB09q5YIVS3Ot0JzLNZQSe3GsNru8iAR9UdSpJWr7BUuK0QGwfUwFP8y5r3AvfOdw=
+	t=1756215839; cv=none; b=nHNVzSSlEb5XNzViX/KKDdtKphyW8uOo6gxdAV/gQ/4hA7D74FuSsvapBE/Qk0FLm1gll4EZ8+XJfqthu5z6sseoKeyj8D5NAwrziWHd0s5EnizAYzxZFrjSuv7mimD8icb/NLxItntA6vaG1T0crxTLTZI/3LgH6T7WzK/v5ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212933; c=relaxed/simple;
-	bh=3YTl0d9Sm3J6Z5LPMx824ElMFVURMooMuVyC6EXlbug=;
+	s=arc-20240116; t=1756215839; c=relaxed/simple;
+	bh=CL9zk59njpbCb/dRucYmkjJb4AjvpuG27tvtX1zOev0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqrGxB3WNVQfkrAOfOCjvo6t5YSy95bddJq0X54/Q42fmBZE5V4I1fwjCbTRJ3rXp8WdVQ6HN5/IkvFqrofAinRFNvvp2fOgBvqsduxETSP2hmRyRLgN+U1ALAhIH2yrA64KjhG4m9Dj3RZByXxqHgjqZxSGz+lhsJ6tTcxwZsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8gLf9Y1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2112C4CEF1;
-	Tue, 26 Aug 2025 12:55:32 +0000 (UTC)
+	 MIME-Version; b=tBTB55nV3ZdK04AOVQgzXFzEWDkj/wNMNRp4cUgmgdMWOORgvyhogYShCApp649j65gJNNa7FFK+1m/zAAYgXMfm8bLnL/Udh3cy+osnl0PmFlIXui1C6rfWVr6Gb9KwxV2BhdTmwW4rHnrFAnnelyusCMj5Et/u/UstjKd/64k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rqzudvxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A07C4CEF1;
+	Tue, 26 Aug 2025 13:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212933;
-	bh=3YTl0d9Sm3J6Z5LPMx824ElMFVURMooMuVyC6EXlbug=;
+	s=korg; t=1756215839;
+	bh=CL9zk59njpbCb/dRucYmkjJb4AjvpuG27tvtX1zOev0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8gLf9Y1weoFkY8bckMwGkCKeFWHZO/0fNDJ6zXv7egeih0xFVMuzKwGs6uq9j9/c
-	 68IbhHw3MTeZZGiblEaseDX/Ygh2tCGRnnk8vZCOHrw3/yDIev3jik4kDgVUpecfBs
-	 YPXvSMWpNp9o0PuawoU4JsSP//DJl/ivTPJUsg2w=
+	b=Rqzudvxds9WzFPmU2vkw6OSGoEDs7D3YO25JTrZsX5sDbO0wX1uLYxWO9F4Qt1niy
+	 9VwHtCK/sY1l97S/orBnGSv/SKC0UowSDZ+/XpNtkI9wdUdhF2tF095BU71ZAv3uQv
+	 KRvIUa50RD4t1J+yBaT42aatEgYLgA46SC1bglwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/587] usb: core: usb_submit_urb: downgrade type check
+Subject: [PATCH 5.15 185/644] scsi: isci: Fix dma_unmap_sg() nents value
 Date: Tue, 26 Aug 2025 13:04:36 +0200
-Message-ID: <20250826110956.186460395@linuxfoundation.org>
+Message-ID: <20250826110951.046121698@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 503bbde34cc3dd2acd231f277ba70c3f9ed22e59 ]
+[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
 
-Checking for the endpoint type is no reason for a WARN, as that can
-cause a reboot. A driver not checking the endpoint type must not cause a
-reboot, as there is just no point in this.  We cannot prevent a device
-from doing something incorrect as a reaction to a transfer. Hence
-warning for a mere assumption being wrong is not sensible.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250612122149.2559724-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/urb.c | 2 +-
+ drivers/scsi/isci/request.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
-index 7576920e2d5a..9f202f575cec 100644
---- a/drivers/usb/core/urb.c
-+++ b/drivers/usb/core/urb.c
-@@ -500,7 +500,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
- 
- 	/* Check that the pipe's type matches the endpoint's type */
- 	if (usb_pipe_type_check(urb->dev, urb->pipe))
--		dev_WARN(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
-+		dev_warn_once(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
- 			usb_pipetype(urb->pipe), pipetypes[xfertype]);
- 
- 	/* Check against a simple/standard policy */
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 6ef40993906a..b37ab6fa3d0e 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -2906,7 +2906,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
+ 					 task->total_xfer_len, task->data_dir);
+ 		else  /* unmap the sgl dma addresses */
+ 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
+-				     request->num_sg_entries, task->data_dir);
++				     task->num_scatter, task->data_dir);
+ 		break;
+ 	case SAS_PROTOCOL_SMP: {
+ 		struct scatterlist *sg = &task->smp_task.smp_req;
 -- 
 2.39.5
 
