@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2019BB36736
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3653B35BAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D58E7AC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468B31BA381F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA93350D4E;
-	Tue, 26 Aug 2025 13:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448CD2FD7DE;
+	Tue, 26 Aug 2025 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trlSsKIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSyQg+zS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1E1350D4C;
-	Tue, 26 Aug 2025 13:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0242321D00E;
+	Tue, 26 Aug 2025 11:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216391; cv=none; b=gWJ7YUSapZ4L6LkMtUsiWIgjI4U2Z+sjNsk8awxykvXXo3XgWb5BhAD8r9f0ppqJkemsKpOl+2HJ676iSNc62Qx8hrdi4lvKydYIeWeAv2wW1A15jSqY5TUjw46EU2ErrAqY0eUzF+8rC78PtvUQ3DLLk9aVwBWejU4oLbldfRs=
+	t=1756207372; cv=none; b=DEASzFds4+kSbfbcGl6LjX1DhgKOBf9OVOWAxjl/0l6A2d5TtqeTi/UHlap9bVMgvMvaxOLukSjAheGnDSt+lUANlkKmhwHxGFa7M9iY4eZx6cUKgCioW+Z/zrrSYgGdPGhflyq/bs0bK/Kq8D78ApOpVh/JcHkPaI4VNg2fHxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216391; c=relaxed/simple;
-	bh=tgefX0eQH97VBRlET0FKOoZRukQiRYV2OtWuSmrcIiQ=;
+	s=arc-20240116; t=1756207372; c=relaxed/simple;
+	bh=No7uQammdHQrXl18y69rNG4PX3NNftbYB7dw2mWtNOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SD3mp97I4m7UggokiuzBwlf2VmXruxfjuZjfTZQ91vxqgl5cZ2RNNXDELzmCYPpAGLGw9ldhn+9iTapQYciqyl61x839gTHQX56l5vh8RDR3T994nzgyrGtX0RkTI9fX5IWVLd8R5JJyoe+tM48BeqUqDTaay2X3zI2um09THUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trlSsKIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE9DC4CEF1;
-	Tue, 26 Aug 2025 13:53:11 +0000 (UTC)
+	 MIME-Version; b=u2iBW25Bm0fM02PRcGimcPZc9NyPM9ActZbynMsg5CIZQBLky0+qhWDANKI+SOhFo2Ghz3ftoN23Mvwn4iSvUxDf56WttUwMOtswg514mq4nZh5AXPn1qA0nSb0FeC7026K9GxlBAtgP7r6kPGCqrjw2OdsJi9h4742vMQY/eXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSyQg+zS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E13AC4CEF1;
+	Tue, 26 Aug 2025 11:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216391;
-	bh=tgefX0eQH97VBRlET0FKOoZRukQiRYV2OtWuSmrcIiQ=;
+	s=korg; t=1756207371;
+	bh=No7uQammdHQrXl18y69rNG4PX3NNftbYB7dw2mWtNOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trlSsKIMnnjfiZv5C7b2P1sSF0+ZRGNBGA+YtARO1tP1plnhc9BRXe+JzvAUAcz3U
-	 2IXLWqpvJlxccrOyxJTi76MWDi61wJAullpZn9VSyqICnu4FlotOgqxtiRkv8UqHPv
-	 9w20Q0BuyZMasnPXeIECpp7gyXq4//oPSQWVSisg=
+	b=jSyQg+zSPgrbYSU62ZBNsyX691nzKFgEDBHSTkht5qLFWZkm2SfTFeb3op1xMc9Pj
+	 dIqUT2DQaWd3U/6FcHmU08c9m0laoggC6ScYWA4m8/trpDm7O/GQRYosVLML1PBZu1
+	 /5XX0mrtTlPBDToRFb5v/Putn2AdzpajFGlMu7r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 350/644] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 157/457] media: iris: Fix typo in depth variable
 Date: Tue, 26 Aug 2025 13:07:21 +0200
-Message-ID: <20250826110955.071098347@linuxfoundation.org>
+Message-ID: <20250826110941.254162892@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
+commit 58edc8a68de7af45a4c815636595daa530f02c13 upstream.
 
-The buffer bgx_sel used in snprintf() was too small to safely hold
-the formatted string "BGX%d" for all valid bgx_id values. This caused
-a -Wformat-truncation warning with `Werror` enabled during build.
+Correct a typo from "dpeth" to "depth".
 
-Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
-snprintf() to ensure safety and suppress the warning.
-
-Build warning:
-  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
-‘bgx_acpi_match_id’:
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
-directive output may be truncated writing between 1 and 3 bytes into a
-region of size 2 [-Werror=format-truncation=]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                             ^~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-directive argument in the range [0, 255]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                         ^~~~~~~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-
-compiler warning due to insufficient snprintf buffer size.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index daaffae1a89f..1831066c7647 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1427,9 +1427,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
- {
- 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct bgx *bgx = context;
--	char bgx_sel[5];
-+	char bgx_sel[7];
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
+index a908b41e2868..802fa62c26eb 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
+@@ -178,7 +178,7 @@ static int iris_hfi_gen2_set_crop_offsets(struct iris_inst *inst)
+ 						  sizeof(u64));
+ }
  
--	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-+	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
- 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
- 		pr_warn("Invalid link device\n");
- 		return AE_OK;
+-static int iris_hfi_gen2_set_bit_dpeth(struct iris_inst *inst)
++static int iris_hfi_gen2_set_bit_depth(struct iris_inst *inst)
+ {
+ 	struct iris_inst_hfi_gen2 *inst_hfi_gen2 = to_iris_inst_hfi_gen2(inst);
+ 	u32 port = iris_hfi_gen2_get_port(V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+@@ -378,7 +378,7 @@ static int iris_hfi_gen2_session_set_config_params(struct iris_inst *inst, u32 p
+ 		{HFI_PROP_BITSTREAM_RESOLUTION,       iris_hfi_gen2_set_bitstream_resolution   },
+ 		{HFI_PROP_CROP_OFFSETS,               iris_hfi_gen2_set_crop_offsets           },
+ 		{HFI_PROP_CODED_FRAMES,               iris_hfi_gen2_set_coded_frames           },
+-		{HFI_PROP_LUMA_CHROMA_BIT_DEPTH,      iris_hfi_gen2_set_bit_dpeth              },
++		{HFI_PROP_LUMA_CHROMA_BIT_DEPTH,      iris_hfi_gen2_set_bit_depth              },
+ 		{HFI_PROP_BUFFER_FW_MIN_OUTPUT_COUNT, iris_hfi_gen2_set_min_output_count       },
+ 		{HFI_PROP_PIC_ORDER_CNT_TYPE,         iris_hfi_gen2_set_picture_order_count    },
+ 		{HFI_PROP_SIGNAL_COLOR_INFO,          iris_hfi_gen2_set_colorspace             },
 -- 
-2.39.5
+2.50.1
 
 
 
