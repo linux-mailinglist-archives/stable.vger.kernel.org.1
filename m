@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-173128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91844B35BD0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C762B360E2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDE3A1BA239C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F97B1BA69ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8332BE7A7;
-	Tue, 26 Aug 2025 11:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647161C1F12;
+	Tue, 26 Aug 2025 13:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOA0eNgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAKe+6LC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F016117332C;
-	Tue, 26 Aug 2025 11:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2016D148850;
+	Tue, 26 Aug 2025 13:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207446; cv=none; b=nXfULno82huAOscrIB+Km2mi3/wjd5flh+Ax6RgF3uPLW0y4OOpRA7e1Tn8qNsXjrsVEwrREAkSUQanEnp5ovmVludSJ9BCspmfiffgAcDZW+NLNAkEfsVQ3k2lzTUSM69+RgVtI4cxKE+G2Qqw8TjQEu+b8W+dbWWk8jdU2KJs=
+	t=1756213283; cv=none; b=bVBnBP2xtdDpWB2xKykMyi/koZzYVjY49F3LZecyBTJyB+/mUPOEcFbfqN+TunBIwugaiKQA796ZsNNCu3rVdBkrP6OGKleGJFUzra9hYY27uhGqx1S47GyvPv5JypL22vfMeCCLG/qhDgmlI5QVG9R7uJfPXmd/9maudFCWaJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207446; c=relaxed/simple;
-	bh=76OoYE1XfQHGy0RBfP+YTDZmU8MBHbzxk++E4NQleE8=;
+	s=arc-20240116; t=1756213283; c=relaxed/simple;
+	bh=PaPNy88rgm01dZDfPwLy/3sa7XWm3ftIFjM93c4MCnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq+Cm55XuMkIZxwY0zwEbbFWByly0ewK6l5z7AdQc2vzg7cZ1teSfE1FEqFNCu2muT6WDh7SmQA0nQhaKkzJgxNsqzG9LaR0O2vX7CizfN0tqIi1rC1jOXuD1p2c0yRX4+c8LP70Vfq+W2hgrDYB19atZhAkjC4/mXxaE2StO8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOA0eNgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E121C4CEF4;
-	Tue, 26 Aug 2025 11:24:05 +0000 (UTC)
+	 MIME-Version; b=LiL2iKOL6Frf66zFobqFHRyAFh7ipQh8UQI5P4k6b+y3HhnJfoDj2kms7V7SdRJiQJZtPiNZKOY/bKwx8mbrEwyBu13XQaGS8WHXZPiXUGBBlHKOIEPr1wu55GT1rxPo99/5tnunK+8nbVj6dTE+lf8JOko9sWx0gQF+jMcTuY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAKe+6LC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4569C4CEF1;
+	Tue, 26 Aug 2025 13:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207445;
-	bh=76OoYE1XfQHGy0RBfP+YTDZmU8MBHbzxk++E4NQleE8=;
+	s=korg; t=1756213283;
+	bh=PaPNy88rgm01dZDfPwLy/3sa7XWm3ftIFjM93c4MCnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOA0eNglYDdqrLOyeecSbM7BVjKqvHkSfmqUAGmBUExfSsWkNPWqKhxKhmWEQU18L
-	 cCt6F7cyjbRsDz05CXGf4oTIcuYb4a3eWnWrCTJmjSv8lOxNaA18LPgTVAy2vRXppL
-	 0ZSJm2sx8fkBJtpn1VIMPmhL9zfrfVUPz944bF74=
+	b=rAKe+6LC/MgyArdAGOQr6vBrsKVVGD0U0AbT6n6Gku4vRs2sm38d8MzCn7hwPYy9/
+	 tGR1KScwHBAuLgkTHvcGAQysU8To2GrZ07JGIRLFz9a6P0Avlf4FPAa/g+Mhjk3nPy
+	 e+OUGtLY7r1O0LOdWMd79mKuk4X51N+DOYsJfTYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 153/457] media: iris: Drop port check for session property response
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 288/587] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
 Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826110941.154187907@linuxfoundation.org>
+Message-ID: <20250826111000.256912235@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: John Garry <john.g.garry@oracle.com>
 
-commit f3516f856d1f11d9dff7d72491d474a2bae1cf8e upstream.
+[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
 
-Currently, port check enforces that session property response must
-arrive only on the BITSTREAM port. However, firmware can send some
-responses on other port as well.
+In blk_stack_limits(), we check that the t->chunk_sectors value is a
+multiple of the t->physical_block_size value.
 
-Remove the strict port validation to correctly handle session property
-responses from the firmware.
+However, by finding the chunk_sectors value in bytes, we may overflow
+the unsigned int which holds chunk_sectors, so change the check to be
+based on sectors.
 
-Cc: stable@vger.kernel.org
-Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 3 ---
- 1 file changed, 3 deletions(-)
+ block/blk-settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-index b75a01641d5d..d1a2a497a7b2 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-@@ -636,9 +636,6 @@ static int iris_hfi_gen2_handle_session_property(struct iris_inst *inst,
- {
- 	struct iris_inst_hfi_gen2 *inst_hfi_gen2 = to_iris_inst_hfi_gen2(inst);
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 7019b8e204d9..021994f6d2d8 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -634,7 +634,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	}
  
--	if (pkt->port != HFI_PORT_BITSTREAM)
--		return 0;
--
- 	if (pkt->flags & HFI_FW_FLAGS_INFORMATION)
- 		return 0;
- 
+ 	/* chunk_sectors a multiple of the physical block size? */
+-	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
++	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
+ 		t->chunk_sectors = 0;
+ 		t->misaligned = 1;
+ 		ret = -1;
 -- 
-2.50.1
+2.39.5
 
 
 
