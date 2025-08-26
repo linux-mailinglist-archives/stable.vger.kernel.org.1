@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3E5B3654C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B5B3631B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D813D7BC45F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B708A1B63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B578A345730;
-	Tue, 26 Aug 2025 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A4246333;
+	Tue, 26 Aug 2025 13:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7F0sJ+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKEWQz2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73427393DC0;
-	Tue, 26 Aug 2025 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90B72605;
+	Tue, 26 Aug 2025 13:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215974; cv=none; b=SSbukecd5LttqWJFSJJHnU+fLGSsslSCPwJLAwO335v6YEWPlvPbq79cU3X1sJ67p2vzJzGAquWWFxB0PqL2ME/t0q9RpYDmOV86M0K4j/RJeB3lx5tG7OIdEGD2KFvHM4flor06uoXYQAr/se8fabElqMb0BWomJt2iUR8s/zE=
+	t=1756214273; cv=none; b=Q7ojXvw2abz5dMD+gC8PG9N8yxkg7ZhCAIovB98GdfDKJ6/I909ZUmTF+5ukfb772oATTXAosEMs0GCkp9d/qGepGml1scLsVt1YXyrWANvyN4IEaiOz21a4Koqea7V3XiS+uVgHuUbH6+Nx7iZzoIolgs0HmuxZ5OfGhPU8cC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215974; c=relaxed/simple;
-	bh=/d8rxjJIybEjnLWT4vvGMyduIr9TxIvfjvp/6hva+8w=;
+	s=arc-20240116; t=1756214273; c=relaxed/simple;
+	bh=8ntA+wKebteYw2ywCoWc2asSrZtdwON85l1Hqmhwj9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hz0MWGYd6Ly2lyczFfamAOo8Ms1CG2Uf8mYC5eJfza2zPlb7ZBlEH8GYDu00D/t9cZfe5RA9uuAa3jM+PW80FeYLTo2Iv9oZBxtuhGdQotTbBKVuCjrmbZAqjfj12JG5mqMzoui7twgmo8BLV7jUKDP/cBvowsTVMgX+SlpFnbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7F0sJ+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0434FC4CEF1;
-	Tue, 26 Aug 2025 13:46:13 +0000 (UTC)
+	 MIME-Version; b=TvrDdbBcHQulIazkkudJ/A7iRIWFJ5ZP28hw+xnD4xyuoYjszGkuhtm83a26Q2WlP7BRsouijRNNCd4oQ4q1vu7vwYdRHCA1yU4VSDcZytao2FSJtCBiogVOr2qjb8TkS5xPmTBj2Dr0oTkxtm8uxOEiS4W8+tlKzdIsSU8BClw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKEWQz2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CAC113D0;
+	Tue, 26 Aug 2025 13:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215974;
-	bh=/d8rxjJIybEjnLWT4vvGMyduIr9TxIvfjvp/6hva+8w=;
+	s=korg; t=1756214273;
+	bh=8ntA+wKebteYw2ywCoWc2asSrZtdwON85l1Hqmhwj9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7F0sJ+lhwmEU//olt/p72XqR3wv8qjGZf7peIMrWI/PqGc61UZa/XYav7uZ1Kwsu
-	 4kvIXxea5DfcXZhuhDV4+Rdu+0jF7jR/UsCX0+LVzpK702580nBRFcerYCE5eLZnHs
-	 PTd17DXkiQ5U2KtZepZhtAzBZn2g4K0UX3/1mSmQ=
+	b=hKEWQz2JLovRM4W2p3/0FlVaTiRF9u76RFDkJ0QCyiu0xP+LQOC2BB/xHzciGf1V9
+	 WSX7s96zYvWKTglqzJWHgvRVRGX7fA2C53aH0UkVuiWQ7HLhkwNQbUCwjDdUVz4Wk9
+	 96v3uGMXsnQ+MWkFKuwIqTk9xziej57EYPfvpy2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Kochetkov <al.kochet@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/644] benet: fix BUG when creating VFs
+Subject: [PATCH 6.1 075/482] ARM: rockchip: fix kernel hang during smp initialization
 Date: Tue, 26 Aug 2025 13:05:28 +0200
-Message-ID: <20250826110952.276380583@linuxfoundation.org>
+Message-ID: <20250826110932.687610529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Alexander Kochetkov <al.kochet@gmail.com>
 
-[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
+[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
 
-benet crashes as soon as SRIOV VFs are created:
+In order to bring up secondary CPUs main CPU write trampoline
+code to SRAM. The trampoline code is written while secondary
+CPUs are powered on (at least that true for RK3188 CPU).
+Sometimes that leads to kernel hang. Probably because secondary
+CPU execute trampoline code while kernel doesn't expect.
 
- kernel BUG at mm/vmalloc.c:3457!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
- [...]
- RIP: 0010:vunmap+0x5f/0x70
- [...]
- Call Trace:
-  <TASK>
-  __iommu_dma_free+0xe8/0x1c0
-  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
-  be_cmd_set_mac+0xaf/0x110 [be2net]
-  be_vf_eth_addr_config+0x19f/0x330 [be2net]
-  be_vf_setup+0x4f7/0x990 [be2net]
-  be_pci_sriov_configure+0x3a1/0x470 [be2net]
-  sriov_numvfs_store+0x20b/0x380
-  kernfs_fop_write_iter+0x354/0x530
-  vfs_write+0x9b9/0xf60
-  ksys_write+0xf3/0x1d0
-  do_syscall_64+0x8c/0x3d0
+The patch moves SRAM initialization step to the point where all
+secondary CPUs are powered down.
 
-be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
-Fix it by freeing only after the lock has been released.
+That fixes rarely hangs on RK3188:
+[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.091996] rockchip_smp_prepare_cpus: ncores 4
 
-Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 1cdb7ca019f5..96a8749cf34f 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3851,8 +3851,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
- 	status = be_mcc_notify_wait(adapter);
+diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
+index 36915a073c23..f432d22bfed8 100644
+--- a/arch/arm/mach-rockchip/platsmp.c
++++ b/arch/arm/mach-rockchip/platsmp.c
+@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 	}
  
- err:
--	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	spin_unlock_bh(&adapter->mcc_lock);
-+	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	return status;
+ 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
+-		if (rockchip_smp_prepare_sram(node)) {
+-			of_node_put(node);
+-			return;
+-		}
+-
+ 		/* enable the SCU power domain */
+ 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 
+@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
+ 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
+ 	}
+-	of_node_put(node);
+ 
+ 	/* Make sure that all cores except the first are really off */
+ 	for (i = 1; i < ncores; i++)
+ 		pmu_set_power_domain(0 + i, false);
++
++	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
++		if (rockchip_smp_prepare_sram(node)) {
++			of_node_put(node);
++			return;
++		}
++	}
++
++	of_node_put(node);
  }
  
+ static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
 -- 
 2.39.5
 
