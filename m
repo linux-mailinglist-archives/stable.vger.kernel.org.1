@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2019FB364AA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D83B35E55
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED41E1BC52F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5342C465200
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A0B22AE5D;
-	Tue, 26 Aug 2025 13:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C9D3002D2;
+	Tue, 26 Aug 2025 11:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9TrDRf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKDpE8dl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EB11C4609;
-	Tue, 26 Aug 2025 13:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970031FECAB;
+	Tue, 26 Aug 2025 11:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215196; cv=none; b=VBcGFrdz/v8NABBKKh5oS5FpA2/HCRVDs3Rx+TH2tZ35vh8TssMPRmPiVXUQaZPD5TC2OmFxe+J7PBjDR8IyLhgvo9o8qS9AHtEls1/uWyVJkepLuMApsKFhLPYeFH3TdLQBRgyHUp7Z1AET0TPrTaIbFTX8Zni65TSmCf7Q72A=
+	t=1756208723; cv=none; b=OWa8HLAhkxdBOa7/NJBI9NjvA5AQZcaJVe6ndQ6fgstSIyS+xkGEc3/DZESz321GHvQavydCdbhEryNN6ORpbeaoPCVfc76+kC0qv0TAQhbJJgbaN4aG3ck6mCZmqSSJwbPj0kxP7p6rPRq21vulaTtLzRYXCDOu9sf68QytNdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215196; c=relaxed/simple;
-	bh=Ga4aY4RcDLWdpJhlcuvIdo0U9qfWlp8faHQUshF/ZcA=;
+	s=arc-20240116; t=1756208723; c=relaxed/simple;
+	bh=lM3Zo9BoIh5rC5d7sTjPl3cFiNbA/adaeGkb1Rw3LVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQef+a7ByHNeiHBqNAg6xBpPW4bVCSc/DKMjLYA6hJa/Hweuq8VHBGTFRW75bFKjF0In4aMKeNbZmpZc1nw3ypyb4UtFUAy+GbtMsggK1o2tDxzo0lxDRSj1p/iXcGujxufxjoEjxPbW77c1iKd07iyF0WnmzU6yExZfm63c8hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9TrDRf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450BFC4CEF1;
-	Tue, 26 Aug 2025 13:33:16 +0000 (UTC)
+	 MIME-Version; b=u56WBJSPbjeLRqqDUboA/yhiDSVxpfkYCf3DnerC8dmMLJj3UyQaSnZucD5g03Ib64YfjeQTgoxm61bMVBuFhaHKd8k1fZEjofegzvIihVzf1o/Vr+L3pI+veqzb0g/q5EgtTq5ger6FYPDNNG0Z6jiA/ha9TOsXJtWeIqPjE7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKDpE8dl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D338C4CEF4;
+	Tue, 26 Aug 2025 11:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215196;
-	bh=Ga4aY4RcDLWdpJhlcuvIdo0U9qfWlp8faHQUshF/ZcA=;
+	s=korg; t=1756208723;
+	bh=lM3Zo9BoIh5rC5d7sTjPl3cFiNbA/adaeGkb1Rw3LVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9TrDRf8Qboy2mrw35grBocu1Ile7EOpAz30eqQqenWKkMGdAmpzuPbT45yltzxXU
-	 JzevXzohvQsLYzeUV8EnlN9LaY0SdEfLoHq5w5Zd9EQkuEUnpIA9757/wbP4IS/6Pf
-	 t6DvcsGjOULfMjsPkvFrK9y3IJpgQKPbUmfSk4cc=
+	b=rKDpE8dlRTBmJj2nuDRPYB671aKnx8wOh5wbvxEyAxs9XTA5IihgEsvDBBpVNZji2
+	 y2gIqYtG4AdhO6FvJr0Zkzhh6krJqy00vDKtzS+w+QfRLApUZ0e3vmnSExGeUOjV6W
+	 XNb9AGvKs/RCeJS6MeCQv7d2/5cEDnHePa5QiFZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 383/482] mptcp: reset fallback status gracefully at disconnect() time
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 221/322] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 26 Aug 2025 13:10:36 +0200
-Message-ID: <20250826110940.291379712@linuxfoundation.org>
+Message-ID: <20250826110921.347201512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Miao Li <limiao@kylinos.cn>
 
-commit da9b2fc7b73d147d88abe1922de5ab72d72d7756 upstream.
+commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
 
-mptcp_disconnect() clears the fallback bit unconditionally, without
-touching the associated flags.
+Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
+or it will randomly work incorrectly on Huawei hisi platforms
+when doing reboot test.
 
-The bit clear is safe, as no fallback operation can race with that --
-all subflow are already in TCP_CLOSE status thanks to the previous
-FASTCLOSE -- but we need to consistently reset all the fallback related
-status.
-
-Also acquire the relevant lock, to avoid fouling static analyzers.
-
-Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250714-net-mptcp-fallback-races-v1-3-391aff963322@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit ebc1e08f01eb ("mptcp: drop
-  last_snd and MPTCP_RESET_SCHEDULER") is not in this version and
-  changed the context. The same modification can still be applied at the
-  same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/core/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3204,7 +3204,16 @@ static int mptcp_disconnect(struct sock
- 	 */
- 	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
- 	msk->last_snd = NULL;
-+
-+	/* The first subflow is already in TCP_CLOSE status, the following
-+	 * can't overlap with a fallback anymore
-+	 */
-+	spin_lock_bh(&msk->fallback_lock);
-+	msk->allow_subflows = true;
-+	msk->allow_infinite_fallback = true;
- 	WRITE_ONCE(msk->flags, 0);
-+	spin_unlock_bh(&msk->fallback_lock);
-+
- 	msk->cb_flags = 0;
- 	msk->recovery = false;
- 	msk->can_ack = false;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -371,6 +371,7 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
+ 
+ 	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
+ 
+ 	/* SanDisk Extreme 55AE */
 
 
 
