@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD5FB369CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56258B35CF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CC7A582B6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C66C7AB329
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E369356904;
-	Tue, 26 Aug 2025 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D922317332C;
+	Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2azFE3Vj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXEc32bI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA043431FE;
-	Tue, 26 Aug 2025 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EBF283FDF;
+	Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217838; cv=none; b=YiEPfYh6ptKNSIrlvLdJMonU+rozUv6wkir98X2TbqSiGpqFHOCsHjOe1d5FaA/8WDZCwKwbQSW9Rz6hgUEBUqE2TpZWkJ14XT/G+bAAF9vsR6I1BuqRSgKtvsaa8qqDFVykEaqotkvYyP+cLe5gA9mUDtOqeK81NDnbNClOVXE=
+	t=1756208374; cv=none; b=BMN+JIh+SXjDDy+Z7MS8BZ69Ssvy3evVYiGFWEJMPe5e6niR1osNTsSfPuk3NZhGSBmbV0z7qx/yaDgS50BEKBlTrJL5r2J2YJhWWjtaIza07/IM+gKkYEp5UUiATnY2a/7SsLLSU4oYXeiWFm79aSGJ9JGJ7JReZbU2cBryLkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217838; c=relaxed/simple;
-	bh=5asC5ksqjwWELMQ9ZHc0lZYRyzv22770Nr5ex6zgCmU=;
+	s=arc-20240116; t=1756208374; c=relaxed/simple;
+	bh=torqszSfg/TKo70gm55gG0xrvIjxkwrK/rZcRTlZjVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OStW9IgRcfhh97tvoEn3MJEzTIkq0VXZbKa5xW4zKvehgHjFX2S4tdidweIfKkFJewfOfP1U8/0rk3hAiOYdQt8OpsYZZ90z6zn1Sy7m6ZFCsgEVidwOxuCUm2APx6eBGCHiTOL2D/vf50fDCCbIEMcAdj9HXdUmVn6RqDPEBTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2azFE3Vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E39CC4CEF1;
-	Tue, 26 Aug 2025 14:17:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kdV96XDN+vlw/n3jmVJlsuPJPusJSlavtHjtD34mkjK7BerdUoI4zJTmRAak5L6mp8CiRXcFw0d3ZVd92J57i2HV76qx+r3c4yvmlBWVuliYvewH9s6cynQKv/Po4ftrfVpO87x90nsYc6LsSwqlqIwLYQaiwO5cxOpeC7eonzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXEc32bI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8AFC4CEF1;
+	Tue, 26 Aug 2025 11:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217834;
-	bh=5asC5ksqjwWELMQ9ZHc0lZYRyzv22770Nr5ex6zgCmU=;
+	s=korg; t=1756208374;
+	bh=torqszSfg/TKo70gm55gG0xrvIjxkwrK/rZcRTlZjVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2azFE3VjU9742AgOj+nmcNXbil5m+4rBq8Qk/0HKiwSNMvSYXbn7ImO822js7ayUJ
-	 cgAzmWRq/whsbwbhEQudxRaKMHDO7a23sqpdgTvEriS+NUKAU7gHB2UNWjbpeJR7EO
-	 NnlTwFUZLSrjEQu2D+Xz8BphNppsWJxU8fSkFOu4=
+	b=iXEc32bILVD/19ZSz0mes1Eah5f8hhT6ZuK7//vuCX0k99g37L1lCHwrUSz9P4Ss2
+	 hSC8gYgutK1XTsZ0kc2jMrhAi44tChnbWcfTecnkHvb66zoBYWmFANOBukjZWi033V
+	 ZYrbGbIrdmlQ/U/pfMo2YOcJrE5hr8lXvzX74JHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 292/523] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.12 087/322] kbuild: userprogs: use correct linker when mixing clang and GNU ld
 Date: Tue, 26 Aug 2025 13:08:22 +0200
-Message-ID: <20250826110931.649399859@linuxfoundation.org>
+Message-ID: <20250826110917.801449430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+The userprogs infrastructure does not expect clang being used with GNU ld
+and in that case uses /usr/bin/ld for linking, not the configured $(LD).
+This fallback is problematic as it will break when cross-compiling.
+Mixing clang and GNU ld is used for example when building for SPARC64,
+as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
+Relax the check around --ld-path so it gets used for all linkers.
 
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
-
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 8ccbb3703954..f02fcaa62804 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -296,7 +296,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
+--- a/Makefile
++++ b/Makefile
+@@ -1069,7 +1069,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+ # userspace programs are linked via the compiler, use the correct linker
+-ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_USERLDFLAGS += --ld-path=$(LD)
+ endif
  
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -347,7 +351,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
- 
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
- 
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -1939,7 +1947,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
- 
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
- 
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
--- 
-2.39.5
-
 
 
 
