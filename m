@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4746B36678
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC74B36199
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91318B60DEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BE87C0189
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0E51B424F;
-	Tue, 26 Aug 2025 13:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BCF227BA4;
+	Tue, 26 Aug 2025 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQRsxZJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxWtrEER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721A1350D55;
-	Tue, 26 Aug 2025 13:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B143A1ACEDA;
+	Tue, 26 Aug 2025 13:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216554; cv=none; b=GYhZ1CLYp9xnNTAqbcfW6uKIzXu7eM/whEODQ0OxzrIHKWGagv4oqnCMzJWhJDIq0MJ3cdxi9LxAF4Q3IyrRZ3wqJfMWOhcFE1UL/tnvGy671q9oeiTYiwE/A9/GWweiPu83hrvkEGM9g6X0nfxw2Nrq+1j1t+12YGpFSQLyMTQ=
+	t=1756213567; cv=none; b=sAbE8KB9qpeMSTqhPtJU+GHRuJ/fb/0NF5Dn8m1Nf+0Ly+x74c+sSYsTq82FbOKujPB/RzEaMhn1ba2JwAasidXlbTk8ZkiEMxnj2bWTfqXDY2Rp+6jZu1vdDp0VU4BWtI3nFc+ZoLMPSGfgs7OcTenQPZcVSNbYnAgJjhQCnWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216554; c=relaxed/simple;
-	bh=H/zEYOtiL4JdCNuWIwDVq1I0VQ7gFQVC3Ojoq3shVyE=;
+	s=arc-20240116; t=1756213567; c=relaxed/simple;
+	bh=94zF0hKpzaXuVaRxt8UWaWRPN0TOpn6bmEd2NGoJKSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sV7OSO2xv9fsbKBItkS+EXJtwse5zmu4OljFZc1XbZvGj4XkRQRsjoDpKm2+IABvPN5GvPhuQTQ+n/MmOpG2QS1gdCFHNnsHQt1dNJYesqt6Cr5XvQGuCWWEqxlGXnPc39cyKZXpcHkbVD58kYBZyJkLAc1dXPy98CsOmg+BU7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQRsxZJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87B0C4CEF1;
-	Tue, 26 Aug 2025 13:55:53 +0000 (UTC)
+	 MIME-Version; b=XAlxq6u0KgGiZSYcqx84x3nbBC4L41U1RK+rLO5FGrMMOWNkyyioM2YeArm6su7QM8gO0wABMGi1N6F6BC+U7U58QE2D4N7s9eKr1cpb+JUUz5kAuErZKL958IiVRQOCF7feiyXiETAUVzoEQcxraI3Xoa6g8jPShMTij1ENM0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxWtrEER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4736BC4CEF1;
+	Tue, 26 Aug 2025 13:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216554;
-	bh=H/zEYOtiL4JdCNuWIwDVq1I0VQ7gFQVC3Ojoq3shVyE=;
+	s=korg; t=1756213567;
+	bh=94zF0hKpzaXuVaRxt8UWaWRPN0TOpn6bmEd2NGoJKSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQRsxZJX2j0hufOS6+pHBDpdYLBXV3/So/qighWXvlbzrJyg8HBZDNY7mEvOKhHCa
-	 VC/J9R0dBSI8beZFpAM5jejATPh2H8yBD/4hHkQ0DgL7AMWsZ7yVLvrkO1p4t3VaRA
-	 wclTZjQKX77tXx5j1qGLs3hPAzLpYXTp2mr6Y6PU=
+	b=NxWtrEERBWwS7A2nLw7CTBnYKGaJe7+hM2n4sU2/6Ih4nw0zYzgSASKydxID5y6/h
+	 hfUjRuLKBDn/ieOIObPF9rc6uTpezMJNlymrC477m22NCfH/wczfYVntl5PRlK8vQ2
+	 7ql2XwITHGTsvo48puMPelCaBtF4f5Zsh7RTgxBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 454/644] media: uvcvideo: Do not mark valid metadata as invalid
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 396/587] parisc: Rename pte_needs_flush() to pte_needs_cache_flush() in cache.c
 Date: Tue, 26 Aug 2025 13:09:05 +0200
-Message-ID: <20250826110957.726154188@linuxfoundation.org>
+Message-ID: <20250826111002.997764612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
+commit 52ce9406a9625c4498c4eaa51e7a7ed9dcb9db16 upstream.
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+The local name used in cache.c conflicts the declaration in
+include/asm-generic/tlb.h.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
-
-Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/parisc/kernel/cache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1335,12 +1335,6 @@ static void uvc_video_decode_meta(struct
- 	if (!meta_buf || length == 2)
- 		return;
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -425,7 +425,7 @@ static inline pte_t *get_ptep(struct mm_
+ 	return ptep;
+ }
  
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1361,6 +1355,12 @@ static void uvc_video_decode_meta(struct
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
-+	}
-+
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
+-static inline bool pte_needs_flush(pte_t pte)
++static inline bool pte_needs_cache_flush(pte_t pte)
+ {
+ 	return (pte_val(pte) & (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_NO_CACHE))
+ 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
+@@ -630,7 +630,7 @@ static void flush_cache_page_if_present(
+ 	ptep = get_ptep(vma->vm_mm, vmaddr);
+ 	if (ptep) {
+ 		pte = ptep_get(ptep);
+-		needs_flush = pte_needs_flush(pte);
++		needs_flush = pte_needs_cache_flush(pte);
+ 		pte_unmap(ptep);
+ 	}
+ 	if (needs_flush)
 
 
 
