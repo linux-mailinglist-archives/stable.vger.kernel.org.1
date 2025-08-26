@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-174316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C99B362C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5060B36C65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8757C6184
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC65558445E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65872D0606;
-	Tue, 26 Aug 2025 13:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D02535AACB;
+	Tue, 26 Aug 2025 14:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyDcCEmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBNQxoy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FB98462;
-	Tue, 26 Aug 2025 13:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACBD35AABE;
+	Tue, 26 Aug 2025 14:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214067; cv=none; b=ibDohHSFoQy+x/Paev3i/fJKJKi1r2Z0kMIP8GSVamhr6r2MFKI0VLsjFV/r2AGXDpgcG4KCuBVGAWz54zOoEh+DdjDzYvx4ubNCC+NYfQZTe6tgVPpd+LQo8EiwDlznVzF6lUKa+Qx99Aq58h0P698bo2Skm3csAM7gTC/bC3c=
+	t=1756219425; cv=none; b=XQv06KDxBFjsqFq02595Jc6RVDPmOqhVS0D2xM7aYhQg8zHl4xP8kUuUXx+X8yRj+aWHeYumibyfu5GPcs7BxfBnJR5QFEd/lETuY3Ds3DrQNwFbgreovSHLHjGiw30dnYsXzfpp4VUnY6HORTZgxzA8XF+1o9bqrsomaM3Rit8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214067; c=relaxed/simple;
-	bh=2416IFVnRAJRYWExfk40aZdaS0gWQT+/A65kki6Debc=;
+	s=arc-20240116; t=1756219425; c=relaxed/simple;
+	bh=TAp6Dv73Cur3L3+eEpf/cle4fkVZOjZmxbj8VJFQv54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwL1pd6g7RuugoGT5AiMzMlRZTv1BtxWe+wSOZ3JhHJDjbVl1OCtuZDkA0WL5Q7RsCDPtv5+c0wqCF/Sii9zCHJn8yfR6pVH/dR0fG0fU7QDDB/GTadiV0qjl5AHpNbImnZPQ3ZcwnPK5mWZrFyCUC0nrBNBLQKA5XlZM8wzUTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyDcCEmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8379C4CEF1;
-	Tue, 26 Aug 2025 13:14:26 +0000 (UTC)
+	 MIME-Version; b=RkuAHK+TY1DdUapcUwya2vVWEPwgBaGQ+VU/1RHYqq1/XRykbLEXldPSE1HUHUZ4dtBIQvbxrCLyNnjJEOSqj5uWvTFlYACwfuUrksKn84sZewWpDEl1yUwPUa4Oall85+3gdQFoMwKgzwlUHl5FBFImuTzf6d8957wOCim7D18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBNQxoy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A47C4CEF1;
+	Tue, 26 Aug 2025 14:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214067;
-	bh=2416IFVnRAJRYWExfk40aZdaS0gWQT+/A65kki6Debc=;
+	s=korg; t=1756219424;
+	bh=TAp6Dv73Cur3L3+eEpf/cle4fkVZOjZmxbj8VJFQv54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cyDcCEmR5G2Oty/z9RiYyNLzVAFo3JgI66+6ma4xa5zn9JGhhtx5XF7amTmXggCaL
-	 VPDVT05v9rDRW92+sIq4bBZjb06/6YdRT94DXPZpsPsQ0soxJ46/SUyZQdLMnlCbHJ
-	 ZiaQ7XefehSFrz3V+9MXzn84B+tzCW5f9MZyKn1Q=
+	b=QBNQxoy1bOzuq/S36i2KadlyoSYlJYg4UDVb1ZJ3RzPRNo+oPGx/s223FPFqBBCID
+	 vKkFrcklZqNseTXqTTYbnVTi7W10RxFi5ZTQULykGUHLCwOp1OOhpPBD7VffS0LsFV
+	 P0/692Ya/vaCQnx1ca2T0o0S2xZt33w2w6ZRrOOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 553/587] RDMA/bnxt_re: Fix to do SRQ armena by default
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.4 376/403] sch_hfsc: make hfsc_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:11:42 +0200
-Message-ID: <20250826111007.090002803@linuxfoundation.org>
+Message-ID: <20250826110917.402054764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 6296f9a5293ada28558f2867ac54c487e1e2b9f2 ]
+commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
 
-Whenever SRQ is created, make sure SRQ arm enable is always
-set. Driver is always ready to receive SRQ ASYNC event.
+hfsc_qlen_notify() is not idempotent either and not friendly
+to its callers, like fq_codel_dequeue(). Let's make it idempotent
+to ease qdisc_tree_reduce_backlog() callers' life:
 
-Additional note -
-There is no need to do srq arm enable conditionally.
-See bnxt_qplib_armen_db in bnxt_qplib_create_cq().
+1. update_vf() decreases cl->cl_nactive, so we can check whether it is
+non-zero before calling it.
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-2-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2. eltree_remove() always removes RB node cl->el_node, but we can use
+   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/sch_hfsc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 68ea4ed0b171..8dc707f98fff 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -685,8 +685,7 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	srq->dbinfo.db = srq->dpi->dbr;
- 	srq->dbinfo.max_slot = 1;
- 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
--	if (srq->threshold)
--		bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
-+	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
- 	srq->arm_req = false;
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -209,7 +209,10 @@ eltree_insert(struct hfsc_class *cl)
+ static inline void
+ eltree_remove(struct hfsc_class *cl)
+ {
+-	rb_erase(&cl->el_node, &cl->sched->eligible);
++	if (!RB_EMPTY_NODE(&cl->el_node)) {
++		rb_erase(&cl->el_node, &cl->sched->eligible);
++		RB_CLEAR_NODE(&cl->el_node);
++	}
+ }
  
- 	return 0;
--- 
-2.50.1
-
+ static inline void
+@@ -1230,7 +1233,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
+ 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
+ 	 * needs to be called explicitly to remove a class from vttree.
+ 	 */
+-	update_vf(cl, 0, 0);
++	if (cl->cl_nactive)
++		update_vf(cl, 0, 0);
+ 	if (cl->cl_flags & HFSC_RSC)
+ 		eltree_remove(cl);
+ }
 
 
 
