@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D1EB3625F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690B7B36C2A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2EC463D17
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9D11C42FCC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9859224DD11;
-	Tue, 26 Aug 2025 13:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D547E35206B;
+	Tue, 26 Aug 2025 14:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toFMw5Ek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL+CRNbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537DB221704;
-	Tue, 26 Aug 2025 13:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F80F2D0626;
+	Tue, 26 Aug 2025 14:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213896; cv=none; b=DSLPo0SfJ3XN0zxEagDbfZrHFjrHs1//x+tDjBCLKrCOu0PlQz/PxPQWeKWW0dxjkbE/GwEacf0jtzZcYf2sZeC7WcV84gTgRk5eWTILO5m/FFjxhOOTdN5WAHUkyMN+XIPC+0ur9KaKFR5sLS8333JUHDHFwODL14KR/rK1+6Y=
+	t=1756219341; cv=none; b=TyHU45AAy1g7J/g+VJgYRmxdGWoR0yBuEm0qQuIgwcQoAubSU3TybbUmRb826lu1PFZZ5pyEYJSpu8ZPDaTYLqiBM/AF4febyVItY2SjwE2gI3sC9EoLJCoIhqKmjo2r9EUnvw8ma6n1Ipxzj6eLqPSWHHSHHlGLVmdT37sPHjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213896; c=relaxed/simple;
-	bh=Pb6fEs0Rbz6GTdE+pgMRQo0073rrEIkR/IADinFYukM=;
+	s=arc-20240116; t=1756219341; c=relaxed/simple;
+	bh=nhlr0Z8DGhI8XZCb/d19XX+OZK88ZxIjX+pG5N2KQnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieleSD35HcU2bUU2EohD/Y/ayhfNfH9mLhOJ9513RGISGjS4VJtkGGGjMtvaLHwxMyxdHNqhxXrtqYYF3PmerIc6MUCrp3utAOnyJEsRHymUEzVwWn5BGgJGx3AfFXd7/niiUQlCNgRDs6kP8CjXGZ4dG+KHOzDNnFqrosIyErI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toFMw5Ek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D860FC4CEF1;
-	Tue, 26 Aug 2025 13:11:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d4dgtD5FXB2cTLdmId5DvgEVo0eqjOVddTrTqf9uTuZSwp4cnLlBdUGDu9wReeY4M/0nXFhmviqRKtqA9JUiHs1dxvyS8/vq95nXikA3ilfu1PRc4xDeTdoJ66czwtlPgjBdoTAZnvvXRCUpum15Gd8CPWNpBkmEeN+r1UGNjAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL+CRNbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF9FC4CEF1;
+	Tue, 26 Aug 2025 14:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213896;
-	bh=Pb6fEs0Rbz6GTdE+pgMRQo0073rrEIkR/IADinFYukM=;
+	s=korg; t=1756219341;
+	bh=nhlr0Z8DGhI8XZCb/d19XX+OZK88ZxIjX+pG5N2KQnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toFMw5Ek5C2bJrOGGQbp4HvoDT6ezrqN4i4hxqAS3wuSz9pKtjYg2m30wSiMT+wDs
-	 9KCjUSI/az5aQZRYb/XcoPtjxSFPI9tOXzd0VyTxLHni3XPNFKAzSfi9GkVq5L1RsL
-	 BKBfvI1xwfbfHdQqBgTSNByM29y/XwNMlhWQ0yB0=
+	b=eL+CRNbDtuCc9p5NyveAiYTYAQow/cZvT+9v1XgFnaL9ZMtiCOoL4IeDlMGYpVSsr
+	 /5gw8sENqGjy1jOTcU1HuzSk3PSRjrNenxaQwIAGWBlw8ln3K+cn6jflTpXw7FVXXo
+	 Ogl/OUVhCjMJvrbdBPASfHanJt4LzQnB1BOYhGZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 521/587] comedi: pcl726: Prevent invalid irq number
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Fusheng=20Huang ?= <Fusheng.Huang@luxshare-ict.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 344/403] tracing: Add down_write(trace_event_sem) when adding trace event
 Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826111006.250178700@linuxfoundation.org>
+Message-ID: <20250826110916.365860099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
+[ Upstream commit b5e8acc14dcb314a9b61ff19dcd9fdd0d88f70df ]
 
-The reproducer passed in an irq number(0x80008000) that was too large,
-which triggered the oob.
+When a module is loaded, it adds trace events defined by the module. It
+may also need to modify the modules trace printk formats to replace enum
+names with their values.
 
-Added an interrupt number check to prevent users from passing in an irq
-number that was too large.
+If two modules are loaded at the same time, the adding of the event to the
+ftrace_events list can corrupt the walking of the list in the code that is
+modifying the printk format strings and crash the kernel.
 
-If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
-because it shifts a 1-bit into the sign bit (which is UB in C).
-Possible solutions include reducing the upper bound on the
-`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
+The addition of the event should take the trace_event_sem for write while
+it adds the new event.
 
-The old code would just not attempt to request the IRQ if the
-`options[1]` value were invalid.  And it would still configure the
-device without interrupts even if the call to `request_irq` returned an
-error.  So it would be better to combine this test with the test below.
+Also add a lockdep_assert_held() on that semaphore in
+__trace_add_event_dirs() as it iterates the list.
 
-Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
-Cc: stable <stable@kernel.org> # 5.13+
-Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
-Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250718223158.799bfc0c@batman.local.home
+Reported-by: Fusheng Huang(黄富生)  <Fusheng.Huang@luxshare-ict.com>
+Closes: https://lore.kernel.org/all/20250717105007.46ccd18f@batman.local.home/
+Fixes: 110bf2b764eb6 ("tracing: add protection around module events unload")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/pcl726.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/comedi/drivers/pcl726.c
-+++ b/drivers/comedi/drivers/pcl726.c
-@@ -328,7 +328,8 @@ static int pcl726_attach(struct comedi_d
- 	 * Hook up the external trigger source interrupt only if the
- 	 * user config option is valid and the board supports interrupts.
- 	 */
--	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (board->irq_mask & (1U << it->options[1]))) {
- 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2109,7 +2109,10 @@ __register_event(struct trace_event_call
+ 	if (ret < 0)
+ 		return ret;
+ 
++	down_write(&trace_event_sem);
+ 	list_add(&call->list, &ftrace_events);
++	up_write(&trace_event_sem);
++
+ 	call->mod = mod;
+ 
+ 	return 0;
+@@ -2489,6 +2492,8 @@ __trace_add_event_dirs(struct trace_arra
+ 	struct trace_event_call *call;
+ 	int ret;
+ 
++	lockdep_assert_held(&trace_event_sem);
++
+ 	list_for_each_entry(call, &ftrace_events, list) {
+ 		ret = __trace_add_new_event(call, tr);
+ 		if (ret < 0)
 
 
 
