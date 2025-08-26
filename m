@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-173641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4937B35DA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAE3B36213
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B35064E411F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB4E7C3FC8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEBF29BDBA;
-	Tue, 26 Aug 2025 11:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DA6298CA7;
+	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN3m7fQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nox4rPcg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAED18DF9D;
-	Tue, 26 Aug 2025 11:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098C321433;
+	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208775; cv=none; b=ZYrguthYETe4wwEfz7QpzjPLnPDaGTiCcBYx9WIQdL65hHr5Ib6Y1oIIZLelIv+EMorpm69qCAlQh5wctxekWVUVD7AOkQoT2aO7HCpt4ifghg0O3taoK7LyqLlV6LNDuLv+wlWNpx7HO6xLOV2A0nzDDZ3Ule6fXBxcRghFd3E=
+	t=1756213780; cv=none; b=EswigQkxHo914B3/ks8wZuCbIlbWorIo/QFjd7K6LlYkCZTz9j5+3spEgiP4573Jm7TtUuwF06/1k89IT9lGksNH6xQ58IuhF7fEhwqOTq9UChuleR268rgTIqjupVRyMmqCz5G2qM35F1JRFVxv1DFp8n5sfOj6ylMxSu8fqlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208775; c=relaxed/simple;
-	bh=xHrjsU3ulqhKgcb4Qh+JC9x8wBxsiJH62aQtHU8M+3I=;
+	s=arc-20240116; t=1756213780; c=relaxed/simple;
+	bh=nAUxEYUxanzilZeodStjU+WPvbXwerUi22eJYSPqGiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kp4gbTt9X7b31vgdPWtzGVdmmVEI7sPRXhlb+12WxAlFdAi4s/XVXP0dbFh00XDcP4idof/GlWQbYTMnElWUEJwUGgYRsv7AWfuzzj9Les2LFEgmD/qWXAEsQzvIjD/sWO63MBn353bEospcPITheb4hesgeHUHUlVwrRgPQp2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN3m7fQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DF8C4CEF1;
-	Tue, 26 Aug 2025 11:46:14 +0000 (UTC)
+	 MIME-Version; b=lB8Cbr68DcTe41yIx5a1ij9PInv71aT/2yaqh+vuwRiBuqxzsdz18bBHQGSOX6bdDdi2MEfxWFgOvnTdZnmsFTWCCQ9BTO9aP0xkUjJXknmqADOM2e06jyyhButseshtcQvAzZC2IU20ZUrjMeJ0LFuRuT3jO/NABvb2NUDlHPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nox4rPcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31447C4CEF1;
+	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208775;
-	bh=xHrjsU3ulqhKgcb4Qh+JC9x8wBxsiJH62aQtHU8M+3I=;
+	s=korg; t=1756213780;
+	bh=nAUxEYUxanzilZeodStjU+WPvbXwerUi22eJYSPqGiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PN3m7fQq4dFWPCtZMgR0ST2+Rxid4m1A0EPUE6X31re796e25Cv4zyRfhAsn1IOdw
-	 jdjkp0Z7IdI0H4xlzzqR4F91svZrU+x1Vi2NJ5JAxGsxrlHTrMMOWmBD8azlZB5FM/
-	 wUoTM46OwCtPWiResvQEmNGaPFvADeiYzRtaTZ88=
+	b=Nox4rPcgOevCW/VA+JIzbCSXjV4mM789MCaMLMT0BJXGk1B8nuXWFauocJvZNDuQM
+	 axKhVoEL8JivktuXcCf74dbZ9VTuh3arR+D2Yltmgo+Z5L9mosbYpz3/14/0zuIfJR
+	 jh7UyUq7Bi8gFAw9YdoWCEQ5jwjefzFM/tH/qtOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Vagin <avagin@gmail.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/322] use uniform permission checks for all mount propagation changes
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pierre Gondois <pierre.gondois@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.6 475/587] cpufreq/cppc: Set the frequency used for computing the capacity
 Date: Tue, 26 Aug 2025 13:10:24 +0200
-Message-ID: <20250826110921.030153686@linuxfoundation.org>
+Message-ID: <20250826111005.051829599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
+commit 5477fa249b56c59c3baa1b237bf083cffa64c84a upstream.
 
-do_change_type() and do_set_group() are operating on different
-aspects of the same thing - propagation graph.  The latter
-asks for mounts involved to be mounted in namespace(s) the caller
-has CAP_SYS_ADMIN for.  The former is a mess - originally it
-didn't even check that mount *is* mounted.  That got fixed,
-but the resulting check turns out to be too strict for userland -
-in effect, we check that mount is in our namespace, having already
-checked that we have CAP_SYS_ADMIN there.
+Save the frequency associated to the performance that has been used when
+initializing the capacity of CPUs.
 
-What we really need (in both cases) is
-	* only touch mounts that are mounted.  That's a must-have
-constraint - data corruption happens if it get violated.
-	* don't allow to mess with a namespace unless you already
-have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
+Also, cppc cpufreq driver can register an artificial energy model. In such
+case, it needs the frequency for this compute capacity.
 
-That's an equivalent of what do_set_group() does; let's extract that
-into a helper (may_change_propagation()) and use it in both
-do_set_group() and do_change_type().
-
-Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Pierre Gondois <pierre.gondois@arm.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20231211104855.558096-7-vincent.guittot@linaro.org
+Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ drivers/base/arch_topology.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index bb1560b0d25c..962fda4fa246 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2683,6 +2683,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
- 	return attach_recursive_mnt(mnt, p, mp, 0);
- }
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -349,6 +349,7 @@ bool __init topology_parse_cpu_capacity(
  
-+static int may_change_propagation(const struct mount *m)
-+{
-+        struct mnt_namespace *ns = m->mnt_ns;
+ void topology_init_cpu_capacity_cppc(void)
+ {
++	u64 capacity, capacity_scale = 0;
+ 	struct cppc_perf_caps perf_caps;
+ 	int cpu;
+ 
+@@ -365,6 +366,10 @@ void topology_init_cpu_capacity_cppc(voi
+ 		    (perf_caps.highest_perf >= perf_caps.nominal_perf) &&
+ 		    (perf_caps.highest_perf >= perf_caps.lowest_perf)) {
+ 			raw_capacity[cpu] = perf_caps.highest_perf;
++			capacity_scale = max_t(u64, capacity_scale, raw_capacity[cpu]);
 +
-+	 // it must be mounted in some namespace
-+	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
-+		 return -EINVAL;
-+	 // and the caller must be admin in userns of that namespace
-+	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
-+		 return -EPERM;
-+	 return 0;
-+}
++			per_cpu(capacity_freq_ref, cpu) = cppc_perf_to_khz(&perf_caps, raw_capacity[cpu]);
 +
- /*
-  * Sanity check the flags to change_mnt_propagation.
-  */
-@@ -2719,10 +2732,10 @@ static int do_change_type(struct path *path, int ms_flags)
- 		return -EINVAL;
+ 			pr_debug("cpu_capacity: CPU%d cpu_capacity=%u (raw).\n",
+ 				 cpu, raw_capacity[cpu]);
+ 			continue;
+@@ -375,7 +380,15 @@ void topology_init_cpu_capacity_cppc(voi
+ 		goto exit;
+ 	}
  
- 	namespace_lock();
--	if (!check_mnt(mnt)) {
--		err = -EINVAL;
-+	err = may_change_propagation(mnt);
-+	if (err)
- 		goto out_unlock;
--	}
+-	topology_normalize_cpu_scale();
++	for_each_possible_cpu(cpu) {
++		capacity = raw_capacity[cpu];
++		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
++				     capacity_scale);
++		topology_set_cpu_scale(cpu, capacity);
++		pr_debug("cpu_capacity: CPU%d cpu_capacity=%lu\n",
++			cpu, topology_get_cpu_scale(cpu));
++	}
 +
- 	if (type == MS_SHARED) {
- 		err = invent_group_ids(mnt, recurse);
- 		if (err)
-@@ -3116,18 +3129,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 	schedule_work(&update_topology_flags_work);
+ 	pr_debug("cpu_capacity: cpu_capacity initialization done\n");
  
- 	namespace_lock();
- 
--	err = -EINVAL;
--	/* To and From must be mounted */
--	if (!is_mounted(&from->mnt))
--		goto out;
--	if (!is_mounted(&to->mnt))
--		goto out;
--
--	err = -EPERM;
--	/* We should be allowed to modify mount namespaces of both mounts */
--	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
-+	err = may_change_propagation(from);
-+	if (err)
- 		goto out;
--	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
-+	err = may_change_propagation(to);
-+	if (err)
- 		goto out;
- 
- 	err = -EINVAL;
--- 
-2.50.1
-
 
 
 
