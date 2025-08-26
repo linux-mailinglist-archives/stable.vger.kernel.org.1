@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-174302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C400DB36275
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8971DB36A7D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C32191895268
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88C1658607E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4070341ABD;
-	Tue, 26 Aug 2025 13:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80922302CA6;
+	Tue, 26 Aug 2025 14:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4wfz9AK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcDzUMxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E333277A4;
-	Tue, 26 Aug 2025 13:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5508635D;
+	Tue, 26 Aug 2025 14:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214029; cv=none; b=fupKE5VRPXkC15eypgyei3/1xBQKgbWSbaDAJcJDmJ39tJf8Y2XBsLx5+3hrGsZM0res2iZd9/79bV3O6wD5hasMCYyXvcjVoxHEpk4FI/v4NCEfOWhJuuorul2w5ShsyfEK85WfvQsrb6SWckYeaebT5IPH/nqsUabUo3W1Dlc=
+	t=1756218455; cv=none; b=f2cuVjocbWFQI7prPYLQctzKyH6BDJKAurVNQnUTxZUDnlQjBFkgG/iFMxrOe9/sMoTfFc+K8pDVD5pW2A8GoLYyEvZeq9g4MShl13y6fuF5Sc093ZMcEHNICdGVqSK+AjYu+gkhTSVmAGL5vriOh8bD4ShrMhSCMCdn/uqYzxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214029; c=relaxed/simple;
-	bh=oXT0pRv0vsxq+hvuAY0nYSCIbnqkFJF8yJKVLWrpAcM=;
+	s=arc-20240116; t=1756218455; c=relaxed/simple;
+	bh=QdtfZjIxppiX2J4a8zcuwoUwRhlbMufIfkm/L/WkUw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koA0rShMqWkiu2SzjvEQ7IqrlCZFBavdPXCdSfvc5EwgJCsVtPTC4jDhHZfhJ3O71HELRut2EGQhidFb/4j2KlZMKdJCec2FkMj01Mdd5UPlDlJfmvuc0WBD7PJxYKhUlsenCsl01R8L9IRDg/kXx4sCCiX+o5pzX2SYnTuhpcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4wfz9AK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98B8C4CEF1;
-	Tue, 26 Aug 2025 13:13:48 +0000 (UTC)
+	 MIME-Version; b=H5Rvyf5cn+LrGAhOnPg2MTRjYRB+GCyO9U6lpYhj+tjBrIdWpAJ9tFoNpih+rHcEoSjm3pKJk7S44taJo8MjDjEvmybO+Q5ncZ2jq7Tj/9wMkJ2g1GksbNGARLriLCklrcswvfBUl6WqJMNSOcdkyLoH54w3WKSes4SGlm9CTjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcDzUMxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C607DC4CEF1;
+	Tue, 26 Aug 2025 14:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214029;
-	bh=oXT0pRv0vsxq+hvuAY0nYSCIbnqkFJF8yJKVLWrpAcM=;
+	s=korg; t=1756218455;
+	bh=QdtfZjIxppiX2J4a8zcuwoUwRhlbMufIfkm/L/WkUw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4wfz9AK/K3EmkBuQxYWrHiMDPdlOL/BKdKnPfrdPAIGC460BlGXTgQMTS8XbxJSo
-	 cMEQ2jeZljiwX4bDrMPUGMUwyWVssl/yIFiFQUVazvF29XXOMeBEy+/Av0vEUeB4r+
-	 8bSwE1UCoMkjIZdVXDHtLe5GtesWrvfc00BSuN+A=
+	b=TcDzUMxMWXDDJXhSkQtc265YVjJ2r9uOBJtIo/exoo6ZPeaL4bduJ3Fwjzz8Yvj6z
+	 1MnnRFc2BNHRLcWOceJ6pXBVdbEm3FaXp6KT1CI+qUjoWHNLoFrXOxWC22qIcXxkLg
+	 0XoTreWoZx8tVeIrOrdkWyPhY1lpYc+SbUPovtsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
-	Yuichiro Tsuji <yuichtsu@amazon.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anantha Prabhu <anantha.prabhu@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 570/587] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
+Subject: [PATCH 5.10 509/523] RDMA/bnxt_re: Fix to initialize the PBL array
 Date: Tue, 26 Aug 2025 13:11:59 +0200
-Message-ID: <20250826111007.534343340@linuxfoundation.org>
+Message-ID: <20250826110936.996428601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuichiro Tsuji <yuichtsu@amazon.com>
+From: Anantha Prabhu <anantha.prabhu@broadcom.com>
 
-[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
+[ Upstream commit 806b9f494f62791ee6d68f515a8056c615a0e7b2 ]
 
-Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
+memset the PBL page pointer and page map arrays before
+populating the SGL addresses of the HWQ.
 
-The PHY address should be masked to 5 bits (0-31). Without this
-mask, invalid PHY addresses could be used, potentially causing issues
-with MDIO bus operations.
-
-Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
-it stays within the valid range.
-
-Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
-Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
-Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
+Signed-off-by: Anantha Prabhu <anantha.prabhu@broadcom.com>
+Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20250805101000.233310-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_devices.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 6a2567a67902..f4340d4ef7ee 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
--	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index af23e57fc78e..be98b23488b4 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -121,6 +121,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
+ 	pbl->pg_arr = vmalloc(pages * sizeof(void *));
+ 	if (!pbl->pg_arr)
+ 		return -ENOMEM;
++	memset(pbl->pg_arr, 0, pages * sizeof(void *));
+ 
+ 	pbl->pg_map_arr = vmalloc(pages * sizeof(dma_addr_t));
+ 	if (!pbl->pg_map_arr) {
+@@ -128,6 +129,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
+ 		pbl->pg_arr = NULL;
+ 		return -ENOMEM;
+ 	}
++	memset(pbl->pg_map_arr, 0, pages * sizeof(dma_addr_t));
+ 	pbl->pg_count = 0;
+ 	pbl->pg_size = sginfo->pgsize;
+ 
 -- 
 2.50.1
 
