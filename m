@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48092B365E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F02B36868
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6F8686AA8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D446D1C27E17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90822FAC0A;
-	Tue, 26 Aug 2025 13:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44432352FE2;
+	Tue, 26 Aug 2025 14:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj8dl4XZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VxiqIHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7596C28314A;
-	Tue, 26 Aug 2025 13:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028551E7C08;
+	Tue, 26 Aug 2025 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215773; cv=none; b=R9NCgsPXM+Br8VAU1qpigNhjdGH6gvXXc4lcMxbmcvTA1AcXSINi1lMgSFFt3HnLh1FQx3srwkQweu3GuooNEJH+Qtb+y5EtiAI/XKCh8RaL+My5+4NMwCiyyLKxqC6n5/GThtKR6mLX4gjSg8L6ibv8sHHBoVITU6ui7ZAh9G0=
+	t=1756217156; cv=none; b=OB7VsS04RIsw13cwBBc6wKhPKwIzJ9S8SgQH7nPJ5jOFOXpqXyfMY4BD8gAMaH/rDjv2pEaQZ6eV0gY5axPeWJVtMkbmqP/go7ErEipBwu1vpgFJgKo8r1NObsJBvN5zzJcj7bBI7Ekh2PoetRChmBhi18xc9Ytu3WktQBzUuzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215773; c=relaxed/simple;
-	bh=dJwiZH+bdh+/jBMm4nDkr4isucKC6DFVaPYausoE19M=;
+	s=arc-20240116; t=1756217156; c=relaxed/simple;
+	bh=MZrh3hs4HrfwHBFcfcS8Vkgyj5YR6e+ZVQWiiGwRVoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFmYIBKjzhr+Nqau9l3EPtslzhNIWFT47yW3BcVDwsFO15DQcw/yZdw7DWArsrxhm89mRZ7bP5M1rTo7BvdtyJfm978fLag7SDVzNkzuiR7R+Ggii2MJuoXcfuyBUPfidIRe87Wf6Za6jo1BZPy+3tliwpczalGzTAk+MQVAHVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj8dl4XZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06055C4CEF1;
-	Tue, 26 Aug 2025 13:42:52 +0000 (UTC)
+	 MIME-Version; b=SP5inYObM9ugwJjW0XNxaGiwA9n8mPsUJyDuELaEXaxhy9S4z7EQpLxdwk359so+Ux1v/RbTDuNQa83Cs28V4GvRtuLYOEjlDvXyXQ6mnzPY7srqy54DST1oTrVn+qbJiETKNrCZ10R3k2j2Kqndr9ORIt/I89rSKeMbXtppBfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VxiqIHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C77FC4CEF1;
+	Tue, 26 Aug 2025 14:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215773;
-	bh=dJwiZH+bdh+/jBMm4nDkr4isucKC6DFVaPYausoE19M=;
+	s=korg; t=1756217155;
+	bh=MZrh3hs4HrfwHBFcfcS8Vkgyj5YR6e+ZVQWiiGwRVoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rj8dl4XZ7FQ0koe5omwj3uBEQel0VqZEdkn8Gd3Mkbpmjd/OQQW96pnC3IB6gO3D3
-	 TSkQUqhSs0QHyTBRtWqPMSSRJJDttpHAFbxxiQZLcQrs6GnGr3p2iKaNjMmkWHEDcb
-	 QsldW6ABJZYbTpkJZvvE0eiMU0Uy2Pj6SybPNrwo=
+	b=1VxiqIHaOIQiwzL0O7IlljZnIqb2bByOP7VWukHAkglkkgvzpof8hyaLkn6RNRvx8
+	 tqKE6rw40E4RQhwOgikc9YCqO90UfsLyvlNTudhzjr0vd3STT6x6XDWtMmiImVnoWt
+	 7CvlIXnof9TbQRuUzIs/tneOO3pHsVxhiXmDJauU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/644] cpufreq: Initialize cpufreq-based frequency-invariance later
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.10 011/523] HID: core: ensure __hid_request reserves the report ID as the first byte
 Date: Tue, 26 Aug 2025 13:03:41 +0200
-Message-ID: <20250826110949.730999487@linuxfoundation.org>
+Message-ID: <20250826110924.859115014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
+commit 0d0777ccaa2d46609d05b66ba0096802a2746193 upstream.
 
-The cpufreq-based invariance is enabled in cpufreq_register_driver(),
-but never disabled after registration fails. Move the invariance
-initialization to where all other initializations have been successfully
-done to solve this problem.
+The low level transport driver expects the first byte to be the report
+ID, even when the report ID is not use (in which case they just shift
+the buffer).
 
-Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, __hid_request() whas not offsetting the buffer it used by one
+in this case, meaning that the raw_request() callback emitted by the
+transport driver would be stripped of the first byte.
+
+Note: this changes the API for uhid devices when a request is made
+through hid_hw_request. However, several considerations makes me think
+this is fine:
+- every request to a HID device made through hid_hw_request() would see
+  that change, but every request made through hid_hw_raw_request()
+  already has the new behaviour. So that means that the users are
+  already facing situations where they might have or not the first byte
+  being the null report ID when it is 0. We are making things more
+  straightforward in the end.
+- uhid is mainly used for BLE devices
+- uhid is also used for testing, but I don't see that change a big issue
+- for BLE devices, we can check which kernel module is calling
+  hid_hw_request()
+- and in those modules, we can check which are using a Bluetooth device
+- and then we can check if the command is used with a report ID or not.
+- surprise: none of the kernel module are using a report ID 0
+- and finally, bluez, in its function set_report()[0], does the same
+  shift if the report ID is 0 and the given buffer has a size > 0.
+
+[0] https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/profiles/input/hog-lib.c#n879
+
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
+Reported-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8258d5439c49d4c35f43
+Tested-by: syzbot+8258d5439c49d4c35f43@syzkaller.appspotmail.com
+Fixes: 4fa5a7f76cc7 ("HID: core: implement generic .request()")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250710-report-size-null-v2-2-ccf922b7c4e5@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/hid/hid-core.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index bbb0cbb2eb8c..7d7158fa70c5 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2841,15 +2841,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	cpufreq_driver = driver_data;
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1730,7 +1730,7 @@ static struct hid_report *hid_get_report
+ int __hid_request(struct hid_device *hid, struct hid_report *report,
+ 		int reqtype)
+ {
+-	char *buf;
++	char *buf, *data_buf;
+ 	int ret;
+ 	u32 len;
  
--	/*
--	 * Mark support for the scheduler's frequency invariance engine for
--	 * drivers that implement target(), target_index() or fast_switch().
--	 */
--	if (!cpufreq_driver->setpolicy) {
--		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
--		pr_debug("supports frequency invariance");
--	}
--
- 	if (driver_data->setpolicy)
- 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
+@@ -1738,10 +1738,17 @@ int __hid_request(struct hid_device *hid
+ 	if (!buf)
+ 		return -ENOMEM;
  
-@@ -2880,6 +2871,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	hp_online = ret;
- 	ret = 0;
++	data_buf = buf;
+ 	len = hid_report_len(report);
  
-+	/*
-+	 * Mark support for the scheduler's frequency invariance engine for
-+	 * drivers that implement target(), target_index() or fast_switch().
-+	 */
-+	if (!cpufreq_driver->setpolicy) {
-+		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
-+		pr_debug("supports frequency invariance");
++	if (report->id == 0) {
++		/* reserve the first byte for the report ID */
++		data_buf++;
++		len++;
 +	}
 +
- 	pr_debug("driver %s up and running\n", driver_data->name);
- 	goto out;
+ 	if (reqtype == HID_REQ_SET_REPORT)
+-		hid_output_report(report, buf);
++		hid_output_report(report, data_buf);
  
--- 
-2.39.5
-
+ 	ret = hid->ll_driver->raw_request(hid, report->id, buf, len,
+ 					  report->type, reqtype);
 
 
 
