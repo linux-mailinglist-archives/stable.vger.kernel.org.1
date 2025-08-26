@@ -1,185 +1,125 @@
-Return-Path: <stable+bounces-172902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6641BB350B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF933B350B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592A81A87911
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6566D487571
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FF221FF4A;
-	Tue, 26 Aug 2025 01:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F122641D8;
+	Tue, 26 Aug 2025 01:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="gNQRQzHN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FZjQujsZ"
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (l-sdnproxy.icoremail.net [20.188.111.126])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497D8265623;
-	Tue, 26 Aug 2025 01:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.188.111.126
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB7E85C4A;
+	Tue, 26 Aug 2025 01:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756170292; cv=none; b=ozYfKzE947Z7QdnURpHbPWIecHhdS8ad75kPziqjfubz2DvizdoQOgZRnNSPd2TiagwHQMJEPKJ3HiLGCRgeoRLi/UqwfMnIhCVGw/Z7zQ/Lknv9x9gEBw1qDmuNlxi0+ICGQocBIKx8rnYDfCrm04J25COHRNTwTRs1opCcwx8=
+	t=1756170340; cv=none; b=oSA/J04nFMtG9bknw7Q/bvY49oUHfhJsf6jOhiaX3zFdwHlnsCDSEVm5QkPoq7w/jg6FzDsEG3GOMl06IO2NLXvxiQj4fYaKz6/PBoE3rbHVqEVixdSEJesDUODnoqCBfVun5qckZ1u2OkaJeIi9wrayhOOkeM/6hqKkHrBp0pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756170292; c=relaxed/simple;
-	bh=2Ho7cC/QIRp0Nf1M5vwKTw1qpgnUTOb+pHhtsLDR8lM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bnzS3d2U2bFoItwK/ofa7pJJ81nOOIWw/JJiN5XUEfTFaVKXIZ48SP8c9oFIZ0U1XzzrM9kfe48a5q9s58ZmJC6ysjEz9adL6fjOUadEHyTIGAYMSZSb25rC8jRe9UxE/phcnAtUu6NuFuOWUreR479UAVPmgMh98Don7YgSzwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=gNQRQzHN; arc=none smtp.client-ip=20.188.111.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=2PWa4
-	RDVbm9vqx+uSESMnuoRp/E021uZvmdOICI1JZM=; b=gNQRQzHNsqU0rVR+w+7ta
-	4rjgqK85BcNKf73FkUIqc0d3RqEVZdwC4nR326NWDMf7RaGGJ+MFgVu1vNFaHPTP
-	oK224flH5C0xegh5LgygQk2fty/BOVlOtxeY0cBkDRyVTdRbAKBNABsHdQi3xc94
-	Ib25UGqMN8U6khyZWPcO94=
-Received: from estar-Super-Server.. (unknown [103.233.162.254])
-	by web4 (Coremail) with SMTP id ywQGZQCnsjcfCK1oXLtKIA--.57357S2;
-	Tue, 26 Aug 2025 09:04:40 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
-Date: Tue, 26 Aug 2025 09:03:46 +0800
-Message-Id: <20250826010346.1374390-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756170340; c=relaxed/simple;
+	bh=JngFn+jzgyIn12/qv12mpOgI7nfL8G9DKZcKVXiPB9I=;
+	h=Date:To:From:Subject:Message-Id; b=P18r7nFKpqCN/3neQMiUNSxm+Uabg8bszbKMP/mcxDbdNOkp4bTcx7hmnNBz0pQhmBXZwWViuixXq1mxzyIyMYawRmA3a44IG6qgoRL6QPOCBckX41qUHWbRjQLZbX4SaFuvTb5D6kd6PR/XOS+5FU0WsB5MVWTEJluVlpNJSV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FZjQujsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90CEC4CEED;
+	Tue, 26 Aug 2025 01:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756170339;
+	bh=JngFn+jzgyIn12/qv12mpOgI7nfL8G9DKZcKVXiPB9I=;
+	h=Date:To:From:Subject:From;
+	b=FZjQujsZhEPNHPJQIaigp1jBB11uAyVv5YFpFl7y5KR8yc/wOz7vea6exDk2XSeJo
+	 gvxnCV7C2sP6LhgorcvhG/vjhJ9yi2HmuTaOf9sEDHKWFsq9eJ14foMyer5aNnE2M8
+	 Jw0PSzo+DJp9joQLk48/ThwhYEpeSqyQXAS003JE=
+Date: Mon, 25 Aug 2025 18:05:38 -0700
+To: mm-commits@vger.kernel.org,vkuznets@redhat.com,stable@vger.kernel.org,ryncsn@gmail.com,okozina@redhat.com,kernelfans@gmail.com,gmazyland@gmail.com,dyoung@redhat.com,dave.hansen@intel.com,coxu@redhat.com,bhe@redhat.com,berrange@redhat.com,leitao@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250826010539.A90CEC4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywQGZQCnsjcfCK1oXLtKIA--.57357S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGrWktFyUurWxWF1xtw1kXwb_yoWrGF17pa
-	4xKFZIkr1UJFyxtFnayw4DXr15Cr4kAryfGFnFqry8ZF1DJryfZ39IkrWjvry5CFZ3C342
-	g3y7WFWrCr47Ja7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUXVWUAwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
-	IFyTuYvjfU5eHqDUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEGAWis2dorJAABsO
 
-DCCP sockets in DCCP_REQUESTING state do not check the sequence number
-or acknowledgment number for incoming Reset, CloseReq, and Close packets.
 
-As a result, an attacker can send a spoofed Reset packet while the client
-is in the requesting state. The client will accept the packet without
-verification and immediately close the connection, causing a denial of
-service (DoS) attack.
+The patch titled
+     Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
 
-This patch moves the processing of Reset, Close, and CloseReq packets
-into dccp_rcv_request_sent_state_process() and validates the ack number
-before accepting them.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
 
-This fix should apply to stable versions *only* in Linux 5.x and 6.x.
-Note that DCCP was removed in Linux 6.16, so this patch is only relevant
-for older versions. We tested it on Ubuntu 24.04 LTS (Linux 6.8) and
-it worked as expected.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Breno Leitao <leitao@debian.org>
+Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
+Date: Thu Aug 21 04:11:21 2025 -0700
+
+Add an explicit initialization for the random member of the kbuf structure
+within the image_load function in arch/arm64/kernel/kexec_image.c. 
+Setting kbuf.random to zero ensures a deterministic and clean starting
+state for the buffer used during kernel image loading, avoiding this UBSAN
+issue later, when kbuf.random is read.
+
+  [   32.362488] UBSAN: invalid-load in ./include/linux/kexec.h:210:10
+  [   32.362649] load of value 252 is not a valid value for type '_Bool'
+
+Link: https://lkml.kernel.org/r/oninomspajhxp4omtdapxnckxydbk2nzmrix7rggmpukpnzadw@c67o7njgdgm3
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: "Daniel P. Berrange" <berrange@redhat.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Liu Pingfan <kernelfans@gmail.com>
+Cc: Milan Broz <gmazyland@gmail.com>
+Cc: Ondrej Kozina <okozina@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/dccp/input.c | 54 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/net/dccp/input.c b/net/dccp/input.c
-index 2cbb757a8..0b1ffb044 100644
---- a/net/dccp/input.c
-+++ b/net/dccp/input.c
-@@ -397,21 +397,22 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
- 	 *	     / * Response processing continues in Step 10; Reset
- 	 *		processing continues in Step 9 * /
- 	*/
-+	struct dccp_sock *dp = dccp_sk(sk);
-+
-+	if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
-+				dp->dccps_awl, dp->dccps_awh)) {
-+		dccp_pr_debug("invalid ackno: S.AWL=%llu, "
-+					"P.ackno=%llu, S.AWH=%llu\n",
-+					(unsigned long long)dp->dccps_awl,
-+			(unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
-+					(unsigned long long)dp->dccps_awh);
-+		goto out_invalid_packet;
-+	}
-+
- 	if (dh->dccph_type == DCCP_PKT_RESPONSE) {
- 		const struct inet_connection_sock *icsk = inet_csk(sk);
--		struct dccp_sock *dp = dccp_sk(sk);
--		long tstamp = dccp_timestamp();
--
--		if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
--			       dp->dccps_awl, dp->dccps_awh)) {
--			dccp_pr_debug("invalid ackno: S.AWL=%llu, "
--				      "P.ackno=%llu, S.AWH=%llu\n",
--				      (unsigned long long)dp->dccps_awl,
--			   (unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
--				      (unsigned long long)dp->dccps_awh);
--			goto out_invalid_packet;
--		}
+ arch/arm64/kernel/kexec_image.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/arm64/kernel/kexec_image.c~kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader
++++ a/arch/arm64/kernel/kexec_image.c
+@@ -76,6 +76,7 @@ static void *image_load(struct kimage *i
+ 	kbuf.buf_min = 0;
+ 	kbuf.buf_max = ULONG_MAX;
+ 	kbuf.top_down = false;
++	kbuf.random = 0;
  
-+		long tstamp = dccp_timestamp();
- 		/*
- 		 * If option processing (Step 8) failed, return 1 here so that
- 		 * dccp_v4_do_rcv() sends a Reset. The Reset code depends on
-@@ -496,6 +497,13 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
- 		}
- 		dccp_send_ack(sk);
- 		return -1;
-+	} else if (dh->dccph_type == DCCP_PKT_RESET) {
-+		dccp_rcv_reset(sk, skb);
-+		return 0;
-+	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {
-+		return dccp_rcv_closereq(sk, skb);
-+	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {
-+		return dccp_rcv_close(sk, skb);
- 	}
- 
- out_invalid_packet:
-@@ -658,17 +666,19 @@ int dccp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
- 	 *		Set TIMEWAIT timer
- 	 *		Drop packet and return
- 	 */
--	if (dh->dccph_type == DCCP_PKT_RESET) {
--		dccp_rcv_reset(sk, skb);
--		return 0;
--	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
--		if (dccp_rcv_closereq(sk, skb))
--			return 0;
--		goto discard;
--	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
--		if (dccp_rcv_close(sk, skb))
-+	if (sk->sk_state != DCCP_REQUESTING) {
-+		if (dh->dccph_type == DCCP_PKT_RESET) {
-+			dccp_rcv_reset(sk, skb);
- 			return 0;
--		goto discard;
-+		} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
-+			if (dccp_rcv_closereq(sk, skb))
-+				return 0;
-+			goto discard;
-+		} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
-+			if (dccp_rcv_close(sk, skb))
-+				return 0;
-+			goto discard;
-+		}
- 	}
- 
- 	switch (sk->sk_state) {
--- 
-2.34.1
+ 	kbuf.buffer = kernel;
+ 	kbuf.bufsz = kernel_len;
+_
+
+Patches currently in -mm which might be from leitao@debian.org are
+
+kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
 
 
