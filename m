@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339F8B36070
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A34AB3689E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F6C01BC104C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B85E75804A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00E6202C46;
-	Tue, 26 Aug 2025 12:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7910134DCCE;
+	Tue, 26 Aug 2025 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHXb9lbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3uMUWNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEF71E25E3;
-	Tue, 26 Aug 2025 12:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F8E223335;
+	Tue, 26 Aug 2025 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213019; cv=none; b=QLh7AzjM5qfETqztbF2hIgN0STlogwM4feDryeEU0L2O/9bUMotJqZ1vmg6kWc1cImQt5iFbDXSv/fllFfiwh1kIGp/pyZyrYf9EMhZ2ZUmtD0qAcX2M4qkqAVG10fRRLhVzxWDpUpOU+XBjfvJYvaAltlWNklQcuVqW6CvkIkQ=
+	t=1756217340; cv=none; b=gqoMvgg8ItCwO5pT0w4DFztdRLnpT1cc9ErQvLgpSxmK2y9fTE3GaD4oaqPgItTm0bTuPIRTA4SzgdqoCucUfztSbxNjFeBOtypnH+06kM5WsolIFrCI0rPHkP//EuwBQ/xJY6twYCBPNUiyNmzbBkhj0XoFZEBJ1z3My1H6guc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213019; c=relaxed/simple;
-	bh=FirY1Wyd1+a5KMcjrkHr8xLEaj1ek7DBR4sEyqTE+HQ=;
+	s=arc-20240116; t=1756217340; c=relaxed/simple;
+	bh=GKPS+JdvbQcz14xq8aFh5DNxBhOS+a/pg02RAoEmMDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ir/Bf79yRnkEygUFDKn/2QOSV2dBLIkPy5agz6gyNyyHyhuztYyh3YF9tSFjmhl0ElUClUvyccNYF5IznTGwYRn9HzEJQxGV+v3Ka88r6zLIP+E2egbom696lOrCfYlOrJMKuqemXEbVZX+c3RX5lupc2OQsg9Db7kVgA0yNRKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHXb9lbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE96C4CEF1;
-	Tue, 26 Aug 2025 12:56:58 +0000 (UTC)
+	 MIME-Version; b=LJqbRQZ5VJ6qaCetOOWstJqMD42dYVIRRG5sSOmfCjcg27+MSllVbfkWEImb/5eOB4F/HLsGD4KP6ysb0v4HIdC4QixSlpZ1NkV6IMCFtd/1czr+jHSdRzcc9Pg2UJHlHMEUitiGqghZSUngpt7S2uXxPqS1FO+CG3K5fR9dFcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3uMUWNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA83C4CEF1;
+	Tue, 26 Aug 2025 14:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213019;
-	bh=FirY1Wyd1+a5KMcjrkHr8xLEaj1ek7DBR4sEyqTE+HQ=;
+	s=korg; t=1756217340;
+	bh=GKPS+JdvbQcz14xq8aFh5DNxBhOS+a/pg02RAoEmMDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHXb9lbp1SZP1IGYYaenOyb+3sOU22N+SdFJvMkz4JVSTetaisA5xKiPeuplDE3XZ
-	 OFVOtSslYUG1U0zNjwVDz0ZpQC8EgJ9k1kOqAb89zv3mSYiK1uD4H+nKKHK/OmiKAf
-	 EE3jytZjQpoGQAsr0dyexn8zcS5UZj9L6AyJGnj0=
+	b=O3uMUWNg37qMypUsppvATvU5ycFsFqApJJrpSuVKIb4GM8mOg9NY65WEfXUeneUPW
+	 YHjznX4s5Yxc+rtn1hoxkLgSjCgbEW2HFKWBGRCzNGyXIxnkSItxhMi17x6uY5q5uM
+	 cFJKgoJTyreI8aaupe2/sdzIcDpKPLLidReQWhl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/587] wifi: iwlwifi: mvm: set gtk id also in older FWs
+Subject: [PATCH 5.10 099/523] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
 Date: Tue, 26 Aug 2025 13:05:09 +0200
-Message-ID: <20250826110957.016169417@linuxfoundation.org>
+Message-ID: <20250826110926.981744579@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit 61be9803f322ab46f31ba944c6ef7de195891f64 ]
+[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
 
-We use gtk[i].id, but it is not even set in older FW APIs
-(iwl_wowlan_status_v6 and iwl_wowlan_status_v7).
-Set it also in older FWs.
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250710212632.e91e49590414.I27d2fdbed1c54aee59929fa11ec169f07e159406@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index a82cdd897173..6c108dbbbc54 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2143,6 +2143,7 @@ static void iwl_mvm_convert_gtk_v2(struct iwl_wowlan_status_data *status,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 9b1a1455a7d5..1f14636d6a3a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -116,8 +116,10 @@ static int __init iwl_mvm_init(void)
+ 	}
  
- 	status->gtk[0].len = data->key_len;
- 	status->gtk[0].flags = data->key_flags;
-+	status->gtk[0].id = status->gtk[0].flags & IWL_WOWLAN_GTK_IDX_MASK;
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
  
- 	memcpy(status->gtk[0].key, data->key, sizeof(data->key));
- 
-@@ -2369,6 +2370,7 @@ iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm, u8 sta_id)
- 		 * currently used key.
- 		 */
- 		status->gtk[0].flags = v6->gtk.key_index | BIT(7);
-+		status->gtk[0].id = v6->gtk.key_index;
- 	} else if (notif_ver == 7) {
- 		struct iwl_wowlan_status_v7 *v7 = (void *)cmd.resp_pkt->data;
- 
+ 	return ret;
+ }
 -- 
 2.39.5
 
