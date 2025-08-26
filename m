@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C20B35FF1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156E4B3687A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A091BA6ACE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861008E50F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196DD20DD51;
-	Tue, 26 Aug 2025 12:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CDE352092;
+	Tue, 26 Aug 2025 14:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx+FVuma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edCqaW2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5C31D88AC;
-	Tue, 26 Aug 2025 12:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42772352089;
+	Tue, 26 Aug 2025 14:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212743; cv=none; b=AUNVroNDIAMXAIHQrUJw0RyZ+fCtuotyxgK2PJq/WRdbOtg1kpTBZQ3+UNL02/G8aSj3sBJEVnCUlW01TUvgEBG1zMAPbQRsS8uN5tyUsplUngBYnolkxGyRZxOSYpefvt7jV0TcQ+438U4ST4yhjtg1fzJV/cNe033FCt7S99c=
+	t=1756217120; cv=none; b=UkN1jwvJ+FbXi2BxpS2vi5o7v2b4wpH1SdeFD+jEvzJPz7t+oEj/k2jblMThvfz3CCGSAd2OEq1e0WLajQNWAOsbkkz7JvxDtMHi7OX08Vq98LDsxIaL/rNJS8YQFDhjGuN3acUPoB74vzkmBU5n8QJ0gbyzFFrM/gPSmw6DZLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212743; c=relaxed/simple;
-	bh=IYFCfQxkJg+qKCK27YcMaL4AYns0X/w3zZY870kHxIk=;
+	s=arc-20240116; t=1756217120; c=relaxed/simple;
+	bh=M6jOZIhYaHzIPlwYXj6cGElJB2tYk1MXfEYWbAXBKF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1vNxmLUDvS/4qikbNWTCDiaWH5ZUuUGPGfChfI4yb+t8VuENS9KbWKTMpQf5Unhonu3tB3v/8WDnHR9Hxi1rohjEv4MQX64LDpf95mORHGXmhn/ELYZ4kB9iU//825ERY2g+8sRexr1bDTvJQiihBhjYwmY39I/ubXRV3wuWRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx+FVuma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE77C4CEF1;
-	Tue, 26 Aug 2025 12:52:23 +0000 (UTC)
+	 MIME-Version; b=B3l0xabL6QP2/luH8QEHF+endzPjjPBOFMV/soBn3BLjBUiblA8IVoyQG+S8VHCwEFQbZOJSBI3k1+AGqdUaaDYa9wgZ44Pluq0KgxTsVZBpXxbSKf8rFzUxsifJjdcTC/MooZugNaPeTsbIUMZLV0vEe/Rj1FKPAXA/hD33uWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edCqaW2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1ACC113CF;
+	Tue, 26 Aug 2025 14:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212743;
-	bh=IYFCfQxkJg+qKCK27YcMaL4AYns0X/w3zZY870kHxIk=;
+	s=korg; t=1756217120;
+	bh=M6jOZIhYaHzIPlwYXj6cGElJB2tYk1MXfEYWbAXBKF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bx+FVumabaAKdz4av2+OCsGz1Ws54wcjxirFexPW7L4qFfBvuIBSvZIRznoE3SK0K
-	 61FPlV8DWSoVdP+ZB1IXk3+dCjGG74hCrm6xWjjdBocXVNY7bxNwBww+RaTQ2qMcco
-	 wzbYQH05+kmE0LjqtwEzsb7f/GW2EnG3rbIwgpUA=
+	b=edCqaW2e2sxH1hOkTHZ9onUKL6Nj6r6OE8AHDITysjTaQfoD+hTzFI8H888igU5mv
+	 G5ctCXHAVGiCA7wuEF1bf6t4xrndCgoKlSNc4kpsfrPSdim6/e6dROyPXBqaAVB6qP
+	 CDrRfLVykr9CLWzXWmz1u/873vN5QtsXzDTs7SMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Berglund <adam.f.berglund@hotmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/587] platform/x86/amd: pmc: Add Lenovo Yoga 6 13ALC6 to pmc quirk list
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 5.10 023/523] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
 Date: Tue, 26 Aug 2025 13:03:53 +0200
-Message-ID: <20250826110955.071221690@linuxfoundation.org>
+Message-ID: <20250826110925.163776108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +59,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-[ Upstream commit 4ff3aeb664f7dfe824ba91ffb0b203397a8d431e ]
+commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
 
-The Lenovo Yoga 6 13ACL6 82ND has a similar BIOS problem as other Lenovo
-laptops from that vintage that causes a rather long resume from suspend.
+Mitigate e.g. the following:
 
-Add it to the quirk list that manipulates the scratch register to avoid
-the issue.
+    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
+    ...
+    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
+    [  120.373866] [00000004] *pgd=00000000
+    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
+    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
+    ...
+    [  120.679543] Call trace:
+    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
+    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
+    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
+    ...
 
-Reported-by: Adam Berglund <adam.f.berglund@hotmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4434
-Tested-by: Adam Berglund <adam.f.berglund@hotmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250718172307.1928744-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Cc: stable@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 7ed12c1d3b34..04686ae1e976 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -189,6 +189,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
- 		}
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
-+	{
-+		.ident = "Lenovo Yoga 6 13ALC6",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
-+		}
-+	},
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
- 	{
- 		.ident = "HP Laptop 15s-eq2xxx",
--- 
-2.39.5
-
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -60,6 +60,7 @@ struct aspeed_lpc_snoop_model_data {
+ };
+ 
+ struct aspeed_lpc_snoop_channel {
++	bool enabled;
+ 	struct kfifo		fifo;
+ 	wait_queue_head_t	wq;
+ 	struct miscdevice	miscdev;
+@@ -192,6 +193,9 @@ static int aspeed_lpc_enable_snoop(struc
+ 	const struct aspeed_lpc_snoop_model_data *model_data =
+ 		of_device_get_match_data(dev);
+ 
++	if (WARN_ON(lpc_snoop->chan[channel].enabled))
++		return -EBUSY;
++
+ 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
+ 	/* Create FIFO datastructure */
+ 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
+@@ -238,6 +242,8 @@ static int aspeed_lpc_enable_snoop(struc
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	lpc_snoop->chan[channel].enabled = true;
++
+ 	return 0;
+ 
+ err_misc_deregister:
+@@ -250,6 +256,9 @@ err_free_fifo:
+ static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 				     int channel)
+ {
++	if (!lpc_snoop->chan[channel].enabled)
++		return;
++
+ 	switch (channel) {
+ 	case 0:
+ 		regmap_update_bits(lpc_snoop->regmap, HICR5,
+@@ -265,6 +274,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
+ 	}
+ 
++	lpc_snoop->chan[channel].enabled = false;
++	/* Consider improving safety wrt concurrent reader(s) */
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
+ 	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ }
 
 
 
