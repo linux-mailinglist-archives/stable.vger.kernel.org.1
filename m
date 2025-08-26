@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E463B367F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416DCB35D33
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD63956642D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65DFA366663
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B663C352FD3;
-	Tue, 26 Aug 2025 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890B83469F0;
+	Tue, 26 Aug 2025 11:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NG2vi7dE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/caArKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73460352FC7;
-	Tue, 26 Aug 2025 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4658C3469F3;
+	Tue, 26 Aug 2025 11:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216862; cv=none; b=ji5NEr1B5e1RELaa4DvU7sHh1GXQEf1PddDYE/KfMI0BwG+6AI1xIx0xV6XPt5p8LZ7B1It1JDTyhFyFLOmB/iis9mr46rMQp8A5YITxUB4MCdN75H/GJJ+AE/xBFjikZ6OJxDibYocSIbx2iRHW/Jkw0BNcyjfVN05FPaXBlEA=
+	t=1756207885; cv=none; b=mItdTAafrW8fDKeH45oi4mkNGl7sW+CJcV4f6Ry3LdcE425k1AW7kSJluxXNM6PLj5JC05BFhoJwoCRpYU8oVD6H3sfbksP12yh14vB0qKgkfy9cy7LCQsqdBNa6saOht9JHFLUhdYaUSHtJwSf6Vs9JwksWmYwF6pIjC7Ba4Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216862; c=relaxed/simple;
-	bh=43EenZSNUfhy2tr9uV0tZE6f6G6PqVDgMJtK97tYw80=;
+	s=arc-20240116; t=1756207885; c=relaxed/simple;
+	bh=e6tjujKkaLliXI0EF+hyjNCf7VbmrMcvq13WYXLVe+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/cMaLX1DRMGcvIQ/h4fEf9dhVDFjmqtXMo7/Vy7buI2rp1fEkGdYQSjyig5gCy0R18mVOG5a2E1NIlr+yKt6cd/89KOG+2n7gpcQxkXxGpnwetb3Pazl90vfLpzGpHUDn1xRFHPIzbXLsDeyeOLO9q4AyfJT2kW0Z0zSuoNP08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NG2vi7dE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC03C4CEF1;
-	Tue, 26 Aug 2025 14:01:01 +0000 (UTC)
+	 MIME-Version; b=HTbvhNB8vlV+XNbHxLWZRjZ9CMhNAQJuqspCupmrfEW9g/qjIpwosM5cDCmixku620Vg4PcdKsCXZMtwpxT5kMe16VjD9IgeBJ4knt8bHjnCr4GBIZik91cEsJdAca2T0tZjhwudCaS8+un5oOjKnBqRpTHDbXN5iWQr4UarI6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/caArKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5764C4CEF1;
+	Tue, 26 Aug 2025 11:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216862;
-	bh=43EenZSNUfhy2tr9uV0tZE6f6G6PqVDgMJtK97tYw80=;
+	s=korg; t=1756207885;
+	bh=e6tjujKkaLliXI0EF+hyjNCf7VbmrMcvq13WYXLVe+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NG2vi7dETwem5KazDEFOjramvKrccuKb53bK+Fg5Ru9fgx7y/iW6uKoNVDqaIuo4j
-	 XNS3uERHnXW4I2ntK5G/AKMBLY3k358U9Yyv/CBCjWy5EU15hvxGNay6akv53SVV79
-	 4mYk75cerbtmA6GuTUqLbbhdnMr6N3fBrgit2/2o=
+	b=B/caArKQQL6dhQsyaJ4y/e4pu5pZ3NbOLXfNQq7B8T+UhMITjQQ6wdoFRDA1rQHrh
+	 RqrIGhl/RKWqhk5tQpN3hpIbU2cjIwgHOna2b+U+Ol+kz2hhssHuUzuEBl6+asCfwp
+	 mara/KkyOAnc8TVxKffVXveJgd84CZgsFE/AKios=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 539/644] platform/chrome: cros_ec: remove unneeded label and if-condition
-Date: Tue, 26 Aug 2025 13:10:30 +0200
-Message-ID: <20250826110959.872438094@linuxfoundation.org>
+Subject: [PATCH 6.16 347/457] cgroup/cpuset: Fix a partition error with CPU hotplug
+Date: Tue, 26 Aug 2025 13:10:31 +0200
+Message-ID: <20250826110945.903270429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 554ec02c97254962bbb0a8776c3160d294fc7e51 ]
+[ Upstream commit 150e298ae0ccbecff2357a72fbabd80f8849ea6e ]
 
-Both `ec_dev->ec` and `ec_dev->pd` are initialized to NULL at the
-beginning of cros_ec_register().  Also, platform_device_unregister()
-takes care if the given platform_device is NULL.
+It was found during testing that an invalid leaf partition with an
+empty effective exclusive CPU list can become a valid empty partition
+with no CPU afer an offline/online operation of an unrelated CPU. An
+empty partition root is allowed in the special case that it has no
+task in its cgroup and has distributed out all its CPUs to its child
+partitions. That is certainly not the case here.
 
-Remove the unneeded goto-label and if-condition.
+The problem is in the cpumask_subsets() test in the hotplug case
+(update with no new mask) of update_parent_effective_cpumask() as it
+also returns true if the effective exclusive CPU list is empty. Fix that
+by addding the cpumask_empty() test to root out this exception case.
+Also add the cpumask_empty() test in cpuset_hotplug_update_tasks()
+to avoid calling update_parent_effective_cpumask() for this special case.
 
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Link: https://lore.kernel.org/r/20230308031247.2866401-1-tzungbi@kernel.org
-Stable-dep-of: e23749534619 ("platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()")
+Fixes: 0c7f293efc87 ("cgroup/cpuset: Add cpuset.cpus.exclusive.effective for v2")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ kernel/cgroup/cpuset.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -207,7 +207,7 @@ int cros_ec_register(struct cros_ec_devi
- 	err = cros_ec_query_all(ec_dev);
- 	if (err) {
- 		dev_err(dev, "Cannot identify the EC: error %d\n", err);
--		goto destroy_mutex;
-+		goto exit;
- 	}
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 77396bab071a..f9d7799c5c94 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1843,7 +1843,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 			if (is_partition_valid(cs))
+ 				adding = cpumask_and(tmp->addmask,
+ 						xcpus, parent->effective_xcpus);
+-		} else if (is_partition_invalid(cs) &&
++		} else if (is_partition_invalid(cs) && !cpumask_empty(xcpus) &&
+ 			   cpumask_subset(xcpus, parent->effective_xcpus)) {
+ 			struct cgroup_subsys_state *css;
+ 			struct cpuset *child;
+@@ -3870,9 +3870,10 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
+ 		partcmd = partcmd_invalidate;
+ 	/*
+ 	 * On the other hand, an invalid partition root may be transitioned
+-	 * back to a regular one.
++	 * back to a regular one with a non-empty effective xcpus.
+ 	 */
+-	else if (is_partition_valid(parent) && is_partition_invalid(cs))
++	else if (is_partition_valid(parent) && is_partition_invalid(cs) &&
++		 !cpumask_empty(cs->effective_xcpus))
+ 		partcmd = partcmd_update;
  
- 	if (ec_dev->irq > 0) {
-@@ -219,7 +219,7 @@ int cros_ec_register(struct cros_ec_devi
- 		if (err) {
- 			dev_err(dev, "Failed to request IRQ %d: %d",
- 				ec_dev->irq, err);
--			goto destroy_mutex;
-+			goto exit;
- 		}
- 	}
- 
-@@ -231,7 +231,7 @@ int cros_ec_register(struct cros_ec_devi
- 		dev_err(ec_dev->dev,
- 			"Failed to create CrOS EC platform device\n");
- 		err = PTR_ERR(ec_dev->ec);
--		goto destroy_mutex;
-+		goto exit;
- 	}
- 
- 	if (ec_dev->max_passthru) {
-@@ -297,7 +297,6 @@ int cros_ec_register(struct cros_ec_devi
- exit:
- 	platform_device_unregister(ec_dev->ec);
- 	platform_device_unregister(ec_dev->pd);
--destroy_mutex:
- 	mutex_destroy(&ec_dev->lock);
- 	lockdep_unregister_key(&ec_dev->lockdep_key);
- 	return err;
-@@ -314,8 +313,7 @@ EXPORT_SYMBOL(cros_ec_register);
-  */
- void cros_ec_unregister(struct cros_ec_device *ec_dev)
- {
--	if (ec_dev->pd)
--		platform_device_unregister(ec_dev->pd);
-+	platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
- 	mutex_destroy(&ec_dev->lock);
- 	lockdep_unregister_key(&ec_dev->lockdep_key);
+ 	if (partcmd >= 0) {
+-- 
+2.50.1
+
 
 
 
