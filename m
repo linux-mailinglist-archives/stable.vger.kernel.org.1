@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0162B35C6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDA5B3622B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80167684DAD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82F7172798
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A52534A30F;
-	Tue, 26 Aug 2025 11:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D50284678;
+	Tue, 26 Aug 2025 13:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U87dwWWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBpGutk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54929D273;
-	Tue, 26 Aug 2025 11:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363EB268C40;
+	Tue, 26 Aug 2025 13:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207899; cv=none; b=ueyGfNZwyLde2J7IXjB6oYhVG9UKeqFJVETj7G5LZ1z3Lo6kvvLUosYe/7Fj++9oneE9nxovJagRNHgcg5vTzNR9CFODTucNlI73j/0k6WxPFR4hbhS5Qx6qYJf9rAiGi2ad2j+RHtPGmnlXnk16NJHV7yR/LqOXgmOrk1DBLJg=
+	t=1756213825; cv=none; b=rHYAnhhLniWwJpoQBB29Xm+QvjX21ERXIr7ioV7a4Dpy5JLJSQwiKAJedods3cl0fNE41/Zg77rzUSeNgwT4IagRRanfZY8qvMHY1AgVMgLC+5oZKdXKfDqix47Mb26ZHX+3eIC+5/wDEd71w1fdxoSpVXv+exBHkYam4uxDw4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207899; c=relaxed/simple;
-	bh=L5pUcxsgRor/y763SSILTIiZv/bVZnhgBPiYczDI+lY=;
+	s=arc-20240116; t=1756213825; c=relaxed/simple;
+	bh=cPXC9+gnmsTZZl0b/NgH+oqgXtrzkaVvrhyjEAL1KlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRRTAqzR38kfcP0i7CAPZCp+kBrfrIJRJ+vsjNWuLQvSlq7BZG+10ilSGLxw7d2cCBxMRi2zpTiE1cHzK/MrvNVGAVuUBAF9UDUR7nOJ6pKwiLpMnt42lT14N/9QX/eS6ehtGZBDEYZ1Nl3t4RrsZVt/m7sX270kZn61MpzQp+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U87dwWWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2181EC4CEF1;
-	Tue, 26 Aug 2025 11:31:34 +0000 (UTC)
+	 MIME-Version; b=t+TCcD3+IDMJg5IGTDxXCRpuYpL9GCa3Thvmlb6mL3CUvm2RQ5rXWlv3UVQ03cwe3bUusQHn8h6LpAtJ9cgT2L0Q8TjveIbboYVlz9APlG3u71rS/u8wtdTQQ2ZfIaqjfmdYbfs0IwJKW31Z+WJz82E87dj+bS2IZUlp2eVJIns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBpGutk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B596BC4CEF1;
+	Tue, 26 Aug 2025 13:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207895;
-	bh=L5pUcxsgRor/y763SSILTIiZv/bVZnhgBPiYczDI+lY=;
+	s=korg; t=1756213825;
+	bh=cPXC9+gnmsTZZl0b/NgH+oqgXtrzkaVvrhyjEAL1KlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U87dwWWVjwTAHvGGvhxaQAw2uJkoNMIN+DQC2Tpt7O2YDVqRL6uvfPU4zbCTCx5Zx
-	 JhpVNf39s8vvY07S3jZMpSqYW/mjhHzt9aYG8wn+wtAlp9DLaDytRUoixZrd1LxwAW
-	 bSlsw0/A6IdOZBn7mw9rD/3d4duJetuvrz0CxOB4=
+	b=wBpGutk0Gh/GM6WQPj2oGBe54udZxM37kP8I8WnMfMPQY0w3vREB/YUVVneDkmsws
+	 RVHwJ42NxblQBCso8cgG1DGXuL6uU95Z8/dXD/UIxOv8uBnN+VaYQTmNVN96iWAGYA
+	 WUOoqao9+gxQdGjqMiI8x5CrTzvx6qNQ2lzWQbtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Boshi Yu <boshiyu@linux.alibaba.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 359/457] RDMA/erdma: Fix unset QPN of GSI QP
+Subject: [PATCH 6.6 494/587] PCI: rockchip: Set Target Link Speed to 5.0 GT/s before retraining
 Date: Tue, 26 Aug 2025 13:10:43 +0200
-Message-ID: <20250826110946.185775977@linuxfoundation.org>
+Message-ID: <20250826111005.546560656@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boshi Yu <boshiyu@linux.alibaba.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit d4ac86b47563c7895dae28658abd1879d266b2b4 ]
+[ Upstream commit 114b06ee108cabc82b995fbac6672230a9776936 ]
 
-The QPN of the GSI QP was not set, which may cause issues.
-Set the QPN to 1 when creating the GSI QP.
+Rockchip controllers can support up to 5.0 GT/s link speed. But the driver
+doesn't set the Target Link Speed currently. This may cause failure in
+retraining the link to 5.0 GT/s if supported by the endpoint. So set the
+Target Link Speed to 5.0 GT/s in the Link Control and Status Register 2.
 
-Fixes: 999a0a2e9b87 ("RDMA/erdma: Support UD QPs and UD WRs")
-Reviewed-by: Cheng Xu <chengyou@linux.alibaba.com>
-Signed-off-by: Boshi Yu <boshiyu@linux.alibaba.com>
-Link: https://patch.msgid.link/20250725055410.67520-4-boshiyu@linux.alibaba.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+[mani: fixed whitespace warning, commit message rewording, added fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Robin Murphy <robin.murphy@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/0afa6bc47b7f50e2e81b0b47d51c66feb0fb565f.1751322015.git.geraldogabriel@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/pcie-rockchip-host.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index c1b2b8c3cdcc..8d7596abb822 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -994,6 +994,8 @@ int erdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attrs,
- 		old_entry = xa_store(&dev->qp_xa, 1, qp, GFP_KERNEL);
- 		if (xa_is_err(old_entry))
- 			ret = xa_err(old_entry);
-+		else
-+			qp->ibqp.qp_num = 1;
- 	} else {
- 		ret = xa_alloc_cyclic(&dev->qp_xa, &qp->ibqp.qp_num, qp,
- 				      XA_LIMIT(1, dev->attrs.max_qp - 1),
--- 
-2.50.1
-
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -339,6 +339,10 @@ static int rockchip_pcie_host_init_port(
+ 		 * Enable retrain for gen2. This should be configured only after
+ 		 * gen1 finished.
+ 		 */
++		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
++		status &= ~PCI_EXP_LNKCTL2_TLS;
++		status |= PCI_EXP_LNKCTL2_TLS_5_0GT;
++		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
+ 		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 		status |= PCI_EXP_LNKCTL_RL;
+ 		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
 
 
 
