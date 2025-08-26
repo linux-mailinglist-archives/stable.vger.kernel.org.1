@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC1CB369D4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3BBB36445
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6663987DE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C763C8A2240
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D6435335B;
-	Tue, 26 Aug 2025 14:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACA83090CE;
+	Tue, 26 Aug 2025 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoNNLJ9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maAhAf/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8981F790F;
-	Tue, 26 Aug 2025 14:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B8D1B87E8;
+	Tue, 26 Aug 2025 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217963; cv=none; b=UccJeJdx44sb3AP6jTdmolGJfVz7oiOVOgoVqDqOlfNGXFan7vaEl3hedzgm9LG7WbTNkPvUl8OtXCrHbUapFh7zzrHdvrOgcMAIoZu967bX6iTHrjyiY2Z5ZaugGvFrwqRw+hZZzY5DktLLkVRfdtrkTujVA2LwTz9xwSjyC3o=
+	t=1756214838; cv=none; b=fJR5LpUOzY7oeRYllC85ksXZUgmZb9msSAfn1gKUOaJRg6ma4dhjR4CMBHu7MHBIuVJ9FIYuAxTuUUYMb0zP+7HCfpgvZuYIA9UWoF8c/M1jDAuKHqQWQC0nk6RhXdWDY669GjZHdd2QrwB3FSHfVcPXUY1VfnYOWAJIMHnmups=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217963; c=relaxed/simple;
-	bh=hkCJWuDow/y0+mVn9r4TIexTPeU+6OFZmPBFXntYUCQ=;
+	s=arc-20240116; t=1756214838; c=relaxed/simple;
+	bh=SbmApaK1G/Fcm2QZJ0K6YJEstH2upefx+uJF1T8ro+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt0KBDrrvIpkOomGvvdhKST3husE21lmfzRTTMs/+oPMi9OMDusFwCiu4PyHvEzKCVwwW54ZAUMwjUsHo2WqxPFBFkpIQd9TccPy0p0tzoRvNgVMpJgROeqbNiylqEBjpFpd3bDf1R9x8s7bqxPY5ty2guF8O38BXZqvhMRQ1CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoNNLJ9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82485C113CF;
-	Tue, 26 Aug 2025 14:19:22 +0000 (UTC)
+	 MIME-Version; b=kyoIu06Fvzo/2xNK6JCMwN0dLkm6HjjzWAJstnlV6maJ3nA3mg8P6CehuVcCxGRmPFderEagFOV9vfvRjd1NkR+7D7WASlumGL+tSxXlL9aMR0PoBN7DfzlkIiTo5ZnTdChNe/c8dpaCB/Nki4sPIjhElxjp4xp18iJSUK//uUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maAhAf/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECD8C4CEF1;
+	Tue, 26 Aug 2025 13:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217962;
-	bh=hkCJWuDow/y0+mVn9r4TIexTPeU+6OFZmPBFXntYUCQ=;
+	s=korg; t=1756214837;
+	bh=SbmApaK1G/Fcm2QZJ0K6YJEstH2upefx+uJF1T8ro+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoNNLJ9tsrSwnTBHU3Uc+b35vmi/mGqwEtcwG8kpiM7+iLlj4Aoj+cN1zkiMTW+xs
-	 FNE7RYPskHKEMbKkF7nc8T8vjed1WmPr97x1bnJn11RXtIqxPN/xM3GYHzlU/CyD3/
-	 QHBjqQPWcaE+0l/X7y9ncova5c3KVBi2/xVkD/W8=
+	b=maAhAf/WLUMmksXeDo+1SJPOEpkzK9r063b6c40VS51Tydp0XpN2Gb+0sXx9pIdXC
+	 n7HFZWRPr84cAvadI5jsJXz/HwIvdzXyLyDeaBp8FDsWNEwZxkOQRuzol7fi6u2aIP
+	 EJKxJJFa/aqzf3BKjTNZTJPoWPmGkf3ZksTH0wD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 300/523] jfs: upper bound check of tree index in dbAllocAG
+	Sravan Kumar Gundu <sravankumarlpu@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 257/482] fbdev: Fix vmalloc out-of-bounds write in fast_imageblit
 Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110931.852600229@linuxfoundation.org>
+Message-ID: <20250826110937.118509308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
 
-[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
+commit af0db3c1f898144846d4c172531a199bb3ca375d upstream.
 
-When computing the tree index in dbAllocAG, we never check if we are
-out of bounds realative to the size of the stree.
-This could happen in a scenario where the filesystem metadata are
-corrupted.
+This issue triggers when a userspace program does an ioctl
+FBIOPUT_CON2FBMAP by passing console number and frame buffer number.
+Ideally this maps console to frame buffer and updates the screen if
+console is visible.
 
-Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
-Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As part of mapping it has to do resize of console according to frame
+buffer info. if this resize fails and returns from vc_do_resize() and
+continues further. At this point console and new frame buffer are mapped
+and sets display vars. Despite failure still it continue to proceed
+updating the screen at later stages where vc_data is related to previous
+frame buffer and frame buffer info and display vars are mapped to new
+frame buffer and eventully leading to out-of-bounds write in
+fast_imageblit(). This bheviour is excepted only when fg_console is
+equal to requested console which is a visible console and updates screen
+with invalid struct references in fbcon_putcs().
+
+Reported-and-tested-by: syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
+Signed-off-by: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/video/fbdev/core/fbcon.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 234b7cc4acfa..f34025cc9b05 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1457,6 +1457,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
- 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
- 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -808,7 +808,8 @@ static void con2fb_init_display(struct v
+ 				   fg_vc->vc_rows);
+ 	}
  
-+	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
-+		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
-+		release_metapage(mp);
-+		return -EIO;
-+	}
-+
- 	/* dmap control page trees fan-out by 4 and a single allocation
- 	 * group may be described by 1 or 2 subtrees within the ag level
- 	 * dmap control page, depending upon the ag size. examine the ag's
--- 
-2.39.5
-
+-	update_screen(vc_cons[fg_console].d);
++	if (fg_console != unit)
++		update_screen(vc_cons[fg_console].d);
+ }
+ 
+ /**
+@@ -1353,6 +1354,7 @@ static void fbcon_set_disp(struct fb_inf
+ 	struct vc_data *svc;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	int rows, cols;
++	unsigned long ret = 0;
+ 
+ 	p = &fb_display[unit];
+ 
+@@ -1403,11 +1405,10 @@ static void fbcon_set_disp(struct fb_inf
+ 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+ 	cols /= vc->vc_font.width;
+ 	rows /= vc->vc_font.height;
+-	vc_resize(vc, cols, rows);
++	ret = vc_resize(vc, cols, rows);
+ 
+-	if (con_is_visible(vc)) {
++	if (con_is_visible(vc) && !ret)
+ 		update_screen(vc);
+-	}
+ }
+ 
+ static __inline__ void ywrap_up(struct vc_data *vc, int count)
 
 
 
