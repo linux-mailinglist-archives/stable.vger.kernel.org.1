@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-173710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A530FB35DF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EC9B364CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F8A7C606D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262AC8E4240
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8650729BDB8;
-	Tue, 26 Aug 2025 11:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7DC3376A5;
+	Tue, 26 Aug 2025 13:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSwvnrsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaTpDOHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440DA20330;
-	Tue, 26 Aug 2025 11:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE0F2AD04;
+	Tue, 26 Aug 2025 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208956; cv=none; b=OIh2dfXVERSy9FAk4QcAPwTbD0RjnIc3iaBPb+7Hfud5cvD/b2Zzc82J1LiKsPcaAgy5Aehc6Rmjrh/uT7g1hPjXgn9t+Es2QiiKXsDHLPWdlb1l1GlAXNi1V8VVGQkfHk13wSFJPhROD00OgG5LhOc1WRkybnHuXRtdShgtg88=
+	t=1756215242; cv=none; b=jZiOatHQpzp+VXxSTnJgO0Y4is3dLjC6ZxthzmqjIe+1XNWf4sy8Yc5ij0HBkrOEJcbhfGuVz0xIVviBwb+zl354oy0PH9PuT2tDnigciLPPCvRSg7+YF+hBA2/olsLYNcJsgnUPOyE+rINhuWhVHGy/mri+7jhuTj4lVPoAW4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208956; c=relaxed/simple;
-	bh=7zejeRPR4+JewCdIXCLkunPlenSAFgaQOWLGOVGM0gY=;
+	s=arc-20240116; t=1756215242; c=relaxed/simple;
+	bh=k6tg3G4gqbCke98isBJmR5YAC8NCQGxWjUCEdUaR2o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocUyH+QwyUOFXV+jJVBd9d7U8M75fjpLmrwFlV8E0YJnICyyNRTUkJfcewEqJcZAp9RZMn8IxeJYoe5rDAj2qJEO5nOp+1oO64rwcoqz+3eirX7gJlwYZOM346ku75WqM0rU9/lAg5sgwbGISWt4xg+rvgkGHWDtwWd1lotQN3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSwvnrsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D222CC4CEF1;
-	Tue, 26 Aug 2025 11:49:15 +0000 (UTC)
+	 MIME-Version; b=ZZz5zk9254weqPID56etup11zBPV3/otouAvbTF7RnFZGOzOdo9vn45CIWlugpZyMEQjUwiaoshDyKSOn3Jz0Kf3L2p/PatcccVJpgw/a0T9WDckmlqvfZAhO43X9UQEUJ55oyRP2dFMODkKfm3HhvGVwIRi9LuLVAX3c7HRHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaTpDOHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AACEC4CEF1;
+	Tue, 26 Aug 2025 13:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208956;
-	bh=7zejeRPR4+JewCdIXCLkunPlenSAFgaQOWLGOVGM0gY=;
+	s=korg; t=1756215241;
+	bh=k6tg3G4gqbCke98isBJmR5YAC8NCQGxWjUCEdUaR2o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSwvnrsItLK0ZYudtbru7hV4HUbeCIXDSxVPhjboyhSTCs2yXaXxSaoF/3DVpZ8Sg
-	 M2p4+O/WEkGG7ByQ1aFDy1uWwKFur194dM/0vek+xQqoUj8SDd5chgqMj1uvteflw1
-	 suD4FOSczjUtto55+/PoXFZApBpjhRdd68mY/ygg=
+	b=EaTpDOHt/Riee+Fy9w0JU7EdFAL4dNHfSfsGaleeo+Pc7FRn9nJ6Y2pr8upQP58ab
+	 /HowDPEJTP9R0Cw1dzQekRvw+z6vWgaGq42zUWkT+3S4Xg09i0Gtq+C4sVxQT4jM01
+	 UjGOGXg89rwmZf3Bapwg+SyWmeF8dqjTmhLTvxJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiande Lu <jiande.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 278/322] Bluetooth: btmtk: Fix wait_on_bit_timeout interruption during shutdown
+Subject: [PATCH 6.1 440/482] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
 Date: Tue, 26 Aug 2025 13:11:33 +0200
-Message-ID: <20250826110922.788618751@linuxfoundation.org>
+Message-ID: <20250826110941.701462757@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +70,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiande Lu <jiande.lu@mediatek.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit 099799fa9b76c5c02b49e07005a85117a25b01ea ]
+[ Upstream commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c ]
 
-During the shutdown process, an interrupt occurs that
-prematurely terminates the wait for the expected event.
-This change replaces TASK_INTERRUPTIBLE with
-TASK_UNINTERRUPTIBLE in the wait_on_bit_timeout call to ensure
-the shutdown process completes as intended without being
-interrupted by signals.
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
 
-Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
-Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
+
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
+
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
+
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtk.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ mm/memory-failure.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 05de2e6f563d..07979d47eb76 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -642,12 +642,7 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	 * WMT command.
- 	 */
- 	err = wait_on_bit_timeout(&data->flags, BTMTK_TX_WAIT_VND_EVT,
--				  TASK_INTERRUPTIBLE, HCI_INIT_TIMEOUT);
--	if (err == -EINTR) {
--		bt_dev_err(hdev, "Execution of wmt command interrupted");
--		clear_bit(BTMTK_TX_WAIT_VND_EVT, &data->flags);
--		goto err_free_wc;
--	}
-+				  TASK_UNINTERRUPTIBLE, HCI_INIT_TIMEOUT);
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -731,9 +731,17 @@ static int hwpoison_hugetlb_range(pte_t
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
- 	if (err) {
- 		bt_dev_err(hdev, "Execution of wmt command timed out");
--- 
-2.50.1
-
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
++
+ static const struct mm_walk_ops hwp_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ };
+ 
+ /*
 
 
 
