@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F50B36503
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3A3B36BF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F6E8A6343
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE81F980F3C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E27334A31D;
-	Tue, 26 Aug 2025 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC687352FDB;
+	Tue, 26 Aug 2025 14:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq6oelki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agH5DNYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC14234A310;
-	Tue, 26 Aug 2025 13:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F66235208F;
+	Tue, 26 Aug 2025 14:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215189; cv=none; b=UW9oD1Gb2anYgNq/XRaC5Nj42enWEDaDK0Pm+8UQnHlORiB7wqEH8p9zBhM05ttkeXLWCEbBBmRDjB21nF7jP23QV2zziLlWNnyWDGAVaHU/ebJ8p7MTqI/Wf8Azx8LR8dd10I+MaIlJA0u8DGUBdevZdC8/5e8bzuXa/0VM+ok=
+	t=1756218209; cv=none; b=X0lLYV+G+NEe6X0ovWga79utOacTbEYGidv5nz72CJB29elAG1KwFw5hmiXfP+fFmgUkfbxUsanT28WOdHF+V3hOyD1ZwL+cQ4v7tgGzDVE12tzWJ3zW4g5NWOZKyXBiTyudQXyJa2SFAY4bg0nOgnClC1hnVQAthVlNJ0Qgwck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215189; c=relaxed/simple;
-	bh=VzQjxg1iCSQMGUOemscLHQXB8/XwDXrxkF3ndHjXVb4=;
+	s=arc-20240116; t=1756218209; c=relaxed/simple;
+	bh=Y9kt6WWTPQ9mrgrTEYBiQLTaxrc9ypqr40M1EO4fwzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcvTg5fmYTsMNm/WCXATDVYpWAnfZd1PABUmvu2FP+ZdnWqcdQeKS3oV7P2UCqxmghPx4IwGeRtn6EbvJv3O8vjmLu0otypInX6nPZoiNEc3VI8lofAe+FnXwj8aabmS4K+SOrIwfJMzVfNUYmmhkqOn62F7/6DHbtYtvnEyMqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq6oelki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A9C4CEF1;
-	Tue, 26 Aug 2025 13:33:07 +0000 (UTC)
+	 MIME-Version; b=urGXWbVPlc+eFgqZnEzqk8nC8lMu2mVTeCffYi03TDekFcVbYmyg4d5fqAjYzx/j9MsosqXNUr2n8dWAKZ9y8wc1x5dWN7Jm0MG3hcvSaZ3pWPec62kuTU66dCmMrwwLcsz+QLsBnHj/f/tvLM0akGB+DpXxY1egt/b1WciuvVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agH5DNYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924E5C4CEF1;
+	Tue, 26 Aug 2025 14:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215188;
-	bh=VzQjxg1iCSQMGUOemscLHQXB8/XwDXrxkF3ndHjXVb4=;
+	s=korg; t=1756218208;
+	bh=Y9kt6WWTPQ9mrgrTEYBiQLTaxrc9ypqr40M1EO4fwzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qq6oelkiurnl5f2GOY8OUc2JHJEu+xFkqu2jmmnqFeb6mhkt6/r5xvM648Iimrq3Q
-	 /Rj6KaZQw1ax8cBzaQ8HppMfwMYZrHXVmAoCy/AR+92WuYxVFEEkdPWEQ6XUhf8wS0
-	 QCBpYtNbLpI3XAQcvk96ag8dmGMlq/y31iIvSlmA=
+	b=agH5DNYwAyLLzM7OUOaE5mO4nooTTjoEVgaM/iOGdEJWZcczKAZty8gmzqfiyr+3b
+	 y+pPhJNCFnajuLCVWCOswuts2pygEE/wVMCNxLdnngqQw4NfKeO9oZXMUHw9XxRl0v
+	 hBqIX9k/Se9DOxKbHDO87C/AFgACsHlLU3N8IKSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 390/482] x86/reboot: Harden virtualization hooks for emergency reboot
+Subject: [PATCH 5.10 433/523] block: Make REQ_OP_ZONE_FINISH a write operation
 Date: Tue, 26 Aug 2025 13:10:43 +0200
-Message-ID: <20250826110940.463498815@linuxfoundation.org>
+Message-ID: <20250826110935.137056833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 5e408396c60cd0f0b53a43713016b6d6af8d69e0 ]
+[ Upstream commit 3f66ccbaaef3a0c5bd844eab04e3207b4061c546 ]
 
-Provide dedicated helpers to (un)register virt hooks used during an
-emergency crash/reboot, and WARN if there is an attempt to overwrite
-the registered callback, or an attempt to do an unpaired unregister.
+REQ_OP_ZONE_FINISH is defined as "12", which makes
+op_is_write(REQ_OP_ZONE_FINISH) return false, despite the fact that a
+zone finish operation is an operation that modifies a zone (transition
+it to full) and so should be considered as a write operation (albeit
+one that does not transfer any data to the device).
 
-Opportunsitically use rcu_assign_pointer() instead of RCU_INIT_POINTER(),
-mainly so that the set/unset paths are more symmetrical, but also because
-any performance gains from using RCU_INIT_POINTER() are meaningless for
-this code.
+Fix this by redefining REQ_OP_ZONE_FINISH to be an odd number (13), and
+redefine REQ_OP_ZONE_RESET and REQ_OP_ZONE_RESET_ALL using sequential
+odd numbers from that new value.
 
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20230721201859.2307736-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: a0ee1d5faff1 ("KVM: VMX: Flush shadow VMCS on emergency reboot")
+Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250625093327.548866-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Extra renames ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/reboot.h |    5 +++--
- arch/x86/kernel/reboot.c      |   30 ++++++++++++++++++++++++------
- arch/x86/kvm/vmx/vmx.c        |    6 ++----
- 3 files changed, 29 insertions(+), 12 deletions(-)
+ include/linux/blk_types.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/reboot.h
-+++ b/arch/x86/include/asm/reboot.h
-@@ -25,8 +25,9 @@ void __noreturn machine_real_restart(uns
- #define MRR_BIOS	0
- #define MRR_APM		1
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -353,13 +353,13 @@ enum req_opf {
+ 	/* Close a zone */
+ 	REQ_OP_ZONE_CLOSE	= 11,
+ 	/* Transition a zone to full */
+-	REQ_OP_ZONE_FINISH	= 12,
++	REQ_OP_ZONE_FINISH	= 13,
+ 	/* write data at the current zone write pointer */
+-	REQ_OP_ZONE_APPEND	= 13,
++	REQ_OP_ZONE_APPEND	= 15,
+ 	/* reset a zone write pointer */
+-	REQ_OP_ZONE_RESET	= 15,
++	REQ_OP_ZONE_RESET	= 17,
+ 	/* reset all the zone present on the device */
+-	REQ_OP_ZONE_RESET_ALL	= 17,
++	REQ_OP_ZONE_RESET_ALL	= 19,
  
--typedef void crash_vmclear_fn(void);
--extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
-+typedef void (cpu_emergency_virt_cb)(void);
-+void cpu_emergency_register_virt_callback(cpu_emergency_virt_cb *callback);
-+void cpu_emergency_unregister_virt_callback(cpu_emergency_virt_cb *callback);
- void cpu_emergency_disable_virtualization(void);
- 
- typedef void (*nmi_shootdown_cb)(int, struct pt_regs*);
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -794,17 +794,35 @@ void machine_crash_shutdown(struct pt_re
-  *
-  * protected by rcu.
-  */
--crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
--EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
-+static cpu_emergency_virt_cb __rcu *cpu_emergency_virt_callback;
-+
-+void cpu_emergency_register_virt_callback(cpu_emergency_virt_cb *callback)
-+{
-+	if (WARN_ON_ONCE(rcu_access_pointer(cpu_emergency_virt_callback)))
-+		return;
-+
-+	rcu_assign_pointer(cpu_emergency_virt_callback, callback);
-+}
-+EXPORT_SYMBOL_GPL(cpu_emergency_register_virt_callback);
-+
-+void cpu_emergency_unregister_virt_callback(cpu_emergency_virt_cb *callback)
-+{
-+	if (WARN_ON_ONCE(rcu_access_pointer(cpu_emergency_virt_callback) != callback))
-+		return;
-+
-+	rcu_assign_pointer(cpu_emergency_virt_callback, NULL);
-+	synchronize_rcu();
-+}
-+EXPORT_SYMBOL_GPL(cpu_emergency_unregister_virt_callback);
- 
- static inline void cpu_crash_vmclear_loaded_vmcss(void)
- {
--	crash_vmclear_fn *do_vmclear_operation = NULL;
-+	cpu_emergency_virt_cb *callback;
- 
- 	rcu_read_lock();
--	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
--	if (do_vmclear_operation)
--		do_vmclear_operation();
-+	callback = rcu_dereference(cpu_emergency_virt_callback);
-+	if (callback)
-+		callback();
- 	rcu_read_unlock();
- }
- 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8602,8 +8602,7 @@ static void __vmx_exit(void)
- {
- 	allow_smaller_maxphyaddr = false;
- 
--	RCU_INIT_POINTER(crash_vmclear_loaded_vmcss, NULL);
--	synchronize_rcu();
-+	cpu_emergency_unregister_virt_callback(crash_vmclear_local_loaded_vmcss);
- 
- 	vmx_cleanup_l1d_flush();
- }
-@@ -8677,8 +8676,7 @@ static int __init vmx_init(void)
- 		pi_init_cpu(cpu);
- 	}
- 
--	rcu_assign_pointer(crash_vmclear_loaded_vmcss,
--			   crash_vmclear_local_loaded_vmcss);
-+	cpu_emergency_register_virt_callback(crash_vmclear_local_loaded_vmcss);
- 
- 	vmx_check_vmcs12_offsets();
- 
+ 	/* SCSI passthrough using struct scsi_request */
+ 	REQ_OP_SCSI_IN		= 32,
 
 
 
