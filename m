@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2874B3679C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A95B35D02
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6D98E839B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0902A164D11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950A3352FEF;
-	Tue, 26 Aug 2025 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B683314DC;
+	Tue, 26 Aug 2025 11:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILAmkfdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2aLceT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC634A32D;
-	Tue, 26 Aug 2025 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C658322524;
+	Tue, 26 Aug 2025 11:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216614; cv=none; b=mxrI18SiBuBTFcJUDHaQinpbBkI9wJ+KObk5bCXhJHPofW+CAsfO8SAl/4SL0xKqKZNxHuNJgpzm60qLgRySnFxtwG3i47MtJ2gog5Z3GSp2MDEmxni3EVDDOhBzuQoa8TZ7JTeKlrb1t/555OBT1/zHQiHULBIsBvFrmKPNOiM=
+	t=1756207783; cv=none; b=GOttzZRqfU7h3dszcJN8eHH5ZuSQZZeZzmIsFLMejZTX4swPi5K8LN7CtebYi1k4ZgQ7hFMCaJ4UtDKUyMMsiR4lXrGPtjZYutXsiNjGE7ymlSXYVHbZE05XTzP2I9p6atk3v/ZSjkViyPw4zIPs64SdtHmMxl/4Iu70oC32hBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216614; c=relaxed/simple;
-	bh=i+14bAa5wOhfJQoLVthYtLXiH8aXCamJzCAsLiTz+Qg=;
+	s=arc-20240116; t=1756207783; c=relaxed/simple;
+	bh=v3+rEVZ6zRIRGt1/ZAgvIxgfDJSx7UBb68BwYBk3uGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZEIdL29/D9Qc2Z7vb5xzSCxrLfVOaTaIyHz4BFjfh8B0Y1c3HiacoTVE8A5ZvD40Wu6TxC6rPK3/iKUFG0QYdRX7lxsGGR7lVMuFj4EUAGsfz+2+dwBSfcTmDQieiWZX5tT6D1iSVc7sJ5Reb0IV9W0L27ovnDOT48IHmdPqO3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILAmkfdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C23C4CEF1;
-	Tue, 26 Aug 2025 13:56:53 +0000 (UTC)
+	 MIME-Version; b=m4RPztT0UgzyjSKIwqb+Kp5Sg2oq11rdK1gcTB8ab4arRrnkXbrIXUvvtTE4mrO8sBW2zEYBvLy367n87Li3gYMbnl51yNSyWjq4NJr0UvkBLbjtoRgnbyGizuUP6VmsuPOFNEpQ/1xP1csD4Olq3kai7vpgyvR98KXdYwfaG7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2aLceT0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17353C4CEF1;
+	Tue, 26 Aug 2025 11:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216614;
-	bh=i+14bAa5wOhfJQoLVthYtLXiH8aXCamJzCAsLiTz+Qg=;
+	s=korg; t=1756207783;
+	bh=v3+rEVZ6zRIRGt1/ZAgvIxgfDJSx7UBb68BwYBk3uGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILAmkfdB9uimu637iIfKqHQWckMxkyiQcj2GXv8yJeUOyp7/dWXC9Xo/Eg0AXJJ4D
-	 +Gb5J0bCWuEENLwu6f5B4kLNc2Ob+fzSY54Ma7zbO8vW3TWgt/dTVw+bHIm2ZZ+7kc
-	 hdD+qVDq9qaas1Qs/MbNHCWMzmTmHe1RY/cH2dhk=
+	b=s2aLceT0kclPnR1tHiYS8goCPEBXd07NVMctk8W9b6fxLamjoBxOh7TxkP2APZEDa
+	 vuqIeJp8PYmAulo4UHfCpX4oBcoFatIDLDhQxE/H5uNpGyngHAjQgui8Xwj98Aii0f
+	 ajDia60OAEL6nubMtsVYebBBgRCUO5ChSF39IikI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.15 478/644] pwm: imx-tpm: Reset counter if CMOD is 0
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 285/457] libfs: massage path_from_stashed() to allow custom stashing behavior
 Date: Tue, 26 Aug 2025 13:09:29 +0200
-Message-ID: <20250826110958.331651778@linuxfoundation.org>
+Message-ID: <20250826110944.422906547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 65c6f742ab14ab1a2679fba72b82dcc0289d96f1 upstream.
+[ Upstream commit bda3f1608d993419fa247dc11263fc931ceca58a ]
 
-As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
-of the TPM counter does NOT get updated when writing MOD.MOD unless
-SC.CMOD != 0. Therefore, with the current code, assuming the following
-sequence:
+* Add a callback to struct stashed_operations so it's possible to
+  implement custom behavior for pidfs and allow for it to return errors.
 
-	1) pwm_disable()
-	2) pwm_apply_might_sleep() /* period is changed here */
-	3) pwm_enable()
+* Teach stashed_dentry_get() to handle error pointers.
 
-and assuming only one channel is active, if CNT.COUNT is higher than the
-MOD.MOD value written during the pwm_apply_might_sleep() call then, when
-re-enabling the PWM during pwm_enable(), the counter will end up resetting
-after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
-normally expected.
-
-Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
-written.
-
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Link: https://lore.kernel.org/r/20250728194144.22884-1-laurentiumihalcea111@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250618-work-pidfs-persistent-v2-2-98f3456fd552@kernel.org
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 0b2d71a7c826 ("pidfs: Fix memory leak in pidfd_info()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/internal.h |  3 +++
+ fs/libfs.c    | 27 ++++++++++++++++++++-------
+ 2 files changed, 23 insertions(+), 7 deletions(-)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -203,6 +203,15 @@ static int pwm_imx_tpm_apply_hw(struct p
- 		writel(val, tpm->base + PWM_IMX_TPM_SC);
+diff --git a/fs/internal.h b/fs/internal.h
+index 393f6c5c24f6..22ba066d1dba 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -322,12 +322,15 @@ struct mnt_idmap *alloc_mnt_idmap(struct user_namespace *mnt_userns);
+ struct mnt_idmap *mnt_idmap_get(struct mnt_idmap *idmap);
+ void mnt_idmap_put(struct mnt_idmap *idmap);
+ struct stashed_operations {
++	struct dentry *(*stash_dentry)(struct dentry **stashed,
++				       struct dentry *dentry);
+ 	void (*put_data)(void *data);
+ 	int (*init_inode)(struct inode *inode, void *data);
+ };
+ int path_from_stashed(struct dentry **stashed, struct vfsmount *mnt, void *data,
+ 		      struct path *path);
+ void stashed_dentry_prune(struct dentry *dentry);
++struct dentry *stash_dentry(struct dentry **stashed, struct dentry *dentry);
+ struct dentry *stashed_dentry_get(struct dentry **stashed);
+ /**
+  * path_mounted - check whether path is mounted
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 972b95cc7433..5b936ee71892 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -2126,6 +2126,8 @@ struct dentry *stashed_dentry_get(struct dentry **stashed)
+ 	dentry = rcu_dereference(*stashed);
+ 	if (!dentry)
+ 		return NULL;
++	if (IS_ERR(dentry))
++		return dentry;
+ 	if (!lockref_get_not_dead(&dentry->d_lockref))
+ 		return NULL;
+ 	return dentry;
+@@ -2174,8 +2176,7 @@ static struct dentry *prepare_anon_dentry(struct dentry **stashed,
+ 	return dentry;
+ }
  
- 		/*
-+		 * if the counter is disabled (CMOD == 0), programming the new
-+		 * period length (MOD) will not reset the counter (CNT). If
-+		 * CNT.COUNT happens to be bigger than the new MOD value then
-+		 * the counter will end up being reset way too late. Therefore,
-+		 * manually reset it to 0.
-+		 */
-+		if (!cmod)
-+			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
-+		/*
- 		 * set period count:
- 		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
- 		 * is updated when MOD register is written.
+-static struct dentry *stash_dentry(struct dentry **stashed,
+-				   struct dentry *dentry)
++struct dentry *stash_dentry(struct dentry **stashed, struct dentry *dentry)
+ {
+ 	guard(rcu)();
+ 	for (;;) {
+@@ -2216,12 +2217,15 @@ static struct dentry *stash_dentry(struct dentry **stashed,
+ int path_from_stashed(struct dentry **stashed, struct vfsmount *mnt, void *data,
+ 		      struct path *path)
+ {
+-	struct dentry *dentry;
++	struct dentry *dentry, *res;
+ 	const struct stashed_operations *sops = mnt->mnt_sb->s_fs_info;
+ 
+ 	/* See if dentry can be reused. */
+-	path->dentry = stashed_dentry_get(stashed);
+-	if (path->dentry) {
++	res = stashed_dentry_get(stashed);
++	if (IS_ERR(res))
++		return PTR_ERR(res);
++	if (res) {
++		path->dentry = res;
+ 		sops->put_data(data);
+ 		goto out_path;
+ 	}
+@@ -2232,8 +2236,17 @@ int path_from_stashed(struct dentry **stashed, struct vfsmount *mnt, void *data,
+ 		return PTR_ERR(dentry);
+ 
+ 	/* Added a new dentry. @data is now owned by the filesystem. */
+-	path->dentry = stash_dentry(stashed, dentry);
+-	if (path->dentry != dentry)
++	if (sops->stash_dentry)
++		res = sops->stash_dentry(stashed, dentry);
++	else
++		res = stash_dentry(stashed, dentry);
++	if (IS_ERR(res)) {
++		dput(dentry);
++		return PTR_ERR(res);
++	}
++	path->dentry = res;
++	/* A dentry was reused. */
++	if (res != dentry)
+ 		dput(dentry);
+ 
+ out_path:
+-- 
+2.50.1
+
 
 
 
