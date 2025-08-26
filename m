@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEF1B36BC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297C4B35DF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510C11C4739D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6007C784D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E3C34DCED;
-	Tue, 26 Aug 2025 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257F729D29B;
+	Tue, 26 Aug 2025 11:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjb/Db7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzoMU3c5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F342459F3;
-	Tue, 26 Aug 2025 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC28D29BDAC;
+	Tue, 26 Aug 2025 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218400; cv=none; b=ELvKGL6K2u6PNE1jwPICU49ErcSpasIxCkw3orhhjRgAgpc2WZBu/CXvfzJrdvb3Ajwt8wemhi3taMQpstnoMZs2n1UWR32UeQF+vjkGLhjtqEhiEdF5K2BGHxBd7GvIsXppUIW3DVpW10x1ke4vW69eBKGSf9MA9Se7hKhLEwc=
+	t=1756208966; cv=none; b=fnrYSA5L9ZC3Z6OmgtLVmkr15vK7Rrr3LjTm8d4oa4zA3hg5zSiTqO1jw1ZuvjqG5+Ptxazu1byZG6j3mEhLvOGnIB+QUQ7PhTVC3CSJVIVDArrq+HY1DesB6H3miiY5NywuURQYePm8W3WeB7IwaQaQf8u+YFxbcn1lOmU0i6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218400; c=relaxed/simple;
-	bh=AHVkI3nz+szE6HP4ijsHDrLRlSuhDL3B8fKI6P1DAJQ=;
+	s=arc-20240116; t=1756208966; c=relaxed/simple;
+	bh=/UcG3K5rMWGBMgZ724C2q1sVf4UEYIDG8XhN69UNP8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjtZTojH7FR7cuOSskrytYOabWmV268N0tVXdvi1BU6wA4jPM8IclqGK/UDhXqkr0Aej7ckEVe6ZQZYurWfMPIQgGhAwoHsieWPmP3ifbB25NMtTSUnDSeup6ilnSqin/GFw/f4KsMs7HJGwPpqA5NB5M8dV6ikmwrh+sierHtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjb/Db7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95448C4CEF1;
-	Tue, 26 Aug 2025 14:26:39 +0000 (UTC)
+	 MIME-Version; b=jnxycNjEIanxkrGm2GAiFWewpKQaLXtZQ9Bb7pneHqUEDbP/wOfWO7q5KYDbgfNJmV6YmgEWJBsS2A3Cw4Rgt6EpxvSZax7xdx+SjUkSSz6jRFjzGLCaaaYO8P6Y9zx6KtRTNkB7gj9JNIdixTqiEG8ZYotSB155mVO8h75O8vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzoMU3c5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224EEC4CEF1;
+	Tue, 26 Aug 2025 11:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218399;
-	bh=AHVkI3nz+szE6HP4ijsHDrLRlSuhDL3B8fKI6P1DAJQ=;
+	s=korg; t=1756208966;
+	bh=/UcG3K5rMWGBMgZ724C2q1sVf4UEYIDG8XhN69UNP8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjb/Db7PQvu+wHne5HE6p5r/Q3scR/qKbtTAvmNYYX3tekca2jojq/K5wEZDqxbBl
-	 1GU+LEp8xkzyquP8SO86N8J9SgNgq8AFtqI1uwzfjbDfljeHskCbaIBWyFb5tdYsdl
-	 cddHiLiWuWWZAHs2ONkOSRA94yGfM03RkzxbR/lo=
+	b=XzoMU3c5ufC7XDnlSiSkQ+CsDkHGwZtS1XlAUWBQY9vPzq76+KPxjCIBliWcJzDkS
+	 0w08NVLdxKcSorvkSuIMpJx39odkEiXx8qrXldfXSISroyMLImqo7dqEupxXT9QDDf
+	 XhxSREjpXNrxlpGtEmxcScP2blPuaK+5LhSzmu4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 477/523] pwm: mediatek: Handle hardware enable and clock enable separately
+Subject: [PATCH 6.12 272/322] net: xilinx: axienet: Fix RX skb ring management in DMAengine mode
 Date: Tue, 26 Aug 2025 13:11:27 +0200
-Message-ID: <20250826110936.210450845@linuxfoundation.org>
+Message-ID: <20250826110922.643603163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Suraj Gupta <suraj.gupta2@amd.com>
 
-[ Upstream commit 704d918341c378c5f9505dfdf32d315e256d3846 ]
+[ Upstream commit fd980bf6e9cdae885105685259421164f843ca55 ]
 
-Stop handling the clocks in pwm_mediatek_enable() and
-pwm_mediatek_disable(). This is a preparing change for the next commit
-that requires that clocks and the enable bit are handled separately.
+Submit multiple descriptors in axienet_rx_cb() to fill Rx skb ring. This
+ensures the ring "catches up" on previously missed allocations.
 
-Also move these two functions a bit further up in the source file to
-make them usable in pwm_mediatek_config(), which is needed in the next
-commit, too.
+Increment Rx skb ring head pointer after BD is successfully allocated.
+Previously, head pointer was incremented before verifying if descriptor is
+successfully allocated and has valid entries, which could lead to ring
+state inconsistency if descriptor setup failed.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
+These changes improve reliability by maintaining adequate descriptor
+availability and ensuring proper ring buffer state management.
+
+Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Link: https://patch.msgid.link/20250813135559.1555652-1-suraj.gupta2@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -120,6 +120,26 @@ static inline void pwm_mediatek_writel(s
- 	writel(value, chip->regs + pwm_mediatek_reg_offset[num] + offset);
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 2d47b35443af..1775e060d39d 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1119,6 +1119,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	struct axienet_local *lp = data;
+ 	struct sk_buff *skb;
+ 	u32 *app_metadata;
++	int i;
+ 
+ 	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
+ 	skb = skbuf_dma->skb;
+@@ -1137,7 +1138,10 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	u64_stats_add(&lp->rx_packets, 1);
+ 	u64_stats_add(&lp->rx_bytes, rx_len);
+ 	u64_stats_update_end(&lp->rx_stat_sync);
+-	axienet_rx_submit_desc(lp->ndev);
++
++	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
++				   RX_BUF_NUM_DEFAULT); i++)
++		axienet_rx_submit_desc(lp->ndev);
+ 	dma_async_issue_pending(lp->rx_chan);
  }
  
-+static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value |= BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
-+static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value &= ~BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
- static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       int duty_ns, int period_ns)
- {
-@@ -182,35 +202,6 @@ out:
- 	return ret;
- }
+@@ -1394,7 +1398,6 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
+ 	if (!skbuf_dma)
+ 		return;
  
--static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--	int ret;
--
--	ret = pwm_mediatek_clk_enable(chip, pwm);
--	if (ret < 0)
--		return ret;
--
--	value = readl(pc->regs);
--	value |= BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	return 0;
--}
--
--static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--
--	value = readl(pc->regs);
--	value &= ~BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	pwm_mediatek_clk_disable(chip, pwm);
--}
--
- static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			      const struct pwm_state *state)
- {
-@@ -220,8 +211,10 @@ static int pwm_mediatek_apply(struct pwm
- 		return -EINVAL;
+-	lp->rx_ring_head++;
+ 	skb = netdev_alloc_skb(ndev, lp->max_frm_size);
+ 	if (!skb)
+ 		return;
+@@ -1419,6 +1422,7 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
+ 	skbuf_dma->desc = dma_rx_desc;
+ 	dma_rx_desc->callback_param = lp;
+ 	dma_rx_desc->callback_result = axienet_dma_rx_cb;
++	lp->rx_ring_head++;
+ 	dmaengine_submit(dma_rx_desc);
  
- 	if (!state->enabled) {
--		if (pwm->state.enabled)
-+		if (pwm->state.enabled) {
- 			pwm_mediatek_disable(chip, pwm);
-+			pwm_mediatek_clk_disable(chip, pwm);
-+		}
- 
- 		return 0;
- 	}
-@@ -230,8 +223,11 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled)
--		err = pwm_mediatek_enable(chip, pwm);
-+	if (!pwm->state.enabled) {
-+		err = pwm_mediatek_clk_enable(chip, pwm);
-+		if (!err)
-+			pwm_mediatek_enable(chip, pwm);
-+	}
- 
- 	return err;
- }
+ 	return;
+-- 
+2.50.1
+
 
 
 
