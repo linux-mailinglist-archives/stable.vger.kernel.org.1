@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56431B360B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308ABB36B61
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 688882A09ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB38B58490C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2E31B4F09;
-	Tue, 26 Aug 2025 13:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725A735E4F9;
+	Tue, 26 Aug 2025 14:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v57ltqhZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOZl3GvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C80672602;
-	Tue, 26 Aug 2025 13:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9BB34A325;
+	Tue, 26 Aug 2025 14:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213217; cv=none; b=DfvZ+LwqLiqVyW1/jcs0GS/UuaKZG43C5XjGKtQ2tqfLJqngjIyxh33WMx/bghiuds5Ny1aW/3iBHxd76gcz236mDW3JFt8LVZP5tHfyTZWO+/ZQ1LtMoBbYTwkRTtO4pAO5q9T4VprcYywEiMJ9V7tN+X6dgtUVognnKleti5o=
+	t=1756218753; cv=none; b=ku2kGqv4EhQIHzUV4/3edV3ooy83teerBTt1DPA5PvDNS5Xy6I4HmOO8N6g7a4IeXK/Xa4x18kc5XtZSPpzFR/69fLDr1b9pgYNebJdnrdMo/b8cY5MUAPngLDIb144u8HrjJ3ZUUhUDDOzVl8eENwTWtvI5HOKgL/IxWeRO3Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213217; c=relaxed/simple;
-	bh=vGWNY5xsIxzQHE3EbLgsuXfMUAEniU5ytXHHyqdxkY8=;
+	s=arc-20240116; t=1756218753; c=relaxed/simple;
+	bh=/pX1RvXR9XeVPiiTacPGPWtN6OLCt3oLF55y2SOrE3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2wA3G+9fzH5FYrupglKcZCmer04qEMJ/M7eWA04+qhy0SxxiQY0k4seVNsCir7uMseVr8M+1qN2PX03O0YzGuEWXbRPlZrNHIMzHyOqk2bSY2nBWpAdQFzB9jyfAI0bJH3RGnJucM+c+ukg7pFEwJyotMaI5lClAbs5yrZp65k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v57ltqhZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AB8C4CEF1;
-	Tue, 26 Aug 2025 13:00:16 +0000 (UTC)
+	 MIME-Version; b=DfnB5DGqnw6JyJh/HXZRWka0Uwd5PpDBgszxN5tmNX+84G5mk/QFPTE7Z9plz8RH6d5UPwNtYf9kdGqFUgoo34wZQlcHpLkPVFSYHmc3domNVXw77wU6hR1cCZogqr8KWsVE49QNvJaAHgJo01zY1n5IejplVBnP5+5CVxws9MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOZl3GvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B669C113CF;
+	Tue, 26 Aug 2025 14:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213217;
-	bh=vGWNY5xsIxzQHE3EbLgsuXfMUAEniU5ytXHHyqdxkY8=;
+	s=korg; t=1756218751;
+	bh=/pX1RvXR9XeVPiiTacPGPWtN6OLCt3oLF55y2SOrE3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v57ltqhZnyT9bA6yHUAM9lv4ZWoesELZUQKmer+Y/pfFpN0LKyXXR6yHcmeh4ziJX
-	 7dK8IKLRw01d+JgUdah5n5aTgtWUsijwpLf9njYyskLv08wsiV3epxIWBOlF02BLjv
-	 13QvTLxb4ehMvLPGbNolL4y0tWGsYBfimKOmxPzk=
+	b=uOZl3GvSsyKgqmUAsm2s2qEUpecqaftmiUdzQDBE91XI4BMlUEZEvJ6+n1VaHN0Gq
+	 8NcXytjqT6snZlpQbiJb5qEhtV435OAYhfbRIoHhdOwp2KiyJ4kfMYi/thA6dXLgcG
+	 jsrq4uzvtOUxQhXdnYdEaebk30qIxGHEnYHkIRYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Totev <gabriel.totev@zetier.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/587] apparmor: shift ouid when mediating hard links in userns
+Subject: [PATCH 5.4 088/403] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
 Date: Tue, 26 Aug 2025 13:06:54 +0200
-Message-ID: <20250826110959.670380918@linuxfoundation.org>
+Message-ID: <20250826110909.094544661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Totev <gabriel.totev@zetier.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit c5bf96d20fd787e4909b755de4705d52f3458836 ]
+[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
 
-When using AppArmor profiles inside an unprivileged container,
-the link operation observes an unshifted ouid.
-(tested with LXD and Incus)
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
-For example, root inside container and uid 1000000 outside, with
-`owner /root/link l,` profile entry for ln:
-
-/root$ touch chain && ln chain link
-==> dmesg
-apparmor="DENIED" operation="link" class="file"
-namespace="root//lxd-feet_<var-snap-lxd-common-lxd>" profile="linkit"
-name="/root/link" pid=1655 comm="ln" requested_mask="l" denied_mask="l"
-fsuid=1000000 ouid=0 [<== should be 1000000] target="/root/chain"
-
-Fix by mapping inode uid of old_dentry in aa_path_link() rather than
-using it directly, similarly to how it's mapped in __file_path_perm()
-later in the file.
-
-Signed-off-by: Gabriel Totev <gabriel.totev@zetier.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/file.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/file.c b/security/apparmor/file.c
-index 6fd21324a097..a51b83cf6968 100644
---- a/security/apparmor/file.c
-+++ b/security/apparmor/file.c
-@@ -436,9 +436,11 @@ int aa_path_link(const struct cred *subj_cred,
- {
- 	struct path link = { .mnt = new_dir->mnt, .dentry = new_dentry };
- 	struct path target = { .mnt = new_dir->mnt, .dentry = old_dentry };
-+	struct inode *inode = d_backing_inode(old_dentry);
-+	vfsuid_t vfsuid = i_uid_into_vfsuid(mnt_idmap(target.mnt), inode);
- 	struct path_cond cond = {
--		d_backing_inode(old_dentry)->i_uid,
--		d_backing_inode(old_dentry)->i_mode
-+		.uid = vfsuid_into_kuid(vfsuid),
-+		.mode = inode->i_mode,
- 	};
- 	char *buffer = NULL, *buffer2 = NULL;
- 	struct aa_profile *profile;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 18c5975d7c03..70ba91d2bedf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -123,8 +123,10 @@ static int __init iwl_mvm_init(void)
+ 	}
+ 
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
