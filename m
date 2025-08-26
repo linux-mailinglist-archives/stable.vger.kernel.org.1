@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198F3B36D36
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF97B369AA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F174C986DDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F14E1C43EB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E715735FC18;
-	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054DD34F496;
+	Tue, 26 Aug 2025 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UM40mwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diaXbywE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9F435CEDD;
-	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8137260586;
+	Tue, 26 Aug 2025 14:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219133; cv=none; b=Ys0gHeuJ71u40mCg2S5QaKeLIUbKqbvHosPeIaKtgInSlQ9Vx36caadayoEOCYDPqEEbSvwcFo03V67ttD3kpIMeqINf1XtOv0swrfjPWZDUXIlU2TjtuYo38rIsN/DIVG7szmKst6KxB9DFiSoDsN/HZ48Gcaka8tJge5qzpkE=
+	t=1756218069; cv=none; b=EDBh+aOoHws0nZCXaigzpFcmTZxDjACpNOOlZEpg6tMCsBLi9cUNaE47AlEkH7g9VrP2XwP5MT9KlngrCuSIVzUjL9pBF+KB3ELTf51WJKzLBLZ/kihGVdxDa3cF30ZDGGWHybpsGaHrhyMNP4GYnI6VStZFCmCwzrjbGVBjx40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219133; c=relaxed/simple;
-	bh=iv80kTbURV7XkPcx5qwWq/gkV+DFb6+dDMZBpn+nEpE=;
+	s=arc-20240116; t=1756218069; c=relaxed/simple;
+	bh=2NvpdKMuQvbFs/PgCT+YVJZpdyitfEOefKQy8oVOP0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MDdvW/dT7g4fLcs9cJwJFYLmpw7Vr4ZLeRiwpbKYH3jScBjMoaLdiQfGq7tMFvEsHnQPQ1dz3aoKiytK3eAM+HZ49PIu6lkNnSD4zhK+njlwEQ0mo2MJDLEpMXXKrIfn0jwjfIZi8JMWDEbJS1vNfnRglOR/IZWhHTBpdVPjDD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UM40mwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7C0C4CEF1;
-	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
+	 MIME-Version; b=a37zDp4cNTLcbl4HerL/4UFgQam/lf1zFszOUyA7JNUAncg9K2i3dRPefGf+V2UilJRaxMJJxpr6TK+kbPU283vASpsVgPtI2AoWAjzBO8Na00JQ6825t3C6bHMiUSX1YmOteO3h0gnlpjXecz6sYEzO3yR+bWaUnXC2cDcScJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diaXbywE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1C0C4CEF1;
+	Tue, 26 Aug 2025 14:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219133;
-	bh=iv80kTbURV7XkPcx5qwWq/gkV+DFb6+dDMZBpn+nEpE=;
+	s=korg; t=1756218069;
+	bh=2NvpdKMuQvbFs/PgCT+YVJZpdyitfEOefKQy8oVOP0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UM40mwk36bwDAdkysrslIKEEsFOXdD1wwc7YZwVUzT90VNDVH+TW5NKO9pRlgcYT
-	 d4Vv9IZl3Obzm0U+XDSrKPGEtKNMYKzSLdMJMRFDFaHq0PNlKZqLSsvQDYyJdRoWV1
-	 TQtlitmXRj1HHV8cjcMUguQ0VpsD/pYBORwtWGJI=
+	b=diaXbywEMEeisVTmulo56lsB/GNp18ywEyJ4cGO7vT6+buRBh26ZMyMUSeAv/MDOS
+	 vEzRWZZWlg5gYl8+YB/P52rrL4JadhDwXbrbm6X9IO6Ikh1J8MYjWbGE8QOHANxlrA
+	 je1w0A0ow1vJXGv7XbyZwueU9H2undZuLG5cPdIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 266/403] net: phy: smsc: add proper reset flags for LAN8710A
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 382/523] media: ov2659: Fix memory leaks in ov2659_probe()
 Date: Tue, 26 Aug 2025 13:09:52 +0200
-Message-ID: <20250826110914.156105614@linuxfoundation.org>
+Message-ID: <20250826110933.884958684@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
+commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
 
-According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
-reset is required after power-on, and the reference clock (REF_CLK) must be
-established before asserting reset.
+ov2659_probe() doesn't properly free control handler resources in failure
+paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
+memory leaks and reorder the ctrl_handler assignment for better code flow.
 
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/smsc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/ov2659.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index e387c219f17d..68bb94f970f6 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -306,6 +306,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 	/* PHY_BASIC_FEATURES */
- 	.flags		= PHY_RST_AFTER_CLK_EN,
+--- a/drivers/media/i2c/ov2659.c
++++ b/drivers/media/i2c/ov2659.c
+@@ -1482,14 +1482,15 @@ static int ov2659_probe(struct i2c_clien
+ 				     V4L2_CID_TEST_PATTERN,
+ 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
+ 				     0, 0, ov2659_test_pattern_menu);
+-	ov2659->sd.ctrl_handler = &ov2659->ctrls;
  
-+	.flags		= PHY_RST_AFTER_CLK_EN,
- 	.probe		= smsc_phy_probe,
+ 	if (ov2659->ctrls.error) {
+ 		dev_err(&client->dev, "%s: control initialization error %d\n",
+ 			__func__, ov2659->ctrls.error);
++		v4l2_ctrl_handler_free(&ov2659->ctrls);
+ 		return  ov2659->ctrls.error;
+ 	}
  
- 	/* basic functions */
--- 
-2.39.5
-
++	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+ 	sd = &ov2659->sd;
+ 	client->flags |= I2C_CLIENT_SCCB;
+ #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 
 
 
