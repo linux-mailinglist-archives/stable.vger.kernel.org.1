@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7ABB35C4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91C0B36A12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFBE17A3BF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D97987D04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC53E2BF3E2;
-	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A10352FF8;
+	Tue, 26 Aug 2025 14:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzqeVSwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVgem2Fs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA44C2BE653;
-	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13EE34F490;
+	Tue, 26 Aug 2025 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207634; cv=none; b=pCzL1MU/k32Rok17d9KmJKRM/nJB++VE8Qx6pqb+xmKH0+tjnhchIj9+d7EUeMUa+WwVonQ6uxuVVfl5DaPJadXNfMwi6kpUZXHBrhcfqQlXSK6K5MpO+vmhRu3oNXIVbGJtQiaFvO6Kg8kOpXadbA4jbi+0HU6XGeEzcLN6VNo=
+	t=1756217945; cv=none; b=Xfx5GQ0HcZklELjShmGVUuBnaypiAc3ydEEFVV9n23QlCODtzKZkxliZcTZVGPE7uEtJWmLGmhKs+rQRcEdmIr035cAmX5Y3nYfNXeJ0oZFGDHtAPoXTvQL4/eiex+568YjOa/AR1LNOMKDYP+hmaUogCc4qk1RrW+dCS3Qd65I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207634; c=relaxed/simple;
-	bh=F8N0boz53m4NEFlwktTJZDORu3e189P9f4Zk8t0ZHyI=;
+	s=arc-20240116; t=1756217945; c=relaxed/simple;
+	bh=WCC9EAZqJk3NllHWFAAntXEKHwp2Wo5WEaJFl+gRDBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VItyhJiBvsaZgJW0i1kc9yMif6YyzpfUhcVNYmR855q0rq/rnowCMkKonIhdJoopYDN8TJ4zDomiLApErZodwu8WVMaKta/l/utnEeCojPrPpVIk/mh10eXdOPNyg7wrm/VVb/y+xT3NfdYrvpKdqmXYlxS4hcV1fjUKOWGXiDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzqeVSwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5AAC4CEF1;
-	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
+	 MIME-Version; b=SYE+VyPP0JOigupoQkBrimhO6QJwrNKq00KW3tMm5SDnLYJk77i8HSZLXzrge1HEkmghu67t0Tm8hpP1NnvNUvSDXrg7a9NEyr520Sqn+D0RFiG+vgmT+hFTPvcl2cWPAuYZ51dDatWjVRJfyayNW62CtUNo+fzejHkdZVLxd6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVgem2Fs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B48C4CEF1;
+	Tue, 26 Aug 2025 14:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207634;
-	bh=F8N0boz53m4NEFlwktTJZDORu3e189P9f4Zk8t0ZHyI=;
+	s=korg; t=1756217944;
+	bh=WCC9EAZqJk3NllHWFAAntXEKHwp2Wo5WEaJFl+gRDBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzqeVSwaDh/McubqPcCfPfZKgyCTQw10Enh2ChKnOUxCBDkGCjNgZsa8a8bkWZJKT
-	 /ZT9QJcN5ePoyLfSjpImH2X/VSm16g4obr8KhUI3z03H6IxnvT2VrP5j4MST1UMAue
-	 MLbDVygvV3oHZlHC1Umy4E3Hyp61/vmEqrq8Zqgo=
+	b=OVgem2FshpGjOJDpCifTcO/AlxDd4BvD157PVPdrj5bMlldehPxjZtX8t4HAmP2A8
+	 rpo4P1KjmvS4Nm43BvurmCmdamJuPamEYzeA8928HfDJOU4AVtUs+AbENIglnCH8yN
+	 gnofht5/QGDSf6nCi7CoF8XFp+KXK06YKoZv94G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.16 259/457] drm/nouveau/gsp: fix mismatched alloc/free for kvmalloc()
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 333/523] pNFS: Fix disk addr range check in block/scsi layout
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826110943.755505792@linuxfoundation.org>
+Message-ID: <20250826110932.691070981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 989fe6771266bdb82a815d78802c5aa7c918fdfd upstream.
+[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
 
-Replace kfree() with kvfree() for memory allocated by kvmalloc().
+At the end of the isect translation, disc_addr represents the physical
+disk offset. Thus, end calculated from disk_addr is also a physical disk
+offset. Therefore, range checking should be done using map->disk_offset,
+not map->start.
 
-Compile-tested only.
-
-Cc: stable@vger.kernel.org
-Fixes: 8a8b1ec5261f ("drm/nouveau/gsp: split rpc handling out on its own")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Timur Tabi <ttabi@nvidia.com>
-Acked-by: Zhi Wang <zhiw@nvidia.com>
-Link: https://lore.kernel.org/r/20250813125412.96178-1-rongqianfeng@vivo.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c | 4 ++--
+ fs/nfs/blocklayout/blocklayout.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-index 9d06ff722fea..0dc4782df8c0 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-@@ -325,7 +325,7 @@ r535_gsp_msgq_recv(struct nvkm_gsp *gsp, u32 gsp_rpc_len, int *retries)
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index a9e563145e0c..a853711bcad2 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -171,8 +171,8 @@ do_add_page_to_bio(struct bio *bio, int npg, int rw, sector_t isect,
  
- 		rpc = r535_gsp_msgq_peek(gsp, sizeof(*rpc), info.retries);
- 		if (IS_ERR_OR_NULL(rpc)) {
--			kfree(buf);
-+			kvfree(buf);
- 			return rpc;
- 		}
+ 	/* limit length to what the device mapping allows */
+ 	end = disk_addr + *len;
+-	if (end >= map->start + map->len)
+-		*len = map->start + map->len - disk_addr;
++	if (end >= map->disk_offset + map->len)
++		*len = map->disk_offset + map->len - disk_addr;
  
-@@ -334,7 +334,7 @@ r535_gsp_msgq_recv(struct nvkm_gsp *gsp, u32 gsp_rpc_len, int *retries)
- 
- 		rpc = r535_gsp_msgq_recv_one_elem(gsp, &info);
- 		if (IS_ERR_OR_NULL(rpc)) {
--			kfree(buf);
-+			kvfree(buf);
- 			return rpc;
- 		}
- 
+ retry:
+ 	if (!bio) {
 -- 
-2.50.1
+2.39.5
 
 
 
