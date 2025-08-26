@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC7EB366EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15883B35C51
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC087BDEFD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA2CC7C0B94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1152F352FF8;
-	Tue, 26 Aug 2025 13:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4DB340DA4;
+	Tue, 26 Aug 2025 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMeBRmkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gs2uOl4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC26352FF0;
-	Tue, 26 Aug 2025 13:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DD92BDC3B;
+	Tue, 26 Aug 2025 11:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216729; cv=none; b=SmAXs12Ab+miemsDaTxYj7nC3urRkP4VKkeKEfVmEqqio8/g/w+IfpDy8wE/BUTlLqSr5uELLemssfKMWfDinP5pVcNxfUXowTW6L48zSLcsQIytCKstH01tGm7AalDeAGRX0qGnkOt8Z6OXusHfox7MJ81mYws5pQvo5C5K42U=
+	t=1756207815; cv=none; b=OXxHSy0Q/3r46Ke5vemsZ0YYqvAbafaxRiEspnOVq/tCZgNPWYU0Zv8D5PjGGofJNCccIpB3QzxzIHH1JGkyb9WVXT9HTN2AiY9XULFL26aZJouGsx7f2zYNyMC9KzPV51UFfCcLqWOQhnpFmwrt750Bt8ELXxb6vmLoss3UzlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216729; c=relaxed/simple;
-	bh=AvxVh6FosuCGoLiv2giagHt9Ck29X3uEyBCygyDkbLU=;
+	s=arc-20240116; t=1756207815; c=relaxed/simple;
+	bh=qZ8cNq5y2K09BLxyvebjhct7sNS8HeVcwJQssQ/bJz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCVNZuVZTVQyFNK0B/RUVvDXlQ7AZHkN/qz+XTd5EI0qMI9KK0tQiWo0TtKFOBYdhU3MJJGmZp25r8YhDUzdjl3v5+YW8VGUgmU5MGQwEOgCfA40G6FwrCXuhPGdvGe83b4C/6hDKH9RNMn9etBwZMYcU+2l2m1AfxTFkfa8I+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMeBRmkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02CCC4CEF1;
-	Tue, 26 Aug 2025 13:58:48 +0000 (UTC)
+	 MIME-Version; b=JGKQGpBpxYbZfOrzAhS7TZ3XT73yMLDfgDcBcRgOkXeuA4Sppd9ocCfgyjlJJOG7yQPzUpixhDIcj2tFTNKDmE54qactPX7Uftm7KWYi0bsWCswIfOaRzcrJJMJGsv9+MklQEgLZ7ciZgsq/N22ddhu2LJPXs31iCs99lo/szTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gs2uOl4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA56C4CEF1;
+	Tue, 26 Aug 2025 11:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216729;
-	bh=AvxVh6FosuCGoLiv2giagHt9Ck29X3uEyBCygyDkbLU=;
+	s=korg; t=1756207815;
+	bh=qZ8cNq5y2K09BLxyvebjhct7sNS8HeVcwJQssQ/bJz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMeBRmkHUXHeJOnOzA3ORwhnR7PjQo2QNEdJ10lvLSTgPl1onBjD0r9XoNPYiZkBX
-	 Vzu293nc33qaMr41qFVqN9Zwtwrl8yn7KS9OsKexxgcuTYKW7ANB7/jJmYz71ZybX9
-	 yJzIrV4vye6d7WUohqj2rsRpktuiCR6qpgABBvNQ=
+	b=gs2uOl4IwKR/J7cruVPk8jisL+3fRnKoUpundpCKB968CRpo8vqHEVwoQqed3hKiT
+	 kYCYNjMigIYIiv7ePeOcALuRlNPSRxoxK1+UFDd7Yivx3l8G+3uyfeNHCl2JX1ViL0
+	 m+3oiEifzinDV2acJQ+S15/A2NoXo0ITH1pPR2u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 521/644] x86/fpu: Delay instruction pointer fixup until after warning
+	syzbot+7836a68852a10ec3d790@syzkaller.appspotmail.com,
+	NeilBrown <neil@brown.name>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.16 328/457] ovl: use I_MUTEX_PARENT when locking parent in ovl_create_temp()
 Date: Tue, 26 Aug 2025 13:10:12 +0200
-Message-ID: <20250826110959.418421094@linuxfoundation.org>
+Message-ID: <20250826110945.451585411@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 1cec9ac2d071cfd2da562241aab0ef701355762a ]
+commit 5f1c8965e748c150d580a2ea8fbee1bd80d07a24 upstream.
 
-Right now, if XRSTOR fails a console message like this is be printed:
+ovl_create_temp() treats "workdir" as a parent in which it creates an
+object so it should use I_MUTEX_PARENT.
 
-	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
+Prior to the commit identified below the lock was taken by the caller
+which sometimes used I_MUTEX_PARENT and sometimes used I_MUTEX_NORMAL.
+The use of I_MUTEX_NORMAL was incorrect but unfortunately copied into
+ovl_create_temp().
 
-However, the text location (...+0x9a in this case) is the instruction
-*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
-also points one instruction late.
+Note to backporters: This patch only applies after the last Fixes given
+below (post v6.16).  To fix the bug in v6.7 and later the
+inode_lock() call in ovl_copy_up_workdir() needs to nest using
+I_MUTEX_PARENT.
 
-The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
-keep on running after returning from the #GP handler. But it does this
-fixup before warning.
-
-The resulting warning output is nonsensical because it looks like the
-non-FPU-related instruction is #GP'ing.
-
-Do not fix up RIP until after printing the warning. Do this by using
-the more generic and standard ex_handler_default().
-
-Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Acked-by: Alison Schofield <alison.schofield@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
-[ Replace fpu_reset_from_exception_fixup() with __restore_fpregs_from_fpstate() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/67a72070.050a0220.3d72c.0022.GAE@google.com/
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+7836a68852a10ec3d790@syzkaller.appspotmail.com
+Tested-by: syzbot+7836a68852a10ec3d790@syzkaller.appspotmail.com
+Fixes: c63e56a4a652 ("ovl: do not open/llseek lower file with upper sb_writers held")
+Fixes: d2c995581c7c ("ovl: Call ovl_create_temp() without lock held.")
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/extable.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/overlayfs/copy_up.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/extable.c
-+++ b/arch/x86/mm/extable.c
-@@ -60,13 +60,12 @@ static bool ex_handler_fault(const struc
- static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
- 				 struct pt_regs *regs)
- {
--	regs->ip = ex_fixup_addr(fixup);
--
- 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
- 		  (void *)instruction_pointer(regs));
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -779,7 +779,7 @@ static int ovl_copy_up_workdir(struct ov
+ 		return err;
  
- 	__restore_fpregs_from_fpstate(&init_fpstate, xfeatures_mask_fpstate());
--	return true;
-+
-+	return ex_handler_default(fixup, regs);
- }
- 
- static bool ex_handler_uaccess(const struct exception_table_entry *fixup,
+ 	ovl_start_write(c->dentry);
+-	inode_lock(wdir);
++	inode_lock_nested(wdir, I_MUTEX_PARENT);
+ 	temp = ovl_create_temp(ofs, c->workdir, &cattr);
+ 	inode_unlock(wdir);
+ 	ovl_end_write(c->dentry);
 
 
 
