@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36AEB36815
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CD8B36025
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F06EBB6308A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED511BA6554
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F7134DCEC;
-	Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65912226861;
+	Tue, 26 Aug 2025 12:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXJ+FhzB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD3Z0hW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406B434DCC0;
-	Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2121F1F55FA;
+	Tue, 26 Aug 2025 12:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217224; cv=none; b=jEdlZANYr/wD6/+iXD5tAiq+wvX86rPQSXH6xcJls25ucQpEDAXimha//uzaeAm+5Udh64S4YTvZodrrrShz5L2devfmqBXq3vqxoitZgnqwEdc4X7mdfj0SYqPo67RTBCgGiVYOIhhOpseNwi6/qU9/Q+SIvEBtROpJY5lbbDM=
+	t=1756212860; cv=none; b=scyNNtrHO400eioras8FW4OYU/CqTpOzUwPZt9aFT9p843YKAarPXUk8JKDcMwMIWem+PHpNZHmK1FKkk/vIaY+J/w6T5Q5w1HH71Rxkzxnw0UxB6yoIKrGUMZ+lpH+4JnI9vyZwyRx8P9mWkA5Vs6VfP5leSvgAiyAK2ruw2TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217224; c=relaxed/simple;
-	bh=v4OaJ3SU7uHGU/6LP9FJQRX6xhzVKikmMoAg2q2GrVg=;
+	s=arc-20240116; t=1756212860; c=relaxed/simple;
+	bh=W5GIl9ikaXQg3oyuz3yimndmQUuUZO603Blb12ZQWUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+M1gi++tFBmSTg32njtFl3Q6uPUiqeZUJu/PY9V9HQBSgYE6etlOx7Ga/qrUmZ42m9AQ7WlTdhP0HwOc4HqQ9odzpq1mYRQ7lFhoVCJOKHb3U7xPSJC/WmRlEdj2cliZLl+aXJC0SolHpjfX2blv1rm1wnD4tW/jiAKKYM5yQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXJ+FhzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841BDC113CF;
-	Tue, 26 Aug 2025 14:07:03 +0000 (UTC)
+	 MIME-Version; b=d1JdU16uo2K4tJaoPCo8n2FQ5DzmkM2eRN72c4eMD2vklTv0JVQdBUTZAY0k0Wh0KKYHugcOfQcyy5x4GVMB1VGX2xv/EyIMrrd8qyf9EEOPiaW55BbTX6avy2FMZ1Q6cMPQUYqXOc+mPC9bktm3flPd6vR7PzeGXV1YoWkCQw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD3Z0hW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A341AC16AAE;
+	Tue, 26 Aug 2025 12:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217224;
-	bh=v4OaJ3SU7uHGU/6LP9FJQRX6xhzVKikmMoAg2q2GrVg=;
+	s=korg; t=1756212860;
+	bh=W5GIl9ikaXQg3oyuz3yimndmQUuUZO603Blb12ZQWUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXJ+FhzBcIVI2xJMhvS8+9drRiPBePTMD18GgR+8b7e1I6Ylr0gL6eSgWfIeiHpjp
-	 eXqN1g31KE5+oCtxfJ7fmCSmS9xywS0wGtIqh4yP6hrScy7jBm11s1kgligT2mD8KX
-	 MW4o7mKkTPMGfMpDnWHgjAJu9YbFvXHj8fQl/WiI=
+	b=eD3Z0hW6MUzaoP21h6c7D8I/FvKx3YDAJ3elKfhzGBoA6U7rO6IBm7a1t0IsjROE0
+	 S67SDMMSRfpdRRJkazwrb3JBP3Bk6ONu6LscBP+EKp80wuzDJyPMpEwO4xHvFoBn6M
+	 vEuTVS0jNjZ0k0Yzf81AYmpylqiAjzKeSgansDp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/523] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+Subject: [PATCH 6.6 122/587] x86/bugs: Avoid warning when overriding return thunk
 Date: Tue, 26 Aug 2025 13:04:31 +0200
-Message-ID: <20250826110926.090601659@linuxfoundation.org>
+Message-ID: <20250826110956.062880229@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+The purpose of the warning is to prevent an unexpected change to the return
+thunk mitigation. However, there are legitimate cases where the return
+thunk is intentionally set more than once. For example, ITS and SRSO both
+can set the return thunk after retbleed has set it. In both the cases
+retbleed is still mitigated.
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
+Replace the warning with an info about the active return thunk.
 
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
-
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index e412340f639d2..d8e01cca576e7 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -538,9 +538,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index c4d5ac99c6af..332c6f24280d 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -71,10 +71,9 @@ void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
  
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
+ static void __init set_return_thunk(void *thunk)
  {
--	struct qfq_sched *q = qdisc_priv(sch);
+-	if (x86_return_thunk != __x86_return_thunk)
+-		pr_warn("x86/bugs: return thunk changed\n");
 -
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -558,10 +555,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg)
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
+ 	x86_return_thunk = thunk;
++
++	pr_info("active return thunk: %ps\n", thunk);
  }
  
-@@ -1509,6 +1507,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
- 	}
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
 -- 
 2.39.5
 
