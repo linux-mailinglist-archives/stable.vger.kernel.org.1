@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9EDB35D21
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A138B3665A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38EA47C0023
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F00C34E458C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357A8283FDF;
-	Tue, 26 Aug 2025 11:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D1734F49C;
+	Tue, 26 Aug 2025 13:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXgepgrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5ryBeVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E87199935;
-	Tue, 26 Aug 2025 11:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56801EEA55;
+	Tue, 26 Aug 2025 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208470; cv=none; b=KIBckAwXQaZNoOcpxJvcFfyn/QEZHMd9pYI+8ydSOmzba+Q0sIRJP/uzE/kEbB+hoiz3zsD1ZwOLEaXtMp9vshis4KGIcyBFpJUNZ+NQ8yiTljpyQYm3+dBfOf0dfcA2ouGeXnTqtTsLL+26iD15oAWaUrD4lfzQ8wiVdNPPSm4=
+	t=1756216492; cv=none; b=Kf6EqJcf9umQw6nBvxm+6KA5OcZajQWdksL6y3CUrxd6R7dB8QTIXFQ/ED7EJCY/3IEfrjVLj+Ri+egaB8+KZUaNeDsY+FO3iuoA/jNlXFi5T3JRrAgKxTsyDjKo+cy+FEvbcZf0V+ydr/nIDi7nNl5ZrRi7XGyV1JZkOmgVnwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208470; c=relaxed/simple;
-	bh=kLJFD/SKWmQyYFaPY0nVDGSh2ckPHo7op1YmFNe7Kd8=;
+	s=arc-20240116; t=1756216492; c=relaxed/simple;
+	bh=L8Ng7aNo0pGzGnKux3FlRX1Xj35IJi1HRTbmMPkQ1ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOfeza3ugZWreLqZ9kbgeRB3mapZvSvLQ/EkhiAQxLjhn8vzTILfGWidjJsaaHuoJVkgJRGpYZKPOJDXJNgWNpY3AT417cGokvmKHYJGFIsalp6UInK49V2DzKQ0ovX05iSafNrxllnWT8p4z1gNiSA5Xns4tMHSMP/dWEThc+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXgepgrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29083C4CEF1;
-	Tue, 26 Aug 2025 11:41:09 +0000 (UTC)
+	 MIME-Version; b=TsLMHu/mzgi5QIeIoczbds2EbNfwci/P+VAdd2DpfxqEuf9y2L8MiheSmm6LocqXxszXvSFDZ1W05t1WC21yKK9cn54KCj9DGSy227qaEd+xe5AypfqBnoykYh8iU7rfuwRdUg1TliKpLq2yyQPO+zkDxYRSuqmTUJSY6VDA6Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5ryBeVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1EBC4CEF1;
+	Tue, 26 Aug 2025 13:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208469;
-	bh=kLJFD/SKWmQyYFaPY0nVDGSh2ckPHo7op1YmFNe7Kd8=;
+	s=korg; t=1756216491;
+	bh=L8Ng7aNo0pGzGnKux3FlRX1Xj35IJi1HRTbmMPkQ1ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXgepgrLuhyGAoqiMHCUsfcKqXHHLylMGuZfllDLQxogLgovQcK5v5wugY6RZrvnQ
-	 zp22HsWpt8GYzAj1c7bCs9bEBNk8fBxGAaYMa5LR1DfrTQpPhlLsos+cgbSm/gEezS
-	 TDggGoKN4b6FOQtWx+oZ2VI4wzbC7dix9TADGP0o=
+	b=u5ryBeVTo+x0spz4Bt93gaGsFhmTBq7s80esvYS5pfE0onOoHkRJG1ORyj1dwmIbs
+	 N1HDPPQ9Ry0agkAZhtEImHpR2Ex8wEMzu8leT0ZHVGM0C5csv7MvEd4I/FCRgfE1a4
+	 ZB/mkaaGB393JeuXlBeFRjGJpt1o3JnUyzdEcT+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 106/322] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 430/644] pNFS: Fix stripe mapping in block/scsi layout
 Date: Tue, 26 Aug 2025 13:08:41 +0200
-Message-ID: <20250826110918.381466083@linuxfoundation.org>
+Message-ID: <20250826110957.117791169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-In the interrupt handler rain_interrupt(), the buffer full check on
-rain->buf_len is performed before acquiring rain->buf_lock. This
-creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
-rain->buf_len is concurrently accessed and modified in the work
-handler rain_irq_work_handler() under the same lock.
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-Multiple interrupt invocations can race, with each reading buf_len
-before it becomes full and then proceeding. This can lead to both
-interrupts attempting to write to the buffer, incrementing buf_len
-beyond its capacity (DATA_SIZE) and causing a buffer overflow.
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
 
-Fix this bug by moving the spin_lock() to before the buffer full
-check. This ensures that the check and the subsequent buffer modification
-are performed atomically, preventing the race condition. An corresponding
-spin_unlock() is added to the overflow path to correctly release the
-lock.
-
-This possible bug was found by an experimental static analysis tool
-developed by our team.
-
-Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-+++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
- {
- 	struct rain *rain = serio_get_drvdata(serio);
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index 16412d6636e8..4e176d7d704d 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
  
-+	spin_lock(&rain->buf_lock);
- 	if (rain->buf_len == DATA_SIZE) {
-+		spin_unlock(&rain->buf_lock);
- 		dev_warn_once(rain->dev, "buffer overflow\n");
- 		return IRQ_HANDLED;
- 	}
--	spin_lock(&rain->buf_lock);
- 	rain->buf_len++;
- 	rain->buf[rain->buf_wr_idx] = data;
- 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+ 
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
+ 
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
+ 
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
+-- 
+2.39.5
+
 
 
 
