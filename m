@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6582B3669A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1254FB3633B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D1F1C23345
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C1E1BC15C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E08350D7B;
-	Tue, 26 Aug 2025 13:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C39242D7B;
+	Tue, 26 Aug 2025 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMIE7e46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjzN/Gq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41F4350D6A;
-	Tue, 26 Aug 2025 13:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E8187554;
+	Tue, 26 Aug 2025 13:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216211; cv=none; b=WoddkJ2N00Uf1lFHU0uuUBoDXI2w1N8h6Ji3EhXKF46rVugZl+0obir+tH8AhZnxktkp0Agqk35NITyRDlE4BOGNrWOpaqrVNqR3LORzRX5yLYwBmB4FbH7wUCUvP9R4HG5FTCOtzE2u6cu1r68Cfv5iRmosG9QYnXNErRNGtNs=
+	t=1756214437; cv=none; b=GvqDP08wdlsTNeUFmdBjsu9e2SXAVn6eieexQotHz6QeRJJM4VA1JKBYI2au6sCg3K3urQMSJkwJg9FSK5AZLhgOd3vWWIV7IF8drHQZWaySVc71WyngPeszLRUKWxk9zn2hgxayixQqx6GTvG4b8XysSJDMoHsOIg7ziQipMRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216211; c=relaxed/simple;
-	bh=vIpg0DE05DnDv0ZSeHHPNxMDUPQtJuUo7F5DCIFVINM=;
+	s=arc-20240116; t=1756214437; c=relaxed/simple;
+	bh=jkCCGhCaTPKxcp9oL7W03OL1kZXSdCsRnPLV24GjlLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXy2XN2prINz8rJU/a/AMFT6Wbjsa6C+NoRojm7AnoLuKP/3XKeeXl3BBRPA6m63X4dhvFksZr+E48aTFAMtxh/lF6kVh5aI4MkbnDZgSWGEEg0NH4yA+cWT8VwwZ3vgkdI5Vzv0Btyp3t6mgFdNZxwo0J6YH+BF9fW8cB88HG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMIE7e46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EADBC113CF;
-	Tue, 26 Aug 2025 13:50:11 +0000 (UTC)
+	 MIME-Version; b=XUzV39jrbWjhqR7UCqZTcY2cxLGarCrIrjY7TXq6ieEZ9+vmeVGEEROZl8SzirG3SJQW16s8S0ffWFG/trxfnRf3ZayMD4ervIg7RRZeGxdG5RAsD7qA9scC2GEq09XMRTTJ+zSZXEA5ITrQMyNVnsvL0IcaodAim4VKQR+EuS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjzN/Gq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5403FC4CEF1;
+	Tue, 26 Aug 2025 13:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216211;
-	bh=vIpg0DE05DnDv0ZSeHHPNxMDUPQtJuUo7F5DCIFVINM=;
+	s=korg; t=1756214437;
+	bh=jkCCGhCaTPKxcp9oL7W03OL1kZXSdCsRnPLV24GjlLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMIE7e46NE1I+0ZPYEmEvqQwwaEvH5s/RTy+IyRqELxnBWsTHUk0wQETImYxaSTKW
-	 L+39wIGlpUUweQ9iYel2H4I+uQ5aJW+O/TY3/F0Tls0UgUCCMi2uJUwHOzYl/V6dnq
-	 Q4nUJ3I4Jb+zkfYIz6IgScSOutoHPvAyixIuq9Jc=
+	b=xjzN/Gq+aFZrC63R1w+Ebe8SXlI+tUBNimj1WCMn/cjVXfw+XhXv6TtWk9d2aElr3
+	 rmKYe+IWb8s2BjUtgChi9FaVkEDVN17AoMUo33coCNhsgxnhn7cUmwBeSPHwp0smcz
+	 yIv9BkRklXz/1ZpP148NCaag1dI6bbLWPo6zbUPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 299/644] usb: xhci: Avoid showing warnings for dying controller
+Subject: [PATCH 6.1 137/482] wifi: rtw89: Fix rtw89_mac_power_switch() for USB
 Date: Tue, 26 Aug 2025 13:06:30 +0200
-Message-ID: <20250826110953.795842933@linuxfoundation.org>
+Message-ID: <20250826110934.203292070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
+[ Upstream commit e2b71603333a9dd73ee88347d8894fffc3456ac1 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed, and when the device stops responding a flag is also
-added to indicate it's dying.
+Clear some bits in some registers in order to allow RTL8851BU to power
+on. This is done both when powering on and when powering off because
+that's what the vendor driver does.
 
-When that flag is set don't bother to show warnings about a missing
-controller.
+Also tested with RTL8832BU and RTL8832CU.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/a39da939-d640-4486-ad38-f658f220afc8@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c | 19 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index e9ebb6c7954f..2d8ca3356ff3 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -118,7 +118,8 @@ int xhci_halt(struct xhci_hcd *xhci)
- 	ret = xhci_handshake(&xhci->op_regs->status,
- 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
- 	if (ret) {
--		xhci_warn(xhci, "Host halt failed, %d\n", ret);
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host halt failed, %d\n", ret);
- 		return ret;
- 	}
- 	xhci->xhc_state |= XHCI_STATE_HALTED;
-@@ -175,7 +176,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
- 	state = readl(&xhci->op_regs->status);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 4a1c9e18c530..f15a2c6874cb 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1093,6 +1093,23 @@ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev)
+ 	rtw89_mac_send_rpwm(rtwdev, state, true);
+ }
  
- 	if (state == ~(u32)0) {
--		xhci_warn(xhci, "Host not accessible, reset failed.\n");
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host not accessible, reset failed.\n");
- 		return -ENODEV;
- 	}
++static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
++{
++	u32 boot_mode;
++
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_USB)
++		return;
++
++	boot_mode = rtw89_read32_mask(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
++	if (!boot_mode)
++		return;
++
++	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFN_ONMAC);
++	rtw89_write32_clr(rtwdev, R_AX_SYS_STATUS1, B_AX_AUTO_WLPON);
++	rtw89_write32_clr(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
++	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
++}
++
+ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ {
+ #define PWR_ACT 1
+@@ -1102,6 +1119,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ 	int ret;
+ 	u8 val;
  
++	rtw89_mac_power_switch_boot_mode(rtwdev);
++
+ 	if (on) {
+ 		cfg_seq = chip->pwr_on_seq;
+ 		cfg_func = chip->ops->pwr_on_func;
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 0291aff94016..52dd24a6216d 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -157,6 +157,7 @@
+ 
+ #define R_AX_SYS_STATUS1 0x00F4
+ #define B_AX_SEL_0XC0_MASK GENMASK(17, 16)
++#define B_AX_AUTO_WLPON BIT(10)
+ #define B_AX_PAD_HCI_SEL_V2_MASK GENMASK(5, 3)
+ #define MAC_AX_HCI_SEL_SDIO_UART 0
+ #define MAC_AX_HCI_SEL_MULTI_USB 1
 -- 
 2.39.5
 
