@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-174716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8780AB3649A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF944B36239
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2774E564ED0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03FB816F2BB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB9323817D;
-	Tue, 26 Aug 2025 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FAC23817D;
+	Tue, 26 Aug 2025 13:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AliWMM2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjCQNYs/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B9320CCCA;
-	Tue, 26 Aug 2025 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCFF184540;
+	Tue, 26 Aug 2025 13:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215128; cv=none; b=Dg7AOfn5QHOqB4Gao6FvYPqfJ5aXJXLXlKpc0uCpnrmhYIfvZeDqlzWYP2DL612kufPWTviMZSU4mReokrwivcs/Sb16AUlyCQLKF9abI28LQm51l3SUoQp1+TDWfsO0OmDSdYnh92QD7I9bIP/OpxQvjoRfn23ISxXX09Yp4Z8=
+	t=1756213849; cv=none; b=hdy54hBzYg2UlLmXfMUQhhhYl1bc7ANnwooR/PX50uURnbJR5TyXaWp2o74KaiEPGxblzR5vWft1rR48WcYISEzwILy6Apt826cPNDi6wlhn0BbxMFwknHu8kGvwxjk9t5ty+NqzX0cWq5f51SAUkcqgfJ0cNzqjpHWAAFvRchs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215128; c=relaxed/simple;
-	bh=fJHBRDQI51JUvnow1Ce/q66X8LTi59T7+V9IMEVUA5M=;
+	s=arc-20240116; t=1756213849; c=relaxed/simple;
+	bh=KSB1bBsl3O8s6X3B5qGEPwQ0RzvhBjh8pOnewE1D+ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTivCzWmISlWZkQtobArecNBixgZT3uosHbVxlQoABJpnCDS88Pl5agEK3cEtrKR/547FO9KwSE2rIvNsrCRKEc5Be3/WiSG22QxOK8h8nypU6IJFMl65hSzCeNCB75tzlEx8SYHsQ7UBVV35abY8Jm/Jr22MTYIoA2OQXBX0XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AliWMM2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA15C4CEF1;
-	Tue, 26 Aug 2025 13:32:07 +0000 (UTC)
+	 MIME-Version; b=KKqZIXw8mFGatjERjEhlujXdepV53YIctU0BIwosPTSSd1tBjg76I2CIupBYhfD3AkJmBuPLBNonCeRuJtrOyyw5EORtxjm3j143mKF2QcwcOQ7jNYW2X6juIVRE1ZFmi6rBf4olvfyhbfkGIMMlt55tlvSrmxo7WS0R+D1Rh5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjCQNYs/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C573C4CEF1;
+	Tue, 26 Aug 2025 13:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215128;
-	bh=fJHBRDQI51JUvnow1Ce/q66X8LTi59T7+V9IMEVUA5M=;
+	s=korg; t=1756213848;
+	bh=KSB1bBsl3O8s6X3B5qGEPwQ0RzvhBjh8pOnewE1D+ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AliWMM2FtXGoqdjgAaalOQfREUzjeF71Bz8URSYLFbDOH85Hhv8pEYsBFwnQnPo+V
-	 MXOSEXeP7aDySyN79i+XoWd5Us1WgcJwV7dbD0eMFEBbmRkpiPqS4Q+Pg+Rqpeipje
-	 eAP/XKiWE6i9yMlV6N3ZVtM4ltEI0t7V5LShvJQ4=
+	b=rjCQNYs/3/8MULJyUSkZEu8ZVEDJoavGiXysnpFet2g1H4uztytWXlDdfCYiELt2d
+	 YZa12uY7c41WZ/Tq5dnIUxZI4qox1P2AYS+Psu6glD2OTPtODp9uCJ17dY+uQBB1D5
+	 bQwAiNx8clooUe1jPe3QBas4AA7IzAJ2UnKlaCM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 398/482] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 502/587] smb: server: split ksmbd_rdma_stop_listening() out of ksmbd_rdma_destroy()
 Date: Tue, 26 Aug 2025 13:10:51 +0200
-Message-ID: <20250826110940.660211400@linuxfoundation.org>
+Message-ID: <20250826111005.755074187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
+[ Upstream commit bac7b996d42e458a94578f4227795a0d4deef6fa ]
 
-The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
-Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
-quirk to enable the mute LED.
+We can't call destroy_workqueue(smb_direct_wq); before stop_sessions()!
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
-Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Otherwise already existing connections try to use smb_direct_wq as
+a NULL pointer.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/connection.c     | 3 ++-
+ fs/smb/server/transport_rdma.c | 5 ++++-
+ fs/smb/server/transport_rdma.h | 4 +++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9915,6 +9915,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 66b20c3d963e..f5ebc200dd73 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -503,7 +503,8 @@ void ksmbd_conn_transport_destroy(void)
+ {
+ 	mutex_lock(&init_lock);
+ 	ksmbd_tcp_destroy();
+-	ksmbd_rdma_destroy();
++	ksmbd_rdma_stop_listening();
+ 	stop_sessions();
++	ksmbd_rdma_destroy();
+ 	mutex_unlock(&init_lock);
+ }
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 6c3a57bff147..a4ff1167c9a1 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -2193,7 +2193,7 @@ int ksmbd_rdma_init(void)
+ 	return 0;
+ }
+ 
+-void ksmbd_rdma_destroy(void)
++void ksmbd_rdma_stop_listening(void)
+ {
+ 	if (!smb_direct_listener.cm_id)
+ 		return;
+@@ -2202,7 +2202,10 @@ void ksmbd_rdma_destroy(void)
+ 	rdma_destroy_id(smb_direct_listener.cm_id);
+ 
+ 	smb_direct_listener.cm_id = NULL;
++}
+ 
++void ksmbd_rdma_destroy(void)
++{
+ 	if (smb_direct_wq) {
+ 		destroy_workqueue(smb_direct_wq);
+ 		smb_direct_wq = NULL;
+diff --git a/fs/smb/server/transport_rdma.h b/fs/smb/server/transport_rdma.h
+index 77aee4e5c9dc..a2291b77488a 100644
+--- a/fs/smb/server/transport_rdma.h
++++ b/fs/smb/server/transport_rdma.h
+@@ -54,13 +54,15 @@ struct smb_direct_data_transfer {
+ 
+ #ifdef CONFIG_SMB_SERVER_SMBDIRECT
+ int ksmbd_rdma_init(void);
++void ksmbd_rdma_stop_listening(void);
+ void ksmbd_rdma_destroy(void);
+ bool ksmbd_rdma_capable_netdev(struct net_device *netdev);
+ void init_smbd_max_io_size(unsigned int sz);
+ unsigned int get_smbd_max_read_write_size(void);
+ #else
+ static inline int ksmbd_rdma_init(void) { return 0; }
+-static inline int ksmbd_rdma_destroy(void) { return 0; }
++static inline void ksmbd_rdma_stop_listening(void) { }
++static inline void ksmbd_rdma_destroy(void) { }
+ static inline bool ksmbd_rdma_capable_netdev(struct net_device *netdev) { return false; }
+ static inline void init_smbd_max_io_size(unsigned int sz) { }
+ static inline unsigned int get_smbd_max_read_write_size(void) { return 0; }
+-- 
+2.50.1
+
 
 
 
