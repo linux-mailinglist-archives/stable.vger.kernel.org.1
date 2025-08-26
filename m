@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF653B36C94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A641B35E5C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53B96871C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 450661BC1055
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8C234DCC1;
-	Tue, 26 Aug 2025 14:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E054E285CA9;
+	Tue, 26 Aug 2025 11:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z++FVuaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJkPoms1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8A835206F;
-	Tue, 26 Aug 2025 14:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6A318DF9D;
+	Tue, 26 Aug 2025 11:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219357; cv=none; b=mYuuNbpD1knXz1fVkKysakV3zs7xlyAFOGcTcgcXIWyvI7W1zL+FPitIPb4zl0qgjLc6SWBs7YZRde15MfjQ6c+vDOVhnFUUS7sBTVpssLCcjAfYBVBOuBB8V290M8GVMuHkJV8OpkqOTxM/+VATPMYA7YeSlRpblvNCAxnRJeE=
+	t=1756208827; cv=none; b=UIdymeZL8k/0RhMz8mDJ3eGWG8L344CCc4V+YW2JIX5t8YXFOMD6MZAYMdNRG9EJGDQ40pgoyTATz/FVUbTV7ArBMPF9L8byXC1n2YXgUwowU5/NdmlSeRLb3dKehAVOMObIEAi5N82nkFSqtBO49PUbsXJeyIA8gOSHR82zh6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219357; c=relaxed/simple;
-	bh=fvHOm1T5WuVoJ8QC02yqFzZlctIuTzFUi4E80qgHJTg=;
+	s=arc-20240116; t=1756208827; c=relaxed/simple;
+	bh=1HmAIAUTCqmVMA9+5XhmgCMZitkOxKVOJ7KricUFylE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nR1vVCPYsieA4mNj+5oMiGhfqVau4iXC3x0odMOagIoKUhaf8bSuVk8/vdlQ+yT9vg0e6CR8V+lq5p/jcj9Kl4uZ/exxxXcGT1aVnD0PN5gZVJuxNadguz1SxsCD6hO2GsYyrKIXtcUU1Gt4CLYrU4Md8OLSzpJPz/WjfY5VAUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z++FVuaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8265FC4CEF1;
-	Tue, 26 Aug 2025 14:42:36 +0000 (UTC)
+	 MIME-Version; b=j5Osi6t6u1Wz0R+qEl3afD85QwhPt0dyGUXWMDQem1SmGmj9G1PyFROdO/XpoaPr5fWB7lPUuOBvB+F5oaFO4rLRMnW2kiMAKFmOBAT/n10jQPasiNnOMmSt7GUq1AZSpuQm2GCYHdTe+QSqP89OC2Xnl2PiNglfrpIRL7fAqyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJkPoms1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F068C4CEF4;
+	Tue, 26 Aug 2025 11:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219356;
-	bh=fvHOm1T5WuVoJ8QC02yqFzZlctIuTzFUi4E80qgHJTg=;
+	s=korg; t=1756208827;
+	bh=1HmAIAUTCqmVMA9+5XhmgCMZitkOxKVOJ7KricUFylE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z++FVuaUlca06o2TUQtZdBLPV37DIwucyuois3J1jnqCnI4k3ccSUxuaSpjw0dvvR
-	 n7bf2s7X0JigLpFSfWuQJpLJW96acSlI7BKbc7zx21Ntl6ELO1P91XNnDdGxiMvyvh
-	 EgjZdyeYMdgwBFsgPJSslzJC/wn3qJhFzNE1el/k=
+	b=LJkPoms1vyGyeQxIbz8yMTjyQWZ56fHSSKE5c7ELfYo+4HQ1F/x+4zhu7i75N4jtC
+	 B74jq09HRXeLnRZrijRVuIaO3hESMw7+wd7hLDv1MHN0Eb98DAq+czETjfxPqbsvGu
+	 sibhOwGmoi9r0o9IO6d7oSyKhE+Fo+AJrtsUmGW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 349/403] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+Subject: [PATCH 6.12 260/322] drm/format-helper: Add generic conversion to 32-bit formats
 Date: Tue, 26 Aug 2025 13:11:15 +0200
-Message-ID: <20250826110916.517725604@linuxfoundation.org>
+Message-ID: <20250826110922.353873434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
+[ Upstream commit d55d0b066f4eedf030c9c1a67a2a0abffece3abc ]
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+Add drm_fb_xfrm_line_32to32() to implement conversion from 32-bit
+pixels to 32-bit pixels. The pixel-conversion is specified by the
+given callback parameter. Mark the helper as always_inline to avoid
+overhead from function calls.
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
+Then implement all existing line-conversion functions with the new
+generic call and the respective pixel-conversion helper.
 
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Applied retry logic around snd_usb_ctl_msg() instead of scarlett2_usb_tx() ]
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://lore.kernel.org/r/20250328141709.217283-3-tzimmermann@suse.de
+Stable-dep-of: 05663d88fd0b ("drm/tests: Fix drm_test_fb_xrgb8888_to_xrgb2101010() on big-endian")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett_gen2.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/drm_format_helper.c | 84 +++++++----------------------
+ 1 file changed, 19 insertions(+), 65 deletions(-)
 
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -118,6 +118,8 @@
- #define SCARLETT2_MIXER_MAX_VALUE \
- 	((SCARLETT2_MIXER_MAX_DB - SCARLETT2_MIXER_MIN_DB) * 2)
+diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
+index 4f60c8d8f63e..4dcb78895581 100644
+--- a/drivers/gpu/drm/drm_format_helper.c
++++ b/drivers/gpu/drm/drm_format_helper.c
+@@ -20,6 +20,8 @@
+ #include <drm/drm_print.h>
+ #include <drm/drm_rect.h>
  
-+#include <linux/delay.h>
++#include "drm_format_internal.h"
 +
- /* map from (dB + 80) * 2 to mixer value
-  * for dB in 0 .. 172: int(8192 * pow(10, ((dB - 160) / 2 / 20)))
-  */
-@@ -591,6 +593,8 @@ static int scarlett2_usb(
- 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
- 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
- 	struct scarlett2_usb_packet *req = NULL, *resp = NULL;
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err = 0;
+ /**
+  * drm_format_conv_state_init - Initialize format-conversion state
+  * @state: The state to initialize
+@@ -244,6 +246,18 @@ static int drm_fb_xfrm(struct iosys_map *dst,
+ 				     xfrm_line);
+ }
  
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -614,6 +618,7 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
++static __always_inline void drm_fb_xfrm_line_32to32(void *dbuf, const void *sbuf,
++						    unsigned int pixels,
++						    u32 (*xfrm_pixel)(u32))
++{
++	__le32 *dbuf32 = dbuf;
++	const __le32 *sbuf32 = sbuf;
++	const __le32 *send32 = sbuf32 + pixels;
++
++	while (sbuf32 < send32)
++		*dbuf32++ = cpu_to_le32(xfrm_pixel(le32_to_cpup(sbuf32++)));
++}
++
+ /**
+  * drm_fb_memcpy - Copy clip buffer
+  * @dst: Array of destination buffers
+@@ -755,16 +769,7 @@ EXPORT_SYMBOL(drm_fb_xrgb8888_to_bgr888);
  
-+retry:
- 	err = snd_usb_ctl_msg(mixer->chip->dev,
- 			usb_sndctrlpipe(mixer->chip->dev, 0),
- 			SCARLETT2_USB_VENDOR_SPECIFIC_CMD_REQ,
-@@ -624,6 +629,10 @@ static int scarlett2_usb(
- 			req_buf_size);
+ static void drm_fb_xrgb8888_to_argb8888_line(void *dbuf, const void *sbuf, unsigned int pixels)
+ {
+-	__le32 *dbuf32 = dbuf;
+-	const __le32 *sbuf32 = sbuf;
+-	unsigned int x;
+-	u32 pix;
+-
+-	for (x = 0; x < pixels; x++) {
+-		pix = le32_to_cpu(sbuf32[x]);
+-		pix |= GENMASK(31, 24); /* fill alpha bits */
+-		dbuf32[x] = cpu_to_le32(pix);
+-	}
++	drm_fb_xfrm_line_32to32(dbuf, sbuf, pixels, drm_pixel_xrgb8888_to_argb8888);
+ }
  
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"Scarlett Gen 2 USB request result cmd %x was %d\n",
+ /**
+@@ -804,19 +809,7 @@ EXPORT_SYMBOL(drm_fb_xrgb8888_to_argb8888);
+ 
+ static void drm_fb_xrgb8888_to_abgr8888_line(void *dbuf, const void *sbuf, unsigned int pixels)
+ {
+-	__le32 *dbuf32 = dbuf;
+-	const __le32 *sbuf32 = sbuf;
+-	unsigned int x;
+-	u32 pix;
+-
+-	for (x = 0; x < pixels; x++) {
+-		pix = le32_to_cpu(sbuf32[x]);
+-		pix = ((pix & 0x00ff0000) >> 16) <<  0 |
+-		      ((pix & 0x0000ff00) >>  8) <<  8 |
+-		      ((pix & 0x000000ff) >>  0) << 16 |
+-		      GENMASK(31, 24); /* fill alpha bits */
+-		*dbuf32++ = cpu_to_le32(pix);
+-	}
++	drm_fb_xfrm_line_32to32(dbuf, sbuf, pixels, drm_pixel_xrgb8888_to_abgr8888);
+ }
+ 
+ static void drm_fb_xrgb8888_to_abgr8888(struct iosys_map *dst, const unsigned int *dst_pitch,
+@@ -835,19 +828,7 @@ static void drm_fb_xrgb8888_to_abgr8888(struct iosys_map *dst, const unsigned in
+ 
+ static void drm_fb_xrgb8888_to_xbgr8888_line(void *dbuf, const void *sbuf, unsigned int pixels)
+ {
+-	__le32 *dbuf32 = dbuf;
+-	const __le32 *sbuf32 = sbuf;
+-	unsigned int x;
+-	u32 pix;
+-
+-	for (x = 0; x < pixels; x++) {
+-		pix = le32_to_cpu(sbuf32[x]);
+-		pix = ((pix & 0x00ff0000) >> 16) <<  0 |
+-		      ((pix & 0x0000ff00) >>  8) <<  8 |
+-		      ((pix & 0x000000ff) >>  0) << 16 |
+-		      ((pix & 0xff000000) >> 24) << 24;
+-		*dbuf32++ = cpu_to_le32(pix);
+-	}
++	drm_fb_xfrm_line_32to32(dbuf, sbuf, pixels, drm_pixel_xrgb8888_to_xbgr8888);
+ }
+ 
+ static void drm_fb_xrgb8888_to_xbgr8888(struct iosys_map *dst, const unsigned int *dst_pitch,
+@@ -866,20 +847,7 @@ static void drm_fb_xrgb8888_to_xbgr8888(struct iosys_map *dst, const unsigned in
+ 
+ static void drm_fb_xrgb8888_to_xrgb2101010_line(void *dbuf, const void *sbuf, unsigned int pixels)
+ {
+-	__le32 *dbuf32 = dbuf;
+-	const __le32 *sbuf32 = sbuf;
+-	unsigned int x;
+-	u32 val32;
+-	u32 pix;
+-
+-	for (x = 0; x < pixels; x++) {
+-		pix = le32_to_cpu(sbuf32[x]);
+-		val32 = ((pix & 0x000000FF) << 2) |
+-			((pix & 0x0000FF00) << 4) |
+-			((pix & 0x00FF0000) << 6);
+-		pix = val32 | ((val32 >> 8) & 0x00300C03);
+-		*dbuf32++ = cpu_to_le32(pix);
+-	}
++	drm_fb_xfrm_line_32to32(dbuf, sbuf, pixels, drm_pixel_xrgb8888_to_xrgb2101010);
+ }
+ 
+ /**
+@@ -920,21 +888,7 @@ EXPORT_SYMBOL(drm_fb_xrgb8888_to_xrgb2101010);
+ 
+ static void drm_fb_xrgb8888_to_argb2101010_line(void *dbuf, const void *sbuf, unsigned int pixels)
+ {
+-	__le32 *dbuf32 = dbuf;
+-	const __le32 *sbuf32 = sbuf;
+-	unsigned int x;
+-	u32 val32;
+-	u32 pix;
+-
+-	for (x = 0; x < pixels; x++) {
+-		pix = le32_to_cpu(sbuf32[x]);
+-		val32 = ((pix & 0x000000ff) << 2) |
+-			((pix & 0x0000ff00) << 4) |
+-			((pix & 0x00ff0000) << 6);
+-		pix = GENMASK(31, 30) | /* set alpha bits */
+-		      val32 | ((val32 >> 8) & 0x00300c03);
+-		*dbuf32++ = cpu_to_le32(pix);
+-	}
++	drm_fb_xfrm_line_32to32(dbuf, sbuf, pixels, drm_pixel_xrgb8888_to_argb2101010);
+ }
+ 
+ /**
+-- 
+2.50.1
+
 
 
 
