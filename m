@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0106BB35DB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C9BB364D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D90C34E40E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB2058A4046
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2C630BF55;
-	Tue, 26 Aug 2025 11:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC8C265CCD;
+	Tue, 26 Aug 2025 13:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K12gRYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNwM797G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE051309DDC;
-	Tue, 26 Aug 2025 11:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E421917ED;
+	Tue, 26 Aug 2025 13:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208819; cv=none; b=L1gq9KkaDUVWqdc6haEa+us53oCE8rKrgevmBNgTssSaF0nVIyLGsPaiF3onH1cq4SB4bmiz4PxvzHv5rCgiEQ/r7NrkQoR5KrLyg8flPpfAq1fv6Ohhwzrn9mqXbTziXfNwlRY1JMMaajj9V7SfaNdALiN5zgSMJXfMqF3HUpA=
+	t=1756215139; cv=none; b=qSisUEMMmYEKC3Jdz++j4Anjq9wnnK2uEToDTvVXo167SNm5ducQ47EDedDUHkwPLi8OR9jkNScuqNuiZ6BrmX1SE9FJFTqJV/tD+dwxpx9/CjLxulkMGznr5upF+WCt2xTraMOzYtP6gaEkypuIzU11k80TvYNJLW6xlBQx+Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208819; c=relaxed/simple;
-	bh=MCaB++Diw298MF0Ccawg9hQdP7xqMKttHMognpxsvgw=;
+	s=arc-20240116; t=1756215139; c=relaxed/simple;
+	bh=lqXn9C9dv5lpdDgTgMKQIcU+te/3c1+/QdbQTUIPXu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3/Qi0ir79h3qjcn6mIt7NBF6FGdnzzDbXKOhDWcEuOg8gFYfI//TvYq8fdKRfRoMHBl8yiHvPu7qS4G25ib912BkKQPQGrHdS4nq0Zg41S+0P0cic37a28xTKRRtd8gXuhxthBkmeIt3OmGZMuNhGm3kW/XPGtquZPqjktmMiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K12gRYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F31EC4CEF1;
-	Tue, 26 Aug 2025 11:46:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r1frnn3HWFExzDxunH1E562TRQGVp9bm6cK51MwsJz4wLuSxvaZEt70gP2Yq4/dEp3+Fs+JfKPuvd9EGqWtB4MBcDDOmJMixqKukLaXa+8sOzSqR9Y/5UnYwWfknCNSHFZDSrreUm6W6uNEyHHHHWNWEbj86r/rEPi7Eavc5YGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNwM797G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A36FC4CEF1;
+	Tue, 26 Aug 2025 13:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208819;
-	bh=MCaB++Diw298MF0Ccawg9hQdP7xqMKttHMognpxsvgw=;
+	s=korg; t=1756215139;
+	bh=lqXn9C9dv5lpdDgTgMKQIcU+te/3c1+/QdbQTUIPXu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1K12gRYATFQoLN3JAkH0bdme91hQjxgJLr5Njuy2CdaTuEeBEukOrlpFtOLm6xA1c
-	 HiuGpWXTqaCXiF0qcLQHwkaVzEXEyJB9MY+N1yOs8KzcqsYch6kuVRP+cJAm4+cxly
-	 R6NhfWZljZTfmvhNUga3fyeIptF1DUHeaDTqU+Q0=
+	b=NNwM797G6tdQeiOqbZx0WHa5lY/AeKT2AgDr/3b11fY2eJqml+F22qXcMCrzFLVN0
+	 XuKwhIsO2n1nmAOlksSEhQaP6225Cv/D2EIOXrvhQjLJDR2X7xmRH+x83jQ5BlKTNV
+	 k/OlzqRBaGMHyHkiE/sDjtdPapzJ+t+nKqJpJAkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/322] tracing: Limit access to parser->buffer when trace_get_user failed
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Subject: [PATCH 6.1 402/482] drm/amd/display: Fix DP audio DTO1 clock source on DCE 6.
 Date: Tue, 26 Aug 2025 13:10:55 +0200
-Message-ID: <20250826110921.839083790@linuxfoundation.org>
+Message-ID: <20250826110940.759358244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,146 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
+commit 297a4833a68aac3316eb808b4123eb016ef242d7 upstream.
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+On DCE 6, DP audio was not working. However, it worked when an
+HDMI monitor was also plugged in.
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+Looking at dce_aud_wall_dto_setup it seems that the main
+difference is that we use DTO1 when only DP is plugged in.
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
+When programming DTO1, it uses audio_dto_source_clock_in_khz
+which is set from get_dp_ref_freq_khz
 
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
+The dce60_get_dp_ref_freq_khz implementation looks incorrect,
+because DENTIST_DISPCLK_CNTL seems to be always zero on DCE 6,
+so it isn't usable.
+I compared dce60_get_dp_ref_freq_khz to the legacy display code,
+specifically dce_v6_0_audio_set_dto, and it turns out that in
+case of DCE 6, it needs to use the display clock. With that,
+DP audio started working on Pitcairn, Oland and Cape Verde.
 
+However, it still didn't work on Tahiti. Despite having the
+same DCE version, Tahiti seems to have a different audio device.
+After some trial and error I realized that it works with the
+default display clock as reported by the VBIOS, not the current
+display clock.
+
+The patch was tested on all four SI GPUs:
+
+* Pitcairn (DCE 6.0)
+* Oland (DCE 6.4)
+* Cape Verde (DCE 6.0)
+* Tahiti (DCE 6.0 but different)
+
+The testing was done on Samsung Odyssey G7 LS28BG700EPXEN on
+each of the above GPUs, at the following settings:
+
+* 4K 60 Hz
+* 1080p 60 Hz
+* 1080p 144 Hz
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 645cc7863da5de700547d236697dffd6760cf051)
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   18 ++++++++++++------
- kernel/trace/trace.h |    8 +++++++-
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |   21 +++--------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1754,7 +1754,7 @@ int trace_get_user(struct trace_parser *
- 
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1768,7 +1768,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1786,12 +1786,14 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1806,11 +1808,15 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1230,6 +1230,7 @@ bool ftrace_event_is_function(struct tra
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1237,7 +1238,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -83,22 +83,13 @@ static const struct state_dependent_cloc
+ static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
  {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
+ 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+-	int dprefclk_wdivider;
+-	int dp_ref_clk_khz;
+-	int target_div;
++	struct dc_context *ctx = clk_mgr_base->ctx;
++	int dp_ref_clk_khz = 0;
  
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1251,6 +1252,11 @@ static inline void trace_parser_clear(st
- 	parser->idx = 0;
- }
+-	/* DCE6 has no DPREFCLK_CNTL to read DP Reference Clock source */
+-
+-	/* Read the mmDENTIST_DISPCLK_CNTL to get the currently
+-	 * programmed DID DENTIST_DPREFCLK_WDIVIDER*/
+-	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, &dprefclk_wdivider);
+-
+-	/* Convert DENTIST_DPREFCLK_WDIVIDERto actual divider*/
+-	target_div = dentist_get_divider_from_did(dprefclk_wdivider);
+-
+-	/* Calculate the current DFS clock, in kHz.*/
+-	dp_ref_clk_khz = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
+-		* clk_mgr->base.dentist_vco_freq_khz) / target_div;
++	if (ASIC_REV_IS_TAHITI_P(ctx->asic_id.hw_internal_rev))
++		dp_ref_clk_khz = ctx->dc_bios->fw_info.default_display_engine_pll_frequency;
++	else
++		dp_ref_clk_khz = clk_mgr_base->clks.dispclk_khz;
  
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
-+
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
+ }
 
 
 
