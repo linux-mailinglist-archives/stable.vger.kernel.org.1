@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AA3B3603D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7BBB36871
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9841BA5E32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05001C2408F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5864186E40;
-	Tue, 26 Aug 2025 12:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3034302CA6;
+	Tue, 26 Aug 2025 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULhvv9yL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN98Kye2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D351A23BE;
-	Tue, 26 Aug 2025 12:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0BD35206F;
+	Tue, 26 Aug 2025 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212904; cv=none; b=hhQdkHCxwvvkNSS3J3P43Xir5cr46K8yqIJSrrTHR0iuc5qtD1ju9NbHSqZ9bWO2cN7Rfg2Mtdp4Ef4QeQEWKAo5vH7xKbquLU58pwvfrCEeNfjScogyctTZrZFns8zpFtXmkElMJwIUc6tTWQNkXVPjD/nrbd/w8miyrEC/Csc=
+	t=1756217284; cv=none; b=It4rYgx0kxV+dO+aVcx3y17Xj8gl82QUljDg3L0RwpBTKPI3C5tr3pWDApYzvnkbfo3s/fWX+KcLgbw/BpUVgI/fwUHHIVoxae2ccgizyLoNJ3ylhedQmMcBt6IDSDnCNVBa30N01gbH2Mw4q+Nr7aEjDKx9+MrbNpFKiJxShFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212904; c=relaxed/simple;
-	bh=mGgpwntjMm2tbqvmXwuc9aNe43sVpfkpNnJJppVav/8=;
+	s=arc-20240116; t=1756217284; c=relaxed/simple;
+	bh=12tWvsLUm6NaR8GK0ABd5tP3r9xxkv1AdlofypKIUYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfwlgzR6ER0uPVTlpOP8FcnY3y78sncHrYb6q08ZwwJborNUx/vKBr+lPTmA+TQUN7KneELaQ5U0+AzjnEJyWaZbiG4/fsk0U24V3vVlGYgQ3LqEtTvGfSU63l+7ehZFP4ZU2RxgCUQceREP8un2ZFCAuA1pZF4ML0Ye5cQc0es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULhvv9yL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF24C4CEF1;
-	Tue, 26 Aug 2025 12:55:03 +0000 (UTC)
+	 MIME-Version; b=F4WxZLVwyBOpMbdxG1eRLdxFLEsGs/mO+t+xrs0xa3BUxbY+iTQNXJFVEEPHAxmq3/rYRLP/N5c/xGDIKevF9F/7ZQHSMw9Rma+nuCE8Tn2SZvuISCco8X9H0V44gg2miOgy3y5GiH9Na5dZuux1w+vGg+C+hGTYjWCE8N37Yck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN98Kye2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20125C116B1;
+	Tue, 26 Aug 2025 14:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212904;
-	bh=mGgpwntjMm2tbqvmXwuc9aNe43sVpfkpNnJJppVav/8=;
+	s=korg; t=1756217284;
+	bh=12tWvsLUm6NaR8GK0ABd5tP3r9xxkv1AdlofypKIUYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULhvv9yLXPCuyouR98XYy/8VccaUnMts04bFSEcTttKg0k0oksw143OjHewVvjKoI
-	 8qo5gL6xAL5eDtDI4utH1gt+USHIITbqmDKr/MijR5XK7ihs3Uqbn4+EncPBEj0fkC
-	 WSL4C/8GtUaABQ6u02COSpzs8E62cvf+2x18rYJs=
+	b=ZN98Kye2oHLmUhGIClgGB/Q+InNsZx7Hun0WI/zw52zZ8EKQ1bnbMB1cIGpNc3Ax6
+	 tl5p/XKG6GRPkqPbY6HzJ5GNQ8wcEjwPFwB1dEzXhJF/k6BmBfrKfToz9PB1y2U/b/
+	 nX/ozI+2BOsKlAexx+j4MR82uAclRYz8XhaV2ppQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/587] s390/time: Use monotonic clock in get_cycles()
+Subject: [PATCH 5.10 085/523] Revert "vmci: Prevent the dispatching of uninitialized payloads"
 Date: Tue, 26 Aug 2025 13:04:55 +0200
-Message-ID: <20250826110956.666442676@linuxfoundation.org>
+Message-ID: <20250826110926.652660144@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
+[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
 
-Otherwise the code might not work correctly when the clock
-is changed.
+This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+While the code "looks" correct, the compiler has no way to know that
+doing "fun" pointer math like this really isn't a write off the end of
+the structure as there is no hint anywhere that the structure has data
+at the end of it.
+
+This causes the following build warning:
+
+In function 'fortify_memset_chk',
+    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
+include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  480 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So revert it for now and it can come back in the future in a "sane" way
+that either correctly makes the structure know that there is trailing
+data, OR just the payload structure is properly referenced and zeroed
+out.
+
+Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/timex.h | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
-index 4d646659a5f5..f7a44af12c2f 100644
---- a/arch/s390/include/asm/timex.h
-+++ b/arch/s390/include/asm/timex.h
-@@ -192,13 +192,6 @@ static inline unsigned long get_tod_clock_fast(void)
- 	asm volatile("stckf %0" : "=Q" (clk) : : "cc");
- 	return clk;
- }
--
--static inline cycles_t get_cycles(void)
--{
--	return (cycles_t) get_tod_clock() >> 2;
--}
--#define get_cycles get_cycles
--
- int get_phys_clock(unsigned long *clock);
- void init_cpu_timer(void);
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index ccadbc0d8f7d..26ff49fdf0f7 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
+-		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
+-			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
  
-@@ -226,6 +219,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
- 	return tod;
- }
- 
-+static inline cycles_t get_cycles(void)
-+{
-+	return (cycles_t)get_tod_clock_monotonic() >> 2;
-+}
-+#define get_cycles get_cycles
-+
- /**
-  * tod_to_ns - convert a TOD format value to nanoseconds
-  * @todval: to be converted TOD format value
 -- 
 2.39.5
 
