@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C87B35D2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54D5B3641A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18DF1BA683C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97777BE2C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835303431FC;
-	Tue, 26 Aug 2025 11:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261AB246790;
+	Tue, 26 Aug 2025 13:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ytph8qbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+fcMTFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402923093BA;
-	Tue, 26 Aug 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB39622DFA7;
+	Tue, 26 Aug 2025 13:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208046; cv=none; b=tmTKf38mZ1VBJ/QNaaUXuMJF6P9zmDTyc1V8HuAKtNDLk7oUes7EdF2q6LWhfuEz5XKEtmnzo9lsVTWv2AyVJ2RDXJlVy3yU2WA0+si6ZlLxxCTtSfgJaLATpr7aSahKpfNZBroyzjoskSwK2ct1/3eQNWfVPuxuSm9MbL2ynMo=
+	t=1756215286; cv=none; b=A0ufK3DVjZdjaCmyA6oYGLFgUy80+ZYuPm5rPqB7ybS9ksBmSqTJpBUDSJv87uvMGLq2fNdRMtit9D2lxlttejLQdsKdw0w/oSYdyJahf/KWPfCL0Xt+g9cDB5Mk/TiYqgV7fkqZq9bC0XW0Y3vaJ9+LCLFz9niqIeSdH8uKUPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208046; c=relaxed/simple;
-	bh=nUfO/4sM6pzkEdxw1r4fnsczKnElt5o/172FhEMtFi8=;
+	s=arc-20240116; t=1756215286; c=relaxed/simple;
+	bh=XUiNpvcKyB24DvKtEtWeodRIdjz3XuyjRQFaYmbNF6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD6czi+J+/+Nr4EhUmB+JgmLAZLq7zvAXSeaSjwgtz7gh0qCRyq4QJB0mbAFFUwnCguzdMvAPiVkvmfNrj6krp6t1SixetwyUkf3n+2sOaZsTrqSU0rg1Vhrc8xYSWlXQ1hUcxXHL5jUhOhbCp70Yyt0CgCN2/MnnSusiJ+wUcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ytph8qbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D7BC4CEF1;
-	Tue, 26 Aug 2025 11:34:05 +0000 (UTC)
+	 MIME-Version; b=mlGlAwHxZ0tlNPRmJ5FVTwxNKw5gUrpN3V9lVmFiIFamkO+qXMqm6NTZSQmDKGrIN+2JErlSYG77nMt7WbArrTWJEPJv2cuaACWlcoqcLGBKTMqH/QyNTaGPnuFuXaWUQNeIyVC1F/iK2qX4nbIDFC7LUaYrt5eG7XFU+Qr+EdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+fcMTFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557A9C4CEF1;
+	Tue, 26 Aug 2025 13:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208045;
-	bh=nUfO/4sM6pzkEdxw1r4fnsczKnElt5o/172FhEMtFi8=;
+	s=korg; t=1756215286;
+	bh=XUiNpvcKyB24DvKtEtWeodRIdjz3XuyjRQFaYmbNF6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ytph8qbns8IhCuEeOINEVmiW25rqK0D9g9hk5NRqAOWfXmbYMWJN9ixVQ81XoaEts
-	 q640iJz3RXpbLtQaTRfSvhiwDQZ8w76k39QfFv+G0ieP0uiciJSgxAgk+ZaB83DH5u
-	 sFYb77F+GZ+IdNInXim3aEqD6QUH68yrkmeaTliA=
+	b=K+fcMTFlbQWr53PnD5d6wTKoeHSVExHSBk45Ne+V026nHpiw0mY/fDr9YxnuWe6Dm
+	 vXiPEPxmKIdaGnZR2M6zYSp0W4ivO4Qkblxzd7LOjKeO1YtatqJkn0kEcdbqN/KlIg
+	 0NeDiuUcPyR967GGPoDForYa0o0rYAGPMz+bUBZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 385/457] md: add helper rdev_needs_recovery()
+	syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com,
+	syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 416/482] comedi: Fix use of uninitialized memory in do_insn_ioctl() and do_insnlist_ioctl()
 Date: Tue, 26 Aug 2025 13:11:09 +0200
-Message-ID: <20250826110946.813615792@linuxfoundation.org>
+Message-ID: <20250826110941.105961194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit cb0780ad4333040a98e10f014b593ef738a3f31e ]
+commit 3cd212e895ca2d58963fdc6422502b10dd3966bb upstream.
 
-Add a helper for checking if an rdev needs recovery.
+syzbot reports a KMSAN kernel-infoleak in `do_insn_ioctl()`.  A kernel
+buffer is allocated to hold `insn->n` samples (each of which is an
+`unsigned int`).  For some instruction types, `insn->n` samples are
+copied back to user-space, unless an error code is being returned.  The
+problem is that not all the instruction handlers that need to return
+data to userspace fill in the whole `insn->n` samples, so that there is
+an information leak.  There is a similar syzbot report for
+`do_insnlist_ioctl()`, although it does not have a reproducer for it at
+the time of writing.
 
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250816002534.1754356-2-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Stable-dep-of: b7ee30f0efd1 ("md: fix sync_action incorrect display during resync")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+One culprit is `insn_rw_emulate_bits()` which is used as the handler for
+`INSN_READ` or `INSN_WRITE` instructions for subdevices that do not have
+a specific handler for that instruction, but do have an `INSN_BITS`
+handler.  For `INSN_READ` it only fills in at most 1 sample, so if
+`insn->n` is greater than 1, the remaining `insn->n - 1` samples copied
+to userspace will be uninitialized kernel data.
+
+Another culprit is `vm80xx_ai_insn_read()` in the "vm80xx" driver.  It
+never returns an error, even if it fails to fill the buffer.
+
+Fix it in `do_insn_ioctl()` and `do_insnlist_ioctl()` by making sure
+that uninitialized parts of the allocated buffer are zeroed before
+handling each instruction.
+
+Thanks to Arnaud Lecomte for their fix to `do_insn_ioctl()`.  That fix
+replaced the call to `kmalloc_array()` with `kcalloc()`, but it is not
+always necessary to clear the whole buffer.
+
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Reported-by: syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a5e45f768aab5892da5d
+Reported-by: syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fb4362a104d45ab09cf9
+Cc: stable <stable@kernel.org> # 5.13+
+Cc: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250725125324.80276-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/comedi/comedi_fops.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 80470bcf4383..0348b5f3adc5 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4822,6 +4822,15 @@ metadata_store(struct mddev *mddev, const char *buf, size_t len)
- static struct md_sysfs_entry md_metadata =
- __ATTR_PREALLOC(metadata_version, S_IRUGO|S_IWUSR, metadata_show, metadata_store);
- 
-+static bool rdev_needs_recovery(struct md_rdev *rdev, sector_t sectors)
-+{
-+	return rdev->raid_disk >= 0 &&
-+	       !test_bit(Journal, &rdev->flags) &&
-+	       !test_bit(Faulty, &rdev->flags) &&
-+	       !test_bit(In_sync, &rdev->flags) &&
-+	       rdev->recovery_offset < sectors;
-+}
-+
- enum sync_action md_sync_action(struct mddev *mddev)
- {
- 	unsigned long recovery = mddev->recovery;
-@@ -8959,11 +8968,7 @@ static sector_t md_sync_position(struct mddev *mddev, enum sync_action action)
- 		start = MaxSector;
- 		rcu_read_lock();
- 		rdev_for_each_rcu(rdev, mddev)
--			if (rdev->raid_disk >= 0 &&
--			    !test_bit(Journal, &rdev->flags) &&
--			    !test_bit(Faulty, &rdev->flags) &&
--			    !test_bit(In_sync, &rdev->flags) &&
--			    rdev->recovery_offset < start)
-+			if (rdev_needs_recovery(rdev, start))
- 				start = rdev->recovery_offset;
- 		rcu_read_unlock();
- 
-@@ -9322,12 +9327,8 @@ void md_do_sync(struct md_thread *thread)
- 			    test_bit(MD_RECOVERY_RECOVER, &mddev->recovery)) {
- 				rcu_read_lock();
- 				rdev_for_each_rcu(rdev, mddev)
--					if (rdev->raid_disk >= 0 &&
--					    mddev->delta_disks >= 0 &&
--					    !test_bit(Journal, &rdev->flags) &&
--					    !test_bit(Faulty, &rdev->flags) &&
--					    !test_bit(In_sync, &rdev->flags) &&
--					    rdev->recovery_offset < mddev->curr_resync)
-+					if (mddev->delta_disks >= 0 &&
-+					    rdev_needs_recovery(rdev, mddev->curr_resync))
- 						rdev->recovery_offset = mddev->curr_resync;
- 				rcu_read_unlock();
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1582,6 +1582,9 @@ static int do_insnlist_ioctl(struct come
+ 				memset(&data[n], 0, (MIN_SAMPLES - n) *
+ 						    sizeof(unsigned int));
  			}
--- 
-2.50.1
-
++		} else {
++			memset(data, 0, max_t(unsigned int, n, MIN_SAMPLES) *
++					sizeof(unsigned int));
+ 		}
+ 		ret = parse_insn(dev, insns + i, data, file);
+ 		if (ret < 0)
+@@ -1665,6 +1668,8 @@ static int do_insn_ioctl(struct comedi_d
+ 			memset(&data[insn->n], 0,
+ 			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
+ 		}
++	} else {
++		memset(data, 0, n_data * sizeof(unsigned int));
+ 	}
+ 	ret = parse_insn(dev, insn, data, file);
+ 	if (ret < 0)
 
 
 
