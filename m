@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F448B369B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A5DB366B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 704341C80539
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEFE91C218C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9AA350D7F;
-	Tue, 26 Aug 2025 14:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B0235082E;
+	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMYx8afY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itSNYSAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697913469F4;
-	Tue, 26 Aug 2025 14:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A31341650;
+	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217635; cv=none; b=f4itaBedaXpemvGljAdPY/O8IdlrgGCqzAcVKpGRnW1n1QPd3BZyFBvrLSxA7XEzof5t1w2UnICYqjCnRGsjlpHjjOQ8fivu7qDg+P2HUQ+RjE6r42l+/gMDtOnJxlk3Xt+XZP9GXo4IY9X3Rh/wYHU/steJrrWguD5N6/JoFRU=
+	t=1756216247; cv=none; b=Rb1LkOtijX9ALfLrm9tYhF5qrzpMax2DKsJxgCKcY+uHwvaNp4Wr3TyY+PsQAeURPqlmDT3FN1K7SD5ONJmPxfRazin9s16RZitC06kJdjLRvmgmyuGARn9p5Bch3k9ot+vXRG5V0tocSgBCT/L4KxxJWbdorJlGEU7X9jCmWeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217635; c=relaxed/simple;
-	bh=Det0Xni6gpMAFbWqjamw92d6l2jAhdJTd7Nw3Yd9IiI=;
+	s=arc-20240116; t=1756216247; c=relaxed/simple;
+	bh=P5RtaV3qZtHAKztjenR7y1C0F0kETjlYTYssfWyjlgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2o01+6l7aoiTbPD7/lhHH09YYr95cv73WRzvhYunkBs+5Wlu3G2rybFyfd5YQMbvXwgOMXh5y/jIKMFlPWRgkZMCHIoYgUDLaF/tWH0Zpce4p3SHNaASlPkAv/pIq3LvW9ImQYDuXW23ssWt/XL68skgHhqawH0DXzY31Lpjjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMYx8afY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2B2C113CF;
-	Tue, 26 Aug 2025 14:13:54 +0000 (UTC)
+	 MIME-Version; b=suuwfdQSS4nlckbVlCnii/TfTdZaKgWU5S/Ge+z17flytHOdKX81/e9ThMUvuBSR6BrY7m66Mp3XEMoNWNvn2ibtGGID0nUtn12wsHoItn6qWFccfavsf3WDezDjPwrD5rJ8LYpLAkS1p62vJv3jHHd8XqAIM/saH4GL7+MT8a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itSNYSAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358A6C4CEF1;
+	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217635;
-	bh=Det0Xni6gpMAFbWqjamw92d6l2jAhdJTd7Nw3Yd9IiI=;
+	s=korg; t=1756216247;
+	bh=P5RtaV3qZtHAKztjenR7y1C0F0kETjlYTYssfWyjlgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMYx8afYO8LARg/Z6IkLdPcVWwOV94Kb/Joq2ulSNeuNhmrJOE7WnPmGrF710XY2D
-	 jS+fgyaDx5ON/lyDPFa4PoeEF3vOSGxqJOHC8ooTopMxp4X0GQ+vj7w/OSdS0FxHYq
-	 2NgXMC+7TLfmb7cuidVZo55UKikwauYzpeFFKJ0c=
+	b=itSNYSAdZK4/Y8m4uRa3v2joE8GRHI2AVpc0SoECHexcV6uzTEDZYLUYCz2iBPdkQ
+	 MGjDR2B61h5KRJR5usYdfkoO0AdP0Lv4kV1gXTPDjUkAgMNqlZt1Dx6iY/chtOE5xG
+	 gSSvF5HQyPO0cDBiX0ERqQHnVHYY9kHxa9E2at2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
+	Juergen Gross <jgross@suse.com>,
+	Elliott Mitchell <ehem+xen@m5p.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 218/523] better lockdep annotations for simple_recursive_removal()
+Subject: [PATCH 5.15 337/644] xen/netfront: Fix TX response spurious interrupts
 Date: Tue, 26 Aug 2025 13:07:08 +0200
-Message-ID: <20250826110929.837644501@linuxfoundation.org>
+Message-ID: <20250826110954.739255480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
 
-[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
+[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
 
-We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
-callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
-(so that a variant of that could be used with parent of the victim
-held locked by the caller).
+We found at Vates that there are lot of spurious interrupts when
+benchmarking the xen-net PV driver frontend. This issue appeared with a
+patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
+harden netfront against event channel storms"). On an iperf benchmark,
+spurious interrupts can represent up to 50% of the interrupts.
 
-In reality, simple_recursive_removal()
-	* never holds two locks at once
-	* holds the lock on parent of dentry passed to callback
-	* is used only on the trees with fixed topology, so the depths
-are not changing.
+Spurious interrupts are interrupts that are rised for nothing, there is
+no work to do. This appends because the function that handles the
+interrupts ("xennet_tx_buf_gc") is also called at the end of the request
+path to garbage collect the responses received during the transmission
+load.
 
-So the locking order is actually fine.
+The request path is doing the work that the interrupt handler should
+have done otherwise. This is particurary true when there is more than
+one vcpu and get worse linearly with the number of vcpu/queue.
 
-AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
-grabbed by that thing.
+Moreover, this problem is amplifyed by the penalty imposed by a spurious
+interrupt. When an interrupt is found spurious the interrupt chip will
+delay the EOI to slowdown the backend. This delay will allow more
+responses to be handled by the request path and then there will be more
+chance the next interrupt will not find any work to do, creating a new
+spurious interrupt.
 
-Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+This causes performance issue. The solution here is to remove the calls
+from the request path and let the interrupt handler do the processing of
+the responses. This approch removes most of the spurious interrupts
+(<0.05%) and also has the benefit of freeing up cycles in the request
+path, allowing it to process more work, which improves performance
+compared to masking the spurious interrupt one way or another.
+
+This optimization changes a part of the code that is present since the
+net frontend driver was upstreamed. There is no similar pattern in the
+other xen PV drivers. Since the first commit of xen-netfront is a blob
+that doesn't explain all the design choices I can only guess why this
+specific mecanism was here. This could have been introduce to compensate
+a slow backend at the time (maybe the backend was fixed or optimize
+later) or a small queue. In 18 years, both frontend and backend gain lot
+of features and optimizations that could have obsolete the feature of
+reaping completions from the TX path.
+
+Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
+guest(s):
+
+Without this patch on the :
+vm -> dom0: 4.5Gb/s
+vm -> vm:   7.0Gb/s
+
+Without XSA-391 patch (revert of b27d47950e48):
+vm -> dom0: 8.3Gb/s
+vm -> vm:   8.7Gb/s
+
+With XSA-391 and this patch:
+vm -> dom0: 11.5Gb/s
+vm -> vm:   12.6Gb/s
+
+v2:
+- add revewed and tested by tags
+- resend with the maintainers in the recipients list
+
+v3:
+- remove Fixes tag but keep the commit ref in the explanation
+- add a paragraph on why this code was here
+
+Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/xen-netfront.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index aa0fbd720409..c6ed6c58dee6 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -272,7 +272,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 		struct dentry *victim = NULL, *child;
- 		struct inode *inode = this->d_inode;
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index 0add51f1b7e4..4b19d54fa2e2 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -639,8 +639,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
  
--		inode_lock(inode);
-+		inode_lock_nested(inode, I_MUTEX_CHILD);
- 		if (d_is_dir(this))
- 			inode->i_flags |= S_DEAD;
- 		while ((child = find_next_child(this, victim)) == NULL) {
-@@ -284,7 +284,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 			victim = this;
- 			this = this->d_parent;
- 			inode = this->d_inode;
--			inode_lock(inode);
-+			inode_lock_nested(inode, I_MUTEX_CHILD);
- 			if (simple_positive(victim)) {
- 				d_invalidate(victim);	// avoid lost mounts
- 				if (d_is_dir(victim))
+-	xennet_tx_buf_gc(queue);
+-
+ 	return 0;
+ }
+ 
+@@ -850,9 +848,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
+ 
+-	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
+-	xennet_tx_buf_gc(queue);
+-
+ 	if (!netfront_tx_slot_available(queue))
+ 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
+ 
 -- 
 2.39.5
 
