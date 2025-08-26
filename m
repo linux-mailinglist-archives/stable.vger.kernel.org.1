@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834EFB36915
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E39B36303
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F06D564640
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1108A77EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584121F4C90;
-	Tue, 26 Aug 2025 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE49334AB0C;
+	Tue, 26 Aug 2025 13:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enOCw8hJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtzKqhzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1693634DCD2;
-	Tue, 26 Aug 2025 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954AA34164F;
+	Tue, 26 Aug 2025 13:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217412; cv=none; b=kO4bFXWt3ePZ2PxTP+tPkn0CQs3kC6GN3SpNs/vrN8FVi2EWCtEz/nMthW/pZDxMG2gVLIZcZ4b80vNxS+n7WP/wTJzuvDNReoVvm7RwddkTguu51TZRJLvbMhF5O7Z6wB89uWNBcRlvNHYAizzyFPYq2mLdneykaQgqf+QpIrM=
+	t=1756214226; cv=none; b=azAlANY24SJeO+skeaiXCN25HNF2TE5eso70p/lXhfqaXOjf6KWKyLAkzVpgfyUqw7ZWMxThjkAa2oFN1s/n4y4OLmlrHnXYFrZTgNt45lCwNF2ROC0Qj8+i6fMG/up5gSjSXKe6CdXuvAqEE3ylAdgNdX5iDB3Uvx4zPtwG9/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217412; c=relaxed/simple;
-	bh=iw+ZBvYnJMI2zjRR8DB2z71Yt5I23YQkbvvfriT11gc=;
+	s=arc-20240116; t=1756214226; c=relaxed/simple;
+	bh=pbXsuTNwRbcFWSGx5P2I4o9ENy8ydqW3Uj7z5G+FDVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRAkJbl0+Y3+8nKt4Sk8Aq3NGFOGE1VW4223NAvfJDRRS1pxacD9xTbWSRzVa/pf2tyHixqDOs1vGdpeDFinmaI/RwjXk8drjvi7URjjuHK3MnXFRQ8JQFva61gRUoByDepBy8CqisT+ti2HzFluhHk2Su5k01cJrpusKvSPro8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enOCw8hJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7B3C4CEF1;
-	Tue, 26 Aug 2025 14:10:11 +0000 (UTC)
+	 MIME-Version; b=JiScXrmwkD3LESyqz2rHs10cSl3DFFsdsg0cKM3s+b+8ewCv/C6eNLMztVTruU8qIQNY76V4/Smg2+sjIne9YojYG1Rhv27MLgbdbSVXlTdwihc/3eR2Yg6FRR/IuQEwy3R9IxOPXd6qOalEMuGF7Cz6B00wPis1pSya1ytTHrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtzKqhzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2950FC4CEF1;
+	Tue, 26 Aug 2025 13:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217412;
-	bh=iw+ZBvYnJMI2zjRR8DB2z71Yt5I23YQkbvvfriT11gc=;
+	s=korg; t=1756214226;
+	bh=pbXsuTNwRbcFWSGx5P2I4o9ENy8ydqW3Uj7z5G+FDVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enOCw8hJ9109475YKhtBUNVJu3yRRJN/zQ60iN5otIGl1BwUr6N+n+y/aPiYTeNaP
-	 weIhqXxDcUKXBoFl9cDooKeHPxtl1gPG1ZHAVwuryf1a2LHZNIOyL89U2xOzen9uf5
-	 SbfQrQTIQLxhEyEmdH+XXXyBNcmQNuRwNfXVxH9o=
+	b=PtzKqhzT5JWzYKEj0szjN0MFUcag+R6tXeSBbGEGq7D+o6UIzWv72goKWk9oJ7hDd
+	 VcxwkQVjKZSG/AfIVKQSsoYDU9DBYZ6iR6wDFKtXwJldw7xUikynsZUkQXwEGLK7u0
+	 tWxxFdhLdY9IJOulGYwXhtdVlx3Liwa9XmB9KjN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"xin.guo" <guoxin0309@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/523] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
+Subject: [PATCH 6.1 059/482] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Tue, 26 Aug 2025 13:05:12 +0200
-Message-ID: <20250826110927.055161894@linuxfoundation.org>
+Message-ID: <20250826110932.281644140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xin.guo <guoxin0309@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-If the new coming segment covers more than one skbs in the ofo queue,
-and which seq is equal to rcv_nxt, then the sequence range
-that is duplicated will be sent as DUP SACK, the detail as below,
-in step6, the {501,2001} range is clearly including too much
-DUP SACK range, in violation of RFC 2883 rules.
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
-2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
-3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
-4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
-5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
-6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
-
-After this fix, the final ACK is as below:
-
-6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
-
-[edumazet] added a new packetdrill test in the following patch.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: xin.guo <guoxin0309@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 82382ac1514f..64a87a39287a 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4769,8 +4769,9 @@ static void tcp_ofo_queue(struct sock *sk)
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 71a00842eb5e..b75999388bf0 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -812,6 +812,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
  
- 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
- 			__u32 dsack = dsack_high;
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
++	}
 +
- 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
--				dsack_high = TCP_SKB_CB(skb)->end_seq;
-+				dsack = TCP_SKB_CB(skb)->end_seq;
- 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
- 		}
- 		p = rb_next(p);
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->horkage & ATA_HORKAGE_NOLPM) {
 -- 
 2.39.5
 
