@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-173410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D42FB35DC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6E4B35D60
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EF5F172742
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEAC61BA4D49
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8A129C339;
-	Tue, 26 Aug 2025 11:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86B533CEB0;
+	Tue, 26 Aug 2025 11:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYFkpJrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4AW2EhE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4191B2BE03C;
-	Tue, 26 Aug 2025 11:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66C52FAC1C;
+	Tue, 26 Aug 2025 11:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208176; cv=none; b=Bc1G+8uDITysNxcjAVzPHsdo3A3skr/x5L+i8RqmrF7fLcC9luWx9xFk93p+q/ZPAzWFsxd1H/mBXNW9pKMJ61HPk9rSty3uB0dJDp7jrrAwuvFnasIcojazPje3KZMKk4g7zMaULAeesF9UugyWHPC8U6EXsvk99+ShxXlRrGw=
+	t=1756208205; cv=none; b=lq/w4gS7s/Tt9E0+v8SHD+/Cy/Ib8RMlLL+n5cK8BCnRxa7pE61/LJ3WZZEBO1SpQDuWxbYjgmNpmbZLv5QPNm1okmqq8NwF07R29RpSZe6tS8Nzv8r8Ijck1m6RHvQ7w9Wb9OuaITb5KVgIM4HILPNQRXEoICXZf41UYMZeP4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208176; c=relaxed/simple;
-	bh=Nye/Irry7GL+Hjd5l4I5xTxVeRV4ya6BdAQ4uUmW5yQ=;
+	s=arc-20240116; t=1756208205; c=relaxed/simple;
+	bh=G/jWzNjHDxs3dPUyyEo+TIwNjBX8uK5vSYx+7mNWuxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCLx+nKM8lHRN6N+qFq8PdUIWpUgbdeHfoFBIF7MfhFco7/nzw2i9CMviPOFLrKd8QG4yQQ15iMtWZmEvlfFibeWryDKNV3tnCie3MXO2/YuBaiDJa9B0rKO6EiDClXoJMCe+EYaUVm5wxg9JpQhtY2Z4xo53dHuVpWKR2vWMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYFkpJrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD540C4CEF1;
-	Tue, 26 Aug 2025 11:36:15 +0000 (UTC)
+	 MIME-Version; b=NLpQ6HRiOTM5smkFoknUcqvcqUFISz/Rhl23BIp4Zd6yRrsEAt49dwOhsfd1H6XKn8l8TQJGzxiMlwT3W2sM3I1PIyuWfB+rlYmT8AesBrAdaaibpB87ZxQaZ9ObdWfpVanEwAu9d3MHapxkJr1atPaywe3sVYMdZYBdKsLFgaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4AW2EhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3711BC4CEF1;
+	Tue, 26 Aug 2025 11:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208176;
-	bh=Nye/Irry7GL+Hjd5l4I5xTxVeRV4ya6BdAQ4uUmW5yQ=;
+	s=korg; t=1756208205;
+	bh=G/jWzNjHDxs3dPUyyEo+TIwNjBX8uK5vSYx+7mNWuxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RYFkpJrW1PxS5OT7WxC2SmGjfdEvXZDq1flrB07t3jwpXXdfo/OQyg/PCi/kUwluX
-	 FAF+C2RDNCOlnI3lNN/zAtyWLi8kN8uJeH3MpJVe97J//3GMvQlSVV47S29qDjCfJE
-	 /2UCggOapcqwciz53U9Yel09h8Ahz+ln33NaArj4=
+	b=r4AW2EhEp6RXFv/QVCcfiHMi5VBBDaBMoCBLe8xsu2C9QtKHnGhYUU4IEB0su2ygq
+	 bZW2zWzWgWldz4zPNrsWRzLrYM7tbDrhR8rjdFNcu+KLQL92VLbIAvd+vRmMTX0zm2
+	 Kga6hhrKPMyjnaqfSQju6AzRie5onCtpJYO3Fml4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.12 003/322] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
-Date: Tue, 26 Aug 2025 13:06:58 +0200
-Message-ID: <20250826110915.274282908@linuxfoundation.org>
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.12 004/322] platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()
+Date: Tue, 26 Aug 2025 13:06:59 +0200
+Message-ID: <20250826110915.303181560@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
 References: <20250826110915.169062587@linuxfoundation.org>
@@ -65,35 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
+commit e2374953461947eee49f69b3e3204ff080ef31b1 upstream.
 
-The freq_tables[] array has num_possible_cpus() elements so, to avoid an
-out of bounds access, this loop should be capped at "< nb_cpus" instead
-of "<= nb_cpus".  The freq_tables[] array is allocated in
-armada_8k_cpufreq_init().
+The blocking notifier is registered in cros_ec_register(); however, it
+isn't unregistered in cros_ec_unregister().
 
+Fix it.
+
+Fixes: 42cd0ab476e2 ("platform/chrome: cros_ec: Query EC protocol version if EC transitions between RO/RW")
 Cc: stable@vger.kernel.org
-Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://lore.kernel.org/r/20250722120513.234031-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -103,7 +103,7 @@ static void armada_8k_cpufreq_free_table
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -313,6 +313,9 @@ EXPORT_SYMBOL(cros_ec_register);
+  */
+ void cros_ec_unregister(struct cros_ec_device *ec_dev)
  {
- 	int opps_index, nb_cpus = num_possible_cpus();
- 
--	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
-+	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
- 		int i;
- 
- 		/* If cpu_dev is NULL then we reached the end of the array */
++	if (ec_dev->mkbp_event_supported)
++		blocking_notifier_chain_unregister(&ec_dev->event_notifier,
++						   &ec_dev->notifier_ready);
+ 	platform_device_unregister(ec_dev->pd);
+ 	platform_device_unregister(ec_dev->ec);
+ 	mutex_destroy(&ec_dev->lock);
 
 
 
