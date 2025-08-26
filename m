@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40C5B35CCE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331B4B361EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BF61BA2BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2762E2A7B88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D7E3451CD;
-	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798A61AB52D;
+	Tue, 26 Aug 2025 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFo+si1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wdk9Q6TY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9959D3451AA;
-	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B48221704;
+	Tue, 26 Aug 2025 13:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207869; cv=none; b=IhcGR9LMXtE0A2ts1O4Mv4vzYsjvcTfNL+x8ByQ5dyl8Wy8XbsXK9JXL3dx19vJ888+eS1zeqLqCXyGFpgkPPKT7bimRll63jQEB1dxaYY2xyRecOgbksFuFOcUwvODTs4tnK9PkqQk2Ij2Lh7xo9y+80EpeQBq2e+JXI03IeuU=
+	t=1756213716; cv=none; b=E3YNuyWXjRwM/TWA+AlOL65YfY31FVoPl+j1up8KOdDVF2mGE/azi1yev60Q6Y/W/PoApMODZ+FzipZH2HyiMuUmf3Q1Ae4/5jF2CUL5W6NQtg50n2ciVLJHr7KrF8aWYmPaKgOEh4VCCnNvzr+z8sikMGZIhceDF3jyeDxDoMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207869; c=relaxed/simple;
-	bh=+BFQWOvGtPBwo4SG53yU1cO3oG7P0QaEtpA4tWgI1CA=;
+	s=arc-20240116; t=1756213716; c=relaxed/simple;
+	bh=7L5zacXi7qeLLRXFjfCmTtqk8uwMjZamBUmpsaRMtSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+oVpdOlpI//sxj+CwzvALm56pmgP6XTa71e89ZkUHbP4xZdUoVdG+QcrtsC9+BK+UhSJhag+M2qxmQygyn+E342kAmZk4i56CR+ytXuQ4IwUffQ+8GY1a7tVdyREWJjaRGUIF2m9KShKfnkfI8nj0RjMvN4G6g0lfDBTWIvGLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFo+si1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B118C4CEF1;
-	Tue, 26 Aug 2025 11:31:09 +0000 (UTC)
+	 MIME-Version; b=P9SAsPaC79L+h0zxUpdkFdM9IPbAXJLS/1fpYPQjupb7GzCKAbS1LZU9twy1H2s6CtgaO+Ucp28CGi4Cmw3YH5D8MJ5cLw9BzJ1CYmq4xHF4DJBSGdUjZvDEa65OnpaZ9YiclaPngAw6XnXc3fNQ0RG3MTukmK8ZCb/1Zz8qp68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wdk9Q6TY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50509C4CEF1;
+	Tue, 26 Aug 2025 13:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207869;
-	bh=+BFQWOvGtPBwo4SG53yU1cO3oG7P0QaEtpA4tWgI1CA=;
+	s=korg; t=1756213715;
+	bh=7L5zacXi7qeLLRXFjfCmTtqk8uwMjZamBUmpsaRMtSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFo+si1Fb+bhs78qbaYlpgAnNt1PU0AwHa6wW8qqUzhRvXTVEpTaexpm3jy97pgtZ
-	 FzhUvOvRmQbYMfTHHQUmEW47NlRJqMrKLJTON9tWTFav1WjjI7s9EFD056rqUOs551
-	 Cv1YdHNCfzTsH4lVocy35AX0RBKbARqMgbKOrX+M=
+	b=Wdk9Q6TYxc0ysI6lE3zPjCQqnCuTeJgdCkOWVeqtFAsy4lfYJoIDqzzLBDvE/WDHQ
+	 V/PENG9I9a5MdDtQi3fEYDir7cuMh9SHZKjp084pOlFYP4XhpyrA60rPO1c0ggEJeI
+	 6id2TlR5toFnZPJ1XMp1Hm3PyrOCpIrVZ66jSdnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.16 318/457] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 453/587] btrfs: populate otime when logging an inode item
 Date: Tue, 26 Aug 2025 13:10:02 +0200
-Message-ID: <20250826110945.212660517@linuxfoundation.org>
+Message-ID: <20250826111004.484789746@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+#    @@ -1,2 +1,6 @@
+#     QA output created by 508
+#     Silence is golden
+#    +Before:
+#    +After : stat.btime = Thu Jan  1 09:30:00 1970
+#    +Before:
+#    +After : stat.btime = Wed Jul  2 14:53:22 2025
+#    ...
+#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ fs/btrfs/tree-log.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1501,6 +1501,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4265,6 +4265,9 @@ static void fill_inode_item(struct btrfs
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode_get_ctime(inode).tv_nsec);
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
++	btrfs_set_timespec_sec(leaf, &item->otime, BTRFS_I(inode)->i_otime_sec);
++	btrfs_set_timespec_nsec(leaf, &item->otime, BTRFS_I(inode)->i_otime_nsec);
 +
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+ 	/*
+ 	 * We do not need to set the nbytes field, in fact during a fast fsync
+ 	 * its value may not even be correct, since a fast fsync does not wait
 
 
 
