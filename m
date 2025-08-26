@@ -1,56 +1,69 @@
-Return-Path: <stable+bounces-173362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77501B35C9A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DD9B36A71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53A78685E39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A85858B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E093451CC;
-	Tue, 26 Aug 2025 11:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF39F350D46;
+	Tue, 26 Aug 2025 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAvh/hw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYyWJPIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105FC3451B0;
-	Tue, 26 Aug 2025 11:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871F1341650;
+	Tue, 26 Aug 2025 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208051; cv=none; b=gHrLaNzAVPztSJRnViiIPZ0wA/JYX9K2EP/7S1ohcBC5qymNuyZT3df2VOsaV2ufZlW7iBvLIOcMM1cySjfssY//IJ+c/V0/6BAQMHvupLz0t5kW68ypd39UoYGUIYwUZRcjGFmB3ut3h/2/BpQT1/V7+kkpjOvpEBC2WMeXu1U=
+	t=1756218281; cv=none; b=IAQ8QkS7dN3wnnXuaSoyuxaRhZ8HHPn0IadRQHL0bXmAQ2p7qyeV1doOhO9besZ6Fepnnk907WJ9dGQjT2Z7WLfiBcmVPjQFuERZEF2lkiaWz4yIL7A6mLiJX7FsqSEyJrT9hh9DRhk925RFp+3fnSAYf0aEkKo1R/WMsVsC+tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208051; c=relaxed/simple;
-	bh=TUi38SWBbJY5IQFUnfqULMvQTCOLNHozF8AbccA2tCU=;
+	s=arc-20240116; t=1756218281; c=relaxed/simple;
+	bh=1/y4h7qGuIrI3AsjSIxVkC6MHxYQCxVUSXCE/lnVO3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA+kHU2RGdWbtW9s9jKqj70NjM9pmepBZuab0mo2Xc6YncSBh3IpRmLWqurMFLO6R8u2bHyKAR6gfstxAZa08kTxlT77r24DU3h/vZV7z7Wi7AIgVOKe5V05Ln6Az5voDyjzHnEDOvc2WzhmQ8115cCuZhiNvIefoNbQ+WnGqt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAvh/hw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F07C4CEF1;
-	Tue, 26 Aug 2025 11:34:10 +0000 (UTC)
+	 MIME-Version; b=ExPyWEIlMe73fhkyDwchYsh7WpMztqltNUyvTb5RECp5Y/eSwiSVEP7xLL+JCl2iia6u+oT1XGt0DojOHA6OHblZRGHbdMwHa4IUB6+htGfUbi1IRG0sNUomv/xJinvEsOj8RVuhsZKtxuSz0LcxwQPH5eX6S9ktNz3Rc2wApu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYyWJPIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5716C4CEF1;
+	Tue, 26 Aug 2025 14:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208050;
-	bh=TUi38SWBbJY5IQFUnfqULMvQTCOLNHozF8AbccA2tCU=;
+	s=korg; t=1756218281;
+	bh=1/y4h7qGuIrI3AsjSIxVkC6MHxYQCxVUSXCE/lnVO3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAvh/hw/aalZk2MZuwe5RhcbeHlLxklVJsm6XOim9JMGaEr2vrWgZIKekBNr7dBbU
-	 xkhbYjInjSQXWVz3wbkFudo929MrnSNZk5d3MPxU7l/Mp99PLwdqYHReEsOQREt+zR
-	 w8MWlfFBLzfUa08oY7TDxIPQYuQuU6L9IsrboHKU=
+	b=zYyWJPIjWA6arxkgUqjT3BbvSxDIXo1+YJ3czYe0OkprRK+QiyFI1Nf8ZzSnAyc44
+	 gEw6RkmcswyQB7nisOALmZ3oJW4kn4hzMgZUBvXMZqTZ6PoQ3Mvmb7ir9H1gNT+muL
+	 Ebt0wIlDWMfXircvLF8k6K7B10wMbYrxe9ABrk0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 387/457] rust: alloc: fix `rusttest` by providing `Cmalloc::aligned_layout` too
-Date: Tue, 26 Aug 2025 13:11:11 +0200
-Message-ID: <20250826110946.863543490@linuxfoundation.org>
+Subject: [PATCH 5.10 462/523] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+Date: Tue, 26 Aug 2025 13:11:12 +0200
+Message-ID: <20250826110935.842048314@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +75,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 0f580d5d3d9d9cd0953695cd32e43aac3a946338 ]
+[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
 
-Commit fde578c86281 ("rust: alloc: replace aligned_size() with
-Kmalloc::aligned_layout()") provides a public `aligned_layout` function
-in `Kamlloc`, but not in `Cmalloc`, and thus uses of it will trigger an
-error in `rusttest`.
+Memory hot remove unmaps and tears down various kernel page table regions
+as required.  The ptdump code can race with concurrent modifications of
+the kernel page tables.  When leaf entries are modified concurrently, the
+dump code may log stale or inconsistent information for a VA range, but
+this is otherwise not harmful.
 
-Such a user appeared in the following commit 22ab0641b939 ("rust: drm:
-ensure kmalloc() compatible Layout"):
+But when intermediate levels of kernel page table are freed, the dump code
+will continue to use memory that has been freed and potentially
+reallocated for another purpose.  In such cases, the ptdump code may
+dereference bogus addresses, leading to a number of potential problems.
 
-    error[E0599]: no function or associated item named `aligned_layout` found for struct `alloc::allocator_test::Cmalloc` in the current scope
-       --> rust/kernel/drm/device.rs:100:31
-        |
-    100 |         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
-        |                               ^^^^^^^^^^^^^^ function or associated item not found in `Cmalloc`
-        |
-       ::: rust/kernel/alloc/allocator_test.rs:19:1
-        |
-    19  | pub struct Cmalloc;
-        | ------------------ function or associated item `aligned_layout` not found for this struct
+To avoid the above mentioned race condition, platforms such as arm64,
+riscv and s390 take memory hotplug lock, while dumping kernel page table
+via the sysfs interface /sys/kernel/debug/kernel_page_tables.
 
-Thus add an equivalent one for `Cmalloc`.
+Similar race condition exists while checking for pages that might have
+been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
+which in turn calls ptdump_check_wx().  Instead of solving this race
+condition again, let's just move the memory hotplug lock inside generic
+ptdump_check_wx() which will benefit both the scenarios.
 
-Fixes: fde578c86281 ("rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20250816204215.2719559-1-ojeda@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Drop get_online_mems() and put_online_mems() combination from all existing
+platform ptdump code paths.
+
+Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/allocator_test.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm64/mm/ptdump_debugfs.c |    3 ---
+ arch/s390/mm/dump_pagetables.c |    2 --
+ mm/ptdump.c                    |    2 ++
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index d19c06ef0498..981e002ae3fc 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -22,6 +22,17 @@ pub type Kmalloc = Cmalloc;
- pub type Vmalloc = Kmalloc;
- pub type KVmalloc = Kmalloc;
+--- a/arch/arm64/mm/ptdump_debugfs.c
++++ b/arch/arm64/mm/ptdump_debugfs.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/debugfs.h>
+-#include <linux/memory_hotplug.h>
+ #include <linux/seq_file.h>
  
-+impl Cmalloc {
-+    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requested size and alignment of
-+    /// `layout`.
-+    pub fn aligned_layout(layout: Layout) -> Layout {
-+        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
-+        // `layout.align()` which together with the slab guarantees means that `Kmalloc` will return
-+        // a properly aligned object (see comments in `kmalloc()` for more information).
-+        layout.pad_to_align()
-+    }
-+}
-+
- extern "C" {
-     #[link_name = "aligned_alloc"]
-     fn libc_aligned_alloc(align: usize, size: usize) -> *mut crate::ffi::c_void;
--- 
-2.50.1
-
+ #include <asm/ptdump.h>
+@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
+ {
+ 	struct ptdump_info *info = m->private;
+ 
+-	get_online_mems();
+ 	ptdump_walk(m, info);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -218,11 +218,9 @@ static int ptdump_show(struct seq_file *
+ 		.marker = address_markers,
+ 	};
+ 
+-	get_online_mems();
+ 	mutex_lock(&cpa_mutex);
+ 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
+ 	mutex_unlock(&cpa_mutex);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -141,6 +141,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ {
+ 	const struct ptdump_range *range = st->range;
+ 
++	get_online_mems();
+ 	mmap_write_lock(mm);
+ 	while (range->start != range->end) {
+ 		walk_page_range_novma(mm, range->start, range->end,
+@@ -148,6 +149,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ 		range++;
+ 	}
+ 	mmap_write_unlock(mm);
++	put_online_mems();
+ 
+ 	/* Flush out the last page */
+ 	st->note_page(st, 0, -1, 0);
 
 
 
