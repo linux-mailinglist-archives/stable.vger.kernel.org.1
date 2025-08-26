@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BC3B3636B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750FBB36BE5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51F08A6CEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ACCC1C41F38
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C2034F467;
-	Tue, 26 Aug 2025 13:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0093451A0;
+	Tue, 26 Aug 2025 14:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAms//C9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWIC+/al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D0A1A239A;
-	Tue, 26 Aug 2025 13:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1358341AA1;
+	Tue, 26 Aug 2025 14:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214429; cv=none; b=ndcB9xuMOz485gqSfVl+R2qtRy3W3w1MDX0DYTrGQD48KLfHFWwITiJu3OnMx/fNTGLJ7JfLmyIvV3uRAs1CCSmyZ5IAnbMJbQDT7+JHqsQtgezYQkv0330wraaVriHuDi4hxJ1o2vJmWNbfNYfWN3px6xZVo9OPQYBrEzoA+co=
+	t=1756218599; cv=none; b=TY24X4XhNZQz4Vw4D083D7WopC78CSqd/ZqjaEjQISbJJF3X8FeAJVzcUoTydl3SCNai6803t9F0afvz3jb9ZdY/LphmvcwiUSGsXYquPrt8wudK7SlJvcoCeT8hASqvZm7iQtazrnIrLMqS9oxxloKefEWGhvcDJalFLbIhNyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214429; c=relaxed/simple;
-	bh=M6KlV/U955VwfbovDMSbOU+ffOgpKfXK2lGwSAOKEwg=;
+	s=arc-20240116; t=1756218599; c=relaxed/simple;
+	bh=M0O2iPzb+9vnjt2b6olFQuUt5tqHo/g/wNDUHZXAWwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGeGUDLrA/aJ7PHgQWPRE+E41XnUY3nli9lp4V8klmaf4ppm2FgE2KBY+HdgZLaq6cVEEoNpetb9ucFGxpPtGCmTrGDEzV+iTlrWz0ed9TG4F9qylstm8IuLVAdg9JIi0TK4cmwpUSVdgYYzcyr9+hyJjoyAiVtp00jiHiOhk90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAms//C9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21430C4CEF1;
-	Tue, 26 Aug 2025 13:20:28 +0000 (UTC)
+	 MIME-Version; b=kxiSWIk+C/0FTe81FBHpyqtDcaS0WRacc4xJ5tsYSr8SZKw9vqV4g1pAHdgCiRM2u3vhoEavca8VTc2YgS0ErrJBXJEbhTBW5gENUdO1ErPiwt+S3QZfLp0Uw6sfUe8CTDsFepNUF2f2ok6Sv6RCvPJQC8Lextih3qnX/YNfKXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWIC+/al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B93BC4CEF1;
+	Tue, 26 Aug 2025 14:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214429;
-	bh=M6KlV/U955VwfbovDMSbOU+ffOgpKfXK2lGwSAOKEwg=;
+	s=korg; t=1756218598;
+	bh=M0O2iPzb+9vnjt2b6olFQuUt5tqHo/g/wNDUHZXAWwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAms//C9lIrSfBypxgTP0s1OsY0l+M/snSaAzpF38UbnkTLy1aWGmrdYqqOLgrUKg
-	 iMQXO7PkeCmYPTrq+XhEXo3hVFa+aUb2/NFuecQMMKJibQith69BQBGgvWOXPcuhKn
-	 RoK3JrqVjmFvsYWFYsnp4leoTKU27t1P3vH4ySu4=
+	b=vWIC+/alUG0951oNG60o+peNQKPMDNeFn5YqUcLIQ7SU1ATq4wt+7se8OU+b3y69F
+	 TkOl1BTsIcI0GNOyWioBXNIa/6X8KHGbvykEFSY5RA45omGRQeSlUBZx5MCQbeAVMZ
+	 MdUIU3g/GEfWJKmz8qpnFesT4zikql4BHSyH9UyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/482] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
-Date: Tue, 26 Aug 2025 13:06:27 +0200
-Message-ID: <20250826110934.128796930@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 062/403] nilfs2: reject invalid file types when reading inodes
+Date: Tue, 26 Aug 2025 13:06:28 +0200
+Message-ID: <20250826110907.579495215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
+commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
 
-If the device configuration fails (if `dma_dev->device_config()`),
-`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
-leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
+To prevent inodes with invalid file types from tripping through the vfs
+and causing malfunctions or assertion failures, add a missing sanity check
+when reading an inode from a block device.  If the file type is not valid,
+treat it as a filesystem error.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
+Fixes: 05fe58fdc10d ("nilfs2: inode operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/nilfs2/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 04bf6ecf7d55..85e0fa7d902b 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
- 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 
- 	/* Make DMA channel work with LPB FIFO data register */
--	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
--		ret = -EINVAL;
--		goto err_dma_prep;
--	}
-+	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
-+		return -EINVAL;
- 
- 	sg_init_table(&sg, 1);
- 
--- 
-2.39.5
-
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -525,11 +525,18 @@ static int __nilfs_read_inode(struct sup
+ 		inode->i_op = &nilfs_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &nilfs_aops;
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &nilfs_special_inode_operations;
+ 		init_special_inode(
+ 			inode, inode->i_mode,
+ 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
++	} else {
++		nilfs_error(sb,
++			    "invalid file type bits in mode 0%o for inode %lu",
++			    inode->i_mode, ino);
++		err = -EIO;
++		goto failed_unmap;
+ 	}
+ 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
+ 	brelse(bh);
 
 
 
