@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193C7B360C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1ABB35B42
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAF361BA5AF9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88AE63A31A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE2F1D61A3;
-	Tue, 26 Aug 2025 13:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2835C340D9D;
+	Tue, 26 Aug 2025 11:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8Bf1Tep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7IrDTWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED93A221DA5;
-	Tue, 26 Aug 2025 13:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B8F29CB32;
+	Tue, 26 Aug 2025 11:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213204; cv=none; b=ErbdWO0GmdaxRmvBxsBmoC7ZnuT6+GO8U6xLnBzqRsehanXqVzi+AQavPpKt0Y/HPcvudJbHHJA9ivTcQnKlXZIwn8z9vSydJfYCFH5SM067CJrR4fZzxLQ54LOus7c4Yod2+U760I3C9slULPSIx02OrbafpnQTGcmEF6oqpzo=
+	t=1756207208; cv=none; b=qgw74OKzDes93FGWTIrLvUQ/QiCpj4ejhEPCfjhw6iU+sSrzPhmw4Nj/LQRk3biamcrJd9KpcG1lLAsP6WvAbyWKl0Gl52/y8kd5QnXgsOr2aOCa/P1ErZ25dJF06nOmIw4JQ8eJGUFnDsTIA6Ei5mrcwoF6Muiss8gLFY9Cb0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213204; c=relaxed/simple;
-	bh=Y1xTduzIJX35Rdno7Yk8mzGvtjqXC05UXGz8sRcaTtA=;
+	s=arc-20240116; t=1756207208; c=relaxed/simple;
+	bh=3KhNv339V30gP3z58/gs49840k+JoTz9/itbaXbOk4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8JFSJljuSVePpNPlHxG+H/0GueHCxHwRydd/FVCfnxoCb5J7e5yD+bH54iU2E02wOFHlWsGGUnHVFBNPHfLKqsoe4yvCv67jbZH47C2bri1x816YYr/3XrsfYtecC1dZn/h7u27yeA4f5s4dldWdehDL6IH8bACXqL1GKdx1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8Bf1Tep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD66C113CF;
-	Tue, 26 Aug 2025 13:00:03 +0000 (UTC)
+	 MIME-Version; b=P9F8+BVQ2ipfBvFnE00ursHayyv6ZH5uxmmcJ9Bj7UX9ztARk99UHrY2Mvu8ISn2z92hizjnRDrSB285z1eJZC0vlLff0KKRrGiyl6FrfX+i26j9fNQIrRVmhB6kgWMcu9aLPw1BgnVMqPP9CswbabJD9oeCfh2Ns0dHt6WtPXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7IrDTWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE27C4CEF4;
+	Tue, 26 Aug 2025 11:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213203;
-	bh=Y1xTduzIJX35Rdno7Yk8mzGvtjqXC05UXGz8sRcaTtA=;
+	s=korg; t=1756207208;
+	bh=3KhNv339V30gP3z58/gs49840k+JoTz9/itbaXbOk4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8Bf1Tepn8r206TnCtOVROHhXXNsO7IBkAuaYgZQYJwP4DP2HzH1z9qJbs06HS8iF
-	 H3JiDxUPDfTgXbfgb3/U7jJBzDIBiUKdv8n+efQvEzCJKbvaH6KtoseKXi9L2yBMp2
-	 7r0vElNJOvfm91i57PMN7d3DimEPnxWC1YoGPvpY=
+	b=R7IrDTWZMlVikTi5JQV5ninps6Aps2l9tdv14+3gV5EyFlR9I5P6jQ550HU8Dt73t
+	 nDXkwmSe7u8sQtjO0tXmng3E+bWlWZHj3+WwGdwFe3c0aWZGfi9R7IlQ9dzM2T+kTX
+	 3qBq7NKT0nPp4eYGgJSLGB22sn7rVhOGfYJEbLdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/587] fs/orangefs: use snprintf() instead of sprintf()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.16 093/457] mtd: rawnand: fsmc: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:06:17 +0200
-Message-ID: <20250826110958.734123154@linuxfoundation.org>
+Message-ID: <20250826110939.676766065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+The DMA map functions can fail and should be tested for errors.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
-
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index b57140ebfad0..cd4bfd92ebd6 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -503,6 +503,8 @@ static int dma_xfer(struct fsmc_nand_dat
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
+ 	dma_dev = chan->device;
+ 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
++	if (dma_mapping_error(dma_dev->dev, dma_addr))
++		return -EINVAL;
  
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
--- 
-2.39.5
-
+ 	if (direction == DMA_TO_DEVICE) {
+ 		dma_src = dma_addr;
 
 
 
