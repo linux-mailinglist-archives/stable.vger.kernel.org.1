@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE73B35D1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E22B35BA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F67683B7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDDD7C1A4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3402FAC1C;
-	Tue, 26 Aug 2025 11:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06113093BA;
+	Tue, 26 Aug 2025 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn99+gEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8VvCpyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058AB29D273;
-	Tue, 26 Aug 2025 11:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E02F83C1;
+	Tue, 26 Aug 2025 11:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208441; cv=none; b=KpuZqIanZ0iOiFbnbpsmytWyO99boXxXjcRL+1h0/3imW1rE3ssblT3dzqRILiJGxUMaLcDnAGewV5Xjb3bO8ErKFle1GhD00x16/gIIl/fJ3W5oYMgUWQUON+ZHCbut7w59zbTKAKPjkOBq3aLn77vp0TrusZMTZ4PcMHWS97I=
+	t=1756207579; cv=none; b=GVnCmtH3pxX3fG/HJoD+LwJNQdbAsH60L5d3uSNQQfB77rwBkX0t3sTL31o776DJSJcWMPKPDbLi7VGhJ4KBvPVnGAnmpCuFF5nzERvIKDZog4Bixh3BXjRkmxvdcSADjirxA/bAN2IgKIg6BZUcslm0wYZV1hdlgnwLNT/meHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208441; c=relaxed/simple;
-	bh=M1WBdEBgY7qKETvNzC0+QafO5mcIQtVE8OvJ4JnZJCM=;
+	s=arc-20240116; t=1756207579; c=relaxed/simple;
+	bh=oE73+Tye9RA7W7g3RfF7sWg4rgNJI/nM0Zsati+x204=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErijA/bv74X03igGmyKXmICuqE5GIMwNwFfKksYntol8Fr8Q+npqdLR8rkGCxMIo6NGOjivDu6M1E42YcaKNOKhnJ5/qHZe+3NdEq3BJAmKrpmrfTvU8UEl+6Bm8uv82J+edGyrGv6ShMzDL+Yd8RotRlxXIJBvKXdBNYUGeHnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn99+gEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89742C4CEF1;
-	Tue, 26 Aug 2025 11:40:40 +0000 (UTC)
+	 MIME-Version; b=KDVyvl0dxoUNpqILNCmfYHLGyAfCOOwW6N1idsaRkp2cQpdcu2kh+FXuLZAjl+rA1Xc0CKy98rm84T0ef5w5vnbSGg+tDlvbftT6STGE/5DOOcvgDZFSHZANxecklAsSQ94/M5q2F37iyGUR/0X+lX83q8+keIcUlwBtVhswn6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8VvCpyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1409C4CEF1;
+	Tue, 26 Aug 2025 11:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208440;
-	bh=M1WBdEBgY7qKETvNzC0+QafO5mcIQtVE8OvJ4JnZJCM=;
+	s=korg; t=1756207579;
+	bh=oE73+Tye9RA7W7g3RfF7sWg4rgNJI/nM0Zsati+x204=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kn99+gEE0xY978Ff866Lq9Fy8YDPfMD3nH+QSveGJINYjVaBdQRbKoGbPbHXMOeF2
-	 u3+YtxaegoGiXhXwNRKgHK/FmH3BJDJhFiztPX20kugKEEHqBQMrP/g1J65MS69d8u
-	 0SCFF9dD2dqNkpFfDYbUNrdc/niP+ybfTM/CPsC0=
+	b=K8VvCpycqPrNVQz3f+DyBEF/vvK8pQWO/2AVas6Azf6gja5iTuqnz18k075GnzTwH
+	 L72o7l2frLXdCDdjXkz5jnOJ+4K+11jAQnSziVM9U+XfPT+IB90I8DVOQTqFrGbR0T
+	 Y98h6IGcy8K/KhZWhNZWXWXmaTuIDbzOadQGjbyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludwig Disterhof <ludwig@disterhof.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 105/322] media: usbtv: Lock resolution while streaming
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.16 236/457] mmc: sdhci-pci-gli: Add a new function to simplify the code
 Date: Tue, 26 Aug 2025 13:08:40 +0200
-Message-ID: <20250826110918.329923514@linuxfoundation.org>
+Message-ID: <20250826110943.206064293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludwig Disterhof <ludwig@disterhof.eu>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
+commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 upstream.
 
-When an program is streaming (ffplay) and another program (qv4l2)
-changes the TV standard from NTSC to PAL, the kernel crashes due to trying
-to copy to unmapped memory.
+In preparation to fix replay timer timeout, add
+sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
-Changing from NTSC to PAL increases the resolution in the usbtv struct,
-but the video plane buffer isn't adjusted, so it overflows.
-
-Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/sdhci-pci-gli.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/media/usb/usbtv/usbtv-video.c
-+++ b/drivers/media/usb/usbtv/usbtv-video.c
-@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
- 	}
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -287,6 +287,20 @@
+ #define GLI_MAX_TUNING_LOOP 40
  
- 	if (params) {
-+		if (vb2_is_busy(&usbtv->vb2q) &&
-+		    (usbtv->width != params->cap_width ||
-+		     usbtv->height != params->cap_height))
-+			return -EBUSY;
- 		usbtv->width = params->cap_width;
- 		usbtv->height = params->cap_height;
- 		usbtv->n_chunks = usbtv->width * usbtv->height
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
+@@ -607,7 +621,6 @@ static void gl9750_hw_setting(struct sdh
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+ 	struct pci_dev *pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	pdev = slot->chip->pdev;
+@@ -626,12 +639,7 @@ static void gl9750_hw_setting(struct sdh
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9750_wt_off(host);
+ }
+@@ -806,7 +814,6 @@ static void sdhci_gl9755_set_clock(struc
+ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	gl9755_wt_on(pdev);
+@@ -841,12 +848,7 @@ static void gl9755_hw_setting(struct sdh
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9755_wt_off(pdev);
+ }
 
 
 
