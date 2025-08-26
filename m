@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04976B36746
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09CFB363D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450E25676DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2961BC7B4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D482634F46B;
-	Tue, 26 Aug 2025 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29595196C7C;
+	Tue, 26 Aug 2025 13:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXRdShpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAoWIysP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807A834F490;
-	Tue, 26 Aug 2025 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04F0AD4B;
+	Tue, 26 Aug 2025 13:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216489; cv=none; b=GzCZnRva4tQOTEnVIksE40gOwlCJYv0mkrU4i6NmfnhMTiI+eyBADC6voy/oezgNH790+2FbXppUJlxJsb2AG/rhMJKra0hCChO4Lni9lSQKH+xVnZyC6XZ60Zp1NCnCFo6jqAYVWU7CvuN5YVtN3PXr1ic2R9/f+dQgKSivJEA=
+	t=1756214779; cv=none; b=H1hRb3mZAkz0PQOgBeVGIQy7JFOv+NUMasDXUhpHrAir+NwBbRYQkllJWkYqHa9sB2571OMxP0rizLhls+cZWi66THcQBnxqJfeONQxVWJhGQ95aQScFaEeMEo6N/VQ7I+fGd2+zwf7ep5f54Kfes6Lh1jA3wmWzou515gvz0sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216489; c=relaxed/simple;
-	bh=31JjWiXApxeT8Ruom2D+Wbc4fyvdxvfP6OSopGp/oCw=;
+	s=arc-20240116; t=1756214779; c=relaxed/simple;
+	bh=CYEcNcG+Ft9G17tStYdm/9YziPjNN01cp3FOVAIO4xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDmLUWndQ+s3p3fe/oXHxLud1j7JJAOIcJ0GP/1v4OGbvKYIQYOVvk6VIueR4obxnc7SBJd4xXn3KJzFjMXzkSBHo+AAysElEouyvO8BD+PrCoha88h6isDNISbh+H2aW53IC4GFuQn0APeM1vUYYbmME8SIpVNHEj0ODvODvsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXRdShpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA766C4CEF1;
-	Tue, 26 Aug 2025 13:54:48 +0000 (UTC)
+	 MIME-Version; b=aU8cU9jWKOBlCw/4/BKJ6nJ2C8OQFZq1YecYpCPsZAFKai54L38h6wZhX8IMS2EVsNSfEvSSgwzt/lB+E5OBXiKI4iHV0WHIEZPRc5YwoaC7pm4yVd7Znbf/Nvgul1UIVveVAsSIfUYCDuDgnGB2APcxtanEe+uOFPC/KpNIXEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAoWIysP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B9C4CEF1;
+	Tue, 26 Aug 2025 13:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216489;
-	bh=31JjWiXApxeT8Ruom2D+Wbc4fyvdxvfP6OSopGp/oCw=;
+	s=korg; t=1756214779;
+	bh=CYEcNcG+Ft9G17tStYdm/9YziPjNN01cp3FOVAIO4xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXRdShpz3YXxP5LjroRfO5JsxCGAjNTNZrdPyYobOpI3c7KEBRPAcjWnFBbaVZ7BV
-	 UXuNLWyI1PSiDkh2NByGoWjvKrrb+UEmLKiDUzGX2r3ekV4yMVztjWCprzYp6gsGmS
-	 bSxdHSz4vFDyZI2/e7wvfyk7RCJqjpeyDjwjtrWg=
+	b=DAoWIysP2An535tXhsVSPAqkZ+mR/lC0KudJjNg8t/L2hnfK05VOkJ6lWvFsvLQxo
+	 +x9GxphIQG9UHWBjmN9OqxH7dQ1nJrZcoOLaJUFQPgrSFRjaQ3fX8I/ofX7noLHOY6
+	 ujq3rZxn8q4hILMHuAfV0VP84qx/ElHH0loMK3VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	stable <stable@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 429/644] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+Subject: [PATCH 6.1 267/482] serial: 8250: fix panic due to PSLVERR
 Date: Tue, 26 Aug 2025 13:08:40 +0200
-Message-ID: <20250826110957.093886551@linuxfoundation.org>
+Message-ID: <20250826110937.363444949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
+commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
 
-In blk_stack_limits(), we check that the t->chunk_sectors value is a
-multiple of the t->physical_block_size value.
+When the PSLVERR_RESP_EN parameter is set to 1, the device generates
+an error response if an attempt is made to read an empty RBR (Receive
+Buffer Register) while the FIFO is enabled.
 
-However, by finding the chunk_sectors value in bytes, we may overflow
-the unsigned int which holds chunk_sectors, so change the check to be
-based on sectors.
+In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
+UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
+dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
+function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
+Execution proceeds to the serial_port_in(port, UART_RX).
+This satisfies the PSLVERR trigger condition.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+When another CPU (e.g., using printk()) is accessing the UART (UART
+is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
+(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
+dw8250_force_idle().
+
+Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
+to fix this issue.
+
+Panic backtrace:
+[    0.442336] Oops - unknown exception [#1]
+[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
+[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
+...
+[    0.442416] console_on_rootfs+0x26/0x70
+
+Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
+Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
+[ Applied fix to serial8250_do_startup() instead of serial8250_initialize() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_port.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 1b92e6624951..d501084bab4a 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -596,7 +596,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	}
- 
- 	/* chunk_sectors a multiple of the physical block size? */
--	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
-+	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
- 		t->chunk_sectors = 0;
- 		t->misaligned = 1;
- 		ret = -1;
--- 
-2.39.5
-
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2370,9 +2370,8 @@ int serial8250_do_startup(struct uart_po
+ 	/*
+ 	 * Now, initialize the UART
+ 	 */
+-	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+-
+ 	spin_lock_irqsave(&port->lock, flags);
++	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+ 	if (up->port.flags & UPF_FOURPORT) {
+ 		if (!up->port.irq)
+ 			up->port.mctrl |= TIOCM_OUT1;
 
 
 
