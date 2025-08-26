@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F0B3694A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C517AB35B07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A021C26AC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5643A9AE6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB1C35A2B9;
-	Tue, 26 Aug 2025 14:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08AC283FDF;
+	Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wo+Q6xdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYPB9ZPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024235207F;
-	Tue, 26 Aug 2025 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5B9277C8C;
+	Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217427; cv=none; b=s8twwfKZEOCENqT+236dsqjsMRbjVefYbNidD2ECidsCSAvDc6QNV9zvvU+xxu8DOzp1C0sWznsqCJIb9Qs34f6QjSHzR98G3KT7hfOpmyb2bJWuu9H0XpNJL3iCTVuQ8/2onP7jkf+kSl/DF7NTU+JHFPY+xN8X82yJit1QoPw=
+	t=1756207030; cv=none; b=UEqppsX0EkriMQPJ53JTekLAASVDVT01lMZly6x4IHl0CsaYbXROMifcgrRAUDNFb/EwNSlwy2aSmfvpRsp+voln/2FZtEcntBQqQxEhfUpONl5hglkgqbraArupKrXwazikWWAqBiUMbb2ZfWR7EHtjXRww/XI8ejDfZLF26MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217427; c=relaxed/simple;
-	bh=y89USmqf2lXDkYj2wx++ahw/rvul+sgxmagmmtowOdE=;
+	s=arc-20240116; t=1756207030; c=relaxed/simple;
+	bh=Um4glkktq2BsM/0gj8OeeGJRIt1KoX2UOBHr9Zh2xtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjhmrOktmTn4I8LAxbvAFf0zqDu14sMnsJJw6dE3eWMTJSCokAgq4CNBWyusRvEYqqRh0WlnmIAKzijbVIGGhiufodZAo4/G2MyQRL/DjYnl3rQ9g/wXplrVeXikVlwdJjkyrU0W1Hm96IvUUhCqsL3yLZadWUOkg+F7HbQeV4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wo+Q6xdV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A176C116B1;
-	Tue, 26 Aug 2025 14:10:27 +0000 (UTC)
+	 MIME-Version; b=Zi9AVFBrOZ79TVuFbXE7XW1p5qqReOkhiqPZfFl9xUthkWyjWRJQwuH0Nzg38etFXoD1MgySjOdzbqJCUSCIL5UTvR30IJM0vVPdCwh3vaGf2CLA3/yQzTZdh/2td6NLYZlrzpYgE6GNkvMDtCHNSqDyqUixJg6ZrwIpbyxRb7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYPB9ZPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55E0C4CEF1;
+	Tue, 26 Aug 2025 11:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217427;
-	bh=y89USmqf2lXDkYj2wx++ahw/rvul+sgxmagmmtowOdE=;
+	s=korg; t=1756207030;
+	bh=Um4glkktq2BsM/0gj8OeeGJRIt1KoX2UOBHr9Zh2xtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wo+Q6xdVqyjZtCzxOyI0FS08fczE4HbB3lcGRtHSahYIEvsSSIncIo8KslLOZjHp/
-	 IWbHIc8gDzB4L8H/OuOahx6c2pvi03AnhE2+9A2Dup/Wz7g0O2qED7PP6ccZG1Rf/S
-	 png2Az2+dzS5vQIsAQuPvA7VOX9WVtzpPwL5rZs0=
+	b=FYPB9ZPkQaFX3/I33tWhubNUr7mK8Bs7spO0bI+fSQXH8RL7Y2tdzJGVPgUaAPVkJ
+	 RHyYuxznB08aNt6diUP0SevUoNS9q4W06krE0f0QIZmzqRwfDp8HXQxyaKsngthS3W
+	 PqNyJw2zY0S65BrZsmB1TF+XcM+Gu04CjkN/cA+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/523] wifi: rtl818x: Kill URBs before clearing tx status queue
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.16 024/457] crypto: ccp - Fix SNP panic notifier unregistration
 Date: Tue, 26 Aug 2025 13:05:08 +0200
-Message-ID: <20250826110926.957575121@linuxfoundation.org>
+Message-ID: <20250826110937.930223934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+commit ab8b9fd39c45b7760093528cbef93e7353359d82 upstream.
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+Panic notifiers are invoked with RCU read lock held and when the
+SNP panic notifier tries to unregister itself from the panic
+notifier callback itself it causes a deadlock as notifier
+unregistration does RCU synchronization.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
+Code flow for SNP panic notifier:
+snp_shutdown_on_panic() ->
+__sev_firmware_shutdown() ->
+__sev_snp_shutdown_locked() ->
+atomic_notifier_chain_unregister(.., &snp_panic_notifier)
 
-Tested on RTL8187BvE device.
+Fix SNP panic notifier to unregister itself during SNP shutdown
+only if panic is not in progress.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 19860c3274fb ("crypto: ccp - Register SNP panic notifier only if SNP is enabled")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/sev-dev.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index eb68b2d3caa1..c9df185dc3f4 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 8fb94c5f006a..17edc6bf5622 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -1787,8 +1787,14 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
+ 	sev->snp_initialized = false;
+ 	dev_dbg(sev->dev, "SEV-SNP firmware shutdown\n");
  
-+	usb_kill_anchored_urbs(&priv->anchored);
-+
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
+-					 &snp_panic_notifier);
++	/*
++	 * __sev_snp_shutdown_locked() deadlocks when it tries to unregister
++	 * itself during panic as the panic notifier is called with RCU read
++	 * lock held and notifier unregistration does RCU synchronization.
++	 */
++	if (!panic)
++		atomic_notifier_chain_unregister(&panic_notifier_list,
++						 &snp_panic_notifier);
  
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
- 
- 	if (!priv->is_rtl8187b)
+ 	/* Reset TMR size back to default */
+ 	sev_es_tmr_size = SEV_TMR_SIZE;
 -- 
-2.39.5
+2.50.1
 
 
 
