@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A52B35BA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB806B3636C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE10189768B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C14351BC5B98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B25A319866;
-	Tue, 26 Aug 2025 11:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29191345744;
+	Tue, 26 Aug 2025 13:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiT1Gsvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5G/hpbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAD326D48;
-	Tue, 26 Aug 2025 11:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBECA345747;
+	Tue, 26 Aug 2025 13:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207360; cv=none; b=I1sqQAlOOhomUjVX6o2fr31eJiyy2taM7BEhIzmLb7E3bRZGh37eiAQWIy7JGWzmxLevSlRvZYN1BXYHAVs+SZ11aRZzOJnY+Wf8re5r76+BpYAw6UFJMR6BM5ULAuBWEV4kGPMPLL6FobRgNSD/SvsUbgjLt4nxiYRgxml+jak=
+	t=1756214556; cv=none; b=Bb2Ew4aH/+DI/Jp2K+u1RtxinjH+3QC38FHcuo03u0DdgoGQRoNL48GXDJT1qNI5kWCJT6RWtsKVFZ4AUKygFiJ+tEHJcysQg9WdaoMiNZVEYgcretC+UVGTSL7LuZhCrawlyLQ8trbWaoEHRbIofLJjQ8WX0SrHqvwSSNiwQXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207360; c=relaxed/simple;
-	bh=FCkPZX70LUFB6kIT0J7AZ+m5nAf0xGH42LGtUDIkGc8=;
+	s=arc-20240116; t=1756214556; c=relaxed/simple;
+	bh=kKKssaRU1oX+7061Zumosg3lIO3JPpjTqtK+B7MsMW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNb5O0O48NvraSPwHGxJgf55GlRdf09qKGKSCAsuzRG0IpuVZjB56lPzVPuhTqJOgTZd0Zh2C7cJMQwSK6QD0zYAHpfYK8lZGTzB2FJSi8mUr8lq/AEGjVlRV4x6xeST2pNu23783M/lePGWz3a8AJHpzVJawd0sTHsu/1Wp5s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiT1Gsvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2047C4CEF4;
-	Tue, 26 Aug 2025 11:22:38 +0000 (UTC)
+	 MIME-Version; b=niDtlY5H0RRyGsuxD6na7jyQpgOzL1tOYJAOyAbEJaMzMQ8pemjWaVRPN97uFApCnSvEq6WvLvyevA8RLYnt1bs43agGliKdEitNMq5Bpyrz1Z/qUWBi1PGwyn6rxpFQOFsf7j+5IJLmjkcmmIPYzt4JlWjch+jQw1xwyivDZHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5G/hpbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E22BC113D0;
+	Tue, 26 Aug 2025 13:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207359;
-	bh=FCkPZX70LUFB6kIT0J7AZ+m5nAf0xGH42LGtUDIkGc8=;
+	s=korg; t=1756214556;
+	bh=kKKssaRU1oX+7061Zumosg3lIO3JPpjTqtK+B7MsMW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiT1GsvvO50Julc/XfPKqjZkqV0Gxy3A6so/9L3WGJb6geUR41OJK1hAyp0IUNOMG
-	 r8xm7YcTMmMy35wktvNTxr6kQTC+7tUpEMlqR62UyZDd8cpGYsEvi4Ee3Yl4M+urLW
-	 DJ3w/xkW4r23uvVZCVA8nkjVClPgezYogvgHZHMs=
+	b=i5G/hpbB7fJ4gZeYi52ZBCgaz2wG5H97eLZtLDnGPOzZ1KR99HRXikctW74v1dgaC
+	 aUAjzkmJ3XESbeA5yFqZcfgqpOjpg53k12BMWgVUf3z8M1DDCZZpbicBB+p3J4a+Rj
+	 7rj3HSUPlPAAJyc9TuQVuqn7HGg5/kGjCGy8J8Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.16 121/457] parisc: Check region is readable by user in raw_copy_from_user()
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 152/482] wifi: iwlegacy: Check rate_idx range after addition
 Date: Tue, 26 Aug 2025 13:06:45 +0200
-Message-ID: <20250826110940.363246701@linuxfoundation.org>
+Message-ID: <20250826110934.571409597@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Stanislaw Gruszka <stf_xl@wp.pl>
 
-commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
+[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
 
-Because of the way the _PAGE_READ is handled in the parisc PTE, an
-access interruption is not generated when the kernel reads from a
-region where the _PAGE_READ is zero. The current code was written
-assuming read access faults would also occur in the kernel.
+Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
+the index is incorrect.
 
-This change adds user access checks to raw_copy_from_user().  The
-prober_user() define checks whether user code has read access to
-a virtual address. Note that page faults are not handled in the
-exception support for the probe instruction. For this reason, we
-precede the probe by a ldb access check.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reported-by: Alexei Safin <a.safin@rosa.ru>
+Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
- arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
- 2 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/include/asm/special_insns.h
-+++ b/arch/parisc/include/asm/special_insns.h
-@@ -32,6 +32,34 @@
- 	pa;						\
- })
- 
-+/**
-+ * prober_user() - Probe user read access
-+ * @sr:		Space regster.
-+ * @va:		Virtual address.
-+ *
-+ * Return: Non-zero if address is accessible.
-+ *
-+ * Due to the way _PAGE_READ is handled in TLB entries, we need
-+ * a special check to determine whether a user address is accessible.
-+ * The ldb instruction does the initial access check. If it is
-+ * successful, the probe instruction checks user access rights.
-+ */
-+#define prober_user(sr, va)	({			\
-+	unsigned long read_allowed;			\
-+	__asm__ __volatile__(				\
-+		"copy %%r0,%0\n"			\
-+		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
-+		"\tproberi (%%sr%1,%2),%3,%0\n"		\
-+		"9:\n"					\
-+		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
-+				"or %%r0,%%r0,%%r0")	\
-+		: "=&r" (read_allowed)			\
-+		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
-+		: "memory"				\
-+	);						\
-+	read_allowed;					\
-+})
-+
- #define CR_EIEM 15	/* External Interrupt Enable Mask */
- #define CR_CR16 16	/* CR16 Interval Timer */
- #define CR_EIRR 23	/* External Interrupt Request Register */
---- a/arch/parisc/lib/memcpy.c
-+++ b/arch/parisc/lib/memcpy.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-+#include <linux/mm.h>
- 
- #define get_user_space()	mfsp(SR_USER)
- #define get_kernel_space()	SR_KERNEL
-@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
- unsigned long raw_copy_from_user(void *dst, const void __user *src,
- 			       unsigned long len)
- {
-+	unsigned long start = (unsigned long) src;
-+	unsigned long end = start + len;
-+	unsigned long newlen = len;
-+
- 	mtsp(get_user_space(), SR_TEMP1);
- 	mtsp(get_kernel_space(), SR_TEMP2);
--	return pa_memcpy(dst, (void __force *)src, len);
-+
-+	/* Check region is user accessible */
-+	if (start)
-+	while (start < end) {
-+		if (!prober_user(SR_TEMP1, start)) {
-+			newlen = (start - (unsigned long) src);
-+			break;
-+		}
-+		start += PAGE_SIZE;
-+		/* align to page boundry which may have different permission */
-+		start = PAGE_ALIGN_DOWN(start);
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 78dee8ccfebf..1c22a29d20d6 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
+ 	    || rate_idx > RATE_COUNT_LEGACY)
+ 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
+ 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
+-	if (info->band == NL80211_BAND_5GHZ)
++	if (info->band == NL80211_BAND_5GHZ) {
+ 		rate_idx += IL_FIRST_OFDM_RATE;
++		if (rate_idx > IL_LAST_OFDM_RATE)
++			rate_idx = IL_LAST_OFDM_RATE;
 +	}
-+	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
- }
- EXPORT_SYMBOL(raw_copy_from_user);
- 
+ 	/* Get PLCP rate for tx_cmd->rate_n_flags */
+ 	rate_plcp = il_rates[rate_idx].plcp;
+ 	/* Zero out flags for this packet */
+-- 
+2.39.5
+
 
 
 
