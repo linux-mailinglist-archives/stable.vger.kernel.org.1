@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A3DB3688D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC7CB3631A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36CCD565E30
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E16468107
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C27E34DCC0;
-	Tue, 26 Aug 2025 14:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F46A30146A;
+	Tue, 26 Aug 2025 13:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5IEY9LU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVIzCnUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC550223335;
-	Tue, 26 Aug 2025 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9E12F657F;
+	Tue, 26 Aug 2025 13:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217343; cv=none; b=ZGapIYhxdQJxYvT0TysXy+iIcFkgQbBRy9erQshMQEEWOMjy4GEtvfQnCrvcOSF9YmZAimKRxRHwjPDmOalYF7vkKiaIVJf3h9y1+buNn7Uj6ImGxZINj9XbhmCFjjJs095lJKsINCyGesp8sSNFYJSeMfuUawsWmzZRg8OWsUE=
+	t=1756214245; cv=none; b=L27HK0CC8OKgNVpPqO+Blme01t1WQgRfF3aWo8P+deZ/cN+VTuWJIDgNiOGkmjD2gBVtvlxjwemxaUetW2NA5CutLBuI0dEZT6O49UstAYnSENpzqjavyN5FOYHUXm8IQEgLFyGLmLncJ3sIhrX/a4F3ZvJmLkeCM4hAchsrC6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217343; c=relaxed/simple;
-	bh=xUkS+0tO6U0/drPZhx1LJAIjsgNQLmY6lY2m3yBNDSU=;
+	s=arc-20240116; t=1756214245; c=relaxed/simple;
+	bh=HlWZap5rM5kvY9YmhjMkNJONjVUtUx8ERfJAF2yB04Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmJqPNAsQ5RxpIvdDZ48iDiWaTTygE42GbO1eayvGK4KwSjzC/ngJdJri587/Uf3bnQIUgot7HbBWyapVQN5TrUI3iRuTBo7XgN4hARBenAcXr1qSzhAAFkrhBbRx3GLy7TL7ZZfeV12p00D+XteObOt6uMKBPDiXEouOWnjEAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5IEY9LU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A792C4CEF1;
-	Tue, 26 Aug 2025 14:09:02 +0000 (UTC)
+	 MIME-Version; b=ii4DW80OEiKtOy4nfJL7SVjqvzv6wSgpDZaui8xN8L4MiIXLNfjiU5MK/aO62xStdGCA0oO9zT3zcGcSKmyqTCTiWPQUQEDyHkaCZillc8EQncy7qx03SytlluiQ33kNQp2ipEA/RKobAj8AqCBNZdPb7hyuBnvpXOLmwPpxJ0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVIzCnUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA46C4CEF1;
+	Tue, 26 Aug 2025 13:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217342;
-	bh=xUkS+0tO6U0/drPZhx1LJAIjsgNQLmY6lY2m3yBNDSU=;
+	s=korg; t=1756214244;
+	bh=HlWZap5rM5kvY9YmhjMkNJONjVUtUx8ERfJAF2yB04Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5IEY9LUnZMhfyrYuhyBV7xIpkQe0IIH89Jgs8wxPuPUxYfFFocSHZDD7EMlkGZZr
-	 k7UlyW9TSAl6SFQ2PNKx8lvuG9W83up6I+KEEv+JhOBvg88WF9GLYY4vWB/LbWiywq
-	 197+FBmPQQ8TZBvT4fu2Z+OhBj1uhCpIELrvdFLk=
+	b=GVIzCnUMmVMcNa3T+fZgJt62M3Qfrrhjyiq7PqCFS13tUaGHlnjeHXTHarsFxOrFN
+	 VAhrg0PC6ah8RacuCVxAb0eWewJKTUpsnv+5s/gSN9tJQ3lrGBfgAhPe7o+jwJe8Jb
+	 vHhdnZYjkHzqGp3byDFts1r8KmGC/8cqOSgo/+80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/523] net_sched: act_ctinfo: use atomic64_t for three counters
+Subject: [PATCH 6.1 065/482] usb: xhci: print xhci->xhc_state when queue_command failed
 Date: Tue, 26 Aug 2025 13:05:18 +0200
-Message-ID: <20250826110927.197380247@linuxfoundation.org>
+Message-ID: <20250826110932.434114805@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit d300335b4e18672913dd792ff9f49e6cccf41d26 ]
+[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
 
-Commit 21c167aa0ba9 ("net/sched: act_ctinfo: use percpu stats")
-missed that stats_dscp_set, stats_dscp_error and stats_cpmark_set
-might be written (and read) locklessly.
+When encounters some errors like these:
+xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
+usb usb5-port6: couldn't allocate usb_device
 
-Use atomic64_t for these three fields, I doubt act_ctinfo is used
-heavily on big SMP hosts anyway.
+It's hard to know whether xhc_state is dying or halted. So it's better
+to print xhc_state's value which can help locate the resaon of the bug.
 
-Fixes: 24ec483cec98 ("net: sched: Introduce act_ctinfo action")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250709090204.797558-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_ctinfo.h |  6 +++---
- net/sched/act_ctinfo.c         | 19 +++++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/usb/host/xhci-ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/tc_act/tc_ctinfo.h b/include/net/tc_act/tc_ctinfo.h
-index f071c1d70a25..a04bcac7adf4 100644
---- a/include/net/tc_act/tc_ctinfo.h
-+++ b/include/net/tc_act/tc_ctinfo.h
-@@ -18,9 +18,9 @@ struct tcf_ctinfo_params {
- struct tcf_ctinfo {
- 	struct tc_action common;
- 	struct tcf_ctinfo_params __rcu *params;
--	u64 stats_dscp_set;
--	u64 stats_dscp_error;
--	u64 stats_cpmark_set;
-+	atomic64_t stats_dscp_set;
-+	atomic64_t stats_dscp_error;
-+	atomic64_t stats_cpmark_set;
- };
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 0862fdd3e568..c4880b22f359 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -4421,7 +4421,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
  
- enum {
-diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
-index 5aa005835c06..9e7dab17c978 100644
---- a/net/sched/act_ctinfo.c
-+++ b/net/sched/act_ctinfo.c
-@@ -44,9 +44,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv4_change_dsfield(ip_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -57,9 +57,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv6_change_dsfield(ipv6_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -72,7 +72,7 @@ static void tcf_ctinfo_cpmark_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				  struct tcf_ctinfo_params *cp,
- 				  struct sk_buff *skb)
- {
--	ca->stats_cpmark_set++;
-+	atomic64_inc(&ca->stats_cpmark_set);
- 	skb->mark = READ_ONCE(ct->mark) & cp->cpmarkmask;
- }
- 
-@@ -322,15 +322,18 @@ static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
+ 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
+ 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
+-		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
++		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
++			 xhci->xhc_state);
+ 		return -ESHUTDOWN;
  	}
  
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_SET,
--			      ci->stats_dscp_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_ERROR,
--			      ci->stats_dscp_error, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_error),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_CPMARK_SET,
--			      ci->stats_cpmark_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_cpmark_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	spin_unlock_bh(&ci->tcf_lock);
 -- 
 2.39.5
 
