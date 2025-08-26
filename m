@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E82B360FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83981B35C15
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62F2D7B8069
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B29B4361913
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E407A23C4F4;
-	Tue, 26 Aug 2025 13:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0C0284B5B;
+	Tue, 26 Aug 2025 11:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2npzDnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPpeo4Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF0F22A4E5;
-	Tue, 26 Aug 2025 13:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38902239573;
+	Tue, 26 Aug 2025 11:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213514; cv=none; b=b7xUbSONxwZjQpV1ObPVs+Q0rZnIhm9XTJu652hxsj8YBI/oOSVIeDdZH/8nSVUXpiNysfDyWeE/EBlq5DCD7odjAgmzCbMo5AAhNTQZZ/XTsYjLrxZCBZwkeqXg1IU7o3QHurX8gOAEmFpJs5ds+DR8pGg5BSee6yhBWIYyH6Q=
+	t=1756207497; cv=none; b=lr8GRuyZo2kio7FM2ZDmkNjlh6rV+rwb5IbXlAu5kJNd0sPoUUmB3xggU1Kmr7u221cVBM/aqWs2OCkWjDQ+wbY6nvn352wGw9YT50D2r9c7q8cw3UxycMCG80r8dJ5sO0YcZyw1lQVxMsY3o4z9vRMA/crkhhp0ntFvJGT+72E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213514; c=relaxed/simple;
-	bh=AoabVf4hnx2UgB8EiJiWoO2AnIQRuznsKTRv87QjV9Q=;
+	s=arc-20240116; t=1756207497; c=relaxed/simple;
+	bh=u7wMnGejLZTWLTqgSfGUpxNT2X0+RMp9zxq5shM0+ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rg0JePkJtUkEzBUIKOUG7j6ni21CXIBrQunDwZzWaOoiwR7znIPgT19ANX9NWzDVUwnf6AuZpLbqkouU6+IIJ0QNjwrIay/h9DLGlh5Z14fkOg1lZJvPjhU5hxjiNPGL0vxoSnKPOGYhCdWELQK7TC7sKyooMMazpLgtAHdXKAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2npzDnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22433C4CEF1;
-	Tue, 26 Aug 2025 13:05:13 +0000 (UTC)
+	 MIME-Version; b=ApOB8liutdktcNChdIH7czWZn2AeCReNe4UGCTgTaWOZOmKJrs+BGR+LaAL7bSPLUoIQJ6+lVqQvRPEt7IeUBZYhM5avYWexSCwlTjLQAIY8j3LD42OF9IjNEkVrdeFCG4vKGT5mpg+sh7RX8Jbmsd0MZTUti1vwq7njveOD93g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPpeo4Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC01FC116D0;
+	Tue, 26 Aug 2025 11:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213514;
-	bh=AoabVf4hnx2UgB8EiJiWoO2AnIQRuznsKTRv87QjV9Q=;
+	s=korg; t=1756207497;
+	bh=u7wMnGejLZTWLTqgSfGUpxNT2X0+RMp9zxq5shM0+ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2npzDnqqLBCTdW4a82CahQM/0K8wgivPl/kM+U+iEtgAPXebR5xP4OYqat1xH7c3
-	 BLZOP2VKfXz/tSb0ppAdXkDi8F91CG/XOR9ZGUqh4IoejtPtUEUZZskp95tJxEiQCv
-	 kyQzbj3nL0lwGLKtSnLe7XLTyuG3WFfmjo+GR33Q=
+	b=vPpeo4DkZjKmJsmGE4HEHxrhHkkHyLo/RUvTwRVGuxSQom9WHHI5ymlgNWtFWS+Nc
+	 2J5ynTLWIqnpWfEvm2yWXWQeXvks4WINea7P65e6ofS2aSqo415mPonTDgOzLpsB8e
+	 hbn12L1uA50tVIAMXogvn50XPtP0Ow9lfc+5mfs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	stable <stable@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.6 339/587] vt: keyboard: Dont process Unicode characters in K_OFF mode
+	Christoph Paasch <cpaasch@openai.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 204/457] mptcp: drop skb if MPTCP skb extension allocation fails
 Date: Tue, 26 Aug 2025 13:08:08 +0200
-Message-ID: <20250826111001.540060939@linuxfoundation.org>
+Message-ID: <20250826110942.408066789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Christoph Paasch <cpaasch@openai.com>
 
-commit b1cc2092ea7a52e2c435aee6d2b1bcb773202663 upstream.
+commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
 
-We don't process Unicode characters if the virtual terminal is in raw
-mode, so there's no reason why we shouldn't do the same for K_OFF
-(especially since people would expect K_OFF to actually turn off all VT
-key processing).
+When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
+we used to return true, letting the segment proceed through the TCP
+receive path without a DSS mapping. Such segments can leave inconsistent
+mapping state and trigger a mid-stream fallback to TCP, which in testing
+collapsed (by artificially forcing failures in skb_ext_add) throughput
+to zero.
 
-Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz
+Return false instead so the TCP input path drops the skb (see
+tcp_data_queue() and step-7 processing). This is the safer choice
+under memory pressure: it preserves MPTCP correctness and provides
+backpressure to the sender.
+
+Control packets remain unaffected: ACK updates and DATA_FIN handling
+happen before attempting the extension allocation, and tcp_reset()
+continues to ignore the return value.
+
+With this change, MPTCP continues to work at high throughput if we
+artificially inject failures into skb_ext_add.
+
+Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/keyboard.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/vt/keyboard.c
-+++ b/drivers/tty/vt/keyboard.c
-@@ -1496,7 +1496,7 @@ static void kbd_keycode(unsigned int key
- 		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
- 						KBD_UNICODE, &param);
- 		if (rc != NOTIFY_STOP)
--			if (down && !raw_mode)
-+			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
- 				k_unicode(vc, keysym, !down);
- 		return;
- 	}
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1117,7 +1117,9 @@ static bool add_addr_hmac_valid(struct m
+ 	return hmac == mp_opt->ahmac;
+ }
+ 
+-/* Return false if a subflow has been reset, else return true */
++/* Return false in case of error (or subflow has been reset),
++ * else return true.
++ */
+ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+@@ -1221,7 +1223,7 @@ bool mptcp_incoming_options(struct sock
+ 
+ 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
+ 	if (!mpext)
+-		return true;
++		return false;
+ 
+ 	memset(mpext, 0, sizeof(*mpext));
+ 
 
 
 
