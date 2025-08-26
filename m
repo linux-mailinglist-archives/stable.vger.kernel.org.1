@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB8AB360D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F009B366EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5651BA643A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8DF56089D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B143F18A6C4;
-	Tue, 26 Aug 2025 13:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4E8350D5A;
+	Tue, 26 Aug 2025 13:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtyelozI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyXhVnc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8DC101F2;
-	Tue, 26 Aug 2025 13:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AD350D54;
+	Tue, 26 Aug 2025 13:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213272; cv=none; b=opXZdk7aOD5hJsWCgva8L8ahDTTYPzz6edFY0XGmMySIFaoT+18aMzdwklqx09CuaZ+dqbhKsQ61HywJW8E7SGM67RK7SlhMrIWhG4UHqAb33eZxxbzMF6ICW2MZkjW3Pc4MrXg5rxLbt2wKiOI7wGu1yWB8L8adDT/7lu+BUd0=
+	t=1756216184; cv=none; b=W31Sx3C+yH8WFZSKkOmksiAMBX3DRBjX6SRt6PVKs0/o40z1OdKLQx95bi6Mvj6aJ9DrqbbWoIssokwnGxAQS+CG2Pi0/3QTmWTgbkP7U6W89+R7xwwT3e9C4SKKaVfhWJdqCywgYHgtrerQnnUDeASpV21qd0x/UpdICWYBd9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213272; c=relaxed/simple;
-	bh=JSxMf92zV17Z/OZCsD1CXG4dYZLOtNpD3zhquWduUtY=;
+	s=arc-20240116; t=1756216184; c=relaxed/simple;
+	bh=amtt516RVWu/g6B1nQQrvvNSDr1e20aeTsUWgwUywsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfrAGHUM/18Z1R6ZeL53ILl3wLvK5tjfQ4T69C95jik4ZxlKXfZXnOyaeqa3sdhV8Rxvbv503NmjgyEBK8SBvZh935r2Oka/G7BZGj6HFMah/tqHFnH7oV0EgM6eTblMmbrGRBhFx1wVmvDZbDTlm6ePfhbp2m2zCt1vVUP6WNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtyelozI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0C7C4CEF1;
-	Tue, 26 Aug 2025 13:01:11 +0000 (UTC)
+	 MIME-Version; b=SCAGGib+j2hKTA8E9iRRGjPtrr10kgb1/0NlWVDeD6b+cAcFhO8SCPF5Q0a7zJVdqPmb6evWaTml1954DWOqMGqdljf5k0m7HhF/MtGYWCv5C3MQkjjUqjwTyLJ+N8epDSkYnt4NEPZuHR8z2F08ZQvv1qQHCkvJkMRj2rkLfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyXhVnc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E27AC4CEF1;
+	Tue, 26 Aug 2025 13:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213272;
-	bh=JSxMf92zV17Z/OZCsD1CXG4dYZLOtNpD3zhquWduUtY=;
+	s=korg; t=1756216184;
+	bh=amtt516RVWu/g6B1nQQrvvNSDr1e20aeTsUWgwUywsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtyelozIKkJGEF720Hl/Mqh64aatcWWGc8xnQm9rZIUAapzDIjeRxeO2wZr9VSyHH
-	 0pj8utQw/oL6jThKwyjFFLIz1J1y/WzVJ4+tpLkSvMlEPEb8F7k3uUT/3XLSTM19RB
-	 tcaBrWEFcs5BgdPXAKO2Cbi1R9t+7bwVsYWFTXak=
+	b=eyXhVnc1YpSLKVHYEvZaTryU0lDsCRT5Jz736fAg8Lkz5Dh7ET9n+oHhfb/odjQO4
+	 CnAy1Cql00K3WOAO8wDBj1f45eDJGiWrwFozzfRJPtp02bT034PA1YgvKLm0l5Uxa/
+	 z5F9YXDPQyFHyiGtpptQaDVDIOCiNtJQjubK4rL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	tuhaowen <tuhaowen@uniontech.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/587] crypto: octeontx2 - add timeout for load_fvc completion poll
+Subject: [PATCH 5.15 316/644] PM: sleep: console: Fix the black screen issue
 Date: Tue, 26 Aug 2025 13:06:47 +0200
-Message-ID: <20250826110959.494828815@linuxfoundation.org>
+Message-ID: <20250826110954.217001847@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: tuhaowen <tuhaowen@uniontech.com>
 
-[ Upstream commit 2157e50f65d2030f07ea27ef7ac4cfba772e98ac ]
+[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
 
-Adds timeout to exit from possible infinite loop, which polls
-on CPT instruction(load_fvc) completion.
+When the computer enters sleep status without a monitor
+connected, the system switches the console to the virtual
+terminal tty63(SUSPEND_CONSOLE).
 
-Signed-off-by: Srujana Challa <schalla@marvell.com>
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+If a monitor is subsequently connected before waking up,
+the system skips the required VT restoration process
+during wake-up, leaving the console on tty63 instead of
+switching back to tty1.
+
+To fix this issue, a global flag vt_switch_done is introduced
+to record whether the system has successfully switched to
+the suspend console via vt_move_to_console() during suspend.
+
+If the switch was completed, vt_switch_done is set to 1.
+Later during resume, this flag is checked to ensure that
+the original console is restored properly by calling
+vt_move_to_console(orig_fgconsole, 0).
+
+This prevents scenarios where the resume logic skips console
+restoration due to incorrect detection of the console state,
+especially when a monitor is reconnected before waking up.
+
+Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
+Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/marvell/octeontx2/otx2_cptpf_ucode.c  | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ kernel/power/console.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-index 1958b797a421..682e7d80adb8 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-@@ -1485,6 +1485,7 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
- 	dma_addr_t rptr_baddr;
- 	struct pci_dev *pdev;
- 	u32 len, compl_rlen;
-+	int timeout = 10000;
- 	int ret, etype;
- 	void *rptr;
+diff --git a/kernel/power/console.c b/kernel/power/console.c
+index fcdf0e14a47d..19c48aa5355d 100644
+--- a/kernel/power/console.c
++++ b/kernel/power/console.c
+@@ -16,6 +16,7 @@
+ #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
  
-@@ -1547,16 +1548,27 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
- 							 etype);
- 		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
- 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
-+		timeout = 10000;
+ static int orig_fgconsole, orig_kmsg;
++static bool vt_switch_done;
  
- 		while (lfs->ops->cpt_get_compcode(result) ==
--						OTX2_CPT_COMPLETION_CODE_INIT)
-+						OTX2_CPT_COMPLETION_CODE_INIT) {
- 			cpu_relax();
-+			udelay(1);
-+			timeout--;
-+			if (!timeout) {
-+				ret = -ENODEV;
-+				cptpf->is_eng_caps_discovered = false;
-+				dev_warn(&pdev->dev, "Timeout on CPT load_fvc completion poll\n");
-+				goto error_no_response;
-+			}
-+		}
+ static DEFINE_MUTEX(vt_switch_mutex);
  
- 		cptpf->eng_caps[etype].u = be64_to_cpup(rptr);
+@@ -136,17 +137,21 @@ void pm_prepare_console(void)
+ 	if (orig_fgconsole < 0)
+ 		return;
+ 
++	vt_switch_done = true;
++
+ 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
+ 	return;
+ }
+ 
+ void pm_restore_console(void)
+ {
+-	if (!pm_vt_switch())
++	if (!pm_vt_switch() && !vt_switch_done)
+ 		return;
+ 
+ 	if (orig_fgconsole >= 0) {
+ 		vt_move_to_console(orig_fgconsole, 0);
+ 		vt_kmsg_redirect(orig_kmsg);
  	}
--	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
- 	cptpf->is_eng_caps_discovered = true;
- 
-+error_no_response:
-+	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
- free_result:
- 	kfree(result);
- lf_cleanup:
++
++	vt_switch_done = false;
+ }
 -- 
 2.39.5
 
