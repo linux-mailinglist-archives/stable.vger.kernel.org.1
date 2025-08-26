@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C93CB35BD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9397B36BEF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 303932A4CE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED2A1C41608
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10F32142D;
-	Tue, 26 Aug 2025 11:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95612350D4E;
+	Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHWfRYM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJ1GCTrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543272FD7DE;
-	Tue, 26 Aug 2025 11:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5136635209B;
+	Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207313; cv=none; b=TGcAzm9Ub5BNY3ecZCXGWBSN6kUOhmklG2j3pEmx4ioArJBVon6AcsyIJnngR9OhH4A6kStmz3bMN6Rixuvad0dkScKxeUb3NeiRPNkEyYEkWl10mWoPd5GaITCWo6BrwfYJfszo6K6YuwE7l0V7KwUMAUaIv3ox46vT+jI1yy8=
+	t=1756218679; cv=none; b=UxM4XszO1TO/uAI1yK6MzLiDiJqroSXZ5YmLIFT6B/LseWdtx8XAD75L1yZB2rqx04vb1Nm9HcrsMoSVGE6ddHJtFXyT9c4AbOLVdc4Kfu9nIVM6HTCBzzWArwvfCUU2SyDOXwO5KJUndE6eR53K910yimA5mt3I+oiCObcDFaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207313; c=relaxed/simple;
-	bh=DrmfzGLNWD5neFK87rMv2KULR2gD/QaytsF11i0Jf0Q=;
+	s=arc-20240116; t=1756218679; c=relaxed/simple;
+	bh=kyTjIkcEIt3nrxbBT33t5eviiC79XzHwWsnm/JVWTWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qiMzMjiazL1gsO/28+Ky03+GR9VRp71loigaPHMA+gz70gipcmBaHsEgkCJvjm4cXfW6KPn41dMKfp8MKGUpE0eXVLqQmdjUYnWXdtxxBjj3Wg0XRlZpSHhM9aUIynCtR9Z53bfCrDrXd5zFz/IjLqe6rhYy38YHtqwct9kD34A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHWfRYM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98E8C4CEF1;
-	Tue, 26 Aug 2025 11:21:52 +0000 (UTC)
+	 MIME-Version; b=gK0QclG0yY0oYe9rv1TN1t+FSrr++YSMDFaYgKct08zgyG4phaNVBjd+tt8UV1IhGQOgkl46xChu3HvcFNpb7CTDZWbXHWQ0PrQU17u1drlfCqJ78dc64vFvcicL36WlvDKb4UtQZAzcdrLJ71biemxy2YfDCcAXQZTVysPBv2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJ1GCTrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D547CC113CF;
+	Tue, 26 Aug 2025 14:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207313;
-	bh=DrmfzGLNWD5neFK87rMv2KULR2gD/QaytsF11i0Jf0Q=;
+	s=korg; t=1756218679;
+	bh=kyTjIkcEIt3nrxbBT33t5eviiC79XzHwWsnm/JVWTWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHWfRYM79A3tI7wSFxOIG0bJIcIh60lZYITsc1sfGtUJfc+zW1ZSEaMhqezx3o7y6
-	 HKjG29KzWrdtVBZxR+QOSN5g94bzOKB6Zsv3MezKUncSbm4f3tp4mPDsrJltS1xmkS
-	 XgavL8dxm2jX7FjlvuHpkGYrHJt9A9uzAqb6OoSQ=
+	b=WJ1GCTrG8F0O9Q03QEye8ne23xRk/vJW8YfHFhRE5KCcTGHu7AOgTP756KVE1YARn
+	 a3xB/Z6c6YwoPBzF0zJIp0eFNWr95CEt94fR0si8hKI4QqeTacSG0RBmQE4Q5DONLr
+	 YI7z5NcD1BMNoamM/yVyboU4JU0/eSEOHxmBv4e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 133/457] media: ipu6: isys: Use correct pads for xlate_streams()
-Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110940.660005102@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 092/403] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
+Date: Tue, 26 Aug 2025 13:06:58 +0200
+Message-ID: <20250826110909.210742937@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit ff49672a28f3a856717f09d61380e524e243121f upstream.
+[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
 
-The pad argument to v4l2_subdev_state_xlate_streams() is incorrect, static
-pad number is used for the source pad even though the pad number is
-dependent on the stream. Fix it.
+There is a small typo in phm_wait_on_indirect_register().
 
-Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Swap mask and value arguments provided to phm_wait_on_register() so that
+they satisfy the function signature and actual usage scheme.
+
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
+
+In practice this doesn't fix any issues because the only place this
+function is used uses the same value for the value and mask.
+
+Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-@@ -354,9 +354,9 @@ static int ipu6_isys_csi2_enable_streams
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
+index d09690fca452..8a1ad9305a21 100644
+--- a/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
++++ b/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
+@@ -148,7 +148,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
+ 	}
  
--	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
--						       CSI2_PAD_SINK,
--						       &streams_mask);
-+	sink_streams =
-+		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
-+						&streams_mask);
+ 	cgs_write_register(hwmgr->device, indirect_port, index);
+-	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
++	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
+ }
  
- 	ret = ipu6_isys_csi2_calc_timing(csi2, &timing, CSI2_ACCINV);
- 	if (ret)
-@@ -384,9 +384,9 @@ static int ipu6_isys_csi2_disable_stream
- 	struct media_pad *remote_pad;
- 	u64 sink_streams;
- 
--	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
--						       CSI2_PAD_SINK,
--						       &streams_mask);
-+	sink_streams =
-+		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
-+						&streams_mask);
- 
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+ int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
+-- 
+2.39.5
+
 
 
 
