@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED14B36741
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8576B35D16
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D4F77B964F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F094188E33D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C7334DCF6;
-	Tue, 26 Aug 2025 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD86C340D9C;
+	Tue, 26 Aug 2025 11:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti2IyluY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciCWcbD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A8835083A;
-	Tue, 26 Aug 2025 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3CD2820B1;
+	Tue, 26 Aug 2025 11:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216931; cv=none; b=MmA/Pc7IuEKdQXSFlN5YmZ1lgbFvMYOLNRlAMQuxmrM38iMyhYF7Tgow6lTWf6UsSQBI5A8Rk4Z03wGi4qDemIAYyMlEVTlk7AxWdLW/pjG/zWRf2ktCtPqPTDLBKEcH3TCWAW/ehfMAgegeK6Cy1BVOz10pB2L6W2vhNeXDLGA=
+	t=1756208010; cv=none; b=hZnVRnF7t4MQxoGFNbGUV61IOmJHoBS0HYR2TLV8apLKCEhyG+usWmQWCiQjebf07bCtXEGWOjKBfKEzivUgP3AXeUY2GCkAtjDIOe1QquOxgKkY85VB2BHDiI9I7mJLReh3q2eWtkx5sJOg6Cd3s0D9s1aofLOOZ+LKxK+5Iwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216931; c=relaxed/simple;
-	bh=Q+TGISCWWRlvVp1zZnaCZ6BoUTfkwwifgAOi68JCzoM=;
+	s=arc-20240116; t=1756208010; c=relaxed/simple;
+	bh=ucijE42LmTzi4DP3J37CCRZw0TtT4AVX9Ai6MsZXfvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ADFE/a+3qM9Og7jCBZhWhizhX9OcKScJrSTZ2tC4WOoe2ztTR5/wrO72BHYxVOzHehmkkBsC61JRbpesElzQPgIKD8qGbKYFIPOiLkMOyKcnqUJ5FqCkOD137xr+4dULIaDKAvxAghWFuOk2X1d2iiZHw7VGJ034eLuF1O6Zmdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti2IyluY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A2C4CEF1;
-	Tue, 26 Aug 2025 14:02:09 +0000 (UTC)
+	 MIME-Version; b=WQpuA6HYvAGjZaGHclg12uhUCmHfZMs1lNu8jL2yPK+jYcxq4C4QMpEDo5wG9pcYLUewSCzLsiBz3yoGz2hDl6K1oWS8Xqb0OHAzudigky8WeIAPT+MX06XWVg0LiEytUKizC+l1k69J026XkawrF3re0SMeVj88d+JZ5Fhfuq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciCWcbD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161B2C4CEF1;
+	Tue, 26 Aug 2025 11:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216930;
-	bh=Q+TGISCWWRlvVp1zZnaCZ6BoUTfkwwifgAOi68JCzoM=;
+	s=korg; t=1756208010;
+	bh=ucijE42LmTzi4DP3J37CCRZw0TtT4AVX9Ai6MsZXfvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ti2IyluYSjLPVxOe3J6NOyhhnEmghFa13AbQTsH5jmUWU+nkw7wTjf+LgumnOtzgA
-	 /evAqvdZFuyIVXEUmM+r2DRTi2Htt8/2nKMK8hccaU9UmmEvJLQ+Q3xXgMROEIHpgF
-	 qIFTwNCejat5tVoj9l6sIad04OGDoFIIPSdpbdn0=
+	b=ciCWcbD0F9BsUdoHK7WbbTGd6xuey4jobFYBHNlkeiZD6vlghNZVEuNvuD1xMEfBE
+	 Pb1yk0SLVk2eoYwGaajzs8vFX4ccoAtEYLODVVbnhzdqWEY/E1svQ/hZAq6WGG4kQr
+	 Rk9Pdvm3VCQH8nTpPy5LAQcd2aWjowoFQpaYsumE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 596/644] media: camss: Convert to platform remove callback returning void
+Subject: [PATCH 6.16 403/457] scsi: ufs: ufs-qcom: Update esi_vec_mask for HW major version >= 6
 Date: Tue, 26 Aug 2025 13:11:27 +0200
-Message-ID: <20250826111001.310414654@linuxfoundation.org>
+Message-ID: <20250826110947.255096646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Bao D. Nguyen <quic_nguyenb@quicinc.com>
 
-[ Upstream commit 428bbf4be4018aefa26e4d6531779fa8925ecaaf ]
+[ Upstream commit 7a9d5195a7f5871a4ad4e55fc567a2b3bee49a59 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+The MCQ feature and ESI are supported by all Qualcomm UFS controller
+versions 6 and above.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Therefore, update the ESI vector mask in the UFS_MEM_CFG3 register for
+platforms with major version number of 6 or higher.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 69080ec3d0da ("media: qcom: camss: cleanup media device allocated resource on error path")
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+Link: https://lore.kernel.org/r/20250714075336.2133-2-quic_nitirawa@quicinc.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 6300d5c54387 ("scsi: ufs: ufs-qcom: Fix ESI null pointer dereference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1477,7 +1477,7 @@ void camss_delete(struct camss *camss)
-  *
-  * Always returns 0.
-  */
--static int camss_remove(struct platform_device *pdev)
-+static void camss_remove(struct platform_device *pdev)
- {
- 	struct camss *camss = platform_get_drvdata(pdev);
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 18a978452001..53301a2c27be 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -2109,8 +2109,7 @@ static int ufs_qcom_config_esi(struct ufs_hba *hba)
  
-@@ -1487,8 +1487,6 @@ static int camss_remove(struct platform_
+ 	retain_and_null_ptr(qi);
  
- 	if (atomic_read(&camss->ref_count) == 0)
- 		camss_delete(camss);
--
--	return 0;
- }
- 
- static const struct of_device_id camss_dt_match[] = {
-@@ -1519,7 +1517,7 @@ static const struct dev_pm_ops camss_pm_
- 
- static struct platform_driver qcom_camss_driver = {
- 	.probe = camss_probe,
--	.remove = camss_remove,
-+	.remove_new = camss_remove,
- 	.driver = {
- 		.name = "qcom-camss",
- 		.of_match_table = camss_dt_match,
+-	if (host->hw_ver.major == 6 && host->hw_ver.minor == 0 &&
+-	    host->hw_ver.step == 0) {
++	if (host->hw_ver.major >= 6) {
+ 		ufshcd_rmwl(hba, ESI_VEC_MASK, FIELD_PREP(ESI_VEC_MASK, MAX_ESI_VEC - 1),
+ 			    REG_UFS_CFG3);
+ 	}
+-- 
+2.50.1
+
 
 
 
