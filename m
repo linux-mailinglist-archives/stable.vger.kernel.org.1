@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5C2B362C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A1DB36C90
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0848C7C65B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ABD41C458EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC653376A9;
-	Tue, 26 Aug 2025 13:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F91353363;
+	Tue, 26 Aug 2025 14:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHLQuk8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4Zk+e32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE049186E40;
-	Tue, 26 Aug 2025 13:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFACE1E500C;
+	Tue, 26 Aug 2025 14:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214073; cv=none; b=Y/VRiGkch8AdpJ1uClrKleeMb5zj843PR05lma/ZfYPHyeiDZtzdGA8teLqNOuBEldn+OQDTEbjZR4zwepTiCFAFRIemTjyakxRnOH14mRr2Zchni4gOGcHmw0mS9MVGMh+1+C9DJNdcnxXcsyDCsVXABGKEj08WBsrf/VPLKF8=
+	t=1756219401; cv=none; b=YBuzECwMmREBl+ZePK9Do6SGbWfUyt2+DRP+7E8OooSFVZHSWCiv+pWCvBLF8XuaHii8LDPIXHFE6g7KQtSA43nTKIVxOR9YeBWNwziiyexrS4JSeZ8POiF87+5wsD2dcuVuj8lqfeK8lEEW9DwmtJnfEO2kZuxrlStNIWtRO6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214073; c=relaxed/simple;
-	bh=53QjcfJoVj0jE8EzvIUJcE5hF6avBdqNGbpygTwFcTo=;
+	s=arc-20240116; t=1756219401; c=relaxed/simple;
+	bh=bM7xvsWM+kpriBdUkr2q4K6QLpy+5z/aTy8yaG5bYV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avbBOmluTVrz0yST/H0vgWZ/8dL2Jz4LLrDlt0Gkf03d/bGnkCKfd0xsVRKQq0juoEnMQiMpWLzQTaEFkodBxju4MbUE7KKEpH+8018LRBh6qcCZOk5ZDlPuU82R6w+qOcksHROnP8E6TSq3/PYw28zkbb4DV9ZUo9UF5gr8n9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHLQuk8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707CAC4CEF1;
-	Tue, 26 Aug 2025 13:14:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X/UBecKmQdWFpI5khzvbprEFZ34nbnCfO0DBSyvs8qcUz3fSMgoERxOD5J0myYaHS65OKT8z81rZ21gKhETUqECk3lzj5UMkhvRyOTYl3a6CdVe4N32OrxhWY2HYfDAnZkqY9TBZRQff4NataeyQGOEYbls93KOj2Xu5D5R+Tm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4Zk+e32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F094FC4CEF1;
+	Tue, 26 Aug 2025 14:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214072;
-	bh=53QjcfJoVj0jE8EzvIUJcE5hF6avBdqNGbpygTwFcTo=;
+	s=korg; t=1756219401;
+	bh=bM7xvsWM+kpriBdUkr2q4K6QLpy+5z/aTy8yaG5bYV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zHLQuk8cmkekZpuADEJJm3smIK3TnFUSyiTIEDIY01GO/MVUD3FJ4h2rU+vyIAnxV
-	 1cHoNAg2XcEBnYYHI8c+DVTWcAtKbMX54O5E4m3zuWL0an/6BvWi7qKePrIcWxkUH3
-	 2SFgj2MgoIlXv/4W7G/YgBmn3RY+N5vyuxcnk738=
+	b=O4Zk+e3225W5FH4MI7pL8bNzBCSNRTyGpPF2w46wy+x/oKbREx+o58SluBDAxzQwJ
+	 JWUBexSd6e+2TnJgXvDcVxw5mxEsob20jD5SwgqEdhywhdHu9W0CGKluLBQbswj0GI
+	 2YSTqM6ROzPQcb6kwuYM5HgQlpluXDNTh/DYslYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 545/587] usb: typec: maxim_contaminant: re-enable cc toggle if cc is open and port is clean
+Subject: [PATCH 5.4 368/403] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Tue, 26 Aug 2025 13:11:34 +0200
-Message-ID: <20250826111006.882532061@linuxfoundation.org>
+Message-ID: <20250826110917.171626200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit a381c6d6f646226924809d0ad01a9465786da463 ]
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-Presently in `max_contaminant_is_contaminant()` if there's no
-contaminant detected previously, CC is open & stopped toggling and no
-contaminant is currently present, TCPC.RC would be programmed to do DRP
-toggling. However, it didn't actively look for a connection. This would
-lead to Type-C not detect *any* new connections. Hence, in the above
-situation, re-enable toggling & program TCPC to look for a new
-connection.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-Also, return early if TCPC was looking for connection as this indicates
-TCPC has neither detected a potential connection nor a change in
-contaminant state.
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-In addition, once dry detection is complete (port is dry), restart
-toggling.
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
 
-Fixes: 02b332a06397e ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+[ Call to drm_dp_dpcd_access() instead of drm_dp_dpcd_probe() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/maxim_contaminant.c |   48 +++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ drivers/gpu/drm/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/maxim_contaminant.c
-+++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
-@@ -322,6 +322,34 @@ static int max_contaminant_enable_dry_de
- 	return 0;
- }
- 
-+static int max_contaminant_enable_toggling(struct max_tcpci_chip *chip)
-+{
-+	struct regmap *regmap = chip->data.regmap;
-+	int ret;
-+
-+	/* Disable dry detection if enabled. */
-+	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL_MASK,
-+				 ULTRA_LOW_POWER_MODE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL1, CCCONNDRY, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = max_tcpci_write8(chip, TCPC_ROLE_CTRL, TCPC_ROLE_CTRL_DRP | 0xA);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL,
-+				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT,
-+				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT);
-+	if (ret)
-+		return ret;
-+
-+	return max_tcpci_write8(chip, TCPC_COMMAND, TCPC_CMD_LOOK4CONNECTION);
-+}
-+
- bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce)
- {
- 	u8 cc_status, pwr_cntl;
-@@ -335,6 +363,12 @@ bool max_contaminant_is_contaminant(stru
- 	if (ret < 0)
- 		return false;
- 
-+	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
-+		if (chip->contaminant_state == DETECTED)
-+			return true;
-+		return false;
-+	}
-+
- 	if (chip->contaminant_state == NOT_DETECTED || chip->contaminant_state == SINK) {
- 		if (!disconnect_while_debounce)
- 			msleep(100);
-@@ -367,6 +401,12 @@ bool max_contaminant_is_contaminant(stru
- 				max_contaminant_enable_dry_detection(chip);
- 				return true;
- 			}
-+
-+			ret = max_contaminant_enable_toggling(chip);
-+			if (ret)
-+				dev_err(chip->dev,
-+					"Failed to enable toggling, ret=%d",
-+					ret);
- 		}
- 		return false;
- 	} else if (chip->contaminant_state == DETECTED) {
-@@ -375,6 +415,14 @@ bool max_contaminant_is_contaminant(stru
- 			if (chip->contaminant_state == DETECTED) {
- 				max_contaminant_enable_dry_detection(chip);
- 				return true;
-+			} else {
-+				ret = max_contaminant_enable_toggling(chip);
-+				if (ret) {
-+					dev_err(chip->dev,
-+						"Failed to enable toggling, ret=%d",
-+						ret);
-+					return true;
-+				}
- 			}
- 		}
- 	}
+--- a/drivers/gpu/drm/drm_dp_helper.c
++++ b/drivers/gpu/drm/drm_dp_helper.c
+@@ -280,7 +280,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * We just have to do it before any DPCD access and hope that the
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+-	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV, buffer,
++	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS, buffer,
+ 				 1);
+ 	if (ret != 1)
+ 		goto out;
 
 
 
