@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-175040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D24B3654F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701FFB368F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80DEC7BECCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D9F1C22514
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A734534A315;
-	Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163733469F4;
+	Tue, 26 Aug 2025 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrS3ebJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtvMRBlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC951E5B88;
-	Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD335207D;
+	Tue, 26 Aug 2025 14:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215982; cv=none; b=c3UJSMYkF4YHyLgG7W57WEI5N0lXN6DACJfilt08jfQ44oFCKIpUZbkaI4Z5ey6LUBRSFdx43y5fqlWic61/ucaCiAHDvC6FZDUj08eRxIQD6xfYH+TawEIRwvCCQDiphvXyNrEv9AIaGjbA2vi0PoLtceXDPx93ct/XFntZ8cg=
+	t=1756217380; cv=none; b=heknkWSGLvkoWRKpQxfqtzn4Odm7RmCh+EwUo8Y2nrY0FmVQGdvOMUeFhzpCJlZvHR/mH8xFGJ7QzsfLHfL6jo2EQLURGPepYUwlEpt1ipqIMvgE35w27e4qiy3Rnm5MlLs/hUAJldl9bHqyeqE0pEGDEqFA01azMFLsL2dEp2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215982; c=relaxed/simple;
-	bh=R0HaYsFGO0GaGWzoOyhI7bQbdevKaB4Yg8zHxGpKWSc=;
+	s=arc-20240116; t=1756217380; c=relaxed/simple;
+	bh=6Cd0tVSw6HktUPb1NjnezfpqsoxZeAFCVbHCLk6P3X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXJMTM9CZ06k4IepWll3ODzwyPM3fjIoPgL6AVsLoiXroRmWZ1Q4IXiOn4Xkum6o/T3cdTcZfD8eUKFaX7PEGgInVsSHC1/pI7Gb9eMTLMH1mnUrvE6LRQ/M/gkbZxr98vYdC4pW9tO4N6a96T0rIWDRlFKDkF9k7iuixoU9qrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrS3ebJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C087CC4CEF1;
-	Tue, 26 Aug 2025 13:46:21 +0000 (UTC)
+	 MIME-Version; b=s5vXhS/YbIGBGoexE1iLVVQuirz+iv0fufi1k7NJvO7NDAfFNABImHhzkMuonuXPpznpdmItlw8DZLYYyW3ZDZMYkyYLDh5G1PC28XDIMgd2JpWxcNKIMcv8AY4eeu4n/Y/if4HNRkxUjkImct3tGw3s0x3oF4ho+Jy4Gn7TOcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtvMRBlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FF0C4CEF1;
+	Tue, 26 Aug 2025 14:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215982;
-	bh=R0HaYsFGO0GaGWzoOyhI7bQbdevKaB4Yg8zHxGpKWSc=;
+	s=korg; t=1756217380;
+	bh=6Cd0tVSw6HktUPb1NjnezfpqsoxZeAFCVbHCLk6P3X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrS3ebJuWv93DBLma1KRUISyD6j1wN8zuwz04Xom2ov6RCXPSdV7F/yXWXPDUB/7Q
-	 hnduBVHiL9mUMLIg+EBT10yYhz/ORc3sagZBQErVBcjqwMYfREddpd8C2f//4f6qVz
-	 qpwUQpsuEn+mOADKG/OIPPnESB38NSLpjcUnZAGU=
+	b=dtvMRBlDPjmXlHqonKj8vf6D+NsX2z7PpD5BMce0APqg/I9J5D3UnEK4iz8Botf+s
+	 vNROUvjTDJ+QM5O5RNdltkpylNji7EC0VIwsJsZczt3vXoZyJfG09UjLnapr17YRLZ
+	 MFvUvmulZOUujNUJNXSC+SYXLjh/iX1u4Zq2iZUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 240/644] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
+Subject: [PATCH 5.10 121/523] crypto: marvell/cesa - Fix engine load inaccuracy
 Date: Tue, 26 Aug 2025 13:05:31 +0200
-Message-ID: <20250826110952.349077836@linuxfoundation.org>
+Message-ID: <20250826110927.502716140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,69 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
+[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
 
-In case of failures either ib_dma_map_single() might not be called yet
-or ib_dma_unmap_single() was already called.
+If an error occurs during queueing the engine load will never be
+decremented.  Fix this by moving the engine load adjustment into
+the cleanup function.
 
-We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/transport_rdma.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/cesa/cipher.c | 4 +++-
+ drivers/crypto/marvell/cesa/hash.c   | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
-index 2644117305c2..dd37cabe8cbc 100644
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -263,8 +263,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
- static void put_recvmsg(struct smb_direct_transport *t,
- 			struct smb_direct_recvmsg *recvmsg)
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index 051a661a63ee..e9411c84db74 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
+ static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
  {
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
-+	if (likely(recvmsg->sge.length != 0)) {
-+		ib_dma_unmap_single(t->cm_id->device,
-+				    recvmsg->sge.addr,
-+				    recvmsg->sge.length,
-+				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
-+	}
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
  
- 	spin_lock(&t->recvmsg_queue_lock);
- 	list_add(&recvmsg->list, &t->recvmsg_queue);
-@@ -632,6 +637,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
- 		ib_dma_unmap_single(t->cm_id->device,
- 				    recvmsg->sge.addr, recvmsg->sge.length,
- 				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
- 		smb_direct_disconnect_rdma_connection(t);
- 		return ret;
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_skcipher_dma_cleanup(req);
++
++	atomic_sub(req->cryptlen, &engine->load);
+ }
+ 
+ static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
+@@ -205,7 +208,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
+ 	struct mv_cesa_engine *engine = creq->base.engine;
+ 	unsigned int ivsize;
+ 
+-	atomic_sub(skreq->cryptlen, &engine->load);
+ 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index 823a8fb114bb..3c4f4f704c64 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -109,9 +109,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
+ static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
+ {
+ 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_ahash_dma_cleanup(req);
++
++	atomic_sub(req->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
+@@ -371,8 +374,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
+ 			}
+ 		}
  	}
-@@ -1813,6 +1819,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
- 		if (!recvmsg)
- 			goto err;
- 		recvmsg->transport = t;
-+		recvmsg->sge.length = 0;
- 		list_add(&recvmsg->list, &t->recvmsg_queue);
- 	}
- 	t->count_avail_recvmsg = t->recv_credit_max;
+-
+-	atomic_sub(ahashreq->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
