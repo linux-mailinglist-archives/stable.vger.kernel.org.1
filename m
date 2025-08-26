@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770A9B368D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B117BB3604B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7881C20490
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2A53AEB89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7D83431FD;
-	Tue, 26 Aug 2025 14:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF875145B3E;
+	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OERXdFS+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSxeqn/J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4582E225390;
-	Tue, 26 Aug 2025 14:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD641ACEDE;
+	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217322; cv=none; b=Mbz5A4YvpDegXVEol1jO8uFftitRg9gSP6k7BD+6Nd16nzVBsg++mCggqmdwaKxWjYlMga9iDeUX73Dn3hJtciMEhfg0XFQd1lNff3Wv93QoOZI3Nrc8Tjr0EuWczrkajmtb5BImjpsA2imYxnSyZLoX3DPB+x9o8wSGb0xLVQw=
+	t=1756212938; cv=none; b=JBmy757pfUlcPjpi1v+GMpt0OERi/+LEDaT/Xw3epsitPG53vSEE/ATwuQVa2hiqDVxklqti2XrS+WSgyrcnJ4EO9WqwblRrxVh10DCTSk8Px5YnoRKPVJtAjnpEaaOXkDyPMc3IMwZJvBFet8kb54EnzgFgfyPrweRAtQWGRjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217322; c=relaxed/simple;
-	bh=orfBFIIsTRTXkmei3kmnHL67VJZcOcNbPitD3W2haGY=;
+	s=arc-20240116; t=1756212938; c=relaxed/simple;
+	bh=wuIvrZ55btVma3vJkTmd4Uwabj9htlf2GsxnqYHsQXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lq5ZlKrZQljx1sY6kLdqm3o5msvB8K06x42RHreCNIxbVPYWNYGc7ieDazejCQrgS6k/jgkOOD8YWsE31mLOITgd0WmOQ0rysrL90AVal4dM42jKuMIkssUfOGD6ELstQtnE8Asy5MgndHUiIXaqma1vQ8mKqZIm5TKavxZdOAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OERXdFS+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C953C4CEF1;
-	Tue, 26 Aug 2025 14:08:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=re+vNU0OJDWK9rE6USZNp1olsFJNPKA1JiE02QhnVhx6DhXIuCul03vaWH4RO4uCi7G6jRVz78eeQdzGwyd+P15PPtrbmt6tJPJ+SEmWzt+kzGNSDd+0lZ/Rd3JJl1K1dORyejp2ORzzI+nIe8iBU9VOmuoWbOW67wUGdTRc4Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSxeqn/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E543C4CEF4;
+	Tue, 26 Aug 2025 12:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217321;
-	bh=orfBFIIsTRTXkmei3kmnHL67VJZcOcNbPitD3W2haGY=;
+	s=korg; t=1756212938;
+	bh=wuIvrZ55btVma3vJkTmd4Uwabj9htlf2GsxnqYHsQXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OERXdFS+JQVxcNYz+NmfBRLsylKDRsYUyszpd0BTGsHGRt96FmmtaANiP4EoR+CA0
-	 XDx0OFwW5Qz3oT7JfZN60vtBtczkYYWHeIkbW2rYQhPTXpEulLThZpl9yq4JwshKQI
-	 7Lz/ppJyRLuX6U11iRCdXAIq6UHXiKxqv2Sx76Jk=
+	b=LSxeqn/JmhYZ7hgCOVpA0sNyIMAeNbIUiiNXhKvSUQGWR3DMpDHDEOdVBhbWnW6Nk
+	 3NAC6nTtZjXAyppsERzsgIU5GstHQxl3roXgyTJC6U20pqP+WX42ukV3ZBP2uDh9Vf
+	 j6ohPjegOhvF9Fbm3tB30LezKogi5/fDmruAKmBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Hostetler <thostet@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 068/523] gve: Fix stuck TX queue for DQ queue format
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 129/587] imx8m-blk-ctrl: set ISI panic write hurry level
 Date: Tue, 26 Aug 2025 13:04:38 +0200
-Message-ID: <20250826110926.252230334@linuxfoundation.org>
+Message-ID: <20250826110956.237357413@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+From: Krzysztof Hałasa <khalasa@piap.pl>
 
-commit b03f15c0192b184078206760c839054ae6eb4eaa upstream.
+[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
 
-gve_tx_timeout was calculating missed completions in a way that is only
-relevant in the GQ queue format. Additionally, it was attempting to
-disable device interrupts, which is not needed in either GQ or DQ queue
-formats.
+Apparently, ISI needs cache settings similar to LCDIF.
+Otherwise we get artefacts in the image.
+Tested on i.MX8MP.
 
-As a result, TX timeouts with the DQ queue format likely would have
-triggered early resets without kicking the queue at all.
-
-This patch drops the check for pending work altogether and always kicks
-the queue after validating the queue has not seen a TX timeout too
-recently.
-
-Cc: stable@vger.kernel.org
-Fixes: 87a7f321bb6a ("gve: Recover from queue stall due to missed IRQ")
-Co-developed-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Link: https://patch.msgid.link/20250717192024.1820931-1-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |   71 +++++++++++++++--------------
- 1 file changed, 39 insertions(+), 32 deletions(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -944,49 +944,56 @@ static void gve_turnup(struct gve_priv *
- 	gve_set_napi_enabled(priv);
- }
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index cc5ef6e2f0a8..0dfaf1d14035 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -664,6 +664,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
+ #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
+ #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
  
--static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
-+							unsigned int txqueue)
++#define ISI_CACHE_CTRL		0x50
++#define  ISI_V_WR_HURRY		GENMASK(28, 26)
++#define  ISI_U_WR_HURRY		GENMASK(25, 23)
++#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
++
+ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 				unsigned long action, void *data)
  {
--	struct gve_notify_block *block;
--	struct gve_tx_ring *tx = NULL;
--	struct gve_priv *priv;
--	u32 last_nic_done;
--	u32 current_time;
- 	u32 ntfy_idx;
+@@ -693,6 +698,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
+ 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
+ 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
++		/* Same here for ISI */
++		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
++				FIELD_PREP(ISI_V_WR_HURRY, 7) |
++				FIELD_PREP(ISI_U_WR_HURRY, 7) |
++				FIELD_PREP(ISI_Y_WR_HURRY, 7));
+ 	}
  
--	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
--	priv = netdev_priv(dev);
- 	if (txqueue > priv->tx_cfg.num_queues)
--		goto reset;
-+		return NULL;
- 
- 	ntfy_idx = gve_tx_idx_to_ntfy(priv, txqueue);
- 	if (ntfy_idx >= priv->num_ntfy_blks)
--		goto reset;
-+		return NULL;
-+
-+	return &priv->ntfy_blocks[ntfy_idx];
-+}
-+
-+static bool gve_tx_timeout_try_q_kick(struct gve_priv *priv,
-+				      unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	u32 current_time;
- 
--	block = &priv->ntfy_blocks[ntfy_idx];
--	tx = block->tx;
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+
-+	if (!block)
-+		return false;
- 
- 	current_time = jiffies_to_msecs(jiffies);
--	if (tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
--		goto reset;
-+	if (block->tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
-+		return false;
-+
-+	netdev_info(priv->dev, "Kicking queue %d", txqueue);
-+	napi_schedule(&block->napi);
-+	block->tx->last_kick_msec = current_time;
-+	return true;
-+}
-+
-+static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	struct gve_priv *priv;
-+
-+	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
-+	priv = netdev_priv(dev);
-+
-+	if (!gve_tx_timeout_try_q_kick(priv, txqueue))
-+		gve_schedule_reset(priv);
- 
--	/* Check to see if there are missed completions, which will allow us to
--	 * kick the queue.
--	 */
--	last_nic_done = gve_tx_load_event_counter(priv, tx);
--	if (last_nic_done - tx->done) {
--		netdev_info(dev, "Kicking queue %d", txqueue);
--		iowrite32be(GVE_IRQ_MASK, gve_irq_doorbell(priv, block));
--		napi_schedule(&block->napi);
--		tx->last_kick_msec = current_time;
--		goto out;
--	} // Else reset.
--
--reset:
--	gve_schedule_reset(priv);
--
--out:
--	if (tx)
--		tx->queue_timeout++;
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+	if (block)
-+		block->tx->queue_timeout++;
- 	priv->tx_timeo_cnt++;
- }
- 
+ 	return NOTIFY_OK;
+-- 
+2.39.5
+
 
 
 
