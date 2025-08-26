@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98313B36B8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A254B35C30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5E11C42983
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D43016A7E8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA8435691E;
-	Tue, 26 Aug 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641422F619C;
+	Tue, 26 Aug 2025 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9TeLCrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO0KWIrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA212341AA6;
-	Tue, 26 Aug 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225AC299959;
+	Tue, 26 Aug 2025 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218938; cv=none; b=d7G+Nr4YUEIXjr7ato2MMyVtBF3Tq9YvB4wQtXAI9R1PbKE2GsMKUE44Wch6yH2F0/LKvzmNdiOCEcu8GJdn8t8mPWZwoaK/417s4IPscmS4dBwFlFIhTK4RLxFu83Pe/nN6aLjqDzxhjpALjrPzsP8I89zR038lotj9JG/Fn9A=
+	t=1756207574; cv=none; b=rISospnF6Ewr9cUaDcjj7LNIev+/PACpqh5LBeA3ZqwikJ18vOI0amGVZ7FDJkAePNt90LlJHvO7ihACU1UO7DjGUpgY9GKqyfCUNZs5AWozlQItciLG+vPwWxCH1ULYMuiaYnf0kJRwc6eqq7fwcVh1n+GJyfaFqBTN/2Bpm7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218938; c=relaxed/simple;
-	bh=EQoVCQwyIm9XG/8OdKQNC/0PgJ+8UWQ+yVa8NwE7/zM=;
+	s=arc-20240116; t=1756207574; c=relaxed/simple;
+	bh=dyNYS8MYFWZBVOdzGHS9e5i+020xCCWlXp45oq3Emgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0M8v0MSOIU0wPr5weoWi62PM7VcGP1IMqmPcyCA9PBegDCIXCiktThfxv49z9p+HxQIeXbnNhkXc6ZIw2M0vSdU30dqbIHzZsIqMTzLxxS2RN/Wqfp4/eatVchq2CAcZuRhosRoYLtSnmnr6H+d8mOpgYiBJO8AvnyQWlAyH0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9TeLCrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33929C113CF;
-	Tue, 26 Aug 2025 14:35:38 +0000 (UTC)
+	 MIME-Version; b=rScG6717U3OZ9VJ6Lgcu1U5LnSa9TzXViLx9lRa7eXy7he8mnI8v9fp9SlQRo/PzPN4ovpKYx3t7nky8huDX1KOq35YkhoTuoj+hflWQKOZgufEh3uZJMAE+R3g3BJC2RDysvETVwHB+6S87Usfk1gk1EIQ/1b+JgOT5NZoQnt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO0KWIrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B6BC4CEF1;
+	Tue, 26 Aug 2025 11:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218938;
-	bh=EQoVCQwyIm9XG/8OdKQNC/0PgJ+8UWQ+yVa8NwE7/zM=;
+	s=korg; t=1756207574;
+	bh=dyNYS8MYFWZBVOdzGHS9e5i+020xCCWlXp45oq3Emgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9TeLCrU6vqnNZlJQAED9rMs9cvl4FepHWy0lu+Q0FQlX41qCQb7zIBRMtsMkYW5p
-	 7OO6V8M85lyZlAqaEjnZz3oraOFgarLENCG8a3z6An8psnrC+aXXgXQceVAd8WstJR
-	 hm3vakAS1SI8cUyB9MC+MFIWJUvuQ0aNiEHCg5gg=
+	b=NO0KWIrEtfKmeTYLSKCTBQonSQzeZ82S2Y2Vm2HEBtDJ3cfvpn/MHvvj0zI2n+bFx
+	 CwK2covnKeNiMVyEwP+jQ0gIRSKroEe6yG+Huf3F7c3untqZB4tzIQQ1zfeQMEGMxP
+	 iGtw2sWDsK1s0wONoBTr4B+MYhB5hexOU8dtLyc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 192/403] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 234/457] mm/damon/core: fix commit_ops_filters by using correct nth function
 Date: Tue, 26 Aug 2025 13:08:38 +0200
-Message-ID: <20250826110912.175633386@linuxfoundation.org>
+Message-ID: <20250826110943.157669522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
+commit 63f5dec16760f2cd7d3f9034d18fc1fa0d83652f upstream.
 
-Clear power.needs_force_resume in pm_runtime_reinit() in case it has
-been set by pm_runtime_force_suspend() invoked from a driver remove
-callback.
+damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
+iterates core_filters.  As a result, performing a commit unintentionally
+corrupts ops_filters.
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add damos_nth_ops_filter() which iterates ops_filters.  Use this function
+to fix issues caused by wrong iteration.
+
+Link: https://lkml.kernel.org/r/20250810124201.15743-1-ekffu200098@gmail.com
+Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/damon/core.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 7fa231076ad5..7d362b38f2e8 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1698,6 +1698,11 @@ void pm_runtime_reinit(struct device *dev)
- 				pm_runtime_put(dev->parent);
- 		}
- 	}
-+	/*
-+	 * Clear power.needs_force_resume in case it has been set by
-+	 * pm_runtime_force_suspend() invoked from a driver remove callback.
-+	 */
-+	dev->power.needs_force_resume = false;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -843,6 +843,18 @@ static struct damos_filter *damos_nth_fi
+ 	return NULL;
  }
  
- /**
--- 
-2.39.5
-
++static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
++{
++	struct damos_filter *filter;
++	int i = 0;
++
++	damos_for_each_ops_filter(filter, s) {
++		if (i++ == n)
++			return filter;
++	}
++	return NULL;
++}
++
+ static void damos_commit_filter_arg(
+ 		struct damos_filter *dst, struct damos_filter *src)
+ {
+@@ -906,7 +918,7 @@ static int damos_commit_ops_filters(stru
+ 	int i = 0, j = 0;
+ 
+ 	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
+-		src_filter = damos_nth_filter(i++, src);
++		src_filter = damos_nth_ops_filter(i++, src);
+ 		if (src_filter)
+ 			damos_commit_filter(dst_filter, src_filter);
+ 		else
 
 
 
