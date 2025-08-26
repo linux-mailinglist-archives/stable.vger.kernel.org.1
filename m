@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D36AB3638C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A756B35BA5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 815015E2DED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EEB51896D13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7614342CAE;
-	Tue, 26 Aug 2025 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6C1312806;
+	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+yo7Sj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXWG+2Ur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99237341AA9;
-	Tue, 26 Aug 2025 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46012264A3;
+	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214514; cv=none; b=WpE39GjwrSHmzjmzmELUuL3E1GmzRBaqgeiV9yaXPPL4WIvOQ2GFU+4unQJnXaKCpBTNAbo++ilfewsKxdQq2/2SLWirknGZtyPt64IxX7gZOWeVhyuSNIf+bbLM0bYz34F1UTrY3Xw0b3toQveswH0VXOJ66xfEsB62Y7h6fIY=
+	t=1756207351; cv=none; b=CoG9S4jWz3Tsz2mt3gXiO0TZQJOXJP+wEIA1dZlXG8dw4oJ/enBm5kl46+0/fDnYOlyWMYfShvO4t3fYqtzRAJlFB5gLw+ZxIoNYJ6IKdHGhhYv9cZXeN+nptS+dnClrZBqdd4RUq3lpeHQSad/MQIgCRL6NuBnRA5yOeNl0h0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214514; c=relaxed/simple;
-	bh=ZYW+NC1D9SPOTo2B/hW3/QX3mrUZeeg0XyB1ETnnMZM=;
+	s=arc-20240116; t=1756207351; c=relaxed/simple;
+	bh=1dI8eJoX9bMq3N2uBWHEJu1Ic4Uiuo4Rt7nGfoU4SeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L00q8dWUDI/agtPL0q/hElW7+Qmv1MJh0vK40j7ettIG+8VbqONasOIX17ODcq+GlO7BYOMVfsiLUezDBS1VEFJFY5QZZkUo7N/jP8+VDOxz3tiSgxrS4SzVgsaRGLN42jSbqDRzLTGAFjUpTotuWNV/OZIgj/M5fkvZnNNagpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+yo7Sj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8282C4CEF1;
-	Tue, 26 Aug 2025 13:21:53 +0000 (UTC)
+	 MIME-Version; b=aJhdYaCX9u6CGX4iWcQIZi6O6x4+OyB1jIC61PP5496EpB4H7gA5qJxOal0mB4Cm/J2S61q74LSKX/RJTHDT7ljK8EMCPXDQZPv3LKSSk93PdDHZryyVyz0PcW1at9sTX3+BgyL4tMVwnBlZy/Wgd2n9QKw50bP8mXBVIaM4tLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXWG+2Ur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392BEC4CEF1;
+	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214514;
-	bh=ZYW+NC1D9SPOTo2B/hW3/QX3mrUZeeg0XyB1ETnnMZM=;
+	s=korg; t=1756207351;
+	bh=1dI8eJoX9bMq3N2uBWHEJu1Ic4Uiuo4Rt7nGfoU4SeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+yo7Sj+hUEG3A48Ou7Z51+Hns45vir0xJq8Fk42mGxX4VWUGNXtviERQeL28KE50
-	 Y27IqldYF1GcCwY5voEIXiBc/4XG6nydPf2IFNeD3v5tgg44GZ8Kuxj8JJoa43BZyp
-	 lGCPcSaIoK92yqj/0cYP9OGUTPju/4TFpsDmGoL4=
+	b=dXWG+2Ur83Kcjle3OC95GEPSbm8TAH84Oda8l/6Z4EeL4SVoPmhERIcemn6W+/CWE
+	 X+2ZO7DhLUqy70oag2/c+7Z1MfA80aWVuTNV9rUFAqUiurj5m8ngG8WoiV8oZzPAUF
+	 7A+rXsDaZxl9ZyqBEtZgOCi5sV9VibJ0uL+tLGr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/482] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.16 118/457] open_tree_attr: do not allow id-mapping changes without OPEN_TREE_CLONE
 Date: Tue, 26 Aug 2025 13:06:42 +0200
-Message-ID: <20250826110934.500422378@linuxfoundation.org>
+Message-ID: <20250826110940.290389338@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
+commit 9308366f062129d52e0ee3f7a019f7dd41db33df upstream.
 
-The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
-`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
-is not saved in the rx ringbuffer and thus lost.
+As described in commit 7a54947e727b ('Merge patch series "fs: allow
+changing idmappings"'), open_tree_attr(2) was necessary in order to
+allow for a detached mount to be created and have its idmappings changed
+without the risk of any racing threads operating on it. For this reason,
+mount_setattr(2) still does not allow for id-mappings to be changed.
 
-Compile tested only
+However, there was a bug in commit 2462651ffa76 ("fs: allow changing
+idmappings") which allowed users to bypass this restriction by calling
+open_tree_attr(2) *without* OPEN_TREE_CLONE.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+can_idmap_mount() prevented this bug from allowing an attached
+mountpoint's id-mapping from being modified (thanks to an is_anon_ns()
+check), but this still allows for detached (but visible) mounts to have
+their be id-mapping changed. This risks the same UAF and locking issues
+as described in the merge commit, and was likely unintentional.
+
+Fixes: 2462651ffa76 ("fs: allow changing idmappings")
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/20250808-open_tree_attr-bugfix-idmap-v1-1-0ec7bc05646c@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ fs/namespace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index b423caea2c58..f796b16eac53 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -803,13 +803,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
- 		skb = new_skb;
- no_new:
- 		if (rtlpriv->use_new_trx_flow) {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 		} else {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 			if (rtlpci->rx_ring[rxring_idx].idx ==
- 			    rtlpci->rxringcount - 1)
- 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
--- 
-2.39.5
-
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5302,7 +5302,8 @@ SYSCALL_DEFINE5(open_tree_attr, int, dfd
+ 		int ret;
+ 		struct mount_kattr kattr = {};
+ 
+-		kattr.kflags = MOUNT_KATTR_IDMAP_REPLACE;
++		if (flags & OPEN_TREE_CLONE)
++			kattr.kflags = MOUNT_KATTR_IDMAP_REPLACE;
+ 		if (flags & AT_RECURSIVE)
+ 			kattr.kflags |= MOUNT_KATTR_RECURSE;
+ 
 
 
 
