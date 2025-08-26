@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7867B36B65
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0535B3672D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F288E8E5754
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDA951C26F9E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F433568FC;
-	Tue, 26 Aug 2025 14:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82776352080;
+	Tue, 26 Aug 2025 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFdfDuPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZd/Das0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7383F356903;
-	Tue, 26 Aug 2025 14:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1A9341ABD;
+	Tue, 26 Aug 2025 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218928; cv=none; b=ZKlLBmtOMZ8hM+EpT+ydwTwUpY7kqIJbdeN/A4iU16NMTdom6zFNj4DzYNDM8Uah7QQFb4xBX8YWt5fcgB+Ak9Vz8vLcmi/yse4yD4givvaGBzh8xPHlfl3S92w2cB7I7ZdvS9/HTjY3YT0KbFCOoUnSh/0qU8fMCiXBNvgYueo=
+	t=1756216513; cv=none; b=ZAy2rtpPLa8pk2acoDsphO/CK08P/c2RBIVz66M+VFtpolTJjIh1AqYrsDHXM5C9IvGd5SbNHmtswJ0qrgTkD0naCQ3aDneedtlhasVx8+0skJhEBhWVqeJqlsMUl2HUA3HVn6BYZhASOWprflq407ssP2r8qg++HgAXsSXRc/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218928; c=relaxed/simple;
-	bh=vFQco0Odyp+mSaY2JPROgwOH/Ycp3KywUVz/RTdp1ug=;
+	s=arc-20240116; t=1756216513; c=relaxed/simple;
+	bh=/S5VpeP4nuCXC5YYjSSn8H6j5Z3/jGMEjnyUvDcnAvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEZxR0FJ+bxpAtybWrGF0h8LldoeG2kM9XE/JFVaAHexnAIrVQ8FZuthM4sc3k5IRbXfeqvRKC7Om1AtgXEI0n9wZWNeDkYuAb0FRo8RrB0gxrc4W+XQf9ytQBO6NHFp74pmEVdWrMtBx1H1TL57WUFOchY2k5eGRKaEPTgTtvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFdfDuPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F381DC4CEF1;
-	Tue, 26 Aug 2025 14:35:27 +0000 (UTC)
+	 MIME-Version; b=bMonWUSjObG+mjUBLlEP9vDLnf8GWxN9zfZWK/E/tLDMKGYDi7H+IzYKwg2evCaW2PumVQaOjO5mWhIQqWJoiKLYjUsimpUhBk4UhR+9hKK/objni4gDI15NqBQMO301NnoEE9gMosFlxMpPM4022QbAXUrBg6Up6Zptr44I7Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZd/Das0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2536C113CF;
+	Tue, 26 Aug 2025 13:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218928;
-	bh=vFQco0Odyp+mSaY2JPROgwOH/Ycp3KywUVz/RTdp1ug=;
+	s=korg; t=1756216513;
+	bh=/S5VpeP4nuCXC5YYjSSn8H6j5Z3/jGMEjnyUvDcnAvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFdfDuPR9jqhLbDusdcDn4naDRHQnV/PQsoAdSZJfA2F7OkxF9TbUG5mp3EoGpO77
-	 Jgg+QDMVmmrAaKUIYBT2COOv+vY1E2NJ+FG3C86ncgtSdc3ThblxaSJfHkUWxRlQ+g
-	 +v6yjrVR/Lc1Iyr46l61cbd9zlDSpA6h7gaL+2Ys=
+	b=yZd/Das09N5fGP7LcT+FbUflJ1oc/6Wh/I31ULAXgvL8MEGiSTzPnGzMphtBrwatp
+	 ADTH+x4g9yWmGd+3N8hZOD2lhD2KwD26VIH1AH6bY4zxbjgN3qBoFS/wwSiAMTlJZY
+	 37gt/79oIgt8uAt1otFI20NE0aOGjWZtGesNM4io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 156/403] io_uring: dont use int for ABI
-Date: Tue, 26 Aug 2025 13:08:02 +0200
-Message-ID: <20250826110911.191200850@linuxfoundation.org>
+	jackysliu <1972843537@qq.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 392/644] scsi: bfa: Double-free fix
+Date: Tue, 26 Aug 2025 13:08:03 +0200
+Message-ID: <20250826110956.158414183@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: jackysliu <1972843537@qq.com>
 
-commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
+[ Upstream commit add4c4850363d7c1b72e8fce9ccb21fdd2cf5dc9 ]
 
-__kernel_rwf_t is defined as int, the actual size of which is
-implementation defined. It won't go well if some compiler / archs
-ever defines it as i64, so replace it with __u32, hoping that
-there is no one using i16 for it.
+When the bfad_im_probe() function fails during initialization, the memory
+pointed to by bfad->im is freed without setting bfad->im to NULL.
 
-Cc: stable@vger.kernel.org
-Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subsequently, during driver uninstallation, when the state machine enters
+the bfad_sm_stopping state and calls the bfad_im_probe_undo() function,
+it attempts to free the memory pointed to by bfad->im again, thereby
+triggering a double-free vulnerability.
+
+Set bfad->im to NULL if probing fails.
+
+Signed-off-by: jackysliu <1972843537@qq.com>
+Link: https://lore.kernel.org/r/tencent_3BB950D6D2D470976F55FC879206DE0B9A09@qq.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/io_uring.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/bfa/bfad_im.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -23,7 +23,7 @@ struct io_uring_sqe {
- 	__u64	addr;		/* pointer to buffer or iovecs */
- 	__u32	len;		/* buffer size or number of iovecs */
- 	union {
--		__kernel_rwf_t	rw_flags;
-+		__u32		rw_flags;
- 		__u32		fsync_flags;
- 		__u16		poll_events;
- 		__u32		sync_range_flags;
+diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
+index 6b5841b1c06e..38292bc43d91 100644
+--- a/drivers/scsi/bfa/bfad_im.c
++++ b/drivers/scsi/bfa/bfad_im.c
+@@ -707,6 +707,7 @@ bfad_im_probe(struct bfad_s *bfad)
+ 
+ 	if (bfad_thread_workq(bfad) != BFA_STATUS_OK) {
+ 		kfree(im);
++		bfad->im = NULL;
+ 		return BFA_STATUS_FAILED;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
