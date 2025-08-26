@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F0B35E6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56AAB36CDE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E761BA6F68
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53C81C8159F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798AE8635C;
-	Tue, 26 Aug 2025 11:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B435E35083A;
+	Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQV1omxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSXWGexB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BBB749C;
-	Tue, 26 Aug 2025 11:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F002FDC5C;
+	Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208942; cv=none; b=fYlZDZZ4Wyn8vjsi92cKZiFB/SIQXmqNrsbrkizn71KPCPuS/oKvNJRTGZJFI0wOkByTMkhoMaVVjkkY6m8C2OkEJBrJemKxPbtdkw0M6adhL92XwAKstjKlkCN5gpg1UdBBfyeXOO9+0WEFMnE7UFehr+kAJIArf7kO6ABcJ5E=
+	t=1756219510; cv=none; b=k77MhYPWPky7OzVamZt1WSGvqaxMLeeuBIBN6iwnMx5y2EpJ2P7mRIH0TdFJDDfW5O1VN8xW4CBAQV5Td5biCBt5+POMhQTvO57Sjiensttj0queK2hkjqlkajPkCaqU2lV4U0nNyVS0px1H7AHP/d2NQWETXt6NqA0QRlvdEUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208942; c=relaxed/simple;
-	bh=Pz5CE3T0HKknzblo3MNNpNOtGIPSF8nB5FJFjHif7tM=;
+	s=arc-20240116; t=1756219510; c=relaxed/simple;
+	bh=aFBnRvvV98YqgdZJRGGH8pIlFVwyIeHNlLl3Ci6HqZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/WwCtxXhpPrhEdnb7jQCxtYC640cgjk0aPSup6eUQO/s/ULZlymi3vbXzb7nEKGLU4+qjkUTs4XwGHEbP8ue2PuVtMPPY8VjVGZGJXxXli4W0miVvjImsJH+pYIw/dOdx7ZkJyujyQzKKj4Xh85fMFsxh4crYhoxVgcTVLaJoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQV1omxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A90C4CEF1;
-	Tue, 26 Aug 2025 11:49:01 +0000 (UTC)
+	 MIME-Version; b=u0YFTJH60yLXTVrKWyIlLIbqZFwhJoCX2Qy6pCqV+Ad0PYDFWl9Jaqj7vLgCXZVzxNWoo5aX4I7vNFj+xw/O3sjyIb89CbgE3n9+Eqkmr/7+n9VySyNBWp6ugiQQ6/KXsJM/XCc7Dh4fNOTiC1HWtoOvEikkCkI5shhyQrsrZyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSXWGexB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AD0C4CEF1;
+	Tue, 26 Aug 2025 14:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208942;
-	bh=Pz5CE3T0HKknzblo3MNNpNOtGIPSF8nB5FJFjHif7tM=;
+	s=korg; t=1756219510;
+	bh=aFBnRvvV98YqgdZJRGGH8pIlFVwyIeHNlLl3Ci6HqZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQV1omxrwnTQ6dMrvanpvQ8Tt+LYyOeDF+/0O9Qwqc6ivV7QobvMMWd1eJDdBWam0
-	 C163iM7RbbKKhREheBuS8rfd7lOLIuUMuO4qSeq1HDxIIohr33izTI2S+xbBtgnenB
-	 snFgH8PBw5qkI1X3Cc3bIOJzab4MxQRT9fk7mRoA=
+	b=NSXWGexBhA4MVd6kQbL9gGHzitiUR2DtDm1wG6PeqE8ojByu1g3ktVgqmiYfZpolT
+	 AKrvx8EN0gG7q3fPPZ7aiMfqSmIKGn/4rLQIrJZq2dcfsBZbtI8+4dIuyfH2PVEKQm
+	 YvRDuXYS1eRG77t8+llaNvRIGpOHwmIo0SerTivQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chanho Min <chanho.min@lge.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 303/322] s390/mm: Do not map lowcore with identity mapping
+Subject: [PATCH 5.4 392/403] NFS: Fix up commit deadlocks
 Date: Tue, 26 Aug 2025 13:11:58 +0200
-Message-ID: <20250826110923.374283068@linuxfoundation.org>
+Message-ID: <20250826110917.863347852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 93f616ff870a1fb7e84d472cad0af651b18f9f87 ]
+commit 133a48abf6ecc535d7eddc6da1c3e4c972445882 upstream.
 
-Since the identity mapping is pinned to address zero the lowcore is always
-also mapped to address zero, this happens regardless of the relocate_lowcore
-command line option. If the option is specified the lowcore is mapped
-twice, instead of only once.
+If O_DIRECT bumps the commit_info rpcs_out field, then that could lead
+to fsync() hangs. The fix is to ensure that O_DIRECT calls
+nfs_commit_end().
 
-This means that NULL pointer accesses will succeed instead of causing an
-exception (low address protection still applies, but covers only parts).
-To fix this never map the first two pages of physical memory with the
-identity mapping.
-
-Fixes: 32db401965f1 ("s390/mm: Pin identity mapping base to zero")
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 723c921e7dfc ("sched/wait, fs/nfs: Convert wait_on_atomic_t() usage to the new wait_var_event() API")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Chanho Min <chanho.min@lge.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/boot/vmem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfs/direct.c        |    2 +-
+ fs/nfs/write.c         |    9 ++++++---
+ include/linux/nfs_fs.h |    1 +
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
-index 3fa28db2fe59..14aee8524021 100644
---- a/arch/s390/boot/vmem.c
-+++ b/arch/s390/boot/vmem.c
-@@ -471,6 +471,9 @@ void setup_vmem(unsigned long kernel_start, unsigned long kernel_end, unsigned l
- 			 lowcore_address + sizeof(struct lowcore),
- 			 POPULATE_LOWCORE);
- 	for_each_physmem_usable_range(i, &start, &end) {
-+		/* Do not map lowcore with identity mapping */
-+		if (!start)
-+			start = sizeof(struct lowcore);
- 		pgtable_populate((unsigned long)__identity_va(start),
- 				 (unsigned long)__identity_va(end),
- 				 POPULATE_IDENTITY);
--- 
-2.50.1
-
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -700,7 +700,7 @@ static void nfs_direct_commit_complete(s
+ 		nfs_unlock_and_release_request(req);
+ 	}
+ 
+-	if (atomic_dec_and_test(&cinfo.mds->rpcs_out))
++	if (nfs_commit_end(cinfo.mds))
+ 		nfs_direct_write_complete(dreq);
+ }
+ 
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1658,10 +1658,13 @@ static void nfs_commit_begin(struct nfs_
+ 	atomic_inc(&cinfo->rpcs_out);
+ }
+ 
+-static void nfs_commit_end(struct nfs_mds_commit_info *cinfo)
++bool nfs_commit_end(struct nfs_mds_commit_info *cinfo)
+ {
+-	if (atomic_dec_and_test(&cinfo->rpcs_out))
++	if (atomic_dec_and_test(&cinfo->rpcs_out)) {
+ 		wake_up_var(&cinfo->rpcs_out);
++		return true;
++	}
++	return false;
+ }
+ 
+ void nfs_commitdata_release(struct nfs_commit_data *data)
+@@ -1756,6 +1759,7 @@ void nfs_init_commit(struct nfs_commit_d
+ 	data->res.fattr   = &data->fattr;
+ 	data->res.verf    = &data->verf;
+ 	nfs_fattr_init(&data->fattr);
++	nfs_commit_begin(cinfo->mds);
+ }
+ EXPORT_SYMBOL_GPL(nfs_init_commit);
+ 
+@@ -1801,7 +1805,6 @@ nfs_commit_list(struct inode *inode, str
+ 
+ 	/* Set up the argument struct */
+ 	nfs_init_commit(data, head, NULL, cinfo);
+-	atomic_inc(&cinfo->mds->rpcs_out);
+ 	return nfs_initiate_commit(NFS_CLIENT(inode), data, NFS_PROTO(inode),
+ 				   data->mds_ops, how, 0);
+ }
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -549,6 +549,7 @@ extern int nfs_wb_page_cancel(struct ino
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(bool never_fail);
+ extern void nfs_commit_free(struct nfs_commit_data *data);
++bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+ 
+ static inline int
+ nfs_have_writebacks(struct inode *inode)
 
 
 
