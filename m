@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A08B369DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E6EB35C3B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16B1586098
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB48D7C368C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C00352066;
-	Tue, 26 Aug 2025 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14222D6E6B;
+	Tue, 26 Aug 2025 11:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSF6dQk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCTbw5PF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C2A350D7F;
-	Tue, 26 Aug 2025 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3AD3375D9;
+	Tue, 26 Aug 2025 11:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218059; cv=none; b=MDoO8++/yhW0FJDXI73f2LSGBOrJuB0qSgVuf5WPAxczvFsbSyaFjhK4FKm+mp0Kv0rJbYXjZR9UbZ5g7En6vWT9GT5A1lkTXzt78u40nOzrmpBl0txOewSGC+C5tTWdWVOu7qJ0RoyzE9/KJy5Tw06uNrYIetge72mJcUT5k7k=
+	t=1756207755; cv=none; b=AZR80p+H8tWGUsL2hOVoSDeBuxbfuetpUVIxl9C6qotW6OPuTRtpiUXG7h2/K2pFuXtUlQvqOke10bpU0ZWqxhlMEKMSWhpPvvYZOq0ch8s5GJ/i4R6xYlondKnMYe2+dtI3EoS2dy3EoOk+GYIAxpChfgA4twkdlqGWSQKRmzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218059; c=relaxed/simple;
-	bh=T+G28X2Qi8hWDk1qvHI5kWRwQJ71GlureO/3B32+JgU=;
+	s=arc-20240116; t=1756207755; c=relaxed/simple;
+	bh=xB0BnQ74jhWQuAkzZPJB6pe63ashfLznKUJxh31lOj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rw3/NJm0FiLn/LYHoIQYpVxh7Ma9tfsi2zVnj3WRvMubz2Tr8gcmcoUG/bq2f0MZFHlOqx2Oh5+EVsAj2O8iyHja5GfjLObqmXWkX1/LmZI4HXNw+LVfN7tD8X3DWgO1MHoBVnDN+7ezOFdUmufcruwrv+yc6J1YN6hvu6eAq0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSF6dQk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A459FC4CEF1;
-	Tue, 26 Aug 2025 14:20:58 +0000 (UTC)
+	 MIME-Version; b=cTY/VfKw5GyeuXfD4TOEzk1BDegF/5ciDvPAPo//o4yxtcwXjvhJAOZ+qUVpSbsYyc8ILl3t7FKzrFeB2MRMaCiEL7PSg8aFCVNzA9/Eg550OBJ7dX9AI89JRzg8vTHTYZpJC4l0ofzxlzJ5pEnlMif2cAcb2nEaV2gflZ70EJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCTbw5PF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234D2C4CEF1;
+	Tue, 26 Aug 2025 11:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218059;
-	bh=T+G28X2Qi8hWDk1qvHI5kWRwQJ71GlureO/3B32+JgU=;
+	s=korg; t=1756207755;
+	bh=xB0BnQ74jhWQuAkzZPJB6pe63ashfLznKUJxh31lOj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSF6dQk/Wt/CJBSJ0km1mOXrCOK8PE/qd2uqHLlcf62JpFc8XcdhL5q+M/deEPttx
-	 qB6oYO1LvnK2z53nZNykFQJRBPJIK3XDUmo/Nz4KhAaM8YE3xY3MtHaCTTjRUpIAk5
-	 equgRON+xuqKH63ZhyiqZ8pWSp+nYueT0TWBhvQ4=
+	b=mCTbw5PF5eFsJWgPV9QNIcK2HU7cjRFUpR/zO5Y+/rkCUVUPbLL6tS/Qw9fVUE425
+	 SMCMErNPd1tKriFuhJOEySxn0FhD2yEO440cxiYA4ZCnnsMDsluJ+D+cUutiFqsNXo
+	 Z+Y1mWWbKEiwCvxYlGt9io7ZViTcTiBu6jEen3sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 378/523] media: hi556: correct the test pattern configuration
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 304/457] iio: adc: ad7173: prevent scan if too many setups requested
 Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826110933.787659214@linuxfoundation.org>
+Message-ID: <20250826110944.883749714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
+commit 1cfb22c277c7274f54babaa5b416dfbc00181e16 upstream.
 
-Hynix hi556 support 8 test pattern modes:
-hi556_test_pattern_menu[] = {
-{
-	"Disabled",
-	"Solid Colour",
-	"100% Colour Bars",
-	"Fade To Grey Colour Bars",
-	"PN9",
-	"Gradient Horizontal",
-	"Gradient Vertical",
-	"Check Board",
-	"Slant Pattern",
-}
+Add a check to ad7173_update_scan_mode() to ensure that we didn't exceed
+the maximum number of unique channel configurations.
 
-The test pattern is set by a 8-bit register according to the
-specification.
-+--------+-------------------------------+
-| BIT[0] |  Solid color                  |
-+--------+-------------------------------+
-| BIT[1] |  Color bar                    |
-+--------+-------------------------------+
-| BIT[2] |  Fade to grey color bar       |
-+--------+-------------------------------+
-| BIT[3] |  PN9                          |
-+--------+-------------------------------+
-| BIT[4] |  Gradient horizontal          |
-+--------+-------------------------------+
-| BIT[5] |  Gradient vertical            |
-+--------+-------------------------------+
-| BIT[6] |  Check board                  |
-+--------+-------------------------------+
-| BIT[7] |  Slant pattern                |
-+--------+-------------------------------+
-Based on function above, current test pattern programming is wrong.
-This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
-will disable the test pattern generation and set the pattern to 0.
+In the AD7173 family of chips, there are some chips that have 16
+CHANNELx registers but only 8 setups (combination of CONFIGx, FILTERx,
+GAINx and OFFSETx registers). Since commit 92c247216918 ("iio: adc:
+ad7173: fix num_slots"), it is possible to have more than 8 channels
+enabled in a scan at the same time, so it is possible to get a bad
+configuration when more than 8 channels are using unique configurations.
+This happens because the algorithm to allocate the setup slots only
+takes into account which slot has been least recently used and doesn't
+know about the maximum number of slots available.
 
-Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Since the algorithm to allocate the setup slots is quite complex, it is
+simpler to check after the fact if the current state is valid or not.
+So this patch adds a check in ad7173_update_scan_mode() after setting up
+all of the configurations to make sure that the actual setup still
+matches the requested setup for each enabled channel. If not, we prevent
+the scan from being enabled and return an error.
+
+The setup comparison in ad7173_setup_equal() is refactored to a separate
+function since we need to call it in two places now.
+
+Fixes: 92c247216918 ("iio: adc: ad7173: fix num_slots")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-adc-ad7173-fix-setup-use-limits-v2-1-8e96bdb72a9c@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/iio/adc/ad7173.c |   87 ++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 75 insertions(+), 12 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -602,21 +602,23 @@ static int hi556_test_pattern(struct hi5
- 	int ret;
- 	u32 val;
- 
--	if (pattern) {
--		ret = hi556_read_reg(hi556, HI556_REG_ISP,
--				     HI556_REG_VALUE_08BIT, &val);
--		if (ret)
--			return ret;
--
--		ret = hi556_write_reg(hi556, HI556_REG_ISP,
--				      HI556_REG_VALUE_08BIT,
--				      val | HI556_REG_ISP_TPG_EN);
--		if (ret)
--			return ret;
--	}
-+	ret = hi556_read_reg(hi556, HI556_REG_ISP,
-+			     HI556_REG_VALUE_08BIT, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
-+		(val & ~HI556_REG_ISP_TPG_EN);
-+
-+	ret = hi556_write_reg(hi556, HI556_REG_ISP,
-+			      HI556_REG_VALUE_08BIT, val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? BIT(pattern - 1) : 0;
- 
- 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
--			       HI556_REG_VALUE_08BIT, pattern);
-+			       HI556_REG_VALUE_08BIT, val);
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -200,7 +200,7 @@ struct ad7173_channel_config {
+ 	/*
+ 	 * Following fields are used to compare equality. If you
+ 	 * make adaptations in it, you most likely also have to adapt
+-	 * ad7173_find_live_config(), too.
++	 * ad7173_is_setup_equal(), too.
+ 	 */
+ 	struct_group(config_props,
+ 		bool bipolar;
+@@ -562,12 +562,19 @@ static void ad7173_reset_usage_cnts(stru
+ 	st->config_usage_counter = 0;
  }
  
- static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
+-static struct ad7173_channel_config *
+-ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
++/**
++ * ad7173_is_setup_equal - Compare two channel setups
++ * @cfg1: First channel configuration
++ * @cfg2: Second channel configuration
++ *
++ * Compares all configuration options that affect the registers connected to
++ * SETUP_SEL, namely CONFIGx, FILTERx, GAINx and OFFSETx.
++ *
++ * Returns: true if the setups are identical, false otherwise
++ */
++static bool ad7173_is_setup_equal(const struct ad7173_channel_config *cfg1,
++				  const struct ad7173_channel_config *cfg2)
+ {
+-	struct ad7173_channel_config *cfg_aux;
+-	int i;
+-
+ 	/*
+ 	 * This is just to make sure that the comparison is adapted after
+ 	 * struct ad7173_channel_config was changed.
+@@ -580,14 +587,22 @@ ad7173_find_live_config(struct ad7173_st
+ 				     u8 ref_sel;
+ 			     }));
+ 
++	return cfg1->bipolar == cfg2->bipolar &&
++	       cfg1->input_buf == cfg2->input_buf &&
++	       cfg1->odr == cfg2->odr &&
++	       cfg1->ref_sel == cfg2->ref_sel;
++}
++
++static struct ad7173_channel_config *
++ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
++{
++	struct ad7173_channel_config *cfg_aux;
++	int i;
++
+ 	for (i = 0; i < st->num_channels; i++) {
+ 		cfg_aux = &st->channels[i].cfg;
+ 
+-		if (cfg_aux->live &&
+-		    cfg->bipolar == cfg_aux->bipolar &&
+-		    cfg->input_buf == cfg_aux->input_buf &&
+-		    cfg->odr == cfg_aux->odr &&
+-		    cfg->ref_sel == cfg_aux->ref_sel)
++		if (cfg_aux->live && ad7173_is_setup_equal(cfg, cfg_aux))
+ 			return cfg_aux;
+ 	}
+ 	return NULL;
+@@ -1229,7 +1244,7 @@ static int ad7173_update_scan_mode(struc
+ 				   const unsigned long *scan_mask)
+ {
+ 	struct ad7173_state *st = iio_priv(indio_dev);
+-	int i, ret;
++	int i, j, k, ret;
+ 
+ 	for (i = 0; i < indio_dev->num_channels; i++) {
+ 		if (test_bit(i, scan_mask))
+@@ -1240,6 +1255,54 @@ static int ad7173_update_scan_mode(struc
+ 			return ret;
+ 	}
+ 
++	/*
++	 * On some chips, there are more channels that setups, so if there were
++	 * more unique setups requested than the number of available slots,
++	 * ad7173_set_channel() will have written over some of the slots. We
++	 * can detect this by making sure each assigned cfg_slot matches the
++	 * requested configuration. If it doesn't, we know that the slot was
++	 * overwritten by a different channel.
++	 */
++	for_each_set_bit(i, scan_mask, indio_dev->num_channels) {
++		const struct ad7173_channel_config *cfg1, *cfg2;
++
++		cfg1 = &st->channels[i].cfg;
++
++		for_each_set_bit(j, scan_mask, indio_dev->num_channels) {
++			cfg2 = &st->channels[j].cfg;
++
++			/*
++			 * Only compare configs that are assigned to the same
++			 * SETUP_SEL slot and don't compare channel to itself.
++			 */
++			if (i == j || cfg1->cfg_slot != cfg2->cfg_slot)
++				continue;
++
++			/*
++			 * If we find two different configs trying to use the
++			 * same SETUP_SEL slot, then we know that the that we
++			 * have too many unique configurations requested for
++			 * the available slots and at least one was overwritten.
++			 */
++			if (!ad7173_is_setup_equal(cfg1, cfg2)) {
++				/*
++				 * At this point, there isn't a way to tell
++				 * which setups are actually programmed in the
++				 * ADC anymore, so we could read them back to
++				 * see, but it is simpler to just turn off all
++				 * of the live flags so that everything gets
++				 * reprogramed on the next attempt read a sample.
++				 */
++				for (k = 0; k < st->num_channels; k++)
++					st->channels[k].cfg.live = false;
++
++				dev_err(&st->sd.spi->dev,
++					"Too many unique channel configurations requested for scan\n");
++				return -EINVAL;
++			}
++		}
++	}
++
+ 	return 0;
+ }
+ 
 
 
 
