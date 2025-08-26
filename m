@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB1CB366E0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1182CB36981
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E341C25FB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0408F566606
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9775C352FFF;
-	Tue, 26 Aug 2025 13:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4008E3570C0;
+	Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKyXJRT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSGmAl6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D52350D46;
-	Tue, 26 Aug 2025 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE089340DA7;
+	Tue, 26 Aug 2025 14:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216308; cv=none; b=IdUWFFgMoBmldNCVGzbWdtblXuVeakAfo+XE9tXwGfT6u2eEb8MbrRyyPWEagBAN/8L4eOWtd25TngiJ0EO6cg0vX7aMPnQ4L4+K3P1qa6qysA/z2m+acYU3zuXHqIiiXQv6pY/MyiCTXtroDAqnShITo1ncOFwa4hX8x2+o7rU=
+	t=1756217704; cv=none; b=HdfdtACHUTtLA2uL9J2A7M6XPquD069MPk1816diydnShvF/pvaRx6s8Kj3c7VULstaokSR29i2LhxcwjySfMzWVZFjnpS+QoxEI5whXd5gWwgmyfXCEQ4746ymcdbOj7T9/I+/7jlqSYMO9uCwJea/Nbva5kuDE5dtbV+SZTqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216308; c=relaxed/simple;
-	bh=Z86WqDwcXjrWl9EZiIFvKk5ijFSj2zumM64EDbhvJAE=;
+	s=arc-20240116; t=1756217704; c=relaxed/simple;
+	bh=O9zIaMyLrEAMUBAQUA7k78jogbRA5tajuHjkaunrnnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ/zacBksUc6PhnQd9H+Uh237NHmvttKNwAPYCNBprP2FsnPox+0/BBLsozUYMkE9XlP5RvnFJ6r6yGe5bH/Mg7S+2X7T5LfSPqw9r19++7cgYqcF/waoAII8ToNhoc/Vh9yQ1ExoIiO8e0FyiCvSWrIEZA7nqdCOqU3xbq0wIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKyXJRT7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED7C4CEF1;
-	Tue, 26 Aug 2025 13:51:47 +0000 (UTC)
+	 MIME-Version; b=gdXv5pINtqLMUgfIfNXgLdYGOy6kfmH0QDAsSRP9L/7to3VHpQxJtxHa1LPyAw9RCWjlPaEL7fI9WhlGRQORKsyiv85zGvJNXv2UoqCjTZtNwL7FO4VoAhlb95muMKylyJPRHJdJlF6fmI5hgWy/0tHBRfY4aLonaPVYAbh7+oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSGmAl6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82215C4CEF1;
+	Tue, 26 Aug 2025 14:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216307;
-	bh=Z86WqDwcXjrWl9EZiIFvKk5ijFSj2zumM64EDbhvJAE=;
+	s=korg; t=1756217703;
+	bh=O9zIaMyLrEAMUBAQUA7k78jogbRA5tajuHjkaunrnnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKyXJRT73KK/suxnlwyfoEBxfohmsa+wdjQyelKbDm5idA0RaZ8c7UZyEd0pmNhs5
-	 QAYp4T7xkpHAU67O+n8HkKfw1eHoK90HGUoKwrKYc9IEK4FN7tsqeRsqnt1ZDNAYiu
-	 KQ41ZkmR7Hv8sgXFCiYXEnVNcMzA8mqhU3wFdFE0=
+	b=zSGmAl6pNS2eBpeAAI5RePIcvzQNJZIm8WBnOs36vfofPxeMOSxML5rWkH2kV0VJV
+	 2lp8xgZ64ork/vCDzu8MEsnLLGZ4etAWboUviFJPdr8MAV2PAo29UNeiRc1PV8WjMz
+	 Z9DEtMPGh55DEmoqfqnTwEB00PhARJXFx8wXJg38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 363/644] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Subject: [PATCH 5.10 244/523] x86/bugs: Avoid warning when overriding return thunk
 Date: Tue, 26 Aug 2025 13:07:34 +0200
-Message-ID: <20250826110955.409525329@linuxfoundation.org>
+Message-ID: <20250826110930.456665016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
+[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
 
-Ensure descriptor is freed on error to avoid memory leak.
+The purpose of the warning is to prevent an unexpected change to the return
+thunk mitigation. However, there are legitimate cases where the return
+thunk is intentionally set more than once. For example, ITS and SRSO both
+can set the return thunk after retbleed has set it. In both the cases
+retbleed is still mitigated.
 
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+Replace the warning with an info about the active return thunk.
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index f1d07ddb3f83..2c5358fc05b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2561,6 +2561,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	struct iwl_fw_dump_desc *desc;
- 	unsigned int delay = 0;
- 	bool monitor_only = false;
-+	int ret;
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 7c269dcb7cec..6ff9fd836d87 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -67,10 +67,9 @@ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
  
- 	if (trigger) {
- 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
-@@ -2591,7 +2592,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	desc->trig_desc.type = cpu_to_le32(trig);
- 	memcpy(desc->trig_desc.data, str, len);
- 
--	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	if (ret)
-+		kfree(desc);
+ static void __init set_return_thunk(void *thunk)
+ {
+-	if (x86_return_thunk != __x86_return_thunk)
+-		pr_warn("x86/bugs: return thunk changed\n");
+-
+ 	x86_return_thunk = thunk;
 +
-+	return ret;
++	pr_info("active return thunk: %ps\n", thunk);
  }
- IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
  
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
 -- 
 2.39.5
 
