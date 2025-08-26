@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFC2B35E12
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C75B361E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3BC31BA7BC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A0318882A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331062BF3E2;
-	Tue, 26 Aug 2025 11:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BC81C4609;
+	Tue, 26 Aug 2025 13:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KHygSOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/5z0knc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0A199935;
-	Tue, 26 Aug 2025 11:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FAE54654;
+	Tue, 26 Aug 2025 13:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208623; cv=none; b=WLMD6VtZDMiPIwSHKNG2wLqt2ALoXqWfQMV51mfDsVGoPHVXIyfwtVvu3MolQWyNkaMiqirkkSo6/b82ZXmUt1SDMVuA8pb9L6VbpxgXd/j+48iNEUVsJvanZ+Q7TiedfdTfcKe4bFZEN25TH3MTenfyCjNx9e9UVCZPD9XiQJA=
+	t=1756213791; cv=none; b=ezFTXqcqPw/1Emi6UU8qOdKB9bU08nFqAd9J0sqlmGqmuaFcC1sVksjv7JcJBc4kqY36dncfZv6BXw3GCvdtiW42d28p641H8yfOM+o9WwWX8s+gNw+SwD0BLe02WMxnQKRPwvlbMBR9IrOHh6yI/Pu5n96c5d9uYdnx992UGtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208623; c=relaxed/simple;
-	bh=nYC8nL4sNFI2sP5w7c03ZEAUxSp3C2z9XTaEMptK+VI=;
+	s=arc-20240116; t=1756213791; c=relaxed/simple;
+	bh=Yc/Ce2N6yVLbn4v2daxfO4awpNv6sEFahrYaN76wElY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nry5LKDhwV+zsQU3jtV0Lz2yb6trRk5uVRsUOWgmcj96GeLkJWzC/gvMDj9zDxnbMwhzbbGGMOiVAAn0zG3yZ2jTnPwBDd+EjN8q6LRfpopLQOegK+t+kmnDoZV2vnRa1+rZ88x7rMMmKGbBgdfBYSFAUJGXRdDLe+5h3IWaFXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KHygSOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D073C4CEF1;
-	Tue, 26 Aug 2025 11:43:42 +0000 (UTC)
+	 MIME-Version; b=GvIt7FDlF+XonCCcjgBOH9UTx1qTW1WHKV+Nqeh5AFx/bNuVv5QPR3U6nKflc6Msg2mExDnWdkarmLlP7ioe4mc2WzQabr0LSnV1mG1k4LlMM9/x/octcpHMCJieg5QO0Tz0KXRZh+sjL21rUUY4Vs6YxWedCryOXXrefjmVPuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/5z0knc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5224C4CEF1;
+	Tue, 26 Aug 2025 13:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208622;
-	bh=nYC8nL4sNFI2sP5w7c03ZEAUxSp3C2z9XTaEMptK+VI=;
+	s=korg; t=1756213791;
+	bh=Yc/Ce2N6yVLbn4v2daxfO4awpNv6sEFahrYaN76wElY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KHygSOIvCtygfo/AG21UzDg3F2KPLlibysx/m6QnTmnyBcFpR9iqJxKRsu4ot7vh
-	 f/6XPRX38HMDEET/if3MjBmONb7eOzhF6uVG/88Ts+n4jbq90mpENbcK56Hgsp0JWF
-	 IxXCJDx5opOT5LVDTSk8p4tkizJTrGIKaPwTqCFw=
+	b=1/5z0kncQVjhN5+aarDF8DwLNC9PP2/X793dToK4lAsepfU7fx8mI/2M//mFq21sK
+	 DLL9YcCTRZfTxCv55ynBaG3jQdsifBiExHfot1JG/bEAvkr/nCbiwStJiSk8SDKVQh
+	 553s16X0mIBOHMTQJsSHx68Pf4D6B7NQI2+TLbBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.12 183/322] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
+	cen zhang <zzzccc427@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 449/587] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
 Date: Tue, 26 Aug 2025 13:09:58 +0200
-Message-ID: <20250826110920.384444661@linuxfoundation.org>
+Message-ID: <20250826111004.380566460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 10507478468f165ea681605d133991ed05cdff62 upstream.
+[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
 
-For later VBIOS versions, the fractional feedback divider is
-calculated as the remainder of dividing the feedback divider by
-a factor, which is set to 1000000. For reference, see:
-- calculate_fb_and_fractional_fb_divider
-- calc_pll_max_vco_construct
+Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
+argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
 
-However, in case of old VBIOS versions that have
-set_pixel_clock_v3, they only have 1 byte available for the
-fractional feedback divider, and it's expected to be set to the
-remainder from dividing the feedback divider by 10.
-For reference see the legacy display code:
-- amdgpu_pll_compute
-- amdgpu_atombios_crtc_program_pll
+Currently passing the wrong flags works for non-debug builds because
+the only XFS_IWALK* flag has the same encoding as the corresponding
+XFS_IBULK* flag, but in debug builds it can trigger an assert that no
+incorrect flag is passed.  Instead just extra the relevant flag.
 
-This commit fixes set_pixel_clock_v3 by dividing the fractional
-feedback divider passed to the function by 100000.
-
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
-Cc: stable@vger.kernel.org
+Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
+Cc: <stable@vger.kernel.org> # v5.19
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_itable.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
- 	allocation.sPCLKInput.usFbDiv =
- 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
- 	allocation.sPCLKInput.ucFracFbDiv =
--			(uint8_t)bp_params->fractional_feedback_divider;
-+			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
- 	allocation.sPCLKInput.ucPostDiv =
- 			(uint8_t)bp_params->pixel_clock_post_divider;
+--- a/fs/xfs/xfs_itable.c
++++ b/fs/xfs/xfs_itable.c
+@@ -422,11 +422,15 @@ xfs_inumbers(
+ 		.breq		= breq,
+ 	};
+ 	struct xfs_trans	*tp;
++	unsigned int		iwalk_flags = 0;
+ 	int			error = 0;
  
+ 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
+ 		return 0;
+ 
++	if (breq->flags & XFS_IBULK_SAME_AG)
++		iwalk_flags |= XFS_IWALK_SAME_AG;
++
+ 	/*
+ 	 * Grab an empty transaction so that we can use its recursive buffer
+ 	 * locking abilities to detect cycles in the inobt without deadlocking.
+@@ -435,7 +439,7 @@ xfs_inumbers(
+ 	if (error)
+ 		goto out;
+ 
+-	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
++	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
+ 			xfs_inumbers_walk, breq->icount, &ic);
+ 	xfs_trans_cancel(tp);
+ out:
 
 
 
