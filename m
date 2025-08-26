@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-174736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BFCB364E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C98B35E3C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7316E8E3D81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A321BC2D80
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9262F6590;
-	Tue, 26 Aug 2025 13:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA1132A3C8;
+	Tue, 26 Aug 2025 11:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWyRvaoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ1I28XS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA172F7473;
-	Tue, 26 Aug 2025 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA363090E1;
+	Tue, 26 Aug 2025 11:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215180; cv=none; b=EkGSGnsFdr/Olh9bY2dOJnyNRr4xQEwqUYzVvIQbHRvUwp+lbVn/7WS2KP9QnhifbUQalsJvF+SvMtzY/yR4+HoLLmqDr6Myabe9pouFCdWlnCG5Loct2vVEXlwVgJCrLiYqY2J7hGQbuW90ZFkp+yrEkKnk2DM6Q0baVsYRXe0=
+	t=1756208736; cv=none; b=r1x5oBnJCmXYUt1SeOP8EY1QO2MSOLD9zhh45gxNuEx29c6pLcBDP6cWoY/q9+M/4qsqGzWNTMHo+dHC4YuJcHvZ8C4DlECk84tM42PTuE1Y9rQi2t5o6GCr8cuiew9AG/RQ9GJLc/XJvqFmcyMD2aWKAxgS4ifC+dPshVClmwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215180; c=relaxed/simple;
-	bh=hm1Za5kihxgIplaBHpyvlW/OFfitumwnlUdiEeBvvw4=;
+	s=arc-20240116; t=1756208736; c=relaxed/simple;
+	bh=nsP8ONHfrnP1rTUFKnj7KkDM2e3DSzTooDXD2U88G/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvsG/7yxdX4jOkREcTW62i2yJVdy6ItgaA9edO4DvK6f3D7HuemVLNGuAZ1rE3LSSwMS9IZxZqtNcpyOIvRQFsgX1QAEtrQkvy0CfyPZXQEl4SziBngvI2nsy6XsSvNy/SadCshmwakbfXYKoom7HkA9JAUTS911GNbIzwB0XpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWyRvaoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263CBC4CEF1;
-	Tue, 26 Aug 2025 13:33:00 +0000 (UTC)
+	 MIME-Version; b=pUbB2LYq9Idjkq6vNq7jqqx6LMGen05TM1AGjE99SBIe2d+p1CtWrCpJa+CMYERhYO3OFCUW7h1i4DTNN50fHDVtj27aMC00da+s4VOxxt6elilj24OWsuq9ZW73fnvc7t7mnolBhMxE2PxbpXJab3zsriP9+RUoZFQpub1nBfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ1I28XS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77ACC4CEF1;
+	Tue, 26 Aug 2025 11:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215180;
-	bh=hm1Za5kihxgIplaBHpyvlW/OFfitumwnlUdiEeBvvw4=;
+	s=korg; t=1756208736;
+	bh=nsP8ONHfrnP1rTUFKnj7KkDM2e3DSzTooDXD2U88G/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWyRvaoBj5j8cNmx3gxhjodSXiqMljwhWIYIhQFoyL8upw1i8t+7RcmYiBA31sQYZ
-	 Xrpbf8dT+TEPwoxmlvOFr34CvGOuAm7BX9IHjjR1WxFcw9e/yAmSsPDOjb1UnaBQZV
-	 A4sfVnyWBX9JeMN/8yct+HqGuyDDmMK7/yjfXERk=
+	b=rZ1I28XSoz86L0Rc0GY7PvNs7448gS9yy5ZaH+7bHg60VV0aUjwdeghiQ2NDYIgOv
+	 TwErqyZcT+d6DEGZBGmmOXExJjdvm48AP+32PjuJIH6aTjCd+G+EzE+4Mzwo0adGE8
+	 1JxVZkEG5/GkJKoUf4Qt0lnzkhgbrzMGnN8Zi2l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Julian Orth <ju.orth@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 6.1 387/482] selftests/memfd: add test for mapping write-sealed memfd read-only
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.12 225/322] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
 Date: Tue, 26 Aug 2025 13:10:40 +0200
-Message-ID: <20250826110940.389415936@linuxfoundation.org>
+Message-ID: <20250826110921.450157159@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
+commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
 
-Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
-assert that we are able to do this in a test to ensure that we do not
-regress this again.
+The USB core will unmap urb->transfer_dma after SETUP stage completes.
+Then the USB controller will access unmapped memory when it received
+device descriptor. If iommu is equipped, the entire test can't be
+completed due to the memory accessing is blocked.
 
-Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Julian Orth <ju.orth@gmail.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Fix it by calling map_urb_for_dma() again for IN stage. To reduce
+redundant map for urb->transfer_buffer, this will also set
+URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
+dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
+flag before second map_urb_for_dma().
+
+Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c |   43 +++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/usb/core/hcd.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -186,6 +186,24 @@ static void *mfd_assert_mmap_shared(int
- 	return p;
- }
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -2151,7 +2151,7 @@ static struct urb *request_single_step_s
+ 	urb->complete = usb_ehset_completion;
+ 	urb->status = -EINPROGRESS;
+ 	urb->actual_length = 0;
+-	urb->transfer_flags = URB_DIR_IN;
++	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
+@@ -2215,9 +2215,15 @@ int ehset_single_step_set_feature(struct
  
-+static void *mfd_assert_mmap_read_shared(int fd)
-+{
-+	void *p;
-+
-+	p = mmap(NULL,
-+		 mfd_def_size,
-+		 PROT_READ,
-+		 MAP_SHARED,
-+		 fd,
-+		 0);
-+	if (p == MAP_FAILED) {
-+		printf("mmap() failed: %m\n");
-+		abort();
+ 	/* Complete remaining DATA and STATUS stages using the same URB */
+ 	urb->status = -EINPROGRESS;
++	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
++	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
++		usb_put_urb(urb);
++		goto out1;
 +	}
 +
-+	return p;
-+}
-+
- static void *mfd_assert_mmap_private(int fd)
- {
- 	void *p;
-@@ -802,6 +820,30 @@ static void test_seal_future_write(void)
- 	close(fd);
- }
- 
-+static void test_seal_write_map_read_shared(void)
-+{
-+	int fd;
-+	void *p;
-+
-+	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
-+
-+	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
-+			    mfd_def_size,
-+			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
-+
-+	mfd_assert_add_seals(fd, F_SEAL_WRITE);
-+	mfd_assert_has_seals(fd, F_SEAL_WRITE);
-+
-+	p = mfd_assert_mmap_read_shared(fd);
-+
-+	mfd_assert_read(fd);
-+	mfd_assert_read_shared(fd);
-+	mfd_fail_write(fd);
-+
-+	munmap(p, mfd_def_size);
-+	close(fd);
-+}
-+
- /*
-  * Test SEAL_SHRINK
-  * Test whether SEAL_SHRINK actually prevents shrinking
-@@ -1056,6 +1098,7 @@ int main(int argc, char **argv)
- 
- 	test_seal_write();
- 	test_seal_future_write();
-+	test_seal_write_map_read_shared();
- 	test_seal_shrink();
- 	test_seal_grow();
- 	test_seal_resize();
+ 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
+ 	if (!retval && !wait_for_completion_timeout(&done,
+ 						msecs_to_jiffies(2000))) {
 
 
 
