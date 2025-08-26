@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6D4B35CC7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A941FB36766
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D45364270
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2AB5564165
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EEE34DCE7;
-	Tue, 26 Aug 2025 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDA334F484;
+	Tue, 26 Aug 2025 13:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9h3+L12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrSvenJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD7634DCDD;
-	Tue, 26 Aug 2025 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE74E2B9A7;
+	Tue, 26 Aug 2025 13:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207709; cv=none; b=l0dsBYzrYXApG9Oe1PtavVVyweXsKVnNyVmHzVsDbeE0ovzWD062lmCYsx+Bc3f/QX5kUZ/mnuyKbs3LvByXlq600362mC0HR0Jgw8omVy0mdvkF9f6KJVHcDbpUcYVwRuMdO4QgBc6MTmRMdN+bDLx1XyLA0NiYub9AFxq4Y+4=
+	t=1756216595; cv=none; b=njUmV/klUzxOkUKSWLSOmnSbvA1rKT9ErUTXqanfXjCSNOeX64n0nCs/gOwzoZwA7q+1Hw1R2AhfkP8AY61oiJw0v5W7dGXIsUjl3/1h2vZSLPKf4eXhyZ28puL6yV9ox2q22ybCYAE8+XFhVRpOPoR4B3xFLLynQ/vs5vhC0NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207709; c=relaxed/simple;
-	bh=u/Ao3pCRiwYEM6zkJmgRIDbGTre0A7iJwRyQhMYffn8=;
+	s=arc-20240116; t=1756216595; c=relaxed/simple;
+	bh=jUudxoz0cOL05gLIcky5SHb0eI8NYTQzoyPLXC9rieY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVOaLehgnI08w4CS6ydiWTVZY8PkLootxAB2VDcWy50uhseMBViKJPNmF9A0hnK7/4QLjimFQhmSZ4dlTSWpAMLNyRdu6azgEj1ZITtY9ETEpAzlTt/97lMeM9ZGOzraODnNVLo6tj0pOfnfxuIKIXHxb1h/ZLvd5HBfeYsWSXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9h3+L12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE8DC4CEF1;
-	Tue, 26 Aug 2025 11:28:28 +0000 (UTC)
+	 MIME-Version; b=dJl5MH8atZpgd1oMhZnpXzAbGacYJtFlk3bbApn+Gr9s/OFb5gaSv6Jxw51K+O0snmlB3PmL33C9mx5ruvGgtoiUjeDD5J2SsoD0TZ2wIT8GJmF/8youixExrUM7VSOHmf2gnPZY2710TDYcIivbYKh+hiDh4caADZSqtbsljyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrSvenJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEE7C4CEF1;
+	Tue, 26 Aug 2025 13:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207708;
-	bh=u/Ao3pCRiwYEM6zkJmgRIDbGTre0A7iJwRyQhMYffn8=;
+	s=korg; t=1756216595;
+	bh=jUudxoz0cOL05gLIcky5SHb0eI8NYTQzoyPLXC9rieY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9h3+L12nFRmptHAh9P7OYEjiF7A5SMs0W2DUdnMC4b/n/EnsYTwBnn9CBxD6l1L2
-	 rOS7I9ujmy4Q6reGXFkSgERFH8JfrmY1euEml074npr85JZARpF88X+ShpNPyO5rcy
-	 pgwmK3QviEC3NnJrevm+/A3EgqIuJS+rQ2PMY6vA=
+	b=yrSvenJlPGfbtDGifTxPPTJ5aewHW1NaD7yBSmzomD2STwN6Q5KxZ5aCgQ3SxTutR
+	 wdiApzsqx+kOLE/a/BKhVlKgIIPQLX0LARmMXm5eoKzrCQGSI/asJIhmgU0veIDoay
+	 QnQ+4opWgw2z2mHk7QFfhY+IhFf42uWHW5YxhXnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 246/457] mm/damon/core: fix damos_commit_filter not changing allow
+	Jack Xiao <Jack.Xiao@amd.com>,
+	Likun Gao <Likun.Gao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 439/644] drm/amdgpu: fix incorrect vm flags to map bo
 Date: Tue, 26 Aug 2025 13:08:50 +0200
-Message-ID: <20250826110943.450022633@linuxfoundation.org>
+Message-ID: <20250826110957.344011797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-commit b3dee902b6c26b7d8031a4df19753e27dcfcba01 upstream.
+[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
 
-Current damos_commit_filter() does not persist the `allow' value of the
-filter.  As a result, changing the `allow' value of a filter and
-committing doesn't change the `allow' value.
+It should use vm flags instead of pte flags
+to specify bo vm attributes.
 
-Add the missing `allow' value update, so committing the filter
-persistently changes the `allow' value well.
-
-Link: https://lkml.kernel.org/r/20250816015116.194589-1-ekffu200098@gmail.com
-Fixes: fe6d7fdd6249 ("mm/damon/core: add damos_filter->allow field")
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.14.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -881,6 +881,7 @@ static void damos_commit_filter(
- {
- 	dst->type = src->type;
- 	dst->matching = src->matching;
-+	dst->allow = src->allow;
- 	damos_commit_filter_arg(dst, src);
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index da21e60bb827..f5441ce15373 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -93,8 +93,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	}
  
+ 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
+-			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
+-			     AMDGPU_PTE_EXECUTABLE);
++			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
++			     AMDGPU_VM_PAGE_EXECUTABLE);
+ 
+ 	if (r) {
+ 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+-- 
+2.50.1
+
 
 
 
