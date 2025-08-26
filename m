@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C58B36C81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD136B36227
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AE1C582616
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B98EB8A2EA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA00A340D95;
-	Tue, 26 Aug 2025 14:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ACA2459F3;
+	Tue, 26 Aug 2025 13:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFhkMyw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILwkjN+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777EE2AE68;
-	Tue, 26 Aug 2025 14:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FEB23026B;
+	Tue, 26 Aug 2025 13:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219294; cv=none; b=UNxQOx96WqFyUjZKypgLO9iikZ4nrnLQbIWGO1zNUZgaEExOGKpODXcoYBizo6J4g+EeUG2G2TNmLcoz6KDbNU0FaFURDNkejVl5FPMpnDoBr2RjV9EEvbL2kUWMZ7mgSEvlsTzQU6TE+y1Un1A6M4bAdwpFGdho0hcCI0AwU38=
+	t=1756213854; cv=none; b=J8V2YRML4bmLw1XXBoG2lKUdOxN+TpC/+j8v/tUUoMYXj+pAIb8rO7c9lp0scTPhzhmxY/FvAVInzGGShJoJ5o/ip9+T+8a4C0kTnS7TQhU3xDmHCkDn1kiscoSnkL1Y2jXzI5oTreyJig4BUEIobtz8rC5hnVF+g+u3EamxCU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219294; c=relaxed/simple;
-	bh=4yA9JNC+fUicaPcbh1feMTMCLXzAYJSzldel2PsxSyU=;
+	s=arc-20240116; t=1756213854; c=relaxed/simple;
+	bh=IBpqPrFfgAPL6L/pMPYVNk9psdJNFdazFAVWMhAW7qQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3ymwAwVwhhJGEf3NcFcKyFzDGxIz+GWGbI/p/wmGmBu/zHi4+wy04ysFIhnfEbnpjUdp7mhYoTiNkI9Qh34e7NNPRlHkv6t/fiMA+f3cPRfeWPEBTdj+0UohbhsYz1JZRZc1TXqXzMcjQFncyx9JqNmgjja3D00oPc8t+oTi0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFhkMyw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A135C4CEF1;
-	Tue, 26 Aug 2025 14:41:33 +0000 (UTC)
+	 MIME-Version; b=gEi12AL3lCenot7+o5O/A8b2yz7GAkiy+gZXXmbf7TRgBPakBUkwJimViEmv956333v1XKjB3+S+u2xRUgt5BZZei0Rxk2ZPw+30/VjXZPqDGxzZljqczI3mBbh8gv3PuLJqGm/dtGiaL8WZMdXYR+VZHcZpxJzIvDYjFfBidKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILwkjN+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86F4C4CEF1;
+	Tue, 26 Aug 2025 13:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219294;
-	bh=4yA9JNC+fUicaPcbh1feMTMCLXzAYJSzldel2PsxSyU=;
+	s=korg; t=1756213854;
+	bh=IBpqPrFfgAPL6L/pMPYVNk9psdJNFdazFAVWMhAW7qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFhkMyw+vM69CCFeHCU1q1WNtWqcuJyB5Q7Rj9ULftcmPcJKNINdwMWTaKRUqlXsd
-	 IWLScAH/gbVyZTE3TlKrLuSo7pUSpNMqqnDtQ772uYtTihY5VWK7whvtriW/vKtzwy
-	 En+Afa1fv658Rs2iEDGKh9KbMQRQUB9KjzLBAf9o=
+	b=ILwkjN+CqgDP2OiTOwnAR2PA6pamN33cB9WO24y9/zCYwwVqJTp+oTvhMYdjuMayN
+	 Wbod1LDEvodqhCIo+BxT7OWFesqJIhpnh+TmDBioPuRRbbWgGM3JkIOir+gOr3uj0P
+	 x2WtUahTq+hUL8hgSQSdwkZOarHc3DbhckcPZbxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Rini <trini@konsulko.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 327/403] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
+	Andrei Vagin <avagin@gmail.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 504/587] use uniform permission checks for all mount propagation changes
 Date: Tue, 26 Aug 2025 13:10:53 +0200
-Message-ID: <20250826110915.856476186@linuxfoundation.org>
+Message-ID: <20250826111005.807146772@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
+[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
 
-When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
-not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
+do_change_type() and do_set_group() are operating on different
+aspects of the same thing - propagation graph.  The latter
+asks for mounts involved to be mounted in namespace(s) the caller
+has CAP_SYS_ADMIN for.  The former is a mess - originally it
+didn't even check that mount *is* mounted.  That got fixed,
+but the resulting check turns out to be too strict for userland -
+in effect, we check that mount is in our namespace, having already
+checked that we have CAP_SYS_ADMIN there.
 
-As a result, the linker script is preprocessed with predefined macros
-for the build host instead of the target.
+What we really need (in both cases) is
+	* only touch mounts that are mounted.  That's a must-have
+constraint - data corruption happens if it get violated.
+	* don't allow to mess with a namespace unless you already
+have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
 
-Assuming you use an x86 build machine, compare the following:
+That's an equivalent of what do_set_group() does; let's extract that
+into a helper (may_change_propagation()) and use it in both
+do_set_group() and do_change_type().
 
- $ clang -dM -E -x c /dev/null
- $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
-
-There is no actual problem presumably because our linker scripts do not
-rely on such predefined macros, but it is better to define correct ones.
-
-Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
-will be processed with the proper target triple.
-
-[Note]
-After the patch submission, we got an actual problem that needs this
-commit. (CBL issue 1859)
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1859
-Reported-by: Tom Rini <trini@konsulko.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/namespace.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -568,8 +568,7 @@ ifneq ($(LLVM_IAS),1)
- CLANG_FLAGS	+= -no-integrated-as
- endif
- CLANG_FLAGS	+= -Werror=unknown-warning-option
--KBUILD_CFLAGS	+= $(CLANG_FLAGS)
--KBUILD_AFLAGS	+= $(CLANG_FLAGS)
-+KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
- export CLANG_FLAGS
- endif
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 6a9c53c800c4..f79226472251 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2526,6 +2526,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
+ 	return attach_recursive_mnt(mnt, p, mp, 0);
+ }
  
++static int may_change_propagation(const struct mount *m)
++{
++        struct mnt_namespace *ns = m->mnt_ns;
++
++	 // it must be mounted in some namespace
++	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
++		 return -EINVAL;
++	 // and the caller must be admin in userns of that namespace
++	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
++		 return -EPERM;
++	 return 0;
++}
++
+ /*
+  * Sanity check the flags to change_mnt_propagation.
+  */
+@@ -2562,10 +2575,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
+ 
+ 	namespace_lock();
+-	if (!check_mnt(mnt)) {
+-		err = -EINVAL;
++	err = may_change_propagation(mnt);
++	if (err)
+ 		goto out_unlock;
+-	}
++
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+@@ -2960,18 +2973,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 
+ 	namespace_lock();
+ 
+-	err = -EINVAL;
+-	/* To and From must be mounted */
+-	if (!is_mounted(&from->mnt))
+-		goto out;
+-	if (!is_mounted(&to->mnt))
+-		goto out;
+-
+-	err = -EPERM;
+-	/* We should be allowed to modify mount namespaces of both mounts */
+-	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+-	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(to);
++	if (err)
+ 		goto out;
+ 
+ 	err = -EINVAL;
+-- 
+2.50.1
+
 
 
 
