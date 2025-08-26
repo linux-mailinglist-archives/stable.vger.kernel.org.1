@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB5FB35D11
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D64B36715
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E051C3A375B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CBA1BC34C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFFB321456;
-	Tue, 26 Aug 2025 11:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB3F225390;
+	Tue, 26 Aug 2025 13:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcB8iGjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrL2KNDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E00239573;
-	Tue, 26 Aug 2025 11:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53872258A;
+	Tue, 26 Aug 2025 13:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208397; cv=none; b=eKyMBcQSIhSZD5l+es7gIU2CjUESnfKT+eReI8X0FwN5frET+HHsUE7k3t6CX9+Ewx+EnYvU/Mc1k9A3Mv5YUQ8LyZxBpk8KCoRIwWqAtuNhBkKh96aQ4TUhIH/kDURLvoEl9+UGExcnTABCCkC2beMasXMnJkaXdZ5VXFk1t3w=
+	t=1756216460; cv=none; b=lrO04R9EvGGaoP/S1B8mUizIUW95F6BximWdNdyNzNYD3pihwgry0lWJg9rZuRjgsjDEdHRLYxwuGFNf+e3E/x8UgL55q9+6y00buVaqsGSWjvoGLoeIwvBVR09rVGbH6rxD5eUbyjb2ccKq0iGtspUygVAmZ/YAwj2p6EOddQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208397; c=relaxed/simple;
-	bh=FZAxQKf/A/UBSFxZCgmp7vgsm3Mg8w8G51nDX0QZZg8=;
+	s=arc-20240116; t=1756216460; c=relaxed/simple;
+	bh=CzBS4VRE3T9hPKxrLJmKWb/4/b8K2uKK+A9z1p1k//E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0KcHtJsVPqRI+SPEssWmoG2BK29Ex3b1ko/1x9HiDSFYkRWx3d/t2qaq6IxxEvkCcrhIqSpcm4Ebw/s3uQ9sX+gcwnJrymBgIRL9Qzr+ShJZg3U8v4uQRhnnJwz1W3u/Prp/4wKpXwT6/t3M2zGizssUqGRAaR9peITVAZcJM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcB8iGjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A66C4CEF1;
-	Tue, 26 Aug 2025 11:39:56 +0000 (UTC)
+	 MIME-Version; b=EDwLaXNwTsBdWEvELdYEdV4w+Bqzv8KYp/sd7+MQIIO4i9JVQG2uDilC77ZdW6KLlme9/C9b0f2HDYzSKVaCXKKMmOsbKzqOqzTHA2nFhXRDMtB63azcYSnJCotAqPjp7JQ53pEXugyLIBChWPhe60t9BdsKyichU75e4iF8JCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrL2KNDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8416C4CEF1;
+	Tue, 26 Aug 2025 13:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208397;
-	bh=FZAxQKf/A/UBSFxZCgmp7vgsm3Mg8w8G51nDX0QZZg8=;
+	s=korg; t=1756216460;
+	bh=CzBS4VRE3T9hPKxrLJmKWb/4/b8K2uKK+A9z1p1k//E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcB8iGjs8qrEg0atfQZeV+0hOEWgDZkMPSxM8J5+Gk7B9sZ0xXBU8XU6iXYpHvV7F
-	 28PbVOzsa4wfjAfCunfGmfNSeb9UHdQwBw1RDtx6YK401VKnLImw+PBUP1YVVhVMIV
-	 mFMV3q8fnrgFdZ3+Ilhb/R+oEQELP3iQ3gO03pBs=
+	b=KrL2KNDA6crW28Wxpvj71iu/cvYbLRTrp65/452d7sfcnepBSq8RHlJKpxp1CUhrl
+	 S7IbbkGkwNTLFJq84cPLWXXIMYX+a6NQkuyMi4PrFaGbLYC8tcNXGBSCkOQNnVsVOC
+	 M29hF8IzmTwstS2vIIz/Wx+mV4q/NaDCVfZxSxr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 095/322] parisc: Revise gateway LWS calls to probe user read access
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nicolas Schier <n.schier@avm.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 419/644] kconfig: nconf: Ensure null termination where strncpy is used
 Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110918.025248932@linuxfoundation.org>
+Message-ID: <20250826110956.840780036@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Shankari Anand <shankari.ak0208@gmail.com>
 
-commit f6334f4ae9a4e962ba74b026e1d965dfdf8cbef8 upstream.
+[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
 
-We use load and stbys,e instructions to trigger memory reference
-interruptions without writing to memory. Because of the way read
-access support is implemented, read access interruptions are only
-triggered at privilege levels 2 and 3. The kernel and gateway
-page execute at privilege level 0, so this code never triggers
-a read access interruption. Thus, it is currently possible for
-user code to execute a LWS compare and swap operation at an
-address that is read protected at privilege level 3 (PRIV_USER).
+strncpy() does not guarantee null-termination if the source string is
+longer than the destination buffer.
 
-Fix this by probing read access rights at privilege level 3 and
-branching to lws_fault if access isn't allowed.
+Ensure the buffer is explicitly null-terminated to prevent potential
+string overflows or undefined behavior.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Acked-by: Nicolas Schier <n.schier@avm.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/syscall.S |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ scripts/kconfig/nconf.c     | 2 ++
+ scripts/kconfig/nconf.gui.c | 1 +
+ 2 files changed, 3 insertions(+)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -613,6 +613,9 @@ lws_compare_and_swap32:
- lws_compare_and_swap:
- 	/* Trigger memory reference interruptions without writing to memory */
- 1:	ldw	0(%r26), %r28
-+	proberi	(%r26), PRIV_USER, %r28
-+	comb,=,n	%r28, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 2:	stbys,e	%r0, 0(%r26)
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index 7b371bd7fb36..8b166ccb0447 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -585,6 +585,8 @@ static void item_add_str(const char *fmt, ...)
+ 		tmp_str,
+ 		sizeof(k_menu_items[index].str));
  
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -767,6 +770,9 @@ cas2_lock_start:
- 	copy	%r26, %r28
- 	depi_safe	0, 31, 2, %r28
- 10:	ldw	0(%r28), %r1
-+	proberi	(%r28), PRIV_USER, %r1
-+	comb,=,n	%r1, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 11:	stbys,e	%r0, 0(%r28)
++	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
++
+ 	free_item(curses_menu_items[index]);
+ 	curses_menu_items[index] = new_item(
+ 			k_menu_items[index].str,
+diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
+index 9aedf40f1dc0..da06ea2afe08 100644
+--- a/scripts/kconfig/nconf.gui.c
++++ b/scripts/kconfig/nconf.gui.c
+@@ -349,6 +349,7 @@ int dialog_inputbox(WINDOW *main_window,
+ 	x = (columns-win_cols)/2;
  
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -951,41 +957,47 @@ atomic_xchg_begin:
+ 	strncpy(result, init, *result_len);
++	result[*result_len - 1] = '\0';
  
- 	/* 8-bit exchange */
- 1:	ldb	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 2:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 16-bit exchange */
- 3:	ldh	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 4:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 32-bit exchange */
- 5:	ldw	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	b	atomic_xchg_start
- 6:	stbys,e	%r0, 0(%r23)
- 	nop
- 	nop
--	nop
--	nop
--	nop
- 
- 	/* 64-bit exchange */
- #ifdef CONFIG_64BIT
- 7:	ldd	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 8:	stdby,e	%r0, 0(%r23)
- #else
- 7:	ldw	0(%r24), %r20
- 8:	ldw	4(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 9:	stbys,e	%r0, 0(%r20)
+ 	/* create the windows */
+ 	win = newwin(win_lines, win_cols, y, x);
+-- 
+2.39.5
+
 
 
 
