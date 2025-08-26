@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26547B36B13
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93FEB3684C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8029C4E2D0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0FC8E1977
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA9035AABD;
-	Tue, 26 Aug 2025 14:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6679434DCCB;
+	Tue, 26 Aug 2025 13:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi2audQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM5IYjAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3632D35AACB;
-	Tue, 26 Aug 2025 14:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242CE1F55F8;
+	Tue, 26 Aug 2025 13:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219188; cv=none; b=pOG334DeJSOIbYkSbSSboLjQLvRtyapGHyUNVqDi+KEGE1aaR9kJpTOpR3S9jQs0vJ1OCvFMl+JLCN528VPyeMGR6jygdT4SvspIp85Mjf4E5wxTiV6TNIOkH8VpSNDgbUlO/L2HMcuuCUXvcxIj+pI7N7kDnbH71ACCXcNpoMM=
+	t=1756216651; cv=none; b=bpo7R9xuTdVDqiDGJkVEnDAWDFNJd6189j2kqPxHQx5nGt3Dpt2HJj8XHP9rOu1g6lKrx+OjksJmYZgRXKuYRSCMaappM5CQ99yMVlPRBtxw9jUJA6uYq1C25KEH7cm+NfGq/Fzw/thjejSmjVSqH/XOrV9SjhjkiXpfmd51lVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219188; c=relaxed/simple;
-	bh=OyMrv7rlG2ZQxbYd3dthhSYzG0argWLliQ6AZ0clRW0=;
+	s=arc-20240116; t=1756216651; c=relaxed/simple;
+	bh=VL6k1nYWJcSnRCIw+1so85AEX5ujnQ1wdVtciOUkXUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eB+ihfJmq3pLAsDFlDbHq+cNH7LvsLZXmw/ggxym2oVXKBtt4WyjWBpqviPvr+ZhT2uwarQF637+yAozAqlgi9BYpQjOmv1opi8mi1ivQeosTHmvt/gq/OWa8D0vOWe8ME9Ml0cuAB/VabO2Eji60QDa3laUWuHMgyHF3e96c44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi2audQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABCDC4CEF1;
-	Tue, 26 Aug 2025 14:39:47 +0000 (UTC)
+	 MIME-Version; b=au/H+XbiWgzWD1hmS4EC2Uaz/udmxAhBBkiXG+CefOf5C0Lz+gwDyTcubjwnQTNQtIkkg/fo+NWv3hIC3NX1hV/rreaoAVEfAwN8pqjEDQVcdZtGVyfNncYzhu0lMwAtyGdGEPzFGVXCbYXIf+jcd1LeH35GASbJ9WTXgDTnp8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM5IYjAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E1EC4CEF1;
+	Tue, 26 Aug 2025 13:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219188;
-	bh=OyMrv7rlG2ZQxbYd3dthhSYzG0argWLliQ6AZ0clRW0=;
+	s=korg; t=1756216650;
+	bh=VL6k1nYWJcSnRCIw+1so85AEX5ujnQ1wdVtciOUkXUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fi2audQ5b+NxV+YSFAGO2nxBN8ioypRkt2eJzHetct0i5lEAMuM5hlGFo51ISVkup
-	 c5aX1NuATcNVAxWt7gY2L3EHgG2P7w4c52aZxRGCOMw8kvZpYtGsAGeS3n8saKpB/M
-	 nyQdfG5QoaRW1zhPx97TRrQGLAKC4eQvbph20PEE=
+	b=MM5IYjANjRds+leDoaRvkNCR38fiI7s4Vxm1tW8qnKG2pcGMnnUvNU6acE9hMzEWT
+	 SS35ThYhHHeZTBRwr1b09Gga+OmsF6tsBQ+JHPBIDmGkUI7duc6TUuiAG1vjnkQIoQ
+	 MjgjHlYDXvZyRkiYaz7o8iGsq2A4xdUZIz0M/vZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 256/403] i3c: dont fail if GETHDRCAP is unsupported
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 491/644] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
 Date: Tue, 26 Aug 2025 13:09:42 +0200
-Message-ID: <20250826110913.895986309@linuxfoundation.org>
+Message-ID: <20250826110958.660009341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 447270cdb41b1c8c3621bb14b93a6749f942556e ]
+commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
 
-'I3C_BCR_HDR_CAP' is still spec v1.0 and has been renamed to 'advanced
-capabilities' in v1.1 onwards. The ST pressure sensor LPS22DF does not
-have HDR, but has the 'advanced cap' bit set. The core still wants to
-get additional information using the CCC 'GETHDRCAP' (or GETCAPS in v1.1
-onwards). Not all controllers support this CCC and will notify the upper
-layers about it. For instantiating the device, we can ignore this
-unsupported CCC as standard communication will work. Without this patch,
-the device will not be instantiated at all.
+In the interrupt handler rain_interrupt(), the buffer full check on
+rain->buf_len is performed before acquiring rain->buf_lock. This
+creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
+rain->buf_len is concurrently accessed and modified in the work
+handler rain_irq_work_handler() under the same lock.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250704204524.6124-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Multiple interrupt invocations can race, with each reading buf_len
+before it becomes full and then proceeding. This can lead to both
+interrupts attempting to write to the buffer, incrementing buf_len
+beyond its capacity (DATA_SIZE) and causing a buffer overflow.
+
+Fix this bug by moving the spin_lock() to before the buffer full
+check. This ensures that the check and the subsequent buffer modification
+are performed atomically, preventing the race condition. An corresponding
+spin_unlock() is added to the overflow path to correctly release the
+lock.
+
+This possible bug was found by an experimental static analysis tool
+developed by our team.
+
+Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 8604c9e7b6ac..07478ddff622 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1243,7 +1243,7 @@ static int i3c_master_retrieve_dev_info(struct i3c_dev_desc *dev)
+--- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
++++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
+@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
+ {
+ 	struct rain *rain = serio_get_drvdata(serio);
  
- 	if (dev->info.bcr & I3C_BCR_HDR_CAP) {
- 		ret = i3c_master_gethdrcap_locked(master, &dev->info);
--		if (ret)
-+		if (ret && ret != -ENOTSUPP)
- 			return ret;
++	spin_lock(&rain->buf_lock);
+ 	if (rain->buf_len == DATA_SIZE) {
++		spin_unlock(&rain->buf_lock);
+ 		dev_warn_once(rain->dev, "buffer overflow\n");
+ 		return IRQ_HANDLED;
  	}
- 
--- 
-2.39.5
-
+-	spin_lock(&rain->buf_lock);
+ 	rain->buf_len++;
+ 	rain->buf[rain->buf_wr_idx] = data;
+ 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
 
 
 
