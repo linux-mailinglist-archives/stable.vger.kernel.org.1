@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701FFB368F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC0EB3631D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D9F1C22514
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4348A619F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163733469F4;
-	Tue, 26 Aug 2025 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF43A24467E;
+	Tue, 26 Aug 2025 13:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtvMRBlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1P7LRn2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD335207D;
-	Tue, 26 Aug 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7651917ED;
+	Tue, 26 Aug 2025 13:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217380; cv=none; b=heknkWSGLvkoWRKpQxfqtzn4Odm7RmCh+EwUo8Y2nrY0FmVQGdvOMUeFhzpCJlZvHR/mH8xFGJ7QzsfLHfL6jo2EQLURGPepYUwlEpt1ipqIMvgE35w27e4qiy3Rnm5MlLs/hUAJldl9bHqyeqE0pEGDEqFA01azMFLsL2dEp2U=
+	t=1756214281; cv=none; b=S5FXLIy6OUPQeVQwP6aF5Kn2b4YAJjSEIYsj5U4E7m9FrNlCN9DChXRyOcV+MztVp8f6q9MooSDPSnZY9RU6gQMAfTGPV1wR9PlqlyRa+T589OAPJx36R/7UcK7uhFan/G/Piuaq2685ZcMDQM/LHvjRKAqpPkgXUlMwzgMJMxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217380; c=relaxed/simple;
-	bh=6Cd0tVSw6HktUPb1NjnezfpqsoxZeAFCVbHCLk6P3X8=;
+	s=arc-20240116; t=1756214281; c=relaxed/simple;
+	bh=D1qwvws/P6CXPFrj26mX79LenVAU+zEelKZf9ztu2ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5vXhS/YbIGBGoexE1iLVVQuirz+iv0fufi1k7NJvO7NDAfFNABImHhzkMuonuXPpznpdmItlw8DZLYYyW3ZDZMYkyYLDh5G1PC28XDIMgd2JpWxcNKIMcv8AY4eeu4n/Y/if4HNRkxUjkImct3tGw3s0x3oF4ho+Jy4Gn7TOcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtvMRBlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FF0C4CEF1;
-	Tue, 26 Aug 2025 14:09:39 +0000 (UTC)
+	 MIME-Version; b=ZK5jOoCPaA69yNXLEuIFYwwc0r3VdYVcM1NPCOgfMAca/Q+fuy730Wvwd3qJ02/t2L05PyrIYJQ2eaChyarHHDUYxr7UsmcUqaim0k0euZ+LL+K6E4DnHqv7mC5Oum49LwWBFvWQAb9BTVNMKa24fSudxHr6nDg5U2ccsqXWW1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1P7LRn2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDEDC4CEF1;
+	Tue, 26 Aug 2025 13:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217380;
-	bh=6Cd0tVSw6HktUPb1NjnezfpqsoxZeAFCVbHCLk6P3X8=;
+	s=korg; t=1756214281;
+	bh=D1qwvws/P6CXPFrj26mX79LenVAU+zEelKZf9ztu2ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtvMRBlDPjmXlHqonKj8vf6D+NsX2z7PpD5BMce0APqg/I9J5D3UnEK4iz8Botf+s
-	 vNROUvjTDJ+QM5O5RNdltkpylNji7EC0VIwsJsZczt3vXoZyJfG09UjLnapr17YRLZ
-	 MFvUvmulZOUujNUJNXSC+SYXLjh/iX1u4Zq2iZUw=
+	b=1P7LRn2xiYPbV6SdtB0wzIcldqIRIzJoGWGei6+RmPeGthDoWaC6LXBNoPrYomv7z
+	 SdUI1nPFbAaYsoMG1QQSPMIrGrH2w3jtacjxdfOAyZ4/K0BljeWYjOC5i0tjLmV+Ph
+	 a717v9NNBZGvFXe3quIEbVO9AXG+qJ9LvQZ4kEbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/523] crypto: marvell/cesa - Fix engine load inaccuracy
+Subject: [PATCH 6.1 078/482] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
 Date: Tue, 26 Aug 2025 13:05:31 +0200
-Message-ID: <20250826110927.502716140@linuxfoundation.org>
+Message-ID: <20250826110932.760330747@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
+[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
 
-If an error occurs during queueing the engine load will never be
-decremented.  Fix this by moving the engine load adjustment into
-the cleanup function.
+ASoC has 2 functions to set bias level.
+	(A) snd_soc_dapm_force_bias_level()
+	(B) snd_soc_dapm_set_bias_level()
 
-Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
+successed.
+
+(A)	int snd_soc_dapm_force_bias_level(...)
+	{
+		...
+		if (ret == 0)
+(a)			dapm->bias_level = level;
+		...
+	}
+
+snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
+It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
+set dapm->bias_level by itself. One note is that (A) might not be called.
+
+(B)	static int snd_soc_dapm_set_bias_level(...)
+	{
+		...
+		ret = snd_soc_card_set_bias_level(...);
+		...
+		if (dapm != &card->dapm)
+(A)			ret = snd_soc_dapm_force_bias_level(...);
+		...
+		ret = snd_soc_card_set_bias_level_post(...);
+		...
+	}
+
+dapm->bias_level will be set if (A) was called, but might not be set
+if (B) was called, even though it calles set_bias_level() function.
+
+We should set dapm->bias_level if we calls
+snd_soc_dapm_set_bias_level() (B), too.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 4 +++-
- drivers/crypto/marvell/cesa/hash.c   | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/soc-dapm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 051a661a63ee..e9411c84db74 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
- static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
- {
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index 4103443770b0..481e5dd593b6 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -742,6 +742,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
+ out:
+ 	trace_snd_soc_bias_level_done(card, level);
  
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_skcipher_dma_cleanup(req);
++	/* success */
++	if (ret == 0)
++		snd_soc_dapm_init_bias_level(dapm, level);
 +
-+	atomic_sub(req->cryptlen, &engine->load);
+ 	return ret;
  }
  
- static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
-@@ -205,7 +208,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
- 	struct mv_cesa_engine *engine = creq->base.engine;
- 	unsigned int ivsize;
- 
--	atomic_sub(skreq->cryptlen, &engine->load);
- 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 823a8fb114bb..3c4f4f704c64 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -109,9 +109,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
- static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
- {
- 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_ahash_dma_cleanup(req);
-+
-+	atomic_sub(req->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
-@@ -371,8 +374,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
- 			}
- 		}
- 	}
--
--	atomic_sub(ahashreq->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
