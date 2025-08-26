@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62211B35BDC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D05B36AAC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA149361BDA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BE1F982B3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69951A256B;
-	Tue, 26 Aug 2025 11:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B534A352FC3;
+	Tue, 26 Aug 2025 14:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUNaRg4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6P1y+/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A53E24169F;
-	Tue, 26 Aug 2025 11:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F4C35208F;
+	Tue, 26 Aug 2025 14:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207359; cv=none; b=Ec6P20DunsinWTPVPZOlLPFD1EK9TCk+mXNiPsDlAcWHTSnVpiEKsN/odXgN7sGFBcUeIwmrgXYIvSmR35aoio/7N8kSxyyh0u1xuJrtBge2+U+Q58Oa65pyGTxDdMbjoBkCvt5WtD9O6CWvWL9bNrFjk7w8GTwP8ZC7C6gxfI0=
+	t=1756218646; cv=none; b=IfMP8tXZ1R5wpBnTPFIN71zWkNUBaoe2yc0T2clI+4qOrg0DhWAlFQHEj1PGIvyTJNA84GCpiKYa3O/nsobHE0IrRHBh2Eaw6AkeLZP/NmGd+DvxQDRo75HunICvQmzg0NsV0/zVNoOjM5IvWqMS3/vXKr+clQw76L8U6gUv2+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207359; c=relaxed/simple;
-	bh=C9TvBwam0yz3UjAOeTHd9WqJySZl97yWkQIc5r8MDjI=;
+	s=arc-20240116; t=1756218646; c=relaxed/simple;
+	bh=DcViz9EHyxxfnb8aPXCLvwr9EXpTQgN6BNMZwctrS3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmHufOEYE3VUmMwff13SQEIfevTRSxyOsnVr7P0riuNB0G6zInK+vRXEKA4hwrpHnZtck/RLHNDQgftlvxf1smTHAKMPE+E8sLP0dCbvFXVB3HZfTqQibAgsQngHKZSEgzQi3nJIDeQ9iORO+Y7c9hbAdqqz/1/H/+01pnxJj1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUNaRg4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4693AC4CEF1;
-	Tue, 26 Aug 2025 11:22:36 +0000 (UTC)
+	 MIME-Version; b=dDMQ6vb4e5ADFzIO+8mH6/UtOOtaBP94lDYOQ4Tmse/gk1ho5O1efq3IA2WUzdZvUIzkMxyjElJIQCDdV33rNFD3GQIz4ogj6Hdp7FH3sGT3MHM08Ox6/3qcU/A1MVwsx9Z+ts68BRQKTTzv1GOXnaxORUSOtmuDkC3uzS5PUHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6P1y+/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D45C4CEF1;
+	Tue, 26 Aug 2025 14:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207356;
-	bh=C9TvBwam0yz3UjAOeTHd9WqJySZl97yWkQIc5r8MDjI=;
+	s=korg; t=1756218646;
+	bh=DcViz9EHyxxfnb8aPXCLvwr9EXpTQgN6BNMZwctrS3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUNaRg4e2d+S72ffdm8Lca8fhTTrjdOj5BMdN2CWSeRvq3dqCv3PMnNvxbonkrch9
-	 cZ3/jfX9bfD8wh9obmK6Qdtq9e14jjX83ROa3SCtBcoZNHV6eZ5Cp+eAUSVzFarEW7
-	 PHSQNrkGfB9u9kmBsnqmLEJoVNvcC3w8i45o6KZk=
+	b=m6P1y+/Zki1yOQFUdGtKzX+jxD6K+HF0d93EgNa8cM2MbRIm46mxSzyphbZ13E1iX
+	 RN5n7iVJrlmSc7NGcKWU0Y9GY0Bc6IYHdRCGjMpr8jexdTvjuRvwpv+QvMZTd4vcs2
+	 ygAwHNXFIRS98NKeQ8NycOn8WnSIHzz+zhPp+NBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 120/457] soc/tegra: pmc: Ensure power-domains are in a known state
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 078/403] Revert "vmci: Prevent the dispatching of uninitialized payloads"
 Date: Tue, 26 Aug 2025 13:06:44 +0200
-Message-ID: <20250826110940.340750978@linuxfoundation.org>
+Message-ID: <20250826110908.593983679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
+[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
 
-After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
-until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
-failed to boot. Looking into this issue, before this commit was applied,
-if any of the Tegra power-domains were in 'on' state when the kernel
-booted, they were being turned off by the genpd core before any driver
-had chance to request them. This was purely by luck and a consequence of
-the power-domains being turned off earlier during boot. After this
-commit was applied, any power-domains in the 'on' state are kept on for
-longer during boot and therefore, may never transitioned to the off
-state before they are requested/used. The hang on the Tegra210 Jetson
-TX1 is caused because devices in some power-domains are accessed without
-the power-domain being turned off and on, indicating that the
-power-domain is not in a completely on state.
+This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
 
->From reviewing the Tegra PMC driver code, if a power-domain is in the
-'on' state there is no guarantee that all the necessary clocks
-associated with the power-domain are on and even if they are they would
-not have been requested via the clock framework and so could be turned
-off later. Some power-domains also have a 'clamping' register that needs
-to be configured as well. In short, if a power-domain is already 'on' it
-is difficult to know if it has been configured correctly. Given that the
-power-domains happened to be switched off during boot previously, to
-ensure that they are in a good known state on boot, fix this by
-switching off any power-domains that are on initially when registering
-the power-domains with the genpd framework.
+While the code "looks" correct, the compiler has no way to know that
+doing "fun" pointer math like this really isn't a write off the end of
+the structure as there is no hint anywhere that the structure has data
+at the end of it.
 
-Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
-associated with a power partition") updated the
-tegra_powergate_of_get_resets() function to pass the 'off' to ensure
-that the resets for the power-domain are in the correct state on boot.
-However, now that we may power off a domain on boot, if it is on, it is
-better to move this logic into the tegra_powergate_add() function so
-that there is a single place where we are handling the initial state of
-the power-domain.
+This causes the following build warning:
 
-Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+In function 'fortify_memset_chk',
+    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
+include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  480 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So revert it for now and it can come back in the future in a "sane" way
+that either correctly makes the structure know that there is trailing
+data, OR just the payload structure is properly referenced and zeroed
+out.
+
+Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -1234,7 +1234,7 @@ err:
- }
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index ccadbc0d8f7d..26ff49fdf0f7 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
+-		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
+-			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
  
- static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
--					 struct device_node *np, bool off)
-+					 struct device_node *np)
- {
- 	struct device *dev = pg->pmc->dev;
- 	int err;
-@@ -1249,22 +1249,6 @@ static int tegra_powergate_of_get_resets
- 	err = reset_control_acquire(pg->reset);
- 	if (err < 0) {
- 		pr_err("failed to acquire resets: %d\n", err);
--		goto out;
--	}
--
--	if (off) {
--		err = reset_control_assert(pg->reset);
--	} else {
--		err = reset_control_deassert(pg->reset);
--		if (err < 0)
--			goto out;
--
--		reset_control_release(pg->reset);
--	}
--
--out:
--	if (err) {
--		reset_control_release(pg->reset);
- 		reset_control_put(pg->reset);
- 	}
- 
-@@ -1309,20 +1293,43 @@ static int tegra_powergate_add(struct te
- 		goto set_available;
- 	}
- 
--	err = tegra_powergate_of_get_resets(pg, np, off);
-+	err = tegra_powergate_of_get_resets(pg, np);
- 	if (err < 0) {
- 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
- 		goto remove_clks;
- 	}
- 
--	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
--		if (off)
--			WARN_ON(tegra_powergate_power_up(pg, true));
-+	/*
-+	 * If the power-domain is off, then ensure the resets are asserted.
-+	 * If the power-domain is on, then power down to ensure that when is
-+	 * it turned on the power-domain, clocks and resets are all in the
-+	 * expected state.
-+	 */
-+	if (off) {
-+		err = reset_control_assert(pg->reset);
-+		if (err) {
-+			pr_err("failed to assert resets: %d\n", err);
-+			goto remove_resets;
-+		}
-+	} else {
-+		err = tegra_powergate_power_down(pg);
-+		if (err) {
-+			dev_err(dev, "failed to turn off PM domain %s: %d\n",
-+				pg->genpd.name, err);
-+			goto remove_resets;
-+		}
-+	}
- 
-+	/*
-+	 * If PM_GENERIC_DOMAINS is not enabled, power-on
-+	 * the domain and skip the genpd registration.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
-+		WARN_ON(tegra_powergate_power_up(pg, true));
- 		goto remove_resets;
- 	}
- 
--	err = pm_genpd_init(&pg->genpd, NULL, off);
-+	err = pm_genpd_init(&pg->genpd, NULL, true);
- 	if (err < 0) {
- 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
- 		       err);
+-- 
+2.39.5
+
 
 
 
