@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E31B36B52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC82B36719
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B311C42381
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 937B8B621C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1155C35AAD6;
-	Tue, 26 Aug 2025 14:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6A8353364;
+	Tue, 26 Aug 2025 14:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQP3hEE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrhSSnUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C361E35AACC;
-	Tue, 26 Aug 2025 14:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F204C35335B;
+	Tue, 26 Aug 2025 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218260; cv=none; b=k6ocad7zuugPwIv7BNn31f3IoYyXUn9FNNdUgjW7PEWav9Tm9e5t+IS/UJUy693Ro2TVpeHUJIgtXkuCpkARlaY2RHt62gCZk+FzPpb9TyRsvnT4hfiFnHf6zytEYXs9vRK7h1A5V+Na+7SFRdudGy2vP7+SaNUCRPqTQdzhwlM=
+	t=1756216823; cv=none; b=DARKkPInqHB+9PpjaMlo0mtY3CSqjBjKnPNckqSbOf6WM7qZImPVGas4E7PvSGuQFbuKQYReEjBTa7mcFq2VZldat2zUn1sGIsY0QREPGKKDsQ79cDKxW+D40FAfCZXVSIBN2P1/tehjWk2mHRG3SrMqRugNBb+Mv5vbt6AQrGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218260; c=relaxed/simple;
-	bh=77mh6PTJXiJ4ebFvt31YmOyB8j0j6GUlU0w6nnYVWhI=;
+	s=arc-20240116; t=1756216823; c=relaxed/simple;
+	bh=hVG8rNhq9XqWd3RhVnCHyut3mhiuPbrJL6zWh2Dko8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5gryE9Yfmr09wYAcO7CaySziUjX1G/LJ3tbWhuUd2mOIR4qAMzoxjMdlZVXTIiutxBn6HcGUxQsmKxvj/JFflywnbwJiHtC8Lai35Mzip67/+md0JAOzrGXmuJYFF21e2StKwuRBg50a8ohk1OAa4KztQAHsjc9adNr6hAZw9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQP3hEE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580D5C4CEF1;
-	Tue, 26 Aug 2025 14:24:20 +0000 (UTC)
+	 MIME-Version; b=f+jrJntEDvuU06G4CR7kwPmBYsRORemvhm3sJ1M3jcWJ9rqsQIg9Zb10PCSlfHyMvhqjheX+zs/4lfmiUPa50VWf+eRWvto6RNPMAsfdUItHc2C4lgImhDx0Z8gFowHb1lliPkmdqQ8P7zb9nFV+4WPGDd+9M6VXGSL/IY7xf78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrhSSnUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50373C4CEF1;
+	Tue, 26 Aug 2025 14:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218260;
-	bh=77mh6PTJXiJ4ebFvt31YmOyB8j0j6GUlU0w6nnYVWhI=;
+	s=korg; t=1756216822;
+	bh=hVG8rNhq9XqWd3RhVnCHyut3mhiuPbrJL6zWh2Dko8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQP3hEE3nz3JyiieGeLvRRbMfsndGWGVtBqP8hIK+qpapB6mThDCOyeSKGEya3FiR
-	 bhMZ+CDduK6xW9FYvrtBxXHRIdg6QInRykhF2CUmEuP/EwKLRgthGHigfdoe/tFFMx
-	 56Ka10kNjomCrmZ26qwWhJl8/6bN2jTP9/mpp1fI=
+	b=CrhSSnUrQOTYsnF6eI1PItPZgjGZWlVEuGtMuPKMzYzv9SpdaOX2iQtWHIpW9tWnv
+	 7rpAw6SJaR5j7kjrKttG01d8upkqRZHhlv5mw1vhNAA8tX03dMvYoka9x0LhE2byrG
+	 o+WNP4bjCjHpxOMCRlPZgB45jvdGUe4Pn5HVnVQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 437/523] comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 556/644] mptcp: fix error mibs accounting
 Date: Tue, 26 Aug 2025 13:10:47 +0200
-Message-ID: <20250826110935.233466050@linuxfoundation.org>
+Message-ID: <20250826111000.307478533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 08ae4b20f5e82101d77326ecab9089e110f224cc ]
+commit 0c1f78a49af721490a5ad70b73e8b4d382465dae upstream.
 
-The handling of the `COMEDI_INSNLIST` ioctl allocates a kernel buffer to
-hold the array of `struct comedi_insn`, getting the length from the
-`n_insns` member of the `struct comedi_insnlist` supplied by the user.
-The allocation will fail with a WARNING and a stack dump if it is too
-large.
+The current accounting for MP_FAIL and FASTCLOSE is not very
+accurate: both can be increased even when the related option is
+not really sent. Move the accounting into the correct place.
 
-Avoid that by failing with an `-EINVAL` error if the supplied `n_insns`
-value is unreasonable.
-
-Define the limit on the `n_insns` value in the `MAX_INSNS` macro.  Set
-this to the same value as `MAX_SAMPLES` (65536), which is the maximum
-allowed sum of the values of the member `n` in the array of `struct
-comedi_insn`, and sensible comedi instructions will have an `n` of at
-least 1.
-
-Reported-by: syzbot+d6995b62e5ac7d79557a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6995b62e5ac7d79557a
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Tested-by: Ian Abbott <abbotti@mev.co.uk>
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250704120405.83028-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eb7f33654dc1 ("mptcp: add the mibs for MP_FAIL")
+Fixes: 1e75629cb964 ("mptcp: add the mibs for MP_FASTCLOSE")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts, because commit f284c0c77321 ("mptcp: implement fastclose
+  xmit path") is not in this version. That's OK, the new helper added
+  by this commit doesn't need to be modified. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/comedi_fops.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/mptcp/options.c |    1 +
+ net/mptcp/subflow.c |    4 +---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/staging/comedi/comedi_fops.c
-+++ b/drivers/staging/comedi/comedi_fops.c
-@@ -1607,6 +1607,16 @@ error:
- 	return i;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -793,6 +793,7 @@ static bool mptcp_established_options_mp
+ 	opts->fail_seq = subflow->map_seq;
+ 
+ 	pr_debug("MP_FAIL fail_seq=%llu\n", opts->fail_seq);
++	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPFAILTX);
+ 
+ 	return true;
  }
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -963,10 +963,8 @@ static enum mapping_status validate_data
+ 				 subflow->map_data_csum);
+ 	if (unlikely(csum)) {
+ 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DATACSUMERR);
+-		if (subflow->mp_join || subflow->valid_csum_seen) {
++		if (subflow->mp_join || subflow->valid_csum_seen)
+ 			subflow->send_mp_fail = 1;
+-			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPFAILTX);
+-		}
+ 		return subflow->mp_join ? MAPPING_INVALID : MAPPING_DUMMY;
+ 	}
  
-+#define MAX_INSNS   MAX_SAMPLES
-+static int check_insnlist_len(struct comedi_device *dev, unsigned int n_insns)
-+{
-+	if (n_insns > MAX_INSNS) {
-+		dev_dbg(dev->class_dev, "insnlist length too large\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- /*
-  * COMEDI_INSN ioctl
-  * synchronous instruction
-@@ -2261,6 +2271,9 @@ static long comedi_unlocked_ioctl(struct
- 			rc = -EFAULT;
- 			break;
- 		}
-+		rc = check_insnlist_len(dev, insnlist.n_insns);
-+		if (rc)
-+			break;
- 		insns = kcalloc(insnlist.n_insns, sizeof(*insns), GFP_KERNEL);
- 		if (!insns) {
- 			rc = -ENOMEM;
-@@ -3112,6 +3125,9 @@ static int compat_insnlist(struct file *
- 	if (copy_from_user(&insnlist32, compat_ptr(arg), sizeof(insnlist32)))
- 		return -EFAULT;
- 
-+	rc = check_insnlist_len(dev, insnlist32.n_insns);
-+	if (rc)
-+		return rc;
- 	insns = kcalloc(insnlist32.n_insns, sizeof(*insns), GFP_KERNEL);
- 	if (!insns)
- 		return -ENOMEM;
 
 
 
