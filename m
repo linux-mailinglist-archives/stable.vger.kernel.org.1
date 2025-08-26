@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8573EB362F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C89B3694E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B530E1BC312C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E089843DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496852F60C1;
-	Tue, 26 Aug 2025 13:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DF535334D;
+	Tue, 26 Aug 2025 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXaELfXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNZJQ39S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0689D341677;
-	Tue, 26 Aug 2025 13:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD21352FFC;
+	Tue, 26 Aug 2025 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214261; cv=none; b=YHmESRadwFBVBQKon2JT5jLOpRDWKsw0TdStkyUpQbwyRexfVSai+jCTZ8zwlxU645Tx4OP2FiCs8dwhs/hLlaJlTKVmDfZ9B2dieE0ZmdyWurNC6Fm4xulTb0tMh9YZ9ipk7zPYGNXAE1vrhfQRJwjuryhx3BlJ+l/O8EMkE+I=
+	t=1756217360; cv=none; b=T2aiLCsrulzVpbzxe0YA8cnPhTi7al7hzHGU4Qpt+lBTJdlTWgM7EjYtRYqhHwfOKDjBb4WPW9H2B1+ttT05COaI60yVYF0RU18yivhlWIOgj1h9HLj8x6ReI8Njy1BcwbOAwNVcufY9RgzPv5/rxb5rVb/b/sg9YTASku8nPUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214261; c=relaxed/simple;
-	bh=csFa+iiR+SWXdlRtpIUD5V13LjiYFcp3LpUOI4hjv4k=;
+	s=arc-20240116; t=1756217360; c=relaxed/simple;
+	bh=lz99SGiYtz0zcUwqM9NiPUkEFvzuXaOtut7YixvTAKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GktSaYIqJ1BHvlfXDeJGspUZrWUZkV47A6ZIAbtl9jaWvB9+oRmFWQOqBRiBnmE9XjerWI8QxsdrDC7gn74FeioUdju93IBks7W4LB0zcaGpfZyQ5Wl8sEr3/Nvvan5SXR00aNSrcc28/HKlMx0zwYLZWZNDMaWzflb3fETOW9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXaELfXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476B4C4CEF1;
-	Tue, 26 Aug 2025 13:17:40 +0000 (UTC)
+	 MIME-Version; b=dUquEC8YZ9/G1LSpFD/4S8Rx65HGpe3Q/qbhMO2MvtT+XngNyP2j5fhSkkzTvlslENVtAkQ/bTmzNGnTgTwQVIi6aiFumkkJVsBB0Eiz+C4kh2m2KrX50+38+VUmTH9Z+JKNts8jhYlYJxiXBEdCQyiqcPyQW8DG7CSEQOaX+6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNZJQ39S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D12C116D0;
+	Tue, 26 Aug 2025 14:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214260;
-	bh=csFa+iiR+SWXdlRtpIUD5V13LjiYFcp3LpUOI4hjv4k=;
+	s=korg; t=1756217358;
+	bh=lz99SGiYtz0zcUwqM9NiPUkEFvzuXaOtut7YixvTAKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXaELfXhFQMsMbuxRZMZjhY2OPf4Nm9HE4PuCH3/7xbTpqujnWIg1GnaZ8BgtARI8
-	 /UZq/NihrwUcf4q13BPHfcIhHyxhaYTLb6gXrOsohEhz6izh5S8+1Wx6BH3oYEo2BK
-	 hHyRM0YJ8wEYfnTXdh4s6rqoGm2myXt+B0MPsNgk=
+	b=TNZJQ39StlY9avE8LRjOviJmLOBVGHgYnyDJCMCln0gU8AJsy8vo1VGF9xqzLes13
+	 HHAD4sXZ78f1J/uILQrzX96X8IbHqeOhqbBideDvnFQ+pS2+WCybP1hFI+IKGXz01M
+	 2wxD6PJGmVU6lfXW8WbME9p5cQiqZ7LdofM2nsh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/482] usb: xhci: Avoid showing errors during surprise removal
+Subject: [PATCH 5.10 114/523] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
 Date: Tue, 26 Aug 2025 13:05:24 +0200
-Message-ID: <20250826110932.589947766@linuxfoundation.org>
+Message-ID: <20250826110927.337145616@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed as well.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-When that flag is set don't show messages in the cleanup path for
-marking the controller dead.
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
+
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index c4880b22f359..c8e1ead0c09e 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1289,12 +1289,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
-  */
- void xhci_hc_died(struct xhci_hcd *xhci)
- {
-+	bool notify;
- 	int i, j;
- 
- 	if (xhci->xhc_state & XHCI_STATE_DYING)
- 		return;
- 
--	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
-+	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
-+	if (notify)
-+		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
- 	xhci->xhc_state |= XHCI_STATE_DYING;
- 
- 	xhci_cleanup_command_queue(xhci);
-@@ -1308,7 +1311,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index fbb5e29530e3..af06f31db0e2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1199,10 +1199,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
  	}
  
- 	/* inform usb core hc died if PCI remove isn't already handling it */
--	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
-+	if (notify)
- 		usb_hc_died(xhci_to_hcd(xhci));
- }
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
  
+ 	cfg->scan_request = request;
+@@ -1218,6 +1214,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
+ 
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
 2.39.5
 
