@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D561B365EC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34440B35F74
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 923DE566BD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F1A6881CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BBA20CCCA;
-	Tue, 26 Aug 2025 13:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589FB18B12;
+	Tue, 26 Aug 2025 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnsVavBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/dGgsRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D8B1E51E1;
-	Tue, 26 Aug 2025 13:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B94511187;
+	Tue, 26 Aug 2025 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215538; cv=none; b=A4xXIL8lFPRfLezRe/cuWZ7H8deiL8Gv0mv0oWFbUxIHSBi5Q7yvd2vmktf+Dz1XGQKMUh9PHJJ8qULrRCxMhAhO9Hi7VeGCjyKf1ybhwAU2TN81Gkpr53N2t6NARE2P/cGTuDcEYw2ertP2bNjtSmP8qzGCOQ/y2WFA5B4BMcc=
+	t=1756212555; cv=none; b=bJr/VMWv7CbHaFwcXO/XfxQlnL98JJN71B/l2ZwboKrjQjUqeZZlVDM01At8rycvdrOsEk4NY4s47qLfVqmZNoBEctFc0NoqMCzN+EHncxvD16eCAR+h7OSpIIveDR4ghCtetNSO10fIFolgUtMCUL1eTU7hb858v8Cc+0lAKBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215538; c=relaxed/simple;
-	bh=Wl85erfLeSqaiTQeqrdHGaLSE5B02xaIORkLoi/Zsxk=;
+	s=arc-20240116; t=1756212555; c=relaxed/simple;
+	bh=H/bh5ClxfZmAIDZ/LnEtySpcpB1XnnH5IpSbGwbu6WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fV8pZNKMpBujz+CFhih8ZgLCL4u3fsHf2nJ1IVsZrafuq4GovnwdAz9L3Z9sjHVYuxbSaM49LG4JnuuKp95amd7iOjuQDcIlIfivusHl09TglYq7bI+Gqlqa5o5GtgeSYqyL/zReFcUqRUOdBwYkkOFkDq7/rIaSQGxPuK69oj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnsVavBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1CEC4CEF1;
-	Tue, 26 Aug 2025 13:38:57 +0000 (UTC)
+	 MIME-Version; b=Iljr242FT1MslHTZQseyX8gh2tv8HsFNjdVu9lKV07ZI1vlCtKmxvlJ4QNhTYAm0gi7ynWRAeHOzde0z7ozhEPwvBDF6mffkI8QmT52tPNb88j/JXOld0Saxwf4+42WDpbVSbqPGCLw4KoWbYk7dn+utvKgkrrMMW0MhTuORZIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/dGgsRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB5BC4CEF1;
+	Tue, 26 Aug 2025 12:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215537;
-	bh=Wl85erfLeSqaiTQeqrdHGaLSE5B02xaIORkLoi/Zsxk=;
+	s=korg; t=1756212553;
+	bh=H/bh5ClxfZmAIDZ/LnEtySpcpB1XnnH5IpSbGwbu6WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnsVavBsifuuCc4TZ4bPZ4bADT6QAAlmAi/4lGzVS8T0zqR8Py+k86JOjFSyb8svA
-	 KzBy0qWjm8ZUkgUOZexFBf5zvRArHteR1GVJP+hVe/AbQVup7DjMWqs146xNboPaJx
-	 6ixsCufDuiVO/ne0gZIBzYXWHVfsp4nD7Bo8Gg64=
+	b=Z/dGgsRetTieU7Ysyb6KELadG28sySd3OqYJIlEG7UnTOOcI1aJjkBgm4NpPZOJcQ
+	 3gJ7SfRDNYe0wYI/Qby58TcEI/Um+2swhXQCQ6LQRVdRTvcn7Zr9Cdy6nF2MjuXm1+
+	 Nn3vbFVaEXLxjIulwiqM+s9l+vKODrJN35Ii0cRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Kees Cook <keescook@chromium.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Siddhi Katage <siddhi.katage@oracle.com>
-Subject: [PATCH 5.15 072/644] x86: Fix get_wchan() to support the ORC unwinder
+	Florian Larysch <fl@n621.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 014/587] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
 Date: Tue, 26 Aug 2025 13:02:43 +0200
-Message-ID: <20250826110948.281970176@linuxfoundation.org>
+Message-ID: <20250826110953.314394159@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Florian Larysch <fl@n621.de>
 
-commit bc9bbb81730ea667c31c5b284f95ee312bab466f upstream.
+commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
 
-Currently, the kernel CONFIG_UNWINDER_ORC option is enabled by default
-on x86, but the implementation of get_wchan() is still based on the frame
-pointer unwinder, so the /proc/<pid>/wchan usually returned 0 regardless
-of whether the task <pid> is running.
+Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
+phy") introduced cable_test support for the LAN8814 that reuses parts of
+the KSZ886x logic and introduced the cable_diag_reg and pair_mask
+parameters to account for differences between those chips.
 
-Reimplement get_wchan() by calling stack_trace_save_tsk(), which is
-adapted to the ORC and frame pointer unwinders.
+However, it did not update the ksz8081_type struct, so those members are
+now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
+and ksz886x_cable_test_wait_for_completion to poll the wrong register
+for the affected PHYs (Basic Control/Reset, which is 0 in normal
+operation) and exit immediately.
 
-Fixes: ee9f8fce9964 ("x86/unwind: Add the ORC unwinder")
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20211008111626.271115116@infradead.org
-Signed-off-by: Siddhi Katage <siddhi.katage@oracle.com>
+Fix this by setting both struct members accordingly.
+
+Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Florian Larysch <fl@n621.de>
+Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/process.c |   51 ++--------------------------------------------
- 1 file changed, 3 insertions(+), 48 deletions(-)
+ drivers/net/phy/micrel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -971,58 +971,13 @@ unsigned long arch_randomize_brk(struct
-  */
- unsigned long get_wchan(struct task_struct *p)
- {
--	unsigned long start, bottom, top, sp, fp, ip, ret = 0;
--	int count = 0;
-+	unsigned long entry = 0;
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -372,6 +372,8 @@ static const struct kszphy_type ksz8051_
  
- 	if (p == current || task_is_running(p))
- 		return 0;
- 
--	if (!try_get_task_stack(p))
--		return 0;
--
--	start = (unsigned long)task_stack_page(p);
--	if (!start)
--		goto out;
--
--	/*
--	 * Layout of the stack page:
--	 *
--	 * ----------- topmax = start + THREAD_SIZE - sizeof(unsigned long)
--	 * PADDING
--	 * ----------- top = topmax - TOP_OF_KERNEL_STACK_PADDING
--	 * stack
--	 * ----------- bottom = start
--	 *
--	 * The tasks stack pointer points at the location where the
--	 * framepointer is stored. The data on the stack is:
--	 * ... IP FP ... IP FP
--	 *
--	 * We need to read FP and IP, so we need to adjust the upper
--	 * bound by another unsigned long.
--	 */
--	top = start + THREAD_SIZE - TOP_OF_KERNEL_STACK_PADDING;
--	top -= 2 * sizeof(unsigned long);
--	bottom = start;
--
--	sp = READ_ONCE(p->thread.sp);
--	if (sp < bottom || sp > top)
--		goto out;
--
--	fp = READ_ONCE_NOCHECK(((struct inactive_task_frame *)sp)->bp);
--	do {
--		if (fp < bottom || fp > top)
--			goto out;
--		ip = READ_ONCE_NOCHECK(*(unsigned long *)(fp + sizeof(unsigned long)));
--		if (!in_sched_functions(ip)) {
--			ret = ip;
--			goto out;
--		}
--		fp = READ_ONCE_NOCHECK(*(unsigned long *)fp);
--	} while (count++ < 16 && !task_is_running(p));
--
--out:
--	put_task_stack(p);
--	return ret;
-+	stack_trace_save_tsk(p, &entry, 1, 0);
-+	return entry;
- }
- 
- long do_arch_prctl_common(struct task_struct *task, int option,
+ static const struct kszphy_type ksz8081_type = {
+ 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
++	.cable_diag_reg		= KSZ8081_LMD,
++	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
+ 	.has_broadcast_disable	= true,
+ 	.has_nand_tree_disable	= true,
+ 	.has_rmii_ref_clk_sel	= true,
 
 
 
