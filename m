@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D57EB363DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBC4B35E06
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08A9B4679DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7DA1367ED8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27886341674;
-	Tue, 26 Aug 2025 13:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D226331B139;
+	Tue, 26 Aug 2025 11:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SylXz0vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwhWy0eL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A402405E1;
-	Tue, 26 Aug 2025 13:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE8429BDB8;
+	Tue, 26 Aug 2025 11:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214635; cv=none; b=hYRNowuEfSyUGQpmzBJS9Un9fB5uwgCJp7ssBCvfggwrio1YXw6d6y1ko6goNMlEIa+QHO3A+wrRsbvvrZODFurT4a59s/T2NvkSyn2ptOXrqgdX6MelDaHG7C6Kig2IKV5H2GwSvoX/96+TrEUrVpYYyJ6qeUrvA5g7oVNv6WQ=
+	t=1756208274; cv=none; b=dME6Vu+zN6U5AeArB50PnePMoXEMtyK1kyDpWgBCIazcrtbsruN5kas4o7usnB7rT9LXAb+NV90NJILmI06rMeApNUWqrl7wQ+yiijNhvxW35vpPFc+E+5/KiXDMopKNqvCuYArSokoRkbhqezK+Vb76fk0K7NCFvjp6leukcUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214635; c=relaxed/simple;
-	bh=QNi4ETE9xdBq+TgeIfLTiwvRKagz7gSYEik0QTNj+2k=;
+	s=arc-20240116; t=1756208274; c=relaxed/simple;
+	bh=Q0ZIZKpFhdvLvLylXVaDE5n+urb8uzOEbI+ezKgmG7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twnTkejTvZTnkjrUB7+1XvkWb+fqTVjmvKTuo67w/pn/WQZ9RAJ1nbJ8ozY5fNPe4TSATLtXr+PeoqY8Jyig9W3DdHnWv4XUORrmEUFqDTWXDbgOWuVYUMYQQpGz1VuBc+bhGU4v/bo0vubOAhyeUr6zY2AOhN+KcMzzkLJxD4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SylXz0vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF0C113CF;
-	Tue, 26 Aug 2025 13:23:55 +0000 (UTC)
+	 MIME-Version; b=TWPw0rNURh6C8suX4t/ASm7jYfP3ORlFFa52KuJOqunmYvx8thQIy72+IEpcdmW0UvOn19WfHQD3EV2Gkl3ueZwneTuqEeacf9VGaguI1nY79NuWueqxVBA5ll9Ydaj7zEUyylCffkzQGpmy4nBHt8lsTIu91k1s/bbrfVPIXw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwhWy0eL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278C9C4CEF1;
+	Tue, 26 Aug 2025 11:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214635;
-	bh=QNi4ETE9xdBq+TgeIfLTiwvRKagz7gSYEik0QTNj+2k=;
+	s=korg; t=1756208274;
+	bh=Q0ZIZKpFhdvLvLylXVaDE5n+urb8uzOEbI+ezKgmG7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SylXz0vnb1YxuLCBu/0uhdd8XlSeCz6d4cIpGfa5+phaEHQe0QH3Y17vRZs12JQsC
-	 W0fFQUfuPuTHb1XaLLNqmiltZ3mdTVVI1x6J3xEW5lb8ZLBuAh+hNHnFKdPZe8ecyv
-	 SzSZGtQP4YFhLkgO2U23UcNPEd8pgGoAjWE6vuY8=
+	b=IwhWy0eLCn73hhGhuBO95NYoRVP5kZbf5HTBskPxJYZwYKtiJno6xDjaeTk1N7zU8
+	 48ad9y6ZSxZAo0ySDn89lhtiEw1rCMEWON/h5WmclXYxMsu/xL9wihIeAMNlN9RKqK
+	 K8AvXJSIfHFk2o5i72RZLme2zE7JkgE4JUfEYMvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/482] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 049/322] scsi: mpi3mr: Fix race between config read submit and interrupt completion
 Date: Tue, 26 Aug 2025 13:07:44 +0200
-Message-ID: <20250826110935.991922749@linuxfoundation.org>
+Message-ID: <20250826110916.609078675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+commit e6327c4acf925bb6d6d387d76fc3bd94471e10d8 upstream.
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+The "is_waiting" flag was updated after calling complete(), which could
+lead to a race where the waiting thread wakes up before the flag is
+cleared. This may cause a missed wakeup or stale state check.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
+Reorder the operations to update "is_waiting" before signaling completion
+to ensure consistent state.
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Cc: stable@vger.kernel.org
+Co-developed-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 73f2dd3af4d4..530b9340db21 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -273,6 +273,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -371,6 +378,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
--- 
-2.39.5
-
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -428,8 +428,8 @@ static void mpi3mr_process_admin_reply_d
+ 				       MPI3MR_SENSE_BUF_SZ);
+ 			}
+ 			if (cmdptr->is_waiting) {
+-				complete(&cmdptr->done);
+ 				cmdptr->is_waiting = 0;
++				complete(&cmdptr->done);
+ 			} else if (cmdptr->callback)
+ 				cmdptr->callback(mrioc, cmdptr);
+ 		}
 
 
 
