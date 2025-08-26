@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E443CB36C3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18061B36A67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6F01C47A8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62FAA011FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96570352FCE;
-	Tue, 26 Aug 2025 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D614352FF3;
+	Tue, 26 Aug 2025 14:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdAb3SYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc0Cg1Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3320C3568F9;
-	Tue, 26 Aug 2025 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE22A35209C;
+	Tue, 26 Aug 2025 14:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219284; cv=none; b=XcdUNE4M1QfQkgQKn3YaX09Zo3iJVWtTU5OduLrKm143lrRQUxI9z2EPUd6prADUPdtJB/hRPFI64KmTOV3aM3woYwgyVLtTk6PzOSbFT9O3EWvQ5se8WcRxBE7BJ9Mseftg088IZl8OLz98bKAKdBHhbb3RKmNJE5tOTwD0g2k=
+	t=1756218217; cv=none; b=qj9qPG4Nxroa1FreC6aWn7A2nws4I/yH83Ui787ByZTvgPeUHTXRaIkXh1GRkqO2kKAEe4iXzXfCvdoL+ZYPg322iuYA2G6TDzh6U3vtbpma0oWzToew9Jx/bYJdHmN4PXFVS0w3LQf2FuS1pZcBgM9sU38Edbi9fuT45CaSKWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219284; c=relaxed/simple;
-	bh=ZfhgisgtO04Asi5zgZxs1vNPjGPJpLA9FjqaFU9TVlU=;
+	s=arc-20240116; t=1756218217; c=relaxed/simple;
+	bh=Rtio3tJl3uYNIg1wDCSrlgGYXWncdXTpM7IvbM1f6LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaNLuNqB1kzHJncIshDS+09fIsbwZVnRTaYPrJikI4iTZRC5cdtkp4bxi4h47LwIx5WaoUFfjYWq+wGVBnQSwGm3hoPRer1OjWl19QuNMw4tD33mNdhmYJTar4U6iuuyseRHyj2nPwv7SLa/jhdFgVkSyBX4SwJ1Cwnq5prV4Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdAb3SYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30B5C4CEF1;
-	Tue, 26 Aug 2025 14:41:23 +0000 (UTC)
+	 MIME-Version; b=VCqLiISLnt+0WA4zOkIm4MziYKS6+n/jItRsb5Fm9cXZATcQ3MLDKQ1Q51f+tzI0r7vuL0M2dxbjhYQjYdzZDlDxfaEOaRP1Mx+vH7BVzVCV34T+EXTSgJe7ZiQx8xh8YYYAWLEh7i+qifTijZNWCHk1i6xvKi47rPerk4YIgpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc0Cg1Vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2DAC4CEF1;
+	Tue, 26 Aug 2025 14:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219284;
-	bh=ZfhgisgtO04Asi5zgZxs1vNPjGPJpLA9FjqaFU9TVlU=;
+	s=korg; t=1756218216;
+	bh=Rtio3tJl3uYNIg1wDCSrlgGYXWncdXTpM7IvbM1f6LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdAb3SYeRDpI1nwDsaraTQx8XqgN7f1Zkxs2kTZGg5j4fagLFZeN4/l7xQMo43vpN
-	 HGmVYUnJOtqiZX9FPB9YKxN9p+yEZUx2YdKlaS94yOW+Dg870o05WVvQTIfYtjOnPU
-	 vOAwcXPCdAs/jFHcQw2oZL0/cVA5QLDm9A903kgI=
+	b=Rc0Cg1VdR7fkwzw4J0RJnDoehV9ueqlImw7xKTQ62JnTiX4+XOw4sEtKtdSnfVCU2
+	 WrdevXw0U221i8LG5roIKIpdv//QQiY5m1k9JdKbcg0uoxgqs9XhpRuxqU6h20Zrvh
+	 sVIsGIZ8dHUDpBy7k2xzGkV+uXKoQ84F4q9TrscA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Dilger <adilger@whamcloud.com>,
-	Li Dongyang <dongyangli@ddn.com>,
-	Alex Zhuravlev <bzzz@whamcloud.com>,
-	Oleg Drokin <green@whamcloud.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 291/403] ext4: check fast symlink for ea_inode correctly
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 407/523] iio: proximity: isl29501: fix buffered read on big-endian systems
 Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826110914.850067464@linuxfoundation.org>
+Message-ID: <20250826110934.498532442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Dilger <adilger@dilger.ca>
+From: David Lechner <dlechner@baylibre.com>
 
-commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
+commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
 
-The check for a fast symlink in the presence of only an
-external xattr inode is incorrect.  If a fast symlink does
-not have an xattr block (i_file_acl == 0), but does have
-an external xattr inode that increases inode i_blocks, then
-the check for a fast symlink will incorrectly fail and
-__ext4_iget()->ext4_ind_check_inode() will report the inode
-is corrupt when it "validates" i_data[] on the next read:
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-    # ln -s foo /mnt/tmp/bar
-    # setfattr -h -n trusted.test \
-               -v "$(yes | head -n 4000)" /mnt/tmp/bar
-    # umount /mnt/tmp
-    # mount /mnt/tmp
-    # ls -l /mnt/tmp
-    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
-    total 4
-     ? l?????????? ? ?    ?        ?            ? bar
-    # dmesg | tail -1
-    EXT4-fs error (device dm-8): __ext4_iget:5098:
-        inode #24578: block 7303014: comm ls: invalid block
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
-
-ext4_inode_is_fast_symlink() should check the superblock
-EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
-EXT4_EA_INODE_FL, since the latter is only set on the xattr
-inode itself, and not on the inode that uses this xattr.
-
-Cc: stable@vger.kernel.org
-Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
-Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
-Reviewed-by: Li Dongyang <dongyangli@ddn.com>
-Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
-Reviewed-by: Oleg Drokin <green@whamcloud.com>
-Reviewed-on: https://review.whamcloud.com/59879
-Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
-Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/proximity/isl29501.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -150,7 +150,7 @@ static int ext4_meta_trans_blocks(struct
-  */
- int ext4_inode_is_fast_symlink(struct inode *inode)
- {
--	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
- 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
- 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
++	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
