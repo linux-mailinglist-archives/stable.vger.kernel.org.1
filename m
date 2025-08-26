@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD59B36A31
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66377B35C00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5519A1C42961
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631D11886937
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF12934DCE8;
-	Tue, 26 Aug 2025 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FEA2BE653;
+	Tue, 26 Aug 2025 11:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLO/QAM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuHOaOQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2F71D5CD4;
-	Tue, 26 Aug 2025 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373EB239573;
+	Tue, 26 Aug 2025 11:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217855; cv=none; b=ftgr8cxvrpcWuNtGLkBVtxgIcgg+BacyagajxR1p8SsyqXLgtwii/DfvKDaeHNPibNqSAiAw5tuCyFb1TEkFvUTnX2dReQP2fp4ageplizcp94goookU4prTzw91qSO6K9JPuehDpiEbZ5yVxPoShnB9fpSBPofgMX8pNPedONI=
+	t=1756207548; cv=none; b=WQHePsuKZF/N4w5hJZuD/gIe6IXODbCah1Dl6G8q0TDTWYtVRjz/xVKMKoXJV58NtMKdwhS0CqrlXFfBa8r62+mkR6sybsDnFxGBiGe0wseHOsKfPp/ZM3uYFpPLi2MF2OMhiu3QJfx+f0QwInJKDjlLXETrv9iAsxVSzeUU8V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217855; c=relaxed/simple;
-	bh=a1I6qpCqi+ocYvuzt3G79MfjsN/jU/ptdIPJLg1Cp9I=;
+	s=arc-20240116; t=1756207548; c=relaxed/simple;
+	bh=O9Ecyd0R1BIT51sbZYt5Dz6EQfYXuZsuMUJlKu+BH+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHWf1De6oeCH4Xvd2a90q55FRhSA2PbchR4b2Hj14t+aIcD7zCEKEkNDlQq92BZlGE6ZKBGiFASiaDpmTAt8zqeppgnI70TRqI9zM0rkPPxzun0NXYBf+BkaJEiwsctU/IJx+9rKoAssB5getTtHvrA/RDZSXed48fQ3THHCtSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLO/QAM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ACBC4CEF1;
-	Tue, 26 Aug 2025 14:17:34 +0000 (UTC)
+	 MIME-Version; b=NAYi01gndMx5SDUZzFlZqAPB7Ln2K02JPKAN/9bkJRaziiIAUSIQUtzArQB5uPnaMfKWHNEToWSnYvA+m2aDrFLehOUhlHk14U6httra5RYNUhVo6TXnZ6NZSVYbHNo7qjZzuMjbssV9q6cOj7nXAkwiD0n7UmANkH+BQAIP1XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuHOaOQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0149C4CEF1;
+	Tue, 26 Aug 2025 11:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217855;
-	bh=a1I6qpCqi+ocYvuzt3G79MfjsN/jU/ptdIPJLg1Cp9I=;
+	s=korg; t=1756207548;
+	bh=O9Ecyd0R1BIT51sbZYt5Dz6EQfYXuZsuMUJlKu+BH+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLO/QAM/YnemoHDCRyAjrYL3/Q3QDzawsz/g+QgK8GxngFXe7nCDiiily64D0Aitp
-	 RWry4RX+RPivFGa3TjfTXBqWr/gWQOVVs4GEggd74D3aJYh1QENm+yF0Uu8riPGgFa
-	 RG4KwwJCqWw8wqLJGW5kOlPCj6j+PwBC0MR3ZSIM=
+	b=HuHOaOQ/ZlW0hbfD8ectlClu2aY7U3X0ItA1TGolfuKjTKCzy11idk2cHjOQ81ZwR
+	 LPHdO2O801dAUaaoBabWU72By0oZkuYpmqOcnxlc4EgLUndzML4VimPCZbiWB7mciR
+	 fgy1Asm97slmkJfiy9k8+c/tFW4WS0e0BYRr+JLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	cen zhang <zzzccc427@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 299/523] jfs: Regular file corruption check
+Subject: [PATCH 6.16 225/457] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
 Date: Tue, 26 Aug 2025 13:08:29 +0200
-Message-ID: <20250826110931.827826432@linuxfoundation.org>
+Message-ID: <20250826110942.930256188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
+argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Currently passing the wrong flags works for non-debug builds because
+the only XFS_IWALK* flag has the same encoding as the corresponding
+XFS_IBULK* flag, but in debug builds it can trigger an assert that no
+incorrect flag is passed.  Instead just extra the relevant flag.
+
+Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
+Cc: <stable@vger.kernel.org> # v5.19
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/xfs_itable.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 930d2701f206..44872daeca01 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
+--- a/fs/xfs/xfs_itable.c
++++ b/fs/xfs/xfs_itable.c
+@@ -447,17 +447,21 @@ xfs_inumbers(
+ 		.breq		= breq,
+ 	};
+ 	struct xfs_trans	*tp;
++	unsigned int		iwalk_flags = 0;
+ 	int			error = 0;
  
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
+ 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
+ 		return 0;
+ 
++	if (breq->flags & XFS_IBULK_SAME_AG)
++		iwalk_flags |= XFS_IWALK_SAME_AG;
 +
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
+ 	/*
+ 	 * Grab an empty transaction so that we can use its recursive buffer
+ 	 * locking abilities to detect cycles in the inobt without deadlocking.
+ 	 */
+ 	tp = xfs_trans_alloc_empty(breq->mp);
+-	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
++	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
+ 			xfs_inumbers_walk, breq->icount, &ic);
+ 	xfs_trans_cancel(tp);
  
--- 
-2.39.5
-
 
 
 
