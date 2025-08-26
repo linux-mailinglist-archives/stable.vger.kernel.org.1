@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF99B35CE9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B77CEB3662E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066827C57DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 266307A168A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B29A321457;
-	Tue, 26 Aug 2025 11:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15311353368;
+	Tue, 26 Aug 2025 13:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5BF3uo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06GOHzMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4507D239573;
-	Tue, 26 Aug 2025 11:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610E34DCE5;
+	Tue, 26 Aug 2025 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208340; cv=none; b=qfnD/tFTGBNJBU38um4tBDEpLvqyKNVXkhEyhDL1rBm68PHy7mGZQn1pThUAyw7wpE/PV6/rUddy2KlWEkR6Qj1QXpNaeHT4jjWSNCxYj0ekDaUE5LS1wLfW2GJNJqHWf+/Ne9UJ7NbA3L+NtuBRUF/ZGxHgKunmcblzSEgHoQE=
+	t=1756216318; cv=none; b=VKTTPnZIz1zGzJjKJDKcf8mOrIBrLmcVBt/xtAZHdYUANM/Dh6H2aoxGXnNkKDRD6xoYLg+ptURcRZdTi0kDi23xEZDZP/pEBo9OdTIT3Hzmcbm9UkvXkNtnT1olb2iytGXdXfnq2NZILxEir8AfQZh6XsDHG044gH2HJ18Gy4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208340; c=relaxed/simple;
-	bh=IpqoGeRaEG5cP/IQ9VMQVnmJdTz/F1GUx2SS1r6nCxQ=;
+	s=arc-20240116; t=1756216318; c=relaxed/simple;
+	bh=y58n61OEhNSqcxLidItxHKWChuNugN4UOZzEK8uoPck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bICcGicJxYu9lE9uwf0166Dhy5Br/4zBhxvU39qjKH9Mpg5RJzo8nLx9RqXYbgvtokOSXyehLXVYuRXc2sd1MB73PZR/5QGgmLF8vahQvbJG9JdQGWjAZMTsDKbXDSKe2HS/p65ClwJuDtDj86UgILY3gJ4+DKUJHH1kr/FC/WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5BF3uo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF13BC4CEF1;
-	Tue, 26 Aug 2025 11:38:59 +0000 (UTC)
+	 MIME-Version; b=lrCntjm5hX6GZTfES4y2x2xErZD6mxcjg56WsNqNtKCjuI6KDUjaaEoapLBk7TO1V7KyhErjGw+LiZW25NUbIAYKsY1ZKXkhj6I/Dv6ejZBCls9YwYBddq1AXG3z6k4LUWpMt3ksrF+6MsTNuxAmhAVk0Ej1rOqmCdQ25XPUbYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06GOHzMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D58EC4CEF1;
+	Tue, 26 Aug 2025 13:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208340;
-	bh=IpqoGeRaEG5cP/IQ9VMQVnmJdTz/F1GUx2SS1r6nCxQ=;
+	s=korg; t=1756216318;
+	bh=y58n61OEhNSqcxLidItxHKWChuNugN4UOZzEK8uoPck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5BF3uo+h8yfP0pCItoP+wFcw1K7D8zR8sgpu9RKJ2VTI9jh08zQJzrL3kgE3N0fn
-	 fOVXQPtOBj4qBCi/jwn5QHtPhVTBky7chTFwzyKg4heopWMSQFz1ezWy7V48dhUkUD
-	 KEvI+a68EJw+naG1/zypbV1RapM0tZSJk2wjeO6M=
+	b=06GOHzMb3uyTPO8CMnrl1JZdroQZQt5T4yhvhBiW2lAfWM0VWQFrCdaqM8CsaEtAT
+	 67H4mIRna8KeDIfKmTFXT7RcB4zYGDX3QQomTzEEMQuIr1ZoaNFkQKWk/GsC8H5rZX
+	 wwkh9RtgrGR2pvk3zA6v/XFDB1CFMLXz/2Avbd00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hong Guan <hguan@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.12 042/322] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
+	ap420073@gmail.com,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 366/644] netmem: fix skb_frag_address_safe with unreadable skbs
 Date: Tue, 26 Aug 2025 13:07:37 +0200
-Message-ID: <20250826110916.414963097@linuxfoundation.org>
+Message-ID: <20250826110955.484225754@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hong Guan <hguan@ti.com>
+From: Mina Almasry <almasrymina@google.com>
 
-commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
+[ Upstream commit 4672aec56d2e8edabcb74c3e2320301d106a377e ]
 
-main_uart1 reserved for TIFS firmware traces is routed to the
-onboard FT4232 via a FET switch which is connected to pin A21 and
-B21 of the SoC and not E17 and C17. Fix it.
+skb_frag_address_safe() needs a check that the
+skb_frag_page exists check similar to skb_frag_address().
 
-Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hong Guan <hguan@ti.com>
-[bb@ti.com: expanded commit message]
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: ap420073@gmail.com
+
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250619175239.3039329-1-almasrymina@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-@@ -259,8 +259,8 @@
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 9155d0d7f706..a8d6e976507e 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3287,7 +3287,13 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
+  */
+ static inline void *skb_frag_address_safe(const skb_frag_t *frag)
+ {
+-	void *ptr = page_address(skb_frag_page(frag));
++	struct page *page = skb_frag_page(frag);
++	void *ptr;
++
++	if (!page)
++		return NULL;
++
++	ptr = page_address(page);
+ 	if (unlikely(!ptr))
+ 		return NULL;
  
- 	main_uart1_pins_default: main-uart1-default-pins {
- 		pinctrl-single,pins = <
--			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
--			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
-+			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
-+			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
- 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
- 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
- 		>;
+-- 
+2.39.5
+
 
 
 
