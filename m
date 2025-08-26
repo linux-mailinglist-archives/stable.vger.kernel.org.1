@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BBBB3675D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584A6B36105
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254D2564FF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CBD81BA7615
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89192350847;
-	Tue, 26 Aug 2025 13:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7BC8635D;
+	Tue, 26 Aug 2025 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cPBrWF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSeKuAiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED2934F49D;
-	Tue, 26 Aug 2025 13:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF9E18DB2A;
+	Tue, 26 Aug 2025 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216368; cv=none; b=QHuoId9shC/5kJKFTuytCVhTOOiigaQI5qn/44x50CdIsiNsq7x/7M1Er44oFkVLOqAYvQE93Pc/pAjd/e6Ozx7cu0KkbWibNbppzkyRzl5qw+l7sOGYd7Xd40UrGA0a4mS7vcimsUYSEix1rJOtX2QtwOpyGR6215Tg62WLTUs=
+	t=1756213383; cv=none; b=T1s6X0GfxjuEf0Z/5mzc/DaNWYMrac0IIg0BD4fiVXcr8/4DcsFn/xQWA9TGDxBUKliZrzlzvgsfFFH0T++IZSgG72sAV7cuPSM3mFYsLbKguPo2Jo2uf3UAypyJm11BWbTDSYnoF/1K7e41hk+XmA3TwFBFhHmeWbU9o+h//Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216368; c=relaxed/simple;
-	bh=anTM6/3mCIhJt+7KnwR2sU8dLpexHOEhCqgFOjhVdZw=;
+	s=arc-20240116; t=1756213383; c=relaxed/simple;
+	bh=w6lHJWjJQQgJc0ll+sYh9WT8lZ4GP5grKmWM/Dle+6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EGUdxHXkHUabetrljI0XzjPn5nq2Wtov+iW1AJESU1iVBYyJg1SLRFlkVamBge1D/RAl0GbCfHYPeDqGEp34Xs1aPwZ4oO4BWUy3l4qWfQaR6DNW+8dveB4CSqpY4hp4gVatIiTuwRh/ZOVj2QTBje5guYMZzn4bq0O/i/mIFDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cPBrWF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6066C4CEF1;
-	Tue, 26 Aug 2025 13:52:47 +0000 (UTC)
+	 MIME-Version; b=fyBJPRVexoOkrBYGRO/ehVqVzlucWzaDLVu02XsQkeNwkHgNvaCqnw3lIoT/csNF7t8iPQ/xMh5GS8/Wt6M+aqjD6i+B6NwCRNq+hIO0q3mrnr3auTArRRFzgXLqHKsotLBpFGNIbJe8F/gDMev+KA/p2AZud3lkBMj5CcbydL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSeKuAiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D5AC4CEF1;
+	Tue, 26 Aug 2025 13:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216368;
-	bh=anTM6/3mCIhJt+7KnwR2sU8dLpexHOEhCqgFOjhVdZw=;
+	s=korg; t=1756213383;
+	bh=w6lHJWjJQQgJc0ll+sYh9WT8lZ4GP5grKmWM/Dle+6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cPBrWF4vBzpfupLtg7AgIuxnn8Xpkge3T+Ey8Vy+rOCplEFIFE2vI8hrnINNsr+j
-	 cMGbO5x256VdcxVxJuctmQk0zhkIcBAqAuv9+hVXhi75gEySV5SsqcZ/sC8rfwPDp5
-	 C28NkWgzp09ZJ6CLDDWF2hCM6HHrK+hgPx5PoPeA=
+	b=kSeKuAiLjsj3Dc5s22WXISaXGiKth12Av7Szv90XpXHn5rKPo8t7Ex3Wk0g75zN/4
+	 fKz0sEF77yBmTLKYFYqiXDsgVyzVqUTXXvwMgVATY6JBO/wSKBxU8VLYUmf2ff4nVr
+	 7xHkp9xwIaZ4iaO/NZeYDTzlFys7NFIuw0TvU4Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 384/644] cifs: Fix calling CIFSFindFirst() for root path without msearch
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 326/587] HID: magicmouse: avoid setting up battery timer when not needed
 Date: Tue, 26 Aug 2025 13:07:55 +0200
-Message-ID: <20250826110955.959648328@linuxfoundation.org>
+Message-ID: <20250826111001.208823155@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
+commit 9bdc30e35cbc1aa78ccf01040354209f1e11ca22 upstream.
 
-To query root path (without msearch wildcard) it is needed to
-send pattern '\' instead of '' (empty string).
+Currently, the battery timer is set up for all devices using
+hid-magicmouse, irrespective of whether they actually need it or not.
 
-This allows to use CIFSFindFirst() to query information about root path
-which is being used in followup changes.
+The current implementation requires the battery timer for Magic Mouse 2
+and Magic Trackpad 2 when connected via USB only. Add checks to ensure
+that the battery timer is only set up when they are connected via USB.
 
-This change fixes the stat() syscall called on the root path on the mount.
-It is because stat() syscall uses the cifs_query_path_info() function and
-it can fallback to the CIFSFindFirst() usage with msearch=false.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b91b4e4dae6 ("HID: magicmouse: Report battery level over USB")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifssmb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/fs/cifs/cifssmb.c b/fs/cifs/cifssmb.c
-index 6ca08e473a7e..e6541bd5c63d 100644
---- a/fs/cifs/cifssmb.c
-+++ b/fs/cifs/cifssmb.c
-@@ -4362,6 +4362,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = 0;
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			pSMB->FileName[2] = 0;
-+			pSMB->FileName[3] = 0;
-+			name_len = 4;
- 		}
- 	} else {
- 		name_len = copy_path_name(pSMB->FileName, searchName);
-@@ -4373,6 +4379,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = '*';
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			name_len = 2;
- 		}
+---
+ drivers/hid/hid-magicmouse.c |   58 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 38 insertions(+), 20 deletions(-)
+
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -772,16 +772,30 @@ static void magicmouse_enable_mt_work(st
+ 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
+ }
+ 
++static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
++{
++	if (vendor != USB_VENDOR_ID_APPLE)
++		return false;
++	return product == USB_DEVICE_ID_APPLE_MAGICMOUSE2;
++}
++
++static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
++{
++	if (vendor != USB_VENDOR_ID_APPLE)
++		return false;
++	return product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	       product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC;
++}
++
+ static int magicmouse_fetch_battery(struct hid_device *hdev)
+ {
+ #ifdef CONFIG_HID_BATTERY_STRENGTH
+ 	struct hid_report_enum *report_enum;
+ 	struct hid_report *report;
+ 
+-	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
+-	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
+-	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
+-	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
++	if (!hdev->battery ||
++	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
++	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
+ 		return -1;
+ 
+ 	report_enum = &hdev->report_enum[hdev->battery_report_type];
+@@ -843,16 +857,17 @@ static int magicmouse_probe(struct hid_d
+ 		return ret;
  	}
  
--- 
-2.39.5
-
+-	timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
+-	mod_timer(&msc->battery_timer,
+-		  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
+-	magicmouse_fetch_battery(hdev);
+-
+-	if (id->vendor == USB_VENDOR_ID_APPLE &&
+-	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+-	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
+-	      hdev->type != HID_TYPE_USBMOUSE)))
++	if (is_usb_magicmouse2(id->vendor, id->product) ||
++	    is_usb_magictrackpad2(id->vendor, id->product)) {
++		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
++		mod_timer(&msc->battery_timer,
++			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
++		magicmouse_fetch_battery(hdev);
++	}
++
++	if (is_usb_magicmouse2(id->vendor, id->product) ||
++	    (is_usb_magictrackpad2(id->vendor, id->product) &&
++	     hdev->type != HID_TYPE_USBMOUSE))
+ 		return 0;
+ 
+ 	if (!msc->input) {
+@@ -908,7 +923,10 @@ static int magicmouse_probe(struct hid_d
+ 
+ 	return 0;
+ err_stop_hw:
+-	del_timer_sync(&msc->battery_timer);
++	if (is_usb_magicmouse2(id->vendor, id->product) ||
++	    is_usb_magictrackpad2(id->vendor, id->product))
++		del_timer_sync(&msc->battery_timer);
++
+ 	hid_hw_stop(hdev);
+ 	return ret;
+ }
+@@ -919,7 +937,9 @@ static void magicmouse_remove(struct hid
+ 
+ 	if (msc) {
+ 		cancel_delayed_work_sync(&msc->work);
+-		del_timer_sync(&msc->battery_timer);
++		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
++		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
++			del_timer_sync(&msc->battery_timer);
+ 	}
+ 
+ 	hid_hw_stop(hdev);
+@@ -936,10 +956,8 @@ static __u8 *magicmouse_report_fixup(str
+ 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
+ 	 *   0x09, 0x02,       // Usage (Mouse)                       2
+ 	 */
+-	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
+-	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
+-	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
++	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
++	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
+ 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
+ 		hid_info(hdev,
+ 			 "fixing up magicmouse battery report descriptor\n");
 
 
 
