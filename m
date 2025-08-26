@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-174783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400A9B36582
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D949FB36C26
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD2A8565A93
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 202BA985DCE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCC1299AAB;
-	Tue, 26 Aug 2025 13:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE141DF75A;
+	Tue, 26 Aug 2025 14:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoicpSp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxgmJ4/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6F7265CCD;
-	Tue, 26 Aug 2025 13:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B35E8635D;
+	Tue, 26 Aug 2025 14:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215306; cv=none; b=ANJZnyQt1bVSrJmG/lwYkcmynKc3+5b8/gEm6VOHu0foDmLYRAazlrrVxQcsaIVzxaNkFNC7EPs61TzPIwyvyV1G26quVNsCODTE05tWvkbiJygJkuVu82Ydt7uq8X58bqVycnFRd8McU20lBK0Tl4lR+TS9iYVMimhXuEBxVKQ=
+	t=1756218452; cv=none; b=GFkE4R4g317OI8LH5L7AM1nYHxSRU0SwlAeWu387nPyCDrGpteFgV8ko2TjXvyCsMAxyx2qAZeb6iAJKzMguvWw3YT9/vcGxrqsn7MBLL+EbO9wsyliwS8MF3pWOe2zcVUeP/wF6bwmDgxwvUPrlBTKbZJE8KP+g0uqObsmPRWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215306; c=relaxed/simple;
-	bh=GvVn8jBnYHzTYeusE7syH6v6hi1+U3QzOE1hiLEMTSA=;
+	s=arc-20240116; t=1756218452; c=relaxed/simple;
+	bh=x9210eMReYuf5fvIIuZa5imYnjVMliVNQJdFdDaJe2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CD9IRzl4Mys40nTqDTSe6/ykmQO+0Rf4uuJyYtoqQPaSfzYQRgkXZ3S0ZaJSXB5KIiuBAcRhsNdhJgtcNiM6GI3qAvNeyIZbOl1q9qp+pIQ11jNFUkHMQ55dnFFYH5wFrltpgaCXoad1qJmqMQzmtSkbdAfqs+Qli/HLo1RKqJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoicpSp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51639C4CEF1;
-	Tue, 26 Aug 2025 13:35:06 +0000 (UTC)
+	 MIME-Version; b=NhBA7MfLU19RlZDJONhZRw3pbXrOkzEdzj1/486Xe0+GuPFLxd5h7EVdN6jkDvZ/WjK6Zie4x4TNjJp1lM8WL/yoFu8os+TZoEgZZpdRHG9Ej2jI7sEofGmb1sSyWzgG9p8YiJgoVF8OpaR0zciZwFXMgj1vQkVrRzkdrbkSn0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxgmJ4/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B454C4CEF1;
+	Tue, 26 Aug 2025 14:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215306;
-	bh=GvVn8jBnYHzTYeusE7syH6v6hi1+U3QzOE1hiLEMTSA=;
+	s=korg; t=1756218452;
+	bh=x9210eMReYuf5fvIIuZa5imYnjVMliVNQJdFdDaJe2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoicpSp5ZsWRDTUP5sLR0D0UQv9W55CiN2pvmLpm4pH83VKWjmB4LTCVZe3UYfUSI
-	 GqeEw/eoIDcFEZ14WHoWpBE82IGWUunfIa/lGlSXuobcuX8U5yxkFV5ZCiysWwwyjZ
-	 hIO5tG5MM8xtSO97mtsS1bbkA//JY3CQSrKm65gY=
+	b=OxgmJ4/OhhnDLjVJOyVtQioVyKTPGCRuZknMw1m2AQ/PAe6oXzWoDQUgUlhEMZ1E5
+	 bNFZCnJ9cOCnSJypBS6KufXJRup2kc38X1U7qazJDLaYlxF2p8QYmHNPQxdQO5MHgS
+	 9CB0ZfPQjIs8jA1Ud1pxO5SEQYcIcmHnLNoQi+zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianhao Zhao <tizhao@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jakub Ramaseuski <jramaseu@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 465/482] net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM
+Subject: [PATCH 5.10 508/523] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
 Date: Tue, 26 Aug 2025 13:11:58 +0200
-Message-ID: <20250826110942.309533446@linuxfoundation.org>
+Message-ID: <20250826110936.972198686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Ramaseuski <jramaseu@redhat.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 864e3396976ef41de6cc7bc366276bf4e084fff2 ]
+[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
 
-When performing Generic Segmentation Offload (GSO) on an IPv6 packet that
-contains extension headers, the kernel incorrectly requests checksum offload
-if the egress device only advertises NETIF_F_IPV6_CSUM feature, which has
-a strict contract: it supports checksum offload only for plain TCP or UDP
-over IPv6 and explicitly does not support packets with extension headers.
-The current GSO logic violates this contract by failing to disable the feature
-for packets with extension headers, such as those used in GREoIPv6 tunnels.
+The following lockdep splat was observed.
 
-This violation results in the device being asked to perform an operation
-it cannot support, leading to a `skb_warn_bad_offload` warning and a collapse
-of network throughput. While device TSO/USO is correctly bypassed in favor
-of software GSO for these packets, the GSO stack must be explicitly told not
-to request checksum offload.
+[  812.359086] ============================================
+[  812.359089] WARNING: possible recursive locking detected
+[  812.359097] --------------------------------------------
+[  812.359100] runtest.sh/30042 is trying to acquire lock:
+[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
+[  812.359131]
+[  812.359131] but task is already holding lock:
+[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
+     :
+[  812.359267] Call Trace:
+[  812.359272]  <TASK>
+[  812.359367]  cpus_read_lock+0x3c/0xe0
+[  812.359382]  static_key_enable+0xe/0x20
+[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
+[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
+[  812.359411]  cgroup_file_write+0x1c7/0x660
+[  812.359467]  kernfs_fop_write_iter+0x358/0x530
+[  812.359479]  vfs_write+0xabe/0x1250
+[  812.359529]  ksys_write+0xf9/0x1d0
+[  812.359558]  do_syscall_64+0x5f/0xe0
 
-Mask NETIF_F_IPV6_CSUM, NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4
-in gso_features_check if the IPv6 header contains extension headers to compute
-checksum in software.
+Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
+and hotplug lock order"), the ordering of cpu hotplug lock
+and cpuset_mutex had been reversed. That patch correctly
+used the cpuslocked version of the static branch API to enable
+cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
+same for cpusets_insane_config_key.
 
-The exception is a BIG TCP extension, which, as stated in commit
-68e068cabd2c6c53 ("net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets"):
-"The feature is only enabled on devices that support BIG TCP TSO.
-The header is only present for PF_PACKET taps like tcpdump,
-and not transmitted by physical devices."
+The cpusets_insane_config_key can be enabled in the
+check_insane_mems_config() which is called from update_nodemask()
+or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
+cpuset_mutex held. Deadlock can happen with a pending hotplug event that
+tries to acquire the cpu hotplug write lock which will block further
+cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
+switching to use static_branch_enable_cpuslocked().
 
-kernel log output (truncated):
-WARNING: CPU: 1 PID: 5273 at net/core/dev.c:3535 skb_warn_bad_offload+0x81/0x140
-...
-Call Trace:
- <TASK>
- skb_checksum_help+0x12a/0x1f0
- validate_xmit_skb+0x1a3/0x2d0
- validate_xmit_skb_list+0x4f/0x80
- sch_direct_xmit+0x1a2/0x380
- __dev_xmit_skb+0x242/0x670
- __dev_queue_xmit+0x3fc/0x7f0
- ip6_finish_output2+0x25e/0x5d0
- ip6_finish_output+0x1fc/0x3f0
- ip6_tnl_xmit+0x608/0xc00 [ip6_tunnel]
- ip6gre_tunnel_xmit+0x1c0/0x390 [ip6_gre]
- dev_hard_start_xmit+0x63/0x1c0
- __dev_queue_xmit+0x6d0/0x7f0
- ip6_finish_output2+0x214/0x5d0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- inet6_csk_xmit+0xeb/0x150
- __tcp_transmit_skb+0x555/0xa80
- tcp_write_xmit+0x32a/0xe90
- tcp_sendmsg_locked+0x437/0x1110
- tcp_sendmsg+0x2f/0x50
-...
-skb linear:   00000000: e4 3d 1a 7d ec 30 e4 3d 1a 7e 5d 90 86 dd 60 0e
-skb linear:   00000010: 00 0a 1b 34 3c 40 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000020: 00 00 00 00 00 12 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000030: 00 00 00 00 00 11 2f 00 04 01 04 01 01 00 00 00
-skb linear:   00000040: 86 dd 60 0e 00 0a 1b 00 06 40 20 23 00 00 00 00
-skb linear:   00000050: 00 00 00 00 00 00 00 00 00 12 20 23 00 00 00 00
-skb linear:   00000060: 00 00 00 00 00 00 00 00 00 11 bf 96 14 51 13 f9
-skb linear:   00000070: ae 27 a0 a8 2b e3 80 18 00 40 5b 6f 00 00 01 01
-skb linear:   00000080: 08 0a 42 d4 50 d5 4b 70 f8 1a
-
-Fixes: 04c20a9356f283da ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Reported-by: Tianhao Zhao <tizhao@redhat.com>
-Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250814105119.1525687-1-jramaseu@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 212a909b4840..114fc8bc37f8 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3610,6 +3610,18 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 			features &= ~NETIF_F_TSO_MANGLEID;
- 	}
- 
-+	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-+	 * so neither does TSO that depends on it.
-+	 */
-+	if (features & NETIF_F_IPV6_CSUM &&
-+	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+	    skb_transport_header_was_set(skb) &&
-+	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+	    !ipv6_has_hopopt_jumbo(skb))
-+		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
-+
- 	return features;
- }
- 
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 52274eda8423..efe9785c6c13 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -392,7 +392,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
+ {
+ 	if (!cpusets_insane_config() &&
+ 		movable_only_nodes(nodes)) {
+-		static_branch_enable(&cpusets_insane_config_key);
++		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
+ 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
+ 			"Cpuset allocations might fail even with a lot of memory available.\n",
+ 			nodemask_pr_args(nodes));
 -- 
 2.50.1
 
