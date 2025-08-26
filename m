@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-176282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74969B36D08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDBAB361EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC15CA07098
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05541889253
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1453568E5;
-	Tue, 26 Aug 2025 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE841E5718;
+	Tue, 26 Aug 2025 13:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="II7pyUej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8/10Qoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA98352FFA;
-	Tue, 26 Aug 2025 14:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9974423A9A0;
+	Tue, 26 Aug 2025 13:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219250; cv=none; b=JSRf7YVNgIarq2g+oRu6UeePQrWajGFGAraWFudPjoFL3AoKNd6w+Mz60yQvbo6wVN2u5BDE80vS/JefsRaxNrCFVoVWeNgafO/AgZqan00kJ0/sT3NurRb0aKO/+LiRjln33locphiusDECiaI+4s8OGOdbAASHZLsKhHNCpqA=
+	t=1756213809; cv=none; b=c7B+/sUpi85NZWz9b1Q+1FynO+c+28nlqxZe+HkYdJ3fZNerGjwxROF78Dcfm5n0/d8Bz7LW9F4FgVFbK6GZw7YftI6R04I5S5oRGcIONSQL5BDfyBL1dX1g+AHtL4kwNaYwnl9od/EoigvcGs2RP+t6USD2v2RhRu2HJFBJkc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219250; c=relaxed/simple;
-	bh=vgh9YIG3os+hu450ms3ZcZVZq4gS0zxwOOoqpOohh/A=;
+	s=arc-20240116; t=1756213809; c=relaxed/simple;
+	bh=Dl5phGPue/2/7dhENTx2VpSQaD2sKVZcBRHPWx4WcQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eOMqsCsI52aCVCm0JarrRsks34F7+naeYqdtiedFyw34bc7r3LKswwmmkhw9U6MiwK9ojaqrvToHikUrBIcm3tnZkFO1TAEctE6pmYEo7/JqObDnB8C0bsyRyaJC2WHFD37qDDilwVuHqeLL3j4EhR1EUSlBX+3Xddkw0vhpJAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=II7pyUej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460E7C113CF;
-	Tue, 26 Aug 2025 14:40:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CWecVdF7TtlRTV5W45I5IerJKBUSySYsRD8qiWUUtDM665K0Wclcz3A+0E3DWR5C+7zYhJiAHy5urUvOL9/J8DgvKDFSad86M2UAneOeWxyKlzBph3ymypoPM4YkJMhocKGo5c55QpMQSycM6qXiLhfiQc/clazBG32gI9YPX1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8/10Qoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA46C4CEF1;
+	Tue, 26 Aug 2025 13:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219250;
-	bh=vgh9YIG3os+hu450ms3ZcZVZq4gS0zxwOOoqpOohh/A=;
+	s=korg; t=1756213809;
+	bh=Dl5phGPue/2/7dhENTx2VpSQaD2sKVZcBRHPWx4WcQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=II7pyUejc7x5l7Wjt+mAdDEmmqxIU4on5KNWrlQ4FT/SLGnzIYHZ3/YbMUE3k3KNG
-	 AK+elR/8fO1egFDjwIhOxTud0P4ojG3hHGQex7m+iDf+Krkdt8+Nal6YUO5QYGiakm
-	 qHBT2KQ9I6y0lf2dRQaNB8yxXMZoSJOgO94detpg=
+	b=e8/10QojdOyr/f5MB/OPnDU+roSPcwTeUav+yNhBO8/4DTJO/xTbTN88IQjs9Eo2G
+	 ZkZph77z+iBlCukbyOXZ9lihpo3PBIFQBufBlT6bzR8jc0LfxPkFiPdwVvkTjoUMRf
+	 bHCbrfYTy4hk/P5V/kVxAGYBEZ5j3mDZXqrvRpMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Rodrigo Siqueira <siqueira@igalia.com>,
 	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.4 310/403] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
-Date: Tue, 26 Aug 2025 13:10:36 +0200
-Message-ID: <20250826110915.374789910@linuxfoundation.org>
+Subject: [PATCH 6.6 488/587] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
+Date: Tue, 26 Aug 2025 13:10:37 +0200
+Message-ID: <20250826111005.387267062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -104,7 +104,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
 +++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-@@ -992,7 +992,7 @@ static enum bp_result set_pixel_clock_v3
+@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
  	allocation.sPCLKInput.usFbDiv =
  			cpu_to_le16((uint16_t)bp_params->feedback_divider);
  	allocation.sPCLKInput.ucFracFbDiv =
