@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD99FB3627D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FD9B36CC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CAC1884B86
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7E33607D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D10A27A455;
-	Tue, 26 Aug 2025 13:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7424F352FF3;
+	Tue, 26 Aug 2025 14:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsIeKdhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRrdO3LC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79ADFBF0;
-	Tue, 26 Aug 2025 13:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D634AAFE;
+	Tue, 26 Aug 2025 14:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214064; cv=none; b=DeAQxKMBK2fVvWR7f3rggMVqsYTOyNv0snHx90zw3i8qnSX6NBlEQg6ZuNPLmOu3ZTvxe6PoQganJ1X9sAY2x1tUG46EfZ7wWOCWs68IsPiou1T1/b3fjKc4BdGDnnZibCVbSMrQ3aRcVXUafhycnDFvHWOuRas3XIfk086Qaqs=
+	t=1756219422; cv=none; b=h1MHBZJf13yYbplhf9ggypkmc+2RDSJb3IVQLS0uevP6vWKwvx703LsGfLRx2lEryamdgvL9ODTQ8eCt8D0sygGKYnhNkCTNUNXTpmSxU+oTjAFfRweue5pHbBD/KjcLlhgj7e30XEmf1U264cRuc7EGN7Rj07Ppo1l3c4tgvKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214064; c=relaxed/simple;
-	bh=uxYB0vHT0VYPqXmT99aNuxfJCQXwcbWDfgcuDz5ZZzU=;
+	s=arc-20240116; t=1756219422; c=relaxed/simple;
+	bh=dty5BJVgPNX3XCLNf0em9eH1JtgGDhNxFyy/65lX4ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEA2pE1blgU3VJ2XLn+mZF5cYr3b4XIV9eTn/JL3GrgizBrVeUIMQOj7IZ4rAyxGlwy2n2ibSXK91wLywrjYUcxMx95S3h9lwIAaMILSjgwRu5lzFP9JG7UYGc/pQrb3yQWJ3bh27z7MMAvvfTJ4OPGt4xAemSvS3kVZEe26nqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsIeKdhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E21C4CEF1;
-	Tue, 26 Aug 2025 13:14:22 +0000 (UTC)
+	 MIME-Version; b=DYTlwJ/zXYRBsCyeZZVUzkUBQva2/3TAziXn/f0NJ+QNIeDTB6xXVH5PplVVVBvUdrTaUZ9u9xt8IiuphVP+9Of6PtnXoqfS6Jv9s4dEb3/ZWGK1SRR5nK3jJM9A6vpphwupBtItkjZqGSb2/EYgYOMykyDUlFYCCTM4AjPESw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRrdO3LC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29D3C4CEF1;
+	Tue, 26 Aug 2025 14:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214063;
-	bh=uxYB0vHT0VYPqXmT99aNuxfJCQXwcbWDfgcuDz5ZZzU=;
+	s=korg; t=1756219422;
+	bh=dty5BJVgPNX3XCLNf0em9eH1JtgGDhNxFyy/65lX4ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsIeKdhLgyxcM1AhFDPn1IadK77oB7QH5tMuU5IKo9Kt+NKU9M6JXz6HndRE1CR7G
-	 NBWJ4mRaj8F0IQaT8zWYsojyRjegxes5QvK1sRlmtCVmpiTsSCfqgxkr79ifb6IfKd
-	 tYel+McqlL46TJ2SzCdxfwV3ko7fA20c0BRab4QI=
+	b=yRrdO3LCtROpKn2NCltGDqeEyV/XBu71BJHzogOz4ZWyPs0SvQfg3WpUdFgB1TihA
+	 HGZzrEhtcQaFNdOY8SYWFaPv+fhhkQrkMLFf1PjKv/sILnsYnVVvE8Wj+SPgf8RwLx
+	 X6XsojUm4z2ktqMeVRNAwn7931jOznyaDL/SKoy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Boshi Yu <boshiyu@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 552/587] RDMA/erdma: Fix ignored return value of init_kernel_qp
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.4 375/403] sch_drr: make drr_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:11:41 +0200
-Message-ID: <20250826111007.065964860@linuxfoundation.org>
+Message-ID: <20250826110917.376315395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boshi Yu <boshiyu@linux.alibaba.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit d5c74713f0117d07f91eb48b10bc2ad44e23c9b9 ]
+commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
 
-The init_kernel_qp interface may fail. Check its return value and free
-related resources properly when it does.
+drr_qlen_notify() always deletes the DRR class from its active list
+with list_del(), therefore, it is not idempotent and not friendly
+to its callers, like fq_codel_dequeue().
 
-Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
-Reviewed-by: Cheng Xu <chengyou@linux.alibaba.com>
-Signed-off-by: Boshi Yu <boshiyu@linux.alibaba.com>
-Link: https://patch.msgid.link/20250725055410.67520-3-boshiyu@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_drr.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index 29ad2f5ffabe..e990690d8b3c 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -979,7 +979,9 @@ int erdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attrs,
- 		if (ret)
- 			goto err_out_cmd;
- 	} else {
--		init_kernel_qp(dev, qp, attrs);
-+		ret = init_kernel_qp(dev, qp, attrs);
-+		if (ret)
-+			goto err_out_xa;
- 	}
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -111,6 +111,7 @@ static int drr_change_class(struct Qdisc
+ 	if (cl == NULL)
+ 		return -ENOBUFS;
  
- 	qp->attrs.max_send_sge = attrs->cap.max_send_sge;
--- 
-2.50.1
-
++	INIT_LIST_HEAD(&cl->alist);
+ 	cl->common.classid = classid;
+ 	cl->quantum	   = quantum;
+ 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
+@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
+ {
+ 	struct drr_class *cl = (struct drr_class *)arg;
+ 
+-	list_del(&cl->alist);
++	list_del_init(&cl->alist);
+ }
+ 
+ static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
+@@ -401,7 +402,7 @@ static struct sk_buff *drr_dequeue(struc
+ 			if (unlikely(skb == NULL))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 
+ 			bstats_update(&cl->bstats, skb);
+ 			qdisc_bstats_update(sch, skb);
+@@ -442,7 +443,7 @@ static void drr_reset_qdisc(struct Qdisc
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
+ 			if (cl->qdisc->q.qlen)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			qdisc_reset(cl->qdisc);
+ 		}
+ 	}
 
 
 
