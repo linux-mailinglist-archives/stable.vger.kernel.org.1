@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462F7B36385
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76097B35CBD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46607BD86C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25E41189C6F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177FD1F4CA9;
-	Tue, 26 Aug 2025 13:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE4333A01B;
+	Tue, 26 Aug 2025 11:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdtVzOSf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJeKvZXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DB714B950;
-	Tue, 26 Aug 2025 13:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0E032144F;
+	Tue, 26 Aug 2025 11:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214961; cv=none; b=A1wyiieh/InVeMI57Dz5Q92zkylblrmtLrUh+7hBSu8BsSUVWS39x/mWhdAZKhiuknoq6GL/Gx0k9qhXbHI8x9uqVS10ce/ltSGROdTIEy/bBiXeS+MU/tRoqHex+3ECjr4jOtdyKIjhV0scXhDXniqSCopy72HTm/h/CkFWPVw=
+	t=1756207788; cv=none; b=EmlLxgUXimwtstdZOKpIsU7cPf3yNmISdaJlsLsbYQFp8H4rbZqw8iTt8y0w+UulaqFoEgoQlxCC5qw9iJ3o6fxRf4l2XGSO/5RfbeQSodRsRl4+9tffMIwtQ1dGTrjQkYC6utq0cptKHn+3r1A6i/lF5jmzoj+/H5izM4vDKtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214961; c=relaxed/simple;
-	bh=QFCQB+1bNHRU/olRviaUXGzutbpIgu6PTdb2TbFLRJE=;
+	s=arc-20240116; t=1756207788; c=relaxed/simple;
+	bh=NN/VGsWHWzTntBi+JJIAofKbczPXARncCuGSJaN6Slo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/q9oQui6olVcSdxXpYkNc3kOrNIoMFanTxsnZBZNx0gRGq732x3JYKaoyXQ/GfRF+69f4nPm0MeJXbh0urmS+jvLOzoz8ay6y9aK8/ehkMwWSIBty+AdngDaIL9a22tsq5UIge33nnBWn8CyiywtRT9mq4pHmCP2bkIO9wLcpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdtVzOSf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6A9C4CEF1;
-	Tue, 26 Aug 2025 13:29:21 +0000 (UTC)
+	 MIME-Version; b=pI+YZ2csE34SW45KZgrX0iU2PINTmIlt3kQGlFQeYdNV8Pu5lk9qb9rtMaM9ToyrwWKzPuPzI+5NNVh4/IXN9wuv9cIvHDpSgan2ZteNtOEVOXGyuOOR11s1NbhC38eoD+hzLJDf/J8oNBpfdrM0nzhoC5iQveV2gW1uL7OarCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJeKvZXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AD4C4CEF1;
+	Tue, 26 Aug 2025 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214961;
-	bh=QFCQB+1bNHRU/olRviaUXGzutbpIgu6PTdb2TbFLRJE=;
+	s=korg; t=1756207788;
+	bh=NN/VGsWHWzTntBi+JJIAofKbczPXARncCuGSJaN6Slo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdtVzOSfNhkQxskLpxFBuVaGC0mrYrpVvxYy/DSiVnZHoxmvAfF7ti5LrP7LTJNWW
-	 BlmfaGPv5mTSMOr3Be/FYaXK+vMorb9MZsr3+pp8IsgP4feayCfghVTLBJP+wbZ710
-	 4skmXJKCR73dB6CJPQ52DTbLNIBxWLzwHyqAq1IU=
+	b=oJeKvZXudxXB9VaV+rGDP+oMcQgur/RbuNM3FenuUNAZW94QjeJLD0GTsXzBRPEqS
+	 4/z4YtjNIp6R7pFqGgjY8goqWYHRkx1IYgZEndAExtfjs6OLAt8B8hl6pP4WSe4Fzl
+	 SskhHv108yaAqTe4fmwzXAN1NT9URdVONooM0w5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 318/482] parisc: Update comments in make_insert_tlb
+	Ye Bin <yebin10@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 287/457] fs/buffer: fix use-after-free when call bh_read() helper
 Date: Tue, 26 Aug 2025 13:09:31 +0200
-Message-ID: <20250826110938.663322101@linuxfoundation.org>
+Message-ID: <20250826110944.475494690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Ye Bin <yebin10@huawei.com>
 
-commit cb22f247f371bd206a88cf0e0c05d80b8b62fb26 upstream.
+[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
 
-The following testcase exposed a problem with our read access checks
-in get_user() and raw_copy_from_user():
+There's issue as follows:
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
+Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
+CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_address_description.constprop.0+0x2c/0x390
+ print_report+0xb4/0x270
+ kasan_report+0xb8/0xf0
+ end_buffer_read_sync+0xe3/0x110
+ end_bio_bh_io_sync+0x56/0x80
+ blk_update_request+0x30a/0x720
+ scsi_end_request+0x51/0x2b0
+ scsi_io_completion+0xe3/0x480
+ ? scsi_device_unbusy+0x11e/0x160
+ blk_complete_reqs+0x7b/0x90
+ handle_softirqs+0xef/0x370
+ irq_exit_rcu+0xa5/0xd0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/mman.h>
-#include <sys/types.h>
+ Above issue happens when do ntfs3 filesystem mount, issue may happens
+ as follows:
+           mount                            IRQ
+ntfs_fill_super
+  read_cache_page
+    do_read_cache_folio
+      filemap_read_folio
+        mpage_read_folio
+	 do_mpage_readpage
+	  ntfs_get_block_vbo
+	   bh_read
+	     submit_bh
+	     wait_on_buffer(bh);
+	                            blk_complete_reqs
+				     scsi_io_completion
+				      scsi_end_request
+				       blk_update_request
+				        end_bio_bh_io_sync
+					 end_buffer_read_sync
+					  __end_buffer_read_notouch
+					   unlock_buffer
 
-int main(int argc, char **argv)
-{
-  unsigned long page_size = sysconf(_SC_PAGESIZE);
-  char *p = malloc(3 * page_size);
-  char *p_aligned;
+            wait_on_buffer(bh);--> return will return to caller
 
-  /* initialize memory region. If not initialized, write syscall below will correctly return EFAULT. */
-  if (1)
-	memset(p, 'X', 3 * page_size);
+					  put_bh
+					    --> trigger stack-out-of-bounds
+In the mpage_read_folio() function, the stack variable 'map_bh' is
+passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
+wait_on_buffer() returns to continue processing, the stack variable
+is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
+process, calling put_bh() may result in stack overrun.
 
-  p_aligned = (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_size - 1));
-  /* Drop PROT_READ protection. Kernel and userspace should fault when accessing that memory region */
-  mprotect(p_aligned, page_size, PROT_NONE);
+If the bh is not allocated on the stack, it belongs to a folio.  Freeing
+a buffer head which belongs to a folio is done by drop_buffers() which
+will fail to free buffers which are still locked.  So it is safe to call
+put_bh() before __end_buffer_read_notouch().
 
-  /* the following write() should return EFAULT, since PROT_READ was dropped by previous mprotect() */
-  int ret = write(2, p_aligned, 1);
-  if (!ret || errno != EFAULT)
-	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
-
-  return 0;
-}
-
-Because of the way _PAGE_READ is handled, kernel code never generates
-a read access fault when it access a page as the kernel privilege level
-is always less than PL1 in the PTE.
-
-This patch reworks the comments in the make_insert_tlb macro to try
-to make this clearer.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ fs/buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -486,6 +486,12 @@
- 	 * this happens is quite subtle, read below */
- 	.macro		make_insert_tlb	spc,pte,prot,tmp
- 	space_to_prot   \spc \prot        /* create prot id from space */
-+
-+#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
-+	/* need to drop DMB bit, as it's used as SPECIAL flag */
-+	depi		0,_PAGE_SPECIAL_BIT,1,\pte
-+#endif
-+
- 	/* The following is the real subtlety.  This is depositing
- 	 * T <-> _PAGE_REFTRAP
- 	 * D <-> _PAGE_DIRTY
-@@ -498,17 +504,18 @@
- 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
- 	 * trigger an access rights trap in user space if the user
- 	 * tries to read an unreadable page */
--#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
--	/* need to drop DMB bit, as it's used as SPECIAL flag */
--	depi		0,_PAGE_SPECIAL_BIT,1,\pte
--#endif
- 	depd            \pte,8,7,\prot
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 8cf4a1dc481e..eb6d85edc37a 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -157,8 +157,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
+  */
+ void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
+ {
+-	__end_buffer_read_notouch(bh, uptodate);
+ 	put_bh(bh);
++	__end_buffer_read_notouch(bh, uptodate);
+ }
+ EXPORT_SYMBOL(end_buffer_read_sync);
  
- 	/* PAGE_USER indicates the page can be read with user privileges,
- 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
--	 * contains _PAGE_READ) */
-+	 * contains _PAGE_READ). While the kernel can't directly write
-+	 * user pages which have _PAGE_WRITE zero, it can read pages
-+	 * which have _PAGE_READ zero (PL <= PL1). Thus, the kernel
-+	 * exception fault handler doesn't trigger when reading pages
-+	 * that aren't user read accessible */
- 	extrd,u,*=      \pte,_PAGE_USER_BIT+32,1,%r0
- 	depdi		7,11,3,\prot
-+
- 	/* If we're a gateway page, drop PL2 back to zero for promotion
- 	 * to kernel privilege (so we can execute the page as kernel).
- 	 * Any privilege promotion page always denys read and write */
+-- 
+2.50.1
+
 
 
 
