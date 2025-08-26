@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB37B35D32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04976B36746
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D433B68BB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450E25676DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E11283FDF;
-	Tue, 26 Aug 2025 11:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D482634F46B;
+	Tue, 26 Aug 2025 13:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bbsnWNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXRdShpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0339D1A256B;
-	Tue, 26 Aug 2025 11:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807A834F490;
+	Tue, 26 Aug 2025 13:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208525; cv=none; b=XkuxZ367mrry1zWA0C8R+ogv1AkIVyERx+dAomt33jfPMWA/TJ1Nh36QltCoD8+1GzcGbBGCkdWsJ0spEjWdorCGHuOACHrV4wRsWBuEdvAl4kMQ1e7Yr2Z4vuq7vJ+wMWrm3QWG2RmFQGEcMQ61hysD87ON32456nP/iEgyh3o=
+	t=1756216489; cv=none; b=GzCZnRva4tQOTEnVIksE40gOwlCJYv0mkrU4i6NmfnhMTiI+eyBADC6voy/oezgNH790+2FbXppUJlxJsb2AG/rhMJKra0hCChO4Lni9lSQKH+xVnZyC6XZ60Zp1NCnCFo6jqAYVWU7CvuN5YVtN3PXr1ic2R9/f+dQgKSivJEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208525; c=relaxed/simple;
-	bh=lL7IqldyAnXCVY8brYyFrnXSGDy/Zw7rgYj6hpz8k8s=;
+	s=arc-20240116; t=1756216489; c=relaxed/simple;
+	bh=31JjWiXApxeT8Ruom2D+Wbc4fyvdxvfP6OSopGp/oCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9beBMPK1hBJgmrRqQDImPxfJxiI1SrqzuvPFv4uX/cPWkV6VMMlFR34Alo7fIcszumcSTudMlwaQcQ6JYKnaYxzJND9Kra6ggzwWtNyRJxQ1DDiGUcldxmycIwLgxxLArvoSUhjNgTtR9NYVRVU7ZroLoaRdr9JSsCow7595Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bbsnWNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E5DC4CEF1;
-	Tue, 26 Aug 2025 11:42:04 +0000 (UTC)
+	 MIME-Version; b=bDmLUWndQ+s3p3fe/oXHxLud1j7JJAOIcJ0GP/1v4OGbvKYIQYOVvk6VIueR4obxnc7SBJd4xXn3KJzFjMXzkSBHo+AAysElEouyvO8BD+PrCoha88h6isDNISbh+H2aW53IC4GFuQn0APeM1vUYYbmME8SIpVNHEj0ODvODvsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXRdShpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA766C4CEF1;
+	Tue, 26 Aug 2025 13:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208524;
-	bh=lL7IqldyAnXCVY8brYyFrnXSGDy/Zw7rgYj6hpz8k8s=;
+	s=korg; t=1756216489;
+	bh=31JjWiXApxeT8Ruom2D+Wbc4fyvdxvfP6OSopGp/oCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bbsnWNcvlMmK5Qmu3cXXRDmuFf6DWNzxAzGEvBQjaOEEOA8RvvyndxBTLyPO1Ak4
-	 TshlnW4EsoPTmnXWHA54TPkrwiCi3bRxtA1vyAxvhNUAdityjbALAbG761cAdtL7HU
-	 kqFYIXvqmESn3nbrKrjfReLZgGAFq5aKDCeAjUz0=
+	b=ZXRdShpz3YXxP5LjroRfO5JsxCGAjNTNZrdPyYobOpI3c7KEBRPAcjWnFBbaVZ7BV
+	 UXuNLWyI1PSiDkh2NByGoWjvKrrb+UEmLKiDUzGX2r3ekV4yMVztjWCprzYp6gsGmS
+	 bSxdHSz4vFDyZI2/e7wvfyk7RCJqjpeyDjwjtrWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.12 104/322] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
-Date: Tue, 26 Aug 2025 13:08:39 +0200
-Message-ID: <20250826110918.303270686@linuxfoundation.org>
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 429/644] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+Date: Tue, 26 Aug 2025 13:08:40 +0200
+Message-ID: <20250826110957.093886551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: John Garry <john.g.garry@oracle.com>
 
-commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
+[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+In blk_stack_limits(), we check that the t->chunk_sectors value is a
+multiple of the t->physical_block_size value.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
+However, by finding the chunk_sectors value in bytes, we may overflow
+the unsigned int which holds chunk_sectors, so change the check to be
+based on sectors.
 
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ block/blk-settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1582,7 +1582,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
- }
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 1b92e6624951..d501084bab4a 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -596,7 +596,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	}
+ 
+ 	/* chunk_sectors a multiple of the physical block size? */
+-	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
++	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
+ 		t->chunk_sectors = 0;
+ 		t->misaligned = 1;
+ 		ret = -1;
+-- 
+2.39.5
+
 
 
 
