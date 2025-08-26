@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F55B35D9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5295B3607F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2F18364414
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136127AC95A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135EB338F24;
-	Tue, 26 Aug 2025 11:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A61118A6C4;
+	Tue, 26 Aug 2025 13:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tFTU0Wr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKZ8fnZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AAD3314DF;
-	Tue, 26 Aug 2025 11:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402193A1B5;
+	Tue, 26 Aug 2025 13:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208197; cv=none; b=Al+lS1TGyaMgGkOZKnCYKUjueEcVPQF+ro67CvwTei6kCR8xu7OCQQ8snhiouZKjSJR4y1dKEzFyCwDu3Y8O8f/yfVsBOnOxeueweYKq9dQDU0f4OE1p2JC7SzLqakt5hesMC7N3ZsN6rlrUjn6MLo4S2g1nnUP6ImVuBSx7dew=
+	t=1756213275; cv=none; b=eHHUKbfhaG5qs+lSXc6yMK5R9HkN1v0tk7+/Y+JHT0hkGrIOt4YxZ3eZQ7FvcXfw5gMOjnw+5n8c4GIXf4rI9ozYlMvEImkGEBHknFz6BjlFXcQ7aWOioEhoWy3u5b304jfNQZYVOxwycbmHC4JajYHeIcBWuDQS7MS2JYmCZfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208197; c=relaxed/simple;
-	bh=OUoK7VZfn3Yu5leZZOPHtqBuZJ+uWjfAMGjCsildkL0=;
+	s=arc-20240116; t=1756213275; c=relaxed/simple;
+	bh=bkgD5nGQlXNYZ6TrqK+lcVhjFQx6Twxes37VsY+tYlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZjnto4wOeTpARhlrvEvUYq+41VL/Usm+59YmiMVxFS++BADDSaFR5lFtyNwKDv+ZVGBlG/YdUMrCA3NzmGFXopldrdpE0dXztMfVuIPoZFDF+ricdH0bvIAax9TMCAR96IHldzetj5vCMS3NeAA4+zOpSKGbmcDkt2jZwJin7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tFTU0Wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A94C4CEF1;
-	Tue, 26 Aug 2025 11:36:37 +0000 (UTC)
+	 MIME-Version; b=V8PCrGKcfRAH1vr4C2g9aK5AZv8KyJSlvWmKF+WPS81mw1/wzt26Qlu+gvt88lU6XnAwllTZXKFtiNoiIZ79B64dBCI2BzxdEQyVAW5w3ABd6CdNWDmMPcen+0p5ECo2leJq5z3UbUrJK+ABpXEF0hdx8XgQplfMnCgL5mh0vno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKZ8fnZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CCAC4CEF1;
+	Tue, 26 Aug 2025 13:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208197;
-	bh=OUoK7VZfn3Yu5leZZOPHtqBuZJ+uWjfAMGjCsildkL0=;
+	s=korg; t=1756213275;
+	bh=bkgD5nGQlXNYZ6TrqK+lcVhjFQx6Twxes37VsY+tYlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tFTU0WrvfGsM1qCCLCSCWCIVgUE+vPzLBce/gHAu3rnhsIt3vuRc4DLP++kcrRhZ
-	 Npr/neyplbKUFndQMkQiPQvyZ9pF4kh/GvGr41O+UWgmFrVPyu9d5Fpx+ceW2JHuR6
-	 0RMZJX5qIYuXDBZZzhlfomQSbnDc6Adse/o+fdOc=
+	b=wKZ8fnZWw5ek2iaYCjPukWTNEzsqKQhXDyWVb5DVGfr10hi3HwFOWXI4jHWtBrABq
+	 mmG1zxtUwzpfKFJCcz+mD2CmyNQtD0dE45ctXJ+D1S3XGlB82rCVs7/RdhqOxDqpGu
+	 6dRvi+LcLMB84jhoZ3HF0etCV1xIGyeOViyM8pxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 019/322] crypto: qat - lower priority for skcipher and aead algorithms
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 285/587] ipmi: Fix strcpy source and destination the same
 Date: Tue, 26 Aug 2025 13:07:14 +0200
-Message-ID: <20250826110915.733514485@linuxfoundation.org>
+Message-ID: <20250826111000.179711621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 8024774190a5ef2af2c5846f60a50b23e0980a32 upstream.
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-Most kernel applications utilizing the crypto API operate synchronously
-and on small buffer sizes, therefore do not benefit from QAT acceleration.
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-Reduce the priority of QAT implementations for both skcipher and aead
-algorithms, allowing more suitable alternatives to be selected by default.
-
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
-Cc: stable@vger.kernel.org
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_algs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
-@@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha1),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha256),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha512),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
- static struct skcipher_alg qat_skciphers[] = { {
- 	.base.cra_name = "cbc(aes)",
- 	.base.cra_driver_name = "qat_aes_cbc",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "ctr(aes)",
- 	.base.cra_driver_name = "qat_aes_ctr",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = 1,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "xts(aes)",
- 	.base.cra_driver_name = "qat_aes_xts",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
- 			  CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index 9a459257489f..ca149ca8ccd6 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1190,14 +1190,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
+ 
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
+ {
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1208,18 +1202,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
+ 	return 0;
+ }
+ 
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1232,18 +1234,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1252,7 +1262,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1289,18 +1314,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
+ 	}
+ 
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
+-- 
+2.39.5
+
 
 
 
