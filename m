@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDD3B36AEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F90B36337
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDC21C25394
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5598A7FD1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88341350D72;
-	Tue, 26 Aug 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B62B223DE5;
+	Tue, 26 Aug 2025 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS7707GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBSOiZMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46107350D54;
-	Tue, 26 Aug 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EEA1DAC95;
+	Tue, 26 Aug 2025 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218494; cv=none; b=Ni87TlhGZ3SqTaLSqlgbXoeY11iBiIdsHX4dfjffZWcAp3nHuj3bi4zUaADVGBzHvKqiYZMRY4Bim4DxOYDUyEoHkc0P5gJcmVMQP8w21OEDBgTHs/cGCozTMXCZWhKAWSU1R3TTrwQNb1WpzRklpAm0PV8sHP/SDKrq6UFkQQo=
+	t=1756214321; cv=none; b=RUeQIgiAhZBFLH9yESrD4nkKWh773NIuo6PSBLGZZqfRA+AETWujPZ8XkQTxjEyNuUHECnsnYLnOp5kVU99S0utE3ZNXGu93RsKdMl/LcqyXtpHmNvnAdkUfUo2ZiBi1+dPj2HwyTAoD8hd7Krxk7/gkmC4N1seiAd7M/YJ7yEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218494; c=relaxed/simple;
-	bh=9yrhtf/BIFkwr+Cx54P+VEqoBVuujBpOF10zCEcYvVQ=;
+	s=arc-20240116; t=1756214321; c=relaxed/simple;
+	bh=SWcs0lHyY51YybWPTf1hAdQWLlv2OCTHoQep6nPo1BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lw6p3FAKLDAvAKMlPy7kJAiuckzEwlx8ONm5Sy+DL7TE8+2T/TCBbtuudLHd52p94f8qcA8rg5ytVmcExeKtKQ/+FquMryj15YP8hslMY1KTVd8O/f8Avj3Om2FufO0FLXPYdtBZg37lLSasvBv6/1zdI6lEoatkrKqnXPI+oKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS7707GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAA7C4CEF1;
-	Tue, 26 Aug 2025 14:28:13 +0000 (UTC)
+	 MIME-Version; b=RQ3PC5Jq2lEIOJaHYkY4UNgL92pG2QzsTzuAdA2ER8VSvtnaoRNh5W3e0BPoCf1Oi4+QD8MH++Xb8rBWBq0BtrJ6whf42Mp5R1EZU0iiWTcXRhcy4dYJtu/gKiQnJJi2FZdC92U+uF88ojl6N4stIKMFhXCi/N7o+LAlsI2ARUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBSOiZMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26B6C113CF;
+	Tue, 26 Aug 2025 13:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218494;
-	bh=9yrhtf/BIFkwr+Cx54P+VEqoBVuujBpOF10zCEcYvVQ=;
+	s=korg; t=1756214321;
+	bh=SWcs0lHyY51YybWPTf1hAdQWLlv2OCTHoQep6nPo1BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iS7707GE9LvNPKtSIJEw7O8xcDDRcUxD28iJXrlIKzwwRW1i8giACqGnSWG0V+bxd
-	 vo2v6Vqvibinzg6lIeNg+FIDRc9RO2O//B2eohNSJjysNS16pJ9mi9XLx+oisDsbXC
-	 81ZCRw+OY4521ZB6u09Lvq7bctersH4VJy2XO93g=
+	b=YBSOiZMo06thYBb7/c/LCic+/qAJijzPxGM3UtaoVhCAQgSr3lRFI+aYzHQmGvbNT
+	 cAR7RISHFIfFfLNxdKVKRLSZZD/xFiOj5Z4IG3qjFPNhjNTBFXQYQ+/od4zCA4xpSQ
+	 EEulVEXM2LuG6GWRJY2J8UnoOdigPB2MN9yo0rQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Fabio Estevam <festevam@denx.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 022/403] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
+	Hans de Goede <hansg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/482] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
 Date: Tue, 26 Aug 2025 13:05:48 +0200
-Message-ID: <20250826110906.381171705@linuxfoundation.org>
+Message-ID: <20250826110933.175579424@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Hans de Goede <hansg@kernel.org>
 
-commit 6d21f2c2dd843bceefd9455f2919f6bb526797f0 upstream.
+[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
 
-Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-booting a board populated with a MAX11601 results in a flood of warnings:
+mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
+belonging to the device being released.
 
-max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-...
+If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
+the mei-client being freed might still be part of the mei_device's
+file_list and iterating over this list after the freeing will then trigger
+a use-afer-free bug.
 
-These warnings are caused by incorrect offsets used for differential
-channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
+Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
+mei-client is not on the mei_device's file_list.
 
-The max1363_mode_table[] defines the differential channel mappings as
-follows:
-
-MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
-MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
-MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
-MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
-MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
-MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
-MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
-MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
-MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
-MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
-MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
-MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
-
-Update the macros to follow this same pattern, ensuring that the scan masks
-are valid and preventing the warnings.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20250516173900.677821-1-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/max1363.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/misc/mei/bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -505,10 +505,10 @@ static const struct iio_event_spec max13
- 	MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),		\
--	MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(8)					\
- 	}
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 7b7f4190cd02..19bc1e9eeb7f 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -1113,6 +1113,8 @@ static void mei_dev_bus_put(struct mei_device *bus)
+ static void mei_cl_bus_dev_release(struct device *dev)
+ {
+ 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
++	struct mei_device *mdev = cldev->cl->dev;
++	struct mei_cl *cl;
  
-@@ -603,14 +603,14 @@ static const enum max1363_modes max11608
- 	MAX1363_CHAN_U(5, _s5, 5, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(6, _s6, 6, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(7, _s7, 7, bits, NULL, 0),	\
--	MAX1363_CHAN_B(0, 1, d0m1, 8, bits, NULL, 0),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 9, bits, NULL, 0),	\
--	MAX1363_CHAN_B(4, 5, d4m5, 10, bits, NULL, 0),	\
--	MAX1363_CHAN_B(6, 7, d6m7, 11, bits, NULL, 0),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 12, bits, NULL, 0),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 13, bits, NULL, 0),	\
--	MAX1363_CHAN_B(5, 4, d5m4, 14, bits, NULL, 0),	\
--	MAX1363_CHAN_B(7, 6, d7m6, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(4, 5, d4m5, 14, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(6, 7, d6m7, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(5, 4, d5m4, 20, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(7, 6, d7m6, 21, bits, NULL, 0),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(16)			\
+ 	if (!cldev)
+ 		return;
+@@ -1120,6 +1122,10 @@ static void mei_cl_bus_dev_release(struct device *dev)
+ 	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
++
++	list_for_each_entry(cl, &mdev->file_list, link)
++		WARN_ON(cl == cldev->cl);
++
+ 	kfree(cldev->cl);
+ 	kfree(cldev);
  }
- static const struct iio_chan_spec max11602_channels[] = MAX1363_8X_CHANS(8);
+-- 
+2.39.5
+
 
 
 
