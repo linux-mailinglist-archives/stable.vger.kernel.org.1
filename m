@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-176309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882F6B36CB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C980B364A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED735A2D3D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918F0681791
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D117235CED4;
-	Tue, 26 Aug 2025 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C772D318143;
+	Tue, 26 Aug 2025 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPLX9/4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsR2xz/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7F535AAA3;
-	Tue, 26 Aug 2025 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6012B2DA;
+	Tue, 26 Aug 2025 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219323; cv=none; b=TNzNYv9QFTd+R8HdyQb8V4J1GwpaRXAF7oDuI/odIAYbFcohtLvgAuOuIutFNX/RqrO4z73M5YRtfwP6VReRk5jWJZWYHoLBv3TFZT5mhYlGOiJiLD5Y+KEJzxc01uHS2GW0noiDrI8xEKBD35C64YhQOMps/VGD7Q6YGf/YLwM=
+	t=1756215162; cv=none; b=bZZd8RnONYSWqzesn4kehnZEBdA1iUCQnwYN3Xps2WANlpkKnLWfGqeRSrMl62+gmyRWBNr0jsA3DBSb7qgPptKIcOqasjXK5plrCL+rDWINqbVjyLzGyyuzVDAMrWcCh1Alw6+4v8kJnm70HnkgFMNYDBjhMOMvSETpOSOOQtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219323; c=relaxed/simple;
-	bh=DeEOE73FH5WpgzGjmbZ5yfGauThmv+40xDNYO6WkagM=;
+	s=arc-20240116; t=1756215162; c=relaxed/simple;
+	bh=ELC+5E/83BR6oCGecPfVDJQBQ9edF7Y4pACzpMhDRAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbHQIF1JzXx8NS7S5ygv2hb2+xOqLSOMmltdWhcIGLJfCSkh/68rkRi5e02eDwg2pflbZtY/zh9OzwC5KtfHuYGqAiAHli2JLRl/4Rnz/ZAVYnUswJy3Dk1ir129kKhlfczdscAzR2k8PBTDFBqiMmpSKzQIAGiPnfkbg469r8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPLX9/4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9C4C113CF;
-	Tue, 26 Aug 2025 14:42:02 +0000 (UTC)
+	 MIME-Version; b=GKZ2xq9DNo/m5keblcopqzumaednrrE0l2eOXmaGBHWHgqO5AIR66hyGCmF6UUiAHQzFFlNWuRRPRNtNPep/x4poHITQMKmfVFWP33J7A8UWjzFCJ10voSp6qzOI34k5W+da8qf4gRpwJrciZu+yP0ySMsMBGcneIwblAZF6JoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsR2xz/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F92EC4CEF1;
+	Tue, 26 Aug 2025 13:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219323;
-	bh=DeEOE73FH5WpgzGjmbZ5yfGauThmv+40xDNYO6WkagM=;
+	s=korg; t=1756215162;
+	bh=ELC+5E/83BR6oCGecPfVDJQBQ9edF7Y4pACzpMhDRAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPLX9/4sM1aRYfr/NugtSnTOr3CyULyvcFMOtcBfc/klS4JLhHy4OZ6V2eyaJ5FeL
-	 kO2kHtARjqSDeAnMtverPkyrXA+NtK6OA4EpGeabPPvervnhP7L3NrjnW29Sf60J0l
-	 h4hd15MJCVKG0j2wXqdqJ5KLobGdF5O/gsNLRJu8=
+	b=RsR2xz/vczI81caR2j4Pr7JS1OAOcmXUumVqynhGUjPirpwYvJOmeoe3edTTubDoq
+	 cJzmoTjimW0pffqQKCBdTZH+xv34NSBXpi9s3445fAAN1ZYWz7p+KJ6fUq0k3296E1
+	 /d4JdNGDJd/L+qZS/rwCDK6DGCY0sExg2t0JyEWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 337/403] mm/zsmalloc.c: convert to use kmem_cache_zalloc in cache_alloc_zspage()
+	Salah Triki <salah.triki@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 410/482] iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
 Date: Tue, 26 Aug 2025 13:11:03 +0200
-Message-ID: <20250826110916.159224885@linuxfoundation.org>
+Message-ID: <20250826110940.956419314@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Salah Triki <salah.triki@gmail.com>
 
-[ Upstream commit f0231305acd53375c6cf736971bf5711105dd6bb ]
+commit 43c0f6456f801181a80b73d95def0e0fd134e1cc upstream.
 
-We always memset the zspage allocated via cache_alloc_zspage.  So it's
-more convenient to use kmem_cache_zalloc in cache_alloc_zspage than caller
-do it manually.
+`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
+Check its return value using `IS_ERR()` and propagate the error if
+necessary.
 
-Link: https://lkml.kernel.org/r/20210114120032.25885-1-linmiaohe@huawei.com
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 694d6b99923e ("mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zsmalloc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/pressure/bmp280-core.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -357,7 +357,7 @@ static void cache_free_handle(struct zs_
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1740,11 +1740,12 @@ int bmp280_common_probe(struct device *d
  
- static struct zspage *cache_alloc_zspage(struct zs_pool *pool, gfp_t flags)
- {
--	return kmem_cache_alloc(pool->zspage_cachep,
-+	return kmem_cache_zalloc(pool->zspage_cachep,
- 			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
- }
+ 	/* Bring chip out of reset if there is an assigned GPIO line */
+ 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpiod))
++		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
++
+ 	/* Deassert the signal */
+-	if (gpiod) {
+-		dev_info(dev, "release reset\n");
+-		gpiod_set_value(gpiod, 0);
+-	}
++	dev_info(dev, "release reset\n");
++	gpiod_set_value(gpiod, 0);
  
-@@ -1067,7 +1067,6 @@ static struct zspage *alloc_zspage(struc
- 	if (!zspage)
- 		return NULL;
- 
--	memset(zspage, 0, sizeof(struct zspage));
- 	zspage->magic = ZSPAGE_MAGIC;
- 	migrate_lock_init(zspage);
+ 	data->regmap = regmap;
  
 
 
