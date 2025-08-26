@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-173855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF07B36090
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6C9B368CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D41E84E430F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7478E2D16
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3091F239B;
-	Tue, 26 Aug 2025 12:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5939A345747;
+	Tue, 26 Aug 2025 14:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upRS4KF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJIARO+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A58A206F23;
-	Tue, 26 Aug 2025 12:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E444352FDA;
+	Tue, 26 Aug 2025 14:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212844; cv=none; b=a90tHeBUco0o6MDoQLGv6lBPbAGCj/J5fQO/6ZM2t6goU1zfaz+LWY+SWFzn4thYoybn7bmIKKHcDb8i7BngCfq5gOd2MR8Z4/UdRU7NBiKmy9N3VzbptT1g57JM41JE//2c5Ni1HUEAJwTde8VkMBZhn5uUh6uk3Ymm51K6nBs=
+	t=1756217161; cv=none; b=VG2YjqIpEAZd49v2/qgrsxFHzm+1AnjWER4/KZundUGh2us/RLsohn00dsIvxknoFwp2NZZZfa/cYmqiXWLdHb6ffA7+2YnKib3ihPNm/WfnP+X/ZJrUL9AKe6+C5DXslYE5GXUa+Blfdvs1oMo8tj3BKXpT4BHkRyChImbbBW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212844; c=relaxed/simple;
-	bh=kftSc76U4+CRwj4G0R2HLC2tzQ52s+2dbiRmbNa6liE=;
+	s=arc-20240116; t=1756217161; c=relaxed/simple;
+	bh=F5fT6j/G4W7s/4ZYBxnnqhcREE8OyNY2+Vt7LqUkXo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9FwyrpD+O7ueNN3m7vFgWel0dAmcdOFFma838i8k2z44WKFq0hNuabAxpGCLsP481Kc4rk2uwS+GIg7DaqMH+UmRBBb1cNQgN1OV8RQsN0HCmyo58rebtecnniyOR9zuapvy+2bT5LD4yEGxZSgBepCRoRiirZL+Z+nlsoNPZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upRS4KF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE9BC113CF;
-	Tue, 26 Aug 2025 12:54:03 +0000 (UTC)
+	 MIME-Version; b=PVMek8eEHj/Mwy9d7rzAPzFPZTZNNgnkgCtikIr3dSnWM2sxMwzdhcFNkc6tIkNw6G2m1n1a5LFxqQ6b8SP/DTRYsftsxGjevj76FLn9olmpRwMb5AyG4LBBzoTACgxhRt3ydl4BNAcTh0BoIDqMob5mciJH5P676H+nUCmO/4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJIARO+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997AEC4CEF1;
+	Tue, 26 Aug 2025 14:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212844;
-	bh=kftSc76U4+CRwj4G0R2HLC2tzQ52s+2dbiRmbNa6liE=;
+	s=korg; t=1756217160;
+	bh=F5fT6j/G4W7s/4ZYBxnnqhcREE8OyNY2+Vt7LqUkXo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upRS4KF00wUgVy8a85+DHeZiRwgT1jKuh0QjCqY25LQdAAQANy6udON+NzQxTG4th
-	 G699AXvrD91meETFgUb8rbDqqCTzws0kuTp6pEGERmplqqk1/mUcuX4xk6AC1TfgGc
-	 3zt8foKX5G32RU+Bn3pvHaMsRGudCygvENJLmZ+M=
+	b=BJIARO+w1/manJpp7yuJd1uJI0ziNtijRIkTN1n52jb+BlKEcdykpgWHwWIDzHToX
+	 YEFX/UySFn++PqhV0dJZp8EBbChUJ5WLoOcFc46ZPmMkoMwjrXfcyM/ylIpx7IUJWz
+	 cev6E2fljEW/+KUzX9vkmvDcsphJf3hnyJr30kwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/587] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 031/523] comedi: Fix some signed shift left operations
 Date: Tue, 26 Aug 2025 13:04:01 +0200
-Message-ID: <20250826110955.277208963@linuxfoundation.org>
+Message-ID: <20250826110925.367159507@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +60,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
+commit ab705c8c35e18652abc6239c07cf3441f03e2cda upstream.
 
-If a synchronous error is detected as a result of user-space process
-triggering a 2-bit uncorrected error, the CPU will take a synchronous
-error exception such as Synchronous External Abort (SEA) on Arm64. The
-kernel will queue a memory_failure() work which poisons the related
-page, unmaps the page, and then sends a SIGBUS to the process, so that
-a system wide panic can be avoided.
+Correct some left shifts of the signed integer constant 1 by some
+unsigned number less than 32.  Change the constant to 1U to avoid
+shifting a 1 into the sign bit.
 
-However, no memory_failure() work will be queued when abnormal
-synchronous errors occur. These errors can include situations like
-invalid PA, unexpected severity, no memory failure config support,
-invalid GUID section, etc. In such a case, the user-space process will
-trigger SEA again.  This loop can potentially exceed the platform
-firmware threshold or even trigger a kernel hard lockup, leading to a
-system reboot.
+The corrected functions are comedi_dio_insn_config(),
+comedi_dio_update_state(), and __comedi_device_postconfig().
 
-Fix it by performing a force kill if no memory_failure() work is queued
-for synchronous errors.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e523c6c86232 ("staging: comedi: drivers: introduce comedi_dio_insn_config()")
+Fixes: 05e60b13a36b ("staging: comedi: drivers: introduce comedi_dio_update_state()")
+Fixes: 09567cb4373e ("staging: comedi: initialize subdevice s->io_bits in postconfig")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/staging/comedi/drivers.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 2abf20736702..22db720b128b 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -715,6 +715,17 @@ static bool ghes_do_proc(struct ghes *ghes,
- 		}
+--- a/drivers/staging/comedi/drivers.c
++++ b/drivers/staging/comedi/drivers.c
+@@ -339,10 +339,10 @@ int comedi_dio_insn_config(struct comedi
+ 			   unsigned int *data,
+ 			   unsigned int mask)
+ {
+-	unsigned int chan_mask = 1 << CR_CHAN(insn->chanspec);
++	unsigned int chan = CR_CHAN(insn->chanspec);
+ 
+-	if (!mask)
+-		mask = chan_mask;
++	if (!mask && chan < 32)
++		mask = 1U << chan;
+ 
+ 	switch (data[0]) {
+ 	case INSN_CONFIG_DIO_INPUT:
+@@ -382,7 +382,7 @@ EXPORT_SYMBOL_GPL(comedi_dio_insn_config
+ unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
+ 				     unsigned int *data)
+ {
+-	unsigned int chanmask = (s->n_chan < 32) ? ((1 << s->n_chan) - 1)
++	unsigned int chanmask = (s->n_chan < 32) ? ((1U << s->n_chan) - 1)
+ 						 : 0xffffffff;
+ 	unsigned int mask = data[0] & chanmask;
+ 	unsigned int bits = data[1];
+@@ -625,8 +625,8 @@ static int insn_rw_emulate_bits(struct c
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1 << (chan - base_chan);		    /* mask */
+-		_data[1] = data[0] ? (1 << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		     /* mask */
++		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
  	}
  
-+	/*
-+	 * If no memory failure work is queued for abnormal synchronous
-+	 * errors, do a force kill.
-+	 */
-+	if (sync && !queued) {
-+		dev_err(ghes->dev,
-+			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
-+			current->comm, task_pid_nr(current));
-+		force_sig(SIGBUS);
-+	}
-+
- 	return queued;
- }
+ 	ret = s->insn_bits(dev, s, &_insn, _data);
+@@ -709,7 +709,7 @@ static int __comedi_device_postconfig(st
  
--- 
-2.39.5
-
+ 		if (s->type == COMEDI_SUBD_DO) {
+ 			if (s->n_chan < 32)
+-				s->io_bits = (1 << s->n_chan) - 1;
++				s->io_bits = (1U << s->n_chan) - 1;
+ 			else
+ 				s->io_bits = 0xffffffff;
+ 		}
 
 
 
