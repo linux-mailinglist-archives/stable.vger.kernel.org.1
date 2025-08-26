@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A674EB3622C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59598B364B8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBD238A49C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A697F8E3930
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35281C4609;
-	Tue, 26 Aug 2025 13:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1933019A3;
+	Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2udl2uPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upuDgo1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2183405F7;
-	Tue, 26 Aug 2025 13:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455462FC870;
+	Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213864; cv=none; b=QntrzIgrAAAN1BcbggGnEBt9ex2QfnmF8ALnM2AvcoQ8B5oMEy9Ii/1DFf3d/dScrubdXWU3y8TWAKLGyAIys9w54fdK2J6O8y7WdfmvixzwqEnr+t9mtSnjLe9iupMFzWgv9Dg04pglHh8cKFnYmvFtxhNDYTfgmxMGlYBIiOM=
+	t=1756215144; cv=none; b=elJyaxEZRNBudO/s540z+YIjng9+YOqJc429jOrwTECHvBfbnJ311LXDhtz/Cq9mcihg4srg+UDEVlY8QEHfoCGGnipU4tjqbQEpFQ9xaSh9JJsWyrOSHizCChwjhmrOIFWMz/Xlb0ijj9y1CQoaDW0KkZMnh8te9eah/sI3oF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213864; c=relaxed/simple;
-	bh=vyr7mK5n0/a3U4KktwWAZ/U9rbRjInZx9BzMOqa5Nos=;
+	s=arc-20240116; t=1756215144; c=relaxed/simple;
+	bh=vAtccH7llEtiWC4DzRymrE39bextzu/47VunGqwEPxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUtztOZfo06F0w8HGGGES5oRCMnCOXRwq+l7mWgQp10d+NCnXpqp92tlAqfwGOjOMVyn5Al60GzjrpwuOClOz+w5TIjyrlv5WeOCBF8tPgJ+as5rwnbX4sSBXkPQdEVQkMLXQFLvHGEvlFfI+CXXOElh/8ad9Ok8EypCP/C92HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2udl2uPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F87C4CEF1;
-	Tue, 26 Aug 2025 13:11:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tCZhmgfzuZmnl4qpdX6CKOYCi+7Ez/5J716kKSH1XWuPS/apSiDl6PsMb1j/R/WovouKHJsXK9kgF5c87ZDAOBnsFW1SJbsfHhGrMIF3bLiFmeeCgJbqTxu2mMx+J9p4uWINWduULm01N5qYVmBH7cV2OCdvEMkqigYt/3eTpFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upuDgo1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15F5C4CEF1;
+	Tue, 26 Aug 2025 13:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213864;
-	bh=vyr7mK5n0/a3U4KktwWAZ/U9rbRjInZx9BzMOqa5Nos=;
+	s=korg; t=1756215144;
+	bh=vAtccH7llEtiWC4DzRymrE39bextzu/47VunGqwEPxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2udl2uPVX/UeNlsJehz0MPHIwsNU3+y+MUI2pMmmsGbEzLikip8d8bp1VeMSR5hjD
-	 uXhSIdnorUUQcLcBR32TX03FU5sXR8+c8KWIzTBFwCcpZ2HSIkuamqUxZ/g/pF4ZNJ
-	 RJLSeyWadRmqbJTjezv/AzEQapJSjg/GaoqzpVZg=
+	b=upuDgo1CLI4KvIG+Nfi7ueOBuzNUS7CnxmlWOfjUd7zWH+PTLiLsN+JdT2YQvJu42
+	 RJTy5JctJBlDO47cglMCXoX4xzDzygTKVmSNWjS7CxucN4He8M007yJy0gW/3KH6aD
+	 K+tED2jY/p+X/+QaHHBC8C9bL41kE4TsiJV4DvZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 507/587] selftests: mptcp: pm: check flush doesnt reset limits
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.1 403/482] drm/amd/display: Find first CRTC and its line time in dce110_fill_display_configs
 Date: Tue, 26 Aug 2025 13:10:56 +0200
-Message-ID: <20250826111005.885239750@linuxfoundation.org>
+Message-ID: <20250826110940.785607180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
+commit 669f73a26f6112eedbadac53a2f2707ac6d0b9c8 upstream.
 
-This modification is linked to the parent commit where the received
-ADD_ADDR limit was accidentally reset when the endpoints were flushed.
+dce110_fill_display_configs is shared between DCE 6-11, and
+finding the first CRTC and its line time is relevant to DCE 6 too.
+Move the code to find it from DCE 11 specific code.
 
-To validate that, the test is now flushing endpoints after having set
-new limits, and before checking them.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4ab09785f8d5d03df052827af073d5c508ff5f63)
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.sh, because some refactoring have been done
-  later on: commit 3188309c8ceb ("selftests: mptcp: netlink:
-  add 'limits' helpers") and commit c99d57d0007a ("selftests: mptcp: use
-  pm_nl endpoint ops") are not in this version. The same operation can
-  still be done at the same place, without using the new helper. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   30 ++++++----
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -134,6 +134,7 @@ ip netns exec $ns1 ./pm_nl_ctl limits 1
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
+@@ -120,9 +120,12 @@ void dce110_fill_display_configs(
+ 	const struct dc_state *context,
+ 	struct dm_pp_display_configuration *pp_display_cfg)
+ {
++	struct dc *dc = context->clk_mgr->ctx->dc;
+ 	int j;
+ 	int num_cfgs = 0;
  
- ip netns exec $ns1 ./pm_nl_ctl limits 8 8
-+ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
- subflows 8" "set limits"
++	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
++
+ 	for (j = 0; j < context->stream_count; j++) {
+ 		int k;
  
+@@ -164,6 +167,23 @@ void dce110_fill_display_configs(
+ 		cfg->v_refresh /= stream->timing.h_total;
+ 		cfg->v_refresh = (cfg->v_refresh + stream->timing.v_total / 2)
+ 							/ stream->timing.v_total;
++
++		/* Find first CRTC index and calculate its line time.
++		 * This is necessary for DPM on SI GPUs.
++		 */
++		if (cfg->pipe_idx < pp_display_cfg->crtc_index) {
++			const struct dc_crtc_timing *timing =
++				&context->streams[0]->timing;
++
++			pp_display_cfg->crtc_index = cfg->pipe_idx;
++			pp_display_cfg->line_time_in_us =
++				timing->h_total * 10000 / timing->pix_clk_100hz;
++		}
++	}
++
++	if (!num_cfgs) {
++		pp_display_cfg->crtc_index = 0;
++		pp_display_cfg->line_time_in_us = 0;
+ 	}
+ 
+ 	pp_display_cfg->display_count = num_cfgs;
+@@ -232,16 +252,6 @@ void dce11_pplib_apply_display_requireme
+ 
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+-	/* TODO: is this still applicable?*/
+-	if (pp_display_cfg->display_count == 1) {
+-		const struct dc_crtc_timing *timing =
+-			&context->streams[0]->timing;
+-
+-		pp_display_cfg->crtc_index =
+-			pp_display_cfg->disp_configs[0].pipe_idx;
+-		pp_display_cfg->line_time_in_us = timing->h_total * 10000 / timing->pix_clk_100hz;
+-	}
+-
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+ 		dm_pp_apply_display_requirements(dc->ctx, pp_display_cfg);
+ }
 
 
 
