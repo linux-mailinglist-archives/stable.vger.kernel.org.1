@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FF4B36371
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E667DB35B38
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDCFB465E88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FFDC7AB36D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBD91EF39E;
-	Tue, 26 Aug 2025 13:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A3293C44;
+	Tue, 26 Aug 2025 11:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKO/azkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTNZkWq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D09823D7DD;
-	Tue, 26 Aug 2025 13:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DBA2BEFF0;
+	Tue, 26 Aug 2025 11:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214376; cv=none; b=WNi4psl3A2pn57istMxqlyO9hHI+JHovymibbBlr1Ru1xnTONW3NF1PhihiwIr+cGQKjZvG40nb+Etkg44goJ6S6cMaCrdtsNNPCVHuL4W8e1AHU5AT4k+q0SCkGHA9amVdbsg5DD4wJEpe4SlPp9YrW5+GwUYyRZJpbEwPY2KQ=
+	t=1756207186; cv=none; b=oDWiPPWNbCZuVvZj75cxmcdlqL71y4hoy1zHhfr6Ju3aQTe3tVYzf0eJLd6TLXYtSoHfCXqxNL9vGk8oOkWbAbHrVbAyqjiSDSkJs2HIg10RxY2B6zSBKnbun3mGy258YJJvhI0ETzL12vxpRIbJ03HB0io9PjqTNCKfM2gpWVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214376; c=relaxed/simple;
-	bh=VUCCmcACO8l3/KyMdG7ZIVVWkyr5Rl5s3C6lMqX2dMs=;
+	s=arc-20240116; t=1756207186; c=relaxed/simple;
+	bh=xXWaWvgj6o34RA+QSQYMxEWhzbJHFq6Le8Z9OnrCu6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5I98cE9ZvY3K9MyDqF4CawpmzpBAStSh3dK47ftjve2orePW53Y5GdSTXLolAhi+uoCUhfHqx1XiC7aL5dnI0QUbLSqPcZVY4RpstDf36lVxyXITxwIKyrz2QkWbl2werGgHHqpSobGo6f3mk4zzA4vPXBmayn/OWmqdPyo9H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKO/azkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C0BC4CEF1;
-	Tue, 26 Aug 2025 13:19:35 +0000 (UTC)
+	 MIME-Version; b=BhhtSjYqeuEMSeNV6k7BGK+lj93rM9FD9TTxDIQ7xJJPT2owo5h+AN0yfe+crwjV2EziSvBDDYi6nzHZh6b/NVpzI29AiPj/FM/jnjfDzOowONJWT3IN3K20VKl8cc9NZ/gogPhty1Zp4FPSg4EeFRoB8YgAUDLAFzC3awGA2tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTNZkWq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7077EC4CEF1;
+	Tue, 26 Aug 2025 11:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214376;
-	bh=VUCCmcACO8l3/KyMdG7ZIVVWkyr5Rl5s3C6lMqX2dMs=;
+	s=korg; t=1756207185;
+	bh=xXWaWvgj6o34RA+QSQYMxEWhzbJHFq6Le8Z9OnrCu6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKO/azkS7bRs3OHTGulBAQPHYkiX4jYbFG3AXczm2F2AYh/NNTMeU+ITSg6Vccf2g
-	 InPpHij5xVseUaPxbTb3u9iFyqnSWh/RgAhHUUVkm7TEGNK+ntZ7h5zuF+FZSata2X
-	 X9jeFoQb7gctYl/wXDWkGFmwmXlwWhp9jw8deS0I=
+	b=KTNZkWq3xk5wZfo5l5Wq1+panZ9jNd7hYSt2lydX6jV2+HO2dkjKywUgybpERgv0D
+	 nYY2JOu/cT2cv1XMObaR+ofi52DceRGJLDzEPAGzM5CjhGmJhiB2H/hYAlzkN3XwUw
+	 ecD573ype3NtfLLU5WcfxVYj7/ZBNWRDUMrd55tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/482] ARM: tegra: Use I/O memcpy to write to IRAM
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.16 052/457] arm64: dts: exynos7870: add quirk to disable USB2 LPM in gadget mode
 Date: Tue, 26 Aug 2025 13:05:36 +0200
-Message-ID: <20250826110932.881495663@linuxfoundation.org>
+Message-ID: <20250826110938.638338888@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
+commit e9355e894aebcbeacffd284644749190cc5f33a4 upstream.
 
-Kasan crashes the kernel trying to check boundaries when using the
-normal memcpy.
+In gadget mode, USB connections are sluggish. The device won't send
+packets to the host unless the host sends packets to the device. For
+instance, SSH-ing through the USB network would apparently not work
+unless you're flood-pinging the device's IP.
 
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the property snps,usb2-gadget-lpm-disable to the dwc3 node, which
+seems to solve this issue.
+
+Fixes: d6f3a7f91fdb ("arm64: dts: exynos: add initial devicetree support for exynos7870")
+Cc: stable@vger.kernel.org # v6.16
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Link: https://lore.kernel.org/r/20250626-exynos7870-dts-fixes-v1-1-349987874d9a@disroot.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-tegra/reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/exynos/exynos7870.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-index d5c805adf7a8..ea706fac6358 100644
---- a/arch/arm/mach-tegra/reset.c
-+++ b/arch/arm/mach-tegra/reset.c
-@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
- 	BUG_ON(is_enabled);
- 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
+diff --git a/arch/arm64/boot/dts/exynos/exynos7870.dtsi b/arch/arm64/boot/dts/exynos/exynos7870.dtsi
+index 5cba8c9bb403..d5d347623b90 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7870.dtsi
++++ b/arch/arm64/boot/dts/exynos/exynos7870.dtsi
+@@ -327,6 +327,7 @@
+ 				phys = <&usbdrd_phy 0>;
  
--	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
-+	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
- 			tegra_cpu_reset_handler_size);
+ 				usb-role-switch;
++				snps,usb2-gadget-lpm-disable;
+ 			};
+ 		};
  
- 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
-2.39.5
+2.50.1
 
 
 
