@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA2CB362B1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25224B35DEE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F06B8A6787
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEDFD7C7620
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEC4341678;
-	Tue, 26 Aug 2025 13:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3646267386;
+	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+/UadA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ruy87f3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6A03277A4;
-	Tue, 26 Aug 2025 13:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9117321D3C0;
+	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214021; cv=none; b=F0CAsk/eN/Y/YCM2RK7TVoWICl+l96R/+TWmrWnXK9HZ7nOXWpNy28pdmmvZxRtVcEQDgY5XrHhnkK1W9j1N9eCYqXVybAVfRuYEWt9uDnno7VTi2aqn2UNSDZWTCntl+rM2IouOn/h6/fRdFHLH99gFqEOXVt18jgoK3usvtEU=
+	t=1756208934; cv=none; b=m6MfiqJ8pex/mSZNb1bVsORiJjUjsFHUz9iibtVuVtTMTEdBbJX7ERMEP/Oai7nMxQk331v2nlyeI0OomwnP0ThVUyOYDWDF1mjsN+lNnkcEMVC4Tj9V1UYAfwmpi1O83kafOMZJCccL6N+/+W+u66NuZEz1lheUOv9Nb3d9oKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214021; c=relaxed/simple;
-	bh=8jxOeEEoLIZNaJKwQXF0PuQ6CEmYAwppSBmrS7U7PY8=;
+	s=arc-20240116; t=1756208934; c=relaxed/simple;
+	bh=f6pbjHKp+jII/+V61xo8pgbXaD8pL3ChuY5cgswSGpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjOKYQ+sNw2BKT0IRgCV7jO9/9bwlZ+4CUfzyzEkQigQR+06rmcdHq4Cpw40zrX1scU0HPKTJnEk15jh+Iwj4sUP3dxVyUm+4ZZxHefMkzop2OLdEOCeTuqhVo1kMy8NFNvzqKKc0yu67Zzaa54fhzR7IOxqflaPnwa4LZfy+2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+/UadA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECB4C4CEF1;
-	Tue, 26 Aug 2025 13:13:40 +0000 (UTC)
+	 MIME-Version; b=NhAqbtT67TxEPRzDRQzrb2O+7u5fNZNAof4rr2CMGs+C+j6TywGIQmN+wSWdsWTr/zeSuzMk8XbeWVo3Hxs1sPuVX47vx08iPXGSfaoLitv5LD72F7eqahXjgs5Uy7siNPJl4cXugTDsneC91KXhdzX90nF2QHZeLNax/+JCJT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ruy87f3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BB1C4CEF1;
+	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214021;
-	bh=8jxOeEEoLIZNaJKwQXF0PuQ6CEmYAwppSBmrS7U7PY8=;
+	s=korg; t=1756208934;
+	bh=f6pbjHKp+jII/+V61xo8pgbXaD8pL3ChuY5cgswSGpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+/UadA+5T6qGuJzJ+c6OcOgBB6QguVgvUZjLQHCDUNkaBT0SUapobGIveluXK7Rb
-	 IACcQ5zOWEqSVq17dW5Mr43GBynfgbNTIbAJ0LMiXl8OTfmezVuwD8if0i7Ep2Mzvr
-	 RdjcHRR3whLIBIgWF+pO1ag2ePXryhqm4ToMqXhE=
+	b=Ruy87f3eYmELWNAf5t1nC0QXFtvOUP55puSqEt1RkU0IB0uARoYCa/wv4CVE6DExq
+	 bE3jqBu2eqiDZ9doQwRgkbbD+HaPzh7QPnPeBw1azQ7NMrKtQTbFb620V2KoGCwbtv
+	 Ss39VDGX2PMq6NBh5fwNgepXQcSKaOmEOZKxYUA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 567/587] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
+Subject: [PATCH 6.12 301/322] microchip: lan865x: fix missing Timer Increment config for Rev.B0/B1
 Date: Tue, 26 Aug 2025 13:11:56 +0200
-Message-ID: <20250826111007.455929016@linuxfoundation.org>
+Message-ID: <20250826110923.325910651@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 
-[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
+[ Upstream commit 2cd58fec912acec273cb155911ab8f06ddbb131a ]
 
-Ensure ndo_fill_forward_path() is called with RCU lock held.
+Fix missing configuration for LAN865x silicon revisions B0 and B1 as per
+Microchip Application Note AN1760 (Rev F, June 2024).
 
-Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The Timer Increment register was not being set, which is required for
+accurate timestamping. As per the application note, configure the MAC to
+set timestamping at the end of the Start of Frame Delimiter (SFD), and
+set the Timer Increment register to 40 ns (corresponding to a 25 MHz
+internal clock).
+
+Link: https://www.microchip.com/en-us/application-notes/an1760
+
+Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
+Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250818060514.52795-3-parthiban.veerasooran@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/ethernet/microchip/lan865x/lan865x.c  | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index 889fd26843e6..11e16c9e4e92 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
- 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
- 		return -1;
+diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+index d03f5a8de58d..84c41f193561 100644
+--- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
++++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+@@ -32,6 +32,10 @@
+ /* MAC Specific Addr 1 Top Reg */
+ #define LAN865X_REG_MAC_H_SADDR1	0x00010023
  
-+	rcu_read_lock();
- 	err = dev_fill_forward_path(dev, addr, &stack);
-+	rcu_read_unlock();
- 	if (err)
- 		return err;
++/* MAC TSU Timer Increment Register */
++#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x00010077
++#define MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS	0x0028
++
+ struct lan865x_priv {
+ 	struct work_struct multicast_work;
+ 	struct net_device *netdev;
+@@ -346,6 +350,21 @@ static int lan865x_probe(struct spi_device *spi)
+ 		goto free_netdev;
+ 	}
  
++	/* LAN865x Rev.B0/B1 configuration parameters from AN1760
++	 * As per the Configuration Application Note AN1760 published in the
++	 * link, https://www.microchip.com/en-us/application-notes/an1760
++	 * Revision F (DS60001760G - June 2024), configure the MAC to set time
++	 * stamping at the end of the Start of Frame Delimiter (SFD) and set the
++	 * Timer Increment reg to 40 ns to be used as a 25 MHz internal clock.
++	 */
++	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
++				    MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
++	if (ret) {
++		dev_err(&spi->dev, "Failed to config TSU Timer Incr reg: %d\n",
++			ret);
++		goto oa_tc6_exit;
++	}
++
+ 	/* As per the point s3 in the below errata, SPI receive Ethernet frame
+ 	 * transfer may halt when starting the next frame in the same data block
+ 	 * (chunk) as the end of a previous frame. The RFA field should be
 -- 
 2.50.1
 
