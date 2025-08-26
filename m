@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD74B3649C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD17B35F9D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 759897B9C80
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0038208B40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD9B22AE5D;
-	Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6451F1A00F0;
+	Tue, 26 Aug 2025 12:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9ItBcHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TTph2DS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885A24086A;
-	Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212FB11187;
+	Tue, 26 Aug 2025 12:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215618; cv=none; b=lISuldijt7bCvDATWSUZX/mC02VZNTmNZrjDFT4qapzRg6aaq/3KVqz9Hsjmv0AQdzCPWewP288F7Qvvx4sHSZKNM92ekrCnszi3Cek5Df+b3pu6EbbgZRlFwSBB7ZaEyu7cl9HnQiAf0rCWG4NTnYeprJWjWQ+N91+W2R87Qgs=
+	t=1756212636; cv=none; b=KkbJo1wW/rYrKZKlJuH2AjuH+nG73a7q7EDCmmWvVfdafWg1lFp5qXw78wm4bizkX2II0dEaUXeGHvyjU2s2ePfyT+PIHUFYhPV+sSO/eQpNvttE5fU7hDO5+4Pv6m0bW57tNYTLlIh1LaPz3ZXV5uK9qBd7QZ20Tb0L0D95r50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215618; c=relaxed/simple;
-	bh=XF2YJwzi/W3HyuGlXws/873VgTnkHZ9mIw9T4ZdDfSE=;
+	s=arc-20240116; t=1756212636; c=relaxed/simple;
+	bh=+FPu8PdlTqfEh8R7UkHlf44EaldPTNsIafR7Kc0187o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWh/efFjzKtZcoxDb3AG6aqMqLtf4398ZubDEVuY6dbzPYgv+bEZppn7WnCInKoF7kOlAn2OzCqNTLV4qUHLvZze32Ds2kq5Ulpcyj6tWjWh5kM1yBXQYjgq9Df7HYpW5/m+ZFkpYUIJhMtwd96IBDxpF+W5zmosbA9LeEYD5Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9ItBcHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB0DC4CEF1;
-	Tue, 26 Aug 2025 13:40:17 +0000 (UTC)
+	 MIME-Version; b=poTPbulMoJVf4sIZv7S4kMriMwElkDzXJc1WXaaW8bl3q/X+93/koCIAb8sAGvFSAbBoK3rSg4g8nBdAfABs35k3khcv7uxs/VOYmt5jus2kQC81GlwVoc8aJfJj6J5OmgI4Q2zS4frMrCJqFceAoKxYdjQmGJMwY9PRY38+Jig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TTph2DS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A258CC113CF;
+	Tue, 26 Aug 2025 12:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215618;
-	bh=XF2YJwzi/W3HyuGlXws/873VgTnkHZ9mIw9T4ZdDfSE=;
+	s=korg; t=1756212636;
+	bh=+FPu8PdlTqfEh8R7UkHlf44EaldPTNsIafR7Kc0187o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9ItBcHYRZYxPIiM2bcTOw+daJgUCg3bADxJuN2VzcOb7DGrSowFyh2EfPJ7N/ARK
-	 +By2QpFIQpFORFs/KXIMC+jX5HWvsqcVLSwr/K2WAV/9Ik6lKPZgHRTpp87qlx53xS
-	 YuUAuKxaMDr3/RHkJUTT2bSPF1Y7ra91jgw1pwoc=
+	b=0TTph2DST/xioTsOTxggisqus84Svukv3416RK+AGuIY6/JyxdoMxBsfegBHp6Oww
+	 MWnxcpsDIRjVou+tjaygyoxmokbm9eGMO1XNcWZrW3D3PAEo9WEMN9MmmMSsGYZ6NK
+	 FHwzJ6LMAA+e9QUU8x1ggvfIVAH6A1G9PK6QZU+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/644] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+Subject: [PATCH 6.6 044/587] KVM: x86: Move handling of is_guest_mode() into fastpath exit handlers
 Date: Tue, 26 Aug 2025 13:03:13 +0200
-Message-ID: <20250826110949.042050449@linuxfoundation.org>
+Message-ID: <20250826110954.066419547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit bec15191d52300defa282e3fd83820f69e447116 upstream.
+[ Upstream commit bf1a49436ea37b98dd2f37c57608951d0e28eecc ]
 
-This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+Let the fastpath code decide which exits can/can't be handled in the
+fastpath when L2 is active, e.g. when KVM generates a VMX preemption
+timer exit to forcefully regain control, there is no "work" to be done and
+so such exits can be handled in the fastpath regardless of whether L1 or
+L2 is active.
 
-tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
-testers can interpret the TryWait.Src to Attached.Src transition after
-Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
-to the debounce timer.
+Moving the is_guest_mode() check into the fastpath code also makes it
+easier to see that L2 isn't allowed to use the fastpath in most cases,
+e.g. it's not immediately obvious why handle_fastpath_preemption_timer()
+is called from the fastpath and the normal path.
 
-Setting the data role can be a costly operation in host mode, and when
-completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
-to fail.
-
-Turn VBUS on before tcpm_set_roles to meet timing requirement.
-
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
+Link: https://lore.kernel.org/r/20240110012705.506918-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ arch/x86/kvm/svm/svm.c | 6 +++---
+ arch/x86/kvm/vmx/vmx.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3622,17 +3622,6 @@ static int tcpm_src_attach(struct tcpm_p
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5a230be224d1..f42c6ef7dc20 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4157,6 +4157,9 @@ static int svm_vcpu_pre_run(struct kvm_vcpu *vcpu)
  
- 	tcpm_enable_auto_vbus_discharge(port, true);
+ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
++	if (is_guest_mode(vcpu))
++		return EXIT_FASTPATH_NONE;
++
+ 	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_MSR &&
+ 	    to_svm(vcpu)->vmcb->control.exit_info_1)
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+@@ -4315,9 +4318,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
  
--	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
--			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
--	if (ret < 0)
--		return ret;
+ 	svm_complete_interrupts(vcpu);
+ 
+-	if (is_guest_mode(vcpu))
+-		return EXIT_FASTPATH_NONE;
 -
--	if (port->pd_supported) {
--		ret = port->tcpc->set_pd_rx(port->tcpc, true);
--		if (ret < 0)
--			goto out_disable_mux;
--	}
--
- 	/*
- 	 * USB Type-C specification, version 1.2,
- 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
-@@ -3642,13 +3631,24 @@ static int tcpm_src_attach(struct tcpm_p
- 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
- 		ret = tcpm_set_vconn(port, true);
- 		if (ret < 0)
--			goto out_disable_pd;
-+			return ret;
- 	}
- 
- 	ret = tcpm_set_vbus(port, true);
- 	if (ret < 0)
- 		goto out_disable_vconn;
- 
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
-+			     tcpm_data_role_for_source(port));
-+	if (ret < 0)
-+		goto out_disable_vbus;
-+
-+	if (port->pd_supported) {
-+		ret = port->tcpc->set_pd_rx(port->tcpc, true);
-+		if (ret < 0)
-+			goto out_disable_mux;
-+	}
-+
- 	port->pd_capable = false;
- 
- 	port->partner = NULL;
-@@ -3658,14 +3658,14 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	return 0;
- 
--out_disable_vconn:
--	tcpm_set_vconn(port, false);
--out_disable_pd:
--	if (port->pd_supported)
--		port->tcpc->set_pd_rx(port->tcpc, false);
- out_disable_mux:
- 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
- 		     TYPEC_ORIENTATION_NONE);
-+out_disable_vbus:
-+	tcpm_set_vbus(port, false);
-+out_disable_vconn:
-+	tcpm_set_vconn(port, false);
-+
- 	return ret;
+ 	return svm_exit_handlers_fastpath(vcpu);
  }
  
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 631fdd4a575a..4c991d514015 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7258,6 +7258,9 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
+ 
+ static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
++	if (is_guest_mode(vcpu))
++		return EXIT_FASTPATH_NONE;
++
+ 	switch (to_vmx(vcpu)->exit_reason.basic) {
+ 	case EXIT_REASON_MSR_WRITE:
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+@@ -7468,9 +7471,6 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
+ 	vmx_recover_nmi_blocking(vmx);
+ 	vmx_complete_interrupts(vmx);
+ 
+-	if (is_guest_mode(vcpu))
+-		return EXIT_FASTPATH_NONE;
+-
+ 	return vmx_exit_handlers_fastpath(vcpu);
+ }
+ 
+-- 
+2.50.1
+
 
 
 
