@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8588B36C28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0EB35B76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8FC97C7A7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA6461886EEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCDA34F498;
-	Tue, 26 Aug 2025 14:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CDA340DAE;
+	Tue, 26 Aug 2025 11:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTXIzuLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPlXXUpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0CC2AD32;
-	Tue, 26 Aug 2025 14:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977E8340D9D;
+	Tue, 26 Aug 2025 11:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218638; cv=none; b=DGsWtCwTshPO5Bs2XBtDL1rzkZqa4NA6zLWDMQOEC4jIx1GOi0qmdxN3vdc2D5AieK80qXxFsQjfHA009aJ4BnYMNjg3PXSm/x/9CbHoP9Zwh+LrHlz7WyXWxhAcR7M9h0lkwV0MhXzsCt9VyRSWgavcijbLE141zxvjVZ6M/Ok=
+	t=1756207203; cv=none; b=KDHt13PCOhcsMN0pOsimZinZXScFDHAQO9hrRL83/7lravfsqkMj4V23lflwxOAn+hSzKDamaEVpyXhhzcBcXB3Re2warP38rtIc9YvFRVlhh4n6+JuJlMiRFvCrceZk8doh/VLrLVsNR6ZZ/j0zmAXWAz1mCAJWXszKFauKK4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218638; c=relaxed/simple;
-	bh=n9AQU9gmk/UeSz5TMyj1yl5zK9F4Bh12iqTHOrkLJtw=;
+	s=arc-20240116; t=1756207203; c=relaxed/simple;
+	bh=7LT1GNuW6p2RHpXR6gJKIhouCoopI6I2SbPTqFYLnxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DoO0vcsyEcJCnzOUaU/qo6Y+RoD8Ho8qtBz7vVetjKTpJKjBG86s4zdHAZchPwoB46m/GMRvjIFVm3KoqdrxkRhMxiiK+ofgUfIoYdQCmJPqU2nUUuiaJQ2norgKnr7wdnxrL5Q81Bxfm3AaRxiEYz6ZJepxd7nHwIM5lpo+wEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTXIzuLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A83AC4CEF1;
-	Tue, 26 Aug 2025 14:30:38 +0000 (UTC)
+	 MIME-Version; b=Icq6ociLvHSrmnhoZEbgtytSR4GbNAaIO2/6BrQueYHHg62kp5KZMyI/W/5VD1MxSl5AhEMpF2CYgUMxVHeTlGI9Ll6UbPrhODKl/IXw8kEmJam3ZZMBp0Lg4ohL8NmtsjQDUkJTLlhczZnmo3ieyTGqmpscLdlj0A32aAJujHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPlXXUpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F3AC4CEF1;
+	Tue, 26 Aug 2025 11:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218638;
-	bh=n9AQU9gmk/UeSz5TMyj1yl5zK9F4Bh12iqTHOrkLJtw=;
+	s=korg; t=1756207203;
+	bh=7LT1GNuW6p2RHpXR6gJKIhouCoopI6I2SbPTqFYLnxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTXIzuLz9KAqL+L4Fr/lVfPd/yJvoo+bBKqrZ9WrmtPPjiP020wtH6L6Fl2cEUymk
-	 diiOu52GC0gjP6t9pcQfKis1ouZNZX2LOOqn2wTZbTB0JPv1zDuQ3DAbzTpu6mHrsc
-	 scb7nPHTVfk1Up1z24a+Fr7OAUHN5eSAY+6/xvl4=
+	b=qPlXXUpPRH1UF95EK+l3wIN+50Ayh1VA7LET9Kq9mdHEpN0znUWVK7K85dSmQbDDu
+	 PLyzSfpTcQz+b0SG7PVpAjzOnroBVL3vbjUv+uka+u2JifLrCwGW1rpS2Jt3Ya44p9
+	 zmRMQ0pIZSvcC5fSWSzMd0IvWUWgOHVFEy7X7qLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 049/403] net_sched: sch_sfq: handle bigger packets
+	Jean-Marc Ranger <jmranger@hotmail.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.16 091/457] mtd: spi-nor: Fix spi_nor_try_unlock_all()
 Date: Tue, 26 Aug 2025 13:06:15 +0200
-Message-ID: <20250826110907.200708194@linuxfoundation.org>
+Message-ID: <20250826110939.628069558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,167 +60,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit e4650d7ae4252f67e997a632adfae0dd74d3a99a ]
+commit 2e3a7476ec3989e77270b9481e76e137824b17c0 upstream.
 
-SFQ has an assumption on dealing with packets smaller than 64KB.
+Commit ff67592cbdfc ("mtd: spi-nor: Introduce spi_nor_set_mtd_info()")
+moved all initialization of the mtd fields at the end of spi_nor_scan().
+Normally, the mtd info is only needed for the mtd ops on the device,
+with one exception: spi_nor_try_unlock_all(), which will also make use
+of the mtd->size parameter. With that commit, the size will always be
+zero because it is not initialized. Fix that by not using the size of
+the mtd_info struct, but use the size from struct spi_nor_flash_parameter.
 
-Even before BIG TCP, TCA_STAB can provide arbitrary big values
-in qdisc_pkt_len(skb)
-
-It is time to switch (struct sfq_slot)->allot to a 32bit field.
-
-sizeof(struct sfq_slot) is now 64 bytes, giving better cache locality.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20241008111603.653140-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: ff67592cbdfc ("mtd: spi-nor: Introduce spi_nor_set_mtd_info()")
+Cc: stable@vger.kernel.org
+Reported-by: Jean-Marc Ranger <jmranger@hotmail.com>
+Closes: https://lore.kernel.org/all/DM6PR06MB561177323DC5207E34AF2A06C547A@DM6PR06MB5611.namprd06.prod.outlook.com/
+Tested-by: Jean-Marc Ranger <jmranger@hotmail.com>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250701140426.2355182-1-mwalle@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_sfq.c |   39 +++++++++++++--------------------------
- 1 file changed, 13 insertions(+), 26 deletions(-)
+ drivers/mtd/spi-nor/swp.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -77,12 +77,6 @@
- #define SFQ_EMPTY_SLOT		0xffff
- #define SFQ_DEFAULT_HASH_DIVISOR 1024
- 
--/* We use 16 bits to store allot, and want to handle packets up to 64K
-- * Scale allot by 8 (1<<3) so that no overflow occurs.
-- */
--#define SFQ_ALLOT_SHIFT		3
--#define SFQ_ALLOT_SIZE(X)	DIV_ROUND_UP(X, 1 << SFQ_ALLOT_SHIFT)
--
- /* This type should contain at least SFQ_MAX_DEPTH + 1 + SFQ_MAX_FLOWS values */
- typedef u16 sfq_index;
- 
-@@ -104,7 +98,7 @@ struct sfq_slot {
- 	sfq_index	next; /* next slot in sfq RR chain */
- 	struct sfq_head dep; /* anchor in dep[] chains */
- 	unsigned short	hash; /* hash value (index in ht[]) */
--	short		allot; /* credit for this slot */
-+	int		allot; /* credit for this slot */
- 
- 	unsigned int    backlog;
- 	struct red_vars vars;
-@@ -120,7 +114,6 @@ struct sfq_sched_data {
- 	siphash_key_t 	perturbation;
- 	u8		cur_depth;	/* depth of longest slot */
- 	u8		flags;
--	unsigned short  scaled_quantum; /* SFQ_ALLOT_SIZE(quantum) */
- 	struct tcf_proto __rcu *filter_list;
- 	struct tcf_block *block;
- 	sfq_index	*ht;		/* Hash table ('divisor' slots) */
-@@ -459,7 +452,7 @@ enqueue:
- 		 */
- 		q->tail = slot;
- 		/* We could use a bigger initial quantum for new flows */
--		slot->allot = q->scaled_quantum;
-+		slot->allot = q->quantum;
- 	}
- 	if (++sch->q.qlen <= q->limit)
- 		return NET_XMIT_SUCCESS;
-@@ -496,7 +489,7 @@ next_slot:
- 	slot = &q->slots[a];
- 	if (slot->allot <= 0) {
- 		q->tail = slot;
--		slot->allot += q->scaled_quantum;
-+		slot->allot += q->quantum;
- 		goto next_slot;
- 	}
- 	skb = slot_dequeue_head(slot);
-@@ -515,7 +508,7 @@ next_slot:
- 		}
- 		q->tail->next = next_a;
- 	} else {
--		slot->allot -= SFQ_ALLOT_SIZE(qdisc_pkt_len(skb));
-+		slot->allot -= qdisc_pkt_len(skb);
- 	}
- 	return skb;
- }
-@@ -598,7 +591,7 @@ drop:
- 				q->tail->next = x;
- 			}
- 			q->tail = slot;
--			slot->allot = q->scaled_quantum;
-+			slot->allot = q->quantum;
- 		}
- 	}
- 	sch->q.qlen -= dropped;
-@@ -628,7 +621,8 @@ static void sfq_perturbation(struct time
- 		mod_timer(&q->perturb_timer, jiffies + period);
- }
- 
--static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
-+static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
-+		      struct netlink_ext_ack *extack)
+--- a/drivers/mtd/spi-nor/swp.c
++++ b/drivers/mtd/spi-nor/swp.c
+@@ -56,7 +56,6 @@ static u64 spi_nor_get_min_prot_length_s
+ static void spi_nor_get_locked_range_sr(struct spi_nor *nor, u8 sr, loff_t *ofs,
+ 					u64 *len)
  {
- 	struct sfq_sched_data *q = qdisc_priv(sch);
- 	struct tc_sfq_qopt *ctl = nla_data(opt);
-@@ -646,14 +640,10 @@ static int sfq_change(struct Qdisc *sch,
- 	    (!is_power_of_2(ctl->divisor) || ctl->divisor > 65536))
- 		return -EINVAL;
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+ 	u8 tb_mask = spi_nor_get_sr_tb_mask(nor);
+@@ -77,13 +76,13 @@ static void spi_nor_get_locked_range_sr(
+ 	min_prot_len = spi_nor_get_min_prot_length_sr(nor);
+ 	*len = min_prot_len << (bp - 1);
  
--	/* slot->allot is a short, make sure quantum is not too big. */
--	if (ctl->quantum) {
--		unsigned int scaled = SFQ_ALLOT_SIZE(ctl->quantum);
--
--		if (scaled <= 0 || scaled > SHRT_MAX)
--			return -EINVAL;
-+	if ((int)ctl->quantum < 0) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
-+		return -EINVAL;
- 	}
--
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -663,10 +653,8 @@ static int sfq_change(struct Qdisc *sch,
- 			return -ENOMEM;
- 	}
- 	sch_tree_lock(sch);
--	if (ctl->quantum) {
-+	if (ctl->quantum)
- 		q->quantum = ctl->quantum;
--		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
--	}
- 	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
- 	if (ctl->flows)
- 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-@@ -762,12 +750,11 @@ static int sfq_init(struct Qdisc *sch, s
- 	q->divisor = SFQ_DEFAULT_HASH_DIVISOR;
- 	q->maxflows = SFQ_DEFAULT_FLOWS;
- 	q->quantum = psched_mtu(qdisc_dev(sch));
--	q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
- 	q->perturb_period = 0;
- 	get_random_bytes(&q->perturbation, sizeof(q->perturbation));
+-	if (*len > mtd->size)
+-		*len = mtd->size;
++	if (*len > nor->params->size)
++		*len = nor->params->size;
  
- 	if (opt) {
--		int err = sfq_change(sch, opt);
-+		int err = sfq_change(sch, opt, extack);
- 		if (err)
- 			return err;
- 	}
-@@ -878,7 +865,7 @@ static int sfq_dump_class_stats(struct Q
- 	if (idx != SFQ_EMPTY_SLOT) {
- 		const struct sfq_slot *slot = &q->slots[idx];
+ 	if (nor->flags & SNOR_F_HAS_SR_TB && sr & tb_mask)
+ 		*ofs = 0;
+ 	else
+-		*ofs = mtd->size - *len;
++		*ofs = nor->params->size - *len;
+ }
  
--		xstats.allot = slot->allot << SFQ_ALLOT_SHIFT;
-+		xstats.allot = slot->allot;
- 		qs.qlen = slot->qlen;
- 		qs.backlog = slot->backlog;
- 	}
+ /*
+@@ -158,7 +157,6 @@ static bool spi_nor_is_unlocked_sr(struc
+  */
+ static int spi_nor_sr_lock(struct spi_nor *nor, loff_t ofs, u64 len)
+ {
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	int ret, status_old, status_new;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+@@ -183,7 +181,7 @@ static int spi_nor_sr_lock(struct spi_no
+ 		can_be_bottom = false;
+ 
+ 	/* If anything above us is unlocked, we can't use 'top' protection */
+-	if (!spi_nor_is_locked_sr(nor, ofs + len, mtd->size - (ofs + len),
++	if (!spi_nor_is_locked_sr(nor, ofs + len, nor->params->size - (ofs + len),
+ 				  status_old))
+ 		can_be_top = false;
+ 
+@@ -195,11 +193,11 @@ static int spi_nor_sr_lock(struct spi_no
+ 
+ 	/* lock_len: length of region that should end up locked */
+ 	if (use_top)
+-		lock_len = mtd->size - ofs;
++		lock_len = nor->params->size - ofs;
+ 	else
+ 		lock_len = ofs + len;
+ 
+-	if (lock_len == mtd->size) {
++	if (lock_len == nor->params->size) {
+ 		val = mask;
+ 	} else {
+ 		min_prot_len = spi_nor_get_min_prot_length_sr(nor);
+@@ -248,7 +246,6 @@ static int spi_nor_sr_lock(struct spi_no
+  */
+ static int spi_nor_sr_unlock(struct spi_nor *nor, loff_t ofs, u64 len)
+ {
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	int ret, status_old, status_new;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+@@ -273,7 +270,7 @@ static int spi_nor_sr_unlock(struct spi_
+ 		can_be_top = false;
+ 
+ 	/* If anything above us is locked, we can't use 'bottom' protection */
+-	if (!spi_nor_is_unlocked_sr(nor, ofs + len, mtd->size - (ofs + len),
++	if (!spi_nor_is_unlocked_sr(nor, ofs + len, nor->params->size - (ofs + len),
+ 				    status_old))
+ 		can_be_bottom = false;
+ 
+@@ -285,7 +282,7 @@ static int spi_nor_sr_unlock(struct spi_
+ 
+ 	/* lock_len: length of region that should remain locked */
+ 	if (use_top)
+-		lock_len = mtd->size - (ofs + len);
++		lock_len = nor->params->size - (ofs + len);
+ 	else
+ 		lock_len = ofs;
+ 
 
 
 
