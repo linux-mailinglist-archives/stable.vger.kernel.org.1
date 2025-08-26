@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BEAB360F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EB7B363C0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B29552A2448
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C999B8A1598
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46C91C4A2D;
-	Tue, 26 Aug 2025 13:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C731D3093BA;
+	Tue, 26 Aug 2025 13:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgGwIlOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L42pQzR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FED0FBF0;
-	Tue, 26 Aug 2025 13:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8612B28FD;
+	Tue, 26 Aug 2025 13:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213333; cv=none; b=E64vR25w+TAs9beFY14iLgwwVwGVHolyicGUM7oV2sSM/HxmffWMWK8Ea8WzW52ArPwrFPi8Gpy96Tov6CDeejnRvdlpt53cPDr7tdbPXhTGDNzNF6aeIqC6rJZyRv9PaAVbsO+zfRX25XwbyTPY7OiAA4LuttcXWN/q/p5CbRI=
+	t=1756214617; cv=none; b=MGUQ/veO6EDzaZ01GCAlX91G6n85wI9e+ammdmtSLJa6CjSUk0t+nGrClwaJyGo+SoMGzsWEEZr4rU2GwhnWGJ9tLmfy7Q0nj3svHcyh+0VTDGWftFJbAxfjfhlJ+3kM5PdHexqrH8wVWaF7Hw+jXSJCgJ3GqcF5rN4l2OFTLvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213333; c=relaxed/simple;
-	bh=gXGK+TpaPHnwBD7xPyoN2yJpydheS0Mu4gPFRwV2JLw=;
+	s=arc-20240116; t=1756214617; c=relaxed/simple;
+	bh=Id7lRayrjsCjfeKGgTWa3twZvqAaWFR47CJZGaDzdSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOp1N7NGviGN8uM74pAVszHEK5wiqgfg/pNbgloW+5uym89R/2XRsVv/ejzfSVgMTNAb64EcS2C8toRf5sOZCQaYX8dBXFgOfq6hRY44odncC1awV5Dj7InsXknjP6rMD9Sq0f+RLvMp/Th1jw4vPzKF6Ryrpcl+Tl8AxjhEE1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgGwIlOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EDAC4CEF1;
-	Tue, 26 Aug 2025 13:02:12 +0000 (UTC)
+	 MIME-Version; b=FcMK3FUdqd7YIVzEQvgKFgQdT3UEpEnhaOkNFOsbXK4kZc7hWctUx9kmP/qmqG7JiMekvl8j6g9/UiA4eorXkBNFWJQ1XvUarEUP4i8eVDr7TMW7DVP8M1fhFO1TN3rbQl+prUtH/mFrJ5VV2ceLhskc2N6nw8S28znbdovxGvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L42pQzR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EFFC4CEF1;
+	Tue, 26 Aug 2025 13:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213333;
-	bh=gXGK+TpaPHnwBD7xPyoN2yJpydheS0Mu4gPFRwV2JLw=;
+	s=korg; t=1756214617;
+	bh=Id7lRayrjsCjfeKGgTWa3twZvqAaWFR47CJZGaDzdSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgGwIlOUSBUHDJib4M2qwL+yQYWvfE5r1k028tbkPaihfRg2vqE9WgLVC6t4EHL36
-	 X6lMa9CJAGoOSkMKYsPgKegcIlcwCTj+oALUgZ33e+E5hbNetB/a7qvsmkYxByk3H9
-	 KWZeNFBrvyk+OfcGPhppF5/MKwGYoJ4ZaIUiyh+A=
+	b=L42pQzR/4BBu/TvSsoTYAq6AIdWJqTkaIsT7TusEZaH8H1vsqHOQc92CvjSLZLL86
+	 9tZfYP0G7NT8efCF4Weky//5DVf04KggR83p2ekY8/e+Bwvie9pIJkLutmdjrJ5NA2
+	 x83yYytNZlirgKimLU8ZAcQqPT+pyIPuTdlWyszc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 309/587] btrfs: zoned: use filesystem size not disk size for reclaim decision
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 205/482] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Tue, 26 Aug 2025 13:07:38 +0200
-Message-ID: <20250826111000.780053243@linuxfoundation.org>
+Message-ID: <20250826110935.852349668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 55f7c65b2f69c7e4cb7aa7c1654a228ccf734fd8 upstream.
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-When deciding if a zoned filesystem is reaching the threshold to reclaim
-data block groups, look at the size of the filesystem not to potentially
-total available size of all drives in the filesystem.
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-Especially if a filesystem was created with mkfs' -b option, constraining
-it to only a portion of the block device, the numbers won't match and
-potentially garbage collection is kicking in too late.
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Fixes: 3687fcb0752a ("btrfs: zoned: make auto-reclaim less aggressive")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2350,8 +2350,8 @@ bool btrfs_zoned_should_reclaim(struct b
- {
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
- 	struct btrfs_device *device;
-+	u64 total = btrfs_super_total_bytes(fs_info->super_copy);
- 	u64 used = 0;
--	u64 total = 0;
- 	u64 factor;
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index aae8335644f3..f40bc835649c 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2198,6 +2198,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
  
- 	ASSERT(btrfs_is_zoned(fs_info));
-@@ -2364,7 +2364,6 @@ bool btrfs_zoned_should_reclaim(struct b
- 		if (!device->bdev)
- 			continue;
+ 	while (n_overflow == 1 && i) {
+@@ -2217,6 +2219,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1, n_empty = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
  
--		total += device->disk_total_bytes;
- 		used += device->bytes_used;
- 	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+-- 
+2.39.5
+
 
 
 
