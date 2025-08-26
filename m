@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA72B367BB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8272B369D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA811BC71DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422858A5F11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14F434DCCE;
-	Tue, 26 Aug 2025 13:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFC635208F;
+	Tue, 26 Aug 2025 14:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxPa29Bb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbQPpL+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF933431FE;
-	Tue, 26 Aug 2025 13:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5EC352087;
+	Tue, 26 Aug 2025 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216648; cv=none; b=hoDS+L9a+QIqQ7DgUAxniCuQzsxCXnNaFfbBGwQxvk2H9B496yRf4ma7eMnaM5u88QAUUF9z0jw1koVXBDE4ze/s5CyBbK1Mq03eqRMBqHC1+VaLYOFMsC3wBcUrfsSkfWw9eYHuOIKCjlfvBudJb2dDeZFhSSIayf8+IARZ0SU=
+	t=1756218128; cv=none; b=LiIF4+MTy2GkXiE+BTseY6ih1Si7ehlvu7nFpXTM70k1w6pj3CwMTCUAR9RzCD8pozChFQCxzbr8itooeysiZ3YBRBmaH95D6W9ZrKXQwCCQq4GehCfNNK0pyq2FCK57fGfiFPjuM9KkxmEwPVMKU4vyX2Bm1AiOILD7aYZ7+pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216648; c=relaxed/simple;
-	bh=K0wbHUL/VIIOOZw8nTaIZtrjPPknmWCEEhxZ8AibgfY=;
+	s=arc-20240116; t=1756218128; c=relaxed/simple;
+	bh=TIioFO/Pv/U1feqgaSu3j3AmzntXSf0WdudFj0N77Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njqE0MIAEuEezuDIizCW52RN4xtaNiWSNMZ4c1RKVEnOrtqMgOk5ByYtXJTMgUC4BDZ5OFEoyx5NAHr+5qqRwiLHOMj6szow6MYluVM5kHuORxd9GWydlDDmyzTprKKNPW5X8K2r6WZAffu0N4e6aWM8mJ8GZXAPj3TJVCANWMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxPa29Bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EBBC4CEF1;
-	Tue, 26 Aug 2025 13:57:27 +0000 (UTC)
+	 MIME-Version; b=Lo88+yRwsjuik0GNfRcfC8/YLKOZaea4fLWIg+JBkUnpOEl6lBEmn9aVGvK6rrzPZZHuKYBdziOIxWUGFpnUjRvQ/SHHkWeV2AHwLvn0mmnueXVTKgVCLOILN8DSTyKKbe8W9gAk7iIWkO0oOozgH70sz1iNSsL1LqnCXYzQHcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbQPpL+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656FCC4CEF1;
+	Tue, 26 Aug 2025 14:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216648;
-	bh=K0wbHUL/VIIOOZw8nTaIZtrjPPknmWCEEhxZ8AibgfY=;
+	s=korg; t=1756218127;
+	bh=TIioFO/Pv/U1feqgaSu3j3AmzntXSf0WdudFj0N77Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxPa29Bbl6iZZUF2TE3O2VXl0Q7tRMkdhtTY6IEF+KWtdxVaeTucl5SwVNR8cXTIR
-	 Y7Wd6HpuXnhpCmbEvXTWSS/AzQWd6BA8nNhI6LX8YL7jd608U5KdT5xJFzxu97fOtP
-	 H2rMr2MQgRTgoYu/O0ZbB0ZIgyIc9X7t15wWYmfA=
+	b=TbQPpL+1cI0+IhLsVyWt6ihnRGc8N/PG1Oz80uhhwAJddYGFuwsg2hJ2IWMtKBqD7
+	 yXR/dTMZ8ZiP1p7TfcIP5UrRvTyvCLQpSE6LtSNSEmW32gKrMZEB9RCVjq7m7bAU1u
+	 97BcXhzyF2C3nD7RSPXkfDoWaXsvXIUlVqmrjVMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludwig Disterhof <ludwig@disterhof.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 490/644] media: usbtv: Lock resolution while streaming
-Date: Tue, 26 Aug 2025 13:09:41 +0200
-Message-ID: <20250826110958.635596035@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 372/523] mtd: rawnand: fsmc: Add missing check after DMA map
+Date: Tue, 26 Aug 2025 13:09:42 +0200
+Message-ID: <20250826110933.642820950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludwig Disterhof <ludwig@disterhof.eu>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
+commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
 
-When an program is streaming (ffplay) and another program (qv4l2)
-changes the TV standard from NTSC to PAL, the kernel crashes due to trying
-to copy to unmapped memory.
+The DMA map functions can fail and should be tested for errors.
 
-Changing from NTSC to PAL increases the resolution in the usbtv struct,
-but the video plane buffer isn't adjusted, so it overflows.
-
-Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
+Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/usb/usbtv/usbtv-video.c
-+++ b/drivers/media/usb/usbtv/usbtv-video.c
-@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
- 	}
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -492,6 +492,8 @@ static int dma_xfer(struct fsmc_nand_dat
  
- 	if (params) {
-+		if (vb2_is_busy(&usbtv->vb2q) &&
-+		    (usbtv->width != params->cap_width ||
-+		     usbtv->height != params->cap_height))
-+			return -EBUSY;
- 		usbtv->width = params->cap_width;
- 		usbtv->height = params->cap_height;
- 		usbtv->n_chunks = usbtv->width * usbtv->height
+ 	dma_dev = chan->device;
+ 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
++	if (dma_mapping_error(dma_dev->dev, dma_addr))
++		return -EINVAL;
+ 
+ 	if (direction == DMA_TO_DEVICE) {
+ 		dma_src = dma_addr;
 
 
 
