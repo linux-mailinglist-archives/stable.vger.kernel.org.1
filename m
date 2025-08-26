@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-172994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C786EB35B34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102B2B36019
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3862D3B4DD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 499827B6C99
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E15F299959;
-	Tue, 26 Aug 2025 11:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308661F12F4;
+	Tue, 26 Aug 2025 12:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfxfG8bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oItyWgd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56E33436C;
-	Tue, 26 Aug 2025 11:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B261F4717;
+	Tue, 26 Aug 2025 12:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207098; cv=none; b=BZNNefqDC1+P/n0dP77ZqB0IbCJNyroGLsE2BWGYBnd8RvaSWXKZbqhn3+1pTD+Kktmta5+Kz73wEOzaFPD5JvSpKiMshS5aV/HBeW0FrDk7St9D8ZG1giI4+ONQzQcsfSZ6PUOYGlh7HODRUmz85m0O+EQa68g4KWTI4NnWrb8=
+	t=1756212975; cv=none; b=hdJMnrYhn73Gfzvq1iBpCLidMh342O/T/6+UbouUbfr98RngAvSZuzIeOSU6BK3bKyZ3sl2sy5qKBeUu6GmVna8gE0HK3FUU6gL0OWp+MI8alWggX9pmLr16SHze67qivNh0hYjOGZ2BIa0t/4sRjrcJ9LHtHMhKuqoxLJy6MUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207098; c=relaxed/simple;
-	bh=cUI7rYYBST0RVbY7EPRRYqz318BfyjcTNTGD2JtZL0U=;
+	s=arc-20240116; t=1756212975; c=relaxed/simple;
+	bh=EXdzbBHG7bpiOHj+TL7QZvM/8+d4/yfqvfUYWXMempc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvN3mEAsTwR9yLu0yIuTtgGHC5WVua3zlh/I2OxwwRSZOTc6Lb7aDdOTZCXXzcMmCVNyvQeXEaRJCSfYJI1le1AEbis5cfwJfQhgYwlSiL5PuVTKU7pBVz7SAJU3bKWISZF2p9Ui+wfs4ZWzE3d4dM1sc/OtF7UvwU2iqs8HILk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfxfG8bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417F9C4CEF1;
-	Tue, 26 Aug 2025 11:18:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lLuQda8ExbdgacCX+1NRUAkFxuqTfd0W6NHzuEnNx+eojx02kws+AwfYCxrNEC6By1rG9fCGpwJ+k+PFgERJW0YRWTeMSTMe+69ZSxqviuD/XaHIKl8HwLnWV/fX7ueJhM8m1Nb+WqYyKzlcjem5TK4MMpi67kD9OosFtg+FeBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oItyWgd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C68AC4CEF1;
+	Tue, 26 Aug 2025 12:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207098;
-	bh=cUI7rYYBST0RVbY7EPRRYqz318BfyjcTNTGD2JtZL0U=;
+	s=korg; t=1756212974;
+	bh=EXdzbBHG7bpiOHj+TL7QZvM/8+d4/yfqvfUYWXMempc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfxfG8bvsM/wD3HoizCmsxrB6GBazvvxuM6m/ElXDcQOw2hIRlgstvVD2nvPVYDa7
-	 1VkQfFu9tWufu/TF7l3MHnE5cXw8fxwBuz71eXtkn52R+v+q00zWQDBsmt9O3KlPWF
-	 GiA3BfGz13voMlz8SBg4xsXMXRrC0xiVN1T37rm4=
+	b=oItyWgd8iOGypwd8kzIHvVDQBsJw+NV8QvI9mvzvjTXGpThaBeNHZIfl/1N08hfT0
+	 xOJQqlAsqezhX8NBsvcCTorLSbY4KG0u7O/p7QakLq6vAXjGfR7/0JoMZ0+hmDBKJ/
+	 z9krRDYV+egwQIMI0yNzJQh9vIbOijt6cW9ey97E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.16 020/457] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
-Date: Tue, 26 Aug 2025 13:05:04 +0200
-Message-ID: <20250826110937.830125943@linuxfoundation.org>
+	Oscar Maes <oscmaes92@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/587] net: ipv4: fix incorrect MTU in broadcast routes
+Date: Tue, 26 Aug 2025 13:05:05 +0200
+Message-ID: <20250826110956.917972522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
+[ Upstream commit 9e30ecf23b1b8f091f7d08b27968dea83aae7908 ]
 
-The MIPS32r2 ChaCha code has never been buildable with the clang
-assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
+Currently, __mkroute_output overrules the MTU value configured for
+broadcast routes.
 
-    error: unknown instruction, did you mean: rol, rotr?
+This buggy behaviour can be reproduced with:
 
-Second, clang requires that both operands of the 'wsbh' instruction be
-explicitly given:
+ip link set dev eth1 mtu 9000
+ip route del broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2
+ip route add broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2 mtu 1500
 
-    error: too few operands for instruction
+The maximum packet size should be 1500, but it is actually 8000:
 
-To fix this, align the code with the real instruction set by (1) using
-the real instruction 'rotr' instead of the nonstandard pseudo-
-instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+ping -b 192.168.0.255 -s 8000
 
-To make removing the use of 'rotl' a bit easier, also remove the
-unnecessary special-casing for big endian CPUs at
-.Lchacha_mips_xor_bytes.  The tail handling is actually
-endian-independent since it processes one byte at a time.  On big endian
-CPUs the old code byte-swapped SAVED_X, then iterated through it in
-reverse order.  But the byteswap and reverse iteration canceled out.
+Fix __mkroute_output to allow MTU values to be configured for
+for broadcast routes (to support a mixed-MTU local-area-network).
 
-Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
-little endian and big endian mips32r2 kernels.
-
-Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
-Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Link: https://patch.msgid.link/20250710142714.12986-1-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lib/crypto/chacha-core.S |   20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ net/ipv4/route.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/mips/lib/crypto/chacha-core.S
-+++ b/arch/mips/lib/crypto/chacha-core.S
-@@ -55,17 +55,13 @@
- #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
- #define MSB 0
- #define LSB 3
--#define ROTx rotl
--#define ROTR(n) rotr n, 24
- #define	CPU_TO_LE32(n) \
--	wsbh	n; \
-+	wsbh	n, n; \
- 	rotr	n, 16;
- #else
- #define MSB 3
- #define LSB 0
--#define ROTx rotr
- #define CPU_TO_LE32(n)
--#define ROTR(n)
- #endif
- 
- #define FOR_EACH_WORD(x) \
-@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
- 	xor	X(W), X(B); \
- 	xor	X(Y), X(C); \
- 	xor	X(Z), X(D); \
--	rotl	X(V), S;    \
--	rotl	X(W), S;    \
--	rotl	X(Y), S;    \
--	rotl	X(Z), S;
-+	rotr	X(V), 32 - S; \
-+	rotr	X(W), 32 - S; \
-+	rotr	X(Y), 32 - S; \
-+	rotr	X(Z), 32 - S;
- 
- .text
- .set	reorder
-@@ -372,21 +368,19 @@ chacha_crypt_arch:
- 	/* First byte */
- 	lbu	T1, 0(IN)
- 	addiu	$at, BYTES, 1
--	CPU_TO_LE32(SAVED_X)
--	ROTR(SAVED_X)
- 	xor	T1, SAVED_X
- 	sb	T1, 0(OUT)
- 	beqz	$at, .Lchacha_mips_xor_done
- 	/* Second byte */
- 	lbu	T1, 1(IN)
- 	addiu	$at, BYTES, 2
--	ROTx	SAVED_X, 8
-+	rotr	SAVED_X, 8
- 	xor	T1, SAVED_X
- 	sb	T1, 1(OUT)
- 	beqz	$at, .Lchacha_mips_xor_done
- 	/* Third byte */
- 	lbu	T1, 2(IN)
--	ROTx	SAVED_X, 8
-+	rotr	SAVED_X, 8
- 	xor	T1, SAVED_X
- 	sb	T1, 2(OUT)
- 	b	.Lchacha_mips_xor_done
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 6ee77f7f9114..8672ebbace98 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2560,7 +2560,6 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 	do_cache = true;
+ 	if (type == RTN_BROADCAST) {
+ 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
+-		fi = NULL;
+ 	} else if (type == RTN_MULTICAST) {
+ 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
+ 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
+-- 
+2.39.5
+
 
 
 
