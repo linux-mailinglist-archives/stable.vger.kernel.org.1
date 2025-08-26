@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A430B36468
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE5CB3616C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABCED8E1ECB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA6B1881F36
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6589023817D;
-	Tue, 26 Aug 2025 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B54299959;
+	Tue, 26 Aug 2025 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SATdMGII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1TazvvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219C81FBCB5;
-	Tue, 26 Aug 2025 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73927243946;
+	Tue, 26 Aug 2025 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214901; cv=none; b=dXPWOwL38Ezx9NJMvauBDYz7lrVZrTiDwn8UAc/z5H0qK8jpQYuyyHgaleNDkmbSg+xsR0s2vd6mF/8ZhhgOBWIXz1TG8jPNnLX35SmjmOtkfdgCBA+SXAzZmsuQCM1jmFkjt8ulfx476+dJDhQaR3cz+WtcoO//+4OzEsdoyeQ=
+	t=1756213549; cv=none; b=pE9Ppvbrxnug+rjhV8dJE3zNHLK0wZLrPl7/uNulMftDb5zT36Wi0so6uhOaLhR3QaBagnfkgWLATirVAOMe4DsQZnLZwIc9v23Gj+qvldYmtEtCNXAnMjePgZMeBtbliV/9Y9hCoPapG9OFe8kV6/k35hGQ8IM3NsqfkGhxDLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214901; c=relaxed/simple;
-	bh=N1dewOGJXQJ2xe1zxismJUzJamfT9e/6TlDgrbrNYe8=;
+	s=arc-20240116; t=1756213549; c=relaxed/simple;
+	bh=diJnoiesu62q3glIOGZ7Cq30RqS326sVTqMBsVfysO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZ76mSNm2DRwhUMZhx7vbJOGyv/aFNkkc+PWPD64oGDZpNKruz45K6/5vPOSfxJhyxGPncqMtgX/LhxP+LF2hTyivZN+nnrH7X6Bh+NufTUQK3JuuQ92E+KIrRAxJe1mbOELQN7wyQav7BnBR5YdvCnsjq9t6sQxyRZSVGaj4sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SATdMGII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8706C113D0;
-	Tue, 26 Aug 2025 13:28:20 +0000 (UTC)
+	 MIME-Version; b=Tf9Kz+AQqupIWN7bTPiWGn1rQVUZFkemBpYYEr4njwVTIuIbB3mvYGYPKgpVfoMwWpAT16Z8dqfYghDKmmgPZNG5RDZdXdMiC2vYQIDF2BigXuvqzQTrCwybxm2wRcRzufx/YeVeIT1UFAITMUQhrL4hFvdwfc0K3DC9P6hu5zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1TazvvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EF0C4CEF1;
+	Tue, 26 Aug 2025 13:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214901;
-	bh=N1dewOGJXQJ2xe1zxismJUzJamfT9e/6TlDgrbrNYe8=;
+	s=korg; t=1756213549;
+	bh=diJnoiesu62q3glIOGZ7Cq30RqS326sVTqMBsVfysO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SATdMGIIEhznwxGtdyWf4N13PBSMF5jtrTnVg1IGe8mjr1LltSbLImyOF2/06jCvh
-	 dxTPxYMVkGZJgdA56aEZPZFabEw5B5GuSN9QxPdq7VViNuEj00qvtVda7Y+Ia5m+/4
-	 KKJAzThxasdWED6iSOWMjbQ/ZcDDGz3Nv3u3qEv8=
+	b=u1TazvvMvQ/x00VdNt1bp6ijEdKlT3u3JjraTSwIilWyJ0xs/MUF1jxng3HYiGsll
+	 vZfJuOzVxiTj5/wVZloH/QnAFLbduq0lcuX409je3ADi31XycZf89V+Onr4YAq17so
+	 O+9SbtR+ZZfxqUu2tYL2uzkvxubClgjLU4MLWEYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Qu Wenruo <wqu@suse.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 285/482] ext4: fix hole length calculation overflow in non-extent inodes
-Date: Tue, 26 Aug 2025 13:08:58 +0200
-Message-ID: <20250826110937.831022100@linuxfoundation.org>
+Subject: [PATCH 6.6 390/587] jbd2: prevent softlockup in jbd2_log_do_checkpoint()
+Date: Tue, 26 Aug 2025 13:08:59 +0200
+Message-ID: <20250826111002.837240046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 02c7f7219ac0e2277b3379a3a0e9841ef464b6d4 upstream.
+commit 9d98cf4632258720f18265a058e62fde120c0151 upstream.
 
-In a filesystem with a block size larger than 4KB, the hole length
-calculation for a non-extent inode in ext4_ind_map_blocks() can easily
-exceed INT_MAX. Then it could return a zero length hole and trigger the
-following waring and infinite in the iomap infrastructure.
+Both jbd2_log_do_checkpoint() and jbd2_journal_shrink_checkpoint_list()
+periodically release j_list_lock after processing a batch of buffers to
+avoid long hold times on the j_list_lock. However, since both functions
+contend for j_list_lock, the combined time spent waiting and processing
+can be significant.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 3 PID: 434101 at fs/iomap/iter.c:34 iomap_iter_done+0x148/0x190
-  CPU: 3 UID: 0 PID: 434101 Comm: fsstress Not tainted 6.16.0-rc7+ #128 PREEMPT(voluntary)
-  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : iomap_iter_done+0x148/0x190
-  lr : iomap_iter+0x174/0x230
-  sp : ffff8000880af740
-  x29: ffff8000880af740 x28: ffff0000db8e6840 x27: 0000000000000000
-  x26: 0000000000000000 x25: ffff8000880af830 x24: 0000004000000000
-  x23: 0000000000000002 x22: 000001bfdbfa8000 x21: ffffa6a41c002e48
-  x20: 0000000000000001 x19: ffff8000880af808 x18: 0000000000000000
-  x17: 0000000000000000 x16: ffffa6a495ee6cd0 x15: 0000000000000000
-  x14: 00000000000003d4 x13: 00000000fa83b2da x12: 0000b236fc95f18c
-  x11: ffffa6a4978b9c08 x10: 0000000000001da0 x9 : ffffa6a41c1a2a44
-  x8 : ffff8000880af5c8 x7 : 0000000001000000 x6 : 0000000000000000
-  x5 : 0000000000000004 x4 : 000001bfdbfa8000 x3 : 0000000000000000
-  x2 : 0000000000000000 x1 : 0000004004030000 x0 : 0000000000000000
-  Call trace:
-   iomap_iter_done+0x148/0x190 (P)
-   iomap_iter+0x174/0x230
-   iomap_fiemap+0x154/0x1d8
-   ext4_fiemap+0x110/0x140 [ext4]
-   do_vfs_ioctl+0x4b8/0xbc0
-   __arm64_sys_ioctl+0x8c/0x120
-   invoke_syscall+0x6c/0x100
-   el0_svc_common.constprop.0+0x48/0xf0
-   do_el0_svc+0x24/0x38
-   el0_svc+0x38/0x120
-   el0t_64_sync_handler+0x10c/0x138
-   el0t_64_sync+0x198/0x1a0
-  ---[ end trace 0000000000000000 ]---
+jbd2_journal_shrink_checkpoint_list() explicitly calls cond_resched() when
+need_resched() is true to avoid softlockups during prolonged operations.
+But jbd2_log_do_checkpoint() only exits its loop when need_resched() is
+true, relying on potentially sleeping functions like __flush_batch() or
+wait_on_buffer() to trigger rescheduling. If those functions do not sleep,
+the kernel may hit a softlockup.
+
+watchdog: BUG: soft lockup - CPU#3 stuck for 156s! [kworker/u129:2:373]
+CPU: 3 PID: 373 Comm: kworker/u129:2 Kdump: loaded Not tainted 6.6.0+ #10
+Hardware name: Huawei TaiShan 2280 /BC11SPCD, BIOS 1.27 06/13/2017
+Workqueue: writeback wb_workfn (flush-7:2)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : native_queued_spin_lock_slowpath+0x358/0x418
+lr : jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+Call trace:
+ native_queued_spin_lock_slowpath+0x358/0x418
+ jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+ __jbd2_log_wait_for_space+0xfc/0x2f8 [jbd2]
+ add_transaction_credits+0x3bc/0x418 [jbd2]
+ start_this_handle+0xf8/0x560 [jbd2]
+ jbd2__journal_start+0x118/0x228 [jbd2]
+ __ext4_journal_start_sb+0x110/0x188 [ext4]
+ ext4_do_writepages+0x3dc/0x740 [ext4]
+ ext4_writepages+0xa4/0x190 [ext4]
+ do_writepages+0x94/0x228
+ __writeback_single_inode+0x48/0x318
+ writeback_sb_inodes+0x204/0x590
+ __writeback_inodes_wb+0x54/0xf8
+ wb_writeback+0x2cc/0x3d8
+ wb_do_writeback+0x2e0/0x2f8
+ wb_workfn+0x80/0x2a8
+ process_one_work+0x178/0x3e8
+ worker_thread+0x234/0x3b8
+ kthread+0xf0/0x108
+ ret_from_fork+0x10/0x20
+
+So explicitly call cond_resched() in jbd2_log_do_checkpoint() to avoid
+softlockup.
 
 Cc: stable@kernel.org
-Fixes: facab4d9711e ("ext4: return hole from ext4_map_blocks()")
-Reported-by: Qu Wenruo <wqu@suse.com>
-Closes: https://lore.kernel.org/linux-ext4/9b650a52-9672-4604-a765-bb6be55d1e4a@gmx.com/
-Tested-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250811064532.1788289-1-yi.zhang@huaweicloud.com
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250812063752.912130-1-libaokun@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/indirect.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/jbd2/checkpoint.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -539,7 +539,7 @@ int ext4_ind_map_blocks(handle_t *handle
- 	int indirect_blks;
- 	int blocks_to_boundary = 0;
- 	int depth;
--	int count = 0;
-+	u64 count = 0;
- 	ext4_fsblk_t first_block = 0;
- 
- 	trace_ext4_ind_map_blocks_enter(inode, map->m_lblk, map->m_len, flags);
-@@ -588,7 +588,7 @@ int ext4_ind_map_blocks(handle_t *handle
- 		count++;
- 		/* Fill in size of a hole we found */
- 		map->m_pblk = 0;
--		map->m_len = min_t(unsigned int, map->m_len, count);
-+		map->m_len = umin(map->m_len, count);
- 		goto cleanup;
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -285,6 +285,7 @@ restart:
+ 		retry:
+ 			if (batch_count)
+ 				__flush_batch(journal, &batch_count);
++			cond_resched();
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
  	}
- 
 
 
 
