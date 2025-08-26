@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B144B368AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11D6B365C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F921C41997
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE0A8E1AF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676CC352098;
-	Tue, 26 Aug 2025 14:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCE92F60C1;
+	Tue, 26 Aug 2025 13:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUFgYrPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9tlZ5w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2563A22DFA7;
-	Tue, 26 Aug 2025 14:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9372D0621;
+	Tue, 26 Aug 2025 13:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217153; cv=none; b=SEXbUZDTHe0NPa2zo9c++RyniTPj2t/hz27AtkMInq7Fa42cJMv62witEbIu756yaxiVYVnyhhiwDU41FYYsIdkRvT7RERk2Xj0dIHD09Zc0V6UpIoGNAYG0gG9XEpEE4NbPTmWEp6vWVl+eky0oy3GXQhBnjw8mDxkO0Tmnut0=
+	t=1756215770; cv=none; b=UYB7y4mz11aMTrVZLg+0JfkGbmN3Y9JJzMR4U+tFduPRZTNH7ghS1/Q15X28PbfWWlOHTodm1FBC64vb/W8Kc82hGWbRzTNRoGGFe52y8a9LNaB6S2ecv4LNfmk3K6XkHeHmp40SwoF0szawflPfVw4J4z7f7DPXNGB9d2YBykM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217153; c=relaxed/simple;
-	bh=tnoxT/UjLfWKQ1og+KhiQZTeQeRU6IxUGlMRtt+mt4s=;
+	s=arc-20240116; t=1756215770; c=relaxed/simple;
+	bh=P81NQE8H2QXTth/YMFq6WzFaL1SwZDOChDRW7Vo/THo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrPl8kdWpEGzUJS0MjVzUXyZ2+KFWS+N570fzdhs9q8ave589dtBe/zQ35Kgo6yMhIDYNRQf/4DVvE4LSBKqrRT5yiLFml6m4E+z7TQcFpSxZJz7d+igX0kVPnWEimRaj3eWE1eqQvR6js9x/nqiANUpPi+2WLxlU82tiex4in4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUFgYrPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8692C4CEF1;
-	Tue, 26 Aug 2025 14:05:52 +0000 (UTC)
+	 MIME-Version; b=SymgFPNxF245qQGe1gbL9fZxmHKxa059N7Qyq84daHiJL8ojbjLF1XQoPA13cQ78nWQbgMWvMYxrXdPyS89cQ3tKDwgsUxRU++NQdzmmTXjQOdnDESGsYdPjupIJ2R2akqZnbhHj2TaymPtE+wRSLPqZ6LA2l2bhx15LueCo81k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9tlZ5w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDEEC4CEF1;
+	Tue, 26 Aug 2025 13:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217153;
-	bh=tnoxT/UjLfWKQ1og+KhiQZTeQeRU6IxUGlMRtt+mt4s=;
+	s=korg; t=1756215770;
+	bh=P81NQE8H2QXTth/YMFq6WzFaL1SwZDOChDRW7Vo/THo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUFgYrPePHg+lfdswCCJQG99tGa2859btASPyFSV19Ri/6hSHrvoLdnpDFADqNQdl
-	 RdyJLyUY9Sq4KT+AcgKykzNLFqqgu+RPdnjKLplaT61//yzimFUrIC+W+qaCADj09V
-	 EH3YnmPXofzkMfZ/XMhGFSOtW9x0mce+GTP805Qs=
+	b=c9tlZ5w+GBinmGgiYWcIAbJ3qqMBYVuGT6LmRZMoCRNxbtyXuK+xxFShOvowFiq0b
+	 jvZ6ivZCUBaohZTek8KV1oTkf5emP+UPOcH8qtJXqjCnRsCk71WPri84m7qW9z1SFi
+	 ey4oLqkt8wVrvKqP083bReK+ED6ZRrf2lcYns2EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 5.10 010/523] HID: core: ensure the allocated report buffer can contain the reserved report ID
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 129/644] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
 Date: Tue, 26 Aug 2025 13:03:40 +0200
-Message-ID: <20250826110924.834196417@linuxfoundation.org>
+Message-ID: <20250826110949.708033157@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 4f15ee98304b96e164ff2340e1dfd6181c3f42aa upstream.
+[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
 
-When the report ID is not used, the low level transport drivers expect
-the first byte to be 0. However, currently the allocated buffer not
-account for that extra byte, meaning that instead of having 8 guaranteed
-bytes for implement to be working, we only have 7.
+In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
+accordance with the target frequency to ensure delivering adequate
+performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
+indication that the desired performance level is actually equal to the
+floor one.  This may cause it to choose a performance point way above
+the desired level.
 
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20250710-report-size-null-v2-1-ccf922b7c4e5@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
+actually sets HWP_DESIRED_PERF in accordance with the target performance
+value.
+
+Address this by adjusting intel_cpufreq_update_pstate() to pass
+target_pstate as both the minimum and the desired performance levels
+to intel_cpufreq_hwp_update().
+
+Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1662,9 +1662,12 @@ u8 *hid_alloc_report_buf(struct hid_repo
- 	/*
- 	 * 7 extra bytes are necessary to achieve proper functionality
- 	 * of implement() working on 8 byte chunks
-+	 * 1 extra byte for the report ID if it is null (not used) so
-+	 * we can reserve that extra byte in the first position of the buffer
-+	 * when sending it to .raw_request()
- 	 */
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 4de71e772f51..9d7a4ef21077 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2703,8 +2703,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
+ 		int max_pstate = policy->strict_target ?
+ 					target_pstate : cpu->max_perf_ratio;
  
--	u32 len = hid_report_len(report) + 7;
-+	u32 len = hid_report_len(report) + 7 + (report->id == 0);
- 
- 	return kzalloc(len, flags);
- }
+-		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
+-					 fast_switch);
++		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
++					 target_pstate, fast_switch);
+ 	} else if (target_pstate != old_pstate) {
+ 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
+ 	}
+-- 
+2.39.5
+
 
 
 
