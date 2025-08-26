@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C4AB360EC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D769B36B46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBA6F4E43A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52C145A17FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A53824DD11;
-	Tue, 26 Aug 2025 13:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BF43568FE;
+	Tue, 26 Aug 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcKUEoFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrAOTa0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE7228C9D;
-	Tue, 26 Aug 2025 13:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74713223335;
+	Tue, 26 Aug 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213462; cv=none; b=NbIQuLJci4r67ohrkZI059kUKsAmPn+ZVSj67M5PyKv+Kw7J04H10oRFsyU+iGphF+z1SSNEvQBktmyk9B0cbnv/lQhj/hRgAMGo3sdcB3W/W5y5opvZqcAALZG+z04gha0b0sjbTZ3D6PRlvBK6XzP/mL7Twx6ttOJk6zwyGeg=
+	t=1756218910; cv=none; b=paRKKTRKW6izA8kOAeXqcsB92qiVKHjxC7cQP4nXavJeh/MzqWVypaURzzj793IA01LRmZHCGZuDmAMt7hiPD7zFxA8yVY3H6OTw3w1o3Qb8SLTzJJ045gpTVbvkfhozcnvSL9ONyXkJSQ1I4eCkMlkLsliyFDZVfy5nmSj1q4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213462; c=relaxed/simple;
-	bh=6XCM0+mn+HS/v1h94Lka7prg7LkItFW59lXGcNQJVnY=;
+	s=arc-20240116; t=1756218910; c=relaxed/simple;
+	bh=s5R7S5bXGaL+optILVcI8iFoC5QDd4BIh73cEXKO8io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib4Ij5o170WLhVyPf1p5YnDEtbfqjwn7/EPFRi4QxSs5M5Z8KOJlu+5o5fsLZJGKQMVwd6+L59jHaHbZMbsdYIDLFeWs/QCa8yfqZV/kYchw+6p5Gz5Hz4+4zYQDGa1GA+YqeijSxikS4sEzzcxPwhnvjwkpG4jE2zyu4CN7bK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcKUEoFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A27EC4CEF1;
-	Tue, 26 Aug 2025 13:04:20 +0000 (UTC)
+	 MIME-Version; b=sifDeL4nGz9X4alaQ1kLiF6GHVFVCKj/lXgfT0GcWLrOBRe4xu6r2sfIcXZaGg7dv3PZR418+ZI+M3J3NPhxaK7Acdgp8tv6SBNmErqNHsBhCHkRYkyHGWbypJtj+yTSb/w6VyKYl+R2LtKj2Qh41cSAZy2mQIuNHt8ZXQ/Swio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrAOTa0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01601C4CEF1;
+	Tue, 26 Aug 2025 14:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213461;
-	bh=6XCM0+mn+HS/v1h94Lka7prg7LkItFW59lXGcNQJVnY=;
+	s=korg; t=1756218910;
+	bh=s5R7S5bXGaL+optILVcI8iFoC5QDd4BIh73cEXKO8io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AcKUEoFwTTY2+v/3ZWM6YiFN6YIZvb0HMhcBgUI7kcM0MlVBTsuQjlWhupveNxKFK
-	 EM7vrxtonQIMbDWmxAG5w9+WHHrBAAK0+fCp6sn+CmyNrC+PbgfLbuRgQ4gjT9jtSn
-	 HH9NsREqgFBAbneZHm37Fc10IJ0eooKuKvaV5Uqw=
+	b=PrAOTa0N69co8rhwxf4tdH0hAvLQuXabToPwLtTUdP02+h8q085AUso3gmljucUNT
+	 CtcjT2Wzmx9vIMUE2jO/ZLJHIufPW/csxKhKoucqGrih3ZwExiERYxmko/NtGCliJ/
+	 oViZwazzyv27nO4W2UFgNPctS0T4sTmQqvok4jnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hong Guan <hguan@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.6 356/587] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 179/403] securityfs: dont pin dentries twice, once is enough...
 Date: Tue, 26 Aug 2025 13:08:25 +0200
-Message-ID: <20250826111001.968811166@linuxfoundation.org>
+Message-ID: <20250826110911.828556342@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hong Guan <hguan@ti.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
+[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
 
-main_uart1 reserved for TIFS firmware traces is routed to the
-onboard FT4232 via a FET switch which is connected to pin A21 and
-B21 of the SoC and not E17 and C17. Fix it.
+incidentally, securityfs_recursive_remove() is broken without that -
+it leaks dentries, since simple_recursive_removal() does not expect
+anything of that sort.  It could be worked around by dput() in
+remove_one() callback, but it's easier to just drop that double-get
+stuff.
 
-Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hong Guan <hguan@ti.com>
-[bb@ti.com: expanded commit message]
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-@@ -144,8 +144,8 @@
+diff --git a/security/inode.c b/security/inode.c
+index 6c326939750d..e6e07787eec9 100644
+--- a/security/inode.c
++++ b/security/inode.c
+@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
+ 		inode->i_fop = fops;
+ 	}
+ 	d_instantiate(dentry, inode);
+-	dget(dentry);
+ 	inode_unlock(dir);
+ 	return dentry;
  
- 	main_uart1_pins_default: main-uart1-default-pins {
- 		pinctrl-single,pins = <
--			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
--			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
-+			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
-+			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
- 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
- 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
- 		>;
+@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
+ 			simple_rmdir(dir, dentry);
+ 		else
+ 			simple_unlink(dir, dentry);
+-		dput(dentry);
+ 	}
+ 	inode_unlock(dir);
+ 	simple_release_fs(&mount, &mount_count);
+-- 
+2.39.5
+
 
 
 
