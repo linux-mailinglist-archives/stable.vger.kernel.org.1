@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4BFB35E58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734F2B3624B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258C81BC36A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4EDC8A4D20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC4829D280;
-	Tue, 26 Aug 2025 11:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F733471E;
+	Tue, 26 Aug 2025 13:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FpLrE8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2pmQaHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72A7286D57;
-	Tue, 26 Aug 2025 11:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04EC1AB52D;
+	Tue, 26 Aug 2025 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208869; cv=none; b=t9E3uhe2tgLeDIX+Zatik22MfCl2/ZFBA/0I1HwVz26ikVMzbjnJ3+S8U//hs4sgSAVK9ShKW19+LE76Fx0cvAyQL4iVFztpoKD7+ywBpgf6uVEol4qQfjg3388xGbO9HOuEn4JkbPkdsBnU/EVmXOX0uVHWTSsDEabbq1yPcAY=
+	t=1756213894; cv=none; b=W6LC8W1/Ox44mP5Rdorn4jB/pvkSzol+yZwtJmyh+Tqx3jI0Evj0Hs5eSFEou3Jtnl+l9/NWbspQXUH/3m9uemV7iYwgeVwlIXTc6Xnp9jvp1Rzj8Px1WjCS8+sDAcgf/EZ2Ozd03kEhfRE1yZDcflsuU54rJ5vg6iEximQL5dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208869; c=relaxed/simple;
-	bh=GSH2jpiudLFknqUEH286hbr8UHubPdzYwg8v+z+LJ5c=;
+	s=arc-20240116; t=1756213894; c=relaxed/simple;
+	bh=xO3YDGVPIf+yJYr01GvWC3IbfGAkqoqCBU5Y2clxGtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yos/db8RhbekCFWWZWi1CKm3nZddaCYQ6yleUrNbbQnga1oOtYt26W/JS2pZ3zFL8st+te4q48il1JxWp4SXCVKwesIi8Qs3sJxaoLNGCTdLvjCX6Doy6Z235G3NgG/A9TTc76VU2kJLXblE+54s8l72oUQZ848l4j9i+kEe0ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FpLrE8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3C3C4CEF1;
-	Tue, 26 Aug 2025 11:47:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=seJJbRKn5Gm2BRZbeo1Am52HBG5HRw6NlhoWQ3upRN1s1CI5KsiwJQ4Fva90EKMNxQFUPJSihJGKujGsxPK2wTq0/R0CtKauC/bhsm2bl+HWmf3PYinGAcKhorYOtxuL82XtZus8M7+HI/yBWCb5/7EWhpeBGvNQaCUiKYtdMhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2pmQaHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E373C4CEF1;
+	Tue, 26 Aug 2025 13:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208868;
-	bh=GSH2jpiudLFknqUEH286hbr8UHubPdzYwg8v+z+LJ5c=;
+	s=korg; t=1756213893;
+	bh=xO3YDGVPIf+yJYr01GvWC3IbfGAkqoqCBU5Y2clxGtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FpLrE8vte86usLhsFH7Lr3m65VOrWC0gjfIrmCiC9ztbYhddIuv9jPa0CBnoZhrT
-	 6W6o438sDItwaKN6leEAJegvXO2kcg+KpNnhN9teYpyQW42LmTRN4uV6vr+a1JfDZ4
-	 tNzVgFEJeu8sZKwPin0O6/hc3S5P6WgYQ/7yaogw=
+	b=n2pmQaHPC/39ftDXiXKp8EzdxE4BRm7NJpHgBnQsj6iBa+LP6AfBfZJgzA1Mmgb6G
+	 RaKQUQyvtvf8xNqBPE+aMYpZTOAOyAxebr1umXQwKzqnvVUlqc3AGzMLm1qNdch1sF
+	 U5cw1m+zDHPSE06BV0i7tBDGcwgLNLzVbAzIwpT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.12 245/322] powerpc/boot: Fix build with gcc 15
-Date: Tue, 26 Aug 2025 13:11:00 +0200
-Message-ID: <20250826110921.970900080@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 512/587] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+Date: Tue, 26 Aug 2025 13:11:01 +0200
+Message-ID: <20250826111006.020728602@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 5a821e2d69e26b51b7f3740b6b0c3462b8cacaff upstream.
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-Similar to x86 the ppc boot code does not build with GCC 15.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-Copy the fix from
-commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250331105722.19709-1-msuchanek@suse.de
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
+
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -70,6 +70,7 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE
- BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
- 
- BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
-+		   -std=gnu11 \
- 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		   -fno-strict-aliasing -O2 \
- 		   -msoft-float -mno-altivec -mno-vsx \
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
++		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
