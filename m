@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4349DB360FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D966B36350
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9585E0A09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4186A1895F89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B54218F2FC;
-	Tue, 26 Aug 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E356B230BDF;
+	Tue, 26 Aug 2025 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UL0LRaaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+H46zlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210F32D7BF;
-	Tue, 26 Aug 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF8D340D93;
+	Tue, 26 Aug 2025 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213299; cv=none; b=A6nW5nOqbv6imz0xmRsoOYK2n3FSirAY2GXSob94ISGncUsJxLYyYxpj+XgIo3selE750V8AVbZMCz0swhEDqg3boREPReNfU5gHBTaerVsyyNFCN7iofTjrQDtYyXtoyQShmS2ghCznIQzULbltTuRXxyB92bQ5eUu8kz8utQ4=
+	t=1756214493; cv=none; b=qAq/U9QgVXAP4Ll9hlMeBgLb8yroqyFZ2xbVbICyOVA1Mg6/Ow4dSCtGXXcOfhIq6DikZoQvRaihyDF4+ysgCGBRqdEs1QcwV224ncTFEz/xjxXhodnS+CJjFVBcS/g3bWUCWCjpAQ2jNW9fqalvMipHaek9E4d+eklEdHF+C3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213299; c=relaxed/simple;
-	bh=3JzunmjMjNkfFWphWjvP2/xTJfkTf0AjbXSUB1wU0Ks=;
+	s=arc-20240116; t=1756214493; c=relaxed/simple;
+	bh=eT8tWcepzU8zOlWvv/p1ckc6toVPHGsOVqPtHCy5ukk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSG7STZoCzUmbEpyDUSymikg+8w6BAhzkzcFDIIOcyXUsJZjCabWqoNcZma1TLpCL5giQuz6E5tsX0VCQlXg5yeJnGJzTE9oQKBa7+yCXrOEPRDJVJ4rVI2lM6fsMMQ+AWt2ND7SU8JAFavW1n7H5wSPLSqH9BSJmmmtL85Tagg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UL0LRaaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3996C4CEF1;
-	Tue, 26 Aug 2025 13:01:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uqBeGj41M3dd7z60gNS/G7xZdjjPjxs5e+zv95H/r9ByHI4Nukg882rSW98FBfKK8sD3ErjcqVOldzHMxjEjjCWRnGBr4XFWYB9G4YaeYOOsEQ/1Waka/Mhd24s+WmpJX7MIxC9825YI31RiTxZxrbz9v5xrstlyN6oWAvJ/Aok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+H46zlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56DFC4CEF1;
+	Tue, 26 Aug 2025 13:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213299;
-	bh=3JzunmjMjNkfFWphWjvP2/xTJfkTf0AjbXSUB1wU0Ks=;
+	s=korg; t=1756214493;
+	bh=eT8tWcepzU8zOlWvv/p1ckc6toVPHGsOVqPtHCy5ukk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UL0LRaaJZ2JhMCsLYwBTmGbZajNrTIhfQsmEO6ZyYyc0sS/gC5fsUNvv8emDmxkz6
-	 zrUK8JkksgPxKbsWjdEWHQiTvv4wAL8IzSWbD2O1SzbMWsIGTxRZJZ3EIivMSOLyjF
-	 upRYKUn+ZB0TBsm5cqqf/H/Un10H0reD7x9tHbmE=
+	b=R+H46zlPT+YzsldO9JiBr9MFQbPY8/hdVB9b77m9WtGj7SPi1fd02GDiZaoYI0r2Z
+	 tCwjLYifJMBYf6H7jiiBtxAjrksJhpo/w/mvS79IRpFaxODOur0opOr84271Vxmfbi
+	 WZiGAIMYlO93C+Clrm3ri99eDPN57N3V+ad/c7yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/587] i3c: add missing include to internal header
+Subject: [PATCH 6.1 159/482] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
 Date: Tue, 26 Aug 2025 13:06:52 +0200
-Message-ID: <20250826110959.620427044@linuxfoundation.org>
+Message-ID: <20250826110934.740219501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
-
-Add the proper header to where the IO accessors are used.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 908a807badaf..e267ea5ec5b9 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index ecc887b5c8c0..6bd7ed19ce28 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1167,6 +1167,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1191,6 +1193,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1221,10 +1225,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
++
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
  
- extern struct bus_type i3c_bus_type;
- 
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index b2c539a42154..e5776545a8a0 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -92,6 +92,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
