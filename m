@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13341B35E7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F92B36C4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C16189699C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795C81C8018D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C88286D57;
-	Tue, 26 Aug 2025 11:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A350435209D;
+	Tue, 26 Aug 2025 14:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcQ+aosM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDNeVnIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2E749C;
-	Tue, 26 Aug 2025 11:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60964352094;
+	Tue, 26 Aug 2025 14:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208962; cv=none; b=XEgqSMeKb2nvfay+RjQtU9/cKx8cHYOQ/oLhhWP++EWjI+eV7p276nK83x/Iv3B8+uLkWi0jOh4AE7GLuoMQHlSiMBe3DJI4Ncg0u9D1K5b7/PMRyeVhe2yHMbPEtwVMhSZM3wDe7Op93ZFKGNc7pQQdJO+hm2hTPbQWQfyha/Q=
+	t=1756219404; cv=none; b=lPtGGDbsjr5WfBQjf7wh0UKbrvc1vP49wAm9KnOD54fcrIlO5L8vFwDxXaUA/lVe3fLtX3tgAkMSsKiU7QxfJp4Iwz0QovauIocClY5dOVq+DVSGRPah7zVYFPv/wIrcIrAwH+FPg5ktpFv9/FFq52fnJGKFZ4L1Oe4CHDdG2yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208962; c=relaxed/simple;
-	bh=g2ugz56UH4UxpyF6377pVLx93r8msBeVDQi7osjDABQ=;
+	s=arc-20240116; t=1756219404; c=relaxed/simple;
+	bh=JyKAMQqodtPFnzt68NS3Fx7U9MukBwLqhOfWBws2cdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol1m1vczf5T84HmpOUF607UX3p1w5QMzkR9upq6WhBlVkqZTK/9rfgPDvZDs0OGioX9SupDdPJfvBd9Tty8f/PenrVS3naydaeh0sYry9RcSSfM3btE1BkNIeXdWlceDjKEknWCH7G0xeBWu3dnhY4Zf6VD9r/Tm6kCPEIQ2ufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcQ+aosM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FA7C4CEF4;
-	Tue, 26 Aug 2025 11:49:20 +0000 (UTC)
+	 MIME-Version; b=TnG9DIiOeuW3GrH6ZydudgzK0YPDA05c2PuM7TcD2i07Gazw/pcabrcCsc7rHX2/CmgCSXYkRCgwT9Qj/nFa3ppq2ckffwpEvdk/zon37GlG5HPJzicO+Xaz4fAmTWhPYsJjOpl9V0KpfOnGfLV76XxS9J/TUVbF8XmzVAWda4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDNeVnIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AEEC4CEF1;
+	Tue, 26 Aug 2025 14:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208961;
-	bh=g2ugz56UH4UxpyF6377pVLx93r8msBeVDQi7osjDABQ=;
+	s=korg; t=1756219404;
+	bh=JyKAMQqodtPFnzt68NS3Fx7U9MukBwLqhOfWBws2cdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcQ+aosM5S+xe1tDDHSFzj3sFQwLYQN95VFlkE+bepZrIPBtVbPDUfTviniccmFTp
-	 aPpPWDvkAoXRo6JxftIcLWMyBJ3of4Cmx3hwqX7fLoZkDv0df5vHQHitkrrxGKjlPx
-	 ajUb50ALRbZcvnqXiSxQXmayhwRxBxaNKCqRbZCU=
+	b=JDNeVnItk1+wfiwRo4lDDQuVS4m+xK2fksCi2gCY+sCQCJKjz5obME6bH6zJGskK8
+	 ojclJmwDfltH6Mfxgn0EJBnP42OlMzCvUUIE3nJoVoz70KYNeo/r8g/6HrFq5xFZ/H
+	 N3pkRJsYjpyMEp664sYDmZDa3X/eopxjJ4K5aK5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/322] Bluetooth: hci_event: fix MTU for BN == 0 in CIS Established
+Subject: [PATCH 5.4 369/403] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
 Date: Tue, 26 Aug 2025 13:11:35 +0200
-Message-ID: <20250826110922.836716480@linuxfoundation.org>
+Message-ID: <20250826110917.201093723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 0b3725dbf61b51e7c663834811b3691157ae17d6 ]
+[ Upstream commit 377dc500d253f0b26732b2cb062e89668aef890a ]
 
-BN == 0x00 in CIS Established means no isochronous data for the
-corresponding direction (Core v6.1 pp. 2394). In this case SDU MTU
-should be 0.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-However, the specification does not say the Max_PDU_C_To_P or P_To_C are
-then zero.  Intel AX210 in Framed CIS mode sets nonzero Max_PDU for
-direction with zero BN.  This causes failure later when we try to LE
-Setup ISO Data Path for disabled direction, which is disallowed (Core
-v6.1 pp. 2750).
+Clamp the value if the user provides a param that will result in an invalid
+fps.
 
-Fix by setting SDU MTU to 0 if BN == 0.
-
-Fixes: 2be22f1941d5f ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Cc: stable@vger.kernel.org
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adjust context in header ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/platform/qcom/venus/core.h |    2 ++
+ drivers/media/platform/qcom/venus/vdec.c |    5 ++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 38643ffa65a9..768bd5fd808f 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6725,8 +6725,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		qos->ucast.out.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
- 					  1000);
--		qos->ucast.in.sdu = le16_to_cpu(ev->c_mtu);
--		qos->ucast.out.sdu = le16_to_cpu(ev->p_mtu);
-+		qos->ucast.in.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
-+		qos->ucast.out.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
- 		qos->ucast.in.phy = ev->c_phy;
- 		qos->ucast.out.phy = ev->p_phy;
- 		break;
-@@ -6740,8 +6740,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		qos->ucast.in.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
- 					  1000);
--		qos->ucast.out.sdu = le16_to_cpu(ev->c_mtu);
--		qos->ucast.in.sdu = le16_to_cpu(ev->p_mtu);
-+		qos->ucast.out.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
-+		qos->ucast.in.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
- 		qos->ucast.out.phy = ev->c_phy;
- 		qos->ucast.in.phy = ev->p_phy;
- 		break;
--- 
-2.50.1
-
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -16,6 +16,8 @@
+ 
+ #define VIDC_CLKS_NUM_MAX	4
+ 
++#define VENUS_MAX_FPS			240
++
+ struct freq_tbl {
+ 	unsigned int load;
+ 	unsigned long freq;
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -418,11 +418,10 @@ static int vdec_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
+ 
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->fps = fps;
+ 	inst->timeperframe = *timeperframe;
 
 
 
