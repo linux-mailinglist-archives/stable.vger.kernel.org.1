@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2A2B35C65
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEDBB36BBD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDEE27C47DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E199CA009A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29502BE7B2;
-	Tue, 26 Aug 2025 11:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE6E3451A0;
+	Tue, 26 Aug 2025 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKBDP0OT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaxZOR9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC4A2820B1;
-	Tue, 26 Aug 2025 11:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D75828314A;
+	Tue, 26 Aug 2025 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207864; cv=none; b=NnO4PyF/3hyoN7sQQcCbH04bSWxNEdhEDrzxG9GTp+Rc02pxX0YhcAz1KBHTqDmzsRrO+JwtmGyEc0aMuYk5djnolmV7FzGsL2VUSHGQhMi6nekHXOQ4RHsuOSiTcafQrjvi4NOID+WH9y6oKgrlRCVXPP3+H/To9jUsBScgBOg=
+	t=1756218167; cv=none; b=q5C/KkplFHtXXtZcD+xoK4itetqOFt0idP4zxLsmaNUM5goiqsdOEt7ErE7m5Wtq2ngSjfTltoO9f1pK7pmdvMpvPeNXI7hHFIha3qI0WV55xhyO50DyjJOnoVgjLZkhkHKyIeQ6PZYq8AN8SGTx4oGmVTW/e09S1EVdS4T3zkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207864; c=relaxed/simple;
-	bh=+MSoshW/AjdvTlwcYzkKmQFZpZzyw/pXPzZAQTE8lSI=;
+	s=arc-20240116; t=1756218167; c=relaxed/simple;
+	bh=MW1k2+FfMZaJUJq9CueKIuMd4Y1VBtCehCXntA4MS/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/Mg7nEmT/Ag9m4XV2XC3axZVd0xUSKuOYsmLTlPPl2tvnIHcV4xzE1lJKHPRLKfk7oO/oQv9sXOBr+gcX+trlrM9tv/GG/v6GlgdhqmN+uErzHxsdDu7Mei8o6fZqkBLKrKgk2FtOnpccyF4uAXDDxP/zdDvsdY4YMbUglJTDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKBDP0OT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29233C4CEF1;
-	Tue, 26 Aug 2025 11:31:04 +0000 (UTC)
+	 MIME-Version; b=X+/j4Ju7wbneCFSzWUVoFEeaqGLV21cTGsERnr1FCoEcMQMuxSAH3FyCInm6yIYIPmLh2xE0nW4P3wUmsoq6Nstb6IYWlX2l2Di49CaeAlxtj9TUzqIUoCfq0JkfoNb3M4lfwD7DAn5LAAzBP/SMoMOBrnKF9AJJvCQeqUoZYMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaxZOR9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BC0C4CEF1;
+	Tue, 26 Aug 2025 14:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207864;
-	bh=+MSoshW/AjdvTlwcYzkKmQFZpZzyw/pXPzZAQTE8lSI=;
+	s=korg; t=1756218167;
+	bh=MW1k2+FfMZaJUJq9CueKIuMd4Y1VBtCehCXntA4MS/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKBDP0OTB8O9pUSGUZWMKGGvY6PNRTJOjrUp/qvvG+szvAO7Nf64amKE7v9OH9Uyn
-	 7pZsmz+AJv/435vCWvBEo2F3V63f+zGNkwRDqsT9/eNmCwR3OCpVdHKj1W02Ui1VJq
-	 71YRUjb5yxUnCClVajLhZCCcl4fsNLZk+xcH7o18=
+	b=IaxZOR9wfgVMPT7vIUrBP+4u7EUnER4Z8cSn7KEZm5Na0Jb6KiHr5oaEuvTSCHXWK
+	 QzRGJ2S2DOZa3WUBq7i+oyynBUd5MgjG6AX880C6bxJ/MN1tKyJxdUu14CctRrHqcc
+	 epejWN40r1xcfgMdpz+JIK/GZwSC7meRwdG+ryIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Fanhua Li <lifanhua5@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Mark Pearson <markpearson@lenovo.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 345/457] drm/nouveau/nvif: Fix potential memory leak in nvif_vmm_ctor().
+Subject: [PATCH 5.10 419/523] usb: hub: avoid warm port reset during USB3 disconnect
 Date: Tue, 26 Aug 2025 13:10:29 +0200
-Message-ID: <20250826110945.855831696@linuxfoundation.org>
+Message-ID: <20250826110934.792035044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fanhua Li <lifanhua5@huawei.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit bb8aeaa3191b617c6faf8ae937252e059673b7ea ]
+[ Upstream commit f59f93cd1d720809466c7fd5aa16a236156c672b ]
 
-When the nvif_vmm_type is invalid, we will return error directly
-without freeing the args in nvif_vmm_ctor(), which leading a memory
-leak. Fix it by setting the ret -EINVAL and goto done.
+During disconnect USB-3 ports often go via SS.Inactive link error state
+before the missing terminations are noticed, and link finally goes to
+RxDetect state
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202312040659.4pJpMafN-lkp@intel.com/
-Fixes: 6b252cf42281 ("drm/nouveau: nvkm/vmm: implement raw ops to manage uvmm")
-Signed-off-by: Fanhua Li <lifanhua5@huawei.com>
-Link: https://lore.kernel.org/r/20250728115027.50878-1-lifanhua5@huawei.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Avoid immediately warm-resetting ports in SS.Inactive state.
+Let ports settle for a while and re-read the link status a few times 20ms
+apart to see if the ports transitions out of SS.Inactive.
+
+According to USB 3.x spec 7.5.2, a port in SS.Inactive should
+automatically check for missing far-end receiver termination every
+12 ms (SSInactiveQuietTimeout)
+
+The futile multiple warm reset retries of a disconnected device takes
+a lot of time, also the resetting of a removed devices has caused cases
+where the reset bit got stuck for a long time on xHCI roothub.
+This lead to issues in detecting new devices connected to the same port
+shortly after.
+
+Tested-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20211210111653.1378381-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2521106fc732 ("usb: hub: Don't try to recover devices lost during warm reset.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvif/vmm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/hub.c |   26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvif/vmm.c b/drivers/gpu/drm/nouveau/nvif/vmm.c
-index 99296f03371a..07c1ebc2a941 100644
---- a/drivers/gpu/drm/nouveau/nvif/vmm.c
-+++ b/drivers/gpu/drm/nouveau/nvif/vmm.c
-@@ -219,7 +219,8 @@ nvif_vmm_ctor(struct nvif_mmu *mmu, const char *name, s32 oclass,
- 	case RAW: args->type = NVIF_VMM_V0_TYPE_RAW; break;
- 	default:
- 		WARN_ON(1);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto done;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2884,6 +2884,8 @@ static unsigned hub_is_wusb(struct usb_h
+ #define PORT_INIT_TRIES		4
+ #endif	/* CONFIG_USB_FEW_INIT_RETRIES */
+ 
++#define DETECT_DISCONNECT_TRIES 5
++
+ #define HUB_ROOT_RESET_TIME	60	/* times are in msec */
+ #define HUB_SHORT_RESET_TIME	10
+ #define HUB_BH_RESET_TIME	50
+@@ -5685,6 +5687,7 @@ static void port_event(struct usb_hub *h
+ 	struct usb_device *udev = port_dev->child;
+ 	struct usb_device *hdev = hub->hdev;
+ 	u16 portstatus, portchange;
++	int i = 0;
+ 
+ 	connect_change = test_bit(port1, hub->change_bits);
+ 	clear_bit(port1, hub->event_bits);
+@@ -5761,17 +5764,27 @@ static void port_event(struct usb_hub *h
+ 		connect_change = 1;
+ 
+ 	/*
+-	 * Warm reset a USB3 protocol port if it's in
+-	 * SS.Inactive state.
+-	 */
+-	if (hub_port_warm_reset_required(hub, port1, portstatus)) {
+-		dev_dbg(&port_dev->dev, "do warm reset\n");
+-		if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
++	 * Avoid trying to recover a USB3 SS.Inactive port with a warm reset if
++	 * the device was disconnected. A 12ms disconnect detect timer in
++	 * SS.Inactive state transitions the port to RxDetect automatically.
++	 * SS.Inactive link error state is common during device disconnect.
++	 */
++	while (hub_port_warm_reset_required(hub, port1, portstatus)) {
++		if ((i++ < DETECT_DISCONNECT_TRIES) && udev) {
++			u16 unused;
++
++			msleep(20);
++			hub_port_status(hub, port1, &portstatus, &unused);
++			dev_dbg(&port_dev->dev, "Wait for inactive link disconnect detect\n");
++			continue;
++		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
+ 				|| udev->state == USB_STATE_NOTATTACHED) {
++			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
+ 			if (hub_port_reset(hub, port1, NULL,
+ 					HUB_BH_RESET_TIME, true) < 0)
+ 				hub_port_disable(hub, port1, 1);
+ 		} else {
++			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+ 			usb_unlock_port(port_dev);
+ 			usb_lock_device(udev);
+ 			usb_reset_device(udev);
+@@ -5779,6 +5792,7 @@ static void port_event(struct usb_hub *h
+ 			usb_lock_port(port_dev);
+ 			connect_change = 0;
+ 		}
++		break;
  	}
  
- 	memcpy(args->data, argv, argc);
--- 
-2.50.1
-
+ 	if (connect_change)
 
 
 
