@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDBAB361EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2E7B35CFF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05541889253
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C331889ACF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE841E5718;
-	Tue, 26 Aug 2025 13:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A327322752;
+	Tue, 26 Aug 2025 11:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8/10Qoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDRoVqDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9974423A9A0;
-	Tue, 26 Aug 2025 13:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA55F284B5B;
+	Tue, 26 Aug 2025 11:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213809; cv=none; b=c7B+/sUpi85NZWz9b1Q+1FynO+c+28nlqxZe+HkYdJ3fZNerGjwxROF78Dcfm5n0/d8Bz7LW9F4FgVFbK6GZw7YftI6R04I5S5oRGcIONSQL5BDfyBL1dX1g+AHtL4kwNaYwnl9od/EoigvcGs2RP+t6USD2v2RhRu2HJFBJkc0=
+	t=1756207961; cv=none; b=nX67m7TisPhggpZlgHuHqHoQpSCljQbgG+DN60EFH4mgPphMNVn2PWgz/ARb/12vIsgc6i6+FDrspnjgzIcAH91PHTxMjHMVKf144kqbJyKdxAN8mnMyfgESYrC9pyYRo4ikdMhUg1oHfGlImf/0DWsO5IvKHpfjdiCKhtml7z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213809; c=relaxed/simple;
-	bh=Dl5phGPue/2/7dhENTx2VpSQaD2sKVZcBRHPWx4WcQI=;
+	s=arc-20240116; t=1756207961; c=relaxed/simple;
+	bh=LrzRQgcJqYPSmJit+QqQvElPwNAP1vMOt78+P1hFE58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CWecVdF7TtlRTV5W45I5IerJKBUSySYsRD8qiWUUtDM665K0Wclcz3A+0E3DWR5C+7zYhJiAHy5urUvOL9/J8DgvKDFSad86M2UAneOeWxyKlzBph3ymypoPM4YkJMhocKGo5c55QpMQSycM6qXiLhfiQc/clazBG32gI9YPX1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8/10Qoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA46C4CEF1;
-	Tue, 26 Aug 2025 13:10:08 +0000 (UTC)
+	 MIME-Version; b=mn4qdM4Qen+ClBJVV+e65xojbqTdeD8rD/hQnB3yZF0+I/LwfaFScIE2e3qyXjHlS1Gec8UQFwEAJhQRFNcZJVXpQrsf74ArQWNF5FVyX7OSejd50k/pQeCmHOJx0VEa/ePJ9r9X9lP1C/lCfp7wOj12zO0OH0NyxC0boKqveGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDRoVqDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471D1C4CEF1;
+	Tue, 26 Aug 2025 11:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213809;
-	bh=Dl5phGPue/2/7dhENTx2VpSQaD2sKVZcBRHPWx4WcQI=;
+	s=korg; t=1756207961;
+	bh=LrzRQgcJqYPSmJit+QqQvElPwNAP1vMOt78+P1hFE58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8/10QojdOyr/f5MB/OPnDU+roSPcwTeUav+yNhBO8/4DTJO/xTbTN88IQjs9Eo2G
-	 ZkZph77z+iBlCukbyOXZ9lihpo3PBIFQBufBlT6bzR8jc0LfxPkFiPdwVvkTjoUMRf
-	 bHCbrfYTy4hk/P5V/kVxAGYBEZ5j3mDZXqrvRpMM=
+	b=wDRoVqDe+Jho+A3CBAlmReShINYExPkGZ6rc/o6WR9i98OcK6ykiwPDX01d1VvS9f
+	 rc5IS92VMYY+60eU/tU2A5ZI5LMx+4Jiu4KGML7UbdquHpaOBnjg5n6kzYZKeaAnzD
+	 i3Zv5nfWEWV5LcIRCZdmjt90owi+bGkv/U+3g3OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.6 488/587] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 353/457] rust: drm: ensure kmalloc() compatible Layout
 Date: Tue, 26 Aug 2025 13:10:37 +0200
-Message-ID: <20250826111005.387267062@linuxfoundation.org>
+Message-ID: <20250826110946.044259742@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 10507478468f165ea681605d133991ed05cdff62 upstream.
+[ Upstream commit 22ab0641b939967f630d108e33a3582841ad6846 ]
 
-For later VBIOS versions, the fractional feedback divider is
-calculated as the remainder of dividing the feedback divider by
-a factor, which is set to 1000000. For reference, see:
-- calculate_fb_and_fractional_fb_divider
-- calc_pll_max_vco_construct
+drm::Device is allocated through __drm_dev_alloc() (which uses
+kmalloc()) and the driver private data, <T as drm::Driver>::Data, is
+initialized in-place.
 
-However, in case of old VBIOS versions that have
-set_pixel_clock_v3, they only have 1 byte available for the
-fractional feedback divider, and it's expected to be set to the
-remainder from dividing the feedback divider by 10.
-For reference see the legacy display code:
-- amdgpu_pll_compute
-- amdgpu_atombios_crtc_program_pll
+Due to the order of fields in drm::Device
 
-This commit fixes set_pixel_clock_v3 by dividing the fractional
-feedback divider passed to the function by 100000.
+  pub struct Device<T: drm::Driver> {
+     dev: Opaque<bindings::drm_device>,
+     data: T::Data,
+  }
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+even with an arbitrary large alignment requirement of T::Data it can't
+happen that the size of Device is smaller than its alignment requirement.
+
+However, let's not rely on this subtle circumstance and create a proper
+kmalloc() compatible Layout.
+
+Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250731154919.4132-3-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/drm/device.rs | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
- 	allocation.sPCLKInput.usFbDiv =
- 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
- 	allocation.sPCLKInput.ucFracFbDiv =
--			(uint8_t)bp_params->fractional_feedback_divider;
-+			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
- 	allocation.sPCLKInput.ucPostDiv =
- 			(uint8_t)bp_params->pixel_clock_post_divider;
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 14c1aa402951..6c1fc33cdc68 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -5,6 +5,7 @@
+ //! C header: [`include/linux/drm/drm_device.h`](srctree/include/linux/drm/drm_device.h)
  
+ use crate::{
++    alloc::allocator::Kmalloc,
+     bindings, device, drm,
+     drm::driver::AllocImpl,
+     error::from_err_ptr,
+@@ -12,7 +13,7 @@ use crate::{
+     prelude::*,
+     types::{ARef, AlwaysRefCounted, Opaque},
+ };
+-use core::{mem, ops::Deref, ptr, ptr::NonNull};
++use core::{alloc::Layout, mem, ops::Deref, ptr, ptr::NonNull};
+ 
+ #[cfg(CONFIG_DRM_LEGACY)]
+ macro_rules! drm_legacy_fields {
+@@ -96,6 +97,10 @@ impl<T: drm::Driver> Device<T> {
+ 
+     /// Create a new `drm::Device` for a `drm::Driver`.
+     pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
++        // `__drm_dev_alloc` uses `kmalloc()` to allocate memory, hence ensure a `kmalloc()`
++        // compatible `Layout`.
++        let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
++
+         // SAFETY:
+         // - `VTABLE`, as a `const` is pinned to the read-only section of the compilation,
+         // - `dev` is valid by its type invarants,
+@@ -103,7 +108,7 @@ impl<T: drm::Driver> Device<T> {
+             bindings::__drm_dev_alloc(
+                 dev.as_raw(),
+                 &Self::VTABLE,
+-                mem::size_of::<Self>(),
++                layout.size(),
+                 mem::offset_of!(Self, dev),
+             )
+         }
+-- 
+2.50.1
+
 
 
 
