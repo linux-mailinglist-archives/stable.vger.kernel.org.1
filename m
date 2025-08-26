@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E41B36704
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1055CB35CD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 062FFB62194
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9906B1BA5591
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86092350D63;
-	Tue, 26 Aug 2025 14:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432C032A3C8;
+	Tue, 26 Aug 2025 11:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LgtQKGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IET2KPtZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FEF30AAD8;
-	Tue, 26 Aug 2025 14:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A3C267386;
+	Tue, 26 Aug 2025 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216816; cv=none; b=rMyj7av8Q51r09e8u/2zj/4xXV1o7uXDwLst1DHN+MN36/pyL+gGHi4dJcMDBAwzseL2AXeGVTzk1YFG/DD564oKIuXN5Of5quVMCKYlSec0RcSjHEbVCJ0+VAiXjfj3dwWkrhWFl2vcI66CT8sYHWrz6b28HY069EiWedtXcnc=
+	t=1756207898; cv=none; b=pnDIWljWdOJK7Kao92btCBf4iI4F5ImYsESkcsw2Xk6dU0vitkRJYd6SlNhgI+MWqJxsO4gFDWs3rCn+JNCy1ZRcjKtkHnCbkzEWQUYZXHd2R3uW/tzF9xP+GckFzZ9AZGKxPqB+vCtj3T/jonVVeeXVU9IQCPLlH/F8PbpQnvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216816; c=relaxed/simple;
-	bh=bzAR4yNG6NsdspXICqbYk+Rp+nBlhF244PqSc3qYino=;
+	s=arc-20240116; t=1756207898; c=relaxed/simple;
+	bh=XVIMPjdD8jr81rdaEhtIHKDOE783h5+vcMhgYaE6Jro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBnZsABbDL/hODblCq8EKsO5Q1mDCUpuB2BNZjy2SffLExEkJ94OLJ6oF4+VLOncbAe8E0sgUhQRr1WryhnUvODH/JyE4jdbDmHoawjVluyXYmA1RNnIYtbD08rKMVhF71BlYw9vfoce6EnUhnp6i799J5ZgyBu30ICfczQ3gF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LgtQKGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B89C4CEF1;
-	Tue, 26 Aug 2025 14:00:14 +0000 (UTC)
+	 MIME-Version; b=LS9JGfaLxDYLv1c9rQCizrkf20x8HRbQ6kjdlXW94k8tvy7raFmQStyept5hxnhvqgpRPTW+fAJK1dkkLkA9/XrnOdFfcyUHZl0WMrvb38RKSc71oMf5TX5LS49Yz1O+MI3xN5A6/ZilH74BNztEo50GvpEAkZI0CJc0zUAZxl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IET2KPtZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA07C4CEF4;
+	Tue, 26 Aug 2025 11:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216814;
-	bh=bzAR4yNG6NsdspXICqbYk+Rp+nBlhF244PqSc3qYino=;
+	s=korg; t=1756207897;
+	bh=XVIMPjdD8jr81rdaEhtIHKDOE783h5+vcMhgYaE6Jro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LgtQKGqzAW3FHckaa/i+HtM5aHimal7r1bCQN0TLfhApK+p0uvPsAyAOMb+eM4wr
-	 WldD5RWJUh0PUYBPf6I0WQ3IQIh8ftYRJc9blbXQrxSqgUoCVF6sJNx+me0Bn/7gDd
-	 8ToYVvV+ZU1sY3PhHl/FNryqp9CpdN0VHg5BWvsc=
+	b=IET2KPtZljWbV/eYFVll/Ykz3DNzZvnQtToPn2g1OCV2QqvlTRjd4IuCeDfNAEg8z
+	 bQR4a9dC0PbPPnjjLmA9DgM/hYOVzLuLTsWB255Rn+BOr4nKV3snAZncHm5JG3RqYf
+	 fUBsV+hNxQ5D6LS5dIqyE5teGkkwIslQEzz9kPRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 553/644] selftests: mptcp: connect: also cover alt modes
+Subject: [PATCH 6.16 360/457] RDMA/hns: Fix querying wrong SCC context for DIP algorithm
 Date: Tue, 26 Aug 2025 13:10:44 +0200
-Message-ID: <20250826111000.231412624@linuxfoundation.org>
+Message-ID: <20250826110946.209422878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit 37848a456fc38c191aedfe41f662cc24db8c23d9 ]
+[ Upstream commit 085a1b42e52750769a3fa29d4da6c05ab56f18f8 ]
 
-The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
-available from the beginning, but only tested when mptcp_connect.sh is
-manually launched with "-m mmap" or "-m sendfile", not via the
-kselftests helpers.
+When using DIP algorithm, all QPs establishing connections with
+the same destination IP share the same SCC, which is indexed by
+dip_idx, but dip_idx isn't necessarily equal to qpn. Therefore,
+dip_idx should be used to query SCC context instead of qpn.
 
-The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
-"-m sendfile". Plus other CIs, especially the ones validating the stable
-releases, were not validating these alternate modes.
-
-To make sure these modes are validated by these CIs, add two new test
-programs executing mptcp_connect.sh with the alternate modes.
-
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Drop userspace_pm.sh from TEST_PROGS ]
+Fixes: 124a9fbe43aa ("RDMA/hns: Append SCC context to the raw dump of QPC")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250726075345.846957-1-huangjunxian6@hisilicon.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
- tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
- tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
- 3 files changed, 12 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 4 ++--
+ drivers/infiniband/hw/hns/hns_roce_restrack.c | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -5,7 +5,8 @@ KSFT_KHDR_INSTALL := 1
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index b30dce00f240..256757f0ff65 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -5514,7 +5514,7 @@ static int hns_roce_v2_query_srqc(struct hns_roce_dev *hr_dev, u32 srqn,
+ 	return ret;
+ }
  
- CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g  -I$(top_srcdir)/usr/include
+-static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 qpn,
++static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 sccn,
+ 				  void *buffer)
+ {
+ 	struct hns_roce_v2_scc_context *context;
+@@ -5526,7 +5526,7 @@ static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 qpn,
+ 		return PTR_ERR(mailbox);
  
--TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
-+TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
-+	      pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh
+ 	ret = hns_roce_cmd_mbox(hr_dev, 0, mailbox->dma, HNS_ROCE_CMD_QUERY_SCCC,
+-				qpn);
++				sccn);
+ 	if (ret)
+ 		goto out;
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index f637b73b946e..230187dda6a0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -100,6 +100,7 @@ int hns_roce_fill_res_qp_entry_raw(struct sk_buff *msg, struct ib_qp *ib_qp)
+ 		struct hns_roce_v2_qp_context qpc;
+ 		struct hns_roce_v2_scc_context sccc;
+ 	} context = {};
++	u32 sccn = hr_qp->qpn;
+ 	int ret;
+ 
+ 	if (!hr_dev->hw->query_qpc)
+@@ -116,7 +117,13 @@ int hns_roce_fill_res_qp_entry_raw(struct sk_buff *msg, struct ib_qp *ib_qp)
+ 	    !hr_dev->hw->query_sccc)
+ 		goto out;
+ 
+-	ret = hr_dev->hw->query_sccc(hr_dev, hr_qp->qpn, &context.sccc);
++	if (hr_qp->cong_type == CONG_TYPE_DIP) {
++		if (!hr_qp->dip)
++			goto out;
++		sccn = hr_qp->dip->dip_idx;
++	}
 +
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
++	ret = hr_dev->hw->query_sccc(hr_dev, sccn, &context.sccc);
+ 	if (ret)
+ 		ibdev_warn_ratelimited(&hr_dev->ib_dev,
+ 				       "failed to query SCCC, ret = %d.\n",
+-- 
+2.50.1
+
 
 
 
