@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90558B36B2F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D55BB367A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24444A00F0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A871C40394
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE9221D3F2;
-	Tue, 26 Aug 2025 14:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CDE350D5F;
+	Tue, 26 Aug 2025 14:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPzhREI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLNdWCtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A99325DB0A;
-	Tue, 26 Aug 2025 14:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76263350D46;
+	Tue, 26 Aug 2025 14:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218206; cv=none; b=NLQkAbr2/OItaHOSkakxJ4ppfAEYSiJ5XxesTWS1GMWlDtHctvBNppoiJ/FeT6MOH8uM2uRyzMCLfVvNKb4o87tkvMR4xJ7Ft1fLg4ArzPmaLsU4UFhk2ADS4neZQC29CmMbfHoORwOd8eRwV+Cg3RwMvma7gQzMaP4Dws3clec=
+	t=1756216807; cv=none; b=MgBddP8STbFdaUpLD2CXi6fCkgR7ISpu+9xL9m6E9iFWN4TW8hjZs2+G1IGcY+yHn4fmWQHaR8C4a9t7ELJnMfW1hVrcYHnfUXSKeSAoqceGh9Orb2Pnw36PzSCPEzQOBt8QTkjTrKpPnVAOAHksNkFFpZyenZZfwtAdKqsmQMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218206; c=relaxed/simple;
-	bh=q/mPBZPv4XhC/aD3DphjTP/tX8uiIqyRrOsB6lv1+AQ=;
+	s=arc-20240116; t=1756216807; c=relaxed/simple;
+	bh=7/N0Zb4uk7g3/zEv48hsMHMY2TxUQX/8JgtAXz123wE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQ0TTgCRrQNLyk0HyK1uNq+pLuCwk7EJm8b51+WfZdrsnUNv+M5JH9T+rDUH6tx3ohity4Kp7GKiwhLk4/fEBWWledIsIdFNAoJP18+xlHa2KmtjDPWZzD/1HUP0qK/26sN+0KWpwi0wHOhHNVhXCCQWEyK/jEqcVvedB8AGrPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPzhREI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1908C4CEF1;
-	Tue, 26 Aug 2025 14:23:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EyQ7iRJnb02bDDf7F/bu7a/vq8/mSrkD6N2UFbjbBL5WiSnGAzlrkwt3QWpshvYergthw/VXg3SvBMvNK8YZCY2sMWG+fk+Z4JxAZFfAGkMlHhZ5DUefzYJCk9UvsUo96QlbJyKAw/v+ieALBgIfpIJCmHxbGGkk2YegjH6ty9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLNdWCtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A376EC113D0;
+	Tue, 26 Aug 2025 14:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218206;
-	bh=q/mPBZPv4XhC/aD3DphjTP/tX8uiIqyRrOsB6lv1+AQ=;
+	s=korg; t=1756216807;
+	bh=7/N0Zb4uk7g3/zEv48hsMHMY2TxUQX/8JgtAXz123wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPzhREI8s8ZmwB4nZORORoAslZ/d4YmnY8BuQWrW5kJmvgkODcdMA53LeV2VhNG0R
-	 J31R8gMEQCmkwPuqa3nWlc48sufPZkPFKt0TVjPp1f8eVQMAtNawwkBg7qvi0W4WjD
-	 yJoUzX20tfXHMogABF3DOFwV7AGalVdMLiOn9FtY=
+	b=GLNdWCtED5HNhBgh4Mrf21IL41NnoUY29/YvS+e8+Pxjynv54jvlHJgXu6UYFpbFy
+	 6FHKdgoDdwoiRBGvFcsLUPA5/XYbrIrZxxb7B2iYvb/W761rbtMEAS/fM+k+3DPe5B
+	 CVuyE5+d6WGKjEo0HX7AEvzZXiTcYFgATydX0A1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 432/523] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.15 551/644] kbuild: userprogs: use correct linker when mixing clang and GNU ld
 Date: Tue, 26 Aug 2025 13:10:42 +0200
-Message-ID: <20250826110935.112074032@linuxfoundation.org>
+Message-ID: <20250826111000.181427460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
+commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+The userprogs infrastructure does not expect clang being used with GNU ld
+and in that case uses /usr/bin/ld for linking, not the configured $(LD).
+This fallback is problematic as it will break when cross-compiling.
+Mixing clang and GNU ld is used for example when building for SPARC64,
+as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
+Relax the check around --ld-path so it gets used for all linkers.
 
-The resulting runtime PM ref imbalance causes warning messages such as:
-
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
-
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
-
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
-
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
-
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
-
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
-[ Adjust surrounding documentation changes ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Work around wrapping '--ld-path' in cc-option in older stable
+         branches due to older minimum LLVM version]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c |    4 +---
- drivers/pci/pci.c      |    8 ++++++--
- drivers/pci/probe.c    |    2 +-
- include/linux/pci.h    |    1 +
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -791,13 +791,11 @@ int pci_acpi_program_hp_params(struct pc
- bool pciehp_is_native(struct pci_dev *bridge)
- {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
+--- a/Makefile
++++ b/Makefile
+@@ -1130,7 +1130,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
+ # userspace programs are linked via the compiler, use the correct linker
+-ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
+ endif
  
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
- 
- 	if (pcie_ports_native)
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2860,8 +2860,12 @@ static const struct dmi_system_id bridge
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
-  *
-- * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-+ *
-+ * Return: Whether it is possible to move the bridge to D3.
-+ *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
-  */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1582,7 +1582,7 @@ void set_pcie_hotplug_bridge(struct pci_
- 
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
- }
- 
- static void set_pcie_thunderbolt(struct pci_dev *dev)
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -439,6 +439,7 @@ struct pci_dev {
- 	unsigned int	is_virtfn:1;
- 	unsigned int	reset_fn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
 
 
 
