@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BE4B362E9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5048AB360E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7623A7BCD09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586563BE8A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090F42857D2;
-	Tue, 26 Aug 2025 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7D5481B1;
+	Tue, 26 Aug 2025 13:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBVxPY2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psWW+cUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9679196C7C;
-	Tue, 26 Aug 2025 13:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE667101F2;
+	Tue, 26 Aug 2025 13:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214532; cv=none; b=IvK2VTskurH+bodKD+BAjMbu8D3aHOya/VKOacID5RVfVvjmeCLX5raP9GzWH6phXB1PQeCyGWdWK9PPZZnwH6BuvcBOeqs3lZRivRMhW9WRW29jKxxdR+yrXC6k9pa2kM1ZiEcOKc8fGIgEbPXkzDE+gHE4qiosxY41WhITuzw=
+	t=1756213251; cv=none; b=iRfBk6Zb25+abrTvwXBF6oovj4/qHpDAXteqMlS7YZHEhIfMtcjkPUBvkr0gFFofphZF4UH/i2KYwS5QI6C5s5yQAlSEXjzpiWKx9HWxih5BnJe2P0ZIdwuqE/Foxpd/UwWxltr/On6Ldmadi5hx8x9r2ZPy+eRfeAkdvWnRxiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214532; c=relaxed/simple;
-	bh=5Vl7G6eRLx1ljua6UIS6vcjR3bI9jXXvYaDD/CzLPgc=;
+	s=arc-20240116; t=1756213251; c=relaxed/simple;
+	bh=/Oa6cqiqFtNWWE3f4QMsYOnzHYcEaeBMxRqNNcz9/ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giexBLpCeVXAmKbRFGe/Wv3Z/4MHTDwufo/qw9LMxG2yL1cLT7W3qB3nNTvyA12Jcxhwn7mW7h3TNDzCOjl1KZ2rkbYPSgzFnnyYF1oEv5UHt2X/BKDRlMCReZkOeV5WH2K1uLEqP/0lSUEgXcelZd6JMAN+o5N44oTtRLXMBM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBVxPY2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C28CC113CF;
-	Tue, 26 Aug 2025 13:22:12 +0000 (UTC)
+	 MIME-Version; b=FEWqT2veZyR/v5dl48IAiHHfyQwStR2S13/Ax2QGs68BwHvEXbVqUngHI2HUqE6yUrwKnuAnWjBAG2Gj1FugoA8ItVuPqWzIHP+K4kPNejb+2iCEyUudF3v3W3VziQ2E26xAKK5kElz7J6H6xGmDX/nsiyfM1ZlNDeF4xq5WhS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psWW+cUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8100C4CEF1;
+	Tue, 26 Aug 2025 13:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214532;
-	bh=5Vl7G6eRLx1ljua6UIS6vcjR3bI9jXXvYaDD/CzLPgc=;
+	s=korg; t=1756213251;
+	bh=/Oa6cqiqFtNWWE3f4QMsYOnzHYcEaeBMxRqNNcz9/ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBVxPY2uCPLqj6ALCnLpu+ZYFELLqLiNU/iZvkI4aHCmXbMgG2uf+ijv/WY5cGa2A
-	 Fxwd8BIuQ58fFCmpaN+sXfn+QuT+nEC5RjS5VFrkf/uevXojnoxpzFmzVA8Ev/mhpK
-	 ogcN8852tdV4H/OF4rW4B8sYGWSYz+hL0LOb030w=
+	b=psWW+cUfBVG6oPh5PD8531nft6LecuhimJTfse2IOEAQ6uDs+mvzXpKQR1piFjzKO
+	 a+bAk5r3tmpC7eVHTBdibQzvXx/y7aV/PnfvmflPhqUGxTqxjN3CS3rPqjZANPr+zo
+	 YChgHZSEbvIGrOLwsgI6dqnUMh8Il8YHAHoUULIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 173/482] drm/amd/display: Only finalize atomic_obj if it was initialized
+Subject: [PATCH 6.6 277/587] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
 Date: Tue, 26 Aug 2025 13:07:06 +0200
-Message-ID: <20250826110935.083106012@linuxfoundation.org>
+Message-ID: <20250826110959.974125782@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit b174084b3fe15ad1acc69530e673c1535d2e4f85 ]
+[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
 
-[Why]
-If amdgpu_dm failed to initalize before amdgpu_dm_initialize_drm_device()
-completed then freeing atomic_obj will lead to list corruption.
+sas_user_scan() did not fully process wildcard channel scans
+(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
+present. Only channel 0 would be scanned via user_scan(), while the
+remaining channels were skipped, potentially missing devices.
 
-[How]
-Check if atomic_obj state is initialized before trying to free.
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to
+shost->max_channel) via scsi_scan_host_selected().  This ensures complete
+wildcard scanning without affecting transport-specific scanning behavior.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_scan.c          |  2 +-
+ drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 64f626cc7913..8cd88b2aa54c 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4638,7 +4638,8 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index cead0fbbe5db..8ee74dddef16 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1851,7 +1851,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
  
- static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm)
+ 	return 0;
+ }
+-
++EXPORT_SYMBOL(scsi_scan_host_selected);
+ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
  {
--	drm_atomic_private_obj_fini(&dm->atomic_obj);
-+	if (dm->atomic_obj.state)
-+		drm_atomic_private_obj_fini(&dm->atomic_obj);
+ 	struct scsi_device *sdev;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 7fdd2b61fe85..7b4c4752e216 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -40,6 +40,8 @@
+ #include <scsi/scsi_transport_sas.h>
+ 
+ #include "scsi_sas_internal.h"
++#include "scsi_priv.h"
++
+ struct sas_host_attrs {
+ 	struct list_head rphy_list;
+ 	struct mutex lock;
+@@ -1681,32 +1683,66 @@ int scsi_is_sas_rphy(const struct device *dev)
+ }
+ EXPORT_SYMBOL(scsi_is_sas_rphy);
+ 
+-
+-/*
+- * SCSI scan helper
+- */
+-
+-static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+-		uint id, u64 lun)
++static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
+ {
+ 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
+ 	struct sas_rphy *rphy;
+ 
+-	mutex_lock(&sas_host->lock);
+ 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
+ 		if (rphy->identify.device_type != SAS_END_DEVICE ||
+ 		    rphy->scsi_target_id == -1)
+ 			continue;
+ 
+-		if ((channel == SCAN_WILD_CARD || channel == 0) &&
+-		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
++		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
+ 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
+ 					 lun, SCSI_SCAN_MANUAL);
+ 		}
+ 	}
+-	mutex_unlock(&sas_host->lock);
++}
+ 
+-	return 0;
++/*
++ * SCSI scan helper
++ */
++
++static int sas_user_scan(struct Scsi_Host *shost, uint channel,
++		uint id, u64 lun)
++{
++	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
++	int res = 0;
++	int i;
++
++	switch (channel) {
++	case 0:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++		break;
++
++	case SCAN_WILD_CARD:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++
++		for (i = 1; i <= shost->max_channel; i++) {
++			res = scsi_scan_host_selected(shost, i, id, lun,
++						      SCSI_SCAN_MANUAL);
++			if (res)
++				goto exit_scan;
++		}
++		break;
++
++	default:
++		if (channel < shost->max_channel) {
++			res = scsi_scan_host_selected(shost, channel, id, lun,
++						      SCSI_SCAN_MANUAL);
++		} else {
++			res = -EINVAL;
++		}
++		break;
++	}
++
++exit_scan:
++	return res;
  }
  
- /******************************************************************************
+ 
 -- 
 2.39.5
 
