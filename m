@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252A6B35F83
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6700CB36629
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B8E1890B65
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE96173E6A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47F9EEAB;
-	Tue, 26 Aug 2025 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AB623D28F;
+	Tue, 26 Aug 2025 13:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSWYpYq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb+CV19W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606FE8462;
-	Tue, 26 Aug 2025 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27374086A;
+	Tue, 26 Aug 2025 13:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212583; cv=none; b=rOUeX+tAfE4UGkgNAQ6t5Uj3sCsBr6oKttXelMi+uy0fhYXM1uJL3pd+/d6aX+cuxkpcnVfAAq1eU+bFuV0SggZqpKmclWA9LyRIKN/MZu1IEEnj+DOwVdTi8Yu18c9Xe62+GdLgEROIJPmZg+XJmQz2SYKQl7I/knPMeAXx9xY=
+	t=1756215605; cv=none; b=tF8g7XAz4QFuPcJP/czNAF2zBDGA1A2IiyMDaWnfBI44myo3QzPn4k5dpPs82u5zvWCHgoJLpZvWyMl/VT+p6TPFEBUrvKRT/kxEp8BS6WY5nXYVchvHqsOBi62Nq8eOT7baSt6hquJrwsRTgm7UHOwJuB3B+qKhrBv5EyDyPOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212583; c=relaxed/simple;
-	bh=OwZAeJxyD5Vo8i6Bln8bhI7PwldRmbVFiYNkcIAubP0=;
+	s=arc-20240116; t=1756215605; c=relaxed/simple;
+	bh=wtQtWgg2P/m/gSfMcGuO1nnPpHeEVekp9w4DafSRDkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqdRMADgjcaHLdMGSCnWhPcBsIMj+yss+qzNCyIlxvfK0j5LdR87Etd8Do49IAdetZiApQo2Cd8h7m1CP5U3CSxNE4FKQq9Z+Y4GH9B43kaakhpBh7xWgSvRVAompTT1EXM1I7J31TheXrHJcZJp+e6NijsfIiT3UPCMKiv2/oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSWYpYq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18DDC4CEF1;
-	Tue, 26 Aug 2025 12:49:42 +0000 (UTC)
+	 MIME-Version; b=g+DD+gpLYZw6QRwNRNwhncxkhARyCKf6mYbAw/iT9OSD0ppgseNOID37okzmUaxfKwnSHAxqsdd+BnIDU8M6UH6PmIRIZ4Jn1B90G1FsKZb/FpAuXlBMPZ/5YHH2GP5yrTQQgtl+EBBT481buotcB5sAxYWsQ4IzHA/HeEsaDOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb+CV19W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A91C4CEF1;
+	Tue, 26 Aug 2025 13:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212583;
-	bh=OwZAeJxyD5Vo8i6Bln8bhI7PwldRmbVFiYNkcIAubP0=;
+	s=korg; t=1756215605;
+	bh=wtQtWgg2P/m/gSfMcGuO1nnPpHeEVekp9w4DafSRDkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSWYpYq11lLC5h+NeDdY4zsHSmjAv4ApKUBxKHvFjid3CcGpWa6ep2rm4ln6OzV9Z
-	 bFR0LvbGA2FPh2Jqc+T6DAC3cV4Z8UeP3pFB/jKOFSKWyFp1wOAj0b1a26Bo+NOheB
-	 LL+Y047/nEslrR21jX9reaAdIABLqhqrYkAuotTc=
+	b=Fb+CV19Wje4nNlUN+jvB7DT7UFQEHVz4WrPA3o57ec4u9aIZSk82fB8c1HscHBPEY
+	 AoGsrd2Rd/KflgcQc2nshxsbZLDAllM3DfDbEab+3Jd9bwflauLxbJy5q+MWOsLY6o
+	 mn+rODgJNXV9OLPqrFef7qbr9nTfL67FXYiHPd94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Mommer <harald.mommer@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 008/587] gpio: virtio: Fix config space reading.
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 066/644] usb: dwc3: qcom: Dont leave BCR asserted
 Date: Tue, 26 Aug 2025 13:02:37 +0200
-Message-ID: <20250826110953.163232329@linuxfoundation.org>
+Message-ID: <20250826110948.134310366@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Mommer <harald.mommer@oss.qualcomm.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
+commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 upstream.
 
-Quote from the virtio specification chapter 4.2.2.2:
+Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
+blocks any subsequent attempts of probing the device, e.g. after a probe
+deferral, with the following showing in the log:
 
-"For the device-specific configuration space, the driver MUST use 8 bit
-wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
-for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
-64 bit wide fields."
+[    1.332226] usb30_prim_gdsc status stuck at 'off'
 
-Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Leave the BCR deasserted when exiting the driver to avoid this issue.
+
+Cc: stable <stable@kernel.org>
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
+[ adapted to individual clock management API instead of bulk clock operations ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-virtio.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpio-virtio.c
-+++ b/drivers/gpio/gpio-virtio.c
-@@ -539,7 +539,6 @@ static const char **virtio_gpio_get_name
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -791,13 +791,13 @@ static int dwc3_qcom_probe(struct platfo
+ 	ret = reset_control_deassert(qcom->resets);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
+-		goto reset_assert;
++		return ret;
+ 	}
  
- static int virtio_gpio_probe(struct virtio_device *vdev)
- {
--	struct virtio_gpio_config config;
- 	struct device *dev = &vdev->dev;
- 	struct virtio_gpio *vgpio;
- 	u32 gpio_names_size;
-@@ -551,9 +550,11 @@ static int virtio_gpio_probe(struct virt
- 		return -ENOMEM;
+ 	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
+ 	if (ret) {
+ 		dev_err(dev, "failed to get clocks\n");
+-		goto reset_assert;
++		return ret;
+ 	}
  
- 	/* Read configuration */
--	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
--	gpio_names_size = le32_to_cpu(config.gpio_names_size);
--	ngpio = le16_to_cpu(config.ngpio);
-+	gpio_names_size =
-+		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
-+					      gpio_names_size));
-+	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
-+					       ngpio));
- 	if (!ngpio) {
- 		dev_err(dev, "Number of GPIOs can't be zero\n");
- 		return -EINVAL;
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -898,8 +898,6 @@ clk_disable:
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
+ 	}
+-reset_assert:
+-	reset_control_assert(qcom->resets);
+ 
+ 	return ret;
+ }
+@@ -929,7 +927,6 @@ static int dwc3_qcom_remove(struct platf
+ 	qcom->num_clocks = 0;
+ 
+ 	dwc3_qcom_interconnect_exit(qcom);
+-	reset_control_assert(qcom->resets);
+ 
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_disable(dev);
 
 
 
