@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5D4B35D84
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F26FB36798
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2703B3B84CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2445B189C054
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC0A327797;
-	Tue, 26 Aug 2025 11:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F2C352096;
+	Tue, 26 Aug 2025 13:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7ADdR31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8vao8v8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8428F935;
-	Tue, 26 Aug 2025 11:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE9A352091;
+	Tue, 26 Aug 2025 13:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208648; cv=none; b=dlfe+gdtQUhVVgcGecJn5rGbxc+atD5hHEnu5jFQ1eCSIYfOAjXnY+qFkxXHdUffJpgz/Z5jgg3qwOhZbPv6nJ/BJq3nj14/juXxf0mFSpqqTrveGh/zv60EjbAWab0e38SHFjP1UWI9uaIi8J/Mg5FTsRSV1d2v2HUJaKQ3d6A=
+	t=1756216711; cv=none; b=pSzF8JkMVHEhy+DmcNY0TvP4duXFGRCCwuPfWBjbVdAXv7Fxe9Pqu+jJVXFIM/2XEliX4nxprdLEwAOQgGpNcd+OZ5H7psg6FvPPhGiYkOcyNTk+SLavQrpY38gNu4npxSW0MoV/Y0AsNIlBgWGVYZ3OTc09JZWzHPP5uWPakmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208648; c=relaxed/simple;
-	bh=3k8ve6bj3Vo4qOJnZnO5Gsf0CGofJ2wdEHl0GeyyCoA=;
+	s=arc-20240116; t=1756216711; c=relaxed/simple;
+	bh=NsejiYjiWLp5wmOIU464TIcAbz3RGcRECzXwFHgS5Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klyO0roHzV+b02tSae1Nk3cMFJMkG8bov9D6Uvzc3YHL8pE279AQigxn1QssYmRn6zwuaF5yhM5VXWu6HGrVKQfk2q9fuYkkxJXceiIVughLdrwmecCN85gbGjDtSq3IaBcm44nYQg/weQxOW4d/g0XfKfMLE3lf2oCALjpAnmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7ADdR31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED029C4CEF4;
-	Tue, 26 Aug 2025 11:44:07 +0000 (UTC)
+	 MIME-Version; b=eycH7peqAc1vHIwSX9gy2vRfFxf6UCDfmca5Nbq+4cxm2zNSSNhMMmuE2WQbQYiVb8GSwT3yVO1LWmj4DoeJ9AQZP6s4GiNgNkxXAzxXjUxEt7P75f0XkVYK5jM82m8Vh+sukh3srC5twDKp1uEwrA1X36M5a5G1exyr3luD9GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8vao8v8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975FDC4CEF1;
+	Tue, 26 Aug 2025 13:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208648;
-	bh=3k8ve6bj3Vo4qOJnZnO5Gsf0CGofJ2wdEHl0GeyyCoA=;
+	s=korg; t=1756216710;
+	bh=NsejiYjiWLp5wmOIU464TIcAbz3RGcRECzXwFHgS5Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7ADdR31XvQ8LXLBJ6WGme3LEPIel+8PezG9p/GWOgCpFHOTq7wPpuXuANkkYGd8U
-	 sw8SL8JUVkg/P2iNRhCca6O/xGrkN+vyVT3JxDk9x67HHL8YGt/BObG/ZJE3dMZdOf
-	 U7Sfn1sWhjesFf7VDAvCbctZgsHGqhas86NDU49s=
+	b=G8vao8v88Fmc28+G3CZ2G0ahGC1BwI+fdjhXvQPXabHURXRXjoqtmucXORLElrka6
+	 9uOnCLDQKHpKKWBsMn0+9HmQp4YVan7LqL1DYjfTJ7n0v7o0ZwxlZjUdkD1HZ/jmF4
+	 9yJdD5C2TVZBylG+UZakPKfGTS4YO8niMurQq8AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 191/322] mptcp: disable add_addr retransmission when timeout is 0
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 515/644] iio: hid-sensor-prox: Restore lost scale assignments
 Date: Tue, 26 Aug 2025 13:10:06 +0200
-Message-ID: <20250826110920.580955676@linuxfoundation.org>
+Message-ID: <20250826110959.267784062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-commit f5ce0714623cffd00bf2a83e890d09c609b7f50a upstream.
+[ Upstream commit 83ded7cfaccccd2f4041769c313b58b4c9e265ad ]
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+The variables `scale_pre_decml`, `scale_post_decml`, and `scale_precision`
+were assigned in commit d68c592e02f6 ("iio: hid-sensor-prox: Fix scale not
+correct issue"), but due to a merge conflict in
+commit 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next"),
+these assignments were lost.
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
+Add back lost assignments and replace `st->prox_attr` with
+`st->prox_attr[0]` because commit 596ef5cf654b ("iio: hid-sensor-prox: Add
+support for more channels") changed `prox_attr` to an array.
 
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
-Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Before commit e4c28e3d5c09 ("mptcp: pm: move generic PM helpers to
-  pm.c"), mptcp_pm_alloc_anno_list() was in pm_netlink.c. The same patch
-  can be applied there without conflicts. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@vger.kernel.org # 5.13+
+Fixes: 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20250331055022.1149736-2-lixu.zhang@intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ changed st->prox_attr[0] array access to st->prox_attr single struct member ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/mptcp-sysctl.rst |    2 ++
- net/mptcp/pm_netlink.c                    |   13 ++++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/iio/light/hid-sensor-prox.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -12,6 +12,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -222,6 +222,11 @@ static int prox_parse_report(struct plat
+ 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
+ 			st->prox_attr.report_id);
  
-+	Do not retransmit if set to 0.
++	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
++						      &st->prox_attr,
++						      &st->scale_pre_decml,
++						      &st->scale_post_decml);
 +
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
- 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -293,6 +293,7 @@ static void mptcp_pm_add_timer(struct ti
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
- 
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -310,6 +311,10 @@ static void mptcp_pm_add_timer(struct ti
- 		goto out;
- 	}
- 
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -321,7 +326,7 @@ static void mptcp_pm_add_timer(struct ti
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -363,6 +368,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -387,8 +393,9 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
- reset_timer:
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
+ 	return ret;
  }
+ 
 
 
 
