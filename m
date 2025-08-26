@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-173635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0EBB35EAA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E17B3621B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9EA362DC6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E54AF36627D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70263376BE;
-	Tue, 26 Aug 2025 11:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A76B32144B;
+	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQNMDvdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VE+Gr29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F36E3376A5;
-	Tue, 26 Aug 2025 11:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9811321433;
+	Tue, 26 Aug 2025 13:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208760; cv=none; b=crQ0pCJYq5SeIY1ootZl0eB9kAR1ABxb3ubZ8GgedlvBMHYtWzkOrNWj7prhNghNvFzzj58ZlOHIh3vldr7B7FKVFpJvXFvQSof5eiBWaIqkuxLn66fGP2NCVrJ1QhtbMBxAITHOzzHwWUDWkObRuGVDEopEI7LIuyrQK2ZXR6w=
+	t=1756213779; cv=none; b=ZWGFdrs+EGscqT9Lq8vzcwSSl/ndGGNdXzl9HlL0u/rLzoxeLUB65jFO2ZbxE/EGYphDPsP8AuQwUrftbF8Wt6evrXYoKztAtSfaKbLXngTtARBPGSiQ4EmQ2H502p18faTW17wLvRdbMBZhxVq/6KYIo5wJ06Kb6Yl0oUulsLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208760; c=relaxed/simple;
-	bh=RLmBTacHE0AlAbmJCXlydTfDNZYNg5Up76cYsx+StR4=;
+	s=arc-20240116; t=1756213779; c=relaxed/simple;
+	bh=TbDluUIJhr3aKwhr9YZX8GB9i2IDDHt/Fl7JL1aem5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W89b+dpJLl0x2/uQQ0ICrxk39gmXxlh6rp3GkB7+NG4jqU67A5tHfNSt8WztuN1g09jI/hG1h80aYL/x/h18PFgbQuLvssLStnLrBgdngwBl8W+zDKt7/y4VLDkkKG2hCDb8yr9KH6chhCa9j+oEbmTXvoXMU6GSqEY2DQMrj5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQNMDvdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C95C4CEF1;
-	Tue, 26 Aug 2025 11:45:59 +0000 (UTC)
+	 MIME-Version; b=ISpAN/+Rx32fMJuAPifqbJoPxRI44OmeOm6fczt4jm4ODh10ApCnSxgY2c9OhLdstSb9yiIt0r4Mq2w7NyT6gHWjX3E9Z8YxSlgdWGTD0gbiR+OWmXDKBVAQ7NGhAW0fJZ1hwIGgrheWkpIkmtzmIApkxl3MVO/qUQIfpXC9O2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VE+Gr29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C21DC4CEF1;
+	Tue, 26 Aug 2025 13:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208760;
-	bh=RLmBTacHE0AlAbmJCXlydTfDNZYNg5Up76cYsx+StR4=;
+	s=korg; t=1756213777;
+	bh=TbDluUIJhr3aKwhr9YZX8GB9i2IDDHt/Fl7JL1aem5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQNMDvdpw6RoI0d0wVekMWee0Z6Zfy4pc8768gr0SO25417j2lmLIZkeWlnEdlFbD
-	 H+o4y+tqz2y6IavHhcv/u8/0wqXbU/hj7NyUXWEHEJRuEf59lMV5GzfJLkv8bI+NkH
-	 CHUFxrUoYdnvWQuGE4LofpCa+FY3olxH5x1mw+pw=
+	b=0VE+Gr29piyoO6DMFiBE1x8d/aR/adTjuu4nbkkh7czD8Pe+4al4WQToyqF9zfmCp
+	 yhxF/Qz3U4sfGo6SVM2V5UQlqnhKB5+0+69giBGSipb3fQ9SWSCzR6kFgF/MAzXugQ
+	 2sCSH/7z9SDBy9EzLJR1QbdR0zpAVmoM+MqCCgbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 207/322] smb: server: split ksmbd_rdma_stop_listening() out of ksmbd_rdma_destroy()
-Date: Tue, 26 Aug 2025 13:10:22 +0200
-Message-ID: <20250826110920.981709114@linuxfoundation.org>
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.6 474/587] energy_model: Use a fixed reference frequency
+Date: Tue, 26 Aug 2025 13:10:23 +0200
+Message-ID: <20250826111005.027259296@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit bac7b996d42e458a94578f4227795a0d4deef6fa ]
+commit 15cbbd1d317e07b4e5c6aca5d4c5579539a82784 upstream.
 
-We can't call destroy_workqueue(smb_direct_wq); before stop_sessions()!
+The last item of a performance domain is not always the performance point
+that has been used to compute CPU's capacity. This can lead to different
+target frequency compared with other part of the system like schedutil and
+would result in wrong energy estimation.
 
-Otherwise already existing connections try to use smb_direct_wq as
-a NULL pointer.
+A new arch_scale_freq_ref() is available to return a fixed and coherent
+frequency reference that can be used when computing the CPU's frequency
+for an level of utilization. Use this function to get this reference
+frequency.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Energy model is never used without defining arch_scale_freq_ref() but
+can be compiled. Define a default arch_scale_freq_ref() returning 0
+in such case.
+
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://lore.kernel.org/r/20231211104855.558096-5-vincent.guittot@linaro.org
+Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c     | 3 ++-
- fs/smb/server/transport_rdma.c | 5 ++++-
- fs/smb/server/transport_rdma.h | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ include/linux/energy_model.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 9eb3e6010aa6..1c37d1e9aef3 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -503,7 +503,8 @@ void ksmbd_conn_transport_destroy(void)
+--- a/include/linux/energy_model.h
++++ b/include/linux/energy_model.h
+@@ -224,7 +224,7 @@ static inline unsigned long em_cpu_energ
+ 				unsigned long max_util, unsigned long sum_util,
+ 				unsigned long allowed_cpu_cap)
  {
- 	mutex_lock(&init_lock);
- 	ksmbd_tcp_destroy();
--	ksmbd_rdma_destroy();
-+	ksmbd_rdma_stop_listening();
- 	stop_sessions();
-+	ksmbd_rdma_destroy();
- 	mutex_unlock(&init_lock);
- }
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 805c20f619b0..67c989e5ddaa 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -2193,7 +2193,7 @@ int ksmbd_rdma_init(void)
- 	return 0;
- }
+-	unsigned long freq, scale_cpu;
++	unsigned long freq, ref_freq, scale_cpu;
+ 	struct em_perf_state *ps;
+ 	int cpu;
  
--void ksmbd_rdma_destroy(void)
-+void ksmbd_rdma_stop_listening(void)
- {
- 	if (!smb_direct_listener.cm_id)
- 		return;
-@@ -2202,7 +2202,10 @@ void ksmbd_rdma_destroy(void)
- 	rdma_destroy_id(smb_direct_listener.cm_id);
+@@ -241,10 +241,10 @@ static inline unsigned long em_cpu_energ
+ 	 */
+ 	cpu = cpumask_first(to_cpumask(pd->cpus));
+ 	scale_cpu = arch_scale_cpu_capacity(cpu);
+-	ps = &pd->table[pd->nr_perf_states - 1];
++	ref_freq = arch_scale_freq_ref(cpu);
  
- 	smb_direct_listener.cm_id = NULL;
-+}
+ 	max_util = min(max_util, allowed_cpu_cap);
+-	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
++	freq = map_util_freq(max_util, ref_freq, scale_cpu);
  
-+void ksmbd_rdma_destroy(void)
-+{
- 	if (smb_direct_wq) {
- 		destroy_workqueue(smb_direct_wq);
- 		smb_direct_wq = NULL;
-diff --git a/fs/smb/server/transport_rdma.h b/fs/smb/server/transport_rdma.h
-index 77aee4e5c9dc..a2291b77488a 100644
---- a/fs/smb/server/transport_rdma.h
-+++ b/fs/smb/server/transport_rdma.h
-@@ -54,13 +54,15 @@ struct smb_direct_data_transfer {
- 
- #ifdef CONFIG_SMB_SERVER_SMBDIRECT
- int ksmbd_rdma_init(void);
-+void ksmbd_rdma_stop_listening(void);
- void ksmbd_rdma_destroy(void);
- bool ksmbd_rdma_capable_netdev(struct net_device *netdev);
- void init_smbd_max_io_size(unsigned int sz);
- unsigned int get_smbd_max_read_write_size(void);
- #else
- static inline int ksmbd_rdma_init(void) { return 0; }
--static inline int ksmbd_rdma_destroy(void) { return 0; }
-+static inline void ksmbd_rdma_stop_listening(void) { }
-+static inline void ksmbd_rdma_destroy(void) { }
- static inline bool ksmbd_rdma_capable_netdev(struct net_device *netdev) { return false; }
- static inline void init_smbd_max_io_size(unsigned int sz) { }
- static inline unsigned int get_smbd_max_read_write_size(void) { return 0; }
--- 
-2.50.1
-
+ 	/*
+ 	 * Find the lowest performance state of the Energy Model above the
 
 
 
