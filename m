@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065D2B35BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17592B3641D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BA27C4291
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F908A8377
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C71C337688;
-	Tue, 26 Aug 2025 11:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FA8341AD4;
+	Tue, 26 Aug 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeYpaUKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPiXNzYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9D2F6564;
-	Tue, 26 Aug 2025 11:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0E9288511;
+	Tue, 26 Aug 2025 13:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207665; cv=none; b=HdnwPm7/HqLpgKH18QLBguvAXhiJmsmtY3dOBdYJ3BgcpbVoA3PViV+kKqSVPzQ8fJ/zum3z0besUl/zJU9v8Dp1zcKUiCiiZiIzT5OhKtE9xwICo2157jLgc69X/vw5q0Qp7SstzZLjCzREpZQayfNc8LqjTB/08TtK/p+rkT0=
+	t=1756214871; cv=none; b=WD6B/uNeO+OCefSDj6p20/WpifZkbKFR1ndu/2iLAlKEy6Z1YdRsFIJ3fWcgqZlRha1l/HSsZoxyJDYnUbuqze7t9ryPCpbil3wvJYLLcBWADrDzHrcdac1wruSweN8SPMhFnvpP1g47xHe8wcgC7i7ig7ioZBvHPvszLrlmlms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207665; c=relaxed/simple;
-	bh=WOFXqdY4Y7FoDlOGM9sZ25iq4TDdf+f9ZPUejcBNH+Y=;
+	s=arc-20240116; t=1756214871; c=relaxed/simple;
+	bh=hJ4bCE5tUivmrqZBCTtTk1Wa0YK0PAnzqQ+anoaJxkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fcCJYy4VojNZ73BkxJYtVVw8lX15jRUjrzljFbzlO7nneJiGE4pJiqHm9HFdh0M8Bu6ES6N0llJ1p67SzwsgAlrlh8qc/NLtGYwqFtd09wsKcl/jPdguk0w34JPILZEMKL63XNbn7Snu76i/D8eEUJKdDabuyuleQO0f/TaaSV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeYpaUKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB11C4CEF1;
-	Tue, 26 Aug 2025 11:27:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SvBMj4lChg728Kz18m/lmFrYAaPrWoznI0caMGTO6zsBELstPK6cY8P6kEXu0X4r5TmNQ3Mkk9aY2IxiUJbytVO7Genkh9yDRFRwBnnuweR0JOcYIs2s6LhbdCVxYYhA7NjnYk6dkMIQmMumjwdJaGWRkmuY/AT2Vb9Gd2ZAKhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPiXNzYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A508DC4CEF1;
+	Tue, 26 Aug 2025 13:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207664;
-	bh=WOFXqdY4Y7FoDlOGM9sZ25iq4TDdf+f9ZPUejcBNH+Y=;
+	s=korg; t=1756214870;
+	bh=hJ4bCE5tUivmrqZBCTtTk1Wa0YK0PAnzqQ+anoaJxkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeYpaUKeT+Mx1eAGbAuc+Q8mjMbuMRWZUFILEE4Rfap33QaqH7eyX+JMZ0E9p5qsb
-	 UXFet/u556zZ4tJI1/GauPkx0NW2Yco3NXEscsAzxjMNVZzy41z/tKJSGXCvPMTHOe
-	 Nwjq0qm2T7rkbOhNqBPF7eE7Yox7JKRnHf47qxns=
+	b=XPiXNzYtj8ucr4RqjLzHfK3dCEHT0yUvcjxI6OT+yMIdlBz49VvCd9i9YfHJl40Xy
+	 P2LpiQkPLIT3jb/D83GjJPWPAzMrj3JLkrNUUjV4bEf/W0wb+FzcWZ8HFB/pY6Sy3Y
+	 ExlL+i94WjbuzQQThDztoQ3EjUaO9V3q6TkCIlzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
-Subject: [PATCH 6.16 270/457] drm/amd/display: Fix DP audio DTO1 clock source on DCE 6.
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.1 301/482] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826110944.052022429@linuxfoundation.org>
+Message-ID: <20250826110938.237114683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 297a4833a68aac3316eb808b4123eb016ef242d7 upstream.
+commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
 
-On DCE 6, DP audio was not working. However, it worked when an
-HDMI monitor was also plugged in.
+The period generated by the hardware is
 
-Looking at dce_aud_wall_dto_setup it seems that the main
-difference is that we use DTO1 when only DP is plugged in.
+	(PWMDWIDTH + 1) << CLKDIV) / freq
 
-When programming DTO1, it uses audio_dto_source_clock_in_khz
-which is set from get_dp_ref_freq_khz
+according to my tests with a signal analyser and also the documentation.
 
-The dce60_get_dp_ref_freq_khz implementation looks incorrect,
-because DENTIST_DISPCLK_CNTL seems to be always zero on DCE 6,
-so it isn't usable.
-I compared dce60_get_dp_ref_freq_khz to the legacy display code,
-specifically dce_v6_0_audio_set_dto, and it turns out that in
-case of DCE 6, it needs to use the display clock. With that,
-DP audio started working on Pitcairn, Oland and Cape Verde.
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
 
-However, it still didn't work on Tahiti. Despite having the
-same DCE version, Tahiti seems to have a different audio device.
-After some trial and error I realized that it works with the
-default display clock as reported by the VBIOS, not the current
-display clock.
-
-The patch was tested on all four SI GPUs:
-
-* Pitcairn (DCE 6.0)
-* Oland (DCE 6.4)
-* Cape Verde (DCE 6.0)
-* Tahiti (DCE 6.0 but different)
-
-The testing was done on Samsung Odyssey G7 LS28BG700EPXEN on
-each of the above GPUs, at the following settings:
-
-* 4K 60 Hz
-* 1080p 60 Hz
-* 1080p 144 Hz
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 645cc7863da5de700547d236697dffd6760cf051)
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
 Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |   21 +++--------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -83,22 +83,13 @@ static const struct state_dependent_cloc
- static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
- {
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
--	int dprefclk_wdivider;
--	int dp_ref_clk_khz;
--	int target_div;
-+	struct dc_context *ctx = clk_mgr_base->ctx;
-+	int dp_ref_clk_khz = 0;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -163,7 +163,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
--	/* DCE6 has no DPREFCLK_CNTL to read DP Reference Clock source */
--
--	/* Read the mmDENTIST_DISPCLK_CNTL to get the currently
--	 * programmed DID DENTIST_DPREFCLK_WDIVIDER*/
--	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, &dprefclk_wdivider);
--
--	/* Convert DENTIST_DPREFCLK_WDIVIDERto actual divider*/
--	target_div = dentist_get_divider_from_did(dprefclk_wdivider);
--
--	/* Calculate the current DFS clock, in kHz.*/
--	dp_ref_clk_khz = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
--		* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-+	if (ASIC_REV_IS_TAHITI_P(ctx->asic_id.hw_internal_rev))
-+		dp_ref_clk_khz = ctx->dc_bios->fw_info.default_display_engine_pll_frequency;
-+	else
-+		dp_ref_clk_khz = clk_mgr_base->clks.dispclk_khz;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
++
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -186,9 +189,16 @@ static int pwm_mediatek_config(struct pw
+ 	}
  
- 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
+ 
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -217,11 +227,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
  }
 
 
