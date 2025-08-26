@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2A3B36C4F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44264B36376
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D36B81C44E7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30BCD7AC548
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53935A296;
-	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13772FC01F;
+	Tue, 26 Aug 2025 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7tnoob1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQEA/mFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78AF352077;
-	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8F53431F4;
+	Tue, 26 Aug 2025 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219172; cv=none; b=ZzGEl7kojT1DW0Gxszz7ecJVQ3gGd1y8uzTljNZu+Mw05rM9uy+eSLtKtK43pRk98G5Dset+esqWGqegPaNX5TAnZSSHlWCX40fYRjwoAiABh5nxZRcmxZX/GPnsALp7U8E97CbpWJe9LuLXxfF/OGuaehyUv6FOYqbxJ304VRs=
+	t=1756214935; cv=none; b=AVP6Y4wjvDLaOKatkr3dp1FaZFD5XrF1uq2nV858DnEO5mYEcu+3O988pwCxlvoZRCcA7ys2AJFauchR38cE/R8zJf4sBk2oiJZmZKUSwbASc36gzjESFzwcVTQfOhrUaj54fEMLyVNoa6Ff5fTdT7MlXVbvkabrQcko6wssVyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219172; c=relaxed/simple;
-	bh=j9FMROHGHB6iX2yAnLkcjepXW4Mx8E1JAb2nNjZ8QbM=;
+	s=arc-20240116; t=1756214935; c=relaxed/simple;
+	bh=58fUJVtT14MZR1U/4cZsAwUDpKdMmByJGIwiS5PB+Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCN5PzrV94O5eEstAtwOuBcI0yDOumFy0Teso62JZBpp9JPnzjoDn1JmO+iK3MaTTncxoGT6YKCKVu0rfX3hF6EzIo5r08PsZ77RvjpKPv6nwZWpTVrUNXt8KXEDIxSLaOFvPGRhmIRBD98YXObMmLxmfiBAwDMZxPzmv9SUd1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7tnoob1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BC2C4CEF1;
-	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
+	 MIME-Version; b=oWYgUGKKPq2FZ9XhXlgUwxKWCObpONUHJX9BmvAGrr7AXA/N58OIqvowtlferR4WpvJL2zuABB5Oe+MiegDQBt1l3P9Am69//nlTtBuqkR7bwBQC8LDWjlIalfNWnyFR/LzdTUEljuEgGTDmlt9Tp7Vq4XyXH0T/63xBXEz3aoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQEA/mFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3CAC4CEF1;
+	Tue, 26 Aug 2025 13:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219172;
-	bh=j9FMROHGHB6iX2yAnLkcjepXW4Mx8E1JAb2nNjZ8QbM=;
+	s=korg; t=1756214935;
+	bh=58fUJVtT14MZR1U/4cZsAwUDpKdMmByJGIwiS5PB+Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7tnoob1HGMdQVNbpQMW80IurpO/x1pLUEP86UEkH2Tx0esCf6p2GTQz8Lo+gq+5B
-	 dF+BaSwO7L3glyuveVQn6H+EINuhJVA/2uC07Ustf4Q7dvadDOuOlVwJQQxaqNVdKY
-	 oIylBNTX9IUmEtNW2uVuOWuE9DI8drFbnUIbI4aM=
+	b=DQEA/mFGU2Y8rlfAbUu4phaIQbuIXWeTlOsR+8rlurtCT+fsrbfs0VOUcPrNpF+16
+	 CKnl83RWgyG58sN+HsDutCVYkZihjuzKDKU7wWSAy950orPjOzhrwnQaPyHzEKNX3M
+	 En+KPr2K7UpRnyb06HyDZIyGLXZ48Sn2qYnKqgzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenchangcheng <chenchangcheng@kylinos.cn>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 253/403] media: uvcvideo: Fix bandwidth issue for Alcor camera
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 326/482] media: ov2659: Fix memory leaks in ov2659_probe()
 Date: Tue, 26 Aug 2025 13:09:39 +0200
-Message-ID: <20250826110913.811142208@linuxfoundation.org>
+Message-ID: <20250826110938.866543428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenchangcheng <chenchangcheng@kylinos.cn>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
+commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
 
-Some broken device return wrong dwMaxPayloadTransferSize fields as
-follows:
+ov2659_probe() doesn't properly free control handler resources in failure
+paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
+memory leaks and reorder the ctrl_handler assignment for better code flow.
 
-[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
-[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
-
-When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
-the camera from starting. So use the bandwidth of maxpsize.
-
-Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/i2c/ov2659.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index e62afdee20db..d1510c1230d9 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -228,6 +228,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
+--- a/drivers/media/i2c/ov2659.c
++++ b/drivers/media/i2c/ov2659.c
+@@ -1479,14 +1479,15 @@ static int ov2659_probe(struct i2c_clien
+ 				     V4L2_CID_TEST_PATTERN,
+ 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
+ 				     0, 0, ov2659_test_pattern_menu);
+-	ov2659->sd.ctrl_handler = &ov2659->ctrls;
  
- 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	if (ov2659->ctrls.error) {
+ 		dev_err(&client->dev, "%s: control initialization error %d\n",
+ 			__func__, ov2659->ctrls.error);
++		v4l2_ctrl_handler_free(&ov2659->ctrls);
+ 		return  ov2659->ctrls.error;
  	}
-+
-+	if (stream->intf->num_altsetting > 1 &&
-+	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
-+		dev_warn_ratelimited(&stream->intf->dev,
-+				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
-+				     ctrl->dwMaxPayloadTransferSize,
-+				     stream->maxpsize);
-+		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
-+	}
- }
  
- static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
--- 
-2.39.5
-
++	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+ 	sd = &ov2659->sd;
+ 	client->flags |= I2C_CLIENT_SCCB;
+ #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 
 
 
