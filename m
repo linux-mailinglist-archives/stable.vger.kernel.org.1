@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C27EB35CA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FAEB365AD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207847C3D24
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2572465CA0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DCE319866;
-	Tue, 26 Aug 2025 11:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740D128314A;
+	Tue, 26 Aug 2025 13:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+N+SNg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxIunmEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B180E3375DC;
-	Tue, 26 Aug 2025 11:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2345F1C4609;
+	Tue, 26 Aug 2025 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208071; cv=none; b=H4GzPk/ce+/Ta3F4AVpesgLtkpb8JaAK9tH8pH3Hr3lPAm7b02mCN7IvQdFV37wIagXTUOLsBdcMEBd90fDVxaiIDcGNZCUjTGNamGLY2PYGaduNOOMZ8JCSVUBvugr/4/t+brEpDaiLXTFmBQNqtrwuQqJD1ZmMcxlBv1+cAjo=
+	t=1756215370; cv=none; b=SjcPAMbQB66e+YgVeMxtkch2b4lB50VZysULxjyKxLutGgOUzympC34WgbI4YXqnOi5l8UF822h5EaZrwK2DcPoj+sBVzTAvEMOX9FDA7KN7NPHKC+s/BijgKhOPSaNxAGrVtWAvTwSxjwlG8gDDRbUzBR9KkYO0XHkNHviBptY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208071; c=relaxed/simple;
-	bh=khHUBhAuhNZdLu5uXGDt1NJ1qZ3fkL0alQy//bVQ5RA=;
+	s=arc-20240116; t=1756215370; c=relaxed/simple;
+	bh=KPkyyqKggILxzPI/COj7g4ky+ALokofwin/7NPD3bmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6Uk7s0aJbxhB2sgy8lzjD8E80tH/815VI7Mr/+0hlXZJ5106uPKtTkbTaeI5quFWGFJtsvE5KTu+/TOL4gmlhB45EZHArUSoWyCFT3U0WikT6gMm2XliokCDrlF1D/vbcYb5LJMSYREVqWb9nW/qSkPcQT8nimrE+lDLba/9/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+N+SNg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7B6C19421;
-	Tue, 26 Aug 2025 11:34:31 +0000 (UTC)
+	 MIME-Version; b=AlBayQta+OMqog0sAVB9r09OcZKguun8+Y6f0kLyQElXU6wnzx+ppyOOE3a70S56CBmuQWq0cGQzX2viP5PwxfWC+jhmfk6/vtk0w0pPAol7T94TfsFVlLWJK5WMO83JWXx992BsJ04I5aZ8R4AmjnTtMgV8x8sA/BEqQyHm1As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxIunmEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681D0C4CEF1;
+	Tue, 26 Aug 2025 13:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208071;
-	bh=khHUBhAuhNZdLu5uXGDt1NJ1qZ3fkL0alQy//bVQ5RA=;
+	s=korg; t=1756215369;
+	bh=KPkyyqKggILxzPI/COj7g4ky+ALokofwin/7NPD3bmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+N+SNg6uewuSoWV+4sr8mfbqEPaRnGbpZ/ApbWbVsqkKuybemifAlgsLGpuzXTgx
-	 MhjwMZr7giQfTwEPOXzo/neNozy1Tv8cHDEw5YTfuF2I+Y83rrdOQYS+N6/d1u8R2Y
-	 OR8Dmce+dRDPVTOXLMn7/BBGyJQw+tLKNfROrMo4=
+	b=fxIunmEbOn2NfPXByS6ka391RQCWTC+vo7lPzxnDgg0k1xJIsebNakDISTsFupVJ4
+	 jrgiyG7dI78ZOteu2PjphYCFpSc9lR6PoyqyKmEyHxog2aMvVkAP9z8lnymGuMCk+O
+	 0E5K0J5aHnw9+qkvorYXTeiY4FKktlaSrIp7efB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 427/457] ASoC: cs35l56: Remove SoundWire Clock Divider workaround for CS35L63
+Subject: [PATCH 6.1 458/482] scsi: qla4xxx: Prevent a potential error pointer dereference
 Date: Tue, 26 Aug 2025 13:11:51 +0200
-Message-ID: <20250826110947.842003226@linuxfoundation.org>
+Message-ID: <20250826110942.140950683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8d13d1bdb59d0a2c526869ee571ec51a3a887463 ]
+[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
 
-Production silicon for CS36L63 has some small differences compared to
-pre-production silicon. Remove soundwire clock workaround as no
-longer necessary. We don't want to do tricks with low-level clocking
-controls if we don't need to.
+The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
+but qla4xxx_ep_connect() returns error pointers.  Propagating the error
+pointers will lead to an Oops in the caller, so change the error pointers
+to NULL.
 
-Fixes: 978858791ced ("ASoC: cs35l56: Add initial support for CS35L63 for I2C and SoundWire")
-
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250820142209.127575-4-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l56-sdw.c | 69 ----------------------------------
- sound/soc/codecs/cs35l56.h     |  3 --
- 2 files changed, 72 deletions(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/cs35l56-sdw.c b/sound/soc/codecs/cs35l56-sdw.c
-index fa9693af3722..d7fa12d287e0 100644
---- a/sound/soc/codecs/cs35l56-sdw.c
-+++ b/sound/soc/codecs/cs35l56-sdw.c
-@@ -394,74 +394,6 @@ static int cs35l56_sdw_update_status(struct sdw_slave *peripheral,
- 	return 0;
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 2925823a494a..837ea487cc82 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -6606,6 +6606,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
+ 
+ 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
+ 	vfree(dst_addr);
++	if (IS_ERR(ep))
++		return NULL;
+ 	return ep;
  }
  
--static int cs35l63_sdw_kick_divider(struct cs35l56_private *cs35l56,
--				    struct sdw_slave *peripheral)
--{
--	unsigned int curr_scale_reg, next_scale_reg;
--	int curr_scale, next_scale, ret;
--
--	if (!cs35l56->base.init_done)
--		return 0;
--
--	if (peripheral->bus->params.curr_bank) {
--		curr_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B1;
--		next_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B0;
--	} else {
--		curr_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B0;
--		next_scale_reg = SDW_SCP_BUSCLOCK_SCALE_B1;
--	}
--
--	/*
--	 * Current clock scale value must be different to new value.
--	 * Modify current to guarantee this. If next still has the dummy
--	 * value we wrote when it was current, the core code has not set
--	 * a new scale so restore its original good value
--	 */
--	curr_scale = sdw_read_no_pm(peripheral, curr_scale_reg);
--	if (curr_scale < 0) {
--		dev_err(cs35l56->base.dev, "Failed to read current clock scale: %d\n", curr_scale);
--		return curr_scale;
--	}
--
--	next_scale = sdw_read_no_pm(peripheral, next_scale_reg);
--	if (next_scale < 0) {
--		dev_err(cs35l56->base.dev, "Failed to read next clock scale: %d\n", next_scale);
--		return next_scale;
--	}
--
--	if (next_scale == CS35L56_SDW_INVALID_BUS_SCALE) {
--		next_scale = cs35l56->old_sdw_clock_scale;
--		ret = sdw_write_no_pm(peripheral, next_scale_reg, next_scale);
--		if (ret < 0) {
--			dev_err(cs35l56->base.dev, "Failed to modify current clock scale: %d\n",
--				ret);
--			return ret;
--		}
--	}
--
--	cs35l56->old_sdw_clock_scale = curr_scale;
--	ret = sdw_write_no_pm(peripheral, curr_scale_reg, CS35L56_SDW_INVALID_BUS_SCALE);
--	if (ret < 0) {
--		dev_err(cs35l56->base.dev, "Failed to modify current clock scale: %d\n", ret);
--		return ret;
--	}
--
--	dev_dbg(cs35l56->base.dev, "Next bus scale: %#x\n", next_scale);
--
--	return 0;
--}
--
--static int cs35l56_sdw_bus_config(struct sdw_slave *peripheral,
--				  struct sdw_bus_params *params)
--{
--	struct cs35l56_private *cs35l56 = dev_get_drvdata(&peripheral->dev);
--
--	if ((cs35l56->base.type == 0x63) && (cs35l56->base.rev < 0xa1))
--		return cs35l63_sdw_kick_divider(cs35l56, peripheral);
--
--	return 0;
--}
--
- static int __maybe_unused cs35l56_sdw_clk_stop(struct sdw_slave *peripheral,
- 					       enum sdw_clk_stop_mode mode,
- 					       enum sdw_clk_stop_type type)
-@@ -477,7 +409,6 @@ static const struct sdw_slave_ops cs35l56_sdw_ops = {
- 	.read_prop = cs35l56_sdw_read_prop,
- 	.interrupt_callback = cs35l56_sdw_interrupt,
- 	.update_status = cs35l56_sdw_update_status,
--	.bus_config = cs35l56_sdw_bus_config,
- #ifdef DEBUG
- 	.clk_stop = cs35l56_sdw_clk_stop,
- #endif
-diff --git a/sound/soc/codecs/cs35l56.h b/sound/soc/codecs/cs35l56.h
-index bd77a57249d7..40a1800a4585 100644
---- a/sound/soc/codecs/cs35l56.h
-+++ b/sound/soc/codecs/cs35l56.h
-@@ -20,8 +20,6 @@
- #define CS35L56_SDW_GEN_INT_MASK_1	0xc1
- #define CS35L56_SDW_INT_MASK_CODEC_IRQ	BIT(0)
- 
--#define CS35L56_SDW_INVALID_BUS_SCALE	0xf
--
- #define CS35L56_RX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE)
- #define CS35L56_TX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE \
- 			    | SNDRV_PCM_FMTBIT_S32_LE)
-@@ -52,7 +50,6 @@ struct cs35l56_private {
- 	u8 asp_slot_count;
- 	bool tdm_mode;
- 	bool sysclk_set;
--	u8 old_sdw_clock_scale;
- 	u8 sdw_link_num;
- 	u8 sdw_unique_id;
- };
 -- 
 2.50.1
 
