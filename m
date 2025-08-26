@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8A5B367E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA15DB3617F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C24338E4024
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADF9189C7DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394DD35082A;
-	Tue, 26 Aug 2025 13:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C902F23F439;
+	Tue, 26 Aug 2025 13:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xk7s5bc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwLaBkXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95352F0671;
-	Tue, 26 Aug 2025 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D811A256B;
+	Tue, 26 Aug 2025 13:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216693; cv=none; b=StJEhrWokE/bXUoUbV4ScEuWMfbJ0FUTWmb29ku46ElJsyqCGpH8HChSwyxiwKIh2fO5DY1D0JcW72+pkro9Z6sEr1lw0FfGuPJ6W1I+peT58DMDdjJVeWhxWax9rK3KldlLCtSjh6zVJfBbaNbKn7BwrHLpFlCfgupOKaxoajc=
+	t=1756213604; cv=none; b=kXU8Q5EwoLbIlWixQlxVTBBFHg0dHlWtTsWslNjl0G0iSqzNJJUq1m7j1pDVpzG6uUndIxnv3rqvzoys6s+QoHQXFkcr+1sBB2/vkAd62xe/iBAMCMKy6cGEJTcj8srrmd844hdaBgk2VNuQbBpCRE/u+DIRKws8VGKWdW9cMbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216693; c=relaxed/simple;
-	bh=Wfa1li5jLEYu4ZHbFenM2XERtAmrJIANC6XOaM2XjB4=;
+	s=arc-20240116; t=1756213604; c=relaxed/simple;
+	bh=ccR1cDPx7gUJlaq1V9OvB7OE17aEe9YPQeb6k8Ezo04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAv+hkWJRlaC8xbvMwlP6GCksMVR3BCj6eUlafBgQq8QPBCFDOasTMmKrspRiJsI2jrldbrat7Ad9KCVsaIa8nhqXFCFRSvDKSCJ3qwgJf+RsuiOozD+dGibGIAIXcpv6roItE3MgFNX7Ej7r3NSDx/At00ih0v165npBHrMUks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xk7s5bc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A78C4CEF1;
-	Tue, 26 Aug 2025 13:58:12 +0000 (UTC)
+	 MIME-Version; b=eW1xQ0f1I+J8paIrWKAEKSk2CxN4E6axAjLwHz1uWLtlMTV5SwsR4zhpuSlYJBk2qFlPnqKUUWM5/Wbdk+sG3lynrP4Ok4cIJxLKO9K60lSw1OkHZhbfGeVoHV7/Lb5Oym/fe3OZp1EczsUhQnfGy8OTuUaEyhqScQwq2yq9Bxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwLaBkXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A81C4CEF1;
+	Tue, 26 Aug 2025 13:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216692;
-	bh=Wfa1li5jLEYu4ZHbFenM2XERtAmrJIANC6XOaM2XjB4=;
+	s=korg; t=1756213604;
+	bh=ccR1cDPx7gUJlaq1V9OvB7OE17aEe9YPQeb6k8Ezo04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xk7s5bc7GFBKPJRfPp8FI0QN2ssJR2X/M7t+aElFd3GcZCttaMTjhRUFQGpVvLL5D
-	 VIkCp/Iq9L4iiWTCQNAiTs9haUKRY/WB2PLx12uMsoqq76bNNC3/Cu8lqVZDbtYfAF
-	 ubmNJrwpabZxDtf7aPMG177rJ01sDn7lLd3o1kog=
+	b=IwLaBkXHQX8VX2XHrG1LqXKnbGB03HEZwnRjy3cdNMGk/YLtL/jd+jROeSkSpaS5C
+	 XrD36Tmp9RvQEqCXkX8glemnyFqd1aCU/mhaiG5hujEqCTa8ErFF4pFPxzOXVpwxQS
+	 WGpp6aWtR7lgvgEpo4vmu3Owklp2QZyT3DlxsUE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jari Ruusu <jariruusu@protonmail.com>,
-	Yi Yang <yiyang13@huawei.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 466/644] Revert "vgacon: Add check for vc_origin address range in vgacon_scroll()"
-Date: Tue, 26 Aug 2025 13:09:17 +0200
-Message-ID: <20250826110958.028111743@linuxfoundation.org>
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 409/587] media: ov2659: Fix memory leaks in ov2659_probe()
+Date: Tue, 26 Aug 2025 13:09:18 +0200
+Message-ID: <20250826111003.335173047@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit e4fc307d8e24f122402907ebf585248cad52841d upstream.
+commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
 
-This reverts commit 864f9963ec6b4b76d104d595ba28110b87158003.
+ov2659_probe() doesn't properly free control handler resources in failure
+paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
+memory leaks and reorder the ctrl_handler assignment for better code flow.
 
-The patch is wrong as it checks vc_origin against vc_screenbuf,
-while in text mode it should compare against vga_vram_base.
-
-As such it broke VGA text scrolling, which can be reproduced like this:
-(1) boot a kernel that is configured to use text mode VGA-console
-(2) type commands:  ls -l /usr/bin | less -S
-(3) scroll up/down with cursor-down/up keys
-
-Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
 Cc: stable@vger.kernel.org
-Cc: Yi Yang <yiyang13@huawei.com>
-Cc: GONG Ruiqi <gongruiqi1@huawei.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/console/vgacon.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov2659.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -1170,7 +1170,7 @@ static bool vgacon_scroll(struct vc_data
- 				     c->vc_screenbuf_size - delta);
- 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
- 			vga_rolled_over = 0;
--		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
-+		} else
- 			c->vc_origin -= delta;
- 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
- 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
+--- a/drivers/media/i2c/ov2659.c
++++ b/drivers/media/i2c/ov2659.c
+@@ -1479,14 +1479,15 @@ static int ov2659_probe(struct i2c_clien
+ 				     V4L2_CID_TEST_PATTERN,
+ 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
+ 				     0, 0, ov2659_test_pattern_menu);
+-	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+ 
+ 	if (ov2659->ctrls.error) {
+ 		dev_err(&client->dev, "%s: control initialization error %d\n",
+ 			__func__, ov2659->ctrls.error);
++		v4l2_ctrl_handler_free(&ov2659->ctrls);
+ 		return  ov2659->ctrls.error;
+ 	}
+ 
++	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+ 	sd = &ov2659->sd;
+ 	client->flags |= I2C_CLIENT_SCCB;
+ #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 
 
 
