@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B173B35BD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1B5B363B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56DD81884064
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66185188EE8F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBDE2BEC2B;
-	Tue, 26 Aug 2025 11:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBB5298CA7;
+	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+aCboWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkvWkheF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC473239573;
-	Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A32F196C7C;
+	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207463; cv=none; b=bhIadOvY2IvEf3ab7RYKnt6zrpWoy40sdvxM52Tav1F++M+mgdtnnFY6v4ZIhJE9xZoxz+3ftAHNX4F05pPXfOz7sTRC5OqYkScwRMujRJWmjetotM+JWnmxOtijmQTJHZC7+9div31EkGhvY2CHaGpqvtROdlnRKRfuBTm8uKE=
+	t=1756214748; cv=none; b=E+8/WFFYgyVMJbGD090LDZ41liWtyYt0SO/7aKOCF4xd8gsFzAkMS12eC1DPgndlpXn5XB4yv07RIXM2qQN7wQf3zd6/YcNqbyWzg2x9Bk+pJnzY47uVNE0WoX9iSzrQND9WCdLb4mQN4/kKOpUAIq5lSFBJZYwDz6Zxz7TwBMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207463; c=relaxed/simple;
-	bh=F/6V6O/XPkSVCskivI3grjoI4I890u3Z7txUp+Ov4FI=;
+	s=arc-20240116; t=1756214748; c=relaxed/simple;
+	bh=5LotdrimBg5Z1zDegCcwsUuMxxifAb9VWbfRWIMqqvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPflrd9YTvnG+oEzKxPqcQ4GugJPW1LbLg+S/q5H+wXrMJqV15LWAnsa+eFqXv0dILasYTT+u+m+0977YeR9LU3j3sqZMckHgwO9/yHDD71LigmK7cEp+xF+w82pMjQRQiqc3XnCY3bgwWmhygiqVew0iVAX6ueFqp68sO4tu5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+aCboWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF4EC4CEF1;
-	Tue, 26 Aug 2025 11:24:23 +0000 (UTC)
+	 MIME-Version; b=i0XZWkjnCc/fbAtGo2nyNsuz5xoxoseN07KqcnxksLvqsTJcWVLOu7ExpFXKGgNaMC6fb0pxUJR5ibrm4XVlZ8fSQlag/cRs8b7dEfGUiK0oZ72VNZXEhJazdv3tgGbLcFBW7BV6c//F+WqZgyxXKkZ4EM9l0nWdSyC6vjV65vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkvWkheF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7E1C4CEF1;
+	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207463;
-	bh=F/6V6O/XPkSVCskivI3grjoI4I890u3Z7txUp+Ov4FI=;
+	s=korg; t=1756214748;
+	bh=5LotdrimBg5Z1zDegCcwsUuMxxifAb9VWbfRWIMqqvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+aCboWgCbqavpaC5pRniWPTG8KshoNOprE5sEGCpWhPv6vevqAqA0eyVcVaYvzH3
-	 02++Oj42yta1qtux6qLwQ2MBLvrluUUZqIrnCum5x0nTamJTFzSNEoqBdBWcHnyH4F
-	 Vemk4Ui+YmYpe7jlsY0/gYSnPNV0G/rotZ7aJ1jw=
+	b=BkvWkheFnGa9K/qGna2tRWewhZq7hC3gRjxZ9ffopWtEFV5+Qpx+9wZAp1zy3Wxtl
+	 aRxBHLa972iV1LopH1l7xTZiDoA3gDSIm2D2xhOWvpxjFSaYwcKFg8I+9rIm/HJPON
+	 BO5HhbQK/Fhp1kJjtrt3cNA4iYVDby+dJdp/dbns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 192/457] drm/amd/display: Revert "drm/amd/display: Fix AMDGPU_MAX_BL_LEVEL value"
+	John Garry <john.g.garry@oracle.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 223/482] scsi: aacraid: Stop using PCI_IRQ_AFFINITY
 Date: Tue, 26 Aug 2025 13:07:56 +0200
-Message-ID: <20250826110942.113134487@linuxfoundation.org>
+Message-ID: <20250826110936.282921897@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: John Garry <john.g.garry@oracle.com>
 
-commit 8e6a18cbf3ee2c1e3d0afd8d3debd0ba8738ad0c upstream.
+[ Upstream commit dafeaf2c03e71255438ffe5a341d94d180e6c88e ]
 
-This reverts commit 66abb996999de0d440a02583a6e70c2c24deab45.
-This broke custom brightness curves but it wasn't obvious because
-of other related changes. Custom brightness curves are always
-from a 0-255 input signal. The correct fix was to fix the default
-value which was done by [1].
+When PCI_IRQ_AFFINITY is set for calling pci_alloc_irq_vectors(), it
+means interrupts are spread around the available CPUs. It also means that
+the interrupts become managed, which means that an interrupt is shutdown
+when all the CPUs in the interrupt affinity mask go offline.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4412
-Link: https://lore.kernel.org/amd-gfx/0f094c4b-d2a3-42cd-824c-dc2858a5618d@kernel.org/T/#m69f875a7e69aa22df3370b3e3a9e69f4a61fdaf2
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6ec8a5cbec751625133461600d0d4950ffd3a214)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Using managed interrupts in this way means that we should ensure that
+completions should not occur on HW queues where the associated interrupt
+is shutdown. This is typically achieved by ensuring only CPUs which are
+online can generate IO completion traffic to the HW queue which they are
+mapped to (so that they can also serve completion interrupts for that HW
+queue).
+
+The problem in the driver is that a CPU can generate completions to a HW
+queue whose interrupt may be shutdown, as the CPUs in the HW queue
+interrupt affinity mask may be offline. This can cause IOs to never
+complete and hang the system. The driver maintains its own CPU <-> HW
+queue mapping for submissions, see aac_fib_vector_assign(), but this does
+not reflect the CPU <-> HW queue interrupt affinity mapping.
+
+Commit 9dc704dcc09e ("scsi: aacraid: Reply queue mapping to CPUs based on
+IRQ affinity") tried to remedy this issue may mapping CPUs properly to HW
+queue interrupts. However this was later reverted in commit c5becf57dd56
+("Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ
+affinity") - it seems that there were other reports of hangs. I guess
+that this was due to some implementation issue in the original commit or
+maybe a HW issue.
+
+Fix the very original hang by just not using managed interrupts by not
+setting PCI_IRQ_AFFINITY.  In this way, all CPUs will be in each HW queue
+affinity mask, so should not create completion problems if any CPUs go
+offline.
+
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20250715111535.499853-1-john.g.garry@oracle.com
+Closes: https://lore.kernel.org/linux-scsi/20250618192427.3845724-1-jmeneghi@redhat.com/
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/aacraid/comminit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4733,16 +4733,16 @@ static int get_brightness_range(const st
- 	return 1;
- }
- 
--/* Rescale from [min..max] to [0..MAX_BACKLIGHT_LEVEL] */
-+/* Rescale from [min..max] to [0..AMDGPU_MAX_BL_LEVEL] */
- static inline u32 scale_input_to_fw(int min, int max, u64 input)
- {
--	return DIV_ROUND_CLOSEST_ULL(input * MAX_BACKLIGHT_LEVEL, max - min);
-+	return DIV_ROUND_CLOSEST_ULL(input * AMDGPU_MAX_BL_LEVEL, max - min);
- }
- 
--/* Rescale from [0..MAX_BACKLIGHT_LEVEL] to [min..max] */
-+/* Rescale from [0..AMDGPU_MAX_BL_LEVEL] to [min..max] */
- static inline u32 scale_fw_to_input(int min, int max, u64 input)
- {
--	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), MAX_BACKLIGHT_LEVEL);
-+	return min + DIV_ROUND_CLOSEST_ULL(input * (max - min), AMDGPU_MAX_BL_LEVEL);
- }
- 
- static void convert_custom_brightness(const struct amdgpu_dm_backlight_caps *caps,
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index 0f64b0244303..31b95e6c96c5 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -481,8 +481,7 @@ void aac_define_int_mode(struct aac_dev *dev)
+ 	    pci_find_capability(dev->pdev, PCI_CAP_ID_MSIX)) {
+ 		min_msix = 2;
+ 		i = pci_alloc_irq_vectors(dev->pdev,
+-					  min_msix, msi_count,
+-					  PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
++					  min_msix, msi_count, PCI_IRQ_MSIX);
+ 		if (i > 0) {
+ 			dev->msi_enabled = 1;
+ 			msi_count = i;
+-- 
+2.39.5
+
 
 
 
