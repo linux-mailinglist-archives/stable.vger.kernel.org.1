@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-176348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5060B36C65
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9336B36809
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC65558445E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB8A2A3081
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D02535AACB;
-	Tue, 26 Aug 2025 14:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB74299A94;
+	Tue, 26 Aug 2025 14:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBNQxoy1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8W6mVGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACBD35AABE;
-	Tue, 26 Aug 2025 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13B51DE8BE;
+	Tue, 26 Aug 2025 14:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219425; cv=none; b=XQv06KDxBFjsqFq02595Jc6RVDPmOqhVS0D2xM7aYhQg8zHl4xP8kUuUXx+X8yRj+aWHeYumibyfu5GPcs7BxfBnJR5QFEd/lETuY3Ds3DrQNwFbgreovSHLHjGiw30dnYsXzfpp4VUnY6HORTZgxzA8XF+1o9bqrsomaM3Rit8=
+	t=1756216971; cv=none; b=W0/ItuhPS/tk0C21d1AJK0+vHH7nWAcQsdrtrgyAip26pn8gEAS5F/Yeszq56Zb4D2Euvqc8P2pf0HHDNU/d+eIfCSB6SVlGJ5NqJzd3IS6Qz+IXhoX3KaVJNauD8wzoC0jqrBctlGRTPDYhm9XN0pjs+CTrvXLhoob4vLnyj24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219425; c=relaxed/simple;
-	bh=TAp6Dv73Cur3L3+eEpf/cle4fkVZOjZmxbj8VJFQv54=;
+	s=arc-20240116; t=1756216971; c=relaxed/simple;
+	bh=fmpHPYIMEkLbalhS0o3iCzgmng37xVYPDQ8bCLGJfdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkuAHK+TY1DdUapcUwya2vVWEPwgBaGQ+VU/1RHYqq1/XRykbLEXldPSE1HUHUZ4dtBIQvbxrCLyNnjJEOSqj5uWvTFlYACwfuUrksKn84sZewWpDEl1yUwPUa4Oall85+3gdQFoMwKgzwlUHl5FBFImuTzf6d8957wOCim7D18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBNQxoy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A47C4CEF1;
-	Tue, 26 Aug 2025 14:43:44 +0000 (UTC)
+	 MIME-Version; b=TOlhIrK4hFJT9rKuoR+MeyVFI80tGUipZr15OkVIjMn2c5p7HUDArhEunPykoDWgaQWRcn427Uzzhwu6nN8JEHtV/jv1IGlP4dvdeRaANhW7ZkfRtd4GKylixddraF9rM3iIdKi5eTug7+0YhZhaYnE3AY1oJXlcEpxkHmcuz9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8W6mVGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6241DC4CEF1;
+	Tue, 26 Aug 2025 14:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219424;
-	bh=TAp6Dv73Cur3L3+eEpf/cle4fkVZOjZmxbj8VJFQv54=;
+	s=korg; t=1756216971;
+	bh=fmpHPYIMEkLbalhS0o3iCzgmng37xVYPDQ8bCLGJfdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBNQxoy1bOzuq/S36i2KadlyoSYlJYg4UDVb1ZJ3RzPRNo+oPGx/s223FPFqBBCID
-	 vKkFrcklZqNseTXqTTYbnVTi7W10RxFi5ZTQULykGUHLCwOp1OOhpPBD7VffS0LsFV
-	 P0/692Ya/vaCQnx1ca2T0o0S2xZt33w2w6ZRrOOg=
+	b=B8W6mVGfdZyiQhjDopRq11IZEAkKhw3u1HXk678OFowthREKmKShmbQPFRFMLAfXr
+	 tgQVj6BtO9+iTMuxRsw/w9ZH7ZrlXiI2RiBd93/WebSKSv6sUTF5TCSbjpiHxwKDxa
+	 8IiS677V/2Rna67TuqVukW22s2gXLF454cEhJjdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.4 376/403] sch_hfsc: make hfsc_qlen_notify() idempotent
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 611/644] selftests: mptcp: pm: check flush doesnt reset limits
 Date: Tue, 26 Aug 2025 13:11:42 +0200
-Message-ID: <20250826110917.402054764@linuxfoundation.org>
+Message-ID: <20250826111001.694206056@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
+commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
 
-hfsc_qlen_notify() is not idempotent either and not friendly
-to its callers, like fq_codel_dequeue(). Let's make it idempotent
-to ease qdisc_tree_reduce_backlog() callers' life:
+This modification is linked to the parent commit where the received
+ADD_ADDR limit was accidentally reset when the endpoints were flushed.
 
-1. update_vf() decreases cl->cl_nactive, so we can check whether it is
-non-zero before calling it.
+To validate that, the test is now flushing endpoints after having set
+new limits, and before checking them.
 
-2. eltree_remove() always removes RB node cl->el_node, but we can use
-   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.sh, because some refactoring have been done
+  later on: commit 3188309c8ceb ("selftests: mptcp: netlink:
+  add 'limits' helpers") and commit c99d57d0007a ("selftests: mptcp: use
+  pm_nl endpoint ops") are not in this version. The same operation can
+  still be done at the same place, without using the new helper. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -209,7 +209,10 @@ eltree_insert(struct hfsc_class *cl)
- static inline void
- eltree_remove(struct hfsc_class *cl)
- {
--	rb_erase(&cl->el_node, &cl->sched->eligible);
-+	if (!RB_EMPTY_NODE(&cl->el_node)) {
-+		rb_erase(&cl->el_node, &cl->sched->eligible);
-+		RB_CLEAR_NODE(&cl->el_node);
-+	}
- }
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -131,6 +131,7 @@ ip netns exec $ns1 ./pm_nl_ctl limits 1
+ check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
  
- static inline void
-@@ -1230,7 +1233,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
- 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
- 	 * needs to be called explicitly to remove a class from vttree.
- 	 */
--	update_vf(cl, 0, 0);
-+	if (cl->cl_nactive)
-+		update_vf(cl, 0, 0);
- 	if (cl->cl_flags & HFSC_RSC)
- 		eltree_remove(cl);
- }
+ ip netns exec $ns1 ./pm_nl_ctl limits 8 8
++ip netns exec $ns1 ./pm_nl_ctl flush
+ check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
+ subflows 8" "set limits"
+ 
 
 
 
