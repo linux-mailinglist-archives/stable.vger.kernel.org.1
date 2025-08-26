@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6653FB35D78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5134B3611D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74681BA42D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 123945E2AF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6D78635C;
-	Tue, 26 Aug 2025 11:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0531ADFFE;
+	Tue, 26 Aug 2025 13:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqUY7/56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0x9gXVMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAA29BDB8;
-	Tue, 26 Aug 2025 11:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C88B148850;
+	Tue, 26 Aug 2025 13:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208277; cv=none; b=kPS2nV0y+Y3MtPhaSKPou7WuwgFtpXtV3LCEi+heQFHk0+wAIUnzmBL9JDewEOjLghDL+VrVEsKoLF1Y+kQG+gNesdRpuhdDh+MNM8j/L0l5cWVl7DWwWoJbCKzllvOB74CCWz4HwZvUNeiNWfWnie6CSgwH5Wz8/e/desxcOtw=
+	t=1756213354; cv=none; b=Cveqs/nnnz0pBC2/E5azU93Vrjd++yed1sA5S9o4No2f0uGVlvzkD9HrSpLbgRF6YdI4a9ZKlu/LHzJPmH8Wu4SuVWbX6fdvso717WlRrPfLg1ibGbWZcP+TAB6jpwmFzY+67mmbSI/zSlvSxfk+fA8452aBgWFFMwIU3bR2FJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208277; c=relaxed/simple;
-	bh=YgxSQyT9acoMV0N66+mkdvIKiOofv+OnKV5TsJJCbuI=;
+	s=arc-20240116; t=1756213354; c=relaxed/simple;
+	bh=kLKF/mFrruoRzW9Gfv/YqpjBbxwoXd6EJrGXra8Y0bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVv7uURDKA+odI2uc5j1zrXuoNoAOI5J9PV6rZdGVWSsz4LbN+xtPJmCCAOIhLzwuS9mkWRKWXhmGZuGfpWoX02FFm+tAZR2dM95kCwfw4uF400UsLmJUqQtUGecQjcHM7fFDtUjtowjdyMQnQT+X4Bo70U+3HwH+DF+xfERvis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqUY7/56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8867FC4CEF1;
-	Tue, 26 Aug 2025 11:37:56 +0000 (UTC)
+	 MIME-Version; b=M5BBkJR3EEO967RfluEs3xcoJm/taGHSN0FIvisD+eviBge77WZZh38QYLR3d2yuJ3isLW3IC1njk7crT6T9JqBclVF8pJ931wKUgsjPsKjiR0mXx4EI7Ha431BoqWkX31BOpw4HwiXwXSKv0e0tShBZO49PFlEgLb/KEIy/Dhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0x9gXVMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E38C4CEF1;
+	Tue, 26 Aug 2025 13:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208276;
-	bh=YgxSQyT9acoMV0N66+mkdvIKiOofv+OnKV5TsJJCbuI=;
+	s=korg; t=1756213354;
+	bh=kLKF/mFrruoRzW9Gfv/YqpjBbxwoXd6EJrGXra8Y0bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqUY7/56VPF6wcE1OxpG+62WCwEKBBaSx3gEW930QSKMyh6myoN5e5yKMrtqshTJX
-	 8OT6+aeQgTeblJGF3cfBGpd/LDd2AbMLHgAAOYuZ6zCR2EH+j/lIt0rCAjCEAEcD5p
-	 kUVZ0DKlYN2Mar41B82G6x0Bq2DKPrqCp/wsGai8=
+	b=0x9gXVMDNjGBNy0ZRMD/ssrNayCEx8vSI+Fewnc0Fipn053dh0nWTWFni31Dg9tjT
+	 xjomNECmifpJeRA4MxUuZiZje9ym7bjvrKPWfhxQRUFfgD09quy7bxxBE4OGXIV1nh
+	 pTSsk7LRTFZs8FdbF/c5RqAT+F3yhE7khMXR9VB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenz Brun <lorenz@brun.one>,
-	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 050/322] ata: libata-scsi: Fix ata_to_sense_error() status handling
+	Sravan Kumar Gundu <sravankumarlpu@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 316/587] fbdev: Fix vmalloc out-of-bounds write in fast_imageblit
 Date: Tue, 26 Aug 2025 13:07:45 +0200
-Message-ID: <20250826110916.634391561@linuxfoundation.org>
+Message-ID: <20250826111000.956073840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
 
-commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
+commit af0db3c1f898144846d4c172531a199bb3ca375d upstream.
 
-Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
-inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
-the function ata_to_sense_error(). This entry ties a failed qc which has
-a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
-the additional sense code UNALIGNED WRITE COMMAND. This entry will be
-used to generate a failed qc sense key and sense code when the qc is
-missing sense data and there is no match for the qc error field in the
-sense_table array of ata_to_sense_error().
+This issue triggers when a userspace program does an ioctl
+FBIOPUT_CON2FBMAP by passing console number and frame buffer number.
+Ideally this maps console to frame buffer and updates the screen if
+console is visible.
 
-As a result, for a failed qc for which we failed to get sense data (e.g.
-read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
-command failed for the non-ncq case, the user very often end up seeing
-the completely misleading "unaligned write command" error, even if qc
-was not a write command. E.g.:
+As part of mapping it has to do resize of console according to frame
+buffer info. if this resize fails and returns from vc_do_resize() and
+continues further. At this point console and new frame buffer are mapped
+and sets display vars. Despite failure still it continue to proceed
+updating the screen at later stages where vc_data is related to previous
+frame buffer and frame buffer info and display vars are mapped to new
+frame buffer and eventully leading to out-of-bounds write in
+fast_imageblit(). This bheviour is excepted only when fg_console is
+equal to requested console which is a visible console and updates screen
+with invalid struct references in fbcon_putcs().
 
-sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
-sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
-sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
-sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
-I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
-
-Fix this by removing the ATA_DRDY entry from the stat_table array so
-that we default to always returning ABORTED COMMAND without any
-additional sense code, since we do not know any better. The entry 0x08
-(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
-error is also misleading (as a parity error would likely be signaled
-through a bus error). So for this case, also default to returning
-ABORTED COMMAND without any additional sense code. With this, the
-previous example error case becomes:
-
-sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
-sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
-sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
-sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
-I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
-
-Together with these fixes, refactor stat_table to make it more readable
-by putting the entries comments in front of the entries and using the
-defined status bits macros instead of hardcoded values.
-
-Reported-by: Lorenz Brun <lorenz@brun.one>
-Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
-Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Reported-and-tested-by: syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
+Signed-off-by: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/video/fbdev/core/fbcon.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -855,18 +855,14 @@ static void ata_to_sense_error(u8 drv_st
- 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
- 	};
- 	static const unsigned char stat_table[][4] = {
--		/* Must be first because BUSY means no other bits valid */
--		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
--		// Busy, fake parity for now
--		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
--		// Device ready, unaligned write command
--		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
--		// Device fault, internal target failure
--		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
--		// Timed out in xfer, fake parity for now
--		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
--		// Recovered ECC error	  Medium error, recovered
--		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
-+		/* Busy: must be first because BUSY means no other bits valid */
-+		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
-+		/* Device fault: INTERNAL TARGET FAILURE */
-+		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
-+		/* Corrected data error */
-+		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
-+
-+		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
- 	};
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -808,7 +808,8 @@ static void con2fb_init_display(struct v
+ 				   fg_vc->vc_rows);
+ 	}
  
- 	/*
+-	update_screen(vc_cons[fg_console].d);
++	if (fg_console != unit)
++		update_screen(vc_cons[fg_console].d);
+ }
+ 
+ /**
+@@ -1353,6 +1354,7 @@ static void fbcon_set_disp(struct fb_inf
+ 	struct vc_data *svc;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	int rows, cols;
++	unsigned long ret = 0;
+ 
+ 	p = &fb_display[unit];
+ 
+@@ -1403,11 +1405,10 @@ static void fbcon_set_disp(struct fb_inf
+ 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+ 	cols /= vc->vc_font.width;
+ 	rows /= vc->vc_font.height;
+-	vc_resize(vc, cols, rows);
++	ret = vc_resize(vc, cols, rows);
+ 
+-	if (con_is_visible(vc)) {
++	if (con_is_visible(vc) && !ret)
+ 		update_screen(vc);
+-	}
+ }
+ 
+ static __inline__ void ywrap_up(struct vc_data *vc, int count)
 
 
 
