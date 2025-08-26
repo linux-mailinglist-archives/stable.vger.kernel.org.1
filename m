@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-175903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACD9B36AB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15162B367C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94E4466C37
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42A21C26A59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF90356913;
-	Tue, 26 Aug 2025 14:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA7D350845;
+	Tue, 26 Aug 2025 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSTlMCJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYgMO65S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594492192F2;
-	Tue, 26 Aug 2025 14:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA363350831;
+	Tue, 26 Aug 2025 14:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218271; cv=none; b=qxWXjL0u5pPBMCTMe6HovNr0qTEmFVWWGEjUHu/e/pQ9kFsIg5wfoKyA1AhrzcACqXAtvD3lACf4YvNEo9GvtIPZPPqBnoqmmSlqXeUc2SmRokac5V5TD4iFWfnS8edRii4iUFjhhiT646u+dMn9aBEAYymJiD48SrRPNZsZQws=
+	t=1756216877; cv=none; b=bjk5agyIQCF2pSsK4AR4ZRok95kKxybYmLVZxZVPQM4TePkGq988pwHvI/j+7cCvd35xRgJvIgcaIfl5mPHNzovu8ztlzvk1hhyCohZvpUHA4LvKUahUwDq9zRD7iLfmuiLADxrOjwbNZ3QS4QcyjiRRUIc72SFE6QXpLL9w5ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218271; c=relaxed/simple;
-	bh=jacx11D4wfRLm4XPh9yjL9sj0t2w6e0/vR0iMgLxvXQ=;
+	s=arc-20240116; t=1756216877; c=relaxed/simple;
+	bh=XM0uPhLcOIhEKOa1qfDgoV10hPTPEmV19dn/rfZPjbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFw436BIIvVKxqba4pM1ynhpjMHNX+Ths4buD4QZjf+wDO5TNaOKsfpwaACtxtMmh8ba7AHXoFY2vrndC5x7uxplSNKoB5RWPZC8IiyvMh1+Xgavd4akv5/VGAhqk1TaDSG1i+XzwTD61+I59UbgUYE4Csqa4wlQADPl1722eSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSTlMCJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965E6C4CEF1;
-	Tue, 26 Aug 2025 14:24:30 +0000 (UTC)
+	 MIME-Version; b=IbqehSbSbvHRWXoY6C47hk/q/HCCmhtSRWF4mGzCLjVL7x9gqs1QIm7bf2y6nhLH4QhkpBHpIosfjkKD3kQZU61L+D686gQRs9Fk1t6ogasHEWTwyeAFn68oRQ4RpyUAtP91UO0519Q8lT+Mo/BRpfBadTOIV1ilLQ/C3qR8HWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYgMO65S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC38C4CEF1;
+	Tue, 26 Aug 2025 14:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218270;
-	bh=jacx11D4wfRLm4XPh9yjL9sj0t2w6e0/vR0iMgLxvXQ=;
+	s=korg; t=1756216877;
+	bh=XM0uPhLcOIhEKOa1qfDgoV10hPTPEmV19dn/rfZPjbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSTlMCJbdGEG+DXXmb3ChncH25Kbpbw0mFzCYACKjSdi658VmaKZWJij6w7eE+G76
-	 uSgnPnNq6DV8QAgVlP7GP+zqlkBU/8PZI3xnnnXx8C3oqycsU0+aH6db6YQ7t3hzqP
-	 p+0gd5sta+bh1AniJQHA6rabWQ4L13HBfbaUtpuU=
+	b=YYgMO65SBhhpYBe2ErTNXXbCY1wx440pNb1SIT4uHhZEX3PW/vy0XSo0Za0RwHAt7
+	 xkwD8fk8e2Ygbit1XffDaPbh+HQM4jlZ5i54pXbLYcd1Ueb+UY5ClFPaLjMSGBQulC
+	 n6hy6OvsRqpVfb/sIlCLjGnzNV2Xz1vy6CUsaUsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 458/523] NFS: Fix the setting of capabilities when automounting a new filesystem
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 577/644] ftrace: Also allocate and copy hash for reading of filter files
 Date: Tue, 26 Aug 2025 13:11:08 +0200
-Message-ID: <20250826110935.744807302@linuxfoundation.org>
+Message-ID: <20250826111000.828752778@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,173 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
+commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
+the pointer to the global tracer hash to its iterator. Unlike the writer
+that allocates a copy of the hash, the reader keeps the pointer to the
+filter hashes. This is problematic because this pointer is static across
+function calls that release the locks that can update the global tracer
+hashes. This can cause UAF and similar bugs.
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Allocate and copy the hash for reading the filter files like it is done
+for the writers. This not only fixes UAF bugs, but also makes the code a
+bit simpler as it doesn't have to differentiate when to free the
+iterator's hash between writers and readers.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ Removed extended capability flags that don't exist in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
+Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
+Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
+Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
+Reported-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c     |   46 ++++++++++++++++++++++++++++++++++++++++++----
- fs/nfs/internal.h   |    2 +-
- fs/nfs/nfs4client.c |   20 +-------------------
- fs/nfs/nfs4proc.c   |    2 +-
- 4 files changed, 45 insertions(+), 25 deletions(-)
+ kernel/trace/ftrace.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -661,6 +661,44 @@ struct nfs_client *nfs_init_client(struc
- }
- EXPORT_SYMBOL_GPL(nfs_init_client);
- 
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
-+		server->caps &= ~NFS_CAP_READ_PLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3825,13 +3825,17 @@ ftrace_regex_open(struct ftrace_ops *ops
+ 	        } else {
+ 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
+ 		}
++	} else {
++		if (hash)
++			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
++		else
++			iter->hash = EMPTY_HASH;
 +	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
-  */
-@@ -699,9 +737,6 @@ static int nfs_init_server(struct nfs_se
- 	/* Initialise the client representation from the mount data */
- 	server->flags = ctx->flags;
- 	server->options = ctx->options;
--	server->caps |= NFS_CAP_HARDLINKS|NFS_CAP_SYMLINKS|NFS_CAP_FILEID|
--		NFS_CAP_MODE|NFS_CAP_NLINK|NFS_CAP_OWNER|NFS_CAP_OWNER_GROUP|
--		NFS_CAP_ATIME|NFS_CAP_CTIME|NFS_CAP_MTIME;
  
- 	if (ctx->rsize)
- 		server->rsize = nfs_block_size(ctx->rsize, NULL);
-@@ -726,6 +761,8 @@ static int nfs_init_server(struct nfs_se
- 	if (error < 0)
- 		goto error;
+-		if (!iter->hash) {
+-			trace_parser_put(&iter->parser);
+-			goto out_unlock;
+-		}
+-	} else
+-		iter->hash = hash;
++	if (!iter->hash) {
++		trace_parser_put(&iter->parser);
++		goto out_unlock;
++	}
  
-+	nfs_server_set_init_caps(server);
-+
- 	/* Preserve the values of mount_server-related mount options */
- 	if (ctx->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &ctx->mount_server.address,
-@@ -867,7 +904,6 @@ void nfs_server_copy_userdata(struct nfs
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1076,6 +1112,8 @@ struct nfs_server *nfs_clone_server(stru
- 	if (error < 0)
- 		goto out_free_server;
+ 	ret = 0;
  
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
- 	if (error < 0)
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -222,7 +222,7 @@ extern struct nfs_client *
- nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct fs_context *);
--extern void nfs4_server_set_init_caps(struct nfs_server *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(struct fs_context *);
- extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
- extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1025,24 +1025,6 @@ static void nfs4_session_limit_xasize(st
- #endif
- }
+@@ -5700,9 +5704,6 @@ int ftrace_regex_release(struct inode *i
+ 		ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
+ 						      iter->hash, filter_hash);
+ 		mutex_unlock(&ftrace_lock);
+-	} else {
+-		/* For read only, the hash is the ops hash */
+-		iter->hash = NULL;
+ 	}
  
--void nfs4_server_set_init_caps(struct nfs_server *server)
--{
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
--		server->caps &= ~NFS_CAP_READ_PLUS;
--
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--}
--
- static int nfs4_server_common_setup(struct nfs_server *server,
- 		struct nfs_fh *mntfh, bool auth_probe)
- {
-@@ -1062,7 +1044,7 @@ static int nfs4_server_common_setup(stru
- 	if (error < 0)
- 		goto out;
- 
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3935,7 +3935,7 @@ int nfs4_server_capabilities(struct nfs_
- 	};
- 	int err;
- 
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
+ 	mutex_unlock(&iter->ops->func_hash->regex_lock);
 
 
 
