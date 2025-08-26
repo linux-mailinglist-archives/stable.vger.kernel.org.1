@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60010B36739
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B7AB35C19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A030566A8B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874C118906CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE082AE7F;
-	Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447822BEC34;
+	Tue, 26 Aug 2025 11:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K68hyj+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiF8lFMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DF0258A;
-	Tue, 26 Aug 2025 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FF229BDAC;
+	Tue, 26 Aug 2025 11:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216575; cv=none; b=a7zQgj3adYSJwS/tuiIhAdkLWvm8IJqAbc7bexyOt0JwmKW3tofpkqIw/4jgHkccCChQLt1jHdqfGa7ldtQoL+HaQ4vDAXn5vv0T5mpirsVMCiyPDHrnP401qjuQ03bl54nATF7N+3N7u1lhnoH0V4ecAXCWpZMesYF5Rf05egk=
+	t=1756207594; cv=none; b=DEn0Cq+bEdysWEpzrtLsm1XQyvIBjbl3ppdAel+GbyXrqXfrasLJMrUsSSbJzd3R/XakRsoscdUFFHk5engwriPQpEuT7ABCoe8hqI7d6s/e60MV60Y/Z0KSHdxzcQfMtb0h76UHcTmSM2kGt1KPLitJ9DSF6Pv91dxoNAG6xH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216575; c=relaxed/simple;
-	bh=Sh6XFfxUWk6ukS3MMbDBSANAyrCEOKP4VtWjWlvkc6s=;
+	s=arc-20240116; t=1756207594; c=relaxed/simple;
+	bh=fjBkNvVAcwltmcJ0w2qL3bXOoGwNC2xOheKxDXqzT6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPGvzBbYwGBoki4HR5uswl9k65wIvIDXSh4HJyrRTBf9xMAARhsfu+76f21SB4Dh8S5UEFa6hCr6JZfo0pv80Iqhey1W0/HflPeEErONQECS2eIxDrWeM1DtAeThfSU6UvTYYwSyoRHwsPnfApgdEWphor4EQiCzU6zM9jK4Jp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K68hyj+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB15C16AAE;
-	Tue, 26 Aug 2025 13:56:14 +0000 (UTC)
+	 MIME-Version; b=lmk5uiQzD/H3jnKJFjHavDuLZlN4ZUMCHlTYpmmcdT5OyEOrU1oNY7o8geQY1XdR1oVbhR3slJ9jMvefBmsYuZvatq7/ofQyflZPhL5rXmCVxZ5C5MeGrVmoruHtIZR/e0hUJ82KGXMHF2j+6CX6uiMxc5tY/XzBAcdErd9ZUxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiF8lFMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E143C4CEF1;
+	Tue, 26 Aug 2025 11:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216575;
-	bh=Sh6XFfxUWk6ukS3MMbDBSANAyrCEOKP4VtWjWlvkc6s=;
+	s=korg; t=1756207593;
+	bh=fjBkNvVAcwltmcJ0w2qL3bXOoGwNC2xOheKxDXqzT6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K68hyj+SwlBSJMswLYlI4/pTd64szOaoeKUmHox6diphKj/oKsv2/iahmK81nlEWq
-	 /kOQ1cnGNdxkZERpwLI5/ItxJ47KU8TvDZ+NywEw+bo038nEvHQ+dA+XaNE/MWI9C1
-	 TB7S6Bs4Q7sAEdFX3/q/xQYDi5oDGmWGL7N9DJY0=
+	b=qiF8lFMbcMLktXC2f+KADnxNXJ1UlSF4UDp7lCTyALcrzs8tzvBhbLMMMYJ2V5asj
+	 dkWJiN6nJkeSjWvEPibsmBCwiIRsy4whc4kOqNpxaoDTjdMzz8Y198d0mZxoiotFE7
+	 FP04qeCm39KiycGrAhjqJQzYVQ6HCHIT7Bx2WpDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 435/644] scsi: lpfc: Remove redundant assignment to avoid memory leak
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.16 242/457] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
 Date: Tue, 26 Aug 2025 13:08:46 +0200
-Message-ID: <20250826110957.244806722@linuxfoundation.org>
+Message-ID: <20250826110943.351219722@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
+commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
 
-Remove the redundant assignment if kzalloc() succeeds to avoid memory
-leak.
+In preparation to fix replay timer timeout, rename the
+gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
 
-Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
+Cc: stable@vger.kernel.org
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index a15ad76aee21..b2578186df63 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -6279,7 +6279,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 			}
- 			phba->nvmeio_trc_on = 1;
- 			phba->nvmeio_trc_output_idx = 0;
--			phba->nvmeio_trc = NULL;
- 		} else {
- nvmeio_off:
- 			phba->nvmeio_trc_size = 0;
--- 
-2.50.1
-
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -1753,7 +1753,7 @@ cleanup:
+ 	return ret;
+ }
+ 
+-static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
++static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+ 	u32 value;
+@@ -1928,7 +1928,7 @@ static int gli_probe_slot_gl9763e(struct
+ 	gli_pcie_enable_msi(slot);
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 					gl9763e_hs400_enhanced_strobe;
+-	gli_set_gl9763e(slot);
++	gl9763e_hw_setting(slot);
+ 	sdhci_enable_v4_mode(host);
+ 
+ 	return 0;
 
 
 
