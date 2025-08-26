@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9FAB35C38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CF6B36181
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D70C4171D3D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B61BC107F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66952C15A8;
-	Tue, 26 Aug 2025 11:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BAC23C4F4;
+	Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynfZ7I4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvDOowap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6271E2BE03C;
-	Tue, 26 Aug 2025 11:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3291823D294;
+	Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207599; cv=none; b=QTaJcmiiKJJGakZpwRhfOXx0HPY3kICFp/GU/JYt2jeUXhRS8mmAwpYM9FGYSuY6DHVDWTq/5MDPUnm3fBty9m+u7sr5axZabqesBMXQwxVZM0l8ehFlzYOVS/n99LCgD5WaCvAem+KLElM32XjEiRxCV0H7O2FdQko2Ws/sR+w=
+	t=1756213607; cv=none; b=ja4kJd/svV+JfzhbR2M6sKF+mHt8RdZF1aZba6QUtx8rBzi4krmscq1jELQ9+DN6haHviH0Cz2IVGDUpo9Gh6pRh4N1g9VSNC7/5ADYlR13Ohbfn+wrl83CPwqIUs8FKwTulCA+NcSwcdmDiT+7TdcvpBqCYKrZ1N5V+1OXir18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207599; c=relaxed/simple;
-	bh=akr7KNtNIpGGRbcmMiIQILYa0zxuHK4nFFITbeEx0sE=;
+	s=arc-20240116; t=1756213607; c=relaxed/simple;
+	bh=1levFNngVgwxV6kQvYwY9bVjsF7YkL5A/EwRy4CxH00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeS9bfdkQf8QTCk4hV6QzfH5t1mEbnpyz5dFz4B56TWpOkx4Lc655d4mOq4moTeXN2yioBZV90bo3il9Q6KCYl4/3orG+bCYwmStK3ttStWTx1H9MOjU75CjbSSeOx9d/PHxulGQU+ZkhXrDAcen/s0zSjYtDDMjv839IbXxUyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynfZ7I4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB9CC4CEF1;
-	Tue, 26 Aug 2025 11:26:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DpUpbo1XBpXFlTx88wGC6WIptatTiZun3EOTwaeB2LkUGpbdnngWJsF6NemFloEOq0JJARjPUouZjzVZcr4UBaPblL0Al51qeCNS5fxXW/ZJz1inX2XT4DD8eJ0Nm72XjSZJizM5vMl4o7lzGnjDn6m6d4HRI/xMQdXfltcM/HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvDOowap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7856C4CEF1;
+	Tue, 26 Aug 2025 13:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207599;
-	bh=akr7KNtNIpGGRbcmMiIQILYa0zxuHK4nFFITbeEx0sE=;
+	s=korg; t=1756213607;
+	bh=1levFNngVgwxV6kQvYwY9bVjsF7YkL5A/EwRy4CxH00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynfZ7I4zJ7j1xBLumWQIEelBrLfoKdhQLClCd6pErWh5773uiDL8PdneMWFMhtrCp
-	 Zu4dCqV8xyfQbMxfn9Qv9i9vrZMoELW2uJ/xsQWLnfmrHvFm5vNjBuJ9u7RIdiGXrZ
-	 jlw3ryPEc0H6nvATUv12WSaXq7a30Njm9okms7cQ=
+	b=VvDOowapvad0oxNbraK+DzguAgT2ovH/J4FPnaXvp3dYCBNzS5DdDKfZgz1ZHKtOk
+	 bJY53QGwupLOUoKLxfeoE+mNXBFDJgs59Iv76LjbMaI9c+xmNkwsGaLh0s7CxtaeaQ
+	 dbA8sdOUZoRCmDFyNNoNUfdo4ctA1h39dsP2pzWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 243/457] mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.6 378/587] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:08:47 +0200
-Message-ID: <20250826110943.376794790@linuxfoundation.org>
+Message-ID: <20250826111002.522155930@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit d2d7a96b29ea6ab093973a1a37d26126db70c79f upstream.
+commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
 
-This adds SDHCI_AM654_QUIRK_DISABLE_HS400 quirk which shall be used
-to disable HS400 support. AM62P SR1.0 and SR1.1 do not support HS400
-due to errata i2458 [0] so disable HS400 for these SoC revisions.
+The period generated by the hardware is
 
-[0] https://www.ti.com/lit/er/sprz574a/sprz574a.pdf
-Fixes: 37f28165518f ("arm64: dts: ti: k3-am62p: Add ITAP/OTAP values for MMC")
+	(PWMDWIDTH + 1) << CLKDIV) / freq
+
+according to my tests with a signal analyser and also the documentation.
+
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
+
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250820193047.4064142-1-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci_am654.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -156,6 +156,7 @@ struct sdhci_am654_data {
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -167,7 +167,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
- #define SDHCI_AM654_QUIRK_FORCE_CDTEST BIT(0)
- #define SDHCI_AM654_QUIRK_SUPPRESS_V1P8_ENA BIT(1)
-+#define SDHCI_AM654_QUIRK_DISABLE_HS400 BIT(2)
- };
- 
- struct window {
-@@ -765,6 +766,7 @@ static int sdhci_am654_init(struct sdhci
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
-+	struct device *dev = mmc_dev(host->mmc);
- 	u32 ctl_cfg_2 = 0;
- 	u32 mask;
- 	u32 val;
-@@ -820,6 +822,12 @@ static int sdhci_am654_init(struct sdhci
- 	if (ret)
- 		goto err_cleanup_host;
- 
-+	if (sdhci_am654->quirks & SDHCI_AM654_QUIRK_DISABLE_HS400 &&
-+	    host->mmc->caps2 & (MMC_CAP2_HS400 | MMC_CAP2_HS400_ES)) {
-+		dev_info(dev, "HS400 mode not supported on this silicon revision, disabling it\n");
-+		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
-+	}
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
 +
- 	ret = __sdhci_add_host(host);
- 	if (ret)
- 		goto err_cleanup_host;
-@@ -883,6 +891,12 @@ static int sdhci_am654_get_of_property(s
- 	return 0;
- }
- 
-+static const struct soc_device_attribute sdhci_am654_descope_hs400[] = {
-+	{ .family = "AM62PX", .revision = "SR1.0" },
-+	{ .family = "AM62PX", .revision = "SR1.1" },
-+	{ /* sentinel */ }
-+};
-+
- static const struct of_device_id sdhci_am654_of_match[] = {
- 	{
- 		.compatible = "ti,am654-sdhci-5.1",
-@@ -975,6 +989,10 @@ static int sdhci_am654_probe(struct plat
- 		goto err_pltfm_free;
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -190,9 +193,16 @@ static int pwm_mediatek_config(struct pw
  	}
  
-+	soc = soc_device_match(sdhci_am654_descope_hs400);
-+	if (soc)
-+		sdhci_am654->quirks |= SDHCI_AM654_QUIRK_DISABLE_HS400;
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
 +
- 	host->mmc_host_ops.start_signal_voltage_switch = sdhci_am654_start_signal_voltage_switch;
- 	host->mmc_host_ops.execute_tuning = sdhci_am654_execute_tuning;
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
  
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -221,11 +231,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
+ }
 
 
 
