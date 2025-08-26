@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF230B36CDA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB64B36519
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95BE39812D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 499878A7BA6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60656352081;
-	Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CF12D0621;
+	Tue, 26 Aug 2025 13:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCjRBBFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpptgIwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9A31E500C;
-	Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166C020CCCA;
+	Tue, 26 Aug 2025 13:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219456; cv=none; b=hcOWKAAZfpDWWmoFuahjrW46M/PYc0uhleohS/xfNPxYaqFkcCu+dCzTSkDZZwIwYP88/EaplSUaGZgtq9LAH4UZvDlmRWd37puTDEx9ERCFnNBGxCb5tB/BaNZOBA60zmlZI/6S8EGiIf7dBwYzSkDEo/JDsZ2bYrca6M/t6jo=
+	t=1756215215; cv=none; b=INNXVvN5WhMcfgI8x1F9OcY4/6rLG9EiBOGyedMOJZJlqvam64ysSfFoohUq1QsZ25uxWoLEb1LYhVhPBuO2aqBdByxn51gEKi8yYsa6he5YrBdMA4JA7H0wIt6kDyggJ83BzoNiLbgNvV8qKT1cR0hpARaRoA0Xx+UGnbjBPUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219456; c=relaxed/simple;
-	bh=mFv9DMMQvUq3/ztyOE7UxKa3bI/3lbOVen4bdZUTbjQ=;
+	s=arc-20240116; t=1756215215; c=relaxed/simple;
+	bh=LI0IZqm5//eghdHfAqql1NbE9x8Y/yhzQBxlYu0NxdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlBvXbJ56LJqFx++giq+unP+VWhWA9+coe0zhjXoBSfNQ4Yy/HnlAVlqJv8XSmvsRQaXdFmbn+D1qz7hxGC1OATuHrgweosKNJyk/qz4UfoA/eYRG+8Bhe/hDY64uLsCnDY+cLr3mAHOVEHYU+7wr3kdDYC6SumhIz5fxIbyfKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCjRBBFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EB1C4CEF1;
-	Tue, 26 Aug 2025 14:44:15 +0000 (UTC)
+	 MIME-Version; b=tEVSd/Vy94HBi3mJx3O6lGs45t0qiRJiKRvXl12dRJ8LpvX06z1B9X9BfYXOiBIIyt7B+4Z6Hv9o0yGBvl6CWGcljB7ftCY10h/CTbxNvZBBQ9KOeiiuBw/Qc1D32XxJLNam5CYElzGWb/oNC8iJjAmxJ6KYbRYmHbhb84jxP88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpptgIwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C98C4CEF1;
+	Tue, 26 Aug 2025 13:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219456;
-	bh=mFv9DMMQvUq3/ztyOE7UxKa3bI/3lbOVen4bdZUTbjQ=;
+	s=korg; t=1756215215;
+	bh=LI0IZqm5//eghdHfAqql1NbE9x8Y/yhzQBxlYu0NxdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCjRBBFnGmdXc8MurlF9pmwohkfR84Bse0jYIUUisryAFkWl20OGmLbQjfOucJyua
-	 fWjbVxpJE9bFEKXdSRYy3TT/UMA5ZXDYo/ZSZLVvXZQn7etm9JMbBMz91VDjLAqKj6
-	 jL+Zm/2T/saP5hLt5CZtavAyYaPALAvbspZ3f+uY=
+	b=cpptgIwB0Hp3nWGngdVIXY7JynRR2oXN5QBBG41nGWmRju7a+hGYTcpKfG6dBsf7I
+	 Y4Mv/n+M2Wgb/kvZjU2fkXpOZlsqYMRPa4Rfobk3KatEy4NWZMOtg5hMvXRzBs/b7v
+	 0LvLDusFSU2fG5dmFEM98REnMNti0yj4oIWEsb60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
+	Melody Olvera <quic_molvera@quicinc.com>,
+	Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 358/403] usb: musb: omap2430: fix device leak at unbind
+Subject: [PATCH 6.1 431/482] soc: qcom: mdt_loader: Enhance split binary detection
 Date: Tue, 26 Aug 2025 13:11:24 +0200
-Message-ID: <20250826110916.880308413@linuxfoundation.org>
+Message-ID: <20250826110941.477825243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
 
-[ Upstream commit 1473e9e7679bd4f5a62d1abccae894fb86de280f ]
+[ Upstream commit 210d12c8197a551caa2979be421aa42381156aec ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+It may be that the offset of the first program header lies inside the mdt's
+filesize, in this case the loader would incorrectly assume that the bins
+were not split and in this scenario the firmware authentication fails.
+This change updates the logic used by the mdt loader to understand whether
+the firmware images are split or not. It figures this out by checking if
+each programs header's segment lies within the file or not.
 
-Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Removed populate_irqs-related goto changes ]
+Co-developed-by: Melody Olvera <quic_molvera@quicinc.com>
+Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
+Signed-off-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230509001821.24010-1-quic_gokukris@quicinc.com
+Stable-dep-of: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/omap2430.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -476,13 +476,13 @@ static int omap2430_probe(struct platfor
- 			ARRAY_SIZE(musb_resources));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add resources\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	pm_runtime_enable(glue->dev);
-@@ -497,7 +497,9 @@ static int omap2430_probe(struct platfor
- 
- err3:
- 	pm_runtime_disable(glue->dev);
--
-+err_put_control_otghs:
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- err2:
- 	platform_device_put(musb);
- 
-@@ -511,6 +513,8 @@ static int omap2430_remove(struct platfo
- 
- 	platform_device_unregister(glue->musb);
- 	pm_runtime_disable(glue->dev);
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- 
- 	return 0;
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -264,6 +264,26 @@ out:
  }
+ EXPORT_SYMBOL_GPL(qcom_mdt_pas_init);
+ 
++static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_name)
++{
++	const struct elf32_phdr *phdrs;
++	const struct elf32_hdr *ehdr;
++	uint64_t seg_start, seg_end;
++	int i;
++
++	ehdr = (struct elf32_hdr *)fw->data;
++	phdrs = (struct elf32_phdr *)(ehdr + 1);
++
++	for (i = 0; i < ehdr->e_phnum; i++) {
++		seg_start = phdrs[i].p_offset;
++		seg_end = phdrs[i].p_offset + phdrs[i].p_filesz;
++		if (seg_start > fw->size || seg_end > fw->size)
++			return true;
++	}
++
++	return false;
++}
++
+ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 			   const char *fw_name, int pas_id, void *mem_region,
+ 			   phys_addr_t mem_phys, size_t mem_size,
+@@ -276,6 +296,7 @@ static int __qcom_mdt_load(struct device
+ 	phys_addr_t min_addr = PHYS_ADDR_MAX;
+ 	ssize_t offset;
+ 	bool relocate = false;
++	bool is_split;
+ 	void *ptr;
+ 	int ret = 0;
+ 	int i;
+@@ -283,6 +304,7 @@ static int __qcom_mdt_load(struct device
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -336,8 +358,7 @@ static int __qcom_mdt_load(struct device
+ 
+ 		ptr = mem_region + offset;
+ 
+-		if (phdr->p_filesz && phdr->p_offset < fw->size &&
+-		    phdr->p_offset + phdr->p_filesz <= fw->size) {
++		if (phdr->p_filesz && !is_split) {
+ 			/* Firmware is large enough to be non-split */
+ 			if (phdr->p_offset + phdr->p_filesz > fw->size) {
+ 				dev_err(dev, "file %s segment %d would be truncated\n",
 
 
 
