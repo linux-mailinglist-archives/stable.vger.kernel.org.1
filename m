@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15EAB36A10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E41B366AA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 010677A6755
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDDF9980145
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9753135CEBD;
-	Tue, 26 Aug 2025 14:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D23350D7C;
+	Tue, 26 Aug 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTmWyj+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtxQcpYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5656235CEC0;
-	Tue, 26 Aug 2025 14:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0449134DCCB;
+	Tue, 26 Aug 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218659; cv=none; b=aHMXi19TFBbEtZhUfiENdHPAhFh++YjBOwqX+57RVXbgCMCg2WKAz/VCntVxyFO23fUy6sJMlMjtqpF4VIwIK8vqRV/HzdjGbY9aOzY+7S3Bg4vlZhxYMaBm976w8ORNaw27f9s9qnspEI6B+frPWQ7fjIV4IQuaPGFdH1wCFbE=
+	t=1756216111; cv=none; b=TsqYNr+ZhbLHUlZQW9m3K+cklTUgYpeHqNVaRllUttYwre14C+E3hyLoTBshSy+cL4ibY0ioRnKS1thUICPmF0sn/JEmdxgbPHrZ0ApqkSg2czTzSltkycD9xKaORXcnC9eY1KY54VddCho5s99waJ110LFlCj22IxJoHkSr6cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218659; c=relaxed/simple;
-	bh=yJ31srxmWc1HwDcA2ZOlf0KSECuWty98tI4IfFPY1G4=;
+	s=arc-20240116; t=1756216111; c=relaxed/simple;
+	bh=lvm6c+CbybswugYpkeAqdZX5Nz2ZxLe9ZUI9gxV0N5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhk47tYnOESzYMfOZvPDomHnyviZmxpxSQHh0T8JXwO5xBJpqVfnuPyj6ucHKmrYpxa3hEpx7ZXrD+bekjlLC3kBG4GByO2uMo2gLK+U8t7zzC9gKoOi4d6ZGA+q3AiQOCT9QxMnIDgafiWbzgmoX0zHvYgrGuiQAOSJHvWk8tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTmWyj+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0E2C4CEF1;
-	Tue, 26 Aug 2025 14:30:58 +0000 (UTC)
+	 MIME-Version; b=sIFUTZYRgnT8QD1yvWC9rU+VJ02jxlCql+nbsbanzuxh/RKI769xEJaAJyTmRUfpB+6am8xpLcJLjHZ4lc/iFFUaPy9udDrKp+lsyHMUQ+VI4MCxDVsFYukT8XGucr1wqjqbCbhSEllvTsJpm3g1HUF1+6z6u/2eNutfv+qRjes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtxQcpYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE36C4CEF1;
+	Tue, 26 Aug 2025 13:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218659;
-	bh=yJ31srxmWc1HwDcA2ZOlf0KSECuWty98tI4IfFPY1G4=;
+	s=korg; t=1756216110;
+	bh=lvm6c+CbybswugYpkeAqdZX5Nz2ZxLe9ZUI9gxV0N5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTmWyj+EhKxexyMgZBHZM4gICD6LMXY19Gjzs7UuGzGohKGIErOJ2vutyJRLm6rzF
-	 q3zVQsRQIxJ1FBdeUqlj/byWnFDOtcIrd34eJT/7xpDAzQ247aDYpFqkBC5ibOmRKz
-	 oBbJuuiazmnOB8jlsW5cGqJL3dAILQGiIEGoHs3A=
+	b=PtxQcpYbAbHOZZFvFzgz4pslX6KmUrv684jV74VdEVNXNbSRAxsu/PX+VMcS4weBC
+	 ONUkCZXkkHxBQKwJtJ5udMggEE8M9i+aGbg5zChEzqorCYcJDoS6ZJ3IT//5OZspKI
+	 d/nxmZJAFA9+JOgD8PIKu/GwsiZxGTZlqn2dIjvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 053/403] net_sched: sch_sfq: reject invalid perturb period
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 288/644] hfs: fix not erasing deleted b-tree node issue
 Date: Tue, 26 Aug 2025 13:06:19 +0200
-Message-ID: <20250826110907.328897857@linuxfoundation.org>
+Message-ID: <20250826110953.519513674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 7ca52541c05c832d32b112274f81a985101f9ba8 ]
+[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+The generic/001 test of xfstests suite fails and corrupts
+the HFS volume:
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Tested:
+generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
 
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
+Ran: generic/001
+Failures: generic/001
+Failed 1 of 1 tests
 
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+   Unused node is not erased (node = 2)
+   Unused node is not erased (node = 4)
+<skipped>
+   Unused node is not erased (node = 253)
+   Unused node is not erased (node = 254)
+   Unused node is not erased (node = 255)
+   Unused node is not erased (node = 256)
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+                  CBTStat = 0x0004 CatStat = 0x00000000
+** The volume untitled was found corrupt and needs to be repaired.
+	volume type is HFS
+	primary MDB is at block 2 0x02
+	alternate MDB is at block 20971518 0x13ffffe
+	primary VHB is at block 0 0x00
+	alternate VHB is at block 0 0x00
+	sector size = 512 0x200
+	VolumeObject flags = 0x19
+	total sectors for volume = 20971520 0x1400000
+	total sectors for embedded volume = 0 0x00
 
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
+This patch adds logic of clearing the deleted b-tree node.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/001 9s ...  32s
+Ran: generic/001
+Passed all 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled appears to be OK.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/hfs/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -653,6 +653,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
- 	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -669,14 +677,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
- 
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 2039cb6d5f66..219e3b8fd6a8 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -586,6 +586,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
+ 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
+ 			hfs_bnode_unhash(node);
+ 			spin_unlock(&tree->hash_lock);
++			hfs_bnode_clear(node, 0, tree->node_size);
+ 			hfs_bmap_free(node);
+ 			hfs_bnode_free(node);
+ 			return;
+-- 
+2.39.5
+
 
 
 
