@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B03AB3678A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229FAB36BCB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323FD1BC6F59
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 488CDA01198
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30742353373;
-	Tue, 26 Aug 2025 13:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D645A3568EC;
+	Tue, 26 Aug 2025 14:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz5DToBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH6XnaU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECB434DCC3;
-	Tue, 26 Aug 2025 13:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924802676E9;
+	Tue, 26 Aug 2025 14:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216625; cv=none; b=fUBU6B3QSvu5CSLTOs5qA16TpPcBVFYfoGrYVEgLndm44gEIuvY1+r/t7EMBXTlgz0EvXkfXzlmRFUDrmB+fG17iX/hSJrHUKm1ojuspii5EVqVmy1zpBJE8Cubc+OecIO8rdcPv6g+aqimjmRXP1XusYj4agfsPP9W2T7ELR3A=
+	t=1756219089; cv=none; b=HrFRLpth186sHAasoHSLJKNnkOHuPLkrJ7t78FVhpl6DV8q3TzrJwc4GshaFLapy8CPaeQBIM2Dsbqxu2lKum3tbp/1EIIfPF9vFCHJZkCF7PrTO3fZfWztdOMyVFudO3kmM6Rnw8tKRImBXBf8g9Wo5Aas6E2JghpSfY2FYvNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216625; c=relaxed/simple;
-	bh=2mRogVjEvW7YIZP4hGukKUqyAUTDpxDispERX8nLckU=;
+	s=arc-20240116; t=1756219089; c=relaxed/simple;
+	bh=7HfNW/cfnHS+UwWudJQqh0Ln1U8csKf0J6d8Ppbhpec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgGEZY0LrditNxVQneH7yNduo+ZmXjmBJlF9zDKcn/eQGGtXC01JVfkyMWDaiEYelj2Q8Bt57PByXWFplwcY5oLehY/bXG8oky9gJgudy0dnSntm7iwlAoE57aPBMXHemMqK0wzGb1ZrxgjPfTOXPp01n5kJ9t9BMSUecng0ep0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz5DToBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA9AC113CF;
-	Tue, 26 Aug 2025 13:57:04 +0000 (UTC)
+	 MIME-Version; b=WJbloDroDHNLBre1228YDBrgNNN3grlJwuDFJKbFDgghWC/N2oJoLC8qglTsXe5DvuYHP6YDbPj08d2MEj/v2pXtV4oMIiwXYof30IZsG0gP+j6HwAwkx68Z1x80QugeQUWpETnY7ZhUxSwYA57rPEoiDJ7jpXmhmpl7BmzGlaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH6XnaU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E40C4CEF1;
+	Tue, 26 Aug 2025 14:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216624;
-	bh=2mRogVjEvW7YIZP4hGukKUqyAUTDpxDispERX8nLckU=;
+	s=korg; t=1756219089;
+	bh=7HfNW/cfnHS+UwWudJQqh0Ln1U8csKf0J6d8Ppbhpec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wz5DToBkBgbQ5GTlOFbNfy7eyx0tPtlVsbbzc/1nOurJnc3ADxhR4kr1FQZwt51v3
-	 2puKyFGX0xgrn8dEuKYCSMpXDuELEDOA+VvhEW6f/V0vcP/9JOkfot77QUpzb3S1ti
-	 xpLuNS1uTN8NXyCcyQKUby/FbaP0lePHl6992XfI=
+	b=UH6XnaU0Lq2VnmxJ3JdUx3h2Rp6275a+CqyWhp+/slfReKsCXjozyfSnS8Qd3tMId
+	 iGoOxy0ABal5aDOfFU7nUH1d/pWVSYsTAn/U5oHNcJMWAL5Z824rfh7twjoAJRDQ/x
+	 cRFaxQZx9kBow4VJAfriKYsqX6LloHs8N2+8YSYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.15 482/644] PCI: endpoint: Fix configfs group list head handling
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 247/403] media: tc358743: Check I2C succeeded during probe
 Date: Tue, 26 Aug 2025 13:09:33 +0200
-Message-ID: <20250826110958.429689727@linuxfoundation.org>
+Message-ID: <20250826110913.646430199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
+[ Upstream commit 303d81635e1d9c949b370215cc94526ed81f2e3d ]
 
-Doing a list_del() on the epf_group field of struct pci_epf_driver in
-pci_epf_remove_cfs() is not correct as this field is a list head, not
-a list entry. This list_del() call triggers a KASAN warning when an
-endpoint function driver which has a configfs attribute group is torn
-down:
+The probe for the TC358743 reads the CHIPID register from
+the device and compares it to the expected value of 0.
+If the I2C request fails then that also returns 0, so
+the driver loads thinking that the device is there.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
-Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
+Generally I2C communications are reliable so there is
+limited need to check the return value on every transfer,
+therefore only amend the one read during probe to check
+for I2C errors.
 
-CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
-Hardware name: Radxa ROCK 5B (DT)
-Call trace:
-show_stack+0x2c/0x84 (C)
-dump_stack_lvl+0x70/0x98
-print_report+0x17c/0x538
-kasan_report+0xb8/0x190
-__asan_report_store8_noabort+0x20/0x2c
-pci_epf_remove_cfs+0x17c/0x198
-pci_epf_unregister_driver+0x18/0x30
-nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
-__arm64_sys_delete_module+0x264/0x424
-invoke_syscall+0x70/0x260
-el0_svc_common.constprop.0+0xac/0x230
-do_el0_svc+0x40/0x58
-el0_svc+0x48/0xdc
-el0t_64_sync_handler+0x10c/0x138
-el0t_64_sync+0x198/0x19c
-...
-
-Remove this incorrect list_del() call from pci_epf_remove_cfs().
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epf-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -343,7 +343,6 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
--	list_del(&driver->epf_group);
- 	mutex_unlock(&pci_epf_mutex);
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index f4ebe93a495c..ce54d963457d 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -110,7 +110,7 @@ static inline struct tc358743_state *to_state(struct v4l2_subdev *sd)
+ 
+ /* --------------- I2C --------------- */
+ 
+-static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
++static int i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ {
+ 	struct tc358743_state *state = to_state(sd);
+ 	struct i2c_client *client = state->i2c_client;
+@@ -136,6 +136,7 @@ static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ 		v4l2_err(sd, "%s: reading register 0x%x from 0x%x failed\n",
+ 				__func__, reg, client->addr);
+ 	}
++	return err != ARRAY_SIZE(msgs);
  }
  
+ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+@@ -192,15 +193,24 @@ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ 	}
+ }
+ 
+-static noinline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
++static noinline u32 i2c_rdreg_err(struct v4l2_subdev *sd, u16 reg, u32 n,
++				  int *err)
+ {
++	int error;
+ 	__le32 val = 0;
+ 
+-	i2c_rd(sd, reg, (u8 __force *)&val, n);
++	error = i2c_rd(sd, reg, (u8 __force *)&val, n);
++	if (err)
++		*err = error;
+ 
+ 	return le32_to_cpu(val);
+ }
+ 
++static inline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
++{
++	return i2c_rdreg_err(sd, reg, n, NULL);
++}
++
+ static noinline void i2c_wrreg(struct v4l2_subdev *sd, u16 reg, u32 val, u32 n)
+ {
+ 	__le32 raw = cpu_to_le32(val);
+@@ -229,6 +239,13 @@ static u16 i2c_rd16(struct v4l2_subdev *sd, u16 reg)
+ 	return i2c_rdreg(sd, reg, 2);
+ }
+ 
++static int i2c_rd16_err(struct v4l2_subdev *sd, u16 reg, u16 *value)
++{
++	int err;
++	*value = i2c_rdreg_err(sd, reg, 2, &err);
++	return err;
++}
++
+ static void i2c_wr16(struct v4l2_subdev *sd, u16 reg, u16 val)
+ {
+ 	i2c_wrreg(sd, reg, val, 2);
+@@ -2041,6 +2058,7 @@ static int tc358743_probe(struct i2c_client *client)
+ 	struct tc358743_platform_data *pdata = client->dev.platform_data;
+ 	struct v4l2_subdev *sd;
+ 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
++	u16 chipid;
+ 	int err;
+ 
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
+@@ -2072,7 +2090,8 @@ static int tc358743_probe(struct i2c_client *client)
+ 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
+ 
+ 	/* i2c access */
+-	if ((i2c_rd16(sd, CHIPID) & MASK_CHIPID) != 0) {
++	if (i2c_rd16_err(sd, CHIPID, &chipid) ||
++	    (chipid & MASK_CHIPID) != 0) {
+ 		v4l2_info(sd, "not a TC358743 on address 0x%x\n",
+ 			  client->addr << 1);
+ 		return -ENODEV;
+-- 
+2.39.5
+
 
 
 
