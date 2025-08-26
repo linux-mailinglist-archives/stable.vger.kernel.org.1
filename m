@@ -1,226 +1,144 @@
-Return-Path: <stable+bounces-176387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BC1B36C60
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23A6B36D67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CCB51C25667
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 735F98E5D4C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFC054673;
-	Tue, 26 Aug 2025 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40203227B9F;
+	Tue, 26 Aug 2025 14:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XdPCvuMt"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MkFRCod7"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2041.outbound.protection.outlook.com [40.107.220.41])
+Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D8F8635D;
-	Tue, 26 Aug 2025 14:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219609; cv=fail; b=ZTUmwsr7tXr11BmWUQ19ZaYt8YbgDnQiM0vGYB+e6p5epmM7Jge6xYJP7nyCHNfhCPK5VNzBeRIKpfM72Ga6Do3R+K4k1h3aup2ndIHu49sNIwofdDfzRNwoPitM8yTLUDWjKxhT1GTEEgd3WY4I7g7Xbj6hai4vh7O/izXFI1o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219609; c=relaxed/simple;
-	bh=9euU7a2I3AfOLNf8gJ1TBWrvKj2IGf7LwsF+qBcUEzA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IWSqiI+cvSnlLWWI0oME0YzcXZtGJUZ+30+GPRzINVUuD5S0mrF5epZ62RcOdtYoBOUupj2x+aIZqtNQOuJ0OXZ1KlFUKiHjYGBMgp5/JNXGHlDllr1vJ++jBjt575px/JBD1MVQL8hWNu2jNG5r6AoZT0zGdm2mXeMtpvjr/U0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XdPCvuMt; arc=fail smtp.client-ip=40.107.220.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lf09ElO77VMu48/7gsOFb9es+WKWxMV+Xsdxf4etLr54rxnzgVCr+gJL0jewWtSjW5/U7l5nmfC1D+tQtFhZ/ZXBESPKgLbJcOC8a0XOZIMTO3VE5hQV5MYfKBPyFjHlmawYnsgLBZaYW0qPVzCK9YNB6MvSuKrxmGFJS2hkyL+NpBD9PeCDtNKWtQt0Y4aHCzVOX+p6mj+PHH8LBNg1LB17zTm8zfvzl3vDhpNMyqq3Ym9enGx3IvCzKHPO3ctM3ySegXLecT5IIjZlPDpBqDpFs4jN/FDw6Qh3ULfnBVZHCr+TUWCgQsK5ZrSiG3ONCuksR2LpaVumlu/PN5el+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LbPHeuD4p672+ynr0yYcJ0HTaBOqYPcsce35r1N/xPw=;
- b=e3mYdvmVltCxCgpibiOtkFKiKWrg876cbldukYNxhHz7enqPoJBtuSbxabHNatjQaUIUqGJQoBP52aVDqSqUgHNd4wdUsbDly7jCyqsC9ElPu1BLWmswIE9IgHsszKVKXVo/iS8ZmXW0G2dn52gcXY5V9cz4rvdbug1GR0OVj6w4JxVAcjLDG0pKHniDlaB52ZkE+zIPybLQbUnENf5GpzDxyAqYIw3oPHXlrw3CLLi/yd+rXKG4pQXpz2w4zmOE1rtZEBAXVQWS7//UnH0RDFmOteMt+oWmh3iMTGEs8KcXW+SrI97rstUxkE+3yja8DT/R86vCtERCNRw9MBy4lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LbPHeuD4p672+ynr0yYcJ0HTaBOqYPcsce35r1N/xPw=;
- b=XdPCvuMtkpMYtZs04LwDEAjxfswa0rg/JNRfjy5pDKuxqRbs3Kel1JtSOsxkf3bkcu2h2K1AKsWer6Cbfn7tZBOXXxMR9BRzQ2vb+aF4E1MNFSN1iU6KvPO39po5tg3JL6ohQtaw1b+UpleEbYHKC1FJvyqx7/F000iVnyo/cYgTiAt2yKlAN+eEJWR58kWvCswi+hBzWLbKUd0X0SWQNkS7R/wA5OL1eqmDDCkovJb/7lEkJAQJ58PJQeqyGVb/giMGYyAVXvdDf+m0Lgf0ebXIhZXjV8WJjvyTCp1cyilYnSYd8+zEzStolsrtedIwGLrlOegqSIkrC0CFrl5p3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
- by CYYPR12MB8729.namprd12.prod.outlook.com (2603:10b6:930:c2::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
- 2025 14:46:44 +0000
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9%5]) with mapi id 15.20.9073.010; Tue, 26 Aug 2025
- 14:46:44 +0000
-Message-ID: <ed898a83-48d1-4cce-87b4-b67ee4fdc047@nvidia.com>
-Date: Tue, 26 Aug 2025 15:46:37 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/403] 5.4.297-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250826110905.607690791@linuxfoundation.org>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P123CA0013.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:a6::25) To SJ2PR12MB8784.namprd12.prod.outlook.com
- (2603:10b6:a03:4d0::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1494E2222AC;
+	Tue, 26 Aug 2025 14:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.176.194.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756220180; cv=none; b=DEAztwwCPZQlTop3oLyAbpyZtH4rxPowZ1w4nerdPL52X9BqKWNv5V9n/dd/69tgu+tAaoKwMORHF73L7hoTwbzpvv+WSV4XwkqmsTR8VA8jqqCfQrp/ity2Ux5DIdNqFwLEenwwlr8majQh20jPq9xh3E7a7OAoUZk5n7jv3qE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756220180; c=relaxed/simple;
+	bh=LI1dCZa4FwieTJrb5lNo+wXzSQ7nbU3b0nB7rDBUhHM=;
+	h=MIME-Version:Content-Type:Date:Message-ID:To:CC:Subject:From:
+	 References:In-Reply-To; b=dxnw46hR0mnxtHaNJpI2YEhAyRQVez+liHHBPkmo5B46zcIPCajdFMx/sMzzNOtxBDMt01fDk+csuKoJmLjyYSAdJjCvr1DT0DoFj4zlHMA9B1zXDzuXj1kosIKVbldHV/CzLqVKPh/U1UMb5fd0Scp5prM+GnnkC4BeEW9G6CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MkFRCod7; arc=none smtp.client-ip=63.176.194.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1756220177; x=1787756177;
+  h=mime-version:content-transfer-encoding:date:message-id:
+   to:cc:subject:from:references:in-reply-to;
+  bh=6W8m3tqW7TsBzc9bn3jq/EsbNWeFZzmBuJ+k3VQ45Yk=;
+  b=MkFRCod77B5NtIFu9/GDHQxgWaEhs0N8JSTb1otA6TKqzb50FnqoVf1Q
+   BOB5h8K0Ovxa4HMmOGfzQGLsfifPOlgIs0h6VobPz1uzmlc/zwAY3M1t+
+   D8sqOU417nzNV1Hlm2aXiUSl4ucyIoBoFUSUxYzohA7tO3yZalj/czo8y
+   jYzf4IBqhyUoTQBr7twAKJ89c9kaBxj6fcp9yxN4OGzYGAx6Z0rZc70kn
+   O4HV8Ia4a3eJsJkELz/EAzXUtzsYctbdu/K3aApGT/ZCpSPN0DlnT0jCj
+   2Ly8eCPrR0lklm1kfWHBI8oEsSlVreLSXauaDipW45q6GxZnIaKfsL7RG
+   A==;
+X-CSE-ConnectionGUID: asiGzhnzTiCdDQnaKZprlg==
+X-CSE-MsgGUID: R4nyLwQwQJCy5oUT7xGABg==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
+   d="scan'208";a="1210282"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 14:56:07 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:1375]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.187:2525] with esmtp (Farcaster)
+ id 2f6f29d2-1acf-4882-b0d8-cf461d27f0a6; Tue, 26 Aug 2025 14:56:07 +0000 (UTC)
+X-Farcaster-Flow-ID: 2f6f29d2-1acf-4882-b0d8-cf461d27f0a6
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Tue, 26 Aug 2025 14:56:06 +0000
+Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
+ (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17; Tue, 26 Aug 2025
+ 14:56:02 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|CYYPR12MB8729:EE_
-X-MS-Office365-Filtering-Correlation-Id: df1a38e4-2966-4be2-5814-08dde4af606b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U2NpTFM5Ymo0QXVhcVIzMzM0emM0N3JRSFVvaDlJS1A2N3BIUTN4TnFCSSs3?=
- =?utf-8?B?SC9xVTJtRU5lZHdtSHE1a1FYd3oxcWdvdCswM2ViVFIvN0V1ekdaVFBRZGhC?=
- =?utf-8?B?S2pUSzZXUDA0YUxoekJESW9VT3VZbnZUVXNpb0lwSXpWeFZhN3d2eGt4eUNV?=
- =?utf-8?B?R09vRkdrQlgzaiszclRkeVl2MFpzY1M3Qm56d1BOTHM4djNEcHBFbUgvMHdz?=
- =?utf-8?B?bUVLSTQ4MDZhVTJ0amFBVXNxQ0R6ZjY3azlLZjB6Y0hseTd0M0x6UTFvalJ5?=
- =?utf-8?B?K2Q0V2ZESnFyUnF4T3Mxd2ZqbmhtTGt2MUcwcHN1MngyalVwKzNSalloM2lz?=
- =?utf-8?B?d3U2SDErVmJVYTZ1V095UWRUamZDb1BsSVp6NEtDU0FpTHhiYS9TeHZ2Vk8z?=
- =?utf-8?B?b0oyZmcvMEsxQXFpNm9LaGxOK1lvUWZxNFpsWmJDeEozVjM4Y1JHRHVOb3lS?=
- =?utf-8?B?ODBJVkJ3K2V1MVFqeGVqcmkvbURQNG94U3ErSEFKei9qWDV6alJUSHB6TmRT?=
- =?utf-8?B?c0hiK05OR0J0dE1uNytBYi8xcVk1eWpveU9NN0lkWUR5SzhUMkViVklqQU01?=
- =?utf-8?B?ZXBmTVFRc29Pbk1OZHVsbU5NQUhjR0ZBYmdzTUFSRlN5TXJ5YU00VlQxV1l4?=
- =?utf-8?B?Nm9WLzBHdFRMRjZJMXhOcis1Wm5TbGw5WkZaRjZsNEJvZlZFaU9kUVhrY3lj?=
- =?utf-8?B?eFMwK0dWbjh0ejVYZGNTZlpYbW8waVE5NllGVGUvRWNTc1ZsTGpNYXoyVWIw?=
- =?utf-8?B?ZERqcXhNNnl1Z0RjbVprb2Rkd1kxS3dlNFk3cDBSSWR1SHlLN0VkNDNyYTFS?=
- =?utf-8?B?NGthM2JhdWRPZms2OXlVVFpGTUw3SEZ0TTI2ek5lUG1WQmFtbytyTkExZU51?=
- =?utf-8?B?WThYS25wV2hsMkVkdk5pRmRLN1NGR2RRNG9nM2x4Ylppa292UGJaMFBJWGt0?=
- =?utf-8?B?ZTdCckVBOCtVallZY2FxdXNmWldFdkc1Z2tBakRTN3hNYXBnWVZKV0dpck9i?=
- =?utf-8?B?dUtWWU0yaitPb1pMNXlXZmg1RmxpQlZMTjlVMEVuOEp3Y0pkTWJPTGZTSSsw?=
- =?utf-8?B?azRFZGhrNUExS21XTnlBb01tbnpKY2t4UXZocFAyeW1WZCtxbWxjSWVWWENS?=
- =?utf-8?B?V3UrRWVSWHlxWng0MU1KUjJZTzh3bWNIbUI3TlFJL1pPeFNtNjRkRGFVNjlB?=
- =?utf-8?B?K2p6Yzd1SGsvd1J3eFpGR2YwSHhEZG1mOXNIMmpwSVRrcFJyUnlmTE5iS01L?=
- =?utf-8?B?RkJmRlJCa3dOZ2U5MGRIZGY5S0x1NGxKUlNoNlNLVjJkQTVIOEt6czN5MElx?=
- =?utf-8?B?ZHJuQkNjNGV4WWY1MHJ2RW5hWkp0TDVnVXFxZWpSMnF2VHdNUlpsUTJZVU5O?=
- =?utf-8?B?WTlzbTVZY3U5ZHFwWmpIUmNFSjI4VzNab3V6ZmhOajc3S2RTbVFVRFVraU1s?=
- =?utf-8?B?SXlRdzBIUlY3ZitBbkhNRHFRanZEMGczSEFOY3h2cHZNTVZZWnR0aXI3dS82?=
- =?utf-8?B?dktOalVsT2ZndFBpUVI5WlNiRDUrUysyRnErZnZueHpCcXArTUcvSk12TnR0?=
- =?utf-8?B?NXBNQitDYTM3bTVGT1BoWlNiNm1mK1c1aUd5UnkyMWNiTVpCbWRaUGtTUHps?=
- =?utf-8?B?YnVDeEdDVzN5N3AvYzJtMWpPU2pYZ0ptekY0T3c2SXU4bEZKT0FvcGVScXBl?=
- =?utf-8?B?RlpSVkYzQ2NTQ0lqdmc4dEtuYkx0RTVKU1p1cmEwL1ZYTXdqbGdMcFZ3SHVP?=
- =?utf-8?B?U0tjTnVTakQ0bjFoaEM4b09EN3Q2UnJSVG1WenhjWjVHUzEyS3ZVMEtTd3k4?=
- =?utf-8?B?U3hoczI0eVJ4M2liZkxkVXFOTys3TktRMk5aQkVMeHNTUEN5RGJkVUtqcmRF?=
- =?utf-8?B?QlA0ZFZ2WmsvU3NxMXhUMUNRY3ZyUHlmVURJbjBzSmRrcjAxeXlneVB4YVkr?=
- =?utf-8?Q?nFMskFhdsmc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZEFjNGFMR1JTY0Q0bTJYTlFpMHJ2bmszd2xNOXhPSFpVcVlNT1VkbnhBNEd3?=
- =?utf-8?B?MjRONXlBcDNFSmNpeWFuSlM4QzNkbkYzN1BQN1AvSEs0TVVETDZHbVJYVnYv?=
- =?utf-8?B?d2RpMUlFdjYrTUlDcEdHZ29ER3VaUXlPTHlBeGFMSXBLd0d3M1RjYkJUR3FC?=
- =?utf-8?B?Rko1cXRDZjlMcml0NnViSWhXWFFqaEJRSE5BUU9kL21RRUJHRkRkTUNJdjhD?=
- =?utf-8?B?MUd5RHFXUnpQRnpPUWErcFhsSkJPSXBxM3E2Qkk0Q2FTTTR3TTJ6ZVlPdk1J?=
- =?utf-8?B?eFpCa3pZeUZmK3dTdUJwVGJjWGJKUlk0QWV1NnhCaEg4OEpSVkx1VzB4ZG5q?=
- =?utf-8?B?ZFJ3TXREaDBPZW1WYkdUM1I4SGx6YkdWZnFZTjJsNkxDTXg4S1pJTHcrZ2Er?=
- =?utf-8?B?ajJLN1JkZHVMRlJrVytPb3NKYnFNRC95RVRxcjhzVTRNVnBLSFg2TDdSSWxR?=
- =?utf-8?B?em9jeGhDeFVQNWsxWnhqdVlzK3RwZmF4VzJGODg2NytLM1cwSHhVcUVTMlMy?=
- =?utf-8?B?L1JQbDNhMGk5dGYxREFnWWIyZ1pVMU1YdkxMMnU0RDE4QzdybE5kZDVaNFg0?=
- =?utf-8?B?SGpkc3FJZSsyVG8xczNqQ3JsdWQ0Y3ozRHhmY3ZuOWZkaXhDREpmVml0WUR5?=
- =?utf-8?B?aUZyNzNHYkJxWlBRcU5OS2xWcER1bFZWU0UrWXhBaWNCMkNVdFJmaWI3L2hp?=
- =?utf-8?B?SWgyekl2UFpTYzZMQWVvYVR0TUY2eEcvQnZZQ0xJWFgwbG9YMWtJdmg1dTVt?=
- =?utf-8?B?bzlzc3g4YmJoNi80anZTdVJIc05SY2N3cERkOHMzMGg5NDhxQ1A3VEFOWmgr?=
- =?utf-8?B?RktmbVVzSVhWWHAzOUk0dWJXc29rNWN3SFhJbEtNNDg4ZFBURFZickZWT2xZ?=
- =?utf-8?B?UXZXUHpZcEowdGRXWWIxc3BpaVo3bVdndnZhUGxJaXBFTnZNeGRtREVrWjJ4?=
- =?utf-8?B?ZEVsdFcvTFlCbm44RFhwOEgvSEtoVFR5L2U3RVFnQk8vcCtTMUpnMFJhbUQr?=
- =?utf-8?B?d1lvRkJWa0J4UVFOT1licmVsQWg0Vk1lV3dOYms0MDVXMEJBbmdxQ0NGWm5H?=
- =?utf-8?B?VHVlbWFoVkQzS1JsamczS1RtZHQ5Y2o2MUlKZzVPRXBVQjF0dTNFWm4wMFRy?=
- =?utf-8?B?MmttR3hEOGIwY0lGWkkvbzZxUXpBaXQ5ek9oVHBDM0FlUjloa2Zwbll5U0VJ?=
- =?utf-8?B?WVg3Z1pxRjJmZHpzVjh0djdSS2FoaDVvaGZjL1E3OWRmQUF3WWk1eitkTTl0?=
- =?utf-8?B?K2ZVa29MTXloWkt5KzMvWFhJV0NZTzk3OWpiTGQwanZZMjYyR0ExVytlQ3JB?=
- =?utf-8?B?RnBtZ2xRQzBlQlFXVXBpdXZIbGF3eVo0YUUxeDNGeXpNTjlPejUwQldDRE1T?=
- =?utf-8?B?amJsbUdLeEV6RWpqMnFuVVFpYXI1SDJRdUJQanVMR0w1RFN5WjdrRkU5MGRm?=
- =?utf-8?B?VEVCbi94VjljZGlRelBjeGtXcWRTT0JoaitVN2ZmYlZJZENydWJDWWhZa3cy?=
- =?utf-8?B?VjlhOGlaTGpYcm5FM1hkUXlCSTE1Y2lmd3l0ZzgxQ3dPZnhScndQZWVxQ3ZV?=
- =?utf-8?B?YTJQYm1lS2JqM3Z2RHpscFZpMUJMOFU2dCtNdWxFZDV6S2tLUnR5MXBYdCtF?=
- =?utf-8?B?bWl4SDlQcUpiNFR3ZW9qR2wwTW9HeUs4Ti9qRG9aYnoweFcybzVCTXllNlRw?=
- =?utf-8?B?enljTXhLUmNPSHpmd2RNeFJPNi9iTGhJaW9CM1d3Rlg1YUZyNEI5cFNpVkVD?=
- =?utf-8?B?WU5RR0JjZmtTLzBnZ1Nvd3BidlNyaWpEL0FsSCtSNlhTcTY1UVVjOVI4WGU0?=
- =?utf-8?B?eFFUK3ZaZStkMldCejNhbDExMnd0SHFtc3ljb2d0TDl6VkVUNlZUalQ2bzhM?=
- =?utf-8?B?QjQ1QyttRUkyY2JxRHZNMWNyRldiWThHM2Q2VjB0OFY2cVNCbkNBTzZLOVBB?=
- =?utf-8?B?Z2tXSjVqUHdIVzlGOXpzWEhaSW5UR2VQN29PdVJxMGhQa1psaWtXeWJld0dU?=
- =?utf-8?B?U3ZBWENNNTBKaFkzYlk0RTFiMCtXbWNIdXQ5NVpXOUgwQ2JNNGdpR3BKQkxx?=
- =?utf-8?B?aFA3UVNlMmpJRVlGY0JMc3VhenFvUE9zc29GRFFsbWRZcEpGK1dsNzJmRDli?=
- =?utf-8?B?UGl4NjI2eldGVUt3QmdEZXdNZTFHUzNqWFd4RmNkQ281TkJQMDcyT1hlQlZw?=
- =?utf-8?Q?EZsyadm/77mMSbj+YdQ5HiLulAs3/p7UXbcXDjWIw8BF?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df1a38e4-2966-4be2-5814-08dde4af606b
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 14:46:44.7037
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JWmhiD4At5PzWRzpq0fRshQllfl8ocQ2fyo1VymUuUSkRWNv7JIjOjuZPk7Xxr2AT6WgUjb4lD0GPKZK5M6w/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8729
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 26 Aug 2025 14:55:58 +0000
+Message-ID: <DCCG3711VAN4.9QEOBBP433L2@amazon.com>
+To: Eugene Koira <eugkoira@amazon.com>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+CC: <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, <joro@8bytes.org>,
+	<will@kernel.org>, <robin.murphy@arm.com>, <longpeng2@huawei.com>,
+	<graf@amazon.de>, <nsaenz@amazon.com>, <nh-open-source@amazon.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] iommu/intel: Fix __domain_mapping()'s usage of
+ switch_to_super_page()
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+X-Mailer: aerc 0.20.1-125-gabe5bb884bbc-dirty
+References: <20250826143816.38686-1-eugkoira@amazon.com>
+In-Reply-To: <20250826143816.38686-1-eugkoira@amazon.com>
+X-ClientProxiedBy: EX19D032UWB002.ant.amazon.com (10.13.139.190) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-Hi Greg,
+On Tue Aug 26, 2025 at 2:38 PM UTC, Eugene Koira wrote:
+> switch_to_super_page() assumes the memory range it's working on is aligne=
+d
+> to the target large page level. Unfortunately, __domain_mapping() doesn't
+> take this into account when using it, and will pass unaligned ranges
+> ultimately freeing a PTE range larger than expected.
+>
+> Take for example a mapping with the following iov_pfn range [0x3fe400,
+> 0x4c0600], which should be backed by the following mappings:
+>
+>    iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
+>    iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
+>    iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
+>
+> Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff=
+]
+> to switch_to_super_page() at a 1 GiB granularity, which will in turn
+> free PTEs all the way to iov_pfn 0x4fffff.
+>
+> Mitigate this by rounding down the iov_pfn range passed to
+> switch_to_super_page() in __domain_mapping()
+> to the target large page level.
+>
+> Additionally add range alignment checks to switch_to_super_page.
+>
+> Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_ma=
+pping()")
+> Signed-off-by: Eugene Koira <eugkoira@amazon.com>
+> Cc: stable@vger.kernel.org
+> ---
 
-On 26/08/2025 12:05, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.297 release.
-> There are 403 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 28 Aug 2025 11:08:17 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.297-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
+>  drivers/iommu/intel/iommu.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 9c3ab9d9f69a..dff2d895b8ab 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -1575,6 +1575,10 @@ static void switch_to_super_page(struct dmar_domai=
+n *domain,
+>  	unsigned long lvl_pages =3D lvl_to_nr_pages(level);
+>  	struct dma_pte *pte =3D NULL;
+> =20
+> +	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
+> +		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
 
-...
-  
-> Prashant Malani <pmalani@google.com>
->      cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+It might make sense to downgrade the warning to WARN_ON_ONCE().
 
+Other than that:
 
-The above commit is causing the following build failure ...
+	Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-  drivers/cpufreq/cppc_cpufreq.c:410:40: error: ‘CPUFREQ_NEED_UPDATE_LIMITS’ undeclared here (not in a function)
-   410 |         .flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
-       |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
-  make[2]: *** [scripts/Makefile.build:262: drivers/cpufreq/cppc_cpufreq.o] Error 1
-
-
-This is seen with ARM64 but I am guessing will be seen for
-other targets too.
-
-Jon
-
--- 
-nvpublic
-
+Regards,
+Nicolas
 
