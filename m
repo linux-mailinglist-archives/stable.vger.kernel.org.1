@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA79CB36850
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4627B35D73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04AE11BC3A94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0AFF4619B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D573035209D;
-	Tue, 26 Aug 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275E1318146;
+	Tue, 26 Aug 2025 11:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uc9Ekhs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h07HDWRM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904AA1F4C90;
-	Tue, 26 Aug 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60A929D26A;
+	Tue, 26 Aug 2025 11:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217013; cv=none; b=gJD5kdTRboVNgV0VpO3SW46xVxHuez66BgmFEAdLFqDSNF3xzFEyjsAz4w32xzE8xzc7IbelUIPAWNEl9sqFX+Jj1OWxy2aoiaQmd4qJHek0S4ooF7XaHBaHDryUB8GwSTZ68Y4s862asf/FIuiBxgVw1v4sJSXcI63i04OCabo=
+	t=1756208087; cv=none; b=glEIPA2wYjfjVpRmMmszc/OoZmhv1IWvBsndg6PlszPfEjudgU10z8lUPOKJNVZmlZySXrtfrDyzOuO1y1Red+iAFRw2ya7ZU3k1+Ea0tugHlVw0RGyBx4AaR8aJnPsomWfj3V1FWz93IKlTa52mX2LOpbQes8mfuU8wD2RQj5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217013; c=relaxed/simple;
-	bh=D5vpd7UdrrAjJ48N51rsjIKX1Hx1+vRwebC4EVBcajg=;
+	s=arc-20240116; t=1756208087; c=relaxed/simple;
+	bh=ywSeUtFl8wD8rPvz4nvLYRjaRNmtqA2hQVVRE03aoT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWwDs1dltQ4ThyP2ioORhe+h/jd3yfIRLI6J10lYMV7ZL7ePsAl2/WS6rggWkN6XbSP+jKTL6OWt0X++bImvIjy66q6Gov4ECFQFrD3Zta+E/CccDJBPalF8BBQBXBK9V4YY/MuAVWE/wWCk/KI80VJdxWYBFHC1iMw2UA3TZb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uc9Ekhs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3BEC4CEF1;
-	Tue, 26 Aug 2025 14:03:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mzg7WTZnzACVeK72ihp2xfglG9yitjkny2oFQOtmV86DgOYgJnm9hPl0qElj530jU9PKPQGVGqWF4eToruTpmkbzJXWAfKWoZ/E/2+zJktf5ppyDTOPK3hrvjQWylcnIS8pCMJkvvfs+buxctQw18gYpnRqAO83FPCxkzfg0ymI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h07HDWRM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E324C4CEF1;
+	Tue, 26 Aug 2025 11:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217013;
-	bh=D5vpd7UdrrAjJ48N51rsjIKX1Hx1+vRwebC4EVBcajg=;
+	s=korg; t=1756208087;
+	bh=ywSeUtFl8wD8rPvz4nvLYRjaRNmtqA2hQVVRE03aoT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uc9Ekhs4i8LgI3um8tvQHVBZ9NGScKLEk6qss5SWvg29QHp6771dxNqZIHOfrbCgW
-	 Mbd2VXEJmQ68aKh3pcdQQS2SpFcs9T+6pr4JAKrssdyywLQuksAMISVtYiBKXXFuJb
-	 2SgvA2N4BVJWxk3izmYbq2CMcPvGJxjJDypyZlBU=
+	b=h07HDWRMHe+rP3YLKrmRr/V9JGEFJQ3nP/ee45c7YGXhKpfTnOkPL0yXjB1lVA1xQ
+	 jamJk4xexUppELjoMHKen9Czc6m0PoIusc6/2+2LwrQETmxlrcVTPG5buNku3QVPZ/
+	 ANJrPJPk+pCepLXFfaZUA+s1rU9J5YlPbFgKLPCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoey Mertes <zoey@cloudflare.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 626/644] mlxsw: spectrum: Forward packets with an IPv4 link-local source IP
+Subject: [PATCH 6.16 433/457] net: dsa: microchip: Fix KSZ9477 HSR port setup issue
 Date: Tue, 26 Aug 2025 13:11:57 +0200
-Message-ID: <20250826111002.069413254@linuxfoundation.org>
+Message-ID: <20250826110947.990802239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit f604d3aaf64ff0d90cc875295474d3abf4155629 ]
+[ Upstream commit e318cd6714592fb762fcab59c5684a442243a12f ]
 
-By default, the device does not forward IPv4 packets with a link-local
-source IP (i.e., 169.254.0.0/16). This behavior does not align with the
-kernel which does forward them.
+ksz9477_hsr_join() is called once to setup the HSR port membership, but
+the port can be enabled later, or disabled and enabled back and the port
+membership is not set correctly inside ksz_update_port_member().  The
+added code always use the correct HSR port membership for HSR port that
+is enabled.
 
-Fix by instructing the device to forward such packets instead of
-dropping them.
-
-Fixes: ca360db4b825 ("mlxsw: spectrum: Disable DIP_LINK_LOCAL check in hardware pipeline")
-Reported-by: Zoey Mertes <zoey@cloudflare.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/6721e6b2c96feb80269e72ce8d0b426e2f32d99c.1755174341.git.petrm@nvidia.com
+Fixes: 2d61298fdd7b ("net: dsa: microchip: Enable HSR offloading for KSZ9477")
+Reported-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
+Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Link: https://patch.msgid.link/20250819010457.563286-1-Tristram.Ha@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c | 2 ++
- drivers/net/ethernet/mellanox/mlxsw/trap.h     | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/dsa/microchip/ksz_common.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 35908a8c640a..85353042a790 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -2269,6 +2269,8 @@ static const struct mlxsw_listener mlxsw_sp_listener[] = {
- 			     ROUTER_EXP, false),
- 	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_DIP_LINK_LOCAL, FORWARD,
- 			     ROUTER_EXP, false),
-+	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_SIP_LINK_LOCAL, FORWARD,
-+			     ROUTER_EXP, false),
- 	/* Multicast Router Traps */
- 	MLXSW_SP_RXL_MARK(ACL1, TRAP_TO_CPU, MULTICAST, false),
- 	MLXSW_SP_RXL_L3_MARK(ACL2, TRAP_TO_CPU, MULTICAST, false),
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/trap.h b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-index 9e070ab3ed76..eabaca6c240a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/trap.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-@@ -93,6 +93,7 @@ enum {
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_SIP_BC = 0x16A,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_DIP_LOCAL_NET = 0x16B,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_DIP_LINK_LOCAL = 0x16C,
-+	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_SIP_LINK_LOCAL = 0x16D,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_IRIF_EN = 0x178,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_ERIF_EN = 0x179,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_LPM4 = 0x17B,
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 7c142c17b3f6..adef7aa327ce 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2347,6 +2347,12 @@ static void ksz_update_port_member(struct ksz_device *dev, int port)
+ 		dev->dev_ops->cfg_port_member(dev, i, val | cpu_port);
+ 	}
+ 
++	/* HSR ports are setup once so need to use the assigned membership
++	 * when the port is enabled.
++	 */
++	if (!port_member && p->stp_state == BR_STATE_FORWARDING &&
++	    (dev->hsr_ports & BIT(port)))
++		port_member = dev->hsr_ports;
+ 	dev->dev_ops->cfg_port_member(dev, port, port_member | cpu_port);
+ }
+ 
 -- 
 2.50.1
 
