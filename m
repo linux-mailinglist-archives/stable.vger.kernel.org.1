@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5C3B35CEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43668B36BF3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E65367A498F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9144987392
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD282322A1E;
-	Tue, 26 Aug 2025 11:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0D133CEB0;
+	Tue, 26 Aug 2025 14:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWUFXTzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NhxPzIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FB32FD7DE;
-	Tue, 26 Aug 2025 11:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA31E20DD51;
+	Tue, 26 Aug 2025 14:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208350; cv=none; b=lFC70U1JhT+FArlK0OkwljqOHe7D4VePGGF2OXK9MoNqRHojsYl5eGHSXdco7oTb5xITgtA2AYqL8+fgD1zjhS1wYE6nB+2jG+f31zALcqFZTSEsAxyyPRBurcN45m/+0eoAlD/6LH8B73P81AvQPvyAzcFxEq1VHWaXHS7zuJ4=
+	t=1756218764; cv=none; b=NXkDn4BJ12KpY3AYp63sw+sYkRGChPNUMclOjPT2gyBQHJnQQfi29AvYlA8zc2ZqS7GsuHFxxonRynayKjsOmXV9AWVJlY7UdgdsDvq8eTSoRgs8pCyQzQj/JAsm2Tuaz5/OjKig7m/j7sZ2ZHvo9m6gv3iiO6yH0QlVfERr174=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208350; c=relaxed/simple;
-	bh=jYjBioxn34bq9966y+PVEzGhQ3LxisPbfunPGALZK3I=;
+	s=arc-20240116; t=1756218764; c=relaxed/simple;
+	bh=rdrhy5eoI7fNBm/NMR1dK/g1TVOFmRt2WKYa7HHLF68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iriEcfDYOn4GSg/ijocawwYtKrdvxxz64ApmI4JW+AnGI6aW0cR0+s45MN+7IJNtu7sjBcXfIL8qUncV4ZoeGCJLnRmtsu04rIUgY+rsaHCg9wdCMVt9H/b371HK4OFobhOHlYPjBTLpuYg2Pa9JAzJ0MjtcG7PFgbIDZcbVUAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWUFXTzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B95C4CEF1;
-	Tue, 26 Aug 2025 11:39:09 +0000 (UTC)
+	 MIME-Version; b=p9F3hY7HDVpOKYww4abfYDMTFMCCsXhX+zm2fujDBlljV6Qtm6x9iLrkY3MYX3u+eLF1HdqCVB2VlADMnTtOYOT5ye3RrVJQTjOi5ZGDVph+R67jVeI1ER49IzDEaAUgugq20hUM/ZDOuIl6s5uKfZEd2WYPA1LQ6A7naOtzVWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NhxPzIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECDDC4CEF1;
+	Tue, 26 Aug 2025 14:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208350;
-	bh=jYjBioxn34bq9966y+PVEzGhQ3LxisPbfunPGALZK3I=;
+	s=korg; t=1756218764;
+	bh=rdrhy5eoI7fNBm/NMR1dK/g1TVOFmRt2WKYa7HHLF68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWUFXTzA+m7ydE2/OjrWm5zJx3lgQYeSNEQ02c3OeKP6XCGfiylAgZtU/cpq0ywSU
-	 xa5f88i0jWv7XuulglXTnI5EbKsIobDumfxC760gCuSfpyLFCjhG349OzP1zmo04N6
-	 kqqzVmQHAigzZKCib8s6hjo/k8ZZDoPTozczaKW8=
+	b=2NhxPzILJm1Wq9KCrNByVPJBu365WnIsQ6TgeNHohVifjkMOWFFC9YgZyCzL/nobX
+	 fQzZLpGmZgJ+Hd2rFbOyICWl2nhAL3hUEHUe/xBbgt0elwX+N33m/18R2Fa+0rrGoo
+	 W9RZXj4hQg5LTYxeTsy7CBQRXNTRDBnIG9dAg1gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Kyoji Ogasawara <sawara04.o@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 036/322] btrfs: fix incorrect log message for nobarrier mount option
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 125/403] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
 Date: Tue, 26 Aug 2025 13:07:31 +0200
-Message-ID: <20250826110916.245632992@linuxfoundation.org>
+Message-ID: <20250826110910.191649924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoji Ogasawara <sawara04.o@gmail.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit edf842abe4368ce3c423343cf4b23b210fcf1622 upstream.
+[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
 
-Fix a wrong log message that appears when the "nobarrier" mount option
-is unset.  When "nobarrier" is unset, barrier is actually enabled.
-However, the log incorrectly stated "turning off barriers".
+fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
+allocate a struct fb_modelist.  If that happens, the modelist stays empty but
+the driver continues to register.  Add a check for its return value to prevent
+poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
+Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
 
-Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/imxfb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1461,7 +1461,7 @@ static void btrfs_emit_options(struct bt
- 	btrfs_info_if_unset(info, old, NODATACOW, "setting datacow");
- 	btrfs_info_if_unset(info, old, SSD, "not using ssd optimizations");
- 	btrfs_info_if_unset(info, old, SSD_SPREAD, "not using spread ssd allocation scheme");
--	btrfs_info_if_unset(info, old, NOBARRIER, "turning off barriers");
-+	btrfs_info_if_unset(info, old, NOBARRIER, "turning on barriers");
- 	btrfs_info_if_unset(info, old, NOTREELOG, "enabling tree log");
- 	btrfs_info_if_unset(info, old, SPACE_CACHE, "disabling disk space caching");
- 	btrfs_info_if_unset(info, old, FREE_SPACE_TREE, "disabling free space tree");
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index dbc8808b093a..8dac15bf2b0c 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -992,8 +992,13 @@ static int imxfb_probe(struct platform_device *pdev)
+ 
+ 
+ 	INIT_LIST_HEAD(&info->modelist);
+-	for (i = 0; i < fbi->num_modes; i++)
+-		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
++	for (i = 0; i < fbi->num_modes; i++) {
++		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
++		if (ret) {
++			dev_err(&pdev->dev, "Failed to add videomode\n");
++			goto failed_cmap;
++		}
++	}
+ 
+ 	/*
+ 	 * This makes sure that our colour bitfield
+-- 
+2.39.5
+
 
 
 
