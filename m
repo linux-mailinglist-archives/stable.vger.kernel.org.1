@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CC2B369D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D48F7B36125
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2366582B7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACDEE7B896A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69CB35083A;
-	Tue, 26 Aug 2025 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F561C860A;
+	Tue, 26 Aug 2025 13:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqQ8YnZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7GWz12G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944D9302CA6;
-	Tue, 26 Aug 2025 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1858635C;
+	Tue, 26 Aug 2025 13:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217902; cv=none; b=AVJvjh+zw51MHsqZTm3/DvrQw7tqUi3rmKsVxJAoB9XSbMC1MQOpBao2Hs+GpXtQp3iD6RB7kM/nLFoq9HKDzxTCbSL33UKma7aez4htKO87q7J38QId+ptQlVMW/JvxT5GiojOekRPuho2CZX4P/cxL6PZGNhig5X/oEhfXyJY=
+	t=1756213612; cv=none; b=qcGKk2Dpmyi/NzT0MloJw5HNXVbNERGncgcCh8joYwol/E607cwmS/jur3yUxqJlM+TIcd0KnOCzDFFs5zmwZfId7r78JOoZ8Dm5rqlIlq4blFQ22A2+Pa+fs6TyKKo3MVlzOlt9LfOlZSTTTXTlBe1e8yfCUBBSbqFQ1wl/d4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217902; c=relaxed/simple;
-	bh=CG7vYqKxdgONnrsWZxSkjC+7YC5w229FnOke+1WAAWU=;
+	s=arc-20240116; t=1756213612; c=relaxed/simple;
+	bh=rCdH1kms/n6brRumpxACy1kkDOjypSvQ1BvcqbPSgMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZJwk3Talu+3J4sBWa+fWlUT9of4u+ZnQtCTPeF2okrsLZ28R4Kmz/HNZIj65QIRCuJ6UjRPddfy9TjqxMJq5QW/M7UaQP4A7ZexC5LAuXrjlM6krd8Csic5+rsnfaFUWdLJgI1lGkXEkvwRvatf/u0sHLJm1ntFInXH0GL/4L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqQ8YnZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C08C4CEF1;
-	Tue, 26 Aug 2025 14:18:21 +0000 (UTC)
+	 MIME-Version; b=IpvAhtMiL2+LAp5gEFojjbIwleDigxcov9SVGKhDdsA6fS1FGBfFaWFF4wqrX06uhEN1JE26r532EmMIcEZbTs9yriFvZpj87+Ptse9SHSbn7BrrVkF8XpSFZqJTmrcY3S95IAHnPSYYfWhiNDCWG56/JF2VQ6Y3pdFjR+NC2f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7GWz12G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0948FC4CEF1;
+	Tue, 26 Aug 2025 13:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217902;
-	bh=CG7vYqKxdgONnrsWZxSkjC+7YC5w229FnOke+1WAAWU=;
+	s=korg; t=1756213612;
+	bh=rCdH1kms/n6brRumpxACy1kkDOjypSvQ1BvcqbPSgMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqQ8YnZVRM91FOodTf/0l5dDKi3kPUkavGWAraUKnDwMGdkcGsTt7rYLGiFQexnhv
-	 bJzV9F0Ut4Tpx6RcSz5tnaYjWN9L+YJlJ/YYsss7lDBgqj3dxy5nWsJgu0fl5I3ITZ
-	 hT0SB5gZQWOFrQbZjLKfNdOMf8Ev+qlhntMipCiM=
+	b=Y7GWz12GMG6omxW1Ap+zl6V8FNMKVyFLIvpNGAOrMIS77RB4Mq7C77OA6u6yq32iV
+	 fGQ9xTkPF29ia8sFUgx/ZsnckW9Mpa4Wa8m7rge6ui7HgeCU8qVf69/sr6JJI7RpET
+	 qp0PIWXBXs2pbGq6r+0PPVXHWzsliAw/sCn18vYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 319/523] dm-mpath: dont print the "loaded" message if registering fails
+	Jean-Marc Ranger <jmranger@hotmail.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.6 380/587] mtd: spi-nor: Fix spi_nor_try_unlock_all()
 Date: Tue, 26 Aug 2025 13:08:49 +0200
-Message-ID: <20250826110932.331929052@linuxfoundation.org>
+Message-ID: <20250826111002.573146657@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
+commit 2e3a7476ec3989e77270b9481e76e137824b17c0 upstream.
 
-If dm_register_path_selector, don't print the "version X loaded" message.
+Commit ff67592cbdfc ("mtd: spi-nor: Introduce spi_nor_set_mtd_info()")
+moved all initialization of the mtd fields at the end of spi_nor_scan().
+Normally, the mtd info is only needed for the mtd ops on the device,
+with one exception: spi_nor_try_unlock_all(), which will also make use
+of the mtd->size parameter. With that commit, the size will always be
+zero because it is not initialized. Fix that by not using the size of
+the mtd_info struct, but use the size from struct spi_nor_flash_parameter.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ff67592cbdfc ("mtd: spi-nor: Introduce spi_nor_set_mtd_info()")
+Cc: stable@vger.kernel.org
+Reported-by: Jean-Marc Ranger <jmranger@hotmail.com>
+Closes: https://lore.kernel.org/all/DM6PR06MB561177323DC5207E34AF2A06C547A@DM6PR06MB5611.namprd06.prod.outlook.com/
+Tested-by: Jean-Marc Ranger <jmranger@hotmail.com>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250701140426.2355182-1-mwalle@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-historical-service-time.c | 4 +++-
- drivers/md/dm-queue-length.c            | 4 +++-
- drivers/md/dm-round-robin.c             | 4 +++-
- drivers/md/dm-service-time.c            | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/swp.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/md/dm-historical-service-time.c b/drivers/md/dm-historical-service-time.c
-index 06fe43c13ba3..2d23de6742fb 100644
---- a/drivers/md/dm-historical-service-time.c
-+++ b/drivers/md/dm-historical-service-time.c
-@@ -537,8 +537,10 @@ static int __init dm_hst_init(void)
+--- a/drivers/mtd/spi-nor/swp.c
++++ b/drivers/mtd/spi-nor/swp.c
+@@ -50,7 +50,6 @@ static u64 spi_nor_get_min_prot_length_s
+ static void spi_nor_get_locked_range_sr(struct spi_nor *nor, u8 sr, loff_t *ofs,
+ 					uint64_t *len)
  {
- 	int r = dm_register_path_selector(&hst_ps);
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+ 	u8 tb_mask = spi_nor_get_sr_tb_mask(nor);
+@@ -71,13 +70,13 @@ static void spi_nor_get_locked_range_sr(
+ 	min_prot_len = spi_nor_get_min_prot_length_sr(nor);
+ 	*len = min_prot_len << (bp - 1);
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
+-	if (*len > mtd->size)
+-		*len = mtd->size;
++	if (*len > nor->params->size)
++		*len = nor->params->size;
  
- 	DMINFO("version " HST_VERSION " loaded");
+ 	if (nor->flags & SNOR_F_HAS_SR_TB && sr & tb_mask)
+ 		*ofs = 0;
+ 	else
+-		*ofs = mtd->size - *len;
++		*ofs = nor->params->size - *len;
+ }
  
-diff --git a/drivers/md/dm-queue-length.c b/drivers/md/dm-queue-length.c
-index 5fd018d18418..cbb72039005a 100644
---- a/drivers/md/dm-queue-length.c
-+++ b/drivers/md/dm-queue-length.c
-@@ -256,8 +256,10 @@ static int __init dm_ql_init(void)
+ /*
+@@ -153,7 +152,6 @@ static bool spi_nor_is_unlocked_sr(struc
+  */
+ static int spi_nor_sr_lock(struct spi_nor *nor, loff_t ofs, uint64_t len)
  {
- 	int r = dm_register_path_selector(&ql_ps);
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	int ret, status_old, status_new;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+@@ -178,7 +176,7 @@ static int spi_nor_sr_lock(struct spi_no
+ 		can_be_bottom = false;
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
+ 	/* If anything above us is unlocked, we can't use 'top' protection */
+-	if (!spi_nor_is_locked_sr(nor, ofs + len, mtd->size - (ofs + len),
++	if (!spi_nor_is_locked_sr(nor, ofs + len, nor->params->size - (ofs + len),
+ 				  status_old))
+ 		can_be_top = false;
  
- 	DMINFO("version " QL_VERSION " loaded");
+@@ -190,11 +188,11 @@ static int spi_nor_sr_lock(struct spi_no
  
-diff --git a/drivers/md/dm-round-robin.c b/drivers/md/dm-round-robin.c
-index bdbb7e6e8212..fa7205f8f0b4 100644
---- a/drivers/md/dm-round-robin.c
-+++ b/drivers/md/dm-round-robin.c
-@@ -212,8 +212,10 @@ static int __init dm_rr_init(void)
+ 	/* lock_len: length of region that should end up locked */
+ 	if (use_top)
+-		lock_len = mtd->size - ofs;
++		lock_len = nor->params->size - ofs;
+ 	else
+ 		lock_len = ofs + len;
+ 
+-	if (lock_len == mtd->size) {
++	if (lock_len == nor->params->size) {
+ 		val = mask;
+ 	} else {
+ 		min_prot_len = spi_nor_get_min_prot_length_sr(nor);
+@@ -243,7 +241,6 @@ static int spi_nor_sr_lock(struct spi_no
+  */
+ static int spi_nor_sr_unlock(struct spi_nor *nor, loff_t ofs, uint64_t len)
  {
- 	int r = dm_register_path_selector(&rr_ps);
+-	struct mtd_info *mtd = &nor->mtd;
+ 	u64 min_prot_len;
+ 	int ret, status_old, status_new;
+ 	u8 mask = spi_nor_get_sr_bp_mask(nor);
+@@ -268,7 +265,7 @@ static int spi_nor_sr_unlock(struct spi_
+ 		can_be_top = false;
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
+ 	/* If anything above us is locked, we can't use 'bottom' protection */
+-	if (!spi_nor_is_unlocked_sr(nor, ofs + len, mtd->size - (ofs + len),
++	if (!spi_nor_is_unlocked_sr(nor, ofs + len, nor->params->size - (ofs + len),
+ 				    status_old))
+ 		can_be_bottom = false;
  
- 	DMINFO("version " RR_VERSION " loaded");
+@@ -280,7 +277,7 @@ static int spi_nor_sr_unlock(struct spi_
  
-diff --git a/drivers/md/dm-service-time.c b/drivers/md/dm-service-time.c
-index 9cfda665e9eb..563bd9e4d16f 100644
---- a/drivers/md/dm-service-time.c
-+++ b/drivers/md/dm-service-time.c
-@@ -338,8 +338,10 @@ static int __init dm_st_init(void)
- {
- 	int r = dm_register_path_selector(&st_ps);
+ 	/* lock_len: length of region that should remain locked */
+ 	if (use_top)
+-		lock_len = mtd->size - (ofs + len);
++		lock_len = nor->params->size - (ofs + len);
+ 	else
+ 		lock_len = ofs;
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " ST_VERSION " loaded");
- 
--- 
-2.39.5
-
 
 
 
