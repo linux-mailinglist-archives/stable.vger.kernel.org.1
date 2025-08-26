@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-175104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0765B3672A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBCBB36B2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBB9980489
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556001C47FA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BDD34F47D;
-	Tue, 26 Aug 2025 13:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A55352FD9;
+	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqtfbmx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es26n7yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DB92F0671;
-	Tue, 26 Aug 2025 13:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F1D2F83BA;
+	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216150; cv=none; b=LgchChHnhkCSWZV7gmQ5qsOYJZ+Jv2RkZ1Jib6hZ6GpMiwEx8VlAGhwLDkHeN2FcM84rEwCjUMyTmcsNbV1TFSUr/ysm9DX4lm4FiP/zYKLmuBw3HYaI1oEQbPDXFslfHp39B4oOK5crEk0jaQ7XRS8IbQfu34myAFS7ppsM3/4=
+	t=1756218504; cv=none; b=IgX8HWuALbxZ7yGo5brZqmi5AP0GHypAyxudod7NNIltOC0QxKKF7QXTri0PpUx98N6q1tmkDE9U9zl3ff1vh8Xy4wRjR2pcWO5sido0Uxsvxd7aopJ4cnCE33WBu918brXFaXrQjE3ayytkf1FGHhJPfTGsqe9ZA+O/F4um+uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216150; c=relaxed/simple;
-	bh=y9EMGj110bNgym/Pv4ksRpHcOsdCpDpN0AuUkNVi+pM=;
+	s=arc-20240116; t=1756218504; c=relaxed/simple;
+	bh=6icj9BTYIC8kwqsxCOLC01tuAqZ0EE7gS8Fj7vrANG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6xskGmhWx/+/jdp3QHtx6aEHCmpTHpa08ER+/68x+hcou0nHfxXaUSsN7PLujX2qhzPNfi2kLnyqwaYiZ7WmoYlzffd6lj1cf8z9fPYDaxwaEDcWhTbBQf0ElLfqOif6l1tTFAanVu36Zv9yLd/tdKNXYCG+zfqQkFXwVNX3Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqtfbmx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72B3C4CEF1;
-	Tue, 26 Aug 2025 13:49:09 +0000 (UTC)
+	 MIME-Version; b=qSNkwzYknXskaxGIZL+1gmqjfUcoAYrOCZFnTuSN975k5nRqTNKmMVX1PqbY6OcXytLS3Z4P4voXVNYD5mCRrhz/rNYwnkjeaPPkb/eNI5y4D4NakUhxvIKpWB62jdYoziS6Z7LreFIXSSG0oBSrczh8yT2YiZa+ThJ+KFWDuKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es26n7yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB72C113D0;
+	Tue, 26 Aug 2025 14:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216150;
-	bh=y9EMGj110bNgym/Pv4ksRpHcOsdCpDpN0AuUkNVi+pM=;
+	s=korg; t=1756218504;
+	bh=6icj9BTYIC8kwqsxCOLC01tuAqZ0EE7gS8Fj7vrANG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqtfbmx3X0qhIhQ3YDRa2VO5pCVv15mDKif2TRSNlISYim+mTdsW6gNoZr0iBuNLD
-	 V0u6wE2dhD13Trpc2vCBalVKRdnVn8DO0214+LuiaM7JnxrdmIW8d9kCm6x8f94G+f
-	 LWiNA/eJz8FG1+5rGrtx8N22wXuoLpV5JFhyeZBQ=
+	b=Es26n7yqAf75hP7XW2hdVWJ3hgw6/xt3/A9hL9ybmdGKli0Qo8JK2OyYlGW6kLIMU
+	 6aEr7nkrBf76b2DF2qQkhzopcfDuMKiKY+9COdDA+BBMzt/k1hfBPzyDTXSVfCXj6f
+	 4ljVmWXkwqQuwxBWhg4qBKm1eJOVzRJ46TsM2K10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Mommer <harald.mommer@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.15 261/644] gpio: virtio: Fix config space reading.
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.4 026/403] comedi: aio_iiro_16: Fix bit shift out of bounds
 Date: Tue, 26 Aug 2025 13:05:52 +0200
-Message-ID: <20250826110952.844093947@linuxfoundation.org>
+Message-ID: <20250826110906.509963248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Mommer <harald.mommer@oss.qualcomm.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
+commit 66acb1586737a22dd7b78abc63213b1bcaa100e4 upstream.
 
-Quote from the virtio specification chapter 4.2.2.2:
+When checking for a supported IRQ number, the following test is used:
 
-"For the device-specific configuration space, the driver MUST use 8 bit
-wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
-for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
-64 bit wide fields."
+	if ((1 << it->options[1]) & 0xdcfc) {
 
-Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
+
+Fixes: ad7a370c8be4 ("staging: comedi: aio_iiro_16: add command support for change of state detection")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707134622.75403-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-virtio.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/staging/comedi/drivers/aio_iiro_16.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-virtio.c
-+++ b/drivers/gpio/gpio-virtio.c
-@@ -275,7 +275,6 @@ static const char **virtio_gpio_get_name
- 
- static int virtio_gpio_probe(struct virtio_device *vdev)
- {
--	struct virtio_gpio_config config;
- 	struct device *dev = &vdev->dev;
- 	struct virtio_gpio *vgpio;
- 	u32 gpio_names_size;
-@@ -287,9 +286,11 @@ static int virtio_gpio_probe(struct virt
- 		return -ENOMEM;
- 
- 	/* Read configuration */
--	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
--	gpio_names_size = le32_to_cpu(config.gpio_names_size);
--	ngpio = le16_to_cpu(config.ngpio);
-+	gpio_names_size =
-+		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
-+					      gpio_names_size));
-+	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
-+					       ngpio));
- 	if (!ngpio) {
- 		dev_err(dev, "Number of GPIOs can't be zero\n");
- 		return -EINVAL;
+--- a/drivers/staging/comedi/drivers/aio_iiro_16.c
++++ b/drivers/staging/comedi/drivers/aio_iiro_16.c
+@@ -178,7 +178,8 @@ static int aio_iiro_16_attach(struct com
+ 	 * Digital input change of state interrupts are optionally supported
+ 	 * using IRQ 2-7, 10-12, 14, or 15.
+ 	 */
+-	if ((1 << it->options[1]) & 0xdcfc) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (1 << it->options[1]) & 0xdcfc) {
+ 		ret = request_irq(it->options[1], aio_iiro_16_cos, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0)
 
 
 
