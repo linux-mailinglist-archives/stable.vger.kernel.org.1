@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05D1B36BD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64D4B366BC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67AF98A7F2C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002E11BC7798
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DF63570BA;
-	Tue, 26 Aug 2025 14:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99797352FD8;
+	Tue, 26 Aug 2025 13:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ust7wk24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xspsMZZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D854B352FE1;
-	Tue, 26 Aug 2025 14:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587C2352FD3;
+	Tue, 26 Aug 2025 13:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218837; cv=none; b=iszN181Nt0IzTFlX+Vo3k8C4kASDJyQvvBkeRRzveq6Bg2RJ9JAxRMZwvSRzO1G5lynD5GKiBtwON454L/RQ3rgcZZfF+4CORLNTiOgc3dXQkd87pwR+nWHG7g5IsSk9GvXD87QZGvnZ86m+trsMM4Ani10lH64WAUAeN8EkWKk=
+	t=1756216292; cv=none; b=MoxVAXiRmFx23A5crOCyQs/0AvroZaCvnbAS1i2oaxpFwV8Oht+ZTIhLr1xyYuq7ejF+hFeoEqCZ5s0J0fR+iMZypGjUcd9BPOysGUABGQPLEaoU26MM8V0I2TL9voJlCEouSAg7a7RjR4um8+4JYpBTG4VPPvllvDpI1PSUeXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218837; c=relaxed/simple;
-	bh=084hwqLi6x54iYQ/kkXnQXgk5Uv6p8qE0WsReKjEF4Q=;
+	s=arc-20240116; t=1756216292; c=relaxed/simple;
+	bh=IWhVfqyKmsiJ4AUAfagZ2OMv6pIkpb19NbgfZlp8JcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGL0MERtOgi/oTPyurJmrOcVC+VjLlhiJjE8ZPihvbCjSzg7PfscLSqCCwJBi2H1N5xxspVb3HV4Rz2tvAMBitAaWlXDY0NaXdCOBL9iN0gRPKdePiI0qUqBEfOxfZBXg4IDqgIiUSr8p43Av9LSkEApEB0jR3YOIgNgWDxaeKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ust7wk24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE4BC4CEF1;
-	Tue, 26 Aug 2025 14:33:57 +0000 (UTC)
+	 MIME-Version; b=OwFZy7KeJjXq2DQwL5ooVecZxEvG2xscUcsh6GRgjY2+areD2RmhcN51Zcn5sdD49YT77pQaEkAIMREntS4b8ZlibRz6vQR/W2N6ijdx+8Dh0T5BGnHS1SG8eAWRpbV86nN++rlmv6PNTGGjDI/P46MbaizOsDXmF1O+IiQtp5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xspsMZZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E0CC113CF;
+	Tue, 26 Aug 2025 13:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218837;
-	bh=084hwqLi6x54iYQ/kkXnQXgk5Uv6p8qE0WsReKjEF4Q=;
+	s=korg; t=1756216292;
+	bh=IWhVfqyKmsiJ4AUAfagZ2OMv6pIkpb19NbgfZlp8JcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ust7wk24OQadTNRJuSVtWjIAL0SUmCN5s3OpAteVDR55egGjodWcbEBsmCB0toNTL
-	 KoqC2/fZMIQ7i4s2QDndd318bt8r0MWQQBimycFSZQjgB76SLzU1OxJZNf4tAbDaxZ
-	 n2gbyZfzudWYstfi/jPXtX+vmZcuPOE4eDYEVRX8=
+	b=xspsMZZP750C3A/KPc+i2D/X7J9m8+fcLQqQTAlLu+2PS+TtKMhhVJMBhJqeihhdi
+	 Pzk+LQgWEwMHOdRLIcgbCoOb1AgT3dnPQhhPZl5EwOLrYJ+bW4u+1vVCHlaxTdAq9j
+	 PWt5pI1kg8eVwAK+GqIuOpqr1VK4qV1WeXpCHrFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Antonino Maniscalco <antomani103@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 121/403] fs/orangefs: Allow 2 more characters in do_c_string()
-Date: Tue, 26 Aug 2025 13:07:27 +0200
-Message-ID: <20250826110910.078906957@linuxfoundation.org>
+Subject: [PATCH 5.15 357/644] drm/msm: use trylock for debugfs
+Date: Tue, 26 Aug 2025 13:07:28 +0200
+Message-ID: <20250826110955.249870863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
+[ Upstream commit 0a1ff88ec5b60b41ba830c5bf08b6cd8f45ab411 ]
 
-The do_k_string() and do_c_string() functions do essentially the same
-thing which is they add a string and a comma onto the end of an existing
-string.  At the end, the caller will overwrite the last comma with a
-newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
-the string.
+This resolves a potential deadlock vs msm_gem_vm_close().  Otherwise for
+_NO_SHARE buffers msm_gem_describe() could be trying to acquire the
+shared vm resv, while already holding priv->obj_lock.  But _vm_close()
+might drop the last reference to a GEM obj while already holding the vm
+resv, and msm_gem_free_object() needs to grab priv->obj_lock, a locking
+inversion.
 
-The change to do_k_string() is just cosmetic.  I moved the "- 1" to
-the other side of the comparison and made it "+ 1".  This has no
-effect on runtime, I just wanted the functions to match each other
-and the rest of the file.
+OTOH this is only for debugfs and it isn't critical if we undercount by
+skipping a locked obj.  So just use trylock() and move along if we can't
+get the lock.
 
-However in do_c_string(), I removed the "- 2" which allows us to print
-two extra characters.  I noticed this issue while reviewing the code
-and I doubt affects anything in real life.  My guess is that this was
-double counting the comma and the newline.  The "+ 1" accounts for
-the newline, and the caller will delete the final comma which ensures
-there is enough space for the newline.
-
-Removing the "- 2" lets us print 2 more characters, but mainly it makes
-the code more consistent and understandable for reviewers.
-
-Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Tested-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Antonino Maniscalco <antomani103@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/661525/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_gem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index fa41db088488..b57140ebfad0 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -728,8 +728,8 @@ static void do_k_string(void *k_mask, int index)
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index d280dd64744d..36ced8f83434 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -886,7 +886,8 @@ void msm_gem_describe(struct drm_gem_object *obj, struct seq_file *m,
+ 	uint64_t off = drm_vma_node_start(&obj->vma_node);
+ 	const char *madv;
  
- 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
- 		if ((strlen(kernel_debug_string) +
--		     strlen(s_kmod_keyword_mask_map[index].keyword))
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
-+		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(kernel_debug_string,
- 				       s_kmod_keyword_mask_map[index].keyword);
- 				strcat(kernel_debug_string, ",");
-@@ -756,7 +756,7 @@ static void do_c_string(void *c_mask, int index)
- 	    (mask->mask2 & cdm_array[index].mask2)) {
- 		if ((strlen(client_debug_string) +
- 		     strlen(cdm_array[index].keyword) + 1)
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(client_debug_string,
- 				       cdm_array[index].keyword);
- 				strcat(client_debug_string, ",");
+-	msm_gem_lock(obj);
++	if (!msm_gem_trylock(obj))
++		return;
+ 
+ 	stats->all.count++;
+ 	stats->all.size += obj->size;
 -- 
 2.39.5
 
