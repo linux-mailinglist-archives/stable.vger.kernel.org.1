@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-174242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19483B361B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F524B36506
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E901A7BA529
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3304F8E0C7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A091196C7C;
-	Tue, 26 Aug 2025 13:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24E43431F4;
+	Tue, 26 Aug 2025 13:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljcRwpjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzDcjFN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FE418DB01;
-	Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A93C34164F;
+	Tue, 26 Aug 2025 13:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213870; cv=none; b=Vuh2R6zVCaSlWwL6NbPSrKNnj/DP+qvD29xVV7jCPfsA6IPPRcnc2J8T9Ky7jemSB278DIPlK+P+XlkEAnpMxrep9KRgAjARNv9+4rTAX62HFB8+gwiO7cuq1iPQvczDYORhlhMgcQyJCGID8GoJj/mr8RsrO0oOXhuqNeglt8c=
+	t=1756215149; cv=none; b=go69KQI97ng0U/prQV5KfYZtGWRS9YZ+OJsYgzx/08emnt9dfN88n2e5gZo3sDGS6kPQSeBVr3d6DZfe8Cx0VhYI5KNf5cWc8EVXXwfU898Uxiy7y4m52JpHMfBDS63MptRlwpRKVba431q1a30eu+R3hycdTrjIe+2KC5KXR8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213870; c=relaxed/simple;
-	bh=+MuyYwVRC7IfTdhKkCxFfwyjmVjUhy9p04MwdFouFns=;
+	s=arc-20240116; t=1756215149; c=relaxed/simple;
+	bh=B85FnzwlsKW4OQyMgU5haPlcbhzak0Xr80UdtwWKDZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpcEyANNfXBl8QPtjNQofmk826JKqRcoYPly2rxw6RdzYDS7Z9b94taCy6xApIIAOzL+dgWcZt3OdhpT0MeGvp6sNIhE17VlpHhdEG6OogJRFx5lp+GPuBavdnh2sM7LmShbaHNET4oxLWTMtOzQshXZoViQBSzE2GZOcPwKC9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljcRwpjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AF5C4CEF1;
-	Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
+	 MIME-Version; b=eFlgn0rLUxegpNonC5+b/LglbRlog8BiVIYbAfYS+8gNFK4KVQkCrOt8/QcVHT7nd5CFHxLIMIGQmnNjmCXUMGb0JraZ0X1xHRtLNa0x7JfN2HkpJLIJZDH8WjAh/BoxkhXHHAZQsJubkzRcvv34qsL/mnt0CfAxAyi5mODYRb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzDcjFN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D270DC4CEF1;
+	Tue, 26 Aug 2025 13:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213869;
-	bh=+MuyYwVRC7IfTdhKkCxFfwyjmVjUhy9p04MwdFouFns=;
+	s=korg; t=1756215149;
+	bh=B85FnzwlsKW4OQyMgU5haPlcbhzak0Xr80UdtwWKDZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljcRwpjKfklnpLGCMXjjwul4gLIlRx5jL11U5OWo2825wkiGVQDvM7NQOQf+RHzeF
-	 pAJuw2O3qgkqZBOeGDGodNB7Tef7RN6sVFIufIGLjallrERsS+7KJwGsCPbFs+JUeK
-	 CRzvwreqribKbk8bp9X79OTV6TTb2mTlhQhCxGXI=
+	b=hzDcjFN0YkbyfhpY7jKR2SMhDFEYbZojQxTwjTCh9Mjh6ohdiLT52Zgu03iwS2oYx
+	 IRyMXuaYBoCJS8DhNsnhVto8/jqQcQarSfHqFQxaR34bjYqsywtfiRnxSgRnGHmaLh
+	 WIW9xSbfs83KtuKQlZScLKw4ZlNm9g46ZUdoUeFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 509/587] mmc: sdhci-pci-gli: Add a new function to simplify the code
+Subject: [PATCH 6.1 405/482] smb: server: split ksmbd_rdma_stop_listening() out of ksmbd_rdma_destroy()
 Date: Tue, 26 Aug 2025 13:10:58 +0200
-Message-ID: <20250826111005.940370942@linuxfoundation.org>
+Message-ID: <20250826110940.834059257@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 ]
+[ Upstream commit bac7b996d42e458a94578f4227795a0d4deef6fa ]
 
-In preparation to fix replay timer timeout, add
-sdhci_gli_mask_replay_timer_timeout() function
-to simplify some of the code, allowing it to be re-used.
+We can't call destroy_workqueue(smb_direct_wq); before stop_sessions()!
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Otherwise already existing connections try to use smb_direct_wq as
+a NULL pointer.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ fs/smb/server/connection.c     | 3 ++-
+ fs/smb/server/transport_rdma.c | 5 ++++-
+ fs/smb/server/transport_rdma.h | 4 +++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -221,6 +221,20 @@
- #define GLI_MAX_TUNING_LOOP 40
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 09e1e7771592..92d8a0d898eb 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -436,7 +436,8 @@ void ksmbd_conn_transport_destroy(void)
+ {
+ 	mutex_lock(&init_lock);
+ 	ksmbd_tcp_destroy();
+-	ksmbd_rdma_destroy();
++	ksmbd_rdma_stop_listening();
+ 	stop_sessions();
++	ksmbd_rdma_destroy();
+ 	mutex_unlock(&init_lock);
+ }
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 7d59ed6e1383..3006d76d8059 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -2188,7 +2188,7 @@ int ksmbd_rdma_init(void)
+ 	return 0;
+ }
  
- /* Genesys Logic chipset */
-+static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
-+{
-+	int aer;
-+	u32 value;
-+
-+	/* mask the replay timer timeout of AER */
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
+-void ksmbd_rdma_destroy(void)
++void ksmbd_rdma_stop_listening(void)
+ {
+ 	if (!smb_direct_listener.cm_id)
+ 		return;
+@@ -2197,7 +2197,10 @@ void ksmbd_rdma_destroy(void)
+ 	rdma_destroy_id(smb_direct_listener.cm_id);
+ 
+ 	smb_direct_listener.cm_id = NULL;
 +}
-+
- static inline void gl9750_wt_on(struct sdhci_host *host)
- {
- 	u32 wt_value;
-@@ -541,7 +555,6 @@ static void gl9750_hw_setting(struct sdh
- {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct pci_dev *pdev;
--	int aer;
- 	u32 value;
  
- 	pdev = slot->chip->pdev;
-@@ -563,12 +576,7 @@ static void gl9750_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
++void ksmbd_rdma_destroy(void)
++{
+ 	if (smb_direct_wq) {
+ 		destroy_workqueue(smb_direct_wq);
+ 		smb_direct_wq = NULL;
+diff --git a/fs/smb/server/transport_rdma.h b/fs/smb/server/transport_rdma.h
+index 77aee4e5c9dc..a2291b77488a 100644
+--- a/fs/smb/server/transport_rdma.h
++++ b/fs/smb/server/transport_rdma.h
+@@ -54,13 +54,15 @@ struct smb_direct_data_transfer {
  
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9750_wt_off(host);
- }
-@@ -743,7 +751,6 @@ static void sdhci_gl9755_set_clock(struc
- static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
--	int aer;
- 	u32 value;
- 
- 	gl9755_wt_on(pdev);
-@@ -781,12 +788,7 @@ static void gl9755_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9755_wt_off(pdev);
- }
+ #ifdef CONFIG_SMB_SERVER_SMBDIRECT
+ int ksmbd_rdma_init(void);
++void ksmbd_rdma_stop_listening(void);
+ void ksmbd_rdma_destroy(void);
+ bool ksmbd_rdma_capable_netdev(struct net_device *netdev);
+ void init_smbd_max_io_size(unsigned int sz);
+ unsigned int get_smbd_max_read_write_size(void);
+ #else
+ static inline int ksmbd_rdma_init(void) { return 0; }
+-static inline int ksmbd_rdma_destroy(void) { return 0; }
++static inline void ksmbd_rdma_stop_listening(void) { }
++static inline void ksmbd_rdma_destroy(void) { }
+ static inline bool ksmbd_rdma_capable_netdev(struct net_device *netdev) { return false; }
+ static inline void init_smbd_max_io_size(unsigned int sz) { }
+ static inline unsigned int get_smbd_max_read_write_size(void) { return 0; }
+-- 
+2.50.1
+
 
 
 
