@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-176243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1713B36AFD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C186FB36705
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB3A44E2A4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5FD97BD8DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777EB2D0626;
-	Tue, 26 Aug 2025 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B9135082F;
+	Tue, 26 Aug 2025 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aB3XEPMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nu/VDRI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346ED341AD4;
-	Tue, 26 Aug 2025 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D3534DCC3;
+	Tue, 26 Aug 2025 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219149; cv=none; b=EX3AiSjW07Yww28Y+LQ2FSO3uzbQjgBwy1daGcqvsiT5zn4ChbX/yOM9UeABiUfzplVdk3KhpIw2atsE4Dto+Eqn5H9FNYp+s3zvTGnGpLtvDr72EJNv6yIooqNGTfBhyFEJd0FkpnKE0RtrpgB8XPk9io77hnYjGlOFmW4N5Zg=
+	t=1756216768; cv=none; b=Vv2k5ZnunnTJqsoR0XklXPNtFc6y8CTUfcOnpRVh8Y8QVXxfFDLHYIzcW6TE9ONyhrE1PtPndpc/3MPVWxSJb8pv5+ff5HEWk05IMwt80XnPAbf/sWtFmo6b5ehRGVjPrz1QbmKWx2nsZiW88AOiqPgFrOSjugdggGMnrzYHnh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219149; c=relaxed/simple;
-	bh=ZFIJlc4FGUtwnrVzwju5MOv8tupfvn4WBkyCa8OqWLs=;
+	s=arc-20240116; t=1756216768; c=relaxed/simple;
+	bh=nvfbitAnZvA84pWvcWlfOXBIQgowE3snq+bGI9ZAKRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ks3fR4+XlqVDSc2DB3RasZ2PubVgMO6fyxteqi3m4wtSmexIwgulZVQ1COMrLmTqBa2I1L+F9dKTKo1Jj3v6NnKbK4nLXNiSfzge7SDd7arxircxuMGJw2+OGLEnnZb4DuANS43ImbWkrUngkgxMugLxbeCllJkfvWkj3aXkcEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aB3XEPMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5CFC4CEF1;
-	Tue, 26 Aug 2025 14:39:08 +0000 (UTC)
+	 MIME-Version; b=lwdzK4xDMSvlljqBvaOw7NXwGZqb/q/i+qlql8OKYSPhpSNbgmYF0RnW+iKqmprlejrkSFHEyxvR+Cl7yD56xNpiNVa/BYA8a368CwyyC3ocD26ssdn5FHeKVvc4vzKqlkhliIwh5TLaPx/amdpJqW3Yhq/Jz/uBgAMF3otAlQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nu/VDRI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8E5C4CEF1;
+	Tue, 26 Aug 2025 13:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219149;
-	bh=ZFIJlc4FGUtwnrVzwju5MOv8tupfvn4WBkyCa8OqWLs=;
+	s=korg; t=1756216768;
+	bh=nvfbitAnZvA84pWvcWlfOXBIQgowE3snq+bGI9ZAKRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aB3XEPMknk2hmDpG78MA4v5AYPYgmBSbJOMu6jvA59Y9JVe4nJCs9IpRrFXwhnRYh
-	 7IagwCZfZZSEENqejZbby0XvYtKNc4/e/csQBEavYTkNYEfQvEqVzboZZGyOJmFbxd
-	 veiTJM8g5nWiaBvknYet8BZhEGkT+wOym5G/BacQ=
+	b=Nu/VDRI8NHxE6QNptOmf15EU3CU3EwrojnEl6bLGHvfF8deBBsp3TGYdZzStVm1Bv
+	 1ZbRiC8FfWmgqE+W6hMTvLFA0AcqnKxh13hgMBEchGoIWbh/VU+hX1FlvSqd+fteHB
+	 gkJ23QojXTfmrdN23nFMVQYY/FoGNAfSjRSSESGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 271/403] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 5.15 506/644] mm: drop the assumption that VM_SHARED always implies writable
 Date: Tue, 26 Aug 2025 13:09:57 +0200
-Message-ID: <20250826110914.291868157@linuxfoundation.org>
+Message-ID: <20250826110959.037546670@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +70,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
+[ Upstream commit e8e17ee90eaf650c855adb0a3e5e965fd6692ff1 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Patch series "permit write-sealed memfd read-only shared mappings", v4.
 
-Some chip types in the ds1307 driver already have OSF handling to
-determine whether .read_time provides valid RTC data or returns -EINVAL.
+The man page for fcntl() describing memfd file seals states the following
+about F_SEAL_WRITE:-
 
-This change removes the clear of the OSF in .probe as the OSF needs to
-be preserved to expand the OSF handling to the ds1341 chip type (note
-that DS1341 and DS1342 share a datasheet).
+    Furthermore, trying to create new shared, writable memory-mappings via
+    mmap(2) will also fail with EPERM.
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With emphasis on 'writable'.  In turns out in fact that currently the
+kernel simply disallows all new shared memory mappings for a memfd with
+F_SEAL_WRITE applied, rendering this documentation inaccurate.
+
+This matters because users are therefore unable to obtain a shared mapping
+to a memfd after write sealing altogether, which limits their usefulness.
+This was reported in the discussion thread [1] originating from a bug
+report [2].
+
+This is a product of both using the struct address_space->i_mmap_writable
+atomic counter to determine whether writing may be permitted, and the
+kernel adjusting this counter when any VM_SHARED mapping is performed and
+more generally implicitly assuming VM_SHARED implies writable.
+
+It seems sensible that we should only update this mapping if VM_MAYWRITE
+is specified, i.e.  whether it is possible that this mapping could at any
+point be written to.
+
+If we do so then all we need to do to permit write seals to function as
+documented is to clear VM_MAYWRITE when mapping read-only.  It turns out
+this functionality already exists for F_SEAL_FUTURE_WRITE - we can
+therefore simply adapt this logic to do the same for F_SEAL_WRITE.
+
+We then hit a chicken and egg situation in mmap_region() where the check
+for VM_MAYWRITE occurs before we are able to clear this flag.  To work
+around this, perform this check after we invoke call_mmap(), with careful
+consideration of error paths.
+
+Thanks to Andy Lutomirski for the suggestion!
+
+[1]:https://lore.kernel.org/all/20230324133646.16101dfa666f253c4715d965@linux-foundation.org/
+[2]:https://bugzilla.kernel.org/show_bug.cgi?id=217238
+
+This patch (of 3):
+
+There is a general assumption that VMAs with the VM_SHARED flag set are
+writable.  If the VM_MAYWRITE flag is not set, then this is simply not the
+case.
+
+Update those checks which affect the struct address_space->i_mmap_writable
+field to explicitly test for this by introducing
+[vma_]is_shared_maywrite() helper functions.
+
+This remains entirely conservative, as the lack of VM_MAYWRITE guarantees
+that the VMA cannot be written to.
+
+Link: https://lkml.kernel.org/r/cover.1697116581.git.lstoakes@gmail.com
+Link: https://lkml.kernel.org/r/d978aefefa83ec42d18dfa964ad180dbcde34795.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+[isaacmanjarres: resolved merge conflicts due to
+due to refactoring that happened in upstream commit
+5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")]
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/fs.h |    4 ++--
+ include/linux/mm.h |   11 +++++++++++
+ kernel/fork.c      |    2 +-
+ mm/filemap.c       |    2 +-
+ mm/madvise.c       |    2 +-
+ mm/mmap.c          |    6 +++---
+ 6 files changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index b371d1e48942..ff9785ff36e7 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1686,10 +1686,8 @@ static int ds1307_probe(struct i2c_client *client,
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -444,7 +444,7 @@ int pagecache_write_end(struct file *, s
+  *   It is also used to block modification of page cache contents through
+  *   memory mappings.
+  * @gfp_mask: Memory allocation flags to use for allocating pages.
+- * @i_mmap_writable: Number of VM_SHARED mappings.
++ * @i_mmap_writable: Number of VM_SHARED, VM_MAYWRITE mappings.
+  * @nr_thps: Number of THPs in the pagecache (non-shmem only).
+  * @i_mmap: Tree of private and shared mappings.
+  * @i_mmap_rwsem: Protects @i_mmap and @i_mmap_writable.
+@@ -542,7 +542,7 @@ static inline int mapping_mapped(struct
  
--		/* oscillator fault?  clear flag, and warn */
-+		/* oscillator fault? warn */
- 		if (regs[1] & DS1337_BIT_OSF) {
--			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
--				     regs[1] & ~DS1337_BIT_OSF);
- 			dev_warn(ds1307->dev, "SET TIME!\n");
- 		}
- 		break;
--- 
-2.39.5
-
+ /*
+  * Might pages of this file have been modified in userspace?
+- * Note that i_mmap_writable counts all VM_SHARED vmas: do_mmap
++ * Note that i_mmap_writable counts all VM_SHARED, VM_MAYWRITE vmas: do_mmap
+  * marks vma as VM_SHARED if it is shared, and the file was opened for
+  * writing i.e. vma may be mprotected writable even if now readonly.
+  *
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -706,6 +706,17 @@ static inline bool vma_is_accessible(str
+ 	return vma->vm_flags & VM_ACCESS_FLAGS;
+ }
+ 
++static inline bool is_shared_maywrite(vm_flags_t vm_flags)
++{
++	return (vm_flags & (VM_SHARED | VM_MAYWRITE)) ==
++		(VM_SHARED | VM_MAYWRITE);
++}
++
++static inline bool vma_is_shared_maywrite(struct vm_area_struct *vma)
++{
++	return is_shared_maywrite(vma->vm_flags);
++}
++
+ #ifdef CONFIG_SHMEM
+ /*
+  * The vma_is_shmem is not inline because it is used only by slow
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -580,7 +580,7 @@ static __latent_entropy int dup_mmap(str
+ 
+ 			get_file(file);
+ 			i_mmap_lock_write(mapping);
+-			if (tmp->vm_flags & VM_SHARED)
++			if (vma_is_shared_maywrite(tmp))
+ 				mapping_allow_writable(mapping);
+ 			flush_dcache_mmap_lock(mapping);
+ 			/* insert tmp into the share list, just after mpnt */
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3408,7 +3408,7 @@ int generic_file_mmap(struct file *file,
+  */
+ int generic_file_readonly_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+-	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
++	if (vma_is_shared_maywrite(vma))
+ 		return -EINVAL;
+ 	return generic_file_mmap(file, vma);
+ }
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -908,7 +908,7 @@ static long madvise_remove(struct vm_are
+ 			return -EINVAL;
+ 	}
+ 
+-	if ((vma->vm_flags & (VM_SHARED|VM_WRITE)) != (VM_SHARED|VM_WRITE))
++	if (!vma_is_shared_maywrite(vma))
+ 		return -EACCES;
+ 
+ 	offset = (loff_t)(start - vma->vm_start)
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -148,7 +148,7 @@ void vma_set_page_prot(struct vm_area_st
+ static void __remove_shared_vm_struct(struct vm_area_struct *vma,
+ 		struct file *file, struct address_space *mapping)
+ {
+-	if (vma->vm_flags & VM_SHARED)
++	if (vma_is_shared_maywrite(vma))
+ 		mapping_unmap_writable(mapping);
+ 
+ 	flush_dcache_mmap_lock(mapping);
+@@ -664,7 +664,7 @@ static void __vma_link_file(struct vm_ar
+ 	if (file) {
+ 		struct address_space *mapping = file->f_mapping;
+ 
+-		if (vma->vm_flags & VM_SHARED)
++		if (vma_is_shared_maywrite(vma))
+ 			mapping_allow_writable(mapping);
+ 
+ 		flush_dcache_mmap_lock(mapping);
+@@ -2918,7 +2918,7 @@ unsigned long mmap_region(struct file *f
+ 		return -EINVAL;
+ 
+ 	/* Map writable and ensure this isn't a sealed memfd. */
+-	if (file && (vm_flags & VM_SHARED)) {
++	if (file && is_shared_maywrite(vm_flags)) {
+ 		int error = mapping_map_writable(file->f_mapping);
+ 
+ 		if (error)
 
 
 
