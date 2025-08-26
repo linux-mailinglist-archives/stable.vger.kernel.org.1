@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42E0B35FD3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FB1B36593
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C390D3AE5C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA3B8A7299
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396AB223DE5;
-	Tue, 26 Aug 2025 12:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9258528EA72;
+	Tue, 26 Aug 2025 13:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLAZ4yUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwoSqQ0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFFE1F5423;
-	Tue, 26 Aug 2025 12:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B67528314A;
+	Tue, 26 Aug 2025 13:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212703; cv=none; b=KgsrFW9QwQTc6AqKMe0kT2kOMzqx/ILpYL1fWp9sZyEHMDBdLDek/4I6CgXNvaeYcUrYxYG1rmemAdLIS80jLoEpS+R4ye9pU0tA+8H+9MNobA+t/tfjtiBm0rGbx5SBuiUpC14B+Z4q+cvGq/CP4apX2sS1Ccl89UGfOitTqqw=
+	t=1756215760; cv=none; b=kbn6pgfXQVLMK8rBHFwIzphQnPtF0O1guJcvDDxbcJoC5l4hDqNu6mnl0OZJkW9Gd5Bll9LHZ4OQ/6uPxkYnDG8TjizQX96dFQnxjXKDdyKtq9WUSAn5ZdrUb6xVVH0ieQKlUZUJU9DUdShI/4bvu0FJp9+Dv2gxGe4AccbtQlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212703; c=relaxed/simple;
-	bh=WiSAgt0wn4tk2GoaCA8n9IGtqNVOYin1xlHemgotXDw=;
+	s=arc-20240116; t=1756215760; c=relaxed/simple;
+	bh=0qlrvmYK6poZla6xRQKwJY0RSCLnMZWV1OTIzlHZA4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVLMsqBr2k0/lB3wWKSiMl1b47VJSRs1WeaqX+2eZxvQTveWAxEI/79jbkeRl7xlckpoTehaiCQeI/Wc0UXmWnLUIBlt9LNd4eBVCcbG7utcvmE3fXhE+bXjGQdQ+xaYLABtGnQTZqY+d2A62N4qkUkil0KRRFEnRR3qb+NJTKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLAZ4yUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22549C116B1;
-	Tue, 26 Aug 2025 12:51:40 +0000 (UTC)
+	 MIME-Version; b=RPpaFqiCdvCGiBRCPZo4FfFslQ6Duze9hP2sn134Xf2cc/x4u7URxKhRZOMelrv+vB7kTbrQAXu+BhJcjAxMC7yXj+YKdkwbngZVZdHAd48SrUorD4sbdRxOJdAyWIZYmJ5HV9N6/dTDvcbujTPb/Mi7/ewzpneoztazPc4bvzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwoSqQ0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B21C4CEF1;
+	Tue, 26 Aug 2025 13:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212701;
-	bh=WiSAgt0wn4tk2GoaCA8n9IGtqNVOYin1xlHemgotXDw=;
+	s=korg; t=1756215760;
+	bh=0qlrvmYK6poZla6xRQKwJY0RSCLnMZWV1OTIzlHZA4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLAZ4yUg4XtkDY3HF4bxDIw0Di4DFkINWDkU0WKYpcDPFKquUvJ/wfsusiRJNu6yv
-	 ht7aHUpmeyc+KLhVYkqMthKmTMQltWhQB9CHzyPA0s7azYgs5tqASKV3iYtAMtqa7f
-	 umiAp4JbKe23NL2zGy9xe1p+ex+QJC/GOpmcf8YE=
+	b=hwoSqQ0wjkcg9BDIm+oDV4s//Ilfs25cD+80MLUz9WZNOTPQhEVpfglZDWRIyu0Gr
+	 JSrVL1lVFq3klCHgabS94hvv1s5EAQOMfm2yHw19XCgLvbJafBRjanxPm1JptU5ZN6
+	 6fBgM5vreza5G+s4gHL7NcSQOyX9DUJ947/LtUEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/587] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
+Subject: [PATCH 5.15 128/644] PM / devfreq: Check governor before using governor->name
 Date: Tue, 26 Aug 2025 13:03:39 +0200
-Message-ID: <20250826110954.715053473@linuxfoundation.org>
+Message-ID: <20250826110949.684634863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
+[ Upstream commit bab7834c03820eb11269bc48f07c3800192460d2 ]
 
-Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
-->writepage") that occurs in various xfstests, causing "something found
-in dmesg" failures.
+Commit 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from
+struct devfreq") removes governor_name and uses governor->name to replace
+it. But devfreq->governor may be NULL and directly using
+devfreq->governor->name may cause null pointer exception. Move the check of
+governor to before using governor->name.
 
-[  341.136573] gfs2_meta_aops does not implement migrate_folio
-[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
-
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from struct devfreq")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/lkml/20250421030020.3108405-5-zhenglifeng1@huawei.com/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/meta_io.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/devfreq/devfreq.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index 1f42eae112fb..b1a368fc089f 100644
---- a/fs/gfs2/meta_io.c
-+++ b/fs/gfs2/meta_io.c
-@@ -93,6 +93,7 @@ const struct address_space_operations gfs2_meta_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepage = gfs2_aspace_writepage,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 237362316edb..02f86879a5be 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1347,15 +1347,11 @@ int devfreq_remove_governor(struct devfreq_governor *governor)
+ 		int ret;
+ 		struct device *dev = devfreq->dev.parent;
  
- const struct address_space_operations gfs2_rgrp_aops = {
-@@ -100,6 +101,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepage = gfs2_aspace_writepage,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
- 
- /**
++		if (!devfreq->governor)
++			continue;
++
+ 		if (!strncmp(devfreq->governor->name, governor->name,
+ 			     DEVFREQ_NAME_LEN)) {
+-			/* we should have a devfreq governor! */
+-			if (!devfreq->governor) {
+-				dev_warn(dev, "%s: Governor %s NOT present\n",
+-					 __func__, governor->name);
+-				continue;
+-				/* Fall through */
+-			}
+ 			ret = devfreq->governor->event_handler(devfreq,
+ 						DEVFREQ_GOV_STOP, NULL);
+ 			if (ret) {
 -- 
 2.39.5
 
