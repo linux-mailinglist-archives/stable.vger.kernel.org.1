@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115BEB361A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065D2B35BD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB2402A63D7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BA27C4291
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0AA2343BE;
-	Tue, 26 Aug 2025 13:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C71C337688;
+	Tue, 26 Aug 2025 11:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTTjD/Hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeYpaUKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D71221704;
-	Tue, 26 Aug 2025 13:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9D2F6564;
+	Tue, 26 Aug 2025 11:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213594; cv=none; b=ni76SXm8ckCSBnPmb9bo83+E7idXXUdhRMpTyflCgKO9sinkxXDOIn/hF5sMSlqHyD8AWyZ717Gfk1d8BeBo0S8meuBqXORIa8XHgIA0l2iLdexzC47OwwdjbjzRnElsdyMKNRTBgmzE1JAJnHPhmChnxzzfoW+RBtGvdoFRRvQ=
+	t=1756207665; cv=none; b=HdnwPm7/HqLpgKH18QLBguvAXhiJmsmtY3dOBdYJ3BgcpbVoA3PViV+kKqSVPzQ8fJ/zum3z0besUl/zJU9v8Dp1zcKUiCiiZiIzT5OhKtE9xwICo2157jLgc69X/vw5q0Qp7SstzZLjCzREpZQayfNc8LqjTB/08TtK/p+rkT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213594; c=relaxed/simple;
-	bh=KAdoxf2oWdyflF9osI6GpipDJigMnG+VV6GW8taVcBs=;
+	s=arc-20240116; t=1756207665; c=relaxed/simple;
+	bh=WOFXqdY4Y7FoDlOGM9sZ25iq4TDdf+f9ZPUejcBNH+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg6b5Cw3txWqWwqm5DZyDG3bMMO3fOPwAUfZ4Nq7mUJCvV0ibIubJWhWWG7yatcON1XXxnkXEnI4CrGLVI7oeu7eJe5oWG2RC4MQcEDVYK9BCjMvDEPadRWokBS9kGdkR7OEnsuacpBK9vpYZ7g0azoNt+4myMEzCJ/gdkUTEYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTTjD/Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FED2C4CEF1;
-	Tue, 26 Aug 2025 13:06:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fcCJYy4VojNZ73BkxJYtVVw8lX15jRUjrzljFbzlO7nneJiGE4pJiqHm9HFdh0M8Bu6ES6N0llJ1p67SzwsgAlrlh8qc/NLtGYwqFtd09wsKcl/jPdguk0w34JPILZEMKL63XNbn7Snu76i/D8eEUJKdDabuyuleQO0f/TaaSV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeYpaUKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB11C4CEF1;
+	Tue, 26 Aug 2025 11:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213593;
-	bh=KAdoxf2oWdyflF9osI6GpipDJigMnG+VV6GW8taVcBs=;
+	s=korg; t=1756207664;
+	bh=WOFXqdY4Y7FoDlOGM9sZ25iq4TDdf+f9ZPUejcBNH+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTTjD/HuwPWTqLRHloiSAQrfl3l98Zk9V6Vz1BNWjw3y5tch1Jffs8f6VOrNJDsCK
-	 t9oCczvtm2xDcHfYBgFnS3Zb9nAsSGJ5f0lKUeCiTxXyOzy0zI8HenTAhseEKBvmW4
-	 sx7x+obOqgmLp/toazITWXqX2DMZRtRmFuoLPSKo=
+	b=WeYpaUKeT+Mx1eAGbAuc+Q8mjMbuMRWZUFILEE4Rfap33QaqH7eyX+JMZ0E9p5qsb
+	 UXFet/u556zZ4tJI1/GauPkx0NW2Yco3NXEscsAzxjMNVZzy41z/tKJSGXCvPMTHOe
+	 Nwjq0qm2T7rkbOhNqBPF7eE7Yox7JKRnHf47qxns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 405/587] media: verisilicon: Fix AV1 decoder clock frequency
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Subject: [PATCH 6.16 270/457] drm/amd/display: Fix DP audio DTO1 clock source on DCE 6.
 Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826111003.231612439@linuxfoundation.org>
+Message-ID: <20250826110944.052022429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 01350185fe02ae3ea2c12d578e06af0d5186f33e upstream.
+commit 297a4833a68aac3316eb808b4123eb016ef242d7 upstream.
 
-The desired clock frequency was correctly set to 400MHz in the device tree
-but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
-Fix the issue by removing the driver call to clk_set_rate(), which reduce
-the amount of board specific code.
+On DCE 6, DP audio was not working. However, it worked when an
+HDMI monitor was also plugged in.
 
-Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
+Looking at dce_aud_wall_dto_setup it seems that the main
+difference is that we use DTO1 when only DP is plugged in.
+
+When programming DTO1, it uses audio_dto_source_clock_in_khz
+which is set from get_dp_ref_freq_khz
+
+The dce60_get_dp_ref_freq_khz implementation looks incorrect,
+because DENTIST_DISPCLK_CNTL seems to be always zero on DCE 6,
+so it isn't usable.
+I compared dce60_get_dp_ref_freq_khz to the legacy display code,
+specifically dce_v6_0_audio_set_dto, and it turns out that in
+case of DCE 6, it needs to use the display clock. With that,
+DP audio started working on Pitcairn, Oland and Cape Verde.
+
+However, it still didn't work on Tahiti. Despite having the
+same DCE version, Tahiti seems to have a different audio device.
+After some trial and error I realized that it works with the
+default display clock as reported by the VBIOS, not the current
+display clock.
+
+The patch was tested on all four SI GPUs:
+
+* Pitcairn (DCE 6.0)
+* Oland (DCE 6.4)
+* Cape Verde (DCE 6.0)
+* Tahiti (DCE 6.0 but different)
+
+The testing was done on Samsung Odyssey G7 LS28BG700EPXEN on
+each of the above GPUs, at the following settings:
+
+* 4K 60 Hz
+* 1080p 60 Hz
+* 1080p 144 Hz
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 645cc7863da5de700547d236697dffd6760cf051)
 Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/verisilicon/rockchip_vpu_hw.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |   21 +++--------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
---- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-@@ -17,7 +17,6 @@
- 
- #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
- #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
--#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
- 
- #define ROCKCHIP_VPU981_MIN_SIZE 64
- 
-@@ -441,13 +440,6 @@ static int rk3066_vpu_hw_init(struct han
- 	return 0;
- }
- 
--static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
--{
--	/* Bump ACLKs to max. possible freq. to improve performance. */
--	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
--	return 0;
--}
--
- static int rockchip_vpu_hw_init(struct hantro_dev *vpu)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -83,22 +83,13 @@ static const struct state_dependent_cloc
+ static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
  {
- 	/* Bump ACLK to max. possible freq. to improve performance. */
-@@ -808,7 +800,6 @@ const struct hantro_variant rk3588_vpu98
- 	.codec_ops = rk3588_vpu981_codec_ops,
- 	.irqs = rk3588_vpu981_irqs,
- 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
--	.init = rk3588_vpu981_hw_init,
- 	.clk_names = rk3588_vpu981_vpu_clk_names,
- 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
- };
+ 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+-	int dprefclk_wdivider;
+-	int dp_ref_clk_khz;
+-	int target_div;
++	struct dc_context *ctx = clk_mgr_base->ctx;
++	int dp_ref_clk_khz = 0;
+ 
+-	/* DCE6 has no DPREFCLK_CNTL to read DP Reference Clock source */
+-
+-	/* Read the mmDENTIST_DISPCLK_CNTL to get the currently
+-	 * programmed DID DENTIST_DPREFCLK_WDIVIDER*/
+-	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, &dprefclk_wdivider);
+-
+-	/* Convert DENTIST_DPREFCLK_WDIVIDERto actual divider*/
+-	target_div = dentist_get_divider_from_did(dprefclk_wdivider);
+-
+-	/* Calculate the current DFS clock, in kHz.*/
+-	dp_ref_clk_khz = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
+-		* clk_mgr->base.dentist_vco_freq_khz) / target_div;
++	if (ASIC_REV_IS_TAHITI_P(ctx->asic_id.hw_internal_rev))
++		dp_ref_clk_khz = ctx->dc_bios->fw_info.default_display_engine_pll_frequency;
++	else
++		dp_ref_clk_khz = clk_mgr_base->clks.dispclk_khz;
+ 
+ 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
+ }
 
 
 
