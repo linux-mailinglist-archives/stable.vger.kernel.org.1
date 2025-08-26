@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B7AB35C19
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998E6B366A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874C118906CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF775B61735
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447822BEC34;
-	Tue, 26 Aug 2025 11:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC3A35209C;
+	Tue, 26 Aug 2025 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiF8lFMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJQOySIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FF229BDAC;
-	Tue, 26 Aug 2025 11:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5D835209A;
+	Tue, 26 Aug 2025 13:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207594; cv=none; b=DEn0Cq+bEdysWEpzrtLsm1XQyvIBjbl3ppdAel+GbyXrqXfrasLJMrUsSSbJzd3R/XakRsoscdUFFHk5engwriPQpEuT7ABCoe8hqI7d6s/e60MV60Y/Z0KSHdxzcQfMtb0h76UHcTmSM2kGt1KPLitJ9DSF6Pv91dxoNAG6xH8=
+	t=1756216588; cv=none; b=iegAaDijvtjASMmfx+VOmYZEow4ZeGCsQWhMHdmxrrfdCNJYnQJThg7pNAZxEZhXL6OUXZDKEWnNmkU8Fi6J8z2qkLAzwrWiIWW8+4cognUMtEm4fJXWSibDIlzPnQs5eZfui6EJkLKRI0wDnURntFo8tvuDJfYZR3OrhGmxsU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207594; c=relaxed/simple;
-	bh=fjBkNvVAcwltmcJ0w2qL3bXOoGwNC2xOheKxDXqzT6E=;
+	s=arc-20240116; t=1756216588; c=relaxed/simple;
+	bh=peOZqkruYxmKEeRsYTXTgsR6DdlAs5Y+Ozum/I/8vn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmk5uiQzD/H3jnKJFjHavDuLZlN4ZUMCHlTYpmmcdT5OyEOrU1oNY7o8geQY1XdR1oVbhR3slJ9jMvefBmsYuZvatq7/ofQyflZPhL5rXmCVxZ5C5MeGrVmoruHtIZR/e0hUJ82KGXMHF2j+6CX6uiMxc5tY/XzBAcdErd9ZUxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiF8lFMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E143C4CEF1;
-	Tue, 26 Aug 2025 11:26:33 +0000 (UTC)
+	 MIME-Version; b=nVb69oIyRPTvini30Pri53m1T95QqeAmCASgt2yCKvkMVtQTQKUl7ORh+F48UIhmtOsh98o7pWANLvLwbxp/3si2oeVuEtMMj/9D28aLqwLhRX2O4LHee5DYiIoIwi8Rc5bOpKdxyjNTtaBVUyfOVpRNtUrrFkLBSiSzH6q+tI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJQOySIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C306C4CEF1;
+	Tue, 26 Aug 2025 13:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207593;
-	bh=fjBkNvVAcwltmcJ0w2qL3bXOoGwNC2xOheKxDXqzT6E=;
+	s=korg; t=1756216587;
+	bh=peOZqkruYxmKEeRsYTXTgsR6DdlAs5Y+Ozum/I/8vn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiF8lFMbcMLktXC2f+KADnxNXJ1UlSF4UDp7lCTyALcrzs8tzvBhbLMMMYJ2V5asj
-	 dkWJiN6nJkeSjWvEPibsmBCwiIRsy4whc4kOqNpxaoDTjdMzz8Y198d0mZxoiotFE7
-	 FP04qeCm39KiycGrAhjqJQzYVQ6HCHIT7Bx2WpDw=
+	b=qJQOySIxPgq4H20wIiEKXNNAbvcNWZx8Jq59LWGPCENe60sP5KevqCmQSMSlLIz9+
+	 2UrwgfGskr2AVReoL/+T7+yakalpRlOiZJhTvD4pC2KH2pyKCcFslswlqBWDjpzbGP
+	 0V7z6WGM5EEvO7veeLcfxMzmXeAAwKicOZsI87Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 242/457] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
-Date: Tue, 26 Aug 2025 13:08:46 +0200
-Message-ID: <20250826110943.351219722@linuxfoundation.org>
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 436/644] ASoC: soc-dai.c: add missing flag check at snd_soc_pcm_dai_probe()
+Date: Tue, 26 Aug 2025 13:08:47 +0200
+Message-ID: <20250826110957.270893307@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
+[ Upstream commit 5c5a7521e9364a40fe2c1b67ab79991e3e9085df ]
 
-In preparation to fix replay timer timeout, rename the
-gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
+dai->probed is used at snd_soc_pcm_dai_probe/remove(),
+and used to call real remove() function only when it was probed.
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	int snd_soc_pcm_dai_probe(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+
+			if (dai->driver->probe) {
+(A)				int ret = dai->driver->probe(dai);
+
+				if (ret < 0)
+					return soc_dai_ret(dai, ret);
+			}
+
+=>			dai->probed = 1;
+		}
+		...
+	}
+
+	int snd_soc_pcm_dai_remove(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+=>			if (dai->probed &&
+			    ...) {
+				...
+			}
+
+=>			dai->probed = 0;
+		}
+		...
+	}
+
+But on probe() case, we need to check dai->probed before calling
+real probe() function at (A), otherwise real probe() might be called
+multi times (but real remove() will be called only once).
+This patch checks it at probe().
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87wn3u64e6.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0e270f32975f ("ASoC: fsl_sai: replace regmap_write with regmap_update_bits")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/soc-dai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1753,7 +1753,7 @@ cleanup:
- 	return ret;
- }
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index 8165f5537043..703aa9a76d03 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -561,6 +561,9 @@ int snd_soc_pcm_dai_probe(struct snd_soc_pcm_runtime *rtd, int order)
+ 		if (dai->driver->probe_order != order)
+ 			continue;
  
--static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
-+static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
- 	u32 value;
-@@ -1928,7 +1928,7 @@ static int gli_probe_slot_gl9763e(struct
- 	gli_pcie_enable_msi(slot);
- 	host->mmc_host_ops.hs400_enhanced_strobe =
- 					gl9763e_hs400_enhanced_strobe;
--	gli_set_gl9763e(slot);
-+	gl9763e_hw_setting(slot);
- 	sdhci_enable_v4_mode(host);
++		if (dai->probed)
++			continue;
++
+ 		if (dai->driver->probe) {
+ 			int ret = dai->driver->probe(dai);
  
- 	return 0;
+-- 
+2.50.1
+
 
 
 
