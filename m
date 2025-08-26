@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD2DB35BAF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15EAB36A10
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C943817934A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 010677A6755
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61114322557;
-	Tue, 26 Aug 2025 11:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9753135CEBD;
+	Tue, 26 Aug 2025 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkpWnqGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTmWyj+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DE12BEFF0;
-	Tue, 26 Aug 2025 11:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5656235CEC0;
+	Tue, 26 Aug 2025 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207214; cv=none; b=WBAI2x24c0JQYwqER7JutrI7USQmYr4Q8iYg/4Lk1VQtSmZH2tOLeOXqHz8levrAEGdyS3fWrGiRJgpYBecsdv1Zhg5uKoYp9Wz+zXHH7rYt9ezaDRZiTi7Dji8mkuEzPum9z16UwtRrVD6NElsObFtyVBFFOL0zRQ38MWWUxRY=
+	t=1756218659; cv=none; b=aHMXi19TFBbEtZhUfiENdHPAhFh++YjBOwqX+57RVXbgCMCg2WKAz/VCntVxyFO23fUy6sJMlMjtqpF4VIwIK8vqRV/HzdjGbY9aOzY+7S3Bg4vlZhxYMaBm976w8ORNaw27f9s9qnspEI6B+frPWQ7fjIV4IQuaPGFdH1wCFbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207214; c=relaxed/simple;
-	bh=mSw3gSa1AzCnPnC3h/qhZvjbN+rLJ8a1MkX/9GIRTwc=;
+	s=arc-20240116; t=1756218659; c=relaxed/simple;
+	bh=yJ31srxmWc1HwDcA2ZOlf0KSECuWty98tI4IfFPY1G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQWODqAQEhFYPPSnxK8z45qMSEoqcf68FD5KwhMz14ghZirz5M030iyWiOYmNf4mvN+Tdj8i5VO2kgXl16g9t7E8/p91oTWsgHL2r5DcboPX8W9n5LFXHsMFemyuXqGI1u7yD2ghp6m23VGJMi30UN6B9lbxHNzXRoR7m0W5SX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkpWnqGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0ECC4CEF1;
-	Tue, 26 Aug 2025 11:20:13 +0000 (UTC)
+	 MIME-Version; b=nhk47tYnOESzYMfOZvPDomHnyviZmxpxSQHh0T8JXwO5xBJpqVfnuPyj6ucHKmrYpxa3hEpx7ZXrD+bekjlLC3kBG4GByO2uMo2gLK+U8t7zzC9gKoOi4d6ZGA+q3AiQOCT9QxMnIDgafiWbzgmoX0zHvYgrGuiQAOSJHvWk8tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTmWyj+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0E2C4CEF1;
+	Tue, 26 Aug 2025 14:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207214;
-	bh=mSw3gSa1AzCnPnC3h/qhZvjbN+rLJ8a1MkX/9GIRTwc=;
+	s=korg; t=1756218659;
+	bh=yJ31srxmWc1HwDcA2ZOlf0KSECuWty98tI4IfFPY1G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkpWnqGJnFdxw41qsLlnF1EHBTgtKqpq0f9S0YlkRwyLwnb/W5nGH3zmLjtP/LKtn
-	 qUPYskzT+eOpQEn0V6hpAnCYBAoSe4GX94PKmhN0lls9uRv6tWqy90WbPiWvlr/VAP
-	 mec5yZ6U74zOfh1AfjgnYZ3AX5ABOnELypC8xICA=
+	b=aTmWyj+EhKxexyMgZBHZM4gICD6LMXY19Gjzs7UuGzGohKGIErOJ2vutyJRLm6rzF
+	 q3zVQsRQIxJ1FBdeUqlj/byWnFDOtcIrd34eJT/7xpDAzQ247aDYpFqkBC5ibOmRKz
+	 oBbJuuiazmnOB8jlsW5cGqJL3dAILQGiIEGoHs3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.16 095/457] mfd: mt6397: Do not use generic name for keypad sub-devices
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.4 053/403] net_sched: sch_sfq: reject invalid perturb period
 Date: Tue, 26 Aug 2025 13:06:19 +0200
-Message-ID: <20250826110939.725782152@linuxfoundation.org>
+Message-ID: <20250826110907.328897857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 92ab1e41569416c639643cd75eea2379190a65f2 upstream.
+[ Upstream commit 7ca52541c05c832d32b112274f81a985101f9ba8 ]
 
-Do not use "mtk-pmic-keys" when creating sub-device for the keypad to
-make sure the keypad driver will only bind to the sub-device if it has
-support for the variant/has matching compatible.
+Gerrard Tai reported that SFQ perturb_period has no range check yet,
+and this can be used to trigger a race condition fixed in a separate patch.
 
+We want to make sure ctl->perturb_period * HZ will not overflow
+and is positive.
+
+Tested:
+
+tc qd add dev lo root sfq perturb -10   # negative value : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 1000000000 # too big : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 2000000 # acceptable value
+tc -s -d qd sh dev lo
+qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Cc: stable@vger.kernel.org
-Fixes: 6e31bb8d3a63 ("mfd: mt6397: Add initial support for MT6328")
-Fixes: de58cee8c6b8 ("mfd: mt6397-core: Add MT6357 PMIC support")
-Fixes: 4a901e305011 ("mfd: mt6397-core: Add resources for PMIC keys for MT6359")
-Reported-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Tested-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com> # on
-Link: https://lore.kernel.org/r/r4k3pgd3ew3ypne7ernxuzwgniiyvzosbce4cfajbcu7equblt@yato35tjb3lw
-Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/mt6397-core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/sched/sch_sfq.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/mfd/mt6397-core.c
-+++ b/drivers/mfd/mt6397-core.c
-@@ -136,7 +136,7 @@ static const struct mfd_cell mt6323_devs
- 		.name = "mt6323-led",
- 		.of_compatible = "mediatek,mt6323-led"
- 	}, {
--		.name = "mtk-pmic-keys",
-+		.name = "mt6323-keys",
- 		.num_resources = ARRAY_SIZE(mt6323_keys_resources),
- 		.resources = mt6323_keys_resources,
- 		.of_compatible = "mediatek,mt6323-keys"
-@@ -153,7 +153,7 @@ static const struct mfd_cell mt6328_devs
- 		.name = "mt6328-regulator",
- 		.of_compatible = "mediatek,mt6328-regulator"
- 	}, {
--		.name = "mtk-pmic-keys",
-+		.name = "mt6328-keys",
- 		.num_resources = ARRAY_SIZE(mt6328_keys_resources),
- 		.resources = mt6328_keys_resources,
- 		.of_compatible = "mediatek,mt6328-keys"
-@@ -175,7 +175,7 @@ static const struct mfd_cell mt6357_devs
- 		.name = "mt6357-sound",
- 		.of_compatible = "mediatek,mt6357-sound"
- 	}, {
--		.name = "mtk-pmic-keys",
-+		.name = "mt6357-keys",
- 		.num_resources = ARRAY_SIZE(mt6357_keys_resources),
- 		.resources = mt6357_keys_resources,
- 		.of_compatible = "mediatek,mt6357-keys"
-@@ -196,7 +196,7 @@ static const struct mfd_cell mt6331_mt63
- 		.name = "mt6332-regulator",
- 		.of_compatible = "mediatek,mt6332-regulator"
- 	}, {
--		.name = "mtk-pmic-keys",
-+		.name = "mt6331-keys",
- 		.num_resources = ARRAY_SIZE(mt6331_keys_resources),
- 		.resources = mt6331_keys_resources,
- 		.of_compatible = "mediatek,mt6331-keys"
-@@ -240,7 +240,7 @@ static const struct mfd_cell mt6359_devs
- 	},
- 	{ .name = "mt6359-sound", },
- 	{
--		.name = "mtk-pmic-keys",
-+		.name = "mt6359-keys",
- 		.num_resources = ARRAY_SIZE(mt6359_keys_resources),
- 		.resources = mt6359_keys_resources,
- 		.of_compatible = "mediatek,mt6359-keys"
-@@ -272,7 +272,7 @@ static const struct mfd_cell mt6397_devs
- 		.name = "mt6397-pinctrl",
- 		.of_compatible = "mediatek,mt6397-pinctrl",
- 	}, {
--		.name = "mtk-pmic-keys",
-+		.name = "mt6397-keys",
- 		.num_resources = ARRAY_SIZE(mt6397_keys_resources),
- 		.resources = mt6397_keys_resources,
- 		.of_compatible = "mediatek,mt6397-keys"
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -653,6 +653,14 @@ static int sfq_change(struct Qdisc *sch,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+ 		return -EINVAL;
+ 	}
++
++	if (ctl->perturb_period < 0 ||
++	    ctl->perturb_period > INT_MAX / HZ) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++		return -EINVAL;
++	}
++	perturb_period = ctl->perturb_period * HZ;
++
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -669,14 +677,12 @@ static int sfq_change(struct Qdisc *sch,
+ 	headdrop = q->headdrop;
+ 	maxdepth = q->maxdepth;
+ 	maxflows = q->maxflows;
+-	perturb_period = q->perturb_period;
+ 	quantum = q->quantum;
+ 	flags = q->flags;
+ 
+ 	/* update and validate configuration */
+ 	if (ctl->quantum)
+ 		quantum = ctl->quantum;
+-	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+ 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
 
 
 
