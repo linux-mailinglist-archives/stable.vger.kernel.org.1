@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76170B35C09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EDAB35D91
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16715363285
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0C51BC03EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF8D2BE03C;
-	Tue, 26 Aug 2025 11:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CC32BE653;
+	Tue, 26 Aug 2025 11:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQU2kSsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPZDDnAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CE17332C;
-	Tue, 26 Aug 2025 11:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F8729BDBA;
+	Tue, 26 Aug 2025 11:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207479; cv=none; b=iRCyAHj/uRsh8GV9RVQQJlPv8zpcXj7eDmPUf3d60oMK+SCjkuJomchSrEWA6wzU23P2PUy8iOZC9/Bcn0Qm56Rzwg8Fc6SwHelUoy0HBK/M28EMEttTmK+sygBqNNpuMcUgHYRlWcfbldlON0td860Gz9JoVPlzv0hsdgnnb88=
+	t=1756208325; cv=none; b=p6FsadVz8RfYWzjPP/phTn29gvfpOaPD/MBMyLB7zQaYptDiQU2lnZoYRoVbXnaUaoxEjGx/77hPfhjPR5a0y7swLHiVZnKlTntPUMKrWBu/BlHM3CnxxxvCpuIyOMqC7sn2dM44FwHrFe8MNXu3M7mc/owXc8sLzcHnBa04FlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207479; c=relaxed/simple;
-	bh=miJtgJphrAv4Raw0EkNHF87mGQ7meAl2FUxBB4EsFVA=;
+	s=arc-20240116; t=1756208325; c=relaxed/simple;
+	bh=1xs/XPVGw6JESVuyUbpmEkAz45zpOJjx77VYW19qa7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6DUIKVjez4kqcuPseoB7NXHvc4x5GkimZenqE+zEFl55eOE1bdxQIq/JBKR5ij82n0rb1WApjUtfFeDb0ZEjhIktvv4iOBS0tsYzo39y3krOCZQitx5IeQWBhQWkzGBaV3/cT4XcmVRFFXi8SV8tNHuWJDB2yCDDY+P4r7UHm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQU2kSsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AABC4CEF4;
-	Tue, 26 Aug 2025 11:24:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ohwGSiNuDGipJkAqkVPalVJqkRNAukLbOwhWJmITU0g3vywTDf570cB+/ENT1T7oZHeW4KlFCo4B/OPkyP67pJR2J+NHncsxJzpnpqGWb2VKCrvDOuVmLA9IAHqIm2bpZ0nvxIOeKyzr82khQPT8LvgIgs5hXLpvRvp5BafBmjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPZDDnAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50F8C4CEF1;
+	Tue, 26 Aug 2025 11:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207478;
-	bh=miJtgJphrAv4Raw0EkNHF87mGQ7meAl2FUxBB4EsFVA=;
+	s=korg; t=1756208325;
+	bh=1xs/XPVGw6JESVuyUbpmEkAz45zpOJjx77VYW19qa7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQU2kSsJNUaMoYwNk6imBqxxWBTiswDET4wFmLY992G0kno2q+kCyXDsrhvHRks0l
-	 w0Y0vOj8haYbF/E4Diz0V65y4r1751BYc9noauYJtUkZ9yL3zPTXYZ9seWSFTUCNAF
-	 coS9sYapcj0NLej9LsWRYrhhCNg/WbjOcIFaYYv4=
+	b=JPZDDnAd9fLY9zY+ExDOBmTK0cit8qgtxQr7zRDvmyLBjXHheRHftar6M5EuZf2gS
+	 I+igVGf2jU581SBzocThkwUPfp8WnGd0jU/YgWRjMKX/ZHbkiV39zYnV/EfQiGsX0n
+	 STkDMrYuTiFlOOShFnq8O+VjgHgqLQvw3+3R6u94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.16 198/457] sched/ext: Fix invalid task state transitions on class switch
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.12 067/322] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:08:02 +0200
-Message-ID: <20250826110942.261044559@linuxfoundation.org>
+Message-ID: <20250826110917.221741402@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit ddf7233fcab6c247379d0928d46cc316ee122229 upstream.
+commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
 
-When enabling a sched_ext scheduler, we may trigger invalid task state
-transitions, resulting in warnings like the following (which can be
-easily reproduced by running the hotplug selftest in a loop):
+The period generated by the hardware is
 
- sched_ext: Invalid task state transition 0 -> 3 for fish[770]
- WARNING: CPU: 18 PID: 787 at kernel/sched/ext.c:3862 scx_set_task_state+0x7c/0xc0
- ...
- RIP: 0010:scx_set_task_state+0x7c/0xc0
- ...
- Call Trace:
-  <TASK>
-  scx_enable_task+0x11f/0x2e0
-  switching_to_scx+0x24/0x110
-  scx_enable.isra.0+0xd14/0x13d0
-  bpf_struct_ops_link_create+0x136/0x1a0
-  __sys_bpf+0x1edd/0x2c30
-  __x64_sys_bpf+0x21/0x30
-  do_syscall_64+0xbb/0x370
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	(PWMDWIDTH + 1) << CLKDIV) / freq
 
-This happens because we skip initialization for tasks that are already
-dead (with their usage counter set to zero), but we don't exclude them
-during the scheduling class transition phase.
+according to my tests with a signal analyser and also the documentation.
 
-Fix this by also skipping dead tasks during class swiching, preventing
-invalid task state transitions.
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
 
-Fixes: a8532fac7b5d2 ("sched_ext: TASK_DEAD tasks must be switched into SCX on ops_enable")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -5694,6 +5694,9 @@ static int scx_enable(struct sched_ext_o
- 			__setscheduler_class(p->policy, p->prio);
- 		struct sched_enq_and_set_ctx ctx;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -164,7 +164,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
-+		if (!tryget_task_struct(p))
-+			continue;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
 +
- 		if (old_class != new_class && p->se.sched_delayed)
- 			dequeue_task(task_rq(p), p, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
- 
-@@ -5706,6 +5709,7 @@ static int scx_enable(struct sched_ext_o
- 		sched_enq_and_set_task(&ctx);
- 
- 		check_class_changed(task_rq(p), p, old_class, p->prio);
-+		put_task_struct(p);
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -187,9 +190,16 @@ static int pwm_mediatek_config(struct pw
  	}
- 	scx_task_iter_stop(&sti);
- 	percpu_up_write(&scx_fork_rwsem);
+ 
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
+ 
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -218,11 +228,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
+ }
 
 
 
