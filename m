@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FF8B35CEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19483B361B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8715D1BA5FF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E901A7BA529
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D8D3376BD;
-	Tue, 26 Aug 2025 11:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A091196C7C;
+	Tue, 26 Aug 2025 13:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgBY5wIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljcRwpjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6234A31F;
-	Tue, 26 Aug 2025 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FE418DB01;
+	Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207935; cv=none; b=BflKZQayhGunnoe8C9qN9zLjClLqfUPV4rI7TRWaZw/9AMnWTAXmPg4P6QbGIhXfHSm9veXqcrO8REyKUrjuDNjD5yMNkax3a9zt/zX10zpqzymAqPDXNgJ0xqIqDNTrhtaHD3XMNtfcitA6c++yhpnH0rxWUtyj97EiFBFi4d0=
+	t=1756213870; cv=none; b=Vuh2R6zVCaSlWwL6NbPSrKNnj/DP+qvD29xVV7jCPfsA6IPPRcnc2J8T9Ky7jemSB278DIPlK+P+XlkEAnpMxrep9KRgAjARNv9+4rTAX62HFB8+gwiO7cuq1iPQvczDYORhlhMgcQyJCGID8GoJj/mr8RsrO0oOXhuqNeglt8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207935; c=relaxed/simple;
-	bh=arbwwwQ4fQuONvjC9OEFCkh66XDmduIbhchjKd90xW4=;
+	s=arc-20240116; t=1756213870; c=relaxed/simple;
+	bh=+MuyYwVRC7IfTdhKkCxFfwyjmVjUhy9p04MwdFouFns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlHaIrFX2ew5FSjMrgkxK8Fsp0dfFGbNqCwaJIC7JYMOEWhK5ObzjkgRx71fpHktKfWctKB+X0hcN0GgfsnKCEtzcqlff8ZI0PwC6dhM/Xu2dSGmDPu/WiAfOrpNBnc0zx+8BXhyWHreY2kG3tBg+pqcDXzqBrejDXndsyYP0+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgBY5wIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC49C4CEF1;
-	Tue, 26 Aug 2025 11:32:15 +0000 (UTC)
+	 MIME-Version; b=PpcEyANNfXBl8QPtjNQofmk826JKqRcoYPly2rxw6RdzYDS7Z9b94taCy6xApIIAOzL+dgWcZt3OdhpT0MeGvp6sNIhE17VlpHhdEG6OogJRFx5lp+GPuBavdnh2sM7LmShbaHNET4oxLWTMtOzQshXZoViQBSzE2GZOcPwKC9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljcRwpjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AF5C4CEF1;
+	Tue, 26 Aug 2025 13:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207935;
-	bh=arbwwwQ4fQuONvjC9OEFCkh66XDmduIbhchjKd90xW4=;
+	s=korg; t=1756213869;
+	bh=+MuyYwVRC7IfTdhKkCxFfwyjmVjUhy9p04MwdFouFns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgBY5wInyUp53iGvq2rPalWNbRWNcFubRWNhwhEu8wceA0mwbEnX/RypSmbZXoWBk
-	 RI5oBY6LNiqKvLOaMzwx5UNWGQZNC8iRAHDgrgBDNiSiqaugllANLbR2ZyHkHKhUQJ
-	 4M8awo/jsfnUKi8dhiBp9urYQnG3ebAVAhZVtt9I=
+	b=ljcRwpjKfklnpLGCMXjjwul4gLIlRx5jL11U5OWo2825wkiGVQDvM7NQOQf+RHzeF
+	 pAJuw2O3qgkqZBOeGDGodNB7Tef7RN6sVFIufIGLjallrERsS+7KJwGsCPbFs+JUeK
+	 CRzvwreqribKbk8bp9X79OTV6TTb2mTlhQhCxGXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiande Lu <jiande.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 374/457] Bluetooth: btmtk: Fix wait_on_bit_timeout interruption during shutdown
+Subject: [PATCH 6.6 509/587] mmc: sdhci-pci-gli: Add a new function to simplify the code
 Date: Tue, 26 Aug 2025 13:10:58 +0200
-Message-ID: <20250826110946.540897902@linuxfoundation.org>
+Message-ID: <20250826111005.940370942@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiande Lu <jiande.lu@mediatek.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit 099799fa9b76c5c02b49e07005a85117a25b01ea ]
+[ Upstream commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 ]
 
-During the shutdown process, an interrupt occurs that
-prematurely terminates the wait for the expected event.
-This change replaces TASK_INTERRUPTIBLE with
-TASK_UNINTERRUPTIBLE in the wait_on_bit_timeout call to ensure
-the shutdown process completes as intended without being
-interrupted by signals.
+In preparation to fix replay timer timeout, add
+sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
-Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
-Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
+Cc: stable@vger.kernel.org
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtk.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 4390fd571dbd..a8c520dc09e1 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -642,12 +642,7 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	 * WMT command.
- 	 */
- 	err = wait_on_bit_timeout(&data->flags, BTMTK_TX_WAIT_VND_EVT,
--				  TASK_INTERRUPTIBLE, HCI_INIT_TIMEOUT);
--	if (err == -EINTR) {
--		bt_dev_err(hdev, "Execution of wmt command interrupted");
--		clear_bit(BTMTK_TX_WAIT_VND_EVT, &data->flags);
--		goto err_free_wc;
--	}
-+				  TASK_UNINTERRUPTIBLE, HCI_INIT_TIMEOUT);
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -221,6 +221,20 @@
+ #define GLI_MAX_TUNING_LOOP 40
  
- 	if (err) {
- 		bt_dev_err(hdev, "Execution of wmt command timed out");
--- 
-2.50.1
-
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
+@@ -541,7 +555,6 @@ static void gl9750_hw_setting(struct sdh
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+ 	struct pci_dev *pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	pdev = slot->chip->pdev;
+@@ -563,12 +576,7 @@ static void gl9750_hw_setting(struct sdh
+ 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9750_wt_off(host);
+ }
+@@ -743,7 +751,6 @@ static void sdhci_gl9755_set_clock(struc
+ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	gl9755_wt_on(pdev);
+@@ -781,12 +788,7 @@ static void gl9755_hw_setting(struct sdh
+ 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9755_wt_off(pdev);
+ }
 
 
 
