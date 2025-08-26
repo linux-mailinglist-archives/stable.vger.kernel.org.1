@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D035B36B15
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44BCB35C18
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D980582C75
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B0C1364729
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8039035A284;
-	Tue, 26 Aug 2025 14:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664329D26A;
+	Tue, 26 Aug 2025 11:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LUCk11R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zrkzw515"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDD7356906;
-	Tue, 26 Aug 2025 14:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04182284B5B;
+	Tue, 26 Aug 2025 11:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218799; cv=none; b=qnl3b1EKXA1EeCXn7/pyXOcU8V8ywIqWnk5DJRVEwF/UcmVtaHuOHrM3bkmuIEfdXfWl/v4FEfSiK2/ByvI/gl5AVhWsvDbKbe2j4QFQ6E8eKkRx6WbD8pfoJPK/zM00kS/z2f7pQeEYM3Lu5JXbkpWpJ0SIWZw/zcO5fTz7Cew=
+	t=1756207538; cv=none; b=ttQUf8Jgvj+7KSkLlFEDuWjDy6+GmLC4Y9x75VLz8QfVE26R18R7xfvqt7v0BhYRAatgR6IBdXDSNIqAwOeXx53LnfzeqcEA/xICP9oZo3L7WwIte700rVeSGdDDyVhhrotLrhrheV2uG50xEiGFX+O/Xxfl/JzVQn0oR4Tllms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218799; c=relaxed/simple;
-	bh=MHhwIwJAua7hUNt0qSMGhvtxpoOhXOmksC9keLX1KsI=;
+	s=arc-20240116; t=1756207538; c=relaxed/simple;
+	bh=4uKiYWlPC38QxqEWgqGgFdtj50/4R5sYIDMvgBnShwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocaxsC5JPSVc8BY4pI1rJ5RcBs4z7ShX73iYxlscSbqfUTKxNOkWk0NCz7KSFK1l59TDhSZnRCpVQURI4IyBbJrulwbXGoKYxg9ycvVc/T3edcLXTYcFVaxbUdeKmj2VG//Kw9OLG5bbz6vQiY98Ei5DW8lD8IK4ST+uPbF/DhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LUCk11R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B507FC4CEF1;
-	Tue, 26 Aug 2025 14:33:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DKz/tKUD5E9H67TUdiVwV/mf455qCew0K1tLbLV9g4Lp5yvHJk3NXe3vJNpC0KBP5B69XRuuQO/cSEqlGW8gK150EOcqqJ5KpWZlImhVABurlyKmd4054cOAfwzW3YFliimu9A8KBDNw+Iau58/hfabQNCQs/pIVqX84N2GZPKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zrkzw515; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7E3C4CEF1;
+	Tue, 26 Aug 2025 11:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218799;
-	bh=MHhwIwJAua7hUNt0qSMGhvtxpoOhXOmksC9keLX1KsI=;
+	s=korg; t=1756207537;
+	bh=4uKiYWlPC38QxqEWgqGgFdtj50/4R5sYIDMvgBnShwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LUCk11RJgSTLryNPcKfF4mS2MQArOSDkHHoi5Qeow+NvHwY6JcfkKAqSJNZuphMH
-	 bQNlZCr7HcGl/34MckOZh0mnWjooNI8PAzlJTfZwuucQwm6hjfiuPqv4W6ImtNfCvD
-	 U6xhEREnfpbGdOsPseTQzcY37ukR0ERL+nCEbk9k=
+	b=Zrkzw515fUDbXxs+CNpofnqQMN4UEZtDCBY4/d+aaANjlto9j0dGrWRH2gv5iwp1j
+	 GJx+gGnuw67mTYdXLzqeUb5DHZz4CColiXbRuoH0LoYgT4lQTc3jvTFiAydBKvLVLO
+	 B1vGvi3wzbL7RPqBDqwKjvT+NeIaviKKqKUapgvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Peter Chen <peter.chen@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/403] usb: chipidea: udc: fix sleeping function called from invalid context
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 179/457] drm/amdgpu: track whether a queue is a kernel queue in amdgpu_mqd_prop
 Date: Tue, 26 Aug 2025 13:07:43 +0200
-Message-ID: <20250826110910.531345934@linuxfoundation.org>
+Message-ID: <20250826110941.799883817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@nxp.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 7368760d1bcdabf515c41a502568b489de3da683 ]
+commit 284d4dfe850e665f0e7d4dfaf4d3d3da76d11fb0 upstream.
 
-The code calls pm_runtime_get_sync with irq disabled, it causes below
-warning:
+Used to to set the MQD appropriately for each queue type.
+Kernel queues have additional privileges.
 
-BUG: sleeping function called from invalid context at
-wer/runtime.c:1075
-in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid:
-er/u8:1
-CPU: 1 PID: 37 Comm: kworker/u8:1 Not tainted
-20200304-00181-gbebfd2a5be98 #1588
-Hardware name: NVIDIA Tegra SoC (Flattened Device Tree)
-Workqueue: ci_otg ci_otg_work
-[<c010e8bd>] (unwind_backtrace) from [<c010a315>]
-1/0x14)
-[<c010a315>] (show_stack) from [<c0987d29>]
-5/0x94)
-[<c0987d29>] (dump_stack) from [<c013e77f>]
-+0xeb/0x118)
-[<c013e77f>] (___might_sleep) from [<c052fa1d>]
-esume+0x75/0x78)
-[<c052fa1d>] (__pm_runtime_resume) from [<c0627a33>]
-0x23/0x74)
-[<c0627a33>] (ci_udc_pullup) from [<c062fb93>]
-nect+0x2b/0xcc)
-[<c062fb93>] (usb_gadget_connect) from [<c062769d>]
-_connect+0x59/0x104)
-[<c062769d>] (ci_hdrc_gadget_connect) from [<c062778b>]
-ssion+0x43/0x48)
-[<c062778b>] (ci_udc_vbus_session) from [<c062f997>]
-s_connect+0x17/0x9c)
-[<c062f997>] (usb_gadget_vbus_connect) from [<c062634d>]
-bd/0x128)
-[<c062634d>] (ci_otg_work) from [<c0134719>]
-rk+0x149/0x404)
-[<c0134719>] (process_one_work) from [<c0134acb>]
-0xf7/0x3bc)
-[<c0134acb>] (worker_thread) from [<c0139433>]
-x118)
-[<c0139433>] (kthread) from [<c01010bd>]
-(ret_from_fork+0x11/0x34)
-
-Tested-by: Dmitry Osipenko <digetx@gmail.com>
-Cc: <stable@vger.kernel.org> #v5.5
-Fixes: 72dc8df7920f ("usb: chipidea: udc: protect usb interrupt enable")
-Reported-by: Dmitry Osipenko <digetx@gmail.com>
-Signed-off-by: Peter Chen <peter.chen@nxp.com>
-Link: https://lore.kernel.org/r/20200316031034.17847-2-peter.chen@kernel.org
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.16.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h      |    1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 19a9a4b83346..d483a957804b 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -1539,18 +1539,19 @@ static const struct usb_ep_ops usb_ep_ops = {
- static void ci_hdrc_gadget_connect(struct usb_gadget *_gadget, int is_active)
- {
- 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
--	unsigned long flags;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -886,6 +886,7 @@ struct amdgpu_mqd_prop {
+ 	uint64_t csa_addr;
+ 	uint64_t fence_address;
+ 	bool tmz_queue;
++	bool kernel_queue;
+ };
  
- 	if (is_active) {
- 		pm_runtime_get_sync(&_gadget->dev);
- 		hw_device_reset(ci);
--		spin_lock_irqsave(&ci->lock, flags);
-+		spin_lock_irq(&ci->lock);
- 		if (ci->driver) {
- 			hw_device_state(ci, ci->ep0out->qh.dma);
- 			usb_gadget_set_state(_gadget, USB_STATE_POWERED);
-+			spin_unlock_irq(&ci->lock);
- 			usb_udc_vbus_handler(_gadget, true);
-+		} else {
-+			spin_unlock_irq(&ci->lock);
- 		}
--		spin_unlock_irqrestore(&ci->lock, flags);
- 	} else {
- 		usb_udc_vbus_handler(_gadget, false);
- 		if (ci->driver)
--- 
-2.39.5
-
+ struct amdgpu_mqd {
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -687,6 +687,7 @@ static void amdgpu_ring_to_mqd_prop(stru
+ 	prop->eop_gpu_addr = ring->eop_gpu_addr;
+ 	prop->use_doorbell = ring->use_doorbell;
+ 	prop->doorbell_index = ring->doorbell_index;
++	prop->kernel_queue = true;
+ 
+ 	/* map_queues packet doesn't need activate the queue,
+ 	 * so only kiq need set this field.
 
 
 
