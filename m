@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8469B36682
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C15B3695E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3E8D564F7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5329981F8F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C1345726;
-	Tue, 26 Aug 2025 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61C61DE8BE;
+	Tue, 26 Aug 2025 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJAg56Zz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ2a6A2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857763451D5;
-	Tue, 26 Aug 2025 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840A9343D63;
+	Tue, 26 Aug 2025 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215956; cv=none; b=qEcMKj1lr9KoRhlKgRe34RUgtJa9cwcs00Aj4b91pboeYF7MMW0VQ61nxO1xpQNainCGmTsWqJl5MxZdACs7vJA6RXLNMTsLmOHhH+AjN2FNqHWxamJo6SgIBx8VUB01EY+SzU33mP/wLOlWDGEahJVU7rBoKCdYhqOVZSwrsJY=
+	t=1756217266; cv=none; b=KlaiBlanw+fva5Q6JRQgQaFEJvMQCz+IXrHCYANoeBD0GbTLCBhf57GcZhwhm63hwcxuc2KP/lsfQpt+skIQvyb3oZbA3hL/k6wm4/AayijcK6N4dshhOVMXXLfPhLFotNXZ24KU+oMiybCd+CxGvLO5QYj0V2jiIAlDHe6BWfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215956; c=relaxed/simple;
-	bh=fdRZvGyacOacbx1Pd5URP9930axNkhpQWy4Kigy/NK4=;
+	s=arc-20240116; t=1756217266; c=relaxed/simple;
+	bh=GAzUYi3HOpu1X6Hyeh70oMk1L5/t0tJqcieAouwoP2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ui244zJYrND+12q0FqgF42ovaFbM99KlCgIw2rSkOjCoel//zq+/zCvolqNwx7jOrDMn5atLxVK+x/2wSarzMpgWKcePLuPtU9I1d8egVwjKX+AGEKWpHuPUIDqIOwv7WEc8nOIuAVKFU5GVHVL8hRx2kA6xhTHrYC1EQufDKHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJAg56Zz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C018EC4CEF1;
-	Tue, 26 Aug 2025 13:45:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LnkyEVvU8W0ih2h/XZnetyoAtelgZm4lVsF7Wfg70Se7qw9UnoiHXQD8Q45zUj/Tm8dUBmC9c2y6N3FjqVGvcLY+9RmLrQO097P4vEjkSUI7V2kNCBkZpj3NoyOo+WAE5rZiJ2sFDcWqG5itBAuWXqBy5xewY1xG0O8CvD/BNfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ2a6A2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CECC113D0;
+	Tue, 26 Aug 2025 14:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215956;
-	bh=fdRZvGyacOacbx1Pd5URP9930axNkhpQWy4Kigy/NK4=;
+	s=korg; t=1756217266;
+	bh=GAzUYi3HOpu1X6Hyeh70oMk1L5/t0tJqcieAouwoP2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJAg56ZzwGfyTtfaQEVpNAfWXpC62d97M3TLrZewPhTu5W7Rp8sh6QcR8tUu0vNk2
-	 /J0EG9ozN9LuFSb9fTe9TGBe3Cgg/FY32o9GwnrrhlW4wZmRPIyv8j8zaY7rExVBui
-	 u0l7cnIinS/6p+mLGr7U6pCyGDDGs0TpWw7yLgCM=
+	b=hQ2a6A2R+9HiS63gJWBxnBCAhab1+9kmESNOOjbv+/5MUg+dlIVdTtG6Me5n31TQr
+	 igmY3p1vegE7HEejejU4My9X8hpNmHOQXD3KZ1qEzIRiIFxES/qd+rUI4A7kD/KUCw
+	 XuWNr6vxDxPsppDdOCMmaehoKIH7UMyEBBq7kxXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yu <zheng.yu@northwestern.edu>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/644] jfs: fix metapage reference count leak in dbAllocCtl
+Subject: [PATCH 5.10 079/523] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
 Date: Tue, 26 Aug 2025 13:04:49 +0200
-Message-ID: <20250826110951.351731134@linuxfoundation.org>
+Message-ID: <20250826110926.515355919@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yu <zheng.yu@northwestern.edu>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 856db37592021e9155384094e331e2d4589f28b1 ]
+[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
 
-In dbAllocCtl(), read_metapage() increases the reference count of the
-metapage. However, when dp->tree.budmin < 0, the function returns -EIO
-without calling release_metapage() to decrease the reference count,
-leading to a memory leak.
+commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
+snd_soc_dai_set_tdm_slot()") checks return value of
+xlate_tdm_slot_mask() (A1)(A2).
 
-Add release_metapage(mp) before the error return to properly manage
-the metapage reference count and prevent the leak.
+	/*
+	 * ...
+(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
+	 * @rx_mask and @slot_width will be ignored.
+	 * ...
+	 */
+	int snd_soc_dai_set_tdm_slot(...)
+	{
+		...
+		if (...)
+(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
+		else
+(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
+		if (ret)
+			goto err;
+		...
+	}
 
-Fixes: a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ("jfs: fix shift-out-of-bounds in dbSplit")
+snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
+but snd_soc_dai_set_tdm_slot() allow to use it (Y).
 
-Signed-off-by: Zheng Yu <zheng.yu@northwestern.edu>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+(A)	static int snd_soc_xlate_tdm_slot_mask(...)
+	{
+		...
+		if (!slots)
+(X)			return -EINVAL;
+		...
+	}
+
+Call xlate_tdm_slot_mask() only if slots was non zero.
+
+Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
+Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
+Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/soc-dai.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index cfb81bf5881e..c2d4349cd959 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1877,8 +1877,10 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index f9aba413e495..e2db2ad219b8 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -206,13 +206,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ {
+ 	int ret = -ENOTSUPP;
  
--		if (dp->tree.budmin < 0)
-+		if (dp->tree.budmin < 0) {
-+			release_metapage(mp);
- 			return -EIO;
-+		}
+-	if (dai->driver->ops &&
+-	    dai->driver->ops->xlate_tdm_slot_mask)
+-		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+-	else
+-		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+-	if (ret)
+-		goto err;
++	if (slots) {
++		if (dai->driver->ops &&
++		    dai->driver->ops->xlate_tdm_slot_mask)
++			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		else
++			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		if (ret)
++			goto err;
++	}
  
- 		/* try to allocate the blocks.
- 		 */
+ 	dai->tx_mask = tx_mask;
+ 	dai->rx_mask = rx_mask;
 -- 
 2.39.5
 
