@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEABB36C6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF4DB35D3D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71CE8E80B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C721B7C5CAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324C01E0E08;
-	Tue, 26 Aug 2025 14:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9470199935;
+	Tue, 26 Aug 2025 11:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isacDJ6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VC6z673n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D435A353379;
-	Tue, 26 Aug 2025 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772FC1A256B;
+	Tue, 26 Aug 2025 11:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219073; cv=none; b=t097UcT/HhiFMY2HtXI6P5m8z0Y7kU3hrN6JXRjBlp0C56sC0fTZ3i+L/DEMamoonQVCer1cvRvD9Qj+mh9Ie99i5TImVSfmsKg/8jNCOr3f/iHAjcklBePeaqUJ9tU8M4L//Fw4RoZQyeFAnhgAxdihKErkvSLIDYcAFr4jz7Q=
+	t=1756208545; cv=none; b=fSxP8lsjKhJRU/hGKs7XUVf+0akZ9G2gLODBnUbcDHLCZmXhppA42EhF5rKRs4VT4G/zzhU9331HYbI+Xd2X5XsBbEfosP4v+0DLEUxinoswxyOw5cDbfaJj5jHTzvb8Ut2fy3YNopW221VW97FwnkwQ6fhoNc99PHQco8c70jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219073; c=relaxed/simple;
-	bh=UWkJiUUqtk1hRGVOpkvofqNmOGsAGT0U/z8t5WQGZXk=;
+	s=arc-20240116; t=1756208545; c=relaxed/simple;
+	bh=n8YpGWAbR0LXBq2JW8p/1IDDiS3lwEQx/pst3nrg0ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9NssteaduJfLmhKWZDk8F/+s1j77dvhruqfCdjoFuinV8r/f8lX/OE2FVanMxaWnmyPLKaHOPzWVxPzSK8FHGq4yWciyxbRYB4X5DSLCjnIaL4i6mG5iVULGvI6PNfTaVjREHtrvqnZyJqKynnM8KWS3mlpDhsaByVoBtYUfeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isacDJ6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3E3C4CEF1;
-	Tue, 26 Aug 2025 14:37:52 +0000 (UTC)
+	 MIME-Version; b=UWUbKYvHZZ3vQ+lXwzPrDrSaiXDWRLf2dVSBhjSln4eDemxKbTuFImulciB5PvlJCUoVtKw0PqMu9dhFJCu5wBZJCdX3zRfiDbRWld+cd/8rGV6Pu53V/w6i8v6aXhVNAWbG0WeGCpNum0RbJSpYubPml+0qmC9GeCtyxN2wR0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VC6z673n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0899CC4CEF1;
+	Tue, 26 Aug 2025 11:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219073;
-	bh=UWkJiUUqtk1hRGVOpkvofqNmOGsAGT0U/z8t5WQGZXk=;
+	s=korg; t=1756208545;
+	bh=n8YpGWAbR0LXBq2JW8p/1IDDiS3lwEQx/pst3nrg0ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isacDJ6Z2EpjdrW/fPLE0qtkqBXfHWPBLq344E35+nJgBITHqJBB0uYERxtKxGklT
-	 d8pf8i+LTgDT3V0SxtiHCd2LcT0DtaSb8EhWvSLg/ofFyjWVO8C9CuOr2H7uQRv6GS
-	 RkeflSUotDIppuBQbACYz3PPOSQ61ib7cB6zxUW0=
+	b=VC6z673nyYVgD9FX6xVnrIQAputWbR0uiTpDG62m6mrZ+Ya582x6xKsLYZzmsWzib
+	 yLP91w/iR8wv/hQeXsARwQImqRRdyY0F9XQBmWAg1+xnEc8k4KrDB0teZxImVd9qEM
+	 iC7wHj68l2Q1HpkPKWNZM0C1ZOS5mQ0bejCJPysg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 242/403] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Subject: [PATCH 6.12 153/322] btrfs: send: add and use helper to rename current inode when processing refs
 Date: Tue, 26 Aug 2025 13:09:28 +0200
-Message-ID: <20250826110913.512854862@linuxfoundation.org>
+Message-ID: <20250826110919.594694100@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
+[ Upstream commit ec666c84deba56f714505b53556a97565f72db86 ]
 
-Not all tasks have an ABI associated or vDSO mapped,
-for example kthreads never do.
-If such a task ever ends up calling stack_top(), it will derefence the
-NULL ABI pointer and crash.
+Extract the logic to rename the current inode at process_recorded_refs()
+into a helper function and use it, therefore removing duplicated logic
+and making it easier for an upcoming patch by avoiding yet more duplicated
+logic.
 
-This can for example happen when using kunit:
-
-    mips_stack_top+0x28/0xc0
-    arch_pick_mmap_layout+0x190/0x220
-    kunit_vm_mmap_init+0xf8/0x138
-    __kunit_add_resource+0x40/0xa8
-    kunit_vm_mmap+0x88/0xd8
-    usercopy_test_init+0xb8/0x240
-    kunit_try_run_case+0x5c/0x1a8
-    kunit_generic_run_threadfn_adapter+0x28/0x50
-    kthread+0x118/0x240
-    ret_from_kernel_thread+0x14/0x1c
-
-Only dereference the ABI point if it is set.
-
-The GIC page is also included as it is specific to the vDSO.
-Also move the randomization adjustment into the same conditional.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/btrfs/send.c |   23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 339870ed92f7..42e95e6edd1d 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -654,18 +654,20 @@ unsigned long mips_stack_top(void)
- 	top -= PAGE_SIZE;
- 
- 	/* Space for the VDSO, data page & GIC user page */
--	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--	top -= PAGE_SIZE;
--	top -= mips_gic_present() ? PAGE_SIZE : 0;
-+	if (current->thread.abi) {
-+		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
-+		top -= PAGE_SIZE;
-+		top -= mips_gic_present() ? PAGE_SIZE : 0;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
- 
- 	/* Space for cache colour alignment */
- 	if (cpu_has_dc_aliases)
- 		top -= shm_align_mask + 1;
- 
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
--
- 	return top;
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -4165,6 +4165,19 @@ out:
+ 	return ret;
  }
  
--- 
-2.39.5
-
++static int rename_current_inode(struct send_ctx *sctx,
++				struct fs_path *current_path,
++				struct fs_path *new_path)
++{
++	int ret;
++
++	ret = send_rename(sctx, current_path, new_path);
++	if (ret < 0)
++		return ret;
++
++	return fs_path_copy(current_path, new_path);
++}
++
+ /*
+  * This does all the move/link/unlink/rmdir magic.
+  */
+@@ -4450,13 +4463,10 @@ static int process_recorded_refs(struct
+ 		 * it depending on the inode mode.
+ 		 */
+ 		if (is_orphan && can_rename) {
+-			ret = send_rename(sctx, valid_path, cur->full_path);
++			ret = rename_current_inode(sctx, valid_path, cur->full_path);
+ 			if (ret < 0)
+ 				goto out;
+ 			is_orphan = false;
+-			ret = fs_path_copy(valid_path, cur->full_path);
+-			if (ret < 0)
+-				goto out;
+ 		} else if (can_rename) {
+ 			if (S_ISDIR(sctx->cur_inode_mode)) {
+ 				/*
+@@ -4464,10 +4474,7 @@ static int process_recorded_refs(struct
+ 				 * dirs, we always have one new and one deleted
+ 				 * ref. The deleted ref is ignored later.
+ 				 */
+-				ret = send_rename(sctx, valid_path,
+-						  cur->full_path);
+-				if (!ret)
+-					ret = fs_path_copy(valid_path,
++				ret = rename_current_inode(sctx, valid_path,
+ 							   cur->full_path);
+ 				if (ret < 0)
+ 					goto out;
 
 
 
