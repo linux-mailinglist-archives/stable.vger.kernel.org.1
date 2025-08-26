@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFC3B36B57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFA8B3608C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56EC582C40
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F977C7933
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDD7352096;
-	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD27C1DD0D4;
+	Tue, 26 Aug 2025 12:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkKTJtgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpdWrQb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF4E3568F4;
-	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A29B770FE;
+	Tue, 26 Aug 2025 12:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218577; cv=none; b=tO7idyazgoMxZt5iMrB4jmJp28LPp3JPtkLmn9dtem7GCuT5TKMqGpOc53v0cQA9Pxry3G/9gEJN9wrcfotQzGpOng4R0du0oSnCHIsQ3OprUAs3YFfjn7Bp6az1EWUgl4lSAQCoCRRc26dr8/CSN9i1/K1vIhMj+L6AeMnxadU=
+	t=1756213061; cv=none; b=pgWpJCnGLo0RRcmN9rZp0Ed3kosj9OFhy+e63EwNimzdBUfxnQNlL6jTl5K6dcbHomn/6DC2VnkTrQPVMdIr47IFYxjXkuJs8mtAQHGY2YTZn5fAxwzCfzmnhLS1JH0gft+HY+Il8Qxu7iIGs0MRUaSRBGvpSO/V+HoFlMgaCV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218577; c=relaxed/simple;
-	bh=ArA7JRGcXQmzyzsQve1+1XZ0pSfk4s//rB4hFdOAltU=;
+	s=arc-20240116; t=1756213061; c=relaxed/simple;
+	bh=Q7HVV/ofaNLaJ9VsQHMmxrBuBvAI+sDhh9EoMIIhSIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0FYqAjbH7KphdHr6l/O5auv2osnBbEcSnJ36FMIVcasqGNPSfo59iIeoAQtnAoWer1ndG3gUhHtL8cviAZzDWzoFdL5AkwKAUJa1jM8uL17tVf5kPNRdPi9Kj3cQdoDdH59+PtFsm3MoHD63uDzlcl7lAZd8tt5pq6vHuzCE64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkKTJtgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A285C4CEF1;
-	Tue, 26 Aug 2025 14:29:37 +0000 (UTC)
+	 MIME-Version; b=VkoDvub0tQdC6hk4DRLOgXZgv9zgIic37lb3gVIPBoxRliEq2zBMGAeI+UccbSReNmSvcmFAtUuuRMW4nVQ4iwIQXRr2liKa7w0niv9J1V8c9r+qkhhnvKHrlFZwOviUqx53uA2k3lWyCAHuHqYFEAPZO017IjfVppNf8itvYBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpdWrQb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2AFC4CEF1;
+	Tue, 26 Aug 2025 12:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218577;
-	bh=ArA7JRGcXQmzyzsQve1+1XZ0pSfk4s//rB4hFdOAltU=;
+	s=korg; t=1756213061;
+	bh=Q7HVV/ofaNLaJ9VsQHMmxrBuBvAI+sDhh9EoMIIhSIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkKTJtguXNb+nVXUjH+ZX7yIcyfNzc+779dAwZungKU4BjwTvKm28D1XZ9pBwnSHO
-	 OapqAPKjCgJNFZvrgo+rYwZTHPwIsoKYOZZXF08rqA6acCBT7OVAQndpX0KHB63tpa
-	 cIq9wUeCZJU2DJ/v1JaFGJ0w/Iu54JEmBOyzI7XE=
+	b=CpdWrQb6yOArMS7kaqxCSBypGAH1k9K7PmNseQTN6tdMKApV+2qfOw7Qcj2e6wsAj
+	 HP0eUN9oXSLas5DNxj96y4wpAadUpC4lTOxdbnxWv5TCiEPkiPtxiMTXf5pJhMHvs5
+	 K75gt2C37N+ruf2k/FZA7wwxiML9BKlolbKKccLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Yun Lu <luyun@kylinos.cn>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 012/403] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
+	ap420073@gmail.com,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 189/587] netmem: fix skb_frag_address_safe with unreadable skbs
 Date: Tue, 26 Aug 2025 13:05:38 +0200
-Message-ID: <20250826110906.077974480@linuxfoundation.org>
+Message-ID: <20250826110957.750078213@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Mina Almasry <almasrymina@google.com>
 
-commit c1ba3c0cbdb5e53a8ec5d708e99cd4c497028a13 upstream.
+[ Upstream commit 4672aec56d2e8edabcb74c3e2320301d106a377e ]
 
-Due to the changes in commit 581073f626e3 ("af_packet: do not call
-packet_read_pending() from tpacket_destruct_skb()"), every time
-tpacket_destruct_skb() is executed, the skb_completion is marked as
-completed. When wait_for_completion_interruptible_timeout() returns
-completed, the pending_refcnt has not yet been reduced to zero.
-Therefore, when ph is NULL, the wait function may need to be called
-multiple times until packet_read_pending() finally returns zero.
+skb_frag_address_safe() needs a check that the
+skb_frag_page exists check similar to skb_frag_address().
 
-We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
-constraint could be way off.
+Cc: ap420073@gmail.com
 
-Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
-Cc: stable@kernel.org
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250619175239.3039329-1-almasrymina@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2713,7 +2713,7 @@ static int tpacket_snd(struct packet_soc
- 	int len_sum = 0;
- 	int status = TP_STATUS_AVAILABLE;
- 	int hlen, tlen, copylen = 0;
--	long timeo = 0;
-+	long timeo;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 7b7222b4f611..3a558a3c2cca 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3556,7 +3556,13 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
+  */
+ static inline void *skb_frag_address_safe(const skb_frag_t *frag)
+ {
+-	void *ptr = page_address(skb_frag_page(frag));
++	struct page *page = skb_frag_page(frag);
++	void *ptr;
++
++	if (!page)
++		return NULL;
++
++	ptr = page_address(page);
+ 	if (unlikely(!ptr))
+ 		return NULL;
  
- 	mutex_lock(&po->pg_vec_lock);
- 
-@@ -2767,6 +2767,7 @@ static int tpacket_snd(struct packet_soc
- 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !po->has_vnet_hdr)
- 		size_max = dev->mtu + reserve + VLAN_HLEN;
- 
-+	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
- 	reinit_completion(&po->skb_completion);
- 
- 	do {
-@@ -2774,7 +2775,6 @@ static int tpacket_snd(struct packet_soc
- 					  TP_STATUS_SEND_REQUEST);
- 		if (unlikely(ph == NULL)) {
- 			if (need_wait && skb) {
--				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
- 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
- 				if (timeo <= 0) {
- 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
+-- 
+2.39.5
+
 
 
 
