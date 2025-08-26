@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF4FB36119
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D18EB35D28
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74A6E7B8292
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023A47C495A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F03238149;
-	Tue, 26 Aug 2025 13:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919D427A917;
+	Tue, 26 Aug 2025 11:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzixOckZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUsnSvkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30911ACEDA;
-	Tue, 26 Aug 2025 13:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5088E17332C;
+	Tue, 26 Aug 2025 11:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213573; cv=none; b=NlYOekNV2eHQTX9jEziM3OeT4PRg8CLoo3F4FvdGpWpbSK+WfJr5GDL674+0hLf0LDyatAYLMBnm6x4Wqe7Hx1cNcZakvM99jSVGgaT7GC+YdJzZY/Srt0j1EUPtwyUUR49jE7e8+78GXuGYo4MiH6uE4IZp6vJcC+g84zAaIzc=
+	t=1756208493; cv=none; b=q85pcE6GpwhZ6m+wxGH+euqB8PYH9S6OjUF9y//CBRBQFn7VyxkjZUnip3n/xfm0J6qYqxa8YP9GNFvqrlaFp+f4w8SPyCZ2o5EHxLzr9eW5xzwjRx+qZxuk8zsSl8h6Vy++eojGvZFVPysxwVg5FLSfkUQgfSkXmA4fbwLmtjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213573; c=relaxed/simple;
-	bh=p1C8thFd/cGFQBN6qQi38H0H/mXXDqZQuacZIHBYy9A=;
+	s=arc-20240116; t=1756208493; c=relaxed/simple;
+	bh=Z29N+t5udhRHzag6tpSyvPD03LNF4Q2elENhVC81soU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cA38jsptbHUWXma5r9tDBtt1NrEjPEIlHsSqkgUX91auDfuA1hPIVEbPRXdvYNdOstlKdkyuCj9CYb30+1CHSydeLiJw5izFE1lVCNvR40d/+MvKK+iSkXSgG9sCmnpSwexkB3Zjg4BWnrriL75LqWJFkMHRfJHPGCZOA2P0JFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzixOckZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7464DC4CEF1;
-	Tue, 26 Aug 2025 13:06:12 +0000 (UTC)
+	 MIME-Version; b=o0abodx8LV3d/Z0NXHlh5Wuw8JB9XVv/ZsC92LhlNv82DV8Eceqc3qxg9Sdy144Iz2JjRoRiKQA/+0xxFN9Z8p7gTR+QIeMTLymRMBngV+nTWMSaH3P02f8Z0rc9/Fp5VEYVp4z5VPp9k0smi0Fe3WhbuL4QlpbVArXx4DGV4ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUsnSvkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE411C4CEF1;
+	Tue, 26 Aug 2025 11:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213572;
-	bh=p1C8thFd/cGFQBN6qQi38H0H/mXXDqZQuacZIHBYy9A=;
+	s=korg; t=1756208493;
+	bh=Z29N+t5udhRHzag6tpSyvPD03LNF4Q2elENhVC81soU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzixOckZwuNrFlqPyeiqZ1LoCW10VPSZkEX+m3wRhlBcBPMRXmSkLmJ6Ea9HEkWb3
-	 QPGB15PZM53mvNYf5ouedQRJqEZ9YvFzWA1PNvIbiVlABKkrmEecRVFnPcpCsk4IFA
-	 REickzeE3diYL4cm4xA2w2lO6k9D+wdQYN/DXUxU=
+	b=OUsnSvkBPBy/030VJQdzR40QximpMR010UjsGqLvqMbqF4cj11Ht4tZbMdhH76Hw4
+	 R5mbQblyzaobWzgDS/e7pOuCXpN5gq8+MNg+kgVGEWmUjc8U7ip9Qqo2GMbeG1qIzZ
+	 Fg9I2opNamT/vP8wazLwo40iOHycVhKboFvRPYHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 398/587] parisc: Revise gateway LWS calls to probe user read access
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.12 132/322] sched/ext: Fix invalid task state transitions on class switch
 Date: Tue, 26 Aug 2025 13:09:07 +0200
-Message-ID: <20250826111003.048734621@linuxfoundation.org>
+Message-ID: <20250826110919.059374385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Andrea Righi <arighi@nvidia.com>
 
-commit f6334f4ae9a4e962ba74b026e1d965dfdf8cbef8 upstream.
+commit ddf7233fcab6c247379d0928d46cc316ee122229 upstream.
 
-We use load and stbys,e instructions to trigger memory reference
-interruptions without writing to memory. Because of the way read
-access support is implemented, read access interruptions are only
-triggered at privilege levels 2 and 3. The kernel and gateway
-page execute at privilege level 0, so this code never triggers
-a read access interruption. Thus, it is currently possible for
-user code to execute a LWS compare and swap operation at an
-address that is read protected at privilege level 3 (PRIV_USER).
+When enabling a sched_ext scheduler, we may trigger invalid task state
+transitions, resulting in warnings like the following (which can be
+easily reproduced by running the hotplug selftest in a loop):
 
-Fix this by probing read access rights at privilege level 3 and
-branching to lws_fault if access isn't allowed.
+ sched_ext: Invalid task state transition 0 -> 3 for fish[770]
+ WARNING: CPU: 18 PID: 787 at kernel/sched/ext.c:3862 scx_set_task_state+0x7c/0xc0
+ ...
+ RIP: 0010:scx_set_task_state+0x7c/0xc0
+ ...
+ Call Trace:
+  <TASK>
+  scx_enable_task+0x11f/0x2e0
+  switching_to_scx+0x24/0x110
+  scx_enable.isra.0+0xd14/0x13d0
+  bpf_struct_ops_link_create+0x136/0x1a0
+  __sys_bpf+0x1edd/0x2c30
+  __x64_sys_bpf+0x21/0x30
+  do_syscall_64+0xbb/0x370
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
+This happens because we skip initialization for tasks that are already
+dead (with their usage counter set to zero), but we don't exclude them
+during the scheduling class transition phase.
+
+Fix this by also skipping dead tasks during class swiching, preventing
+invalid task state transitions.
+
+Fixes: a8532fac7b5d2 ("sched_ext: TASK_DEAD tasks must be switched into SCX on ops_enable")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/syscall.S |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ kernel/sched/ext.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -613,6 +613,9 @@ lws_compare_and_swap32:
- lws_compare_and_swap:
- 	/* Trigger memory reference interruptions without writing to memory */
- 1:	ldw	0(%r26), %r28
-+	proberi	(%r26), PRIV_USER, %r28
-+	comb,=,n	%r28, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 2:	stbys,e	%r0, 0(%r26)
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5372,6 +5372,9 @@ static int scx_ops_enable(struct sched_e
+ 			__setscheduler_class(p->policy, p->prio);
+ 		struct sched_enq_and_set_ctx ctx;
  
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -767,6 +770,9 @@ cas2_lock_start:
- 	copy	%r26, %r28
- 	depi_safe	0, 31, 2, %r28
- 10:	ldw	0(%r28), %r1
-+	proberi	(%r28), PRIV_USER, %r1
-+	comb,=,n	%r1, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 11:	stbys,e	%r0, 0(%r28)
++		if (!tryget_task_struct(p))
++			continue;
++
+ 		if (old_class != new_class && p->se.sched_delayed)
+ 			dequeue_task(task_rq(p), p, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
  
- 	/* Calculate 8-bit hash index from virtual address */
-@@ -951,41 +957,47 @@ atomic_xchg_begin:
+@@ -5384,6 +5387,7 @@ static int scx_ops_enable(struct sched_e
+ 		sched_enq_and_set_task(&ctx);
  
- 	/* 8-bit exchange */
- 1:	ldb	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 2:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 16-bit exchange */
- 3:	ldh	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 	b	atomic_xchg_start
- 4:	stbys,e	%r0, 0(%r20)
--	nop
--	nop
--	nop
- 
- 	/* 32-bit exchange */
- 5:	ldw	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	b	atomic_xchg_start
- 6:	stbys,e	%r0, 0(%r23)
- 	nop
- 	nop
--	nop
--	nop
--	nop
- 
- 	/* 64-bit exchange */
- #ifdef CONFIG_64BIT
- 7:	ldd	0(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 8:	stdby,e	%r0, 0(%r23)
- #else
- 7:	ldw	0(%r24), %r20
- 8:	ldw	4(%r24), %r20
-+	proberi	(%r24), PRIV_USER, %r20
-+	comb,=,n	%r20, %r0, lws_fault /* backwards, likely not taken */
-+	nop
- 	copy	%r23, %r20
- 	depi_safe	0, 31, 2, %r20
- 9:	stbys,e	%r0, 0(%r20)
+ 		check_class_changed(task_rq(p), p, old_class, p->prio);
++		put_task_struct(p);
+ 	}
+ 	scx_task_iter_stop(&sti);
+ 	percpu_up_write(&scx_fork_rwsem);
 
 
 
