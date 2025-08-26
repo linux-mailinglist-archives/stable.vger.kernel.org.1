@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F6DB363B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DF6B36B1E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08EA57B7A4B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB07D4E1649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F65A319867;
-	Tue, 26 Aug 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA713570AD;
+	Tue, 26 Aug 2025 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2G4cmd+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmY0EmsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB9A13FD86;
-	Tue, 26 Aug 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE81B352093;
+	Tue, 26 Aug 2025 14:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215061; cv=none; b=XmovIkZro6gtTk/3keqDCAxqd1wNXAjQjurA2f6KBle10QPt4eCc4eY/7y+Z0nxXvfFCjY+f0XmFfQC8t4bJ5EqPg/I9SIXumFRfsBfuQzI68MiJmdRK2swJSvi091YPTBnBbh2cppibKp4LeArOsCqjL38omFliSkDFpJsiWnw=
+	t=1756219219; cv=none; b=kYwWqJQBIzXldpJBJ2F2mHdx8gidqjRFDhg3HZgBNMtzrLDu2hBM/HXBApjLbS5a/e7nB3/tqGigWHj3z//xvA9apVp/RR8hq8ET3rsfXTNmbHoF2tOHTKj6RfyOxvihJNpOzCKIFDMoW4PesJG8B33CjYZ0wnGwmqOAkjeGaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215061; c=relaxed/simple;
-	bh=0DnmUkWyfHloBFje0X90vrzZG5ixcyKxRK86UD94aWo=;
+	s=arc-20240116; t=1756219219; c=relaxed/simple;
+	bh=3zyO5hMQl1thfm81bYFiBYBwre/7TGHiRChX740DrSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZqOWfiDKeCoIKDuLNhuYvmMlz600YQSKeGNa9wVNU+1FFLduXoaMpd4sxswWnbn6fTQ3H+7BL7oa56PL2nBg+jwc41c6HZ5o+PPYGzSOokHo5CQUI2k7jeBg2b6RbMyGBTk/GVOSeyw7o2zHpAllSHoLXOSihouUaensYT1RbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2G4cmd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5554C4CEF1;
-	Tue, 26 Aug 2025 13:31:00 +0000 (UTC)
+	 MIME-Version; b=BoVxr/uVoraydVJr3d7EFG5YNjie6ue1s1sSSRHgpg7cllqeqGALLhLEK5th5aqnSr972ICphjnbiwfwQ4Y9uLJBMmLTeBh+a2bmqMiXREg6yu5cbn6rANSJscFTN051cs+Hd0KBFj+U7rwyGSocBe8018lofPTthTo7LfaAQ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmY0EmsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51469C4CEF1;
+	Tue, 26 Aug 2025 14:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215061;
-	bh=0DnmUkWyfHloBFje0X90vrzZG5ixcyKxRK86UD94aWo=;
+	s=korg; t=1756219219;
+	bh=3zyO5hMQl1thfm81bYFiBYBwre/7TGHiRChX740DrSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2G4cmd+gwyxCgGehN038XM3JsQ5OmtSJB9ecZ8kr4esa4FhF5c9teP3R0a79Hq5A
-	 xhnp7RHO6e/1PVeVxflp1a+zMY9vcXBOTCuWi8bUyNLADrpIkIbTjEHZUfIg/TZGes
-	 pJjSaE+lCthEFphJYnv97TmvvZ7YgYu/OdJ7hQ7I=
+	b=fmY0EmsMEMeMick9bwoRhgkEUBniTPcUf8QRfXUoLY7io8A9oLQ+JDxWPk0pr3Gml
+	 3s25JKgz/ZNfT8ACrPX01NmZe1T4sRdJ/B348DbZJclljbsTJZNsBduMU+nTy6XFr2
+	 vUi51caGIFQaVLDcd2iu3UVFWUlRfKxOvQDfrcbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 372/482] platform/chrome: cros_ec: remove unneeded label and if-condition
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.4 299/403] PCI: endpoint: Fix configfs group list head handling
 Date: Tue, 26 Aug 2025 13:10:25 +0200
-Message-ID: <20250826110940.023691065@linuxfoundation.org>
+Message-ID: <20250826110915.074033732@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 554ec02c97254962bbb0a8776c3160d294fc7e51 ]
+commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
 
-Both `ec_dev->ec` and `ec_dev->pd` are initialized to NULL at the
-beginning of cros_ec_register().  Also, platform_device_unregister()
-takes care if the given platform_device is NULL.
+Doing a list_del() on the epf_group field of struct pci_epf_driver in
+pci_epf_remove_cfs() is not correct as this field is a list head, not
+a list entry. This list_del() call triggers a KASAN warning when an
+endpoint function driver which has a configfs attribute group is torn
+down:
 
-Remove the unneeded goto-label and if-condition.
+==================================================================
+BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
+Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
 
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Link: https://lore.kernel.org/r/20230308031247.2866401-1-tzungbi@kernel.org
-Stable-dep-of: e23749534619 ("platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
+Hardware name: Radxa ROCK 5B (DT)
+Call trace:
+show_stack+0x2c/0x84 (C)
+dump_stack_lvl+0x70/0x98
+print_report+0x17c/0x538
+kasan_report+0xb8/0x190
+__asan_report_store8_noabort+0x20/0x2c
+pci_epf_remove_cfs+0x17c/0x198
+pci_epf_unregister_driver+0x18/0x30
+nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
+__arm64_sys_delete_module+0x264/0x424
+invoke_syscall+0x70/0x260
+el0_svc_common.constprop.0+0xac/0x230
+do_el0_svc+0x40/0x58
+el0_svc+0x48/0xdc
+el0t_64_sync_handler+0x10c/0x138
+el0t_64_sync+0x198/0x19c
+...
+
+Remove this incorrect list_del() call from pci_epf_remove_cfs().
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/pci-epf-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -205,7 +205,7 @@ int cros_ec_register(struct cros_ec_devi
- 	err = cros_ec_query_all(ec_dev);
- 	if (err) {
- 		dev_err(dev, "Cannot identify the EC: error %d\n", err);
--		goto destroy_mutex;
-+		goto exit;
- 	}
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -155,7 +155,6 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
+-	list_del(&driver->epf_group);
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
- 	if (ec_dev->irq > 0) {
-@@ -217,7 +217,7 @@ int cros_ec_register(struct cros_ec_devi
- 		if (err) {
- 			dev_err(dev, "Failed to request IRQ %d: %d\n",
- 				ec_dev->irq, err);
--			goto destroy_mutex;
-+			goto exit;
- 		}
- 	}
- 
-@@ -229,7 +229,7 @@ int cros_ec_register(struct cros_ec_devi
- 		dev_err(ec_dev->dev,
- 			"Failed to create CrOS EC platform device\n");
- 		err = PTR_ERR(ec_dev->ec);
--		goto destroy_mutex;
-+		goto exit;
- 	}
- 
- 	if (ec_dev->max_passthru) {
-@@ -295,7 +295,6 @@ int cros_ec_register(struct cros_ec_devi
- exit:
- 	platform_device_unregister(ec_dev->ec);
- 	platform_device_unregister(ec_dev->pd);
--destroy_mutex:
- 	mutex_destroy(&ec_dev->lock);
- 	lockdep_unregister_key(&ec_dev->lockdep_key);
- 	return err;
-@@ -312,8 +311,7 @@ EXPORT_SYMBOL(cros_ec_register);
-  */
- void cros_ec_unregister(struct cros_ec_device *ec_dev)
- {
--	if (ec_dev->pd)
--		platform_device_unregister(ec_dev->pd);
-+	platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
- 	mutex_destroy(&ec_dev->lock);
- 	lockdep_unregister_key(&ec_dev->lockdep_key);
 
 
 
