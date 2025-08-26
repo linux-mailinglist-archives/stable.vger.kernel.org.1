@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38866B35BAC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AD6B35D9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 462C23A843E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83D51BA5EDE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA966284B5B;
-	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6418C29D280;
+	Tue, 26 Aug 2025 11:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjRS5Rst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4ptf+tO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A871C2BE03C;
-	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223FF17332C;
+	Tue, 26 Aug 2025 11:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207596; cv=none; b=ewa5n5IjulyKH81wwjK1vMRBfGe1mQwwPHSjAYJ/yMzVZpJXk2arxi5aCvwGSqFlfLxPHzBdKi2T1cpN76JTf+vvpUeArOKY3cXZELc+YqLZGuWaoWH06Jov1eeAuNZHW3709sLc2OhW/FJn98w/6/xZ0AIyZvx4qjmfFaUuLys=
+	t=1756208369; cv=none; b=TGNfb9wPXXAvvM5PDUmFV1jIZsww1VYwhGoRhhpJGNuqdGfjvnQMIr4M1ayX4jvHjFZsTINNOwntORSA0TZcoxAahGFILnfgfvSjf8SXgvD51vbRsKZ9AvGl8aI8mn2Vqj4/lHSjkgbdHkGEF7i60vTIH0m/Vn8NPb5gUFpm/mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207596; c=relaxed/simple;
-	bh=5nSW2E5JhAU1NzCeUaO2HBpqqHJk7N4Vs0gaFUWwRuM=;
+	s=arc-20240116; t=1756208369; c=relaxed/simple;
+	bh=f/2u9xIL6dYth/gUDHdReFNUjz4HNsKF4fNt1fDrh4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6KI8mh4s9Tg7qfFWeBHrK/aVkQkuC5TJgufkd/R4OvhXApcxL/UITvZTNKbho8HXkSYCbMt5z3ci3ZuVSqMpOlihvayRvESR4urHfppQCBdTRJql9dVZ667wgZ9fSTXyD0JeSWVMoWayMrM5FuibcpHsybkNpBn2uvkov2CaEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjRS5Rst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356F3C4CEF1;
-	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
+	 MIME-Version; b=S1KbSnpCq9BxWz8TNCeIWn/7k5WkweIllSye1dHOFKk2OjLr0ldx2YKSoE9rW4Ls695AnMOFTLCnFbyMoyhZdKhsAzpKtx6cGe1SrqagWd5uc02bZtZHlvfIHcAOVgVU/mA7ENGCVMEUm/ALjH4yu8u7/2baKMgvOU74CAHNTx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4ptf+tO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99804C4CEF1;
+	Tue, 26 Aug 2025 11:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207596;
-	bh=5nSW2E5JhAU1NzCeUaO2HBpqqHJk7N4Vs0gaFUWwRuM=;
+	s=korg; t=1756208369;
+	bh=f/2u9xIL6dYth/gUDHdReFNUjz4HNsKF4fNt1fDrh4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjRS5RstYvBdE/kfxG18pBbyQSZbPrnTMaQNdpTlXGkc5bTQ2eTAoHZrvUrdeaHpt
-	 wK8gWje4nmHDwkdOgPphySgeseaBBFmnY8Gc/KEPSJfKyqO5cg4fTgbM6XC3OR1hYF
-	 5qBNTgiXjzrhi7+tYvWYA6jAcDZOY6HGmS6nTjzM=
+	b=D4ptf+tO2qF6hqS3eTQMzhcM4FJ2K0qa22XuAHhCv1it6pT3DmLetEQmTp6jlyBWV
+	 EYJp58sLJfNwggR6P2RwWi2OEyJF61KlntHfTLCX90AdWyz/L1PRkWTFYEAzi3h2pj
+	 TacHxvSUWi/g85slksKAJAqMy+QJioUpv6/Y/Jq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 216/457] btrfs: add comment for optimization in free_extent_buffer()
+	stable@kernel.org,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 085/322] f2fs: fix to avoid out-of-boundary access in dnode page
 Date: Tue, 26 Aug 2025 13:08:20 +0200
-Message-ID: <20250826110942.702075942@linuxfoundation.org>
+Message-ID: <20250826110917.730777289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 2697b6159744e5afae0f7715da9f830ba6f9e45a ]
+commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 upstream.
 
-There's this special atomic compare and exchange logic which serves to
-avoid locking the extent buffers refs_lock spinlock and therefore reduce
-lock contention, so add a comment to make it more obvious.
+As Jiaming Zhang reported:
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: ad580dfa388f ("btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x17e/0x800 mm/kasan/report.c:480
+ kasan_report+0x147/0x180 mm/kasan/report.c:593
+ data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
+ f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
+ f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
+ f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
+ prepare_write_begin fs/f2fs/data.c:3395 [inline]
+ f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
+ generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
+ f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
+ f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x546/0xa90 fs/read_write.c:686
+ ksys_write+0x149/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The root cause is in the corrupted image, there is a dnode has the same
+node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
+access block address in dnode at offset 934, however it parses the dnode
+as inode node, so that get_dnode_addr() returns 360, then it tries to
+access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
+
+To fix this issue, let's add sanity check for node id of all direct nodes
+during f2fs_get_dnode_of_data().
+
+Cc: stable@kernel.org
+Reported-by: Jiaming Zhang <r772577952@gmail.com>
+Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/node.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -3493,6 +3493,7 @@ void free_extent_buffer(struct extent_bu
- 			break;
- 		}
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -799,6 +799,16 @@ int f2fs_get_dnode_of_data(struct dnode_
+ 	for (i = 1; i <= level; i++) {
+ 		bool done = false;
  
-+		/* Optimization to avoid locking eb->refs_lock. */
- 		if (atomic_try_cmpxchg(&eb->refs, &refs, refs - 1))
- 			return;
- 	}
++		if (nids[i] && nids[i] == dn->inode->i_ino) {
++			err = -EFSCORRUPTED;
++			f2fs_err_ratelimited(sbi,
++				"inode mapping table is corrupted, run fsck to fix it, "
++				"ino:%lu, nid:%u, level:%d, offset:%d",
++				dn->inode->i_ino, nids[i], level, offset[level]);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			goto release_pages;
++		}
++
+ 		if (!nids[i] && mode == ALLOC_NODE) {
+ 			/* alloc new node */
+ 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
 
 
 
