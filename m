@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8193DB35FCE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4044AB3684B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFBBB1BA5F14
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C80562FE4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BA1220F41;
-	Tue, 26 Aug 2025 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1934352FCC;
+	Tue, 26 Aug 2025 14:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pssbx8da"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkZeoguf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AE1186E40;
-	Tue, 26 Aug 2025 12:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E743352FD2;
+	Tue, 26 Aug 2025 14:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212691; cv=none; b=bMtpdWsMVPITa0ZqgpzQj6Htt2CRsoQSC4tJOuSeMaoQ//LhQrcq0OAVVzT+padizE1snfuKBCiNeLoBCrs+q8mjJviHQXZWS/3B4yb4ZgRiPkKa6222HDOZ2V8Vg/GtmMhlYJdyfEcZ8U12z0LuULPXHpX6UXIGaoK1Gob6BYQ=
+	t=1756217140; cv=none; b=UI2bd/2IvAC1HJ5WdiBGjZsPcD2wAjDHmyFrb3uP44vqqO+BohVqDnyo66T4gl2QSw+MI2YYvkRqL4vbBzfYLb0DSD4ksbF6bgVAyVPMVCZX1jVgJIDOAa4f+foVwAvbVDmAflfHfVhwK0HWGtGgq3qXJNhzIiNA+KL/YCBsIpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212691; c=relaxed/simple;
-	bh=tq1QG9/eBesfMLPzjZtLM+qe4Tt5YkfZYkWk6w5COOM=;
+	s=arc-20240116; t=1756217140; c=relaxed/simple;
+	bh=xgMfy3fV7jCv+AxR53VpPRBsAuYkbigCTGgY4BdrjrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJbNVBuW5FrcjmuopSrPL9wzylGOEkYWmK+jqWhnSwtxYBMrFNhFq1vESmohkfWJSxTpdQ73a97/mfnTJp6D+xwDCBX4+BxQJqRRVBn7pqJNu6s7RXFk5Xwj2fMDSSiwq/FmQ6z21ZB4xhvHsr65yHEkE5ralDbP5x3ZcVtEZrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pssbx8da; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756A4C116B1;
-	Tue, 26 Aug 2025 12:51:30 +0000 (UTC)
+	 MIME-Version; b=YEnmPa0KwKeSGMQDUXD7qr3e73Zrji3rMGOmhp7IrB/CrV0NSISnnOl0z/v5mrkWb+bSJojQcoXdE1jp6SzAkaldbUgnuruJ/DC4q9qnLBif6WCRMtwIZy//yxwAVKkRJcV3b4cHEFThW+vTe6E7fbNnDZ4ydv19E6c3VKS2Er8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkZeoguf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBFFC4CEF1;
+	Tue, 26 Aug 2025 14:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212690;
-	bh=tq1QG9/eBesfMLPzjZtLM+qe4Tt5YkfZYkWk6w5COOM=;
+	s=korg; t=1756217140;
+	bh=xgMfy3fV7jCv+AxR53VpPRBsAuYkbigCTGgY4BdrjrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pssbx8daYqroLQr33xNPzJdjz5hBMnn6Fkzp9SvFry5ty4aWHZ0QlnFOOa9U3bI7b
-	 vcfjQ9BXhHqFwg0YqhgqqCuh273lRtq524GtmrfxVjCK4W5i4RPe7wq0+9nOpcrIcR
-	 QkqlEoktsCLoA2Ho/sSs5hQEzm5zM8h/2UgZ5b6E=
+	b=HkZeoguf2AHP75pU3ednJKmagPTqSZwlgrQmMuRk4ASEIIaY++PgfH0JU1qBULWVD
+	 PA3bFeNauI675AfsWn7kSgigW3ASBvAHBFBCSnR+6rAtjBbklMvFvcwouIJOtG4Osl
+	 9V9FBbbgkJzyrMCDeO2Eeb9WlR2ueJGFAzXBLCDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/587] hfsplus: dont use BUG_ON() in hfsplus_create_attributes_file()
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 005/523] usb: gadget: configfs: Fix OOB read on empty string write
 Date: Tue, 26 Aug 2025 13:03:35 +0200
-Message-ID: <20250826110954.614852207@linuxfoundation.org>
+Message-ID: <20250826110924.707774542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Xinyu Liu <1171169449@qq.com>
 
-[ Upstream commit c7c6363ca186747ebc2df10c8a1a51e66e0e32d9 ]
+commit 3014168731b7930300aab656085af784edc861f6 upstream.
 
-When the volume header contains erroneous values that do not reflect
-the actual state of the filesystem, hfsplus_fill_super() assumes that
-the attributes file is not yet created, which later results in hitting
-BUG_ON() when hfsplus_create_attributes_file() is called. Replace this
-BUG_ON() with -EIO error with a message to suggest running fsck tool.
+When writing an empty string to either 'qw_sign' or 'landingPage'
+sysfs attributes, the store functions attempt to access page[l - 1]
+before validating that the length 'l' is greater than zero.
 
-Reported-by: syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=1107451c16b9eb9d29e6
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/7b587d24-c8a1-4413-9b9a-00a33fbd849f@I-love.SAKURA.ne.jp
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the vulnerability by adding a check at the beginning
+of os_desc_qw_sign_store() and webusb_landingPage_store() to handle
+the zero-length input case gracefully by returning immediately.
+
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/tencent_B1C9481688D0E95E7362AB2E999DE8048207@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/xattr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/configfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index f7f9d0889df3..d5fd8e068486 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -172,7 +172,11 @@ static int hfsplus_create_attributes_file(struct super_block *sb)
- 		return PTR_ERR(attr_file);
- 	}
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -855,6 +855,8 @@ static ssize_t os_desc_qw_sign_store(str
+ 	struct gadget_info *gi = os_desc_item_to_gadget_info(item);
+ 	int res, l;
  
--	BUG_ON(i_size_read(attr_file) != 0);
-+	if (i_size_read(attr_file) != 0) {
-+		err = -EIO;
-+		pr_err("detected inconsistent attributes file, running fsck.hfsplus is recommended.\n");
-+		goto end_attr_file_creation;
-+	}
- 
- 	hip = HFSPLUS_I(attr_file);
- 
--- 
-2.39.5
-
++	if (!len)
++		return len;
+ 	l = min((int)len, OS_STRING_QW_SIGN_LEN >> 1);
+ 	if (page[l - 1] == '\n')
+ 		--l;
 
 
 
