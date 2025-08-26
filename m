@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F93B36C2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE14B36A69
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E52A584EDB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E92A1C437FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDAF350D57;
-	Tue, 26 Aug 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A563451A0;
+	Tue, 26 Aug 2025 14:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEdsO7e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fw+7OArd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9478835209D;
-	Tue, 26 Aug 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562F341650;
+	Tue, 26 Aug 2025 14:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219050; cv=none; b=bWF/BvN1ZVAoxmWmlIDQ7MvmoodZiKnUqZ4wESrWAp2yDG/pTDUg74ReCnQkSv04U0wwWiakpuC0oastrHX4nzQqRyyurL0oC8g2HSpBwe5IC4N5iS/kdKiZUTN2jSiWpARqAt/QV6YqMHo9QfdmtVp1yKXLSxwAqhSFxuBDv7c=
+	t=1756217984; cv=none; b=nfiHBYewhdCcGNQAyv2BEVO1501Ps5Cp97UnH/oo8M/wU+EZ4a1lVJXAfleXaxv4CeJbEhVqh4tOJsMEeb7cP/QNXdZTYh51xKd3kWuUZx5EpGyCbAN6sVHcm9VcqELB8eGh1tj7Mj2L9LHGx2Ng+6O+LO3k1u7bKBUBLos/Rcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219050; c=relaxed/simple;
-	bh=UUH84azPrOBw8yMfH3P6owR9ZG4Bx/bsv/K5C58aPv8=;
+	s=arc-20240116; t=1756217984; c=relaxed/simple;
+	bh=nHEN4nC1v/VqOY0YWD47ApmovhUvOUeHOZ9ChXqFdqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IL8VgN8hFSVgvrWaY3rkndx/OuiB/qOSIAiDqORLqVarEOMHzUcHOXLlSf1G7I8xb2Lr+iE/nL7XqU54Hsd8vuSlpgEF7ODTOKb2YIzPHznnX/AJB4UJnP8jXUgsUIaHC3qEI7bPAUgkHlxf/TDRpT/bBDOCivrtgsC6mUkULlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEdsO7e2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9D2C4CEF1;
-	Tue, 26 Aug 2025 14:37:29 +0000 (UTC)
+	 MIME-Version; b=ix5wgbRHIBdFSkyyMZFCPCltpo4jwaBttHxVSt9rwe93sOii6XCh6T3wDQoiwKjq1PPZcBRdGoaRqed/K6iP3px0DpQ5FxERU8fJ2VWxCU3j0HB1VbWCC1EZ8fQ0r75yrTjwrUd9t9BxmFuM2E8p4JQIddhByuoKjRlEf5smD3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fw+7OArd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBDEC4CEF1;
+	Tue, 26 Aug 2025 14:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219050;
-	bh=UUH84azPrOBw8yMfH3P6owR9ZG4Bx/bsv/K5C58aPv8=;
+	s=korg; t=1756217984;
+	bh=nHEN4nC1v/VqOY0YWD47ApmovhUvOUeHOZ9ChXqFdqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEdsO7e2I2VSOMsxc9WkFphw5mBn4vvBuZSXRXqMRE/afrc61/MmxFPeddYLn2H6n
-	 VcA7FLsPTILSh4T4Yi2hqLy20sg7vPjDM/mRktQQ/c3zTDybsH9Vv3RkIk0+ZASZLm
-	 RI3GRw3k9iB+f2Kw8daynqiqbhPbWjACNgV7V7J0=
+	b=fw+7OArdGkKSR6hjLOix+2821Im22iBKgMUIj7tlYgC9mTn1Zf4ZBpgmBgJ1pdhfs
+	 g5omPk0Q0AfTeViv5BZFXAHUnbWrqIBub0kbcuiE/Q1cVH/gCuni53mSKoooxDxb48
+	 GxYVJfROwSVu5iHklcGIIIeUc56QMfiXFbfZmsN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Showrya M N <showrya@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 234/403] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 350/523] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
 Date: Tue, 26 Aug 2025 13:09:20 +0200
-Message-ID: <20250826110913.292404193@linuxfoundation.org>
+Message-ID: <20250826110933.100196915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Showrya M N <showrya@chelsio.com>
+From: Youngjun Lee <yjjuny.lee@samsung.com>
 
-[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
+commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
 
-In case of an ib_fast_reg_mr allocation failure during iSER setup, the
-machine hits a panic because iscsi_conn->dd_data is initialized
-unconditionally, even when no memory is allocated (dd_size == 0).  This
-leads invalid pointer dereference during connection teardown.
+The buffer length check before calling uvc_parse_format() only ensured
+that the buffer has at least 3 bytes (buflen > 2), buf the function
+accesses buffer[3], requiring at least 4 bytes.
 
-Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
+This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
 
-Panic trace:
-------------
- iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
- iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
- BUG: unable to handle page fault for address: fffffffffffffff8
- RIP: 0010:swake_up_locked.part.5+0xa/0x40
- Call Trace:
-  complete+0x31/0x40
-  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
-  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
-  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
-  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
-  ? netlink_lookup+0x12f/0x1b0
-  ? netlink_deliver_tap+0x2c/0x200
-  netlink_unicast+0x1ab/0x280
-  netlink_sendmsg+0x257/0x4f0
-  ? _copy_from_user+0x29/0x60
-  sock_sendmsg+0x5f/0x70
+Fix it by checking that the buffer has at least 4 bytes in
+uvc_parse_format().
 
-Signed-off-by: Showrya M N <showrya@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libiscsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
-index f3cee64c6d12..9b94218ff04c 100644
---- a/drivers/scsi/libiscsi.c
-+++ b/drivers/scsi/libiscsi.c
-@@ -2893,7 +2893,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
- 	conn = cls_conn->dd_data;
- 	memset(conn, 0, sizeof(*conn) + dd_size);
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -511,6 +511,9 @@ static int uvc_parse_format(struct uvc_d
+ 	unsigned int i, n;
+ 	u8 ftype;
  
--	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
-+	if (dd_size)
-+		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
- 	conn->session = session;
- 	conn->cls_conn = cls_conn;
- 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
--- 
-2.39.5
-
++	if (buflen < 4)
++		return -EINVAL;
++
+ 	format->type = buffer[2];
+ 	format->index = buffer[3];
+ 
 
 
 
