@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4627B35D73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38421B36421
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0AFF4619B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54D127BE379
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275E1318146;
-	Tue, 26 Aug 2025 11:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA348187554;
+	Tue, 26 Aug 2025 13:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h07HDWRM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0dx58+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60A929D26A;
-	Tue, 26 Aug 2025 11:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9871B1ADFFE;
+	Tue, 26 Aug 2025 13:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208087; cv=none; b=glEIPA2wYjfjVpRmMmszc/OoZmhv1IWvBsndg6PlszPfEjudgU10z8lUPOKJNVZmlZySXrtfrDyzOuO1y1Red+iAFRw2ya7ZU3k1+Ea0tugHlVw0RGyBx4AaR8aJnPsomWfj3V1FWz93IKlTa52mX2LOpbQes8mfuU8wD2RQj5g=
+	t=1756215304; cv=none; b=EkOivcmD/G3XvExMMv1ZidKtoF92XRtWrgwYNF3bgIo7+ewmvKgUoSATg4ZzXSOXenmZQJ4bFJR4GIePlcu1QW1MPAYBHN9M+fYfX08sjC1d72mcgwooTpNG+I6n3o0xG/L3qj09tzwQtPlg7rOZIhPZgWs4+VEYfwms7WQ6+Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208087; c=relaxed/simple;
-	bh=ywSeUtFl8wD8rPvz4nvLYRjaRNmtqA2hQVVRE03aoT8=;
+	s=arc-20240116; t=1756215304; c=relaxed/simple;
+	bh=74GjVozd1b4mdY2K3P/cmiHx/RWLRx+NEpqjF6GX9mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mzg7WTZnzACVeK72ihp2xfglG9yitjkny2oFQOtmV86DgOYgJnm9hPl0qElj530jU9PKPQGVGqWF4eToruTpmkbzJXWAfKWoZ/E/2+zJktf5ppyDTOPK3hrvjQWylcnIS8pCMJkvvfs+buxctQw18gYpnRqAO83FPCxkzfg0ymI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h07HDWRM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E324C4CEF1;
-	Tue, 26 Aug 2025 11:34:46 +0000 (UTC)
+	 MIME-Version; b=huaBXEqh0l2yO32fsSV5oG/9HYMsvP2iAj0gz0lz7aUZzQuKZITEeaVD3nLqnb3XhDFiyssXFFRUf+rAnc3I4xxjtWo9GFaUkYNRC9MuTiGqsz9VUTMnAwWVqfSvavZQiPvda+4n7h6dJM/BCyCqrfUwLx2bHBZTFxmOY09aJJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0dx58+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F55C4CEF1;
+	Tue, 26 Aug 2025 13:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208087;
-	bh=ywSeUtFl8wD8rPvz4nvLYRjaRNmtqA2hQVVRE03aoT8=;
+	s=korg; t=1756215304;
+	bh=74GjVozd1b4mdY2K3P/cmiHx/RWLRx+NEpqjF6GX9mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h07HDWRMHe+rP3YLKrmRr/V9JGEFJQ3nP/ee45c7YGXhKpfTnOkPL0yXjB1lVA1xQ
-	 jamJk4xexUppELjoMHKen9Czc6m0PoIusc6/2+2LwrQETmxlrcVTPG5buNku3QVPZ/
-	 ANJrPJPk+pCepLXFfaZUA+s1rU9J5YlPbFgKLPCI=
+	b=h0dx58+TxDftKNYvaALXYXuI8UWpPUKyQO0oI7plVtA/jI9DtdN0YU86F/L1brCD7
+	 n9sbE3w7IRDj/A3598Fw+W15J9z/Ghfc6ezL6Wo+gvlCiNF8LyQQ+spn0aXPceJgrP
+	 j5+BhGRHXpAyTzvgQ4c8F75K12e7Scg9fEPWjBL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Tristram Ha <tristram.ha@microchip.com>,
-	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 433/457] net: dsa: microchip: Fix KSZ9477 HSR port setup issue
+Subject: [PATCH 6.1 464/482] drm/amd/display: Add null pointer check in mod_hdcp_hdcp1_create_session()
 Date: Tue, 26 Aug 2025 13:11:57 +0200
-Message-ID: <20250826110947.990802239@linuxfoundation.org>
+Message-ID: <20250826110942.284695686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit e318cd6714592fb762fcab59c5684a442243a12f ]
+[ Upstream commit 7a2ca2ea64b1b63c8baa94a8f5deb70b2248d119 ]
 
-ksz9477_hsr_join() is called once to setup the HSR port membership, but
-the port can be enabled later, or disabled and enabled back and the port
-membership is not set correctly inside ksz_update_port_member().  The
-added code always use the correct HSR port membership for HSR port that
-is enabled.
+The function mod_hdcp_hdcp1_create_session() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference.
 
-Fixes: 2d61298fdd7b ("net: dsa: microchip: Enable HSR offloading for KSZ9477")
-Reported-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
-Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://patch.msgid.link/20250819010457.563286-1-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
+
+This is similar to the commit c3e9826a2202
+("drm/amd/display: Add null pointer check for get_first_active_display()").
+
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e43eb3cd731649c4f8b9134f857be62a416c893)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 7c142c17b3f6..adef7aa327ce 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2347,6 +2347,12 @@ static void ksz_update_port_member(struct ksz_device *dev, int port)
- 		dev->dev_ops->cfg_port_member(dev, i, val | cpu_port);
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index 7f8f127e7722..ab6964ca1c2b 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -260,6 +260,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_create_session(struct mod_hdcp *hdcp)
+ 		return MOD_HDCP_STATUS_FAILURE;
  	}
  
-+	/* HSR ports are setup once so need to use the assigned membership
-+	 * when the port is enabled.
-+	 */
-+	if (!port_member && p->stp_state == BR_STATE_FORWARDING &&
-+	    (dev->hsr_ports & BIT(port)))
-+		port_member = dev->hsr_ports;
- 	dev->dev_ops->cfg_port_member(dev, port, port_member | cpu_port);
- }
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
  
+ 	mutex_lock(&psp->hdcp_context.mutex);
 -- 
 2.50.1
 
