@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-172974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2663BB35B22
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB389B36047
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4DE17A8B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079163BE455
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2971C2C15A8;
-	Tue, 26 Aug 2025 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086691DD9D3;
+	Tue, 26 Aug 2025 12:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy3lk0hR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7wFI0cj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5F12BE653;
-	Tue, 26 Aug 2025 11:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78471A23BE;
+	Tue, 26 Aug 2025 12:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207048; cv=none; b=jVSXZ56Vnj8Uy1Mf/kIcAi8fwnKLFTLETyZU6QnLoaF166sTw4K6WhFp7DtbGTqNPI1XEP9hvPQuM+HraRVCes3q6x1XOoEczm56uGuLkReGAzZOOv9yflDUdO8Oa8j+EnrDwQnRRJ2e7zKEWKCrGjhGAiRUtJuyjXoK0en62LU=
+	t=1756212909; cv=none; b=XgEOyPkdegopAjzV/tQdtC0L7L9mHfp4V1HOMkn+4zEr3OXZGjXNyQ1kVl9dS+JRyvZJfZPjJKTyIiHsbRVyRuBJoOi7n1ldY7mGDUEfiuldU/u/AvKWDCYtyr9zWEFmIeTkYsjv6TQBTaVfcwUNd7fKGG5Bse6S5Ly2G0zTuKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207048; c=relaxed/simple;
-	bh=i+5NaYNTvvPG1wfBIWCt8ts7+b7DcE23LzgRzmFcRoM=;
+	s=arc-20240116; t=1756212909; c=relaxed/simple;
+	bh=Olph1BJFlnHzhyUHkYHD6AkdUDSa4o1R8OQIRYa0nWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WE1SNmoqt9kravvz32VzCveVGSxxpJXX3UKD+gHzcBukDhX67CXN/pntVk5wo8b4dmw7rtTrdEDygdCfEILKpfDtiXiiAnSOW67w35ZzAmgVv1nh9B+RosUSIYoUzTilSmpw6MvsRn5/tsnsZYgcmS0Toz1IanKCne2lwesbyPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy3lk0hR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2391DC4CEF1;
-	Tue, 26 Aug 2025 11:17:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C+yytf27XG6bXZun+NaSbXfng1O1OtF3heSPIE3yrCFpaknUnoKYiUSn9tvnwB39ZpJY8ua3Qae2mOYaMa17OcCufeMUlafhFeBMZLx2dSZqoVrrUo8cR4UqK+vzzQvQn79+d3VEU7g4v1HLYSAXMR8yCXjzQikAGNw77jG0cxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7wFI0cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE0DC4CEF1;
+	Tue, 26 Aug 2025 12:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207047;
-	bh=i+5NaYNTvvPG1wfBIWCt8ts7+b7DcE23LzgRzmFcRoM=;
+	s=korg; t=1756212909;
+	bh=Olph1BJFlnHzhyUHkYHD6AkdUDSa4o1R8OQIRYa0nWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hy3lk0hRQORb2PLeC9OLOR+Vy7Mq3UW+kE6INBM84c/jqE+TJgcSEe1g4wTy+iO+Q
-	 TMVXtY2qFCrsEJgks6nh8ypub0sv96SMQkMR0n1xOwKl9Rt2rs4DIAdYHCBul1CF/Q
-	 XTN9sJFYlkNb9jZt6MmNx6CLgFLkuCNeUrLuSQU8=
+	b=V7wFI0cj3/gOO5yMqzKb5A7diQIWtQ4lGTd+mwlafx3RGsgZzxhzPzE3yx1cSV09e
+	 oYYYLFnR+aA9EuCnGAFa1B7igDw5WVPYSy4qbIe8Hm9SJere25lazZdN5FXY808Zie
+	 YenpVfDJ1pXh0OCl71t3gBy0X9fCnAPx22TGd/J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 6.16 013/457] usb: dwc3: meson-g12a: fix device leaks at unbind
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 148/587] wifi: rtw89: Lower the timeout in rtw89_fw_read_c2h_reg() for USB
 Date: Tue, 26 Aug 2025 13:04:57 +0200
-Message-ID: <20250826110937.647767157@linuxfoundation.org>
+Message-ID: <20250826110956.716627794@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
+[ Upstream commit 671be46afd1f03de9dc6e4679c88e1a7a81cdff6 ]
 
-Make sure to drop the references taken to the child devices by
-of_find_device_by_node() during probe on driver unbind.
+This read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
+1000000 µs can take ~250 seconds in the worst case because sending a
+USB control message takes ~250 µs.
 
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Lower the timeout to 4000 for USB in order to reduce the maximum polling
+time to ~1 second.
+
+This problem was observed with RTL8851BU while suspending to RAM with
+WOWLAN enabled. The computer sat for 4 minutes with a black screen
+before suspending.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/09313da6-c865-4e91-b758-4cb38a878796@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 9 +++++++--
+ drivers/net/wireless/realtek/rtw89/fw.h | 2 ++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -837,6 +837,9 @@ static void dwc3_meson_g12a_remove(struc
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 89b0a7970508..539537360914 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3427,13 +3427,18 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+ 	const u32 *c2h_reg = chip->c2h_regs;
+-	u32 ret;
++	u32 ret, timeout;
+ 	u8 i, val;
  
- 	usb_role_switch_unregister(priv->role_switch);
+ 	info->id = RTW89_FWCMD_C2HREG_FUNC_NULL;
  
-+	put_device(priv->switch_desc.udc);
-+	put_device(priv->switch_desc.usb2_port);
++	if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
++		timeout = RTW89_C2H_TIMEOUT_USB;
++	else
++		timeout = RTW89_C2H_TIMEOUT;
 +
- 	of_platform_depopulate(dev);
- 
- 	for (i = 0 ; i < PHY_COUNT ; ++i) {
+ 	ret = read_poll_timeout_atomic(rtw89_read8, val, val, 1,
+-				       RTW89_C2H_TIMEOUT, false, rtwdev,
++				       timeout, false, rtwdev,
+ 				       chip->c2h_ctrl_reg);
+ 	if (ret) {
+ 		rtw89_warn(rtwdev, "c2h reg timeout\n");
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 775f4e8fbda4..bc6a9ea9352e 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -69,6 +69,8 @@ struct rtw89_h2creg_sch_tx_en {
+ #define RTW89_C2HREG_HDR_LEN 2
+ #define RTW89_H2CREG_HDR_LEN 2
+ #define RTW89_C2H_TIMEOUT 1000000
++#define RTW89_C2H_TIMEOUT_USB 4000
++
+ struct rtw89_mac_c2h_info {
+ 	u8 id;
+ 	u8 content_len;
+-- 
+2.39.5
+
 
 
 
