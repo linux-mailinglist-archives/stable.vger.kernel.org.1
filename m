@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B40B36A9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96152B35CC5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663D5A01139
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754AA1BA4F39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866B435334B;
-	Tue, 26 Aug 2025 14:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFBE340DBF;
+	Tue, 26 Aug 2025 11:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1IbMlgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MW5cyQjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F072352093;
-	Tue, 26 Aug 2025 14:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEB4321F30;
+	Tue, 26 Aug 2025 11:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218214; cv=none; b=HepeEBpQW0knEZoG+G6yfM3ABCOBrsMkQWit7FEtezp3uk8T9XU4OGghHclBiKRxVuJq1GY9qg+pDw1ViE+ajtEAAOuvXm8rBiHJEdEe4hcOyLsQP3ot5diAQKnqE+PMt1YzZKqXqxPXqUfu0A7o4mqC39QFzuujadZbjEPms1o=
+	t=1756207830; cv=none; b=Wsxh7b6vZ9pRvGBnzF6Ly5hI6YADsVZ+1SRQvi76XnQb4GdnU8UqaWbo1Ii6I7fT6JntE9sUn62vpXW4kO1OMSnjPYni9BMAebdSZFOgG8iWd0f15eSlqVfP1xHDBuTJX4lhe6D7qFAe++/w6G4K4HBtZPPSTMwaNLfBSgAG7rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218214; c=relaxed/simple;
-	bh=VcjITdyAwWcTym+o+Rf44plT14ULnodfuw5/gyPSKy4=;
+	s=arc-20240116; t=1756207830; c=relaxed/simple;
+	bh=whFOSnS7CpLAfSw9fcyHwKsej0FrfFGpbhC/Fy1ACn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9Rcgq/ix+tXvtQU9Ft7+rNYzpRg+4VCkdYrJEXLUQlBgMfTKzBkPbxxDo8xEpuSkQ0afg3t93aY/60IMWmKOWSMOgQLZPr7D8McJyXl9qdg5/HPPRRuLz9f+7Y0d2ErvCWP6oomkA3gFbG+MWQWtqtMjmXe4lENN2766Sp5GIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1IbMlgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C55C4CEF1;
-	Tue, 26 Aug 2025 14:23:33 +0000 (UTC)
+	 MIME-Version; b=gzAiZmAevc7mwH4LdoKAbjdc+LrLcoKrRaOiu/km3jwZ4xcF9wWs6MDufNfNnJqzBI4y2g4Kq3K676Pgqy5wnCaZIGqGyQ+tdIWqNFsIW1Jv/FAR8shnUkSEX503B2p5tceNPrp05LhG59OoHOl29kvSHjQWKsjMnMh5fto7xxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MW5cyQjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C55C4CEF1;
+	Tue, 26 Aug 2025 11:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218214;
-	bh=VcjITdyAwWcTym+o+Rf44plT14ULnodfuw5/gyPSKy4=;
+	s=korg; t=1756207830;
+	bh=whFOSnS7CpLAfSw9fcyHwKsej0FrfFGpbhC/Fy1ACn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1IbMlgRdUBfdp+07MuYECl9rE3jpCEeCD6icm209Sq51jLAp3sSJxTgWbTmqhifo
-	 PFcx7ZhBQbKfcgXvLT6ez5EhzK6o2k3g9nyP/yqZvGZiegY2WpvUXyyBjn5c9UsYmB
-	 aD1KSejcyv98KcyordBD8wiWtaCApE5KgEIMIHYY=
+	b=MW5cyQjW65QoNAJw7wKfttgUnjPyId/GU7uiJM4H9COvNUksg+hkX83FqOT4rPUED
+	 rDyplh52YffJ/FppyqNJzeUTxTZOj+XFEwe2V5Lxv/DAoyISqxqbphm/u1KCWyq+mz
+	 bKsaJ6Bh2arlPxT4rcDPGRti77hYhJhTd32H+R+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 406/523] iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
-Date: Tue, 26 Aug 2025 13:10:16 +0200
-Message-ID: <20250826110934.474376828@linuxfoundation.org>
+	Alex Guo <alexguo1023@gmail.com>,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.16 333/457] i2c: rtl9300: Fix out-of-bounds bug in rtl9300_i2c_smbus_xfer
+Date: Tue, 26 Aug 2025 13:10:17 +0200
+Message-ID: <20250826110945.567282136@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 43c0f6456f801181a80b73d95def0e0fd134e1cc upstream.
+commit 57f312b955938fc4663f430cb57a71f2414f601b upstream.
 
-`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
-Check its return value using `IS_ERR()` and propagate the error if
-necessary.
+The data->block[0] variable comes from user. Without proper check,
+the variable may be very large to cause an out-of-bounds bug.
 
-Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix this bug by checking the value of data->block[0] first.
+
+1. commit 39244cc75482 ("i2c: ismt: Fix an out-of-bounds bug in
+   ismt_access()")
+2. commit 92fbb6d1296f ("i2c: xgene-slimpro: Fix out-of-bounds bug in
+   xgene_slimpro_i2c_xfer()")
+
+Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.13+
+Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250810-i2c-rtl9300-multi-byte-v5-1-cd9dca0db722@narfation.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-core.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-rtl9300.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1064,11 +1064,12 @@ int bmp280_common_probe(struct device *d
- 
- 	/* Bring chip out of reset if there is an assigned GPIO line */
- 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpiod))
-+		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
-+
- 	/* Deassert the signal */
--	if (gpiod) {
--		dev_info(dev, "release reset\n");
--		gpiod_set_value(gpiod, 0);
--	}
-+	dev_info(dev, "release reset\n");
-+	gpiod_set_value(gpiod, 0);
- 
- 	data->regmap = regmap;
- 	ret = regmap_read(regmap, BMP280_REG_ID, &chip_id);
+--- a/drivers/i2c/busses/i2c-rtl9300.c
++++ b/drivers/i2c/busses/i2c-rtl9300.c
+@@ -281,6 +281,10 @@ static int rtl9300_i2c_smbus_xfer(struct
+ 		ret = rtl9300_i2c_reg_addr_set(i2c, command, 1);
+ 		if (ret)
+ 			goto out_unlock;
++		if (data->block[0] < 1 || data->block[0] > I2C_SMBUS_BLOCK_MAX) {
++			ret = -EINVAL;
++			goto out_unlock;
++		}
+ 		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0]);
+ 		if (ret)
+ 			goto out_unlock;
 
 
 
