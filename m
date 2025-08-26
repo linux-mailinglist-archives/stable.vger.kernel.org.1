@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-174386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491E0B362EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13341B36583
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2665918866B1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136F57BAF6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5E834A31D;
-	Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EDB34DCE1;
+	Tue, 26 Aug 2025 13:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbLj87z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w1yjYMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F7278771;
-	Tue, 26 Aug 2025 13:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36C934DCCE;
+	Tue, 26 Aug 2025 13:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214252; cv=none; b=X/NKhXLfCFd9wupF7H823UsYIgrAdmwYf3we4qgY05E8Cj6Og+7Lri4HlfOyxAFG4SYajZ1ajriUQ7p5x67zO+yFVl2f5rgnXPHTaVwaa9Xdm/9u/QrHx4RACsTQReeb4Ogytak7j6nfl2UgDnLmZm2IPtEZWv1r98YDV3EOIKQ=
+	t=1756216042; cv=none; b=jhjqucz0G15Z7t9d06M5ySnegOLQ4cx8bY6coj/uLXDlUrcyZqoLmLGVXmrGFsK6Yv1QdtDg4odtoNvxjXfQm/dNcCwp2RhjLvf5bFYGOxmlt/20MCMFYj7lvmVWFPgAhaoLwddnIryB0G4cQKMaX3dqWFjVL3ixkDsbUZqIlQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214252; c=relaxed/simple;
-	bh=uPVYY4+uO7OvcgQpYwZhhp2JHm30Gp7WsopqLqY5cQ8=;
+	s=arc-20240116; t=1756216042; c=relaxed/simple;
+	bh=gIV9d0RrE+d1EIP4gaJdk3QdserPs4cDWR0GTqsfg4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5e38ggEH7MamlMbUFNHuQ/WPwTkGOINach/+qkdL/6+0rPLBI+JDuoq4MRfpTX0UHJwpDpM0O1BUo88i1m2qFYBTWwMmHJVLVebpCZ2QyzXUAOzzy1frOd8j7l6ljB8z8MGugHG5JoqXbToT3AyVE2ow2LmYuUBXHUmhxA4yMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbLj87z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF0BC4CEF1;
-	Tue, 26 Aug 2025 13:17:32 +0000 (UTC)
+	 MIME-Version; b=ROoKE80sRx6u3AfN9Op6UZp+/mDqU0W5T/myJfb3FN9O4inbL0gv8VjIL4XlRHKcPjz9oa+/oFoUlnOVeilY3HUqIeeNGi+zKwCU4wYZBxex6ydXMW+aOYA8K/sQEwshfXqKkHr6fk4vqvSMKhRO3YngwWLu2g6YxIaLXw+9u3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w1yjYMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D1BC4CEF1;
+	Tue, 26 Aug 2025 13:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214252;
-	bh=uPVYY4+uO7OvcgQpYwZhhp2JHm30Gp7WsopqLqY5cQ8=;
+	s=korg; t=1756216042;
+	bh=gIV9d0RrE+d1EIP4gaJdk3QdserPs4cDWR0GTqsfg4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbLj87z2auqkV5Gkp9kDMIlsIUNUhlQSFsDmVRgDiFWrXOfuVw+Wde0BveACXA2x7
-	 GMB2EMc26iDiqIazymHy9Q2gy3hEtWKdisyL07dFlwvbWcE/IUQwej8vaI39ypAYAz
-	 9Ws9Su97uq4LReik3Of0RvrtbxqczeGm0VVFqP3U=
+	b=0w1yjYMAHQgNRH0czt+5dl8odjYXancXCunKRy+w/rBMQ7UCjGjTiwBlH06DJrxFA
+	 qLr6l2EyfoLju311LrXQNWEujJn0RVuaxw3QbnqdcR6zKezmW+XFcJVcK1Wp8yTqhj
+	 iWU3LOd9eBj+FulngqWphdbgZ97DRblQLDe2OB90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Jameson Thies <jthies@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/482] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
+Subject: [PATCH 5.15 230/644] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
 Date: Tue, 26 Aug 2025 13:05:21 +0200
-Message-ID: <20250826110932.514651902@linuxfoundation.org>
+Message-ID: <20250826110952.114070806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benson Leung <bleung@chromium.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
+[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
 
-ucsi_psy_get_current_max would return 0mA as the maximum current if
-UCSI detected a BC or a Default USB Power sporce.
+If the NFS client is doing writeback from a workqueue context, avoid using
+__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
+PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
+failures much more likely.
 
-The comment in this function is true that we can't tell the difference
-between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
-of USB 1.1/2.0 power is available, which is 100mA, which is a better
-fallback value than 0, which causes some userspaces, including the ChromeOS
-power manager, to regard this as a power source that is not providing
-any power.
+We've seen those allocation failures show up when the loopback driver is
+doing writeback from a workqueue to a file on NFS, where memory allocation
+failure results in errors or corruption within the loopback device's
+filesystem.
 
-In reality, 100mA is guaranteed from all sources in these classes.
-
-Signed-off-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Trond Myklebust <trondmy@kernel.org>
+Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/psy.c  | 2 +-
- drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ fs/nfs/internal.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index b35c6e07911e..9b0157063df0 100644
---- a/drivers/usb/typec/ucsi/psy.c
-+++ b/drivers/usb/typec/ucsi/psy.c
-@@ -163,7 +163,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
- 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
- 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
- 	default:
--		val->intval = 0;
-+		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
- 		break;
- 	}
- 	return 0;
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 793a8307dded..0167239cdcd4 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -313,9 +313,10 @@ struct ucsi {
- #define UCSI_MAX_SVID		5
- #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index a6d0b64dda36..76605eb93609 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -581,9 +581,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
  
--#define UCSI_TYPEC_VSAFE5V	5000
--#define UCSI_TYPEC_1_5_CURRENT	1500
--#define UCSI_TYPEC_3_0_CURRENT	3000
-+#define UCSI_TYPEC_VSAFE5V		5000
-+#define UCSI_TYPEC_DEFAULT_CURRENT	 100
-+#define UCSI_TYPEC_1_5_CURRENT		1500
-+#define UCSI_TYPEC_3_0_CURRENT		3000
+ static inline gfp_t nfs_io_gfp_mask(void)
+ {
+-	if (current->flags & PF_WQ_WORKER)
+-		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
+-	return GFP_KERNEL;
++	gfp_t ret = current_gfp_context(GFP_KERNEL);
++
++	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
++	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
++		ret |= __GFP_NORETRY | __GFP_NOWARN;
++	return ret;
+ }
  
- struct ucsi_connector {
- 	int num;
+ /* unlink.c */
 -- 
 2.39.5
 
