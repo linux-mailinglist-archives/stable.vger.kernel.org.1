@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-173403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C107B35DB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BFAB36546
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 990D5461DD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA8A2015FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26834341658;
-	Tue, 26 Aug 2025 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B2B340DA1;
+	Tue, 26 Aug 2025 13:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bL3z6SpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3OBGLi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D126233CE94;
-	Tue, 26 Aug 2025 11:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F7A34164F;
+	Tue, 26 Aug 2025 13:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208157; cv=none; b=OUooipOWgk6sFa7+2fqzyFAWsf2EOyJg/hSdn7GYRT9q1uriPbE0SHEn+dPDHXbHOIRAQX8HnEAYxMR8E0vTQ8a54TOdtiNGLfyUuoJcqAL0wxf28HujSAMjtijq0AIN1S8FdaVQuMrx69wrHa4rwHS1Rx+BwbdF266AAXoeo1Q=
+	t=1756215357; cv=none; b=NVAVcfKXYB6Wf/WfOLRjHWLxoABRLaTS67WMCAJMHSVbCo4jDRQ0zkJ262z/amQzOE9vuO2SI7jUETztOKmhr5364gggJWK/c+PCbL77FZv5FyHLNowiOtiaf0BbfqiCsCG9b15vYyaRNMS1y/SjBvHJ1Ngfgz5PZ0hP1iHK8E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208157; c=relaxed/simple;
-	bh=DWgboMTj+D+OoqlI/7qLPS4lYcHDkn4g6UqHfiVKnEI=;
+	s=arc-20240116; t=1756215357; c=relaxed/simple;
+	bh=2nzQTN6dpCr6MbfDScPxgGfnlBBR5hXoGPTqOrbCCWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRHJNYJ87qZO77xBUNZtuuBqDKq86kNVmTojgxBAPKLGrI6RcvmAR+uLPtj49IOFuvjfohNJ+jvSENIiP+wZ4uPbd4HcnP+HvIty5lRNOUcw+m+nSlCUxfgV0AhZkJzm8baCropezDc3K4LEtRDvSP/C3yrOreDkOT0LN+1AI6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bL3z6SpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C48C4CEF1;
-	Tue, 26 Aug 2025 11:35:57 +0000 (UTC)
+	 MIME-Version; b=DdBlFWAPeoa13TRNugDGmTsWIkHGJi1CuYEU15+VbK/cBlf7wNH06KKYiGv7UAaKQM4f/TEDGxxtZWS0LEHyj6OZa6TtIN++EMu5DD31KtT53agnta/gUqmfPDPWvWpcIREIreJfMYuSIRl2y/nIUzkkrNF0ZURff10U8x+QPaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3OBGLi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE6AC4CEF1;
+	Tue, 26 Aug 2025 13:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208157;
-	bh=DWgboMTj+D+OoqlI/7qLPS4lYcHDkn4g6UqHfiVKnEI=;
+	s=korg; t=1756215356;
+	bh=2nzQTN6dpCr6MbfDScPxgGfnlBBR5hXoGPTqOrbCCWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bL3z6SpTSyAyIBJqyFmeqTGe/THTH/aNw4OIFcNrksQG+4xG4TVPAUHY8iuDNzxOk
-	 xG3EQ7m0KM5UBwEvNf43bPLdkRfOzMrzd9K+4bw24WxAoxrI9otHthuLEMbo/oqz+t
-	 6ulWjMC0HKP8Ff5RUq3V+EX+WKk+zoIzQOwv/EaM=
+	b=w3OBGLi4QupSLnEfjpiE68UG97BQl8jCT8hXntpY8PRSd/dm9A3mlEPWIbYVf86mL
+	 WzHYTXa5LgqE6GOtsBU+o+lHiF46jED/t0Rv2ywNLCvhf11mcg8OC903VdjYN0bqEA
+	 LbwaQWmuSKhh1NqRo2dWPynIkKD9PvJmucrEmeuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armen Ratner <armeng@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alexei Lazar <alazar@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Florian Westphal <fw@strlen.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 451/457] net/mlx5e: Preserve shared buffer capacity during headroom updates
+Subject: [PATCH 6.1 482/482] netfilter: nf_reject: dont leak dst refcount for loopback packets
 Date: Tue, 26 Aug 2025 13:12:15 +0200
-Message-ID: <20250826110948.431404827@linuxfoundation.org>
+Message-ID: <20250826110942.722946738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armen Ratner <armeng@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 8b0587a885fdb34fd6090a3f8625cb7ac1444826 ]
+[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
 
-When port buffer headroom changes, port_update_shared_buffer()
-recalculates the shared buffer size and splits it in a 3:1 ratio
-(lossy:lossless) - Currently, the calculation is:
-lossless = shared / 4;
-lossy = (shared / 4) * 3;
+recent patches to add a WARN() when replacing skb dst entry found an
+old bug:
 
-Meaning, the calculation dropped the remainder of shared % 4 due to
-integer division, unintentionally reducing the total shared buffer
-by up to three cells on each update. Over time, this could shrink
-the buffer below usable size.
+WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
+WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
+WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
+[..]
+Call Trace:
+ nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
+ nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ ..
 
-Fix it by changing the calculation to:
-lossless = shared / 4;
-lossy = shared - lossless;
+This is because blamed commit forgot about loopback packets.
+Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
 
-This retains all buffer cells while still approximating the
-intended 3:1 split, preventing capacity loss over time.
+Instead of checking hook just check if the skb already has a route
+attached to it.
 
-While at it, perform headroom calculations in units of cells rather than
-in bytes for more accurate calculations avoiding extra divisions.
-
-Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
-Signed-off-by: Armen Ratner <armeng@nvidia.com>
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20250820133209.389065-9-mbloch@nvidia.com
+Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.c        | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
+ net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 5ae787656a7c..3efa8bf1d14e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -272,8 +272,8 @@ static int port_update_shared_buffer(struct mlx5_core_dev *mdev,
- 	/* Total shared buffer size is split in a ratio of 3:1 between
- 	 * lossy and lossless pools respectively.
- 	 */
--	lossy_epool_size = (shared_buffer_size / 4) * 3;
- 	lossless_ipool_size = shared_buffer_size / 4;
-+	lossy_epool_size    = shared_buffer_size - lossless_ipool_size;
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 675b5bbed638..2d663fe50f87 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -247,8 +247,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (!oth)
+ 		return;
  
- 	mlx5e_port_set_sbpr(mdev, 0, MLX5_EGRESS_DIR, MLX5_LOSSY_POOL, 0,
- 			    lossy_epool_size);
-@@ -288,14 +288,12 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	u16 port_buff_cell_sz = priv->dcbx.port_buff_cell_sz;
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	int sz = MLX5_ST_SZ_BYTES(pbmc_reg);
--	u32 new_headroom_size = 0;
--	u32 current_headroom_size;
-+	u32 current_headroom_cells = 0;
-+	u32 new_headroom_cells = 0;
- 	void *in;
- 	int err;
- 	int i;
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(oldskb) < 0)
++	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
+ 		return;
  
--	current_headroom_size = port_buffer->headroom_size;
--
- 	in = kzalloc(sz, GFP_KERNEL);
- 	if (!in)
- 		return -ENOMEM;
-@@ -306,12 +304,14 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+ 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+@@ -321,8 +320,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+ 	if (iph->frag_off & htons(IP_OFFSET))
+ 		return;
  
- 	for (i = 0; i < MLX5E_MAX_NETWORK_BUFFER; i++) {
- 		void *buffer = MLX5_ADDR_OF(pbmc_reg, in, buffer[i]);
-+		current_headroom_cells += MLX5_GET(bufferx_reg, buffer, size);
-+
- 		u64 size = port_buffer->buffer[i].size;
- 		u64 xoff = port_buffer->buffer[i].xoff;
- 		u64 xon = port_buffer->buffer[i].xon;
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+ 		return;
  
--		new_headroom_size += size;
- 		do_div(size, port_buff_cell_sz);
-+		new_headroom_cells += size;
- 		do_div(xoff, port_buff_cell_sz);
- 		do_div(xon, port_buff_cell_sz);
- 		MLX5_SET(bufferx_reg, buffer, size, size);
-@@ -320,10 +320,8 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 		MLX5_SET(bufferx_reg, buffer, xon_threshold, xon);
- 	}
+ 	if (skb_csum_unnecessary(skb_in) ||
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index e4776bd2ed89..f3579bccf0a5 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -293,7 +293,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	fl6.fl6_sport = otcph->dest;
+ 	fl6.fl6_dport = otcph->source;
  
--	new_headroom_size /= port_buff_cell_sz;
--	current_headroom_size /= port_buff_cell_sz;
--	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
--					new_headroom_size);
-+	err = port_update_shared_buffer(priv->mdev, current_headroom_cells,
-+					new_headroom_cells);
- 	if (err)
- 		goto out;
+-	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
++	if (!skb_dst(oldskb)) {
+ 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
+ 		if (!dst)
+ 			return;
+@@ -397,8 +397,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+ 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+ 		skb_in->dev = net->loopback_dev;
  
+-	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
+-	    nf_reject6_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+ 		return;
+ 
+ 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
 -- 
 2.50.1
 
