@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53925B36418
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE9BB36BB4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618C9684D6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B11DB5857CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50E439FD9;
-	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8296235AACE;
+	Tue, 26 Aug 2025 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2m+2bhXs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zus/JWGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9216672605;
-	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E1E481CD;
+	Tue, 26 Aug 2025 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214761; cv=none; b=KvgLewwFN6/jaut7+ZtDvK9gWHSiGr+I7g4FOPK+HXJ332B076uRCRfMSdKWyWlI9DYGdxJWN/Xkkf3XuGmbiSvPQhGL9akG/Yx5C1rdx8tIyFwZdcbo4+2G/Y4Dfo3BzvLocfzykQWZVAMI9GYoIbSfsg90VLq2FfKffOqZFlQ=
+	t=1756219011; cv=none; b=reWOYvhcfz2bCadC8lO0vyIcqYnZyh19a1pTWMKfmZKOMVm8HxVhiHk/NpPSI4YuTWtSZfRL4VsnIlyFoBBl8UBWmgCBjoCmeFBgKYEZZPcG51Lfy9wvFtJomQIsNxVUVdD5IjtbUeArlBV8I/3Hhwj5PzaufhOg0eTK75xca1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214761; c=relaxed/simple;
-	bh=Xjf/WAv0uCm+2UQ5g8a635bn0S49Rli9iAFuR5YcF2c=;
+	s=arc-20240116; t=1756219011; c=relaxed/simple;
+	bh=SNJBlsrp39NuH198n1VzJkD09LYiV0pvTE0Xs79H4SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5i66xtoSEFrXQ7yV4wgt9GnhsTpdLc9Z5jeHnct58gCLCsOngIJH1ok28L3MYcwT6QkV4Insspvxvxn/pJqqTiiq3zt07o1O/AJoSigSbugOOSz7Eq1h8A18jKFhEzPE529FE3Nol0vToF7guCC37K0LqBi3/hMg38PrhL7bKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2m+2bhXs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293C7C4CEF1;
-	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
+	 MIME-Version; b=Ju9EilsJ1vaKRz4kDlQWl+1OZl70Ltxl3eZQcD8mxDAW+e18cfen/okdueLFhrKJpwvG6FmUHzG4vvkesYADpUkRx91RQRlkreeBF+HkidfIPE2ddnqf4NCv8WOvHSAl8sJ72IRz39hvnfFOkNxGSxtG0s77pd5TK4hdSfaAsbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zus/JWGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AEEC4CEF1;
+	Tue, 26 Aug 2025 14:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214761;
-	bh=Xjf/WAv0uCm+2UQ5g8a635bn0S49Rli9iAFuR5YcF2c=;
+	s=korg; t=1756219011;
+	bh=SNJBlsrp39NuH198n1VzJkD09LYiV0pvTE0Xs79H4SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2m+2bhXs1+vroHCaRPiwjMpCTNnKnHxUadhbITrXlMWSwKviSyNUKe61CoeLdGee7
-	 9w1YI1ZeOxt4JqmKB5LM+rXlWvDgGVdRHxIbWMKYefCSCP9hoSi/UwZrX1asB4x+FN
-	 9Va0cwiAss7zC9Y/jL26BEtQ66QkYA2XpJsXnlv4=
+	b=Zus/JWGaGjbHInNMdnO8zfqjXp1DicTJM2gzja86S0H3A7v7/cUREfIdYiI7Tmuyc
+	 UTTRbmPq47pzipqoT1bu0blShbAcedb3E+3Ywr5ivGTcjZnlYsvWjfBN+7zSTyC+aB
+	 iUiG+NjKP4v/aAFTgJBfBN0d0N8gaYwXdc2xs8r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 260/482] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
+	Alexander Kochetkov <al.kochet@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 187/403] ARM: rockchip: fix kernel hang during smp initialization
 Date: Tue, 26 Aug 2025 13:08:33 +0200
-Message-ID: <20250826110937.192169589@linuxfoundation.org>
+Message-ID: <20250826110912.044945955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Alexander Kochetkov <al.kochet@gmail.com>
 
-commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
+[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+In order to bring up secondary CPUs main CPU write trampoline
+code to SRAM. The trampoline code is written while secondary
+CPUs are powered on (at least that true for RK3188 CPU).
+Sometimes that leads to kernel hang. Probably because secondary
+CPU execute trampoline code while kernel doesn't expect.
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
+The patch moves SRAM initialization step to the point where all
+secondary CPUs are powered down.
 
-The test system was running a workload with hot unplug happening in
-parallel.  Then kemleak decided to disable itself due to its inability to
-allocate more kmemleak objects.  The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
+That fixes rarely hangs on RK3188:
+[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.091996] rockchip_smp_prepare_cpus: ncores 4
 
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop via a
-workqueue.  In this particular case, there are at least 40,000 objects
-that need to be processed and given the slowness of a debug kernel and the
-fact that a raw_spinlock has to be acquired and released in
-__delete_object(), it could take a while to properly handle all these
-objects.
-
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really needed.
-However, it is probably not worth the effort to optimize for such an edge
-case that should rarely happen.  So the simple solution is to call
-cond_resched() at periodic interval in the iteration loop to avoid soft
-lockup.
-
-Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmemleak.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1992,6 +1992,7 @@ static const struct file_operations kmem
- static void __kmemleak_do_cleanup(void)
- {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
- 
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -2000,6 +2001,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
+diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
+index 649e0a54784c..246a525d1d26 100644
+--- a/arch/arm/mach-rockchip/platsmp.c
++++ b/arch/arm/mach-rockchip/platsmp.c
+@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
  	}
+ 
+ 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
+-		if (rockchip_smp_prepare_sram(node)) {
+-			of_node_put(node);
+-			return;
+-		}
+-
+ 		/* enable the SCU power domain */
+ 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 
+@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
+ 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
+ 	}
+-	of_node_put(node);
+ 
+ 	/* Make sure that all cores except the first are really off */
+ 	for (i = 1; i < ncores; i++)
+ 		pmu_set_power_domain(0 + i, false);
++
++	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
++		if (rockchip_smp_prepare_sram(node)) {
++			of_node_put(node);
++			return;
++		}
++	}
++
++	of_node_put(node);
  }
  
+ static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
+-- 
+2.39.5
+
 
 
 
