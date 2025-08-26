@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D3EB36C84
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6A4B361B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C2AA06099
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825A01BA5164
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99BA353359;
-	Tue, 26 Aug 2025 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC28C252900;
+	Tue, 26 Aug 2025 13:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHjUBZr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJ5+aw2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E6F350825;
-	Tue, 26 Aug 2025 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AD2259CB2;
+	Tue, 26 Aug 2025 13:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219047; cv=none; b=PISGMwX3fTefGLKXMDVw2yLIuxBpT8HgeXgmxu9lxq67i8FUA7TMB87I11c1v//mm6URJi7emkoi+9VNK9M9gkc6uDgTZ2HOM/WGOym1RexD0Wzr6Jt92LUITsY8Z/ATy/S388p4tK2bbZlFI72Uyl0IClWScY3Xm7dvXtWgRNM=
+	t=1756213710; cv=none; b=h7ea5UC0Sl8MHiivs05UuUJPJ86U9WJGTRzhqXd1RxLKmuB0EZHP2MumTIFfqVA5bQgEoAq7tc2bg6SxgBFQaHZn/3Q2R0IoW5+062PzNZFZiMMhshEIJYJBkfFn9oP+AT44a7n45TdtFDHKigE3vGOdLvLsM86M5JpFYTskjwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219047; c=relaxed/simple;
-	bh=k8X7gm5SAxkMjgEGEAKVW+GwpQZCRFybdJpoQi0eJy0=;
+	s=arc-20240116; t=1756213710; c=relaxed/simple;
+	bh=kw0lDCbeZJvHXycC4f3qgWGXhocZip2TE9MSQC7AjNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNrwT6YmrjgkkukNpVBuTlgIdKIsi8FXKjpuyWcSHOq62DCI4/vjt3cOxNsskyMAHs9Douo6ryCiK34sM2VbMfm5Ysb3PncOOtwHAu8x1UTVbmgTy6Z2r5TNe+UH1o2NKjTIQH51TiJcjrCfw4UqlZI4yyhcjeuWkqmXCnqVZac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHjUBZr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A138C4CEF1;
-	Tue, 26 Aug 2025 14:37:27 +0000 (UTC)
+	 MIME-Version; b=A8f2Cymi3HFo4DsU64XFegsnXonmAAWdDuZsKsEnb+FR8QCSh0u5cReeUTY9POE+JX8kjVt/iP+6HkRRpJDNrPoLKjwM4pqbAXsko7K9BlGT9Yd9PMSGIfOhgN0bGnGA0kjc6OECbnbyimYPwPtvk/w7/OCH/vTAKembl80y26s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJ5+aw2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA528C4CEF1;
+	Tue, 26 Aug 2025 13:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219047;
-	bh=k8X7gm5SAxkMjgEGEAKVW+GwpQZCRFybdJpoQi0eJy0=;
+	s=korg; t=1756213710;
+	bh=kw0lDCbeZJvHXycC4f3qgWGXhocZip2TE9MSQC7AjNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHjUBZr0ULQ6HYYFnf+lQkT0pA8SGnNQMsflqYyLnTcyadpemel4j6CxcnRBmB/R2
-	 P59F0tUbGQmpTzE7D+eUkwIbHRf9TzHk/qRx8WzGwxIn5cyV0IT8LW6jGZQ/tQ8oam
-	 qfyLZh5cEu11CyMi5RW9e7Rj1NYH8Sccyp+7crJc=
+	b=ZJ5+aw2QkVpA0FlvRrmKr7MH+tXqFklsVA+M1Mi+cl7XC5X6vb+3uw/NRZeyUKyvW
+	 YP4RQwvr1K4u2QQifuTVDRxzF2moBewDBe7tXTM87e1s4dhWJzKbB1fC7hFqmhEkMx
+	 /NpnP6+kzzOQGc7agg8yKuTqATxeXeaITLAQdNYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 233/403] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
+	Hans de Goede <hansg@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 410/587] media: ivsc: Fix crash at shutdown due to missing mei_cldev_disable() calls
 Date: Tue, 26 Aug 2025 13:09:19 +0200
-Message-ID: <20250826110913.266110793@linuxfoundation.org>
+Message-ID: <20250826111003.359696391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+commit 0c92c49fc688cfadacc47ae99b06a31237702e9e upstream.
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+Both the ACE and CSI driver are missing a mei_cldev_disable() call in
+their remove() function.
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
+This causes the mei_cl client to stay part of the mei_device->file_list
+list even though its memory is freed by mei_cl_bus_dev_release() calling
+kfree(cldev->cl).
 
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
+This leads to a use-after-free when mei_vsc_remove() runs mei_stop()
+which first removes all mei bus devices calling mei_ace_remove() and
+mei_csi_remove() followed by mei_cl_bus_dev_release() and then calls
+mei_cl_all_disconnect() which walks over mei_device->file_list dereferecing
+the just freed cldev->cl.
 
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And mei_vsc_remove() it self is run at shutdown because of the
+platform_device_unregister(tp->pdev) in vsc_tp_shutdown()
+
+When building a kernel with KASAN this leads to the following KASAN report:
+
+[ 106.634504] ==================================================================
+[ 106.634623] BUG: KASAN: slab-use-after-free in mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
+[ 106.634683] Read of size 4 at addr ffff88819cb62018 by task systemd-shutdow/1
+[ 106.634729]
+[ 106.634767] Tainted: [E]=UNSIGNED_MODULE
+[ 106.634770] Hardware name: Dell Inc. XPS 16 9640/09CK4V, BIOS 1.12.0 02/10/2025
+[ 106.634773] Call Trace:
+[ 106.634777]  <TASK>
+...
+[ 106.634871] kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:636)
+[ 106.634901] mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
+[ 106.634921] mei_cl_all_disconnect (drivers/misc/mei/client.c:2165 (discriminator 4)) mei
+[ 106.634941] mei_reset (drivers/misc/mei/init.c:163) mei
+...
+[ 106.635042] mei_stop (drivers/misc/mei/init.c:348) mei
+[ 106.635062] mei_vsc_remove (drivers/misc/mei/mei_dev.h:784 drivers/misc/mei/platform-vsc.c:393) mei_vsc
+[ 106.635066] platform_remove (drivers/base/platform.c:1424)
+
+Add the missing mei_cldev_disable() calls so that the mei_cl gets removed
+from mei_device->file_list before it is freed to fix this.
+
+Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
+Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/media/pci/intel/ivsc/mei_ace.c |    2 ++
+ drivers/media/pci/intel/ivsc/mei_csi.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 7e8892dad2d7..626be0ec3c7a 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -296,7 +296,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
+--- a/drivers/media/pci/intel/ivsc/mei_ace.c
++++ b/drivers/media/pci/intel/ivsc/mei_ace.c
+@@ -528,6 +528,8 @@ static void mei_ace_remove(struct mei_cl
  
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+ 	ace_set_camera_owner(ace, ACE_CAMERA_IVSC);
  
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -347,7 +351,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
++	mei_cldev_disable(cldev);
++
+ 	mutex_destroy(&ace->lock);
+ }
  
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+--- a/drivers/media/pci/intel/ivsc/mei_csi.c
++++ b/drivers/media/pci/intel/ivsc/mei_csi.c
+@@ -807,6 +807,8 @@ static void mei_csi_remove(struct mei_cl
  
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -1978,7 +1986,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
+ 	pm_runtime_disable(&cldev->dev);
  
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
++	mei_cldev_disable(cldev);
++
+ 	mutex_destroy(&csi->lock);
+ }
  
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
--- 
-2.39.5
-
 
 
 
