@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB584B36D06
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:05:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F9DB36770
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F065881E6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A3EEB6285B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F42341AA5;
-	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E61A352066;
+	Tue, 26 Aug 2025 14:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OI42PMQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9wk9Tay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4590260586;
-	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD0B34DCF6;
+	Tue, 26 Aug 2025 14:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219458; cv=none; b=sSxsMWLcXbEqxCPFznsMrQdOVLw+BC24B43wGa8F3JTbfIIITCgobovKif/qunTHBfB+SmwzZlYO97uSLIOWQgUPN7qzYaIr1HRFbLOabJhhPqC/BJXr0m1BWuqzRuFM+qNoNgLQvHxzMRvOs1H8feeuTOhZON5H3FCAoZCeq+w=
+	t=1756216925; cv=none; b=JVw2NsNwInLP3YM+FJ5UpwHQbUfoYXu4RtHGiSX8xxyyROjiZPN6LCh7HvHZdkstMFM9JHn7no5jE+uJR6P07e6GlcqSDSnOo1+LqwnHoy+xVGE6jZZAdr8Z6FpA+zNaPfEyDXc77dkwwTvion433tA53daPkb+yKJhisqWiBHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219458; c=relaxed/simple;
-	bh=7R7qkQzF4JrwktBAWypXs3iVrbUfzNKofc0k/HeNSA0=;
+	s=arc-20240116; t=1756216925; c=relaxed/simple;
+	bh=JL2zx+LdVArgj2aBcKbpxBauXC/vkkPUtagm9b6dnbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHgbFEqAk8p3ox1CV1m+EU+qfoWuBOlEjoq0QIHLrxUO1UaPUM3NR2Nh4G+RFT4ge+zDP4l1LCXuVSiSSlP5cN88b0TK1/t4oK0EfdoP/bu5XnHdYsM2496EW3/CxSwx1O2DritqGBwv5WoE3w8kdEa3kHEdMOiX9nZeq4ESDtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OI42PMQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32306C4CEF1;
-	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N1ZOD65NZ9R5R5yXFmvafL0WblQgxkYqIVKih6TO1vg4ZO4ckEezFJxZslSLyalYvn1WaU+H9j5pT9lqF/kkwXU+/LYekvu+UYCEmh45Ra0EekZpnF1FcWh/UMYYdHTtpttbQa8WOifUah63O9doEr56Bde9VlgQPTMM1RFLEhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9wk9Tay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA8AC4CEF1;
+	Tue, 26 Aug 2025 14:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219458;
-	bh=7R7qkQzF4JrwktBAWypXs3iVrbUfzNKofc0k/HeNSA0=;
+	s=korg; t=1756216924;
+	bh=JL2zx+LdVArgj2aBcKbpxBauXC/vkkPUtagm9b6dnbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OI42PMQPaIgQEivLul8bSgknz7MQ9CvBmVkQZYTfG8JqnOhF2mT9euSK5MZc+SseF
-	 2RmKeOdKWzsmcU8WhwoGKGF4BKnl+HaoYJITU7DGA4amRATPFJD+/YNZ+crHz49JVl
-	 ZByTpCoUclcVApLhqMwTf9rbpQWKEYJzoyWcdeRY=
+	b=n9wk9TaycE/fcAzecaWGsZ9kwMJmAE8YVEIXoqHKqu8FsjP1q/TtL2ujTd3ZrE72t
+	 E7Q5LAXsgD2RVB2rKdvHA3IflIJoWRtj16Sooikjv4VH+XwUNSZCChayGcNyUwGLwH
+	 kr88vGfRwzLLc9Gen+Ws6lnlc2lhe2Ps7E6ud5T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	sashal@kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.4 359/403] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 594/644] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Tue, 26 Aug 2025 13:11:25 +0200
-Message-ID: <20250826110916.913829002@linuxfoundation.org>
+Message-ID: <20250826111001.258970214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
 
-[ Git was trying to insert the code above the ds_1388 case statement block (in
-each respective function) which don't exist in the v5.4.296 rtc-ds1307 driver,
-thus a manual fixup was required. ]
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+[ call to drm_dp_dpcd_access() instead of drm_dp_dpcd_probe() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Here's the backport of patch 2/2 of the series for v5.4.
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/rtc/rtc-ds1307.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -252,6 +252,13 @@ static int ds1307_get_time(struct device
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case mcp794xx:
- 		if (!(tmp & MCP794XX_BIT_ST))
- 			return -EINVAL;
-@@ -343,6 +350,10 @@ static int ds1307_set_time(struct device
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case mcp794xx:
- 		/*
- 		 * these bits were cleared when preparing the date/time
+--- a/drivers/gpu/drm/drm_dp_helper.c
++++ b/drivers/gpu/drm/drm_dp_helper.c
+@@ -336,7 +336,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV,
++		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS,
+ 					 buffer, 1);
+ 		if (ret != 1)
+ 			goto out;
 
 
 
