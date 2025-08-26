@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E017B35C35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2BDB36AF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAF1C7B75DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59BF84E2AE3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85D321457;
-	Tue, 26 Aug 2025 11:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A79435FC36;
+	Tue, 26 Aug 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiY8Fge2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jSGZQHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10972FAC02;
-	Tue, 26 Aug 2025 11:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C091335FC29;
+	Tue, 26 Aug 2025 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207775; cv=none; b=aCyc4bfNgBrUGAx2Fi61o+AaaUvd/EyyKtIfp4shqfbG3gRnY1BqNpVYOITdee1KYg8SvhN9HiEtPjwYggwKPvInuhjXcOhy49nfTwBPb6TCTPbj6a9H0DmUGRZKjD9UiqBSz0w3aLmFQAQVlLqyO5Sx36wZxzgoRvqgZLnXRdI=
+	t=1756219141; cv=none; b=qxovpvysC2iQ3Ugmn8F8B+wp2QxwgqICKUNIL5I2APtBMRp+caUImwRiYbPv7I++UhSznO8+L69M0jlMsxylO5P3QY4wKhBZddEkO6KRGvL1glWzcNAsjIIQaTR3TmFskGKcmyQycQApUnewAWbYXgUtG6PZ/J4V556v/tIBBkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207775; c=relaxed/simple;
-	bh=DZL0ZvCuFC5jjLgSJ6UC4p7SwPkpyRmQETh9+VnFa+g=;
+	s=arc-20240116; t=1756219141; c=relaxed/simple;
+	bh=Z12DYYH302f3N+6GY/W+2q/mqgXe6REwFughrGmKito=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCAyu2RtqrgpnaZrjxI1Mu1LGEsjnk0Uw8SpU22iohqmd2O1boSM+KAn3huB0GXwjWVZgqpx7d7SE+dBIETCW/Yxt6D+7Xnj/jYEGUuz2kc8e0fVg5j98tW8O+x4x+TJBqeRuLVya4J2FCrE8NIrETYsgHNHCe6LAbLiUAsbNaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiY8Fge2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5130DC4CEF1;
-	Tue, 26 Aug 2025 11:29:35 +0000 (UTC)
+	 MIME-Version; b=C78XtSVoZnPIUdEVYHkOA4GY/40RB19ulHAmZSCebUIVp/ieHlOlOd1g8Gkyl3BoHS2WOVAj4mppsHz7QVMep/lDGqFIZtGVxyetqzaxRc352tNRt0PJ0W8oCQU5X3lGGIBz8GHrgiJ+j4ssVTy7d8vPsdX0JTxBBtfaY6uCutg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jSGZQHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1A1C4CEF1;
+	Tue, 26 Aug 2025 14:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207775;
-	bh=DZL0ZvCuFC5jjLgSJ6UC4p7SwPkpyRmQETh9+VnFa+g=;
+	s=korg; t=1756219141;
+	bh=Z12DYYH302f3N+6GY/W+2q/mqgXe6REwFughrGmKito=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiY8Fge2wh/iaCh1TmIrkAyC8a5tRnpqzgp2wWIv6dmCpUj0eTsdfje458/6cwB32
-	 VN3ZoQptI4sOqIsPn0VJDnTmo5G0wB3E+/yQLDNAk3Kfe3LsHuU/teZPDNVI0zHK7d
-	 gBZmXWVE3sP5vrqA4KcyoQB0R3dYX0YKDzAykJoA=
+	b=1jSGZQHwT1EXYzEI2QXBCk+7sOmn9ZYs2OCsHpwrzBsImnoETqZglgEbfTMRGSTtt
+	 uuMpcZC0PkMcYBA1+Uvtm+xhouvxqKdnQdnyLWz5hma0LZWko8dEDBamBTrP96pOFa
+	 8D8pqMAieCQ6T83ow83Jq2ZykkhdsQjVx8IuBeVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.16 311/457] comedi: Make insn_rw_emulate_bits() do insn->n samples
+	Konstantin Evtushenko <koevtushenko@yandex.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 269/403] pNFS: Handle RPC size limit for layoutcommits
 Date: Tue, 26 Aug 2025 13:09:55 +0200
-Message-ID: <20250826110945.047154969@linuxfoundation.org>
+Message-ID: <20250826110914.235530279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
+[ Upstream commit d897d81671bc4615c80f4f3bd5e6b218f59df50c ]
 
-The `insn_rw_emulate_bits()` function is used as a default handler for
-`INSN_READ` instructions for subdevices that have a handler for
-`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
-handler for `INSN_WRITE` instructions for subdevices that have a handler
-for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
-`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
-`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
-instructions are supposed to be able read or write multiple samples,
-indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
-only handles a single sample.  For `INSN_READ`, the comedi core will
-copy `insn->n` samples back to user-space.  (That triggered KASAN
-kernel-infoleak errors when `insn->n` was greater than 1, but that is
-being fixed more generally elsewhere in the comedi core.)
+When there are too many block extents for a layoutcommit, they may not
+all fit into the maximum-sized RPC. This patch allows the generic pnfs
+code to properly handle -ENOSPC returned by the block/scsi layout driver
+and trigger additional layoutcommits if necessary.
 
-Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
-an error, to conform to the general expectation for `INSN_READ` and
-`INSN_WRITE` handlers.
-
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250630183537.196479-5-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ fs/nfs/pnfs.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct c
- 	unsigned int chan = CR_CHAN(insn->chanspec);
- 	unsigned int base_chan = (chan < 32) ? 0 : chan;
- 	unsigned int _data[2];
-+	unsigned int i;
- 	int ret;
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index d91576a587e4..992cdac8dbe9 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -3047,6 +3047,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
+ 	struct nfs_inode *nfsi = NFS_I(inode);
+ 	loff_t end_pos;
+ 	int status;
++	bool mark_as_dirty = false;
  
--	if (insn->n == 0)
--		return 0;
--
- 	memset(_data, 0, sizeof(_data));
- 	memset(&_insn, 0, sizeof(_insn));
- 	_insn.insn = INSN_BITS;
-@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct c
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1U << (chan - base_chan);		     /* mask */
--		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		/* mask */
+ 	if (!pnfs_layoutcommit_outstanding(inode))
+ 		return 0;
+@@ -3098,19 +3099,23 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
+ 	if (ld->prepare_layoutcommit) {
+ 		status = ld->prepare_layoutcommit(&data->args);
+ 		if (status) {
+-			put_cred(data->cred);
++			if (status != -ENOSPC)
++				put_cred(data->cred);
+ 			spin_lock(&inode->i_lock);
+ 			set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags);
+ 			if (end_pos > nfsi->layout->plh_lwb)
+ 				nfsi->layout->plh_lwb = end_pos;
+-			goto out_unlock;
++			if (status != -ENOSPC)
++				goto out_unlock;
++			spin_unlock(&inode->i_lock);
++			mark_as_dirty = true;
+ 		}
  	}
-+	for (i = 0; i < insn->n; i++) {
-+		if (insn->insn == INSN_WRITE)
-+			_data[1] = data[i] ? _data[0] : 0;	/* bits */
-+
-+		ret = s->insn_bits(dev, s, &_insn, _data);
-+		if (ret < 0)
-+			return ret;
  
--	ret = s->insn_bits(dev, s, &_insn, _data);
--	if (ret < 0)
--		return ret;
--
--	if (insn->insn == INSN_READ)
--		data[0] = (_data[1] >> (chan - base_chan)) & 1;
-+		if (insn->insn == INSN_READ)
-+			data[i] = (_data[1] >> (chan - base_chan)) & 1;
-+	}
  
--	return 1;
-+	return insn->n;
- }
- 
- static int __comedi_device_postconfig_async(struct comedi_device *dev,
+ 	status = nfs4_proc_layoutcommit(data, sync);
+ out:
+-	if (status)
++	if (status || mark_as_dirty)
+ 		mark_inode_dirty_sync(inode);
+ 	dprintk("<-- %s status %d\n", __func__, status);
+ 	return status;
+-- 
+2.39.5
+
 
 
 
