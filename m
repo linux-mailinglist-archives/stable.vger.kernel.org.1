@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-175690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93219B369F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8BCB36C92
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF021B60807
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1392A04B28
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659F3350D67;
-	Tue, 26 Aug 2025 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9B5352071;
+	Tue, 26 Aug 2025 14:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tytpdjY3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye35yuQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2469F1DF75A;
-	Tue, 26 Aug 2025 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD22B350D72;
+	Tue, 26 Aug 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217712; cv=none; b=UjvqyrpafPY1e1XfYjo4YFJishTueVh+D2RZ06+2eefT7+3BEr1cCAidM5ceVFtFnjifuvYhIwOw/jNP8yH2002/ggdIDB0Y9J+0ELzBCoZb2jySO3C4mBL8LbNY6/4rN97sdKUzX/sgXq1YawT+KZdkdsii9+lQXkmKltnRj6g=
+	t=1756218780; cv=none; b=ZGNNQVC15s8HD5J0WLY7bed8op/L89x+tBCBbgL5FM7oAZj4jB8GgWb5b+9HUy6CPB29hfLcwCsBRQE4ovTRRdrt9Yf6cel4TeEHGLex4kHMmO8CdtWXO+XeV287VFyTScHykJy3UhkRDBQVY+rrSZQ5IvxyeLMZV0FX9+t7p80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217712; c=relaxed/simple;
-	bh=0nuN1pAq0yoExnyZORslmkoSI/a/3sSzsA51GHRM4IM=;
+	s=arc-20240116; t=1756218780; c=relaxed/simple;
+	bh=L/Q5tlezWZsgRXHMM4iZNLuY6TiAoMOWctaSW/WIpw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qF50Z3dzyvBBsAjmCBs32UP1XvTINkFHPpPwusFQmfD0Tnrui1vMe4MfRnMnMYxLUfhlbwEsHpNlX3BCUmmhWfrsxo9iv8fV/9YmTAv8dIruGNyUgN3BzE76EwkF4wN3CC5dfGYafezxnDH7xSAKhF+wXEHjfEEuOGcOwudgiJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tytpdjY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EDDC4CEF1;
-	Tue, 26 Aug 2025 14:15:11 +0000 (UTC)
+	 MIME-Version; b=S+Bqux4qhg5l4AxcE+5ipMMGzJF64s6InslmGykPqN33/iHYbavUXYsLAHd9VHoIY7BqWU/1+31a+vi/VYggsc0ctHocibArZsdp3Ly5IO2wAtHyfieM4UY8ERvaRmTpZqLAcilfMOjFo/CDuUdNHQfIFSmxTtsaaJFzHDfV0yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye35yuQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461FC4CEF1;
+	Tue, 26 Aug 2025 14:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217712;
-	bh=0nuN1pAq0yoExnyZORslmkoSI/a/3sSzsA51GHRM4IM=;
+	s=korg; t=1756218780;
+	bh=L/Q5tlezWZsgRXHMM4iZNLuY6TiAoMOWctaSW/WIpw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tytpdjY3wwLUNYYorZ2wUucZghGdcR2GQQFWuJTizuBbgF8wHLHHX3sp85ZAnbAan
-	 W88g/PWkKnSYUcUsCuiE5W1ntWK1O9KdYL6jW9GT7MFdFWXTWOd6NK9FY+ZUO+uoiC
-	 L6KIvJnRodn436y1XrbcqtBNxf8vyO0u8y5O5ngg=
+	b=Ye35yuQQI6grTBbmHG/0SDxdGzd//jf2RXxrpWrlDilCReXToecHat/cDsc2IKdkn
+	 CyJWQeFZDBqGJAxAc85q2gzRK5CKg70Bq5Zt1yW17IkjvVEfFuozTpGAuJnOMhcnDS
+	 OVWxnSwRxDW36Zec8jVjLIk3p+gbmGb+2bwxq7Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 247/523] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
+Subject: [PATCH 5.4 131/403] rtc: ds1307: fix incorrect maximum clock rate handling
 Date: Tue, 26 Aug 2025 13:07:37 +0200
-Message-ID: <20250826110930.528045221@linuxfoundation.org>
+Message-ID: <20250826110910.360759270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
+[ Upstream commit cf6eb547a24af7ad7bbd2abe9c5327f956bbeae8 ]
 
-snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
-leads to null pointer dereference.
-This was reproduced with topology loading and marking a link as ignore
-due to missing hardware component on the system.
-On module removal the soc_tplg_remove_link() would call
-snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
-no runtime was created.
+When ds3231_clk_sqw_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6c6ff145b3346 ("rtc: ds1307: add clock provider support for DS3231")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-1-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-ds1307.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index e9da95ebccc8..1120d669fe2e 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -958,6 +958,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
- void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
- 				struct snd_soc_pcm_runtime *rtd)
- {
-+	if (!rtd)
-+		return;
-+
- 	lockdep_assert_held(&client_mutex);
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 40532a36ae67..b371d1e48942 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1381,7 +1381,7 @@ static long ds3231_clk_sqw_round_rate(struct clk_hw *hw, unsigned long rate,
+ 			return ds3231_clk_sqw_rates[i];
+ 	}
  
- 	/* release machine specific resources */
+-	return 0;
++	return ds3231_clk_sqw_rates[ARRAY_SIZE(ds3231_clk_sqw_rates) - 1];
+ }
+ 
+ static int ds3231_clk_sqw_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
