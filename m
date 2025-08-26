@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-172954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0287AB35AFA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747C1B36893
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE911883959
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF6D580340
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB31299959;
-	Tue, 26 Aug 2025 11:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4316C350D44;
+	Tue, 26 Aug 2025 14:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8Wm6EeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZK/fLg5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5D4277C8C;
-	Tue, 26 Aug 2025 11:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010F41DE8BE;
+	Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756206996; cv=none; b=hvSHkGQUDQswe1cub1dB+DVmW7S6f3x8Wmfpsg45mXIGOZVXyBp1zDXf1mpfScgiHDy0NAE60STJCmzXqQe/D3vvGIEJgaYqF5jliZisq47olHkZwL2WOHEpiOJviLz0doXcAwmIdMImUdeyE6iBd3j2TJoy5jjSonnVebmlmQM=
+	t=1756217261; cv=none; b=TA4URZJI8SoQhwm/LOE1Aq10xVulDm1YhswP1TkJySmP6zh3/0VBLm5NBBJ5WLbgwQuLnOV4JDhXhgtlJIKTDFmk0s9JXrtXt5W271Kr7wBrZxVKbXSdiuNUXGRpxBrI6ed0WfhKCWYBqPT2+sAFfvJnZkyGeeWDZryhJY7I8Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756206996; c=relaxed/simple;
-	bh=wlJe8A8mu+fV6QcfJvuRwUG3eAAptO8+kNzjQItCmcQ=;
+	s=arc-20240116; t=1756217261; c=relaxed/simple;
+	bh=tWD61AE5KaPgIJ/8L7Wd38qX0eFRL583cUe4cggrP3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAnAn1kZi7R4GLu46WoDljEb5hS6In8ncwzG4f2aM4f/BbUHDKZuNilPVBTeIE/PKcS5viNHuUWXNT6LOstac9H0gHMspQBVPELq8fet62xaV7YzKsHC/avys+QTshMKh/EVtIByaSP+3qMEYJBZxXQ9hjXod6hGSiBELeahduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8Wm6EeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9172C4CEF1;
-	Tue, 26 Aug 2025 11:16:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TCCkMY+tko7gtQYhOzqtEOB+cCHX9vdTGmscGnXaOPLRoXuvf/q3gBLvQzqVJByMQUTAkP9vPN1qbpQjS///7kDBKmqnN+TTPkyhWK54xD3wYbwjk1zCfXvIlBn41au2ep90hx4/71F9G3L7aJhwkvRKYZc/ErzoqGPaJKiaL6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZK/fLg5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88709C4CEF1;
+	Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756206996;
-	bh=wlJe8A8mu+fV6QcfJvuRwUG3eAAptO8+kNzjQItCmcQ=;
+	s=korg; t=1756217260;
+	bh=tWD61AE5KaPgIJ/8L7Wd38qX0eFRL583cUe4cggrP3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8Wm6EeSQB8qi6S/9p758v5U8EYQAR/scyKNS7deBhb55ZD8MJdcrkpmDt2fOxgmi
-	 FwPN1heRcE8w1grhrqAIwfYElg21JBN24FBHhXszKxzoAGQS1LPlsOQO6ixBDpBlxB
-	 Ws1MQR5iWD+TAIqlIhSal0iAFgOWiBznNUujehyA=
+	b=jZK/fLg59N/SRu1rAJgcvFXWhkEHa/+dgnGAAMAKjpQGhLKWMcmVBRmwPthhIAYSS
+	 D+o1sbrwzO+CdHQ8kPXIVK/pEmLQzGWk4Jr4DI8hnyIlsXdTBTpqcY5IyEy2EwzpxL
+	 1xF3iSwI3AcKI8+hjzZEetCU5EZfL3qjFzhh4p+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.16 003/457] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
+	RubenKelevra <rubenkelevra@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 077/523] fs_context: fix parameter name in infofc() macro
 Date: Tue, 26 Aug 2025 13:04:47 +0200
-Message-ID: <20250826110937.383243566@linuxfoundation.org>
+Message-ID: <20250826110926.466853665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: RubenKelevra <rubenkelevra@gmail.com>
 
-commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
+[ Upstream commit ffaf1bf3737f706e4e9be876de4bc3c8fc578091 ]
 
-The freq_tables[] array has num_possible_cpus() elements so, to avoid an
-out of bounds access, this loop should be capped at "< nb_cpus" instead
-of "<= nb_cpus".  The freq_tables[] array is allocated in
-armada_8k_cpufreq_init().
+The macro takes a parameter called "p" but references "fc" internally.
+This happens to compile as long as callers pass a variable named fc,
+but breaks otherwise. Rename the first parameter to “fc” to match the
+usage and to be consistent with warnfc() / errorfc().
 
-Cc: stable@vger.kernel.org
-Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3ff937b33d9 ("prefix-handling analogues of errorf() and friends")
+Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
+Link: https://lore.kernel.org/20250617230927.1790401-1-rubenkelevra@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
+ include/linux/fs_context.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -103,7 +103,7 @@ static void armada_8k_cpufreq_free_table
- {
- 	int opps_index, nb_cpus = num_possible_cpus();
+diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
+index e869ce3ae660..40dd74bdd9fb 100644
+--- a/include/linux/fs_context.h
++++ b/include/linux/fs_context.h
+@@ -207,7 +207,7 @@ void logfc(struct fc_log *log, const char *prefix, char level, const char *fmt,
+  */
+ #define infof(fc, fmt, ...) __logfc(fc, 'i', fmt, ## __VA_ARGS__)
+ #define info_plog(p, fmt, ...) __plog(p, 'i', fmt, ## __VA_ARGS__)
+-#define infofc(p, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
++#define infofc(fc, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
  
--	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
-+	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
- 		int i;
- 
- 		/* If cpu_dev is NULL then we reached the end of the array */
+ /**
+  * warnf - Store supplementary warning message
+-- 
+2.39.5
+
 
 
 
