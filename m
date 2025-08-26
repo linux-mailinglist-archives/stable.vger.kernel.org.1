@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F126DB36B44
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0978AB35C28
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF16986497
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10985189959B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CDD302CA6;
-	Tue, 26 Aug 2025 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402229D273;
+	Tue, 26 Aug 2025 11:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9HoMX2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UuaSmJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839162AE7F;
-	Tue, 26 Aug 2025 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046421ADA7;
+	Tue, 26 Aug 2025 11:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218036; cv=none; b=H65qMaFKfbZpwRBgBG99A2b2CxdMQ/hinKjZO3VSSuzdSc5fkcokpBVB3pYmE1dfc4kRKF2srkf20Gko1Z8PSqZ4+mP0hPX3oZpXC5OQ0JNwr5ETne0mmareH1WK++T7qYFjJl56EPfJbWxUdIcBEjWw7TPsdTdYlW3ep9p6fTM=
+	t=1756207647; cv=none; b=G9LlBtSZ/LTYwWAz0WtPHTFhmRSnRQEVHQM+9Ccq0QRuKdIxXICmWqvVJfl19K+lPFtO7pzVFB8rGGR5TVKiH7vWv2VJGYEVSJvsK/CTRDqpU5I9pKkEDIsMS/QDZt8auazVDKlD8sBfIezNZ0EMNNDfLKa8XKm4xrVhBxoB/CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218036; c=relaxed/simple;
-	bh=4YSpal2R1eQmsg1En29N6SV28ybkWMDoM/doLkF0dCc=;
+	s=arc-20240116; t=1756207647; c=relaxed/simple;
+	bh=knKM8ksvXM4ZFddQv6EFLyhb1g0WwWSDIuOqkAz6EqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZetsScgLIFo98EAVrkK9qgToBl8p0AtyntnVDiE0ACkcPHZtPKWfz7IPZ3knXxKj0qLMl4gFa+Lbwn9OCNZ9BSJPu9JpMg3BlhzsKdgPRDO+Cc4GwZdiv4yx6zwYe5W2ravvxLB3fUbmnntn7UE4791eRn1KhPpEJxgUrIaKVao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9HoMX2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F18C4CEF1;
-	Tue, 26 Aug 2025 14:20:35 +0000 (UTC)
+	 MIME-Version; b=hhwRz6PrK0psEK3fAKkdY1Zhdu+JrCevJzrN+kGg042HpHan56E9DWlRXeEhRqdW3eZCv7WgPxBgLLkQKCiqCfQ0id0ot/2z1w70j0w/EjqnVaF4WltEAJIEQaj7w8/DnBSCmMNKws2a7zibhTcp7+Rd96VaV56rts6kHjAiGY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UuaSmJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A84C113CF;
+	Tue, 26 Aug 2025 11:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218036;
-	bh=4YSpal2R1eQmsg1En29N6SV28ybkWMDoM/doLkF0dCc=;
+	s=korg; t=1756207647;
+	bh=knKM8ksvXM4ZFddQv6EFLyhb1g0WwWSDIuOqkAz6EqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9HoMX2lGa3Rla96TPdpHkzrWA/GOYzrPNXbmSAKT82RtFtHLOoqCgM0FKIf9TH0x
-	 UGcyUezg46MuDoW/z6MbCZj0HyYATXD5CNgflM1r92rSgBFbWYns1ZsDhfeUpqG7Cc
-	 X9Yr09UTUUtEuBWTy6XRbqKWDLK7Bca7YIY7MBHI=
+	b=0UuaSmJoLSf+mtsg84fLduMmnRsMM34thvuY3M3GEc+onqIiLBY5uKUDkAaP5r1K0
+	 EV/r/XyE5pyJmcdb15EmntpMVb2KDkgGRuiSako7tYZ7pxv8EuFuqmriu+bOwCsbrP
+	 JQx8kL/cipEodKP6QaZxTm7gNKRfPxkPuB2/H8Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 338/523] ASoC: soc-dai.c: add missing flag check at snd_soc_pcm_dai_probe()
+	Charlton Lin <charlton.lin@intel.com>,
+	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.16 264/457] drm/i915/lnl+/tc: Use the cached max lane count value
 Date: Tue, 26 Aug 2025 13:09:08 +0200
-Message-ID: <20250826110932.809360025@linuxfoundation.org>
+Message-ID: <20250826110943.904057943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 5c5a7521e9364a40fe2c1b67ab79991e3e9085df ]
+commit c5c2b4b3841666be3a45346d0ffa96b4b143504e upstream.
 
-dai->probed is used at snd_soc_pcm_dai_probe/remove(),
-and used to call real remove() function only when it was probed.
+Use the cached max lane count value on LNL+, to account for scenarios
+where this value is queried after the HW cleared the corresponding pin
+assignment value in the TCSS_DDI_STATUS register after the sink got
+disconnected.
 
-	int snd_soc_pcm_dai_probe(...)
-	{
-		...
-		for_each_rtd_dais(rtd, i, dai) {
-			...
+For consistency, follow-up changes will use the cached max lane count
+value on other platforms as well and will also cache the pin assignment
+value in a similar way.
 
-			if (dai->driver->probe) {
-(A)				int ret = dai->driver->probe(dai);
-
-				if (ret < 0)
-					return soc_dai_ret(dai, ret);
-			}
-
-=>			dai->probed = 1;
-		}
-		...
-	}
-
-	int snd_soc_pcm_dai_remove(...)
-	{
-		...
-		for_each_rtd_dais(rtd, i, dai) {
-			...
-=>			if (dai->probed &&
-			    ...) {
-				...
-			}
-
-=>			dai->probed = 0;
-		}
-		...
-	}
-
-But on probe() case, we need to check dai->probed before calling
-real probe() function at (A), otherwise real probe() might be called
-multi times (but real remove() will be called only once).
-This patch checks it at probe().
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87wn3u64e6.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0e270f32975f ("ASoC: fsl_sai: replace regmap_write with regmap_update_bits")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250811080152.906216-5-imre.deak@intel.com
+(cherry picked from commit afc4e84388079f4d5ba05271632b7a4d8d85165c)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-dai.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_tc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index e2db2ad219b8..583b18d0f446 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -488,6 +488,9 @@ int snd_soc_pcm_dai_probe(struct snd_soc_pcm_runtime *rtd, int order)
- 		if (dai->driver->probe_order != order)
- 			continue;
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -394,12 +394,16 @@ static void read_pin_configuration(struc
  
-+		if (dai->probed)
-+			continue;
+ int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
+ {
++	struct intel_display *display = to_intel_display(dig_port);
+ 	struct intel_tc_port *tc = to_tc_port(dig_port);
+ 
+ 	if (!intel_encoder_is_tc(&dig_port->base))
+ 		return 4;
+ 
+-	return get_max_lane_count(tc);
++	if (DISPLAY_VER(display) < 20)
++		return get_max_lane_count(tc);
 +
- 		if (dai->driver->probe) {
- 			int ret = dai->driver->probe(dai);
++	return tc->max_lane_count;
+ }
  
--- 
-2.50.1
-
+ void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
 
 
 
