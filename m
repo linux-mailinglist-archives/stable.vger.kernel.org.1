@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE76B365FE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 161A6B3600F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A091E8E5C25
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE855464A0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FE02F49EA;
-	Tue, 26 Aug 2025 13:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920201DD0D4;
+	Tue, 26 Aug 2025 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05t6tgqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA/8d2X0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E81E2D060B;
-	Tue, 26 Aug 2025 13:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5092338DEC;
+	Tue, 26 Aug 2025 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215797; cv=none; b=cE6bMHe8OvZqOcML2Q+sO0nL1zrZgWaCbYbYS7Ubl1yucE+8EjmY1GV9TJcESEUV4GqZUfWPpYGquZe+scOanfF6ZOUoR+bJZ6Bcr6PQEwnGbuKtFM+ymxjKLHCwjXjl/ymaCpAoPR1gbr77kyB9HPd/ZuWn65HpjWU26dC6Zik=
+	t=1756212814; cv=none; b=gq18qESzbD8SJcHKxOHtaBc7br5XvSRdYuxiaTY3sI8WOK6ZxI/pwPIiBlHVWmTi/oZ/i46V96KQNGx9sf5MhjOc/B6MPtg5eoZ5kh/0Hmr75ppn5UPukWfbkfEmf7a+/XFOfVpakrcVhJtttHW/2deqEXP8B4C3a0OHrdXsQTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215797; c=relaxed/simple;
-	bh=ZUUsUk3gCWv+otGHx0gjq+jzDBf9zdZCJwb5cRz4EGY=;
+	s=arc-20240116; t=1756212814; c=relaxed/simple;
+	bh=09t4o7puzMB1m7xAmZ8aSMn1lMHXEBLR/y8J1zmM4/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAQhh+XhzFhAPP/n4WE/7u/Un+5o5Z+IXq5Ylp7psobFyoUAzYvA6WNGgyffN+CGuGNa7uK75sCr9wxTTdjTD5PNrz4Hz3IvPFfmSuZR6UfKLhW8t3XhNa5vuvbJZ+Y7nQ5j9fxvgiMP8lyXF+ucruOnKxaez7Sn1Lqoc/JZqLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05t6tgqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0B6C4CEF1;
-	Tue, 26 Aug 2025 13:43:16 +0000 (UTC)
+	 MIME-Version; b=XLucjn2cgEK2OyMVQXLAOcf0iJfbNpfUM5wDGPd+8D631bS5zYhRC9UC19hkjRj79KuWLQOYete6D42nyGadSO3/Fd0ay0KF62tmvWo0A56bz1QCydjESu8aoF01hbljsYzeLZApfnNObAuolFPHqWuXWKLXGgafafxYUpsvrhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JA/8d2X0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD16C4CEF1;
+	Tue, 26 Aug 2025 12:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215797;
-	bh=ZUUsUk3gCWv+otGHx0gjq+jzDBf9zdZCJwb5cRz4EGY=;
+	s=korg; t=1756212814;
+	bh=09t4o7puzMB1m7xAmZ8aSMn1lMHXEBLR/y8J1zmM4/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05t6tgqwmVhHNh8DZDMpnqZvjU2nVO9RyDbHM3h9X2at1RG3ZyWQ56qVz4PkZjcyc
-	 KRqFStWoIiKlgfHTNveQv48/yJIAhXX+CFlBQNU0Gl1SxU5rYRWYVV3Qiv4B4BRbq+
-	 98ChAQAfKotApeZArgJAVYcu/Rg5ckFuIntt8McQ=
+	b=JA/8d2X021wNbu+HjtWZFQkL46/TSSaCk/Hk1d9g5CP8R8b2TQ5T2o6dIqbXGaOfb
+	 2CqA8bXaZjUaLjS8xq3dn9nEu+oM70quxUZl9PllQ0siUGp2UrAeCdKLs6xQ2cuEoC
+	 u8B25PhqdAqwNwlbSMiDwhBsvjyotwP3ed4Qzq7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Visavalia <rohit.visavalia@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Sebastian Ott <sebott@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/644] clk: xilinx: vcu: unregister pll_post only if registered correctly
+Subject: [PATCH 6.6 112/587] ACPI: processor: fix acpi_object initialization
 Date: Tue, 26 Aug 2025 13:04:21 +0200
-Message-ID: <20250826110950.689255815@linuxfoundation.org>
+Message-ID: <20250826110955.789906268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohit Visavalia <rohit.visavalia@amd.com>
+From: Sebastian Ott <sebott@redhat.com>
 
-[ Upstream commit 3b0abc443ac22f7d4f61ddbbbbc5dbb06c87139d ]
+[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
 
-If registration of pll_post is failed, it will be set to NULL or ERR,
-unregistering same will fail with following call trace:
+Initialization of the local acpi_object in acpi_processor_get_info()
+only sets the first 4 bytes to zero and is thus incomplete. This is
+indicated by messages like:
+	acpi ACPI0007:be: Invalid PBLK length [166288104]
 
-Unable to handle kernel NULL pointer dereference at virtual address 008
-pc : clk_hw_unregister+0xc/0x20
-lr : clk_hw_unregister_fixed_factor+0x18/0x30
-sp : ffff800011923850
-...
-Call trace:
- clk_hw_unregister+0xc/0x20
- clk_hw_unregister_fixed_factor+0x18/0x30
- xvcu_unregister_clock_provider+0xcc/0xf4 [xlnx_vcu]
- xvcu_probe+0x2bc/0x53c [xlnx_vcu]
+Fix this by initializing all 16 bytes of the processor member of that
+union.
 
-Fixes: 4472e1849db7 ("soc: xilinx: vcu: make pll post divider explicit")
-Signed-off-by: Rohit Visavalia <rohit.visavalia@amd.com>
-Link: https://lore.kernel.org/r/20250210113614.4149050-2-rohit.visavalia@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/xilinx/xlnx_vcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
-index d66b1315114e..292d50ba0112 100644
---- a/drivers/clk/xilinx/xlnx_vcu.c
-+++ b/drivers/clk/xilinx/xlnx_vcu.c
-@@ -587,8 +587,8 @@ static void xvcu_unregister_clock_provider(struct xvcu_device *xvcu)
- 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_MCU]);
- 	if (!IS_ERR_OR_NULL(hws[CLK_XVCU_ENC_CORE]))
- 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_CORE]);
--
--	clk_hw_unregister_fixed_factor(xvcu->pll_post);
-+	if (!IS_ERR_OR_NULL(xvcu->pll_post))
-+		clk_hw_unregister_fixed_factor(xvcu->pll_post);
- }
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 7053f1b9fc1d..c0f9cf9768ea 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -250,7 +250,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
  
- /**
+ static int acpi_processor_get_info(struct acpi_device *device)
+ {
+-	union acpi_object object = { 0 };
++	union acpi_object object = { .processor = { 0 } };
+ 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+ 	struct acpi_processor *pr = acpi_driver_data(device);
+ 	int device_declaration = 0;
 -- 
 2.39.5
 
