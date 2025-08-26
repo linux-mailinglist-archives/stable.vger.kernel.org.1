@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034DDB3685D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115BEB361A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE1EA982748
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB2402A63D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA82434F498;
-	Tue, 26 Aug 2025 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0AA2343BE;
+	Tue, 26 Aug 2025 13:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYbEjagI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTTjD/Hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6965333439F;
-	Tue, 26 Aug 2025 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D71221704;
+	Tue, 26 Aug 2025 13:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216580; cv=none; b=h9k6Se20FZqR3TI4ILtQctqACSmVT0bw7RwOnGRr3ZeBKym10ZlUbXmd6SS8XcZQGhRuS6D+yU33Nxp8181IuhTO1FmOUIHzsJGkj84D7lftU9yY4cn/PXlohjLGwahSEpAm5i8JbaiAEZMlSPQkOz7gWgeDDjyvZsTxIuC1Eyc=
+	t=1756213594; cv=none; b=ni76SXm8ckCSBnPmb9bo83+E7idXXUdhRMpTyflCgKO9sinkxXDOIn/hF5sMSlqHyD8AWyZ717Gfk1d8BeBo0S8meuBqXORIa8XHgIA0l2iLdexzC47OwwdjbjzRnElsdyMKNRTBgmzE1JAJnHPhmChnxzzfoW+RBtGvdoFRRvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216580; c=relaxed/simple;
-	bh=Kyrr9O49B+bSNToeOsgkXtXzH38Hcet/Bptky/G2ER4=;
+	s=arc-20240116; t=1756213594; c=relaxed/simple;
+	bh=KAdoxf2oWdyflF9osI6GpipDJigMnG+VV6GW8taVcBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8CtXPha4lRJJp7hLjn4R0xJgrXRk2w+mkMmW8Mur8MnkyZBTH0SZYlgAjxCOMg/IMiOYa6gVbnMc4tO+Rn7gMcq1skNx1b36T9DJ+FHecBSnkri9GL1Hp+81HOyWXVCzo6K5JGrjCd3q6lAmYFVcm3Qy4BkvmPMeuVqXkwWpMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYbEjagI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05BDC113D0;
-	Tue, 26 Aug 2025 13:56:19 +0000 (UTC)
+	 MIME-Version; b=dg6b5Cw3txWqWwqm5DZyDG3bMMO3fOPwAUfZ4Nq7mUJCvV0ibIubJWhWWG7yatcON1XXxnkXEnI4CrGLVI7oeu7eJe5oWG2RC4MQcEDVYK9BCjMvDEPadRWokBS9kGdkR7OEnsuacpBK9vpYZ7g0azoNt+4myMEzCJ/gdkUTEYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTTjD/Hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FED2C4CEF1;
+	Tue, 26 Aug 2025 13:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216580;
-	bh=Kyrr9O49B+bSNToeOsgkXtXzH38Hcet/Bptky/G2ER4=;
+	s=korg; t=1756213593;
+	bh=KAdoxf2oWdyflF9osI6GpipDJigMnG+VV6GW8taVcBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYbEjagI/w9xVsIVis+4Cuq7PJg+TOPfMLytybbB7LJ9dYUtD/DUPNNXAcj7oLA9+
-	 8C6w3dTmQtMMViLdkJB7KrPGNjRS27IEVM/tiEEFvGjRJLUk5nY9XgtJPlJ5cl/+pA
-	 Rg4z20PuHKiJqL36XaW64UmHV0NMG9JzyUC5aWQg=
+	b=oTTjD/HuwPWTqLRHloiSAQrfl3l98Zk9V6Vz1BNWjw3y5tch1Jffs8f6VOrNJDsCK
+	 t9oCczvtm2xDcHfYBgFnS3Zb9nAsSGJ5f0lKUeCiTxXyOzy0zI8HenTAhseEKBvmW4
+	 sx7x+obOqgmLp/toazITWXqX2DMZRtRmFuoLPSKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	stable <stable@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 5.15 463/644] vt: keyboard: Dont process Unicode characters in K_OFF mode
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 405/587] media: verisilicon: Fix AV1 decoder clock frequency
 Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826110957.952085711@linuxfoundation.org>
+Message-ID: <20250826111003.231612439@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-commit b1cc2092ea7a52e2c435aee6d2b1bcb773202663 upstream.
+commit 01350185fe02ae3ea2c12d578e06af0d5186f33e upstream.
 
-We don't process Unicode characters if the virtual terminal is in raw
-mode, so there's no reason why we shouldn't do the same for K_OFF
-(especially since people would expect K_OFF to actually turn off all VT
-key processing).
+The desired clock frequency was correctly set to 400MHz in the device tree
+but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
+Fix the issue by removing the driver call to clk_set_rate(), which reduce
+the amount of board specific code.
 
-Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz
+Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/keyboard.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/verisilicon/rockchip_vpu_hw.c |    9 ---------
+ 1 file changed, 9 deletions(-)
 
---- a/drivers/tty/vt/keyboard.c
-+++ b/drivers/tty/vt/keyboard.c
-@@ -1484,7 +1484,7 @@ static void kbd_keycode(unsigned int key
- 		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
- 						KBD_UNICODE, &param);
- 		if (rc != NOTIFY_STOP)
--			if (down && !raw_mode)
-+			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
- 				k_unicode(vc, keysym, !down);
- 		return;
- 	}
+--- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
++++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
+@@ -17,7 +17,6 @@
+ 
+ #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
+ #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
+-#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
+ 
+ #define ROCKCHIP_VPU981_MIN_SIZE 64
+ 
+@@ -441,13 +440,6 @@ static int rk3066_vpu_hw_init(struct han
+ 	return 0;
+ }
+ 
+-static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
+-{
+-	/* Bump ACLKs to max. possible freq. to improve performance. */
+-	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
+-	return 0;
+-}
+-
+ static int rockchip_vpu_hw_init(struct hantro_dev *vpu)
+ {
+ 	/* Bump ACLK to max. possible freq. to improve performance. */
+@@ -808,7 +800,6 @@ const struct hantro_variant rk3588_vpu98
+ 	.codec_ops = rk3588_vpu981_codec_ops,
+ 	.irqs = rk3588_vpu981_irqs,
+ 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
+-	.init = rk3588_vpu981_hw_init,
+ 	.clk_names = rk3588_vpu981_vpu_clk_names,
+ 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
+ };
 
 
 
