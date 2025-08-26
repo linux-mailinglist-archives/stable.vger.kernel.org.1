@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-176350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78A1B36B8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F48B35E48
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 77F574E36D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04F091BA6755
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE0335CEC1;
-	Tue, 26 Aug 2025 14:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6DF29BDAC;
+	Tue, 26 Aug 2025 11:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIS8RQIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyXlGh9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D9B35CEB7;
-	Tue, 26 Aug 2025 14:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC81283FDF;
+	Tue, 26 Aug 2025 11:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219430; cv=none; b=ng/u39EH99lGzdv2noTvBUcilXcK1XRe6tMxrWcPSDrcIs0YGT/TcXeEIz0Y29wULSQobPjCKvUJymqGmDfNwcgrpWWu5wjh+mC+L+eVL94nEfiUZXL0O007xFPzMKGNLlDlpZ5ENN3PYnKEFcRO2D0ECso4HgnRrImHjnxreNE=
+	t=1756208900; cv=none; b=kf8270B5AoorLRZeW6A3c5USli6qVxmYh/Pe/kBOWVEz4VrfQP+7q5PlqjFSRJkSkYDMi3KZDqdD4LNI4Fxtdrx2zGwyPQFrNeY/DMoYFJWuPWu9i7yYMBra1eezpfSJmWvlBzxD7gqxfexi9VNgolKK8KTLrk8t8MUwB1MTuGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219430; c=relaxed/simple;
-	bh=WG8Wni87ldT3sV5IProCi1bLLCs5vzkBg9z5dj2XoF8=;
+	s=arc-20240116; t=1756208900; c=relaxed/simple;
+	bh=TQvJCDL3wkB0WvEwyr/3cFoUzcQcOUpdlwX0PANc3Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRdumGAkvHcoVaLuHRf5l+dnh70aM+4F0H9XJrAPm0/3YSXpAaNF7nltaJcxlL5ZcUJlO0mD3BxddFcQ9fbMBmHUlHNBenSEQkPrDE8URQfU8qlJ8JQOLwXRiEJEDB0ZbLcxw9qguATRhpKRnhsJU7kUMDZmXUvIOzvdjQYgBNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIS8RQIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E91DC4CEF1;
-	Tue, 26 Aug 2025 14:43:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IpPbHfSUL5kZIZYkEhBhkK3hE5rCtlx/4oV/RCzUaokWSTCg674360c7fTVta8bl27hgSoU+QGvSuEOP8FVSbXinqextY3vg4XPkeaQxkZgdHWyL/oJYCV8eyn5M+etKDXNy6kkz/3hQvlExSuhlr4mRKBYth211aQ4CUcFkvh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyXlGh9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D87FC4CEF1;
+	Tue, 26 Aug 2025 11:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219430;
-	bh=WG8Wni87ldT3sV5IProCi1bLLCs5vzkBg9z5dj2XoF8=;
+	s=korg; t=1756208900;
+	bh=TQvJCDL3wkB0WvEwyr/3cFoUzcQcOUpdlwX0PANc3Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIS8RQIgemXgALVfPH/t6cNTRpmOX+8M0GnNJak2Udumm7mFtbagyAleBhlHAc/1k
-	 xH5HaxFmcKIfgotfCgQcadHKjXlnz4YBd3HUafd4orYjR94K40hS5k20wTP99Ca7Gc
-	 BguMkjg+ebPNmFJoH1rkyjzg/rkm8TF3n/aAk1lY=
+	b=WyXlGh9RXjqzYxRNH860v1VG2kwyC0DvWuZzMijcHSaMWxavFpLuCDftv7IzdRdFB
+	 nVHaZnafycdCohMjkjx67jE19AvQnuNwEPjYiKJ5lxK1KMlm+GgmxEhJ/Jf8lqnie8
+	 Fgll+GdwxJXO60XjCC+n3Utuvb/SPxQmTZRBOZrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.4 378/403] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 289/322] drm/amd/display: Dont print errors for nonexistent connectors
 Date: Tue, 26 Aug 2025 13:11:44 +0200
-Message-ID: <20250826110917.462248859@linuxfoundation.org>
+Message-ID: <20250826110923.047045711@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 342debc12183b51773b3345ba267e9263bdfaaef upstream.
+[ Upstream commit f14ee2e7a86c5e57295b48b8e198cae7189b3b93 ]
 
-After making all ->qlen_notify() callbacks idempotent, now it is safe to
-remove the check of qlen!=0 from both fq_codel_dequeue() and
-codel_qdisc_dequeue().
+When getting the number of connectors, the VBIOS reports
+the number of valid indices, but it doesn't say which indices
+are valid, and not every valid index has an actual connector.
+If we don't find a connector on an index, that is not an error.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Considering these are not actual errors, don't litter the logs.
+
+Fixes: 60df5628144b ("drm/amd/display: handle invalid connector indices")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 249d4bc5f1935f04bb45b3b63c0f8922565124f7)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_codel.c    |    5 +----
- net/sched/sch_fq_codel.c |    6 ++----
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c |  5 +----
+ drivers/gpu/drm/amd/display/dc/core/dc.c          | 15 ++++++++++++++-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_deque
- 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
- 			    drop_func, dequeue_func);
- 
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->stats.drop_count && sch->q.qlen) {
-+	if (q->stats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
- 		q->stats.drop_count = 0;
- 		q->stats.drop_len = 0;
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -315,10 +315,8 @@ begin:
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 3bacf470f7c5..a523c5cfcd24 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -174,11 +174,8 @@ static struct graphics_object_id bios_parser_get_connector_id(
+ 		return object_id;
  	}
- 	qdisc_bstats_update(sch, skb);
- 	flow->deficit -= qdisc_pkt_len(skb);
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->cstats.drop_count && sch->q.qlen) {
+ 
+-	if (tbl->ucNumberOfObjects <= i) {
+-		dm_error("Can't find connector id %d in connector table of size %d.\n",
+-			 i, tbl->ucNumberOfObjects);
++	if (tbl->ucNumberOfObjects <= i)
+ 		return object_id;
+-	}
+ 
+ 	id = le16_to_cpu(tbl->asObjects[i].usObjectID);
+ 	object_id = object_id_from_bios_object_id(id);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index b089db2b3d87..84e377113e58 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -215,11 +215,24 @@ static bool create_links(
+ 		connectors_num,
+ 		num_virtual_links);
+ 
+-	// condition loop on link_count to allow skipping invalid indices
++	/* When getting the number of connectors, the VBIOS reports the number of valid indices,
++	 * but it doesn't say which indices are valid, and not every index has an actual connector.
++	 * So, if we don't find a connector on an index, that is not an error.
++	 *
++	 * - There is no guarantee that the first N indices will be valid
++	 * - VBIOS may report a higher amount of valid indices than there are actual connectors
++	 * - Some VBIOS have valid configurations for more connectors than there actually are
++	 *   on the card. This may be because the manufacturer used the same VBIOS for different
++	 *   variants of the same card.
++	 */
+ 	for (i = 0; dc->link_count < connectors_num && i < MAX_LINKS; i++) {
++		struct graphics_object_id connector_id = bios->funcs->get_connector_id(bios, i);
+ 		struct link_init_data link_init_params = {0};
+ 		struct dc_link *link;
+ 
++		if (connector_id.id == CONNECTOR_ID_UNKNOWN)
++			continue;
 +
-+	if (q->cstats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
- 					  q->cstats.drop_len);
- 		q->cstats.drop_count = 0;
+ 		DC_LOG_DC("BIOS object table - printing link object info for connector number: %d, link_index: %d", i, dc->link_count);
+ 
+ 		link_init_params.ctx = dc->ctx;
+-- 
+2.50.1
+
 
 
 
