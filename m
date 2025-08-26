@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A2CB36853
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBD8B365D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C602A7E01
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A158E0904
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6131F352FC1;
-	Tue, 26 Aug 2025 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A57E230BDF;
+	Tue, 26 Aug 2025 13:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9jZMCz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hcd5lo0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E157350D72;
-	Tue, 26 Aug 2025 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72822BE653;
+	Tue, 26 Aug 2025 13:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217128; cv=none; b=TuZ0a7CRYURG6zAcnDeke/2e+aYEzTtdgkxNpbuNvAvOfAAEWFy/0Oavh+dPPevN4pDgW7kSE0MxTC9+c/864pGhHk8EIXlBsXuwMjCDef1eOPR/B6/vx/wuOE2rRey5ScCCE4L34Xuto/JS1+NHvbsV2qzIre7ytDM9/zwYH0I=
+	t=1756215734; cv=none; b=YRMz2cSZDX+g7kbbq0INn3Xy7AVr9EmG0JSL1DQ75CDVNzU9yrZETfjN/U98V21W0hpPeMKWFjeGxHii/4hpS/97HGy29HDl2liLwWqX9IDcU1eAc+Tce+tLh1GwcvqVMgJQFYDfVuP/v7Z+AOFiO8Rr6URNONGq5Ri72k+AK0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217128; c=relaxed/simple;
-	bh=Y53HQ5ggBKVthhqoijIynZR5p7dAM5h77bYvB2klQqQ=;
+	s=arc-20240116; t=1756215734; c=relaxed/simple;
+	bh=X4hfGsyA7Ksgy4nIedhbIWRSZkCWPHIXQg/kcLwfCBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rqXz2DccYt5yH76EYXXXv2FJwpRc+Jvx7ETXm4gGJsQcYHdC0nPJjku+MwHjnvqFU94rJv9OEaPnIr3EY320k91h4uLqya19M6uFIqvcJSdMUJOGPzTUU4eM1CaP/jhI5rxQMTpW6kKIcfZ+PWT1ZGty/jiP7g9SRwaDUYYjy5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9jZMCz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA00AC4CEF1;
-	Tue, 26 Aug 2025 14:05:27 +0000 (UTC)
+	 MIME-Version; b=EzwmRFdjqJpb/wn5eGMQcBvVBNSqNUUQQG0C+lgc1QeLh0mbgO1wCPiw6RjCSS1crxaXup7rEQ2ZJgqrAEku/236rOjqf2KNjZbdy3Y1l/X0/ozd+Bmic1k5fZGemrv71nLU3kCsax7W/h/DxkwV4fSXJLPYZv9oYF0s8vSKvJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hcd5lo0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADD7C116D0;
+	Tue, 26 Aug 2025 13:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217128;
-	bh=Y53HQ5ggBKVthhqoijIynZR5p7dAM5h77bYvB2klQqQ=;
+	s=korg; t=1756215733;
+	bh=X4hfGsyA7Ksgy4nIedhbIWRSZkCWPHIXQg/kcLwfCBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9jZMCz4gkfUBZj9rsq/sRBwfAajpXQubZOOvU9sv0mUUF3B5MNnmfnhQ49Dr6dW8
-	 SwFDKsxwUKqsCa34VcNSHBXmRuZ+naxXFaGAmrhiI6FUQzfOjgKYt54eWNOdKJDber
-	 ogtZs6dp5VfjdYnxs+xB58GHVwAybN+7EAyX7lyI=
+	b=Hcd5lo0j3wNRxIsVXHQ6CTPN3D08fM+V1VEtpG8B9/BNcw8FVorJa9AkjC0L/lAE1
+	 ZLY8CW8EgdaIPLLxdv4/Wb9+XQ18OXeSNhEhR5wQCLRdSDhiHDNdRybSNauoCUpqb4
+	 tHBBpNo8a7/NH227y6jF61nVM/FtQgToWMaNMZfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 026/523] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
+	Stav Aviram <saviram@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 145/644] net/mlx5: Check device memory pointer before usage
 Date: Tue, 26 Aug 2025 13:03:56 +0200
-Message-ID: <20250826110925.239438976@linuxfoundation.org>
+Message-ID: <20250826110950.084242269@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Stav Aviram <saviram@nvidia.com>
 
-commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
+[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
 
-Fix a race where a pending interrupt could be received and the handler
-called before the handler's data has been setup, by converting to
-irq_set_chained_handler_and_data().
+Add a NULL check before accessing device memory to prevent a crash if
+dev->dm allocation in mlx5_init_once() fails.
 
-Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
+Signed-off-by: Stav Aviram <saviram@nvidia.com>
+Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc-core.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -391,10 +391,9 @@ static int stm32_adc_irq_probe(struct pl
- 		return -ENOMEM;
+diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
+index 001d766cf291..a85f9f08877e 100644
+--- a/drivers/infiniband/hw/mlx5/dm.c
++++ b/drivers/infiniband/hw/mlx5/dm.c
+@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
+ 	int err;
+ 	u64 address;
+ 
+-	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
++	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+index 3d5e57ff558c..15ee84a2a470 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+@@ -25,7 +25,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+ 	if (!dm)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	spin_lock_init(&dm->lock);
+ 
+@@ -61,7 +61,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ err_steering:
+ 	kfree(dm);
+ 
+-	return ERR_PTR(-ENOMEM);
++	return NULL;
+ }
+ 
+ void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 13eceb601634..b3627163a292 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -901,9 +901,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
  	}
  
--	for (i = 0; i < priv->cfg->num_irqs; i++) {
--		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
--		irq_set_handler_data(priv->irq[i], priv);
--	}
-+	for (i = 0; i < priv->cfg->num_irqs; i++)
-+		irq_set_chained_handler_and_data(priv->irq[i],
-+						 stm32_adc_irq_handler, priv);
- 
- 	return 0;
- }
+ 	dev->dm = mlx5_dm_create(dev);
+-	if (IS_ERR(dev->dm))
+-		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
+-
+ 	dev->tracer = mlx5_fw_tracer_create(dev);
+ 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
+ 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
+-- 
+2.39.5
+
 
 
 
