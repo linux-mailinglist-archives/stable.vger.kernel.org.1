@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CFCB369C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970BDB36C40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55E71C41C55
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FB3DA02521
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3054350840;
-	Tue, 26 Aug 2025 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C748352FD4;
+	Tue, 26 Aug 2025 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgIF4U7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLM87aEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606E81662E7;
-	Tue, 26 Aug 2025 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066E035AABF;
+	Tue, 26 Aug 2025 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217738; cv=none; b=aJaYUM+E8+BHMrjzeoVQ1956R73ws4KqhK8Cjeqx6CNLwgjJ00btBrS48zzC8SYwWCLFZTE/4uCU+pXjylZMSohU4tWH2h8Su1LLwumFZDExvVEfbuctESZU6thw+XMDqbZvcZmBSll8hfz8QHRC76cWZE7I93bFKam+qh26Oxs=
+	t=1756218807; cv=none; b=n3GceRcBAmDUkSAb61CCXLC//By38vYJ3m7nmxnfYpJvT5+P3IFGOPRZELl/C1VGD7mRGiJnj7iZTsmPcV0CWbUI261AMYgbIxFZ4luw7kHk3Z0Rt5Y09xyrxy9EfX+adBhu3qCjY2U27mtlnePXa49oWch4J//OXb7+pcQQ4Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217738; c=relaxed/simple;
-	bh=ndH+JmSoxE6rk6uiLDZMdSSVmtvaBnv695NzwKZZYAE=;
+	s=arc-20240116; t=1756218807; c=relaxed/simple;
+	bh=lhnBjVi4+2pIe1jep4sOsHFt5eiD+ou2Lsn52oZvdPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mtTY2pK/9N8VqK7ocYih4wXxDhTPNDkL5d6pOexkfads3qu8zoLpmbH+R1Zgu486THpKo9HxqsSu+mfvc71C9MyfFiOiWHmLs51UUVB6qxPN4yP0ZwWcPJAFzPUYCqaijXixnvl4l9rSLKUNPxoMt3CcoR7JM/MJWgpw6h1F03M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgIF4U7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EE7C4CEF1;
-	Tue, 26 Aug 2025 14:15:37 +0000 (UTC)
+	 MIME-Version; b=Qi8nvJPHMFQ80gJvg1sxtmbQeeWTBkegoL2U2725eI3Y1upRabSa7+FU7SpQ0DQGOWLBoaqtx517DjdpN5GVfEyY8A9DWi1EsmCbwbi12VHOsnVkIIC7BMGFT0KkbqkTIEXIQxOL2SusSgInNQxDhmq/Q0lvWOAWDsUUTZkHw8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLM87aEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D8BC4CEF1;
+	Tue, 26 Aug 2025 14:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217738;
-	bh=ndH+JmSoxE6rk6uiLDZMdSSVmtvaBnv695NzwKZZYAE=;
+	s=korg; t=1756218806;
+	bh=lhnBjVi4+2pIe1jep4sOsHFt5eiD+ou2Lsn52oZvdPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgIF4U7VW6b7zrQdZun4R3mQWuRdXJo6NaUJDwuv7tsyffjz0WdIHngeGLbPqb0U/
-	 CmN9sI/SwCvwW4CSk/IAx69P+o9zyLUYQMnmtO5HK4P4QBsF0AgOkutDC84db4Cgtm
-	 va34Ibha5f6biR/ZzLdDhhD4zWsVp83I/9AVfmyI=
+	b=iLM87aEtbXOjOwZn8aqGtu2x2LK9iTO1lkxvtfbATPt5oC8lcpO1A3j9jWbKM6mlp
+	 EQRUOsE4UqEigrHgKq0JdrRNVi8C/C/LjcBlcQPfOnhMbBlVWVP3cR1b4XVhatXcev
+	 xbtiCoQa0oIiVtp8xkdgMzPt+8Zy7Bt9ch8CCt6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	zhangjian <zhangjian496@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/523] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+Subject: [PATCH 5.4 140/403] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
 Date: Tue, 26 Aug 2025 13:07:46 +0200
-Message-ID: <20250826110930.742531185@linuxfoundation.org>
+Message-ID: <20250826110910.623942587@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
+[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+The function needs to check the minimal filehandle length before it can
+access the embedded filehandle.
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: zhangjian <zhangjian496@huawei.com>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ fs/nfs/export.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 9580a7f7f73d..883399ad80e0 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -202,6 +202,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- 	return spi_write(st->spi, st->data.d8, 2);
- }
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index deecb67638aa..97b6fa0adb57 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -67,14 +67,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
+ 	struct nfs4_label *label = NULL;
+ 	struct nfs_fattr *fattr = NULL;
+ 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
+-	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
++	size_t fh_size = offsetof(struct nfs_fh, data);
+ 	const struct nfs_rpc_ops *rpc_ops;
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+-	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
++	int len = EMBED_FH_OFF;
+ 	u32 *p = fid->raw;
+ 	int ret;
  
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
-+
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -287,10 +305,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
- 
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
- 
- static int ad7768_set_freq(struct ad7768_state *st,
++	/* Initial check of bounds */
++	if (fh_len < len + XDR_QUADLEN(fh_size) ||
++	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
++		return NULL;
++	/* Calculate embedded filehandle size */
++	fh_size += server_fh->size;
++	len += XDR_QUADLEN(fh_size);
+ 	/* NULL translates to ESTALE */
+ 	if (fh_len < len || fh_type != len)
+ 		return NULL;
 -- 
 2.39.5
 
