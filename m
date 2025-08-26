@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722F9B36B74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32E9B35BD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1CA9A04D8B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128C61BA27B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2778D35AAB8;
-	Tue, 26 Aug 2025 14:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16992F8BD9;
+	Tue, 26 Aug 2025 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mpcx6zsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXsyOGdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98E4350855;
-	Tue, 26 Aug 2025 14:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D60529D26A;
+	Tue, 26 Aug 2025 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218801; cv=none; b=WK8BLCb4BSCjdk8LeBcKHTVF6+xRm+bNnXUdJlWHb75jBx62l2y5/mM9wAhPZWxBcyBn/sCZkUoC9MgnjGdMFd3sA/JPmNHojY3Mb79KSSZYOiCjnF9TkAraK3HFGMXVCCwVCVHfkDDG5x2WaKc4tSUIyM7NBmWaaLoQko9ys4E=
+	t=1756207453; cv=none; b=M6diS/Vo5TuFp+StUAAamjsp6qW4y/6R7xh+xaZPhEqoLLGidrVhtnPhpu8x9amfGtRXQhB/uQd7chrSbF+wRxaqG7UfVhyaiR3HfbmT+MuRLBENLGQmyGiPFRTn8YiiQz8NA0DEWjfkB/Ck1xjyWVx4XoFUdgCCVBTkiCedscY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218801; c=relaxed/simple;
-	bh=fkNDV/k+a3Hy1fHlrwAD6LWSwBwKnqI/lWe/kqJAMBI=;
+	s=arc-20240116; t=1756207453; c=relaxed/simple;
+	bh=v63Fe5SfwoBpBnzz7muaqRR1mJwV0LybCDILlSujg4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHhUeyGJ/dqG6lsgIWd5QnVw4ua3ny111lZmb7ElZ3VKoBn8e9Ou0tuDN6IhJizCXvIh5dobNUPlG62SGsCfRoy8xCKePsGlUI7BV+aMkz48o3ZVd+uLnCO51ziVo+VV77Ysb2NNegx5oVG9KSh8so+ik50A8KKX30U4R+Rr4Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mpcx6zsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DBAC4CEF1;
-	Tue, 26 Aug 2025 14:33:21 +0000 (UTC)
+	 MIME-Version; b=Ig75yNri9o0VCyo9ztiPl8e7zAVhbTx882Ze7hfiwP1whHEBt9b3At9bEz4EdsjpA8KsG9GlEG27V6Lx+ZH/wYmnpjFhtUgGObgNSGLQzC+nKcCCkvhfrbofsDyYb3lhmUa8+71+OPt3Lcq3voMHrBPwAKe5bTduKRsw8gSphMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXsyOGdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D09C4CEF1;
+	Tue, 26 Aug 2025 11:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218801;
-	bh=fkNDV/k+a3Hy1fHlrwAD6LWSwBwKnqI/lWe/kqJAMBI=;
+	s=korg; t=1756207453;
+	bh=v63Fe5SfwoBpBnzz7muaqRR1mJwV0LybCDILlSujg4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mpcx6zsinzypz+YMaXKDwHjW21/9DkRkftmEw/EJcNbw+aZYxhY++S/G2tpPVx9SO
-	 EMjnAuIRVM97irHynMqN7A4ZYzUs7qj5iHyyxS1NTf/ZxAFOf728U0ZPl9/K4WLBGH
-	 FSZ07BM+qDRkN/CoxSgmT8x7e4fa+QqD/S6EmEXQ=
+	b=VXsyOGdqjJwiG9CmmDtGr417GhWpE5lL/BKLnZ1z+edGbgl1XYRaU7xiWTVkJGvkb
+	 5AwX+wjKE2xCHu9yZAL6Qp/xOhJy0DST/SpFt8o+u502umQbdsJM0FMiH6OZCYP9JB
+	 l11NUNR1p6MLOX8mAmkvS7wl/EBo6byyju3CE+QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alastair DSilva <alastair@d-silva.org>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/403] pci/hotplug/pnv-php: Improve error msg on power state change failure
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 180/457] drm/amdgpu: Update external revid for GC v9.5.0
 Date: Tue, 26 Aug 2025 13:07:44 +0200
-Message-ID: <20250826110910.561331780@linuxfoundation.org>
+Message-ID: <20250826110941.825868024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 323c2a26ff43500a96799250330fab68903d776f ]
+commit 05c8b690511854ba31d8d1bff7139a13ec66b9e7 upstream.
 
-When changing the slot state, if opal hits an error and tells as such
-in the asynchronous reply, the warning "Wrong msg" is logged, which is
-rather confusing. Instead we can reuse the better message which is
-already used when we couldn't submit the asynchronous opal request
-initially.
+Use different external revid for GC v9.5.0 SOCs.
 
-Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191121134918.7155-8-fbarrat@linux.ibm.com
-Stable-dep-of: 466861909255 ("PCI: pnv_php: Clean up allocated IRQs on unplug")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 21c6764ed4bfaecad034bc4fd15dd64c5a436325)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 382494261830..8223fe0b751f 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -341,18 +341,19 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
- 	ret = pnv_pci_set_power_state(php_slot->id, state, &msg);
- 	if (ret > 0) {
- 		if (be64_to_cpu(msg.params[1]) != php_slot->dn->phandle	||
--		    be64_to_cpu(msg.params[2]) != state			||
--		    be64_to_cpu(msg.params[3]) != OPAL_SUCCESS) {
-+		    be64_to_cpu(msg.params[2]) != state) {
- 			pci_warn(php_slot->pdev, "Wrong msg (%lld, %lld, %lld)\n",
- 				 be64_to_cpu(msg.params[1]),
- 				 be64_to_cpu(msg.params[2]),
- 				 be64_to_cpu(msg.params[3]));
- 			return -ENOMSG;
- 		}
-+		if (be64_to_cpu(msg.params[3]) != OPAL_SUCCESS) {
-+			ret = -ENODEV;
-+			goto error;
-+		}
- 	} else if (ret < 0) {
--		pci_warn(php_slot->pdev, "Error %d powering %s\n",
--			 ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
--		return ret;
-+		goto error;
- 	}
- 
- 	if (state == OPAL_PCI_SLOT_POWER_OFF || state == OPAL_PCI_SLOT_OFFLINE)
-@@ -361,6 +362,11 @@ int pnv_php_set_slot_power_state(struct hotplug_slot *slot,
- 		ret = pnv_php_add_devtree(php_slot);
- 
- 	return ret;
-+
-+error:
-+	pci_warn(php_slot->pdev, "Error %d powering %s\n",
-+		 ret, (state == OPAL_PCI_SLOT_POWER_ON) ? "on" : "off");
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(pnv_php_set_slot_power_state);
- 
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -1218,6 +1218,8 @@ static int soc15_common_early_init(struc
+ 			AMD_PG_SUPPORT_JPEG;
+ 		/*TODO: need a new external_rev_id for GC 9.4.4? */
+ 		adev->external_rev_id = adev->rev_id + 0x46;
++		if (amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(9, 5, 0))
++			adev->external_rev_id = adev->rev_id + 0x50;
+ 		break;
+ 	default:
+ 		/* FIXME: not supported yet */
 
 
 
