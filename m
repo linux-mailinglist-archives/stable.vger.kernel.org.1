@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-176220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6D4B36AE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5043FB35C2F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 311957B638F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CD9D684B93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E9F3568FB;
-	Tue, 26 Aug 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6219934F48E;
+	Tue, 26 Aug 2025 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMNznMkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJ89FjsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B6E2676E9;
-	Tue, 26 Aug 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205D534F48D;
+	Tue, 26 Aug 2025 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219092; cv=none; b=oedjL5Xu3aC/NCDjSRTldBAZu3GcnyxGJB1Ty10RqgeAeTTA3RGGmq9nerVwIRU9c9KCFhDkFfpaIF3E8Cpq1GAE/iKmr/uw6yaO8/quKGnbc+uHiz139yzE6FxsgNQHQnxlhU746UOY9OypWQ/o8zusFXPoMS8/IC7XxAAKyOY=
+	t=1756207714; cv=none; b=lbQkXrrhrSjLBOBwHiUci2ZN8N10v9/ASCU4ylTljp+YbCmYOrVHY9twGPfyQWnY9EyzJFYBpNaPfM6Inv52ijTR+8mxW9rFFCmUXHd5ysnXcii8Du8KmfjeK2zEZRJdFNAtP04GXnnvJ+LP986RtpRthoLlyzZyN9yEJGEoGck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219092; c=relaxed/simple;
-	bh=ij22ufTKP5/nsicsrHcUe59PJeld8YngQtnRY4kVMBA=;
+	s=arc-20240116; t=1756207714; c=relaxed/simple;
+	bh=5SmGE928FRcuP9HL727USO6YtGGY6nvxL2+y7NZTEHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtWlQt6HVBYs8Re4QmS0UWs3JaWYLkQIaqVUFK1tl/AWn5tNJaa1yNlY8FGvlGemSxRzIXJPSy6dj+uC4PSeaAXFpTL07MLGJsO/F+zOte2MdyIBrJycRJdBV6kNhF8jaXOHGJr6PsjhwKIqtuvDsgU89Ld9RJN7Si641Vg7Rls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMNznMkG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0D1C4CEF1;
-	Tue, 26 Aug 2025 14:38:11 +0000 (UTC)
+	 MIME-Version; b=kCYD0sKDbvoXYgLo2zO0WWa6ENqqQrHpO5o0Pmap+KSUplSk09HMo2nDZH1qwQn8mwc1YqlHaKtOqOVq4nLkdCrtuR4nA+KORBAtRIgVH5w3TSU+wjDmlWQeKsAsdxzI4saTqnW4HeBiFPjrR9UQw2AEcxxp74kTh8dD89u3PY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJ89FjsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02ABC4CEF1;
+	Tue, 26 Aug 2025 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219091;
-	bh=ij22ufTKP5/nsicsrHcUe59PJeld8YngQtnRY4kVMBA=;
+	s=korg; t=1756207714;
+	bh=5SmGE928FRcuP9HL727USO6YtGGY6nvxL2+y7NZTEHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMNznMkG6JObo4k5+M3n0S27IWUFFeE5pngXxreOJJSWD+gUpHo0CblsuMlOhvS+t
-	 mq++sbU30CNjOYtWBzcxohuIrIvxi0KV0G9l4z5EWAin0Rxw9zBJ/YxXcr0KNYJ4sm
-	 2l2OFQtyjqihR+fh9AjFSnJ/o3Tzeeet3wKevxb0=
+	b=aJ89FjsSMQfq/XzqdGQl5rJh3LjC9XQAiP1ig+poyHnvNXxEOisTAHPe1J12yLKAQ
+	 afvszdhsnLKuZz87CK7yChyw2M/fUv1ZTJDqIwGSxIsTUM+yT43YNJu5Hpwym8dFaj
+	 hVwHEYT5n6rJlJD9d5oMtBdtXrk87Y1BHKsdvntc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 248/403] media: tc358743: Return an appropriate colorspace from tc358743_set_fmt
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sven Peter <sven@svenpeter.dev>,
+	Tomasz Jeznach <tjeznach@rivosinc.com>
+Subject: [PATCH 6.16 290/457] iommu: Remove ops.pgsize_bitmap from drivers that dont use it
 Date: Tue, 26 Aug 2025 13:09:34 +0200
-Message-ID: <20250826110913.673031137@linuxfoundation.org>
+Message-ID: <20250826110944.551000681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +67,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 377cc006a364dfdab2f3f221cfad63a9265200b8 ]
+[ Upstream commit 8901812485de1356e3757958af40fe0d3a48e986 ]
 
-When calling tc358743_set_fmt, the code was calling tc358743_get_fmt
-to choose a valid format. However that sets the colorspace
-based on information read back from the chip, not the colour
-format requested.
+These drivers all set the domain->pgsize_bitmap in their
+domain_alloc_paging() functions, so the ops value is never used. Delete
+it.
 
-The result was that if you called try or set format for UYVY
-when the current format was RGB3 then you would get told SRGB,
-and try RGB3 when current was UYVY and you would get told
-SMPTE170M.
-
-The value programmed in the VI_REP register for the colorspace
-is always set by this driver, therefore there is no need to read
-back the value, and never set to REC709.
-Return the colorspace based on the format set/tried instead.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Sven Peter <sven@svenpeter.dev> # for Apple DART
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Tomasz Jeznach <tjeznach@rivosinc.com> # for RISC-V
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/3-v2-68a2e1ba507c+1fb-iommu_rm_ops_pgsize_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Stable-dep-of: 72b6f7cd89ce ("iommu/virtio: Make instance lookup robust")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tc358743.c | 44 ++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 27 deletions(-)
+ drivers/iommu/apple-dart.c       |    1 -
+ drivers/iommu/intel/iommu.c      |    1 -
+ drivers/iommu/iommufd/selftest.c |    1 -
+ drivers/iommu/riscv/iommu.c      |    1 -
+ drivers/iommu/virtio-iommu.c     |    6 ++----
+ 5 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index ce54d963457d..26e9e95dd6ae 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -1685,12 +1685,23 @@ static int tc358743_enum_mbus_code(struct v4l2_subdev *sd,
- 	return 0;
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -991,7 +991,6 @@ static const struct iommu_ops apple_dart
+ 	.of_xlate = apple_dart_of_xlate,
+ 	.def_domain_type = apple_dart_def_domain_type,
+ 	.get_resv_regions = apple_dart_get_resv_regions,
+-	.pgsize_bitmap = -1UL, /* Restricted during dart probe */
+ 	.owner = THIS_MODULE,
+ 	.default_domain_ops = &(const struct iommu_domain_ops) {
+ 		.attach_dev	= apple_dart_attach_dev_paging,
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4390,7 +4390,6 @@ const struct iommu_ops intel_iommu_ops =
+ 	.device_group		= intel_iommu_device_group,
+ 	.is_attach_deferred	= intel_iommu_is_attach_deferred,
+ 	.def_domain_type	= device_def_domain_type,
+-	.pgsize_bitmap		= SZ_4K,
+ 	.page_response		= intel_iommu_page_response,
+ 	.default_domain_ops = &(const struct iommu_domain_ops) {
+ 		.attach_dev		= intel_iommu_attach_device,
+--- a/drivers/iommu/iommufd/selftest.c
++++ b/drivers/iommu/iommufd/selftest.c
+@@ -801,7 +801,6 @@ static const struct iommu_ops mock_ops =
+ 	.default_domain = &mock_blocking_domain,
+ 	.blocked_domain = &mock_blocking_domain,
+ 	.owner = THIS_MODULE,
+-	.pgsize_bitmap = MOCK_IO_PAGE_SIZE,
+ 	.hw_info = mock_domain_hw_info,
+ 	.domain_alloc_paging_flags = mock_domain_alloc_paging_flags,
+ 	.domain_alloc_nested = mock_domain_alloc_nested,
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -1533,7 +1533,6 @@ static void riscv_iommu_release_device(s
  }
  
-+static u32 tc358743_g_colorspace(u32 code)
-+{
-+	switch (code) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+		return V4L2_COLORSPACE_SRGB;
-+	case MEDIA_BUS_FMT_UYVY8_1X16:
-+		return V4L2_COLORSPACE_SMPTE170M;
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int tc358743_get_fmt(struct v4l2_subdev *sd,
- 		struct v4l2_subdev_pad_config *cfg,
- 		struct v4l2_subdev_format *format)
- {
- 	struct tc358743_state *state = to_state(sd);
--	u8 vi_rep = i2c_rd8(sd, VI_REP);
- 
- 	if (format->pad != 0)
- 		return -EINVAL;
-@@ -1700,23 +1711,7 @@ static int tc358743_get_fmt(struct v4l2_subdev *sd,
- 	format->format.height = state->timings.bt.height;
- 	format->format.field = V4L2_FIELD_NONE;
- 
--	switch (vi_rep & MASK_VOUT_COLOR_SEL) {
--	case MASK_VOUT_COLOR_RGB_FULL:
--	case MASK_VOUT_COLOR_RGB_LIMITED:
--		format->format.colorspace = V4L2_COLORSPACE_SRGB;
--		break;
--	case MASK_VOUT_COLOR_601_YCBCR_LIMITED:
--	case MASK_VOUT_COLOR_601_YCBCR_FULL:
--		format->format.colorspace = V4L2_COLORSPACE_SMPTE170M;
--		break;
--	case MASK_VOUT_COLOR_709_YCBCR_FULL:
--	case MASK_VOUT_COLOR_709_YCBCR_LIMITED:
--		format->format.colorspace = V4L2_COLORSPACE_REC709;
--		break;
--	default:
--		format->format.colorspace = 0;
--		break;
--	}
-+	format->format.colorspace = tc358743_g_colorspace(format->format.code);
- 
- 	return 0;
+ static const struct iommu_ops riscv_iommu_ops = {
+-	.pgsize_bitmap = SZ_4K,
+ 	.of_xlate = riscv_iommu_of_xlate,
+ 	.identity_domain = &riscv_iommu_identity_domain,
+ 	.blocked_domain = &riscv_iommu_blocking_domain,
+--- a/drivers/iommu/virtio-iommu.c
++++ b/drivers/iommu/virtio-iommu.c
+@@ -998,7 +998,7 @@ static void viommu_get_resv_regions(stru
+ 	iommu_dma_get_resv_regions(dev, head);
  }
-@@ -1730,19 +1725,14 @@ static int tc358743_set_fmt(struct v4l2_subdev *sd,
- 	u32 code = format->format.code; /* is overwritten by get_fmt */
- 	int ret = tc358743_get_fmt(sd, cfg, format);
  
--	format->format.code = code;
-+	if (code == MEDIA_BUS_FMT_RGB888_1X24 ||
-+	    code == MEDIA_BUS_FMT_UYVY8_1X16)
-+		format->format.code = code;
-+	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+-static struct iommu_ops viommu_ops;
++static const struct iommu_ops viommu_ops;
+ static struct virtio_driver virtio_iommu_drv;
  
- 	if (ret)
- 		return ret;
+ static int viommu_match_node(struct device *dev, const void *data)
+@@ -1086,7 +1086,7 @@ static bool viommu_capable(struct device
+ 	}
+ }
  
--	switch (code) {
--	case MEDIA_BUS_FMT_RGB888_1X24:
--	case MEDIA_BUS_FMT_UYVY8_1X16:
--		break;
--	default:
--		return -EINVAL;
--	}
+-static struct iommu_ops viommu_ops = {
++static const struct iommu_ops viommu_ops = {
+ 	.capable		= viommu_capable,
+ 	.domain_alloc_identity	= viommu_domain_alloc_identity,
+ 	.domain_alloc_paging	= viommu_domain_alloc_paging,
+@@ -1217,8 +1217,6 @@ static int viommu_probe(struct virtio_de
+ 		viommu->first_domain++;
+ 	}
+ 
+-	viommu_ops.pgsize_bitmap = viommu->pgsize_bitmap;
 -
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
- 		return 0;
+ 	virtio_device_ready(vdev);
  
--- 
-2.39.5
-
+ 	/* Populate the event queue with buffers */
 
 
 
