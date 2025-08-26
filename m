@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44BCB35C18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A96B35CD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B0C1364729
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A7E57C5548
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664329D26A;
-	Tue, 26 Aug 2025 11:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783DE2F9982;
+	Tue, 26 Aug 2025 11:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zrkzw515"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIimbmZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04182284B5B;
-	Tue, 26 Aug 2025 11:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33976267386;
+	Tue, 26 Aug 2025 11:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207538; cv=none; b=ttQUf8Jgvj+7KSkLlFEDuWjDy6+GmLC4Y9x75VLz8QfVE26R18R7xfvqt7v0BhYRAatgR6IBdXDSNIqAwOeXx53LnfzeqcEA/xICP9oZo3L7WwIte700rVeSGdDDyVhhrotLrhrheV2uG50xEiGFX+O/Xxfl/JzVQn0oR4Tllms=
+	t=1756208272; cv=none; b=ukhmMXH38dgJF7LD6oW+Lie0aDf2FZ/+fy7c2xxXP8HQtYkrFgrxrrhRoKtWjU4XyPyEZC50FnLLT/ryN9zw+zkLvsxenqwInKIR2S7tbWmN7q4zcwz19XdBjTM9FWnURfstaosNJP1WnyqpLkqG2aDwzfr8xSr7YTyTt4B6J5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207538; c=relaxed/simple;
-	bh=4uKiYWlPC38QxqEWgqGgFdtj50/4R5sYIDMvgBnShwM=;
+	s=arc-20240116; t=1756208272; c=relaxed/simple;
+	bh=iHb8W5X+qlpMbJ39YeJTBxM7lS41xNLsM8GrH5+cbUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DKz/tKUD5E9H67TUdiVwV/mf455qCew0K1tLbLV9g4Lp5yvHJk3NXe3vJNpC0KBP5B69XRuuQO/cSEqlGW8gK150EOcqqJ5KpWZlImhVABurlyKmd4054cOAfwzW3YFliimu9A8KBDNw+Iau58/hfabQNCQs/pIVqX84N2GZPKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zrkzw515; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7E3C4CEF1;
-	Tue, 26 Aug 2025 11:25:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lMF6zVGM+YW3tc25RvapUz+L4D09Oko7AZswmxPMnDBQ0fGcICNvyeugoJ9rWLnzM2hKL/b5DFcNHc3HPzJk4zgDrIxE12lqQGECJqUugdQBED3hxZigUExbKmFVV6/DahjYyp8zFHsGxgFLIgAB0KmJgWBLpTuizN2rDF51QbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIimbmZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAC8C4CEF1;
+	Tue, 26 Aug 2025 11:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207537;
-	bh=4uKiYWlPC38QxqEWgqGgFdtj50/4R5sYIDMvgBnShwM=;
+	s=korg; t=1756208272;
+	bh=iHb8W5X+qlpMbJ39YeJTBxM7lS41xNLsM8GrH5+cbUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zrkzw515fUDbXxs+CNpofnqQMN4UEZtDCBY4/d+aaANjlto9j0dGrWRH2gv5iwp1j
-	 GJx+gGnuw67mTYdXLzqeUb5DHZz4CColiXbRuoH0LoYgT4lQTc3jvTFiAydBKvLVLO
-	 B1vGvi3wzbL7RPqBDqwKjvT+NeIaviKKqKUapgvM=
+	b=uIimbmZlDRYBe4CaFCUNUYODPpMT3/EvQkw5UBfTzhaSBUXq7k5QKUTW1tHCYatnH
+	 uEPbzLdfxmsXL8zBAAU86KqTUmIrkZ5TotEZdW/sAwZun7ehVjUGx8uUk8cjcWlvIZ
+	 VNLf4RrQMqAClv3wxpTu1Q8FltYXXyA0VeLwlvzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 179/457] drm/amdgpu: track whether a queue is a kernel queue in amdgpu_mqd_prop
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 048/322] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
 Date: Tue, 26 Aug 2025 13:07:43 +0200
-Message-ID: <20250826110941.799883817@linuxfoundation.org>
+Message-ID: <20250826110916.582117027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 284d4dfe850e665f0e7d4dfaf4d3d3da76d11fb0 upstream.
+commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 upstream.
 
-Used to to set the MQD appropriately for each queue type.
-Kernel queues have additional privileges.
+On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
+and in this case the driver ends up programming the UTRL_NEXUS_TYPE
+incorrectly as 0.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.16.x
+This is because the left hand side of the shift is 1, which is of type
+int, i.e. 31 bits wide. Shifting by more than that width results in
+undefined behaviour.
+
+Fix this by switching to the BIT() macro, which applies correct type
+casting as required. This ensures the correct value is written to
+UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
+warning:
+
+    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
+    shift exponent 32 is too large for 32-bit type 'int'
+
+For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
+write.
+
+Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h      |    1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/ufs/host/ufs-exynos.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -886,6 +886,7 @@ struct amdgpu_mqd_prop {
- 	uint64_t csa_addr;
- 	uint64_t fence_address;
- 	bool tmz_queue;
-+	bool kernel_queue;
- };
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1078,8 +1078,8 @@ static int exynos_ufs_post_link(struct u
+ 	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
  
- struct amdgpu_mqd {
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -687,6 +687,7 @@ static void amdgpu_ring_to_mqd_prop(stru
- 	prop->eop_gpu_addr = ring->eop_gpu_addr;
- 	prop->use_doorbell = ring->use_doorbell;
- 	prop->doorbell_index = ring->doorbell_index;
-+	prop->kernel_queue = true;
+ 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
+-	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
+-	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
  
- 	/* map_queues packet doesn't need activate the queue,
- 	 * so only kiq need set this field.
+ 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
 
 
 
