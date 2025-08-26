@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1947B35C0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C84B3640C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86E2188DAC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236C68A2140
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E482C15A8;
-	Tue, 26 Aug 2025 11:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFC3341651;
+	Tue, 26 Aug 2025 13:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7Fa7Y9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWzud7WM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707229D273;
-	Tue, 26 Aug 2025 11:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D0B1DE4CD;
+	Tue, 26 Aug 2025 13:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207571; cv=none; b=NE1iJfk1QlGeh1/XIe7zZEJW4u+oWnT7LywBj/skIPJCUdwxB9k7N9j36wnoUpozvXElK0/0UUIN/2iw7aXBFJVR7g9CZL24SMsez7yG6FrNzdJP7gptxXaB5d6bH1MgaoXW+biQydV+65cTXT17TvZgR8vhR38rH7lPKoHliGE=
+	t=1756214772; cv=none; b=iZ3juGH1Sfir6KjizKoK1iFp7c/+OxUs1X+/Sz9/3kPUI8/n5Dg5IekHiU+xeKj0QVjcFF5qyla2IxgH9jmkgfhl1XCLM92wrOyS5/SzvbziuGmv6ZuzNwHPA1aF2Nrfr09npnTnV9X0ZWZayO7H/LBKBCljaMHwn/d3V4vrbAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207571; c=relaxed/simple;
-	bh=vj0xebZVJS8xaXu7ecdcpbtztkoRsPsZ8NXBLDNFEvo=;
+	s=arc-20240116; t=1756214772; c=relaxed/simple;
+	bh=zy7d+9vG6PGoTQV8uoOOBR5cyA0gRqGcdL8/Vyw1qQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/JO+SSjMSB8D1ZNBwh1VqX+wMcajZlwQbbiv/DaN18WbZT2FwiFtpFjHcFtFArbvdR4PM2bDOj/jLQOjrAxECE1gPsMU8h8NsOCo3Ekfd/6trNWGn7dAXRMV9RBQp5kCp5igJwH52SYiNZTil8RidsM2Bcd0OoSMqP/Ze/w4nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7Fa7Y9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0752DC4CEF1;
-	Tue, 26 Aug 2025 11:26:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nLM92GEeRlFUdlQYICUELKMDco5nrreahpr/LvUJHEex6AYjtC/tLJBG2z9ndojUpX8k2uQWBk3N36Hpp2MB1slgLkh9gwiG38+ZM1FVelf+glmAcD/Qf8Skv51blb5ZxH5iNTVqn6FPbwW7zg4iEzdW4oFJNq58DLhf9aqUiEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWzud7WM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC598C4CEF1;
+	Tue, 26 Aug 2025 13:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207571;
-	bh=vj0xebZVJS8xaXu7ecdcpbtztkoRsPsZ8NXBLDNFEvo=;
+	s=korg; t=1756214772;
+	bh=zy7d+9vG6PGoTQV8uoOOBR5cyA0gRqGcdL8/Vyw1qQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7Fa7Y9GQiEIsvNGCbBoJuHYYOTvRJTQmVuy/xDeff7ht1fNJ1LO9ihH8r45UErUV
-	 rQwTAm09K/NHvljbJjb1optsGXn1CF47zZ/0L7nUXC4Ex41ICupjPaHfxP9HaoyFcG
-	 KEXFcWwOegv6eVLIIWrtNls72ykUbrP/1DFNPjFI=
+	b=jWzud7WMoVxdz3fxEaWhg2OLMNaqc9tQPzhoE5Y/LgmiVm7Dgaj6q1wWlBUZuwkgJ
+	 d/03kbggI7/1dVLGSMkV8CCw+pL5OmvhiBHj196hodnE3E5W/stST6OKP2vKc3uqc7
+	 QBexCbAs5De12GENlbnDmbT5IQEirraDu6jwD+gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.16 233/457] iommu/arm-smmu-v3: Fix smmu_domain->nr_ats_masters decrement
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 6.1 264/482] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826110943.132732354@linuxfoundation.org>
+Message-ID: <20250826110937.289199807@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Willy Tarreau <w@1wt.eu>
 
-commit 685ca577b408ffd9c5a4057a2acc0cd3e6978b36 upstream.
+commit a477629baa2a0e9991f640af418e8c973a1c08e3 upstream.
 
-The arm_smmu_attach_commit() updates master->ats_enabled before calling
-arm_smmu_remove_master_domain() that is supposed to clean up everything
-in the old domain, including the old domain's nr_ats_masters. So, it is
-supposed to use the old ats_enabled state of the device, not an updated
-state.
+While nolibc-test does test syscalls, it doesn't test as much the rest
+of the macros, and a wrong spelling of FD_SETBITMASK in commit
+feaf75658783a broke programs using either FD_SET() or FD_CLR() without
+being noticed. Let's fix these macros.
 
-This isn't a problem if switching between two domains where:
- - old ats_enabled = false; new ats_enabled = false
- - old ats_enabled = true;  new ats_enabled = true
-but can fail cases where:
- - old ats_enabled = false; new ats_enabled = true
-   (old domain should keep the counter but incorrectly decreased it)
- - old ats_enabled = true;  new ats_enabled = false
-   (old domain needed to decrease the counter but incorrectly missed it)
-
-Update master->ats_enabled after arm_smmu_remove_master_domain() to fix
-this.
-
-Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Link: https://lore.kernel.org/r/20250801030127.2006979-1-nicolinc@nvidia.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: feaf75658783a ("nolibc: fix fd_set type")
+Cc: stable@vger.kernel.org # v6.2+
+Acked-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/nolibc/types.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2997,9 +2997,9 @@ void arm_smmu_attach_commit(struct arm_s
- 		/* ATS is being switched off, invalidate the entire ATC */
- 		arm_smmu_atc_inv_master(master, IOMMU_NO_PASID);
- 	}
--	master->ats_enabled = state->ats_enabled;
+--- a/tools/include/nolibc/types.h
++++ b/tools/include/nolibc/types.h
+@@ -102,7 +102,7 @@ typedef struct {
+ 		int __fd = (fd);					\
+ 		if (__fd >= 0)						\
+ 			__set->fds[__fd / FD_SETIDXMASK] &=		\
+-				~(1U << (__fd & FX_SETBITMASK));	\
++				~(1U << (__fd & FD_SETBITMASK));	\
+ 	} while (0)
  
- 	arm_smmu_remove_master_domain(master, state->old_domain, state->ssid);
-+	master->ats_enabled = state->ats_enabled;
- }
+ #define FD_SET(fd, set) do {						\
+@@ -119,7 +119,7 @@ typedef struct {
+ 		int __r = 0;						\
+ 		if (__fd >= 0)						\
+ 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
+-1U << (__fd & FD_SET_BITMASK));						\
++1U << (__fd & FD_SETBITMASK));						\
+ 		__r;							\
+ 	})
  
- static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 
 
