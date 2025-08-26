@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF4DB35D3D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E001B35C3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C721B7C5CAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C377B76CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9470199935;
-	Tue, 26 Aug 2025 11:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A663322752;
+	Tue, 26 Aug 2025 11:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VC6z673n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/72DfNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772FC1A256B;
-	Tue, 26 Aug 2025 11:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170B82BF3E2;
+	Tue, 26 Aug 2025 11:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208545; cv=none; b=fSxP8lsjKhJRU/hGKs7XUVf+0akZ9G2gLODBnUbcDHLCZmXhppA42EhF5rKRs4VT4G/zzhU9331HYbI+Xd2X5XsBbEfosP4v+0DLEUxinoswxyOw5cDbfaJj5jHTzvb8Ut2fy3YNopW221VW97FwnkwQ6fhoNc99PHQco8c70jo=
+	t=1756207781; cv=none; b=bgr2tWUiQrkAde1xIfZMrbwxGawa/2e9sIca2cLnvlUfKWf1AFfDccgUxYJe2OtvZ/yd4UKbW4aM6z2GNrSa+Cb3rpzBew4sS9YLusWRQTRsUqPDky0HsoGfgPWrf48xr2nUfBYSOVAEPpe91WFmxvZatnXPpANVUpMjC5FUdWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208545; c=relaxed/simple;
-	bh=n8YpGWAbR0LXBq2JW8p/1IDDiS3lwEQx/pst3nrg0ks=;
+	s=arc-20240116; t=1756207781; c=relaxed/simple;
+	bh=gw5Lyfs/MM0xavlkWdOP+HsFr2jUzJh/em441E86FFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWUbKYvHZZ3vQ+lXwzPrDrSaiXDWRLf2dVSBhjSln4eDemxKbTuFImulciB5PvlJCUoVtKw0PqMu9dhFJCu5wBZJCdX3zRfiDbRWld+cd/8rGV6Pu53V/w6i8v6aXhVNAWbG0WeGCpNum0RbJSpYubPml+0qmC9GeCtyxN2wR0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VC6z673n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0899CC4CEF1;
-	Tue, 26 Aug 2025 11:42:24 +0000 (UTC)
+	 MIME-Version; b=ScsAJ0EOlVNFkvpQmwpvCcd23WopFehBX1R97TxNOHGVjEZZgcZDWwdLX8lhYkH2iR5+SEwm3WcEkwYEOVEvbKDhTyJ79DQZCWJpFfpi0LDSQ0yRiD97Ov6YHYzOsepTHAru8m0eNoU3NK3c8EP1ayNXpVocbwhU7ke+96lxgLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/72DfNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA5EC4CEF1;
+	Tue, 26 Aug 2025 11:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208545;
-	bh=n8YpGWAbR0LXBq2JW8p/1IDDiS3lwEQx/pst3nrg0ks=;
+	s=korg; t=1756207781;
+	bh=gw5Lyfs/MM0xavlkWdOP+HsFr2jUzJh/em441E86FFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VC6z673nyYVgD9FX6xVnrIQAputWbR0uiTpDG62m6mrZ+Ya582x6xKsLYZzmsWzib
-	 yLP91w/iR8wv/hQeXsARwQImqRRdyY0F9XQBmWAg1+xnEc8k4KrDB0teZxImVd9qEM
-	 iC7wHj68l2Q1HpkPKWNZM0C1ZOS5mQ0bejCJPysg=
+	b=m/72DfNWTSkzFrC2ghMKigWOGrrpEDDk40yge0H/AUpxbtvinoCyXkP1PT1eWaCX5
+	 nPAi5ciRXqTUWAeGWmnLE+THGIcB3W1WT9UUpaYnOXZgG7g5T69hfphLE56I4lYp4t
+	 Yk3zHFTNuNJWGVe1NEkTFAsKgEEg2c50d2cR6ZNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Thomas Bertschinger <tahbertschinger@gmail.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/322] btrfs: send: add and use helper to rename current inode when processing refs
+Subject: [PATCH 6.16 284/457] fhandle: do_handle_open() should get FD with user flags
 Date: Tue, 26 Aug 2025 13:09:28 +0200
-Message-ID: <20250826110919.594694100@linuxfoundation.org>
+Message-ID: <20250826110944.397879379@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Thomas Bertschinger <tahbertschinger@gmail.com>
 
-[ Upstream commit ec666c84deba56f714505b53556a97565f72db86 ]
+[ Upstream commit b5ca88927e353185b3d9ac4362d33e5aeb25771f ]
 
-Extract the logic to rename the current inode at process_recorded_refs()
-into a helper function and use it, therefore removing duplicated logic
-and making it easier for an upcoming patch by avoiding yet more duplicated
-logic.
+In f07c7cc4684a, do_handle_open() was switched to use the automatic
+cleanup method for getting a FD. In that change it was also switched
+to pass O_CLOEXEC unconditionally to get_unused_fd_flags() instead
+of passing the user-specified flags.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
+I don't see anything in that commit description that indicates this was
+intentional, so I am assuming it was an oversight.
+
+With this fix, the FD will again be opened with, or without, O_CLOEXEC
+according to what the user requested.
+
+Fixes: f07c7cc4684a ("fhandle: simplify error handling")
+Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
+Link: https://lore.kernel.org/20250814235431.995876-4-tahbertschinger@gmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |   23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ fs/fhandle.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4165,6 +4165,19 @@ out:
- 	return ret;
- }
+diff --git a/fs/fhandle.c b/fs/fhandle.c
+index 66ff60591d17..e21ec857f2ab 100644
+--- a/fs/fhandle.c
++++ b/fs/fhandle.c
+@@ -404,7 +404,7 @@ static long do_handle_open(int mountdirfd, struct file_handle __user *ufh,
+ 	if (retval)
+ 		return retval;
  
-+static int rename_current_inode(struct send_ctx *sctx,
-+				struct fs_path *current_path,
-+				struct fs_path *new_path)
-+{
-+	int ret;
-+
-+	ret = send_rename(sctx, current_path, new_path);
-+	if (ret < 0)
-+		return ret;
-+
-+	return fs_path_copy(current_path, new_path);
-+}
-+
- /*
-  * This does all the move/link/unlink/rmdir magic.
-  */
-@@ -4450,13 +4463,10 @@ static int process_recorded_refs(struct
- 		 * it depending on the inode mode.
- 		 */
- 		if (is_orphan && can_rename) {
--			ret = send_rename(sctx, valid_path, cur->full_path);
-+			ret = rename_current_inode(sctx, valid_path, cur->full_path);
- 			if (ret < 0)
- 				goto out;
- 			is_orphan = false;
--			ret = fs_path_copy(valid_path, cur->full_path);
--			if (ret < 0)
--				goto out;
- 		} else if (can_rename) {
- 			if (S_ISDIR(sctx->cur_inode_mode)) {
- 				/*
-@@ -4464,10 +4474,7 @@ static int process_recorded_refs(struct
- 				 * dirs, we always have one new and one deleted
- 				 * ref. The deleted ref is ignored later.
- 				 */
--				ret = send_rename(sctx, valid_path,
--						  cur->full_path);
--				if (!ret)
--					ret = fs_path_copy(valid_path,
-+				ret = rename_current_inode(sctx, valid_path,
- 							   cur->full_path);
- 				if (ret < 0)
- 					goto out;
+-	CLASS(get_unused_fd, fd)(O_CLOEXEC);
++	CLASS(get_unused_fd, fd)(open_flag);
+ 	if (fd < 0)
+ 		return fd;
+ 
+-- 
+2.50.1
+
 
 
 
