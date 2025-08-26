@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3EB361E2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:13:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647CAB35E5A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 511691886CC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30A004652C9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0472D320B;
-	Tue, 26 Aug 2025 13:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52270321438;
+	Tue, 26 Aug 2025 11:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es3/0Dy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1fA/BW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95CF241673;
-	Tue, 26 Aug 2025 13:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C781FECAB;
+	Tue, 26 Aug 2025 11:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213767; cv=none; b=YkNXUbFbNU6NRRSckYxj4X8z0bf05FrhGYiTPBWW4QQC6RCdU43Jm4WApyewPtt/DaO19YDdtIOXwCuJPmfhIsD+7d46civ4AnGH2wFWjhYUSMQsbrrky0lcXbujG6ZDMtQyA6Sw1SxowBGWcHF/QciqLV/0pehbByJr7GCSaHk=
+	t=1756208731; cv=none; b=Wlq3wHm8s4XUKfiGUP3IUTdVUc6R1f+NJ+Pu7Cfrwo7390LiNj789rcZPEjYi0l/QAS7qK5yaNS/KfP5IXk/HAUScYpnSbg1OhPBGlnnB6yeJcnLfZIJyLCNM928NGtAo3RGh7H0WHrf0r/vV6FxvmzxeKLQDQGi3RUzSOK8ebE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213767; c=relaxed/simple;
-	bh=Mjk0oRMTNeKhBNHYvps4nigQFetcRBr3Bs4MpXf+CWY=;
+	s=arc-20240116; t=1756208731; c=relaxed/simple;
+	bh=8K6OLmgV7c79MFjySWlJmFXq8eiob1lzVO942DvXM+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfCVNhkskoiIwYdlPQDT/No9A+vpWQnApGAZpHbCas4drelHWs9cMNDUOsMPD0FGxfuJbddncxdIiMVEHWuZd5CC2rU7AzaBX7kt/ygJSlURIOeruxaoRawTwndgCV+sRDDgzZJvBLwSR7Cy8YN3v+ByLkWUvncJmU7AOiKJWiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es3/0Dy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E546DC4CEF1;
-	Tue, 26 Aug 2025 13:09:26 +0000 (UTC)
+	 MIME-Version; b=gPSoCJlz+3dPVuv/MZZtsrHdF6SWmjPwJZ5kqYJiALFE3qqgbJsC4UkvyXkypl4mUw5JdY0pjJVa9MgxDkL7l9ZvhvT3AWfPuRS4TvsIBroYExE8p4wAw60wFuGEtOc+uOylnQ0mp3CC4nOAASO/LQMZM1tA50Y+f6UnIqW28x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1fA/BW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F122C4CEF4;
+	Tue, 26 Aug 2025 11:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213767;
-	bh=Mjk0oRMTNeKhBNHYvps4nigQFetcRBr3Bs4MpXf+CWY=;
+	s=korg; t=1756208730;
+	bh=8K6OLmgV7c79MFjySWlJmFXq8eiob1lzVO942DvXM+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=es3/0Dy7nhZEuLy5SiBslnC18FSfyZFAj3HJg1Ed3pJ7j8s/SaohluDoHfHB8yt3C
-	 zyuR5XuC0TODOCvKjAJCsAVD8BYgbz3OoyjrkerH0gXwjoMhBoxxwxPzotsxit0tpB
-	 bs41ESz1qj2wJelQ1U06R8NF01AxmN0/msWR8LPE=
+	b=t1fA/BW1Emjl95PzQylvR0mbizFeoF4N+UIZNuWPZ/30OvaQE5uR/QQB8FK46smPt
+	 339rNvI5Jspetc/U0g6jmAa63hu4OZ+xZlNIaGsdz05Gm/SKQ6VtjwDrQHLpopID2p
+	 P7oGuvqQ0Fjk6WNtMz5IdEaMi3X7Dxu20fOA/s0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 471/587] sched/topology: Add a new arch_scale_freq_ref() method
-Date: Tue, 26 Aug 2025 13:10:20 +0200
-Message-ID: <20250826111004.955613953@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Charalampos Mitrodimas <charmitro@posteo.net>
+Subject: [PATCH 6.12 206/322] debugfs: fix mount options not being applied
+Date: Tue, 26 Aug 2025 13:10:21 +0200
+Message-ID: <20250826110920.956513117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,207 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-commit 9942cb22ea458c34fa17b73d143ea32d4df1caca upstream.
+commit ba6cc29351b1fa0cb9adce91b88b9f3c3cbe9c46 upstream.
 
-Create a new method to get a unique and fixed max frequency. Currently
-cpuinfo.max_freq or the highest (or last) state of performance domain are
-used as the max frequency when computing the frequency for a level of
-utilization, but:
+Mount options (uid, gid, mode) are silently ignored when debugfs is
+mounted. This is a regression introduced during the conversion to the
+new mount API.
 
-  - cpuinfo_max_freq can change at runtime. boost is one example of
-    such change.
+When the mount API conversion was done, the parsed options were never
+applied to the superblock when it was reused. As a result, the mount
+options were ignored when debugfs was mounted.
 
-  - cpuinfo.max_freq and last item of the PD can be different leading to
-    different results between cpufreq and energy model.
+Fix this by following the same pattern as the tracefs fix in commit
+e4d32142d1de ("tracing: Fix tracefs mount options"). Call
+debugfs_reconfigure() in debugfs_get_tree() to apply the mount options
+to the superblock after it has been created or reused.
 
-We need to save the reference frequency that has been used when computing
-the CPUs capacity and use this fixed and coherent value to convert between
-frequency and CPU's capacity.
+As an example, with the bug the "mode" mount option is ignored:
 
-In fact, we already save the frequency that has been used when computing
-the capacity of each CPU. We extend the precision to save kHz instead of
-MHz currently and we modify the type to be aligned with other variables
-used when converting frequency to capacity and the other way.
+  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
+  $ mount | grep debugfs_test
+  debugfs on /tmp/debugfs_test type debugfs (rw,relatime)
+  $ ls -ld /tmp/debugfs_test
+  drwx------ 25 root root 0 Aug  4 14:16 /tmp/debugfs_test
 
-[ mingo: Minor edits. ]
+With the fix applied, it works as expected:
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20231211104855.558096-2-vincent.guittot@linaro.org
-Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
+  $ mount | grep debugfs_test
+  debugfs on /tmp/debugfs_test type debugfs (rw,relatime,mode=666)
+  $ ls -ld /tmp/debugfs_test
+  drw-rw-rw- 37 root root 0 Aug  2 17:28 /tmp/debugfs_test
+
+Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220406
+Cc: stable <stable@kernel.org>
+Reviewed-by: Eric Sandeen <sandeen@redhat.com>
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/r/20250816-debugfs-mount-opts-v3-1-d271dad57b5b@posteo.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/topology.h   |    1 +
- arch/arm64/include/asm/topology.h |    1 +
- arch/riscv/include/asm/topology.h |    1 +
- drivers/base/arch_topology.c      |   29 ++++++++++++++---------------
- include/linux/arch_topology.h     |    7 +++++++
- include/linux/sched/topology.h    |    8 ++++++++
- 6 files changed, 32 insertions(+), 15 deletions(-)
+ fs/debugfs/inode.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/arm/include/asm/topology.h
-+++ b/arch/arm/include/asm/topology.h
-@@ -13,6 +13,7 @@
- #define arch_set_freq_scale topology_set_freq_scale
- #define arch_scale_freq_capacity topology_get_freq_scale
- #define arch_scale_freq_invariant topology_scale_freq_invariant
-+#define arch_scale_freq_ref topology_get_freq_ref
- #endif
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -183,6 +183,9 @@ static int debugfs_reconfigure(struct fs
+ 	struct debugfs_fs_info *sb_opts = sb->s_fs_info;
+ 	struct debugfs_fs_info *new_opts = fc->s_fs_info;
  
- /* Replace task scheduler's default cpu-invariant accounting */
---- a/arch/arm64/include/asm/topology.h
-+++ b/arch/arm64/include/asm/topology.h
-@@ -23,6 +23,7 @@ void update_freq_counters_refs(void);
- #define arch_set_freq_scale topology_set_freq_scale
- #define arch_scale_freq_capacity topology_get_freq_scale
- #define arch_scale_freq_invariant topology_scale_freq_invariant
-+#define arch_scale_freq_ref topology_get_freq_ref
++	if (!new_opts)
++		return 0;
++
+ 	sync_filesystem(sb);
  
- #ifdef CONFIG_ACPI_CPPC_LIB
- #define arch_init_invariance_cppc topology_init_cpu_capacity_cppc
---- a/arch/riscv/include/asm/topology.h
-+++ b/arch/riscv/include/asm/topology.h
-@@ -9,6 +9,7 @@
- #define arch_set_freq_scale		topology_set_freq_scale
- #define arch_scale_freq_capacity	topology_get_freq_scale
- #define arch_scale_freq_invariant	topology_scale_freq_invariant
-+#define arch_scale_freq_ref		topology_get_freq_ref
+ 	/* structure copy of new mount options to sb */
+@@ -269,10 +272,16 @@ static int debugfs_fill_super(struct sup
  
- /* Replace task scheduler's default cpu-invariant accounting */
- #define arch_scale_cpu_capacity	topology_get_cpu_scale
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -19,6 +19,7 @@
- #include <linux/init.h>
- #include <linux/rcupdate.h>
- #include <linux/sched.h>
-+#include <linux/units.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/thermal_pressure.h>
-@@ -26,7 +27,8 @@
- static DEFINE_PER_CPU(struct scale_freq_data __rcu *, sft_data);
- static struct cpumask scale_freq_counters_mask;
- static bool scale_freq_invariant;
--static DEFINE_PER_CPU(u32, freq_factor) = 1;
-+DEFINE_PER_CPU(unsigned long, capacity_freq_ref) = 1;
-+EXPORT_PER_CPU_SYMBOL_GPL(capacity_freq_ref);
- 
- static bool supports_scale_freq_counters(const struct cpumask *cpus)
+ static int debugfs_get_tree(struct fs_context *fc)
  {
-@@ -170,9 +172,9 @@ DEFINE_PER_CPU(unsigned long, thermal_pr
-  * operating on stale data when hot-plug is used for some CPUs. The
-  * @capped_freq reflects the currently allowed max CPUs frequency due to
-  * thermal capping. It might be also a boost frequency value, which is bigger
-- * than the internal 'freq_factor' max frequency. In such case the pressure
-- * value should simply be removed, since this is an indication that there is
-- * no thermal throttling. The @capped_freq must be provided in kHz.
-+ * than the internal 'capacity_freq_ref' max frequency. In such case the
-+ * pressure value should simply be removed, since this is an indication that
-+ * there is no thermal throttling. The @capped_freq must be provided in kHz.
-  */
- void topology_update_thermal_pressure(const struct cpumask *cpus,
- 				      unsigned long capped_freq)
-@@ -183,10 +185,7 @@ void topology_update_thermal_pressure(co
- 
- 	cpu = cpumask_first(cpus);
- 	max_capacity = arch_scale_cpu_capacity(cpu);
--	max_freq = per_cpu(freq_factor, cpu);
--
--	/* Convert to MHz scale which is used in 'freq_factor' */
--	capped_freq /= 1000;
-+	max_freq = arch_scale_freq_ref(cpu);
- 
- 	/*
- 	 * Handle properly the boost frequencies, which should simply clean
-@@ -279,13 +278,13 @@ void topology_normalize_cpu_scale(void)
- 
- 	capacity_scale = 1;
- 	for_each_possible_cpu(cpu) {
--		capacity = raw_capacity[cpu] * per_cpu(freq_factor, cpu);
-+		capacity = raw_capacity[cpu] * per_cpu(capacity_freq_ref, cpu);
- 		capacity_scale = max(capacity, capacity_scale);
- 	}
- 
- 	pr_debug("cpu_capacity: capacity_scale=%llu\n", capacity_scale);
- 	for_each_possible_cpu(cpu) {
--		capacity = raw_capacity[cpu] * per_cpu(freq_factor, cpu);
-+		capacity = raw_capacity[cpu] * per_cpu(capacity_freq_ref, cpu);
- 		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
- 			capacity_scale);
- 		topology_set_cpu_scale(cpu, capacity);
-@@ -321,15 +320,15 @@ bool __init topology_parse_cpu_capacity(
- 			cpu_node, raw_capacity[cpu]);
- 
- 		/*
--		 * Update freq_factor for calculating early boot cpu capacities.
-+		 * Update capacity_freq_ref for calculating early boot CPU capacities.
- 		 * For non-clk CPU DVFS mechanism, there's no way to get the
- 		 * frequency value now, assuming they are running at the same
--		 * frequency (by keeping the initial freq_factor value).
-+		 * frequency (by keeping the initial capacity_freq_ref value).
- 		 */
- 		cpu_clk = of_clk_get(cpu_node, 0);
- 		if (!PTR_ERR_OR_ZERO(cpu_clk)) {
--			per_cpu(freq_factor, cpu) =
--				clk_get_rate(cpu_clk) / 1000;
-+			per_cpu(capacity_freq_ref, cpu) =
-+				clk_get_rate(cpu_clk) / HZ_PER_KHZ;
- 			clk_put(cpu_clk);
- 		}
- 	} else {
-@@ -411,7 +410,7 @@ init_cpu_capacity_callback(struct notifi
- 	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
- 
- 	for_each_cpu(cpu, policy->related_cpus)
--		per_cpu(freq_factor, cpu) = policy->cpuinfo.max_freq / 1000;
-+		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
- 
- 	if (cpumask_empty(cpus_to_visit)) {
- 		topology_normalize_cpu_scale();
---- a/include/linux/arch_topology.h
-+++ b/include/linux/arch_topology.h
-@@ -27,6 +27,13 @@ static inline unsigned long topology_get
- 
- void topology_set_cpu_scale(unsigned int cpu, unsigned long capacity);
- 
-+DECLARE_PER_CPU(unsigned long, capacity_freq_ref);
++	int err;
 +
-+static inline unsigned long topology_get_freq_ref(int cpu)
-+{
-+	return per_cpu(capacity_freq_ref, cpu);
-+}
-+
- DECLARE_PER_CPU(unsigned long, arch_freq_scale);
+ 	if (!(debugfs_allow & DEBUGFS_ALLOW_API))
+ 		return -EPERM;
  
- static inline unsigned long topology_get_freq_scale(int cpu)
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -275,6 +275,14 @@ void arch_update_thermal_pressure(const
- { }
- #endif
- 
-+#ifndef arch_scale_freq_ref
-+static __always_inline
-+unsigned int arch_scale_freq_ref(int cpu)
-+{
-+	return 0;
-+}
-+#endif
+-	return get_tree_single(fc, debugfs_fill_super);
++	err = get_tree_single(fc, debugfs_fill_super);
++	if (err)
++		return err;
 +
- static inline int task_node(const struct task_struct *p)
- {
- 	return cpu_to_node(task_cpu(p));
++	return debugfs_reconfigure(fc);
+ }
+ 
+ static void debugfs_free_fc(struct fs_context *fc)
 
 
 
