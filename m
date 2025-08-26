@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107F5B3698A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE4FB35D6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6281F1C25A73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74C771BA4EF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9700335A281;
-	Tue, 26 Aug 2025 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F34D301486;
+	Tue, 26 Aug 2025 11:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4QLagPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvIBXX/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53201350D65;
-	Tue, 26 Aug 2025 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7FB2135B8;
+	Tue, 26 Aug 2025 11:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217728; cv=none; b=NbWoIceZFJ3FGH+Axu7VFkLa4izgSbSJVf00YhJ/am3J2/ct+CgtF1Xdcyx4rKtGkMIE0rjO1AXoSTyijFD59ojO34l9WBgqWhgc/AzZ1g1krUYZyOjiKVbwUiQMYziv92tPqm5fGIfAASi1+Lpq6UIg/skhPtITgotS1KN46QU=
+	t=1756208231; cv=none; b=Ts/kzxNPcy9QUzE1V2akewthE9OrZk8a8qCCwDGQvbGv8CbKdi8lDIXKK7vjjM2ywlobYuIQ6mqzKUD6520tu7pKlg6iJxCY8ZeNDgu5EvNsAzs11Vg9K/aXFwyJVuJu5f4FJAi7dbFf+22p44NFMQyC1ibjeZevrKLBoQqnpAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217728; c=relaxed/simple;
-	bh=rfjkrCC2KoIaya/3KzodZE6t623N+vRxdBZwnqR0IaM=;
+	s=arc-20240116; t=1756208231; c=relaxed/simple;
+	bh=DFquoXEJzH6RDc76dJCoMU/nhRQMrkmhAEBuaYieb8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4KBVOVSmexuMq5Nn0XQqmiCM/NQiHgY1NNOK699cIlv+vlLYMqaveka4lnnrkBrGX/W7Izv9u/xf9DxcKCJVTEvALW4NCb3urEFpiuxLy9OE8ltGqFR9TWq5x9Hde8n12TS1NfmGDmDB5OSYgty/obdrQJIpZqMJW6QcHO3hOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4QLagPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A859C113D0;
-	Tue, 26 Aug 2025 14:15:27 +0000 (UTC)
+	 MIME-Version; b=hi9RrpB8c09TKiKEJE5XW1tohx8bC9TAYbjLiVRQw7KbzsF8aU6pBttexxfz38sEVjT59v10me1MWiuX956M3QXB2mQp2oJU3bFurxx/dqJbdi5wvYH64/BhB0iHJPwsqLaFubL+uEWtLjyi2u0IysIpkAcXunrojCu0P/99JbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvIBXX/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3651C4CEF1;
+	Tue, 26 Aug 2025 11:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217727;
-	bh=rfjkrCC2KoIaya/3KzodZE6t623N+vRxdBZwnqR0IaM=;
+	s=korg; t=1756208231;
+	bh=DFquoXEJzH6RDc76dJCoMU/nhRQMrkmhAEBuaYieb8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4QLagPC2/63agAl2jAmzI7IFJxZwv+3upBOJ8NlGbappyzO4hkKtwB3XOtZu3G2N
-	 bcs0qZ+1mEqLfu+D0scInXCWyJMd1ItfrCvFV51FpJ+URuqTJYB+3s4MBDW8/Ev9mP
-	 yiVUdP/3DSrXGTDl5bbvz2Y9Jetbpj2l1KkFFpVo=
+	b=bvIBXX/Kyk24+IhjpFlLV+uI39gBZqW+QdwjIVpmQb6xKPTSQFC058ec9sIx26r3h
+	 NgaSkyPo/NNE6VPEa+LurQN6Qr/+M0r8vHScD8X7+CqMrLapswQvKX9jmXAcVSEZc+
+	 Vu5rQO1X9CQySRKiVqT0dxgKLDWGNrAqalBrpwkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 235/523] selftests: tracing: Use mutex_unlock for testing glob filter
-Date: Tue, 26 Aug 2025 13:07:25 +0200
-Message-ID: <20250826110930.245970767@linuxfoundation.org>
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 031/322] ext4: fix reserved gdt blocks handling in fsmap
+Date: Tue, 26 Aug 2025 13:07:26 +0200
+Message-ID: <20250826110916.101690815@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
+commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
 
-Since commit c5b6ababd21a ("locking/mutex: implement
-mutex_trylock_nested") makes mutex_trylock() as an inlined
-function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
-mutex_trylock() for testing the glob filter of ftrace.
+In some cases like small FSes with no meta_bg and where the resize
+doesn't need extra gdt blocks as it can fit in the current one,
+s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
+length entry, which is incorrect.
 
-Use mutex_unlock instead.
+  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
+  $ mount /dev/sda /mnt/scratch
+  $ xfs_io -c "fsmap -d" /mnt/scartch
 
-Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+        0: 253:48 [0..127]: static fs metadata 128
+        1: 253:48 [128..255]: special 102:1 128
+        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
+        3: 253:48 [256..383]: special 102:3 128
+
+Fix this by adding a check for this case.
+
+Cc: stable@kernel.org
+Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/fsmap.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-index 4b994b6df5ac..ed81eaf2afd6 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
- ftrace_filter_check '*pin*lock' '.*pin.*lock$'
- 
- # filter by start*mid*
--ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
-+ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
- 
- # Advanced full-glob matching feature is recently supported.
- # Skip the tests if we are sure the kernel does not support it.
--- 
-2.39.5
-
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
+ 	/* Reserved GDT blocks */
+ 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
+ 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
++
++		/*
++		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
++		 * check for that.
++		 */
++		if (!len)
++			return 0;
++
+ 		error = ext4_getfsmap_fill(meta_list, fsb, len,
+ 					   EXT4_FMR_OWN_RESV_GDT);
+ 		if (error)
 
 
 
