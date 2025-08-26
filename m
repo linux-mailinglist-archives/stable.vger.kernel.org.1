@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B754B36BA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8D0B367D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33A007BB199
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53733580701
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7C33568F0;
-	Tue, 26 Aug 2025 14:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A22350D5D;
+	Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ElNUd/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZPYnSCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3772F352FEE;
-	Tue, 26 Aug 2025 14:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A432A34F47D;
+	Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219378; cv=none; b=GiJjVIoIf0DaWjicVrj0zSR4Ip9OZZF1F7DfRq6JWN8LbDWGeFxwk0vRhaT20esJz1naWN/y5WVmv+wHwET19HzRZEdtD/ygaxK3mBk/rtREz0F6MJULP/dEJVf9DsLrxIqYFDxur4iyEhY/Yy/Rp8TQuhUrpM8DdP/xUEyLeaM=
+	t=1756216809; cv=none; b=K8KEMhmBIK1x7ECv3ENgtkg9ZeEkq8o2eTFCcL8bdLn8VjNMzm2tAtyiPGklYo4MyQb3Sw/cFXr6NmXgKsrRISHwW0yKgK26uSA6e3gRowXbx+erR4R/9fJj2fqziQ3UFBre2N1KZt0A/TRBoNG+X9zCgNdezVjHcoZ6ybemKiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219378; c=relaxed/simple;
-	bh=Vb3LMFbrP5l0jDPoACsk+nu6jsceIB9jLAprf62dZJU=;
+	s=arc-20240116; t=1756216809; c=relaxed/simple;
+	bh=3YHn6wJWKXiLXWMG6hlzRTPTG5d0JwcOcC3nKUQo6q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VC0Iy33MrktvnCOupfogxaIrBjqcYIyMkMGI3wEIvJdqJ9LrQ9BzNhcYqAOlhnbc1pCC3qT8mj/ZOFSAByk7pSFS7OrGnUBeRYE9hH0eALbB0WAvh3GnzQGVDxpVcH96DqWsndHZIGKpsurv3VdTNI2e3WySbdi5jXR3eE43EaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ElNUd/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F11DC4CEF1;
-	Tue, 26 Aug 2025 14:42:57 +0000 (UTC)
+	 MIME-Version; b=ht7o//n7XM53e4JFHT6tNq9VtrNRARls4m/XVyF+9DsexwFunAff760HOogJPnRNGS9gTh1CWB9klk4kGwgPIKKCusvrhEM2iH1XEMDLpq3uJsAING8oPz6mCn/ZrVi9OZIDVu8v/uHLHzLxxeWYZjzzYJflYBQBibXc/kypfUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZPYnSCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37191C4CEF1;
+	Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219377;
-	bh=Vb3LMFbrP5l0jDPoACsk+nu6jsceIB9jLAprf62dZJU=;
+	s=korg; t=1756216809;
+	bh=3YHn6wJWKXiLXWMG6hlzRTPTG5d0JwcOcC3nKUQo6q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ElNUd/2Pm49ZgW7AbOWjSUqjw4P2gj6Bli8GFuY5Yhw9HDBAaXNKQsbyKSbLdviY
-	 NRx/jfuq8H/LmtwAc8iH3VaLouChfeWBWFn4AM2wEtVJ6bFGwwkLTdoaWmu8qno1l8
-	 TaasavCKxjmBFTLYWVAUy7XJm4EdkS9U/apPBLBU=
+	b=sZPYnSCNwnPhYI05Ym8QMo7p4OMzU1B87AVR0bi7ifsQCk7siLbAmMhy1Qb4zZ7k3
+	 anRXmUpEoKFRbjwRi9VAgwp99W3FWfX8WjhH/0Lfh/WguVi2+Lu2sJ1QeDQNC/KvEY
+	 flVZc4kbr3HrHYEB/QecCg+3UlCG+Ga9E+fBVwkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 317/403] iio: proximity: isl29501: fix buffered read on big-endian systems
+	Xiumei Mu <xmu@redhat.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 552/644] selftests: mptcp: make sendfile selftest work
 Date: Tue, 26 Aug 2025 13:10:43 +0200
-Message-ID: <20250826110915.570500958@linuxfoundation.org>
+Message-ID: <20250826111000.205651040@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
+commit df9e03aec3b14970df05b72d54f8ac9da3ab29e1 upstream.
 
-Fix passing a u32 value as a u16 buffer scan item. This works on little-
-endian systems, but not on big-endian systems.
+When the selftest got added, sendfile() on mptcp sockets returned
+-EOPNOTSUPP, so running 'mptcp_connect.sh -m sendfile' failed
+immediately.
 
-A new local variable is introduced for getting the register value and
-the array is changed to a struct to make the data layout more explicit
-rather than just changing the type and having to recalculate the proper
-length needed for the timestamp.
+This is no longer the case, but the script fails anyway due to timeout.
+Let the receiver know once the sender has sent all data, just like
+with '-m mmap' mode.
 
-Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+v2: need to respect cfg_wait too, as pm_userspace.sh relied
+on -m sendfile to keep the connection open (Mat Martineau)
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Reviewed-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/proximity/isl29501.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |   26 ++++++++++++++--------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/proximity/isl29501.c
-+++ b/drivers/iio/proximity/isl29501.c
-@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
- 	const unsigned long *active_mask = indio_dev->active_scan_mask;
--	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
-+	u32 value;
-+	struct {
-+		u16 data;
-+		aligned_s64 ts;
-+	} scan = { };
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -451,6 +451,18 @@ static void set_nonblock(int fd)
+ 	fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+ }
  
--	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
--		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
-+	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
-+		isl29501_register_read(isl29501, REG_DISTANCE, &value);
-+		scan.data = value;
-+	}
++static void shut_wr(int fd)
++{
++	/* Close our write side, ev. give some time
++	 * for address notification and/or checking
++	 * the current status
++	 */
++	if (cfg_wait)
++		usleep(cfg_wait);
++
++	shutdown(fd, SHUT_WR);
++}
++
+ static int copyfd_io_poll(int infd, int peerfd, int outfd, bool *in_closed_after_out)
+ {
+ 	struct pollfd fds = {
+@@ -528,14 +540,7 @@ static int copyfd_io_poll(int infd, int
+ 					/* ... and peer also closed already */
+ 					break;
  
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-+	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
- 	iio_trigger_notify_done(indio_dev->trig);
+-				/* ... but we still receive.
+-				 * Close our write side, ev. give some time
+-				 * for address notification and/or checking
+-				 * the current status
+-				 */
+-				if (cfg_wait)
+-					usleep(cfg_wait);
+-				shutdown(peerfd, SHUT_WR);
++				shut_wr(peerfd);
+ 			} else {
+ 				if (errno == EINTR)
+ 					continue;
+@@ -666,7 +671,7 @@ static int copyfd_io_mmap(int infd, int
+ 		if (err)
+ 			return err;
  
- 	return IRQ_HANDLED;
+-		shutdown(peerfd, SHUT_WR);
++		shut_wr(peerfd);
+ 
+ 		err = do_recvfile(peerfd, outfd);
+ 		*in_closed_after_out = true;
+@@ -690,6 +695,9 @@ static int copyfd_io_sendfile(int infd,
+ 		err = do_sendfile(infd, peerfd, size);
+ 		if (err)
+ 			return err;
++
++		shut_wr(peerfd);
++
+ 		err = do_recvfile(peerfd, outfd);
+ 		*in_closed_after_out = true;
+ 	}
 
 
 
