@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55485B3699C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6276EB36712
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ACD7582CB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314061C22767
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FB5352FF5;
-	Tue, 26 Aug 2025 14:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1E934F47E;
+	Tue, 26 Aug 2025 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCL+WaUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puR+IZch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CBE2E88B7;
-	Tue, 26 Aug 2025 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7BF286881;
+	Tue, 26 Aug 2025 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217795; cv=none; b=nx3V5qVnB7HklvPqV3TfVkrQ4Y8jE9kvSD1nHeWE3CNDaQFdww+XLmkXJ8mpW1oyYTgI/La/jy8T7BARaiqL26ix8icBgy5WikE3fbmUiuBJL8jUuZxrbtgZ+I7MsaMvYJw08H0TsgT7qPS1pCoTWnTbqQLgrhK8+Xn26gwGHWk=
+	t=1756216502; cv=none; b=RJvc0845UI6MFDbpgInxKTh3bWzraS5kHEND/fD5cIBMls3FYhNj59cWSWVLD/abJP42tpDH+6ALmkNlP9HDUpl9NvK7yPMB1hHW4FD8aealI5HT0rzKzjWIuqGHFr8NMqVwQArqptGoWaGamgqpQrx7knpCtJIRQEBk7vX1yXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217795; c=relaxed/simple;
-	bh=NAdFMQtaATjtamObcCO5OoxUThUExZMfL2YbYQuXwiU=;
+	s=arc-20240116; t=1756216502; c=relaxed/simple;
+	bh=3VQw0lpWOOXTnJ5wlddqAghD0pX3ZOfN4pfDh3cKvxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BN4WeA0W9u+5kIWgC9BD+eqyE7MLHndZouuI23y8W6z3NsQH/2SVaxRrEipisyjZA9NqxvtPH/6BCJFCR6Z1JMan3E5pnZnrJ//nrOxV1hHmllZCKjYp3lvokbjfLRq271nYM3EQiUl+OjZvm0/Gnd0nJM3L3Ue6jWS+0jYTNNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCL+WaUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E22C4CEF1;
-	Tue, 26 Aug 2025 14:16:35 +0000 (UTC)
+	 MIME-Version; b=Pv+94CueCzLTG/wVed3jrJmtYryBb3Dfse9V8pYVD1pvTgMqNXKdZmdE4QWoGu9S96+qX6x9PxPMzClPUBBinluTKoBCbZ9zwvSJscqcKoY8vMo0xzBmsnrAqXQrPhymoY7FVeDGUAO62A3z9BQ6HSZ+HQ6jwFH7nSfeeMlEJ5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puR+IZch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F646C4CEF1;
+	Tue, 26 Aug 2025 13:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217795;
-	bh=NAdFMQtaATjtamObcCO5OoxUThUExZMfL2YbYQuXwiU=;
+	s=korg; t=1756216502;
+	bh=3VQw0lpWOOXTnJ5wlddqAghD0pX3ZOfN4pfDh3cKvxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCL+WaUCeHDf3j/Myk9mN/tNq7hNOGYr9gLe/sHvvWfxpm8lWaRVLcOB92I3OAt9n
-	 faGhl/3NCMiTgjHIGw85NmwVOkuD1juGCiUmO1hCzH4waeRQtxrd3OBP9j5Tr7j5Cr
-	 22HAPLF9pTdU6lXsaz5dgqgyhmYkWFFpJlbxgGrE=
+	b=puR+IZchd89RNVekX2/VFkXgDfjwnaCHEIV6G7/y6T5fe1oahSpF3YzntNB06B1D/
+	 rBSYWLqBsgH+2ZII/Ng2xo0uDzxIqsPh+prGuxLLcEiMnJUaad4/jol0yfnpY5jS5W
+	 Torz1us0UNlQQaq/ygxNDUxAXU3Try7sqUhkWZMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ap420073@gmail.com,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 278/523] netmem: fix skb_frag_address_safe with unreadable skbs
-Date: Tue, 26 Aug 2025 13:08:08 +0200
-Message-ID: <20250826110931.288558817@linuxfoundation.org>
+Subject: [PATCH 5.15 398/644] leds: leds-lp50xx: Handle reg to get correct multi_index
+Date: Tue, 26 Aug 2025 13:08:09 +0200
+Message-ID: <20250826110956.313243168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mina Almasry <almasrymina@google.com>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-[ Upstream commit 4672aec56d2e8edabcb74c3e2320301d106a377e ]
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-skb_frag_address_safe() needs a check that the
-skb_frag_page exists check similar to skb_frag_address().
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Cc: ap420073@gmail.com
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250619175239.3039329-1-almasrymina@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index ca7f2a2c3e3f..4b5731245bf1 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3104,7 +3104,13 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
-  */
- static inline void *skb_frag_address_safe(const skb_frag_t *frag)
- {
--	void *ptr = page_address(skb_frag_page(frag));
-+	struct page *page = skb_frag_page(frag);
-+	void *ptr;
-+
-+	if (!page)
-+		return NULL;
-+
-+	ptr = page_address(page);
- 	if (unlikely(!ptr))
- 		return NULL;
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 401df1e2e05d..a2748e467451 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -487,6 +487,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		}
+ 
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -494,8 +495,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				goto child_out;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
+ 
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
  
 -- 
 2.39.5
