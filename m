@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C507B35DD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8CBB369EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817421883063
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C776398795D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE8B239573;
-	Tue, 26 Aug 2025 11:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA2835A29E;
+	Tue, 26 Aug 2025 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APi4qGLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kwk3d2LZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C30817332C;
-	Tue, 26 Aug 2025 11:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185C135A2A4;
+	Tue, 26 Aug 2025 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208514; cv=none; b=uChPpCfTGW+mTKsMGzN5JziA5/OzXliVXRN66lPlfk2iBRbwXrDr3DGdD/5mz3bz/StFaWDjNnC8sNlT2pXhETKaNxlGTxnXbXKVX8eKBdexS0SBGGEriP4rswZR14r5RZkpKvWlOC1DtiEqB5y60AmxVgb6GLCWqAcGQOE7OVg=
+	t=1756217892; cv=none; b=Cv2+OHPSIkcDOEjxbmn4tA2dz56FrvyaCwLxTxExanROhJr4TDqnSQV3NXijEHDaJaEZmXIpiemggaXvS1Cn7gPE90L6Ad4zAX0flIAcLoYIBTdcP7EMViexbQfjzsGt8lfGj+EJOqqU5HNew8uDknugKx3VnQIQxllSFg4rnkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208514; c=relaxed/simple;
-	bh=Xs+VxmLplExeo1if4QpBZwnVZhgsbqaRFcozi6DrJG0=;
+	s=arc-20240116; t=1756217892; c=relaxed/simple;
+	bh=KXwcYIBUL74k1EwF0pA2mt7GoP4JLkevD/bx2PNh6xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFHD0RdhL9XromRBdke1KbEcUTsqpGbIuy7shAWuqnzjihCzBxssGit7nbCZPxF5C5v68YXkH0rZ7AbVItqE9yAeJSBuGaGYtvtA4bpE7DYkdrCfR6L77t3SRuXKhRSFrZ4aENWsMAoBk/oDXj4iuOtYWtJhug1k05xF4hM+XpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APi4qGLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AB9C4CEF1;
-	Tue, 26 Aug 2025 11:41:53 +0000 (UTC)
+	 MIME-Version; b=A3tlsa+LkqX5DP8S0J1idtpkWhBd+XHPxNx6SxZJmaNrpdadmR6Fi0uDaHD/nprKmQm9oxBxqU6b75lDgYEt/f5XoCIFAMZTSWqWV+QxoKeg48uX0Hsn0diCzeSrVp+qitqbCm/KZc/3ilWKoZy/KRKwy7jLEFnDe5KTk4FqgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kwk3d2LZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E846C4CEF1;
+	Tue, 26 Aug 2025 14:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208514;
-	bh=Xs+VxmLplExeo1if4QpBZwnVZhgsbqaRFcozi6DrJG0=;
+	s=korg; t=1756217892;
+	bh=KXwcYIBUL74k1EwF0pA2mt7GoP4JLkevD/bx2PNh6xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APi4qGLCQ2bjXmVh9nQVlOyNuqP+rbByxywmtccM+iJAI4zWy6YCs3dPc7cyurtPi
-	 M+/N/h04Fii72HJcf6BD95/WV0TrCkPhPmg+KlYiJvZr+Du3sNBqR8lR6a3C0N8Na6
-	 2qCkBAUHlA1XbmQXmNDft6Bn8W+a8yJ1gr2yRLa8=
+	b=Kwk3d2LZutyVgqYTmAZ1nYht6MscSEhqtfOSX5iFdeiVz67IZU1qDLrDm1NQ24UIM
+	 +pVRo9QGG4XlxuW3kUAFMRaCHHfXASTpCugD3wyLqvRAZEs1QCDfvV22AU0Rl3F2CI
+	 yxacPxvca62Q0ld2b3+P407mxZRxPUVG3WoPwhdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 110/322] media: ivsc: Fix crash at shutdown due to missing mei_cldev_disable() calls
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 315/523] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
 Date: Tue, 26 Aug 2025 13:08:45 +0200
-Message-ID: <20250826110918.499328173@linuxfoundation.org>
+Message-ID: <20250826110932.232654296@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-commit 0c92c49fc688cfadacc47ae99b06a31237702e9e upstream.
+[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
 
-Both the ACE and CSI driver are missing a mei_cldev_disable() call in
-their remove() function.
+Fix Smatch-detected error:
+drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
+error: uninitialized symbol 'r'.
 
-This causes the mei_cl client to stay part of the mei_device->file_list
-list even though its memory is freed by mei_cl_bus_dev_release() calling
-kfree(cldev->cl).
+Smatch detects a possible use of the uninitialized variable 'r' in
+dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
+skipped and 'r' is returned without being set, leading to undefined
+behavior.
 
-This leads to a use-after-free when mei_vsc_remove() runs mei_stop()
-which first removes all mei bus devices calling mei_ace_remove() and
-mei_csi_remove() followed by mei_cl_bus_dev_release() and then calls
-mei_cl_all_disconnect() which walks over mei_device->file_list dereferecing
-the just freed cldev->cl.
+Initialize 'r' to 0 before the loop. This ensures that if there are no
+devices to iterate over, the function still returns a defined value.
 
-And mei_vsc_remove() it self is run at shutdown because of the
-platform_device_unregister(tp->pdev) in vsc_tp_shutdown()
-
-When building a kernel with KASAN this leads to the following KASAN report:
-
-[ 106.634504] ==================================================================
-[ 106.634623] BUG: KASAN: slab-use-after-free in mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
-[ 106.634683] Read of size 4 at addr ffff88819cb62018 by task systemd-shutdow/1
-[ 106.634729]
-[ 106.634767] Tainted: [E]=UNSIGNED_MODULE
-[ 106.634770] Hardware name: Dell Inc. XPS 16 9640/09CK4V, BIOS 1.12.0 02/10/2025
-[ 106.634773] Call Trace:
-[ 106.634777]  <TASK>
-...
-[ 106.634871] kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:636)
-[ 106.634901] mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
-[ 106.634921] mei_cl_all_disconnect (drivers/misc/mei/client.c:2165 (discriminator 4)) mei
-[ 106.634941] mei_reset (drivers/misc/mei/init.c:163) mei
-...
-[ 106.635042] mei_stop (drivers/misc/mei/init.c:348) mei
-[ 106.635062] mei_vsc_remove (drivers/misc/mei/mei_dev.h:784 drivers/misc/mei/platform-vsc.c:393) mei_vsc
-[ 106.635066] platform_remove (drivers/base/platform.c:1424)
-
-Add the missing mei_cldev_disable() calls so that the mei_cl gets removed
-from mei_device->file_list before it is freed to fix this.
-
-Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
-Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ivsc/mei_ace.c |    2 ++
- drivers/media/pci/intel/ivsc/mei_csi.c |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/md/dm-zoned-target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ivsc/mei_ace.c
-+++ b/drivers/media/pci/intel/ivsc/mei_ace.c
-@@ -529,6 +529,8 @@ static void mei_ace_remove(struct mei_cl
+diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+index 48fc723f1ac8..e5f61a9080e4 100644
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -1066,7 +1066,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
+ 	struct dmz_target *dmz = ti->private;
+ 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
+ 	sector_t capacity;
+-	int i, r;
++	int i, r = 0;
  
- 	ace_set_camera_owner(ace, ACE_CAMERA_IVSC);
- 
-+	mei_cldev_disable(cldev);
-+
- 	mutex_destroy(&ace->lock);
- }
- 
---- a/drivers/media/pci/intel/ivsc/mei_csi.c
-+++ b/drivers/media/pci/intel/ivsc/mei_csi.c
-@@ -786,6 +786,8 @@ static void mei_csi_remove(struct mei_cl
- 
- 	pm_runtime_disable(&cldev->dev);
- 
-+	mei_cldev_disable(cldev);
-+
- 	mutex_destroy(&csi->lock);
- }
- 
+ 	for (i = 0; i < dmz->nr_ddevs; i++) {
+ 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+-- 
+2.39.5
+
 
 
 
