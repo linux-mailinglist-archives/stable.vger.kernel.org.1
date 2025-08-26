@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95500B364B3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA98B36AF9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3611885B20
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B7D565422
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EFD265CC0;
-	Tue, 26 Aug 2025 13:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCFA35A29D;
+	Tue, 26 Aug 2025 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBkLHbZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRFYJZu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102E2AD04;
-	Tue, 26 Aug 2025 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884E7350851;
+	Tue, 26 Aug 2025 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215234; cv=none; b=D39NXb/znqc/XUuzhUFX4xP9uh8m5OyugssCIaT/O2hqvEdli8IUpZhV5V2VpvQDOJweMTdop0PPVRfq4EIOy5fwph0EU6DvHLRHz0aujeSBB6VthO2mRqCHIqLhhlR2Pg4YfviWMsfsSvToMq+UGqTXA9ALGfEY4jlPSQL8+NM=
+	t=1756218325; cv=none; b=JrvJmoVJNAet1UeIE7DAcagOzq6SX7bozRUfnwldtWym1rsDmV+2vSIHcZT228qPcf7cscg6NmILUR3mPNNc5DmLZMx8nRdhyvNOBZ3zmMfCP5ObcGg8mcKq7u1WMQgj2zCSnYOUskFucpK54GD0mdzvlgrPr01epom3w8v5ack=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215234; c=relaxed/simple;
-	bh=c6UuT36KxkfWi4OInFIi9DjBvn5I0w0K3hdV/mawW6E=;
+	s=arc-20240116; t=1756218325; c=relaxed/simple;
+	bh=8qq6vP4Xk/ZcFfT9DX24Mf0n1s59hiC+4n+yd0YHczs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBnciwWU54NxudDmWy+iI6woRKwaunk5BbwAuUloX/A5CfjIL25DGQSAKwatUx999khgdwrVKBCSiC6B4UafBAISlV4C5eupxdlz7PfJowU4tViWrP94HPD4rngjrlf3csCPSV27COBBS3QQO3rr6/wrTtIPlucBwZZC/UrBhV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBkLHbZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAFFC16AAE;
-	Tue, 26 Aug 2025 13:33:53 +0000 (UTC)
+	 MIME-Version; b=ADO8JyvxdecRsoYOJTPdAZrKIBYaQ245Y8qshsObKNKgdJCOmUp4qlE0PLi+DJQY90IJlZjYc+63Ao+gprlv6sKtcecNGfQ9cFV9gUnwsmbFeeiEkW+Q9zPNfF0XFZl6sn6dtqVmrF+fV2p1w3iazyWyw6/OQbWuYDDoG66xafk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRFYJZu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0BFC4CEF1;
+	Tue, 26 Aug 2025 14:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215233;
-	bh=c6UuT36KxkfWi4OInFIi9DjBvn5I0w0K3hdV/mawW6E=;
+	s=korg; t=1756218325;
+	bh=8qq6vP4Xk/ZcFfT9DX24Mf0n1s59hiC+4n+yd0YHczs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBkLHbZsdcSgnE+WZd/kmAfoIKxOW3RFw7+S4/n62pnXj4GsIymaoRfCCJ8BXD8ug
-	 lcsWkMD+PD7W8WR23rC7YLRl7pW3plr857TFLR7ZPLQdWoP7reEjlvtBhtjrizM382
-	 YtXwhR3hheeER5X8eyF0qeqHM5zd52hDp4/qYcgg=
+	b=bRFYJZu05uSCN+RKjoDooACQppfenxPBjXtBnJnGtGhB14H9KUqC2j29j9GO1R8om
+	 zTQPl8ABjWC07O+AVg3ly+PiivcNHb+F0RyZ0FcQjZmWzL4J9Un4oOpyKipOEPr5BC
+	 HYB3gYSCL1VcXSm9b3aRWipODM7Tz1qWgIKdJmWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/482] mmc: sdhci-pci-gli: Use PCI AER definitions, not hard-coded values
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Marco Elver <elver@google.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 480/523] asm-generic: Add memory barrier dma_mb()
 Date: Tue, 26 Aug 2025 13:11:30 +0200
-Message-ID: <20250826110941.626731396@linuxfoundation.org>
+Message-ID: <20250826110936.285019996@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-[ Upstream commit 951b7ccc54591ba48755b5e0c7fc8b9623a64640 ]
+[ Upstream commit ed59dfd9509d172e4920994ed9cbebf93b0050cc ]
 
-015c9cbcf0ad ("mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of
-AER") added PCI_GLI_9750_CORRERR_MASK, the offset of the AER Capability in
-config space, and PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT, the
-Replay Timer Timeout bit in the AER Correctable Error Status register.
+The memory barrier dma_mb() is introduced by commit a76a37777f2c
+("iommu/arm-smmu-v3: Ensure queue is read after updating prod pointer"),
+which is used to ensure that prior (both reads and writes) accesses
+to memory by a CPU are ordered w.r.t. a subsequent MMIO write.
 
-Use pci_find_ext_capability() to locate the AER Capability and use the
-existing PCI_ERR_COR_REP_TIMER definition to mask the bit.
-
-This removes a little bit of unnecessarily device-specific code and makes
-AER-related things more greppable.
-
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20240327214831.1544595-2-helgaas@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de> # for asm-generic
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Link: https://lore.kernel.org/r/20220523113126.171714-2-wangkefeng.wang@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: aa6956150f82 ("wifi: ath11k: fix dest ring-buffer corruption when ring is full")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ Documentation/memory-barriers.txt |   11 ++++++-----
+ include/asm-generic/barrier.h     |    8 ++++++++
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -27,8 +27,6 @@
- #define PCI_GLI_9750_PM_CTRL	0xFC
- #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
+--- a/Documentation/memory-barriers.txt
++++ b/Documentation/memory-barriers.txt
+@@ -1894,6 +1894,7 @@ There are some more advanced barrier fun
  
--#define PCI_GLI_9750_CORRERR_MASK				0x214
--#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
+  (*) dma_wmb();
+  (*) dma_rmb();
++ (*) dma_mb();
  
- #define SDHCI_GLI_9750_CFG2          0x848
- #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
-@@ -154,8 +152,6 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
+      These are for use with consistent memory to guarantee the ordering
+      of writes or reads of shared memory accessible to both the CPU and a
+@@ -1925,11 +1926,11 @@ There are some more advanced barrier fun
+      The dma_rmb() allows us guarantee the device has released ownership
+      before we read the data from the descriptor, and the dma_wmb() allows
+      us to guarantee the data is written to the descriptor before the device
+-     can see it now has ownership.  Note that, when using writel(), a prior
+-     wmb() is not needed to guarantee that the cache coherent memory writes
+-     have completed before writing to the MMIO region.  The cheaper
+-     writel_relaxed() does not provide this guarantee and must not be used
+-     here.
++     can see it now has ownership.  The dma_mb() implies both a dma_rmb() and
++     a dma_wmb().  Note that, when using writel(), a prior wmb() is not needed
++     to guarantee that the cache coherent memory writes have completed before
++     writing to the MMIO region.  The cheaper writel_relaxed() does not provide
++     this guarantee and must not be used here.
  
--#define PCI_GLI_9755_CORRERR_MASK				0x214
--#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
+      See the subsection "Kernel I/O barrier effects" for more information on
+      relaxed I/O accessors and the Documentation/core-api/dma-api.rst file for
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -37,6 +37,10 @@
+ #define wmb()	do { kcsan_wmb(); __wmb(); } while (0)
+ #endif
  
- #define GLI_MAX_TUNING_LOOP 40
++#ifdef __dma_mb
++#define dma_mb()	do { kcsan_mb(); __dma_mb(); } while (0)
++#endif
++
+ #ifdef __dma_rmb
+ #define dma_rmb()	do { kcsan_rmb(); __dma_rmb(); } while (0)
+ #endif
+@@ -64,6 +68,10 @@
+ #define wmb()	mb()
+ #endif
  
-@@ -501,9 +497,7 @@ static void gl9750_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
--	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9750_wt_off(host);
- }
-@@ -715,9 +709,7 @@ static void gl9755_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
--	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9755_wt_off(pdev);
- }
++#ifndef dma_mb
++#define dma_mb()	mb()
++#endif
++
+ #ifndef dma_rmb
+ #define dma_rmb()	rmb()
+ #endif
 
 
 
