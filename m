@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB328B36964
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00F2B36AD1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5757D8E5F23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A345A0188
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDE3352FD0;
-	Tue, 26 Aug 2025 14:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00307353373;
+	Tue, 26 Aug 2025 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abFh6j/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgDbUWbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4F352066;
-	Tue, 26 Aug 2025 14:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30F6352FFA;
+	Tue, 26 Aug 2025 14:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217627; cv=none; b=b9d9tIT2LtkzYEXct4LcvbvIFIn3H+fXvYYtrXVXdOW4ZIQRl8JWpX4OZVYMemfUEzNqNplm/VnvzM+39uAKU4sNM3O4Rqlb1wTx3mH1shrZIA2hRf2M0zreEX9L0VhathHRfuL8CoK/vo+OV/yA1Njp21CEE9AbUo06IgXLGk0=
+	t=1756218698; cv=none; b=Ad96BA5zFrpJON5shUeuE457d7YSm72R8RsHUSd0b6q5u4Es8gvpDfqW+f9ZH89lCFFlwvRHrKtCPGDNJzOvJZtzrJQdafQLswEz1dZftkjwrGf1ftca17X229aqNfJuhEtviDUV1dHVckxEzm/5VJJ6U5zAdWvEf/BsB8J4DQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217627; c=relaxed/simple;
-	bh=6X+vhEe38Eql3131+bwFzfEVysXSZ/4bYJzHmaMdYmk=;
+	s=arc-20240116; t=1756218698; c=relaxed/simple;
+	bh=QunifYzEjnOKjr9vF0Noq4lMzQiR2t1RTyz5YJQxnBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlFOaR5N9t69HGgwsuj23KiC5Y1ZeMuY34PbeV2GXvYxcuoQYKYwkcTKcO0mZ0mc3yGb4XFbvq/NV190YnWnZRYY+EV1hM/vWfyRZ3MN7X+8bzqguzx9ytSOvJO0YF1cyFebO/MTLFEN1N4RAZXzT5lt1adPL/bExUTCjZEiyXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abFh6j/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494B4C4CEF1;
-	Tue, 26 Aug 2025 14:13:47 +0000 (UTC)
+	 MIME-Version; b=FJ4BdK7F44D1v3sEc6k0wUz4LQrmwRohgDnnh5VrGcalW0hhmbqzNZ5iFa2ZnL2RIi8m3oN3dY6YPnIC7KS2j4Ay7TgVVjtBMgOeAYuQ0tSPwzni+cPyVIzoUx6j860H9smqAGZH1bCKgvusK3ieUPkmYZRu8VMSm3Zgc73IW6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgDbUWbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA57BC4CEF1;
+	Tue, 26 Aug 2025 14:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217627;
-	bh=6X+vhEe38Eql3131+bwFzfEVysXSZ/4bYJzHmaMdYmk=;
+	s=korg; t=1756218697;
+	bh=QunifYzEjnOKjr9vF0Noq4lMzQiR2t1RTyz5YJQxnBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abFh6j/9wFwKP9uTJUxYf0sKOxe/NsArK+IDrMXc2u9+RHzKtMGNSH9678ltYU4Ac
-	 nmRJAuzlyvur2jzu9H7K4G68Pc1MtsPxC44vLNIVMJiMDFc7VViLh5zyry+SQO0PO3
-	 zCmKwbu/moyGO6OWL0MbQafxZd/Bj8G9A1+QfJqw=
+	b=OgDbUWbTVDeknL0PsiXvJXB/wHPtbKmgcamOX6M4HnwwxFexpKc9zG7bSB2/8bfS3
+	 xPsYYlOaf45JTLd3wBD835hQcXuIuvC9kNnWiH0Xcjci7LHZBbe9CNTpCuPIY2APw5
+	 wnAq/G/G0EZIGqF+HpO/kxUcyAdUpfkoBz6P8yZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 215/523] udf: Verify partition map count
+Subject: [PATCH 5.4 099/403] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
 Date: Tue, 26 Aug 2025 13:07:05 +0200
-Message-ID: <20250826110929.767113946@linuxfoundation.org>
+Message-ID: <20250826110909.409190427@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-Verify that number of partition maps isn't insanely high which can lead
-to large allocation in udf_sb_alloc_partition_maps(). All partition maps
-have to fit in the LVD which is in a single block.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
+
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
+
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 8dae5e73a00b..723184b1201f 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1410,7 +1410,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 	struct genericPartitionMap *gpm;
- 	uint16_t ident;
- 	struct buffer_head *bh;
--	unsigned int table_len;
-+	unsigned int table_len, part_map_count;
- 	int ret;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 668c8897c109..f9508d71fc6c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1118,10 +1118,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
+ 	}
  
- 	bh = udf_read_tagged(sb, block, block, &ident);
-@@ -1431,7 +1431,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 					   "logical volume");
- 	if (ret)
- 		goto out_bh;
--	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
+ 
+ 	cfg->scan_request = request;
+@@ -1137,6 +1133,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
+ 
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
 +
-+	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
-+	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
-+		udf_err(sb, "error loading logical volume descriptor: "
-+			"Too many partition maps (%u > %u)\n", part_map_count,
-+			table_len / (unsigned)sizeof(struct genericPartitionMap1));
-+		ret = -EIO;
-+		goto out_bh;
-+	}
-+	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
- 	if (ret)
- 		goto out_bh;
- 
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
 2.39.5
 
