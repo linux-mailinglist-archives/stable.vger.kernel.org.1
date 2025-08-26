@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABFCB363A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D02EB35C17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66D721BC6F99
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23011363548
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF6E22DF99;
-	Tue, 26 Aug 2025 13:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46A529D26A;
+	Tue, 26 Aug 2025 11:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+JSCX0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXb5vXAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3311DAC95;
-	Tue, 26 Aug 2025 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D0F239573;
+	Tue, 26 Aug 2025 11:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214703; cv=none; b=ef/kVCanshUD1NQ0SWUO2sHvl1ymWDVhE5och2sGy5bzEy125FKk/sk4G/FXXzU3BHVqKsN9takd2eek6JH9IxnlZdYTi40lnO1CwynZ0AMIiXB8ZEklSAf7wIQeidUxTEScYgRxvVCv93mIMxJAxZvBy4W2ZQFiUHtmot889xc=
+	t=1756207502; cv=none; b=dT5+uhFFK+uq6QSgn6NMSA0l1ceMONcGe/1fSkRDXon0zEzwiZ+ibHH5tI2YbvvwAs1uXHR47bW8Ay4MJwRqNHu0RYDO1YBCBhUC9oFWYoWDIE2sYnBvb8p0EWetyDVWjzW6G+F2fSDIB+SXhwy0dS+J1nrBEdwjnLf63eUm3qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214703; c=relaxed/simple;
-	bh=nMI8x04ihMzQC9Tb7SUMV/tFmN5PpXcmTHWi8fQHamU=;
+	s=arc-20240116; t=1756207502; c=relaxed/simple;
+	bh=gjPhH0Sa1Qvx7xDLI47JopOrwOb60odI+I0DSPdKeBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1YLnFCSPqNRmrpr6QBExz71DFZS37g7h2ynQLMYd7/q1GYB1fkAA7gMaizpBnBednKFBu8XVE/M6Qz+fO1K8cElrE6dU4vJFVcq63ZV49k/663yXnSQjahzJdd0IV5rTK0t/EJi+aykS/E/JKQsadXK9LtRGDkkO8nmDbgpE6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+JSCX0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F612C4CEF1;
-	Tue, 26 Aug 2025 13:25:03 +0000 (UTC)
+	 MIME-Version; b=AFcus9VxLhLyH1r4cV+JA6U9eIH45EmtIztKEdrz69oKh7GJ3vhV1YG/ORbeA+84BwKToCaTmQgk9fKdc344Q5RRTqvtqrox2uzy97/mGgqaKoLay7KgZBWJRsTRGGdpg/oqa3OzE/4jcEUvsXvdjWr+34cDeaf3Qat6JJYlrMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXb5vXAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72F4C4CEF1;
+	Tue, 26 Aug 2025 11:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214703;
-	bh=nMI8x04ihMzQC9Tb7SUMV/tFmN5PpXcmTHWi8fQHamU=;
+	s=korg; t=1756207502;
+	bh=gjPhH0Sa1Qvx7xDLI47JopOrwOb60odI+I0DSPdKeBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+JSCX0z6b+mh1ArMJ+zfTaDGyuWLgrN/DAxrjv3GjSVQY5PIb8g4Sr9RzWhMJNlO
-	 qCOYFlWm+knKZgLzClcP7BNPDfBgPN2hJyP1QxOF/j6bhADYrdRjoxAes69yjuTgxt
-	 k+YJAHcnKCOJGpeTCiwIxoxdiTG6In9pCCsq0TO0=
+	b=QXb5vXASzFIWa1CSMgTJ9IrQp/AWHRx8f6KMVVFHWHMRp/UHwW7TxPvQWmAefDL6e
+	 g4Qv8h4Y0UPfTov/PoFgAG51CzP0UtDN5Ae7q8Qdatr6V9l4QZOdV4iex7yo1nohO1
+	 v2atdU4f8xiOtFIQI+DVi98srvGKoafwu6zZ+gGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/482] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 206/457] mptcp: remove duplicate sk_reset_timer call
 Date: Tue, 26 Aug 2025 13:08:10 +0200
-Message-ID: <20250826110936.627368371@linuxfoundation.org>
+Message-ID: <20250826110942.456511834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
+commit 5d13349472ac8abcbcb94407969aa0fdc2e1f1be upstream.
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+sk_reset_timer() was called twice in mptcp_pm_alloc_anno_list.
 
-Some chip types in the ds1307 driver already have OSF handling to
-determine whether .read_time provides valid RTC data or returns -EINVAL.
+Simplify the code by using a 'goto' statement to eliminate the
+duplication.
 
-This change removes the clear of the OSF in .probe as the OSF needs to
-be preserved to expand the OSF handling to the ds1341 chip type (note
-that DS1341 and DS1342 share a datasheet).
+Note that this is not a fix, but it will help backporting the following
+patch. The same "Fixes" tag has been added for this reason.
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-4-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/mptcp/pm.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 530b9340db21..6d82fb45e9a8 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1819,10 +1819,8 @@ static int ds1307_probe(struct i2c_client *client,
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -353,9 +353,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
+ 			return false;
  
--		/* oscillator fault?  clear flag, and warn */
-+		/* oscillator fault? warn */
- 		if (regs[1] & DS1337_BIT_OSF) {
--			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
--				     regs[1] & ~DS1337_BIT_OSF);
- 			dev_warn(ds1307->dev, "SET TIME!\n");
- 		}
- 		break;
--- 
-2.39.5
-
+-		sk_reset_timer(sk, &add_entry->add_timer,
+-			       jiffies + mptcp_get_add_addr_timeout(net));
+-		return true;
++		goto reset_timer;
+ 	}
+ 
+ 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
+@@ -369,6 +367,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 	add_entry->retrans_times = 0;
+ 
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
++reset_timer:
+ 	sk_reset_timer(sk, &add_entry->add_timer,
+ 		       jiffies + mptcp_get_add_addr_timeout(net));
+ 
 
 
 
