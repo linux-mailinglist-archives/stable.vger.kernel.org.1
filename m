@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369BFB35E2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70335B36A00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AE7463538
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB9458301A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D8921D3C0;
-	Tue, 26 Aug 2025 11:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66512341AA6;
+	Tue, 26 Aug 2025 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLUc9uMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCRSJJgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F08393DD1;
-	Tue, 26 Aug 2025 11:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242FA2AE68;
+	Tue, 26 Aug 2025 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208417; cv=none; b=PqDXYwGAhU1xj3JDi2axuNP7kSUuTrDgb0lC4ki1q4pthpNLlV0IzES7mhlWFsA/jEDsaSLizpbV6bpqiVOWTwMHVN+Rxn+nROTBe2Xi53ccNTnap/tAHp00I4Y64k5zqmqIwezUf4XJiFcO0Us9jGDaOJC62agLMNHR//lGpxU=
+	t=1756217955; cv=none; b=eANTPpPel9NSPEZjIJBpHQsyZ9tJ1rI4qe6xFYutDK7fFhb0/NfcnNxIPrwfVzrZ1cwK1i2RIkQ/PTRWUV0wGy/2ejYd1Feis/zojxdYuDwAg+ZFSbTa+SuzSRBrByLoddg6FcG7GhrRfC2o+UZiocJSJqsJVhjVDMvzgcdAPKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208417; c=relaxed/simple;
-	bh=Bbqdwrivrgn8erSyYoPeI/vobkSyXA5MHDprmAlH22Y=;
+	s=arc-20240116; t=1756217955; c=relaxed/simple;
+	bh=c4CnVwBlD/d+ErDm9rNdZERF4iqeYLN5+2hZMuhnsW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGZM93y9uQ+h1T4XN0PDJFOqvMQAJje6KJwcFSBbWnuSXo1/OOnJNUQP99lKIm/qInWAH17HPZoiN0vjmZv8n8AYXKMftgWbpb8Ekj5CLUOrxm+PCzQ8e1rvZ78/lchUk7HomJmVL3jtM6ZFoAf2DAWIH2ARiwEE9nfWb1Z8wNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLUc9uMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E19C4CEF1;
-	Tue, 26 Aug 2025 11:40:17 +0000 (UTC)
+	 MIME-Version; b=mRhHDTm0OdpPcsoNYxrTpfoBkRE08z0glLQa6vxxGgNQ+LBh+/GG1QMaHbrh9t2zUG6otK1lt6gakSLnFr5ZTEwUQaoebYyHEQPLUF53RKwEGiW38MfLEJ9BiXM0xjH2WMjVOEgarUbk2uhMol9a3xoQXCKeMX/sCtomKLaUH+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCRSJJgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9700C4CEF1;
+	Tue, 26 Aug 2025 14:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208417;
-	bh=Bbqdwrivrgn8erSyYoPeI/vobkSyXA5MHDprmAlH22Y=;
+	s=korg; t=1756217955;
+	bh=c4CnVwBlD/d+ErDm9rNdZERF4iqeYLN5+2hZMuhnsW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLUc9uMeMXintaa46zkqIXwQXFz0jPSpJwEAkB8VUmPwjGx+foOicy+dwyK3n0xrb
-	 s5Gy2+mVKQWYCHfi6FSJOkrUkwZk56rzUzSMEbU6m07d8HvnC7G9AVEl/E+1G8252Z
-	 Xxte0g18fAmEAQBEUXKIoPI6922FlOWhGvaf26pw=
+	b=qCRSJJgDMseFkS4o7kOkfyaTrinMW7mI/s8JudOlmn0kFw1mSnwpoHRn+7956YBVq
+	 qRINVZjSg+UHWYUSADtoxFeh65bJ7M5Uysjq2Ih01TZNSa/Ooe6FBGgNFbsm2yqmx0
+	 HBbWeJar0URxkUAvzc9D81ks761+F5MidZO1m/zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 102/322] media: vivid: fix wrong pixel_array control size
+	Cheick Traore <cheick.traore@foss.st.com>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 307/523] pinctrl: stm32: Manage irq affinity settings
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826110918.235468695@linuxfoundation.org>
+Message-ID: <20250826110932.030541049@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Cheick Traore <cheick.traore@foss.st.com>
 
-commit 3e43442d4994c9e1e202c98129a87e330f7faaed upstream.
+[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
 
-The pixel_array control size was calculated incorrectly:
-the dimensions were swapped (dims[0] should be the height), and the
-values should be the width or height divided by PIXEL_ARRAY_DIV
-and rounded up. So don't use roundup, but use DIV_ROUND_UP instead.
+Trying to set the affinity of the interrupts associated to stm32
+pinctrl results in a write error.
 
-This bug is harmless in the sense that nothing will break, except that
-it consumes way too much memory for this control.
+Fill struct irq_chip::irq_set_affinity to use the default helper
+function.
 
-Fixes: 6bc7643d1b9c ("media: vivid: add pixel_array test control")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
+Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-ctrls.c   |    3 ++-
- drivers/media/test-drivers/vivid/vivid-vid-cap.c |    4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-+++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-@@ -243,7 +243,8 @@ static const struct v4l2_ctrl_config viv
- 	.min = 0x00,
- 	.max = 0xff,
- 	.step = 1,
--	.dims = { 640 / PIXEL_ARRAY_DIV, 360 / PIXEL_ARRAY_DIV },
-+	.dims = { DIV_ROUND_UP(360, PIXEL_ARRAY_DIV),
-+		  DIV_ROUND_UP(640, PIXEL_ARRAY_DIV) },
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index 2d852f15cc50..6b6fdb711659 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -412,6 +412,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
+ 	.irq_set_wake	= irq_chip_set_wake_parent,
+ 	.irq_request_resources = stm32_gpio_irq_request_resources,
+ 	.irq_release_resources = stm32_gpio_irq_release_resources,
++	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
  };
  
- static const struct v4l2_ctrl_config vivid_ctrl_s32_array = {
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -453,8 +453,8 @@ void vivid_update_format_cap(struct vivi
- 	if (keep_controls)
- 		return;
- 
--	dims[0] = roundup(dev->src_rect.width, PIXEL_ARRAY_DIV);
--	dims[1] = roundup(dev->src_rect.height, PIXEL_ARRAY_DIV);
-+	dims[0] = DIV_ROUND_UP(dev->src_rect.height, PIXEL_ARRAY_DIV);
-+	dims[1] = DIV_ROUND_UP(dev->src_rect.width, PIXEL_ARRAY_DIV);
- 	v4l2_ctrl_modify_dimensions(dev->pixel_array, dims);
- }
- 
+ static int stm32_gpio_domain_translate(struct irq_domain *d,
+-- 
+2.39.5
+
 
 
 
