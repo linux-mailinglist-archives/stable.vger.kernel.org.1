@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD72B35DD0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F126DB36B44
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD637188FE9E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF16986497
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED71523D7FA;
-	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CDD302CA6;
+	Tue, 26 Aug 2025 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXC/8O4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9HoMX2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFBE393DD1;
-	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839162AE7F;
+	Tue, 26 Aug 2025 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208495; cv=none; b=ouV3XrCa/791wd3VCCEwGHLQQ/rMXPbZlQXvH6xOwtpThdTh+x+boIzJioiHv1zA8CrvxGAz7e7/ZG8wYjgR4PvSxMB54xc+/9R1Xq9a2KvfNUzPzJXImRG/aAFV/3obTX6RZP5OT99fUtPBe3KyQ6Ejp86hDYWgdLZhoL+GHLk=
+	t=1756218036; cv=none; b=H65qMaFKfbZpwRBgBG99A2b2CxdMQ/hinKjZO3VSSuzdSc5fkcokpBVB3pYmE1dfc4kRKF2srkf20Gko1Z8PSqZ4+mP0hPX3oZpXC5OQ0JNwr5ETne0mmareH1WK++T7qYFjJl56EPfJbWxUdIcBEjWw7TPsdTdYlW3ep9p6fTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208495; c=relaxed/simple;
-	bh=Q08WXDafU4pVzOK1n45X45NtyOnutR+BuVdHgJ7DMdY=;
+	s=arc-20240116; t=1756218036; c=relaxed/simple;
+	bh=4YSpal2R1eQmsg1En29N6SV28ybkWMDoM/doLkF0dCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iduN8SV10ua69st9K7n3iRoRLLmxFu8WiSQnH4XHqmEmD3Roy/aKuKD2NZBMHHirEkTHSFcDmTFOUHvim4+qJbk7fB4zWMe9tCzURH67KbJZchSKlSA1UWT6s3DcNEHEGw7m2zt7zChiTtrDtVkYf5kDaur1U9sXp7EdmCzj70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXC/8O4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F6FC4CEF4;
-	Tue, 26 Aug 2025 11:41:35 +0000 (UTC)
+	 MIME-Version; b=ZetsScgLIFo98EAVrkK9qgToBl8p0AtyntnVDiE0ACkcPHZtPKWfz7IPZ3knXxKj0qLMl4gFa+Lbwn9OCNZ9BSJPu9JpMg3BlhzsKdgPRDO+Cc4GwZdiv4yx6zwYe5W2ravvxLB3fUbmnntn7UE4791eRn1KhPpEJxgUrIaKVao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9HoMX2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F18C4CEF1;
+	Tue, 26 Aug 2025 14:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208495;
-	bh=Q08WXDafU4pVzOK1n45X45NtyOnutR+BuVdHgJ7DMdY=;
+	s=korg; t=1756218036;
+	bh=4YSpal2R1eQmsg1En29N6SV28ybkWMDoM/doLkF0dCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXC/8O4xRtkpt+OVl1I9ysKb+3Vf9gWk+IOiVRJ+Wo0W+PbpqABReNrXXrcfCc68M
-	 LDExCM2PMMWG3ilI2jJsOm7ei2vWlKxawi03w5YAWXYRqCQLjschvQClobRIRguIDx
-	 0+IwlOGG1hJUkxSTf4c/dTFUe8Grey8lachW0YqM=
+	b=m9HoMX2lGa3Rla96TPdpHkzrWA/GOYzrPNXbmSAKT82RtFtHLOoqCgM0FKIf9TH0x
+	 UGcyUezg46MuDoW/z6MbCZj0HyYATXD5CNgflM1r92rSgBFbWYns1ZsDhfeUpqG7Cc
+	 X9Yr09UTUUtEuBWTy6XRbqKWDLK7Bca7YIY7MBHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 133/322] ipv6: sr: Fix MAC comparison to be constant-time
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 338/523] ASoC: soc-dai.c: add missing flag check at snd_soc_pcm_dai_probe()
 Date: Tue, 26 Aug 2025 13:09:08 +0200
-Message-ID: <20250826110919.083630254@linuxfoundation.org>
+Message-ID: <20250826110932.809360025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit a458b2902115b26a25d67393b12ddd57d1216aaa upstream.
+[ Upstream commit 5c5a7521e9364a40fe2c1b67ab79991e3e9085df ]
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
+dai->probed is used at snd_soc_pcm_dai_probe/remove(),
+and used to call real remove() function only when it was probed.
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	int snd_soc_pcm_dai_probe(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+
+			if (dai->driver->probe) {
+(A)				int ret = dai->driver->probe(dai);
+
+				if (ret < 0)
+					return soc_dai_ret(dai, ret);
+			}
+
+=>			dai->probed = 1;
+		}
+		...
+	}
+
+	int snd_soc_pcm_dai_remove(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+=>			if (dai->probed &&
+			    ...) {
+				...
+			}
+
+=>			dai->probed = 0;
+		}
+		...
+	}
+
+But on probe() case, we need to check dai->probed before calling
+real probe() function at (A), otherwise real probe() might be called
+multi times (but real remove() will be called only once).
+This patch checks it at probe().
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87wn3u64e6.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0e270f32975f ("ASoC: fsl_sai: replace regmap_write with regmap_update_bits")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_hmac.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/soc-dai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -35,6 +35,7 @@
- #include <net/xfrm.h>
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index e2db2ad219b8..583b18d0f446 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -488,6 +488,9 @@ int snd_soc_pcm_dai_probe(struct snd_soc_pcm_runtime *rtd, int order)
+ 		if (dai->driver->probe_order != order)
+ 			continue;
  
- #include <crypto/hash.h>
-+#include <crypto/utils.h>
- #include <net/seg6.h>
- #include <net/genetlink.h>
- #include <net/seg6_hmac.h>
-@@ -271,7 +272,7 @@ bool seg6_hmac_validate_skb(struct sk_bu
- 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
- 		return false;
++		if (dai->probed)
++			continue;
++
+ 		if (dai->driver->probe) {
+ 			int ret = dai->driver->probe(dai);
  
--	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
-+	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
- 		return false;
- 
- 	return true;
+-- 
+2.50.1
+
 
 
 
