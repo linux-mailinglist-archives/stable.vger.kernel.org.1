@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9028CB36323
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4217FB368BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F4D98A636A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72D7C1C81D80
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1128D318143;
-	Tue, 26 Aug 2025 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2FD34166C;
+	Tue, 26 Aug 2025 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtxN8g2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyZGZWxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ADC26FDBF;
-	Tue, 26 Aug 2025 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B65621D3F2;
+	Tue, 26 Aug 2025 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214302; cv=none; b=Ab7SA8Aow7cZrViVIOv1Jup7ii1QQlKS9iUd8j0U6Qd3LbCkPLhROniNksaxbSpbF1TfaAcrDINCmeG5fm4q8Sx7ce6Qt5u5+zUAWC2i5VsDsZ0D88UzEVicBGN6TbjV2HGO2MNMVxmT44/SoCdYnDhgRTHocgJosUkckCX0XNU=
+	t=1756217385; cv=none; b=sYtSlE7g8Tocoyda9OLd47PbR15Uu9a8vt9+Wfmmi0WxfqzN2zPw7dsucaRZbrUXPJwNtkB4lR/n9KRiz56sRzfNVCI8ngtTDrNf1gv3d2UG1rwFp6mZy2FMdDK2XncXYOT3OK5nLPet/LztliZLgtc+sZMI1zkEQmprg0zO+UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214302; c=relaxed/simple;
-	bh=keb5UXWHXk7mHRAZ3l4uookjXPztH02KErlX8jR/wlE=;
+	s=arc-20240116; t=1756217385; c=relaxed/simple;
+	bh=ODWWMA8sZCLZXEH/rE+EZ2CBuWxunC349OKk4vldwLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjGH7gCaKGPNeHWoFrf9Ywa0Rc+X3E8YQbIl+8+ouFHwo3ruEZZemxYkYX8TZ7KO1KgJtTq/2wNwYBadQdYXrjXqXDwwyOVYnGxj1S7pTJrxqa48HMzA76GvBFoiNNlfIsLQcwi8lQx5E463X8OTBoKpSuX+h4nmEcQprjH94Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtxN8g2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AEDC4CEF1;
-	Tue, 26 Aug 2025 13:18:22 +0000 (UTC)
+	 MIME-Version; b=N78hyf0LrEexk6gucimqm6Lg5tfv7LqOSO9BsBfdNW8lb6mPIhA+JC+V5AZLWu4EriZj3QhxavVTu8fc6ucnJpVb3tRKed6KnJo3to+xR2cgZ9hAiV9cU5N0iL5dx/Or4M8cSOgrPGDbsmJKhk3CLbfkh0iHN4kjSRqPVpK+a14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyZGZWxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B4DC4CEF1;
+	Tue, 26 Aug 2025 14:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214302;
-	bh=keb5UXWHXk7mHRAZ3l4uookjXPztH02KErlX8jR/wlE=;
+	s=korg; t=1756217385;
+	bh=ODWWMA8sZCLZXEH/rE+EZ2CBuWxunC349OKk4vldwLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtxN8g2JL+6+cmrdbQLLanz8f4uKBmqqKwoutKqxzeOHc19NOIYi/Gxg0WvL89Bxd
-	 N68d31R0nr7dLppjC8Q40CAeKX4lERwIpbLPNcVQo11HDWC3I5yI1c65xiBWepZ20Y
-	 EGgg5deHIdpGjxnuT5Sd4//ChqPeuPl0FQao8EHY=
+	b=JyZGZWxGbt3ZXbjiotuI2CKXzrrGbHaBk5oA2eQoGE4bzLALujLEk9ilJ94dC3Uh3
+	 /8p5/6hGCqbS0QuQGsUv+dYHm0QCd+gNzKFlQceKAyZ/obhxDDLgLmR9eGWPrsea67
+	 gtTsYOEKM7toztE2OmQF03IoV0tHulFnw/UoFGvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/482] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Subject: [PATCH 5.10 123/523] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
 Date: Tue, 26 Aug 2025 13:05:33 +0200
-Message-ID: <20250826110932.808692690@linuxfoundation.org>
+Message-ID: <20250826110927.548755369@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
+[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
 
-Nolibc assumes that the kernel ABI is using a time values that are as
-large as a long integer. For most ABIs this holds true.
-But for x32 this is not correct, as it uses 32bit longs but 64bit times.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+davinci_lpsc_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
-and time_t being the same type. While timespec::tv_sec comes from the
-kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
+Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+no resources are left allocated.
 
-Switch to the __kernel_old_time_t to always get the correct type.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
-Acked-by: Willy Tarreau <w@1wt.eu>
+Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/davinci/psc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index 1747ae125392..a0ea830e1ba1 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -33,6 +33,8 @@ typedef unsigned long     uintptr_t;
- typedef   signed long      intptr_t;
- typedef   signed long     ptrdiff_t;
+diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
+index 7387e7f6276e..4e1abfc1e564 100644
+--- a/drivers/clk/davinci/psc.c
++++ b/drivers/clk/davinci/psc.c
+@@ -278,6 +278,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
  
-+#include <linux/types.h>
-+
- /* those are commonly provided by sys/types.h */
- typedef unsigned int          dev_t;
- typedef unsigned long         ino_t;
-@@ -44,6 +46,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef   signed long        time_t;
-+typedef __kernel_old_time_t  time_t;
- 
- #endif /* _NOLIBC_STD_H */
+ 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
+ 					      best_dev_name(dev), name);
++	if (!lpsc->pm_domain.name) {
++		clk_hw_unregister(&lpsc->hw);
++		kfree(lpsc);
++		return ERR_PTR(-ENOMEM);
++	}
+ 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
+ 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
+ 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
 -- 
 2.39.5
 
