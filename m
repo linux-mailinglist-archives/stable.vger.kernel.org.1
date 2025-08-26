@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D1B360CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE73B35B75
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BAE3A0FE5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954071885F6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE553218858;
-	Tue, 26 Aug 2025 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08F333EAF2;
+	Tue, 26 Aug 2025 11:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTLDxSzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtAnrz9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CA11A00F0;
-	Tue, 26 Aug 2025 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A56332142D;
+	Tue, 26 Aug 2025 11:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213182; cv=none; b=RGxvIJeNqLjbjIkoS5cFuhjkXtS6uUCyQXmInGQZHVUHWrnhZf7FeqkmrLMWeKnQNl1ESETqtUswfc4VPrqQ9+zCIHhOSDe/L4hPhfK8kN3gmlcIKd9A0j6sckZgTCTVVWxFTLHHu1mC9Lb4csGLTIfvPIAbS2QXZfB2/L1eqrU=
+	t=1756207201; cv=none; b=oJ1NtAbCu3FcdN+FzA8vHjTaBqlqz5GLvHfZtM1+UluryD6vDFEyYYXiBTBRbjK/sPAFVqrBvYKCIvBUjC9GXL8FdG7rb43JxsPsVx9FOW4dNMWUi8vACcnzFY6Gq2Et2owUOcUrtEIrrgvK41lLtXG660zNmV8Li6CYBRFwshY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213182; c=relaxed/simple;
-	bh=Tax0sjRT5kSqItI1pkSl/nEHYXPt46kiDbyxmbWUAY8=;
+	s=arc-20240116; t=1756207201; c=relaxed/simple;
+	bh=LCSvU7Lnq6t6QroEWqTZ2Hgb0WFppfgSUyjsqcYMb5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8JFDedOVpfpAXPrjF0hiczJlbBvt12e2GJt0DzRszA3c7A2sw0ftvHIA3NxRikg8k9GJaCkT3C8LmRIjELq28x+DkFIQyAIDPjcumDA4GPkC5pX/kXhfmz7iw5Jo/ZCdXnETBcc8UPAK7lgiUhaP7xkn6anqToERajSBpi2/ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTLDxSzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C4CC4CEF1;
-	Tue, 26 Aug 2025 12:59:41 +0000 (UTC)
+	 MIME-Version; b=DdQcQ9lDmq71MsRuiJHe4nB7rBXYzCowiXSEBhXzDTJEsB8+3KQkQaVInInUYuiDl3BtNPo+qCiTxNfAFxMvbNtUCgXqHzyzP/RHW9D34Dr6Hz24qISjaK4yNOq0dDQRiMiFHNciFgt9Hni7QoNucin053zDs+po5PB92uP+DfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtAnrz9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB74EC4CEF1;
+	Tue, 26 Aug 2025 11:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213181;
-	bh=Tax0sjRT5kSqItI1pkSl/nEHYXPt46kiDbyxmbWUAY8=;
+	s=korg; t=1756207201;
+	bh=LCSvU7Lnq6t6QroEWqTZ2Hgb0WFppfgSUyjsqcYMb5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTLDxSzh++mwIolG9rxQTJvV9yEYD0gRWMG6zMOh50kCMobs4oHF38OsnmAgp7itH
-	 jCH2Yd3+T761cl+4K8lrKeO5DHA5gF/a+xOg+lUlRZi5CkiJQii3hWfnd5pY6FS3p2
-	 Vqwk+6jnS8Rwdq1Qut0upHHVkvhJRLc6rY1fzr74=
+	b=BtAnrz9Z49btjRCzd+Dluf8BA55P66rtG40smBQ2l6ivP2DkMU4jzDVrJ5LRwcA6p
+	 6cDg9qN53wiiZ+RY2jYX02fPkeGGVpCg8j1DC4YMtXxIoXD8KhR6+TbtssMuinFHCY
+	 BHPRres9GlCfBu4hIOTl+gKtUPXDcl1xUmkujic0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/587] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
-Date: Tue, 26 Aug 2025 13:06:13 +0200
-Message-ID: <20250826110958.635305167@linuxfoundation.org>
+	Tim Harvey <tharvey@gateworks.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.16 090/457] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
+Date: Tue, 26 Aug 2025 13:06:14 +0200
+Message-ID: <20250826110939.605564127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
+commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
 
-./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
-	Unsigned expression compared with zero: rate < 0
+The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
+integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
+represent millidegrees Celcius.
 
-The unsigned long 'rate' variable caused:
-- Incorrect handling of negative errors
-- Compile warning: "Unsigned expression compared with zero"
+Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
+scaling") properly addressed the incorrect scaling in the
+pwm_auto_point_temp_store implementation but erroneously scaled
+the pwm_auto_point_pwm_show (pwm value) instead of the
+pwm_auto_point_temp_show (temp value) resulting in:
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
+ 25500
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
+ 4500
 
-Fix by changing to long type and adding req->rate cast.
+Fix the scaling of these attributes:
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
+ 255
+ # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
+ 45000
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/tegra/clk-periph.c | 4 ++--
+ drivers/hwmon/gsc-hwmon.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index 0626650a7011..c9fc52a36fce 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
- 	const struct clk_ops *div_ops = periph->div_ops;
- 	struct clk_hw *div_hw = &periph->divider.hw;
--	unsigned long rate;
-+	long rate;
+--- a/drivers/hwmon/gsc-hwmon.c
++++ b/drivers/hwmon/gsc-hwmon.c
+@@ -64,7 +64,7 @@ static ssize_t pwm_auto_point_temp_show(
+ 		return ret;
  
- 	__clk_hw_set_clk(div_hw, hw);
- 
-@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	if (rate < 0)
- 		return rate;
- 
--	req->rate = rate;
-+	req->rate = (unsigned long)rate;
- 	return 0;
+ 	ret = regs[0] | regs[1] << 8;
+-	return sprintf(buf, "%d\n", ret * 10);
++	return sprintf(buf, "%d\n", ret * 100);
  }
  
--- 
-2.39.5
-
+ static ssize_t pwm_auto_point_temp_store(struct device *dev,
+@@ -99,7 +99,7 @@ static ssize_t pwm_auto_point_pwm_show(s
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+ 
+-	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
++	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
+ }
+ 
+ static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
 
 
 
