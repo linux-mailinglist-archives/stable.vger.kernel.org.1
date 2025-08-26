@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C3AB36D3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0E9B36B79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42ADF983278
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3FE1C4265D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038F235CEB6;
-	Tue, 26 Aug 2025 14:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D7C35AAA5;
+	Tue, 26 Aug 2025 14:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ya48iZ96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1477K7qO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5216260586;
-	Tue, 26 Aug 2025 14:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19403352FFF;
+	Tue, 26 Aug 2025 14:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219445; cv=none; b=tAXNABwByluaPG9RVPVn+eWLzS6LuX6crTp0/uxietUeP6aLvuEnQm5eNPwWaZqfpGKwjVRTtW71wqu3Uy4pFTLp2HT+cEeOoOdQ3wBJR1DgdQBTlK1Ecy5GAokR+T70DWjU5i7+xm0Wvael+7nXYBAAS8UIYwRpE2mIZHGNtSI=
+	t=1756218382; cv=none; b=NfCSK1BQrXgIJE660VR4FhY25HXAmNYtUFsJirbXqMskMHaKoQoQmbWO1eiVkvJYvOFbumQ16KKH5qaZhkxelwarA5G5xUiOevxegXiX6N6/msAMjtm3NOfISJ/RK/qHWyFaXyKrdcONqUqm7xquEs5IGVcdibi95cNn2S1csig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219445; c=relaxed/simple;
-	bh=KGjXnGspEwswb2xyNCdnd5DpH/aYPy4Pkj+RMv9aYY0=;
+	s=arc-20240116; t=1756218382; c=relaxed/simple;
+	bh=IZEpB7UaIoB1I3int3vB0V0Y5tOeZPQCRLlwu1xmMII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTngloBhFcwwl4dC5oWPBLxzfYgnDT3oI3j+MY99jLvT8u+oCtJfmtb/y/JC+WmLHIlOY2lPn2vPNkgK2ThlRbXikd/a2Ber2omjYSmOtF8nNVgWGFuGBJStbi9xSWSqMT2enMXj4qUUC1+9feeQeOtp7CBMcX0PLduEoxvflfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ya48iZ96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435C3C4CEF1;
-	Tue, 26 Aug 2025 14:44:05 +0000 (UTC)
+	 MIME-Version; b=nKUoYATBYKGVIgMhHYxa6QYsBUu9kMR5RvhE36IZ4hVClGvLgS12sFypWDrVq2O7VO5EwohqsPO6YU2Dp5+xw2O/0QieXoOJHsYULvsq758bfuvvKB1NqjHCpn37Nf+cbbie12TWOzrTEtczS2CnbtQpcde/WawAKfbTg9S8Ovk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1477K7qO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FBAC4CEF1;
+	Tue, 26 Aug 2025 14:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219445;
-	bh=KGjXnGspEwswb2xyNCdnd5DpH/aYPy4Pkj+RMv9aYY0=;
+	s=korg; t=1756218382;
+	bh=IZEpB7UaIoB1I3int3vB0V0Y5tOeZPQCRLlwu1xmMII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ya48iZ961SYY5xFjzuYUS+LT0RgC+30VqXGVA6SnNNzy6ZyI+pHpof+VUA1NEk+/T
-	 867+jUjRZhhp8QxeMT30suLH3IxjeM+ShIbiDR726zI3oPmTxOZXPAF46iNxvHNPtE
-	 Tl4nkTWUvpsxFSej5mZSfJ2UHMScPffOTpn9i7mA=
+	b=1477K7qOe9aU/J7/rkOLg53iVi9ySR4ZI1CNmQ277DZcAwbz2e5uyhjF7OCxNhRWp
+	 1hG4Cp73lCq0Xfz0I915lk3JEu71YQ4TrpcL4DPFH6zyOYWloCVB7CCliPuMizU1CS
+	 zxgBiitctBlfmE4RRIqHq9H5eAW4BdSqjzn8wdAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@mellanox.com>,
-	Jiri Pirko <jiri@mellanox.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 383/403] net: sched: extract bstats update code into function
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 499/523] selftests: mptcp: pm: check flush doesnt reset limits
 Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826110917.598400661@linuxfoundation.org>
+Message-ID: <20250826110936.750217813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@mellanox.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 5e1ad95b630e652d3467d1fd1f0b5e5ea2c441e2 ]
+commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
 
-Extract common code that increments cpu_bstats counter into standalone act
-API function. Change hardware offloaded actions that use percpu counter
-allocation to use the new function instead of incrementing cpu_bstats
-directly.
+This modification is linked to the parent commit where the received
+ADD_ADDR limit was accidentally reset when the endpoints were flushed.
 
-This commit doesn't change functionality.
+To validate that, the test is now flushing endpoints after having set
+new limits, and before checking them.
 
-Signed-off-by: Vlad Buslov <vladbu@mellanox.com>
-Acked-by: Jiri Pirko <jiri@mellanox.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.sh, because some refactoring have been done
+  later on: commit 3188309c8ceb ("selftests: mptcp: netlink:
+  add 'limits' helpers") and commit c99d57d0007a ("selftests: mptcp: use
+  pm_nl endpoint ops") are not in this version. The same operation can
+  still be done at the same place, without using the new helper. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/act_api.h      |    7 +++++++
- net/sched/act_csum.c       |    2 +-
- net/sched/act_ct.c         |    2 +-
- net/sched/act_gact.c       |    2 +-
- net/sched/act_mirred.c     |    2 +-
- net/sched/act_tunnel_key.c |    2 +-
- net/sched/act_vlan.c       |    2 +-
- 7 files changed, 13 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -186,6 +186,13 @@ int tcf_action_dump(struct sk_buff *skb,
- 		    int ref);
- int tcf_action_dump_old(struct sk_buff *skb, struct tc_action *a, int, int);
- int tcf_action_dump_1(struct sk_buff *skb, struct tc_action *a, int, int);
-+
-+static inline void tcf_action_update_bstats(struct tc_action *a,
-+					    struct sk_buff *skb)
-+{
-+	bstats_cpu_update(this_cpu_ptr(a->cpu_bstats), skb);
-+}
-+
- void tcf_action_update_stats(struct tc_action *a, u64 bytes, u32 packets,
- 			     bool drop, bool hw);
- int tcf_action_copy_stats(struct sk_buff *, struct tc_action *, int);
---- a/net/sched/act_csum.c
-+++ b/net/sched/act_csum.c
-@@ -577,7 +577,7 @@ static int tcf_csum_act(struct sk_buff *
- 	params = rcu_dereference_bh(p->params);
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -130,6 +130,7 @@ ip netns exec $ns1 ./pm_nl_ctl limits 1
+ check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
  
- 	tcf_lastuse_update(&p->tcf_tm);
--	bstats_cpu_update(this_cpu_ptr(p->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&p->common, skb);
+ ip netns exec $ns1 ./pm_nl_ctl limits 8 8
++ip netns exec $ns1 ./pm_nl_ctl flush
+ check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
+ subflows 8" "set limits"
  
- 	action = READ_ONCE(p->tcf_action);
- 	if (unlikely(action == TC_ACT_SHOT))
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -482,7 +482,7 @@ out_push:
- 	skb_push_rcsum(skb, nh_ofs);
- 
- out:
--	bstats_cpu_update(this_cpu_ptr(a->cpu_bstats), skb);
-+	tcf_action_update_bstats(&c->common, skb);
- 	return retval;
- 
- drop:
---- a/net/sched/act_gact.c
-+++ b/net/sched/act_gact.c
-@@ -159,7 +159,7 @@ static int tcf_gact_act(struct sk_buff *
- 		action = gact_rand[ptype](gact);
- 	}
- #endif
--	bstats_cpu_update(this_cpu_ptr(gact->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&gact->common, skb);
- 	if (action == TC_ACT_SHOT)
- 		qstats_drop_inc(this_cpu_ptr(gact->common.cpu_qstats));
- 
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -233,7 +233,7 @@ static int tcf_mirred_act(struct sk_buff
- 	}
- 
- 	tcf_lastuse_update(&m->tcf_tm);
--	bstats_cpu_update(this_cpu_ptr(m->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&m->common, skb);
- 
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
- 	m_eaction = READ_ONCE(m->tcfm_eaction);
---- a/net/sched/act_tunnel_key.c
-+++ b/net/sched/act_tunnel_key.c
-@@ -31,7 +31,7 @@ static int tunnel_key_act(struct sk_buff
- 	params = rcu_dereference_bh(t->params);
- 
- 	tcf_lastuse_update(&t->tcf_tm);
--	bstats_cpu_update(this_cpu_ptr(t->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&t->common, skb);
- 	action = READ_ONCE(t->tcf_action);
- 
- 	switch (params->tcft_action) {
---- a/net/sched/act_vlan.c
-+++ b/net/sched/act_vlan.c
-@@ -29,7 +29,7 @@ static int tcf_vlan_act(struct sk_buff *
- 	u16 tci;
- 
- 	tcf_lastuse_update(&v->tcf_tm);
--	bstats_cpu_update(this_cpu_ptr(v->common.cpu_bstats), skb);
-+	tcf_action_update_bstats(&v->common, skb);
- 
- 	/* Ensure 'data' points at mac_header prior calling vlan manipulating
- 	 * functions.
 
 
 
