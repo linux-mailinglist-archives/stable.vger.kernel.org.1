@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E18EB362B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B56B364FF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7FFA5E6B38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077C9565B0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4249A32A3C8;
-	Tue, 26 Aug 2025 13:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4642264B8;
+	Tue, 26 Aug 2025 13:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZyixPhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uu8W1bFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0004422DF99;
-	Tue, 26 Aug 2025 13:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECF51B87E8;
+	Tue, 26 Aug 2025 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214035; cv=none; b=l/jNIO/Mn+0hipA8qZ2q1a9Wkqzr/kVLkzzarV6u3Xyc6vobX6xkg/rOjnUwn+JnKwYTx8RaSeFi4Yf//bE2t0sSlc8w+xn/Z5b4D8dIxWNaYwQ7nCvkHuv8Y7+suMuiLH+yWIcFV24TmVBkr6iIilfgHjFv3Gcuc5NkGt5suo4=
+	t=1756215317; cv=none; b=a4nKf5SWZWyHTzBl5EIbv5Z3iloWu1iJbzPsyZG1Mecb1TvLSXW/1sMv6s+8cqALXrCWagE1f29u8kVR9g7lqJNmsCgAjjiwhldaPoVR3yw15So/TnkTqV+vfbHieoAz7DWitBjfr02zp74a8gjBGmQxIwutiLoNprrnCwHK7F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214035; c=relaxed/simple;
-	bh=hoDk8KIrMLWn2MKF+hBzEcshYbZ5D1YjK8Infrlumd0=;
+	s=arc-20240116; t=1756215317; c=relaxed/simple;
+	bh=CH9O5/e1nRbRILaLcV9kfJu0rnoAkR30jBiT24QGGSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrQ1OmyE9MykuLqnNs1fjgoqkCnfg4I9LpopQxk6sd/xPweAdrQNoQ8hlKeY1rAlASRPN2JVC2ideYLRTleJg8yUgUukOtdGxX5RozYTXPDEUVvSOFPWaYs9DWlroVXUa0JET24N70Arl2QXbEnFf+OgzfY3xBM5Cl2t/FqS66o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZyixPhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2438FC4CEF1;
-	Tue, 26 Aug 2025 13:13:53 +0000 (UTC)
+	 MIME-Version; b=leW+2ias6oendeAIy4VbF9H405Wcu71ysXxMV++zDc27r66XpVOaCLTOm1yYHAJpoqZ45VvrSl64hewM6ZTTdMVijVgBfy/7Y95ENv6dO8t2ULrYm97EO2nRTotSYmIrmloAezUcU5gMj3MDpI5Pm32fnAJrXn2+TqaR6uFsj7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uu8W1bFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B1BC4CEF1;
+	Tue, 26 Aug 2025 13:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214034;
-	bh=hoDk8KIrMLWn2MKF+hBzEcshYbZ5D1YjK8Infrlumd0=;
+	s=korg; t=1756215314;
+	bh=CH9O5/e1nRbRILaLcV9kfJu0rnoAkR30jBiT24QGGSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZyixPhkd3ax8L3iGILXxNdC7AsHwtqTIWxY/zqy3eDgJivAi1aW9yz88UGfsIgEN
-	 HcSGtoFyz3mW7tRdNZ4EOXRoEo1UbFt0fRuwHwHMlacE7A8lmzgx6pXrYgjgehR1rC
-	 Fjq+KlAlooggmto2rF7VrzTK2tig0MzbFsjQm5jM=
+	b=uu8W1bFeJ2zOjpM9i+yz/U4o7rttR99F/uQK2BJ73QjE2yECSKN27GQQ3a/ED5TNL
+	 aY3JGE9/tYFvLrJ5KkYiYKorM0lLv9/+ha02XhRHnzvLanfB21I7P0qxPZAxotTjbn
+	 js/eyUKVzUwzaZMY0k4Hs+Rtx3cp3xNgHX7Sc5Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 572/587] net/smc: fix UAF on smcsk after smc_listen_out()
+Subject: [PATCH 6.1 468/482] ppp: fix race conditions in ppp_fill_forward_path
 Date: Tue, 26 Aug 2025 13:12:01 +0200
-Message-ID: <20250826111007.586321088@linuxfoundation.org>
+Message-ID: <20250826110942.383361247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit d9cef55ed49117bd63695446fb84b4b91815c0b4 ]
+[ Upstream commit 0417adf367a0af11adf7ace849af4638cfb573f7 ]
 
-BPF CI testing report a UAF issue:
+ppp_fill_forward_path() has two race conditions:
 
-  [   16.446633] BUG: kernel NULL pointer dereference, address: 000000000000003  0
-  [   16.447134] #PF: supervisor read access in kernel mod  e
-  [   16.447516] #PF: error_code(0x0000) - not-present pag  e
-  [   16.447878] PGD 0 P4D   0
-  [   16.448063] Oops: Oops: 0000 [#1] PREEMPT SMP NOPT  I
-  [   16.448409] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Tainted: G           OE      6.13.0-rc3-g89e8a75fda73-dirty #4  2
-  [   16.449124] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODUL  E
-  [   16.449502] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/201  4
-  [   16.450201] Workqueue: smc_hs_wq smc_listen_wor  k
-  [   16.450531] RIP: 0010:smc_listen_work+0xc02/0x159  0
-  [   16.452158] RSP: 0018:ffffb5ab40053d98 EFLAGS: 0001024  6
-  [   16.452526] RAX: 0000000000000001 RBX: 0000000000000002 RCX: 000000000000030  0
-  [   16.452994] RDX: 0000000000000280 RSI: 00003513840053f0 RDI: 000000000000000  0
-  [   16.453492] RBP: ffffa097808e3800 R08: ffffa09782dba1e0 R09: 000000000000000  5
-  [   16.453987] R10: 0000000000000000 R11: 0000000000000000 R12: ffffa0978274640  0
-  [   16.454497] R13: 0000000000000000 R14: 0000000000000000 R15: ffffa09782d4092  0
-  [   16.454996] FS:  0000000000000000(0000) GS:ffffa097bbc00000(0000) knlGS:000000000000000  0
-  [   16.455557] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003  3
-  [   16.455961] CR2: 0000000000000030 CR3: 0000000102788004 CR4: 0000000000770ef  0
-  [   16.456459] PKRU: 5555555  4
-  [   16.456654] Call Trace  :
-  [   16.456832]  <TASK  >
-  [   16.456989]  ? __die+0x23/0x7  0
-  [   16.457215]  ? page_fault_oops+0x180/0x4c  0
-  [   16.457508]  ? __lock_acquire+0x3e6/0x249  0
-  [   16.457801]  ? exc_page_fault+0x68/0x20  0
-  [   16.458080]  ? asm_exc_page_fault+0x26/0x3  0
-  [   16.458389]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458689]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458987]  ? lock_is_held_type+0x8f/0x10  0
-  [   16.459284]  process_one_work+0x1ea/0x6d  0
-  [   16.459570]  worker_thread+0x1c3/0x38  0
-  [   16.459839]  ? __pfx_worker_thread+0x10/0x1  0
-  [   16.460144]  kthread+0xe0/0x11  0
-  [   16.460372]  ? __pfx_kthread+0x10/0x1  0
-  [   16.460640]  ret_from_fork+0x31/0x5  0
-  [   16.460896]  ? __pfx_kthread+0x10/0x1  0
-  [   16.461166]  ret_from_fork_asm+0x1a/0x3  0
-  [   16.461453]  </TASK  >
-  [   16.461616] Modules linked in: bpf_testmod(OE) [last unloaded: bpf_testmod(OE)  ]
-  [   16.462134] CR2: 000000000000003  0
-  [   16.462380] ---[ end trace 0000000000000000 ]---
-  [   16.462710] RIP: 0010:smc_listen_work+0xc02/0x1590
+1. The ppp->channels list can change between list_empty() and
+   list_first_entry(), as ppp_lock() is not held. If the only channel
+   is deleted in ppp_disconnect_channel(), list_first_entry() may
+   access an empty head or a freed entry, and trigger a panic.
 
-The direct cause of this issue is that after smc_listen_out_connected(),
-newclcsock->sk may be NULL since it will releases the smcsk. Therefore,
-if the application closes the socket immediately after accept,
-newclcsock->sk can be NULL. A possible execution order could be as
-follows:
+2. pch->chan can be NULL. When ppp_unregister_channel() is called,
+   pch->chan is set to NULL before pch is removed from ppp->channels.
 
-smc_listen_work                                 | userspace
------------------------------------------------------------------
-lock_sock(sk)                                   |
-smc_listen_out_connected()                      |
-| \- smc_listen_out                             |
-|    | \- release_sock                          |
-     | |- sk->sk_data_ready()                   |
-                                                | fd = accept();
-                                                | close(fd);
-                                                |  \- socket->sk = NULL;
-/* newclcsock->sk is NULL now */
-SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk))
+Fix these by using a lockless RCU approach:
+- Use list_first_or_null_rcu() to safely test and access the first list
+  entry.
+- Convert list modifications on ppp->channels to their RCU variants and
+  add synchronize_net() after removal.
+- Check for a NULL pch->chan before dereferencing it.
 
-Since smc_listen_out_connected() will not fail, simply swapping the order
-of the code can easily fix this issue.
-
-Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250818054618.41615-1-alibuda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f6efc675c9dd ("net: ppp: resolve forwarding path for bridge pppoe devices")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Link: https://patch.msgid.link/20250814012559.3705-2-dqfext@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ppp/ppp_generic.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 8f75bb9d165a..b3bfd0f18d41 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2553,8 +2553,9 @@ static void smc_listen_work(struct work_struct *work)
- 			goto out_decl;
- 	}
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 67d9efb05443..cbf1c1f23281 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -33,6 +33,7 @@
+ #include <linux/ppp_channel.h>
+ #include <linux/ppp-comp.h>
+ #include <linux/skbuff.h>
++#include <linux/rculist.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/if_arp.h>
+ #include <linux/ip.h>
+@@ -1613,11 +1614,14 @@ static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
+ 	if (ppp->flags & SC_MULTILINK)
+ 		return -EOPNOTSUPP;
  
--	smc_listen_out_connected(new_smc);
- 	SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk), ini);
-+	/* smc_listen_out() will release smcsk */
-+	smc_listen_out_connected(new_smc);
- 	goto out_free;
+-	if (list_empty(&ppp->channels))
++	pch = list_first_or_null_rcu(&ppp->channels, struct channel, clist);
++	if (!pch)
++		return -ENODEV;
++
++	chan = READ_ONCE(pch->chan);
++	if (!chan)
+ 		return -ENODEV;
  
- out_unlock:
+-	pch = list_first_entry(&ppp->channels, struct channel, clist);
+-	chan = pch->chan;
+ 	if (!chan->ops->fill_forward_path)
+ 		return -EOPNOTSUPP;
+ 
+@@ -3000,7 +3004,7 @@ ppp_unregister_channel(struct ppp_channel *chan)
+ 	 */
+ 	down_write(&pch->chan_sem);
+ 	spin_lock_bh(&pch->downl);
+-	pch->chan = NULL;
++	WRITE_ONCE(pch->chan, NULL);
+ 	spin_unlock_bh(&pch->downl);
+ 	up_write(&pch->chan_sem);
+ 	ppp_disconnect_channel(pch);
+@@ -3506,7 +3510,7 @@ ppp_connect_channel(struct channel *pch, int unit)
+ 	hdrlen = pch->file.hdrlen + 2;	/* for protocol bytes */
+ 	if (hdrlen > ppp->dev->hard_header_len)
+ 		ppp->dev->hard_header_len = hdrlen;
+-	list_add_tail(&pch->clist, &ppp->channels);
++	list_add_tail_rcu(&pch->clist, &ppp->channels);
+ 	++ppp->n_channels;
+ 	pch->ppp = ppp;
+ 	refcount_inc(&ppp->file.refcnt);
+@@ -3536,10 +3540,11 @@ ppp_disconnect_channel(struct channel *pch)
+ 	if (ppp) {
+ 		/* remove it from the ppp unit's list */
+ 		ppp_lock(ppp);
+-		list_del(&pch->clist);
++		list_del_rcu(&pch->clist);
+ 		if (--ppp->n_channels == 0)
+ 			wake_up_interruptible(&ppp->file.rwait);
+ 		ppp_unlock(ppp);
++		synchronize_net();
+ 		if (refcount_dec_and_test(&ppp->file.refcnt))
+ 			ppp_destroy_interface(ppp);
+ 		err = 0;
 -- 
 2.50.1
 
