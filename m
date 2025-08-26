@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C8CB35FDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9214AB36860
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77BCD46318F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843221C41672
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A791C6BE;
-	Tue, 26 Aug 2025 12:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE3534DCED;
+	Tue, 26 Aug 2025 14:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjkoJz2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpBTNyDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58C0195811;
-	Tue, 26 Aug 2025 12:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8EE1DE8BE;
+	Tue, 26 Aug 2025 14:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212722; cv=none; b=li7Dn+6yurNhwZG1crkWl6Usg69NmeZCvDsZRz0O5cO91/lcZujUjyhGaau7tkAgvb+GXZF3LglE4QqND+N5JJq8JlSuXdzr1IKcdKypNOSeAv2wzCzyqC4Vo5uKAa0QRFb85rmqFI+yt0UbPKlAnin/hPSD42rAQeZ7uvKMiQ4=
+	t=1756217099; cv=none; b=YIUallkway1sbnTpw9ZgdJ379drkx6Qon2K0chzOST0D6p3VPs4Qy/XyKLzfJD9oTY8ruhWMxwrkNx1f7V+imTbmLAi/Ls4swkF/ttbf0AtsdAjK1QVrxXCksvZNcuJaGTSKNmgfw2hPAa6L/UVYkWDYrllHBM9+5SJTmjlHkGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212722; c=relaxed/simple;
-	bh=kc5cybpjKSbR1pDESOqVsx/PaNUQ4GF90+wq8q1/mwE=;
+	s=arc-20240116; t=1756217099; c=relaxed/simple;
+	bh=RRQuIntySAa6Sl3VyTuSsjn5dKpfEf9HitX2ThqykZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvRYxWzef6gRiqq/kJqnotFbhtbCAvXwcD8wgvt0ipRCKkwPXp6SZ9W9JF1aSU0ddYmHjlIJmLVLCsEkST9gu2qS/yEnDVNxIX4yjd4qJFyxom8cR5Wu7pMj5cNyPvJ6bnVj5GL+4tS2yDRrnONAyKhMBnSYJPfz5HQbw+XTXOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjkoJz2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FDFC4CEF1;
-	Tue, 26 Aug 2025 12:52:02 +0000 (UTC)
+	 MIME-Version; b=UVpzOu9K4ogXkIT9tum2PFycwyzS7cPTliEUpwnlCgyM58Bori+estIpgtgErA9GbTatRFzxvj2kU3yxRK39xai8tn7tv8R0vU3pyNqqVZywsEbUX/a8YSq08w+6P/FvsN+lzZcyjGUgHJ9FcGE9CHZSzNMhiz2wM/MlVdkatJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpBTNyDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E902CC4CEF1;
+	Tue, 26 Aug 2025 14:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212722;
-	bh=kc5cybpjKSbR1pDESOqVsx/PaNUQ4GF90+wq8q1/mwE=;
+	s=korg; t=1756217099;
+	bh=RRQuIntySAa6Sl3VyTuSsjn5dKpfEf9HitX2ThqykZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjkoJz2ACyxS/fNpLqDuBA5nCIC43r45atbuAmny+jZL8aCASebQXFBRtnbxjTKvg
-	 cKFWEuYP0RvUL15uYI8cKYvVf8dZZATu9+fYwNtNpIzy9UxeHGuC/5JT3/wRe+YNwi
-	 7FLekwKoCmHTSMEof6UeIQ7yXf9sW/ScnSDm99P4=
+	b=MpBTNyDzGRDALh4BLr5I94daFg7z+/2HQBXQP52bdz4i9fbEq4h31kyvmzVpoqL1l
+	 ffHpMGecSAiM2uaudh+9KuskO3hnY+jHXvHckfwu3pSrnxZHgTlTOcRWmBEaCAMz9z
+	 8TANUVP7Sb+8M91bBan/30tzLYkxejhykiBesPfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/587] fs/ntfs3: Add sanity check for file name
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 016/523] dmaengine: nbpfaxi: Fix memory corruption in probe()
 Date: Tue, 26 Aug 2025 13:03:46 +0200
-Message-ID: <20250826110954.891969843@linuxfoundation.org>
+Message-ID: <20250826110924.985121669@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
+commit 188c6ba1dd925849c5d94885c8bbdeb0b3dcf510 upstream.
 
-The length of the file name should be smaller than the directory entry size.
+The nbpf->chan[] array is allocated earlier in the nbpf_probe() function
+and it has "num_channels" elements.  These three loops iterate one
+element farther than they should and corrupt memory.
 
-Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The changes to the second loop are more involved.  In this case, we're
+copying data from the irqbuf[] array into the nbpf->chan[] array.  If
+the data in irqbuf[i] is the error IRQ then we skip it, so the iterators
+are not in sync.  I added a check to ensure that we don't go beyond the
+end of the irqbuf[] array.  I'm pretty sure this can't happen, but it
+seemed harmless to add a check.
+
+On the other hand, after the loop has ended there is a check to ensure
+that the "chan" iterator is where we expect it to be.  In the original
+code we went one element beyond the end of the array so the iterator
+wasn't in the correct place and it would always return -EINVAL.  However,
+now it will always be in the correct place.  I deleted the check since
+we know the result.
+
+Cc: stable@vger.kernel.org
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/b13c5225-7eff-448c-badc-a2c98e9bcaca@sabinyo.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/dma/nbpfaxi.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index e1b856ecce61..6b93c909bdc9 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
- 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
- 		return true;
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -1356,7 +1356,7 @@ static int nbpf_probe(struct platform_de
+ 	if (irqs == 1) {
+ 		eirq = irqbuf[0];
  
-+	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
-+		return true;
-+
- 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
- 				     PATH_MAX);
- 	if (name_len <= 0) {
--- 
-2.39.5
-
+-		for (i = 0; i <= num_channels; i++)
++		for (i = 0; i < num_channels; i++)
+ 			nbpf->chan[i].irq = irqbuf[0];
+ 	} else {
+ 		eirq = platform_get_irq_byname(pdev, "error");
+@@ -1366,16 +1366,15 @@ static int nbpf_probe(struct platform_de
+ 		if (irqs == num_channels + 1) {
+ 			struct nbpf_channel *chan;
+ 
+-			for (i = 0, chan = nbpf->chan; i <= num_channels;
++			for (i = 0, chan = nbpf->chan; i < num_channels;
+ 			     i++, chan++) {
+ 				/* Skip the error IRQ */
+ 				if (irqbuf[i] == eirq)
+ 					i++;
++				if (i >= ARRAY_SIZE(irqbuf))
++					return -EINVAL;
+ 				chan->irq = irqbuf[i];
+ 			}
+-
+-			if (chan != nbpf->chan + num_channels)
+-				return -EINVAL;
+ 		} else {
+ 			/* 2 IRQs and more than one channel */
+ 			if (irqbuf[0] == eirq)
+@@ -1383,7 +1382,7 @@ static int nbpf_probe(struct platform_de
+ 			else
+ 				irq = irqbuf[0];
+ 
+-			for (i = 0; i <= num_channels; i++)
++			for (i = 0; i < num_channels; i++)
+ 				nbpf->chan[i].irq = irq;
+ 		}
+ 	}
 
 
 
