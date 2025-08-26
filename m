@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38A7B3686B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC4B35D1E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF0F8E5F9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AA47366654
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19442352089;
-	Tue, 26 Aug 2025 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731FD346A13;
+	Tue, 26 Aug 2025 11:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piVJux3U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IosT0W2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C996721ABDC;
-	Tue, 26 Aug 2025 13:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247903451DE;
+	Tue, 26 Aug 2025 11:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216705; cv=none; b=SfmZgLKYoY9Ay6FXsAroYWgbkQwaick38OnXwFt3NY4YDPjr2UB0Z1ZHeBTE7x5cMy7lcC4XpmKy4T5o8dDVs5lnim4QUa9fo1neODwVK5cFlx3MQFHfJd7G0x+EaUNgdGVedvKZfUMqrnVF3egoOlCieYeRG28BADXs9GMDPcQ=
+	t=1756207875; cv=none; b=TixdHFX6UENeV3RQ6nQracwlnntgOUtrK+7d32GICLnvsDrvUlWc4nBOiQsfYB62/wyyc1momb57urGrw9MSAJjz4lvrlxrr0Yu6ZKH63KzJoodSHPSe3DqnoZ655axlpJgOVY5kan+UMI4FWGPpDZf/aXWY5R6vy+qcl0+4hS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216705; c=relaxed/simple;
-	bh=52kyHoJrkUgSE2B1CNyIO6ffBNwj/B6e00e6LMZWTII=;
+	s=arc-20240116; t=1756207875; c=relaxed/simple;
+	bh=9g7FODQvcbQaHmcsMS69z3l2e7bKxOUQfFK8Gf2ndls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzlCaqf0l9BbW/y409aRNYqp65l0s/Pu7n0qLil+ejJ2PvDs/KgPDCjQ0AE8Sgp6WQVIr+r8rc0mmV5MrEJeDzdGqqRXLXQ0PgkF0SrhQxyW2+8h68l91u0PvBJIGNtue3zBiEMfnXxijVdeLzDfcvxg1SAXfzJp4om26lKYgK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piVJux3U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB77C4CEF1;
-	Tue, 26 Aug 2025 13:58:25 +0000 (UTC)
+	 MIME-Version; b=tJNP02IUil67zl7pT0z4z6wyHQfNsEs1y9oqC04dMKxJ0dKrzy67d4sD6WlY0DKLgiAbWZ2jW8qAp0A4DAmzvfYsr1mKImP2Cv/3f6fv9NzOiIRaY4J556VTt3U9Lc8rQVJYKJQGIsk2kyiAZfJlFv/c3ytAtV+082RrlThOawY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IosT0W2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0D3C116B1;
+	Tue, 26 Aug 2025 11:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216705;
-	bh=52kyHoJrkUgSE2B1CNyIO6ffBNwj/B6e00e6LMZWTII=;
+	s=korg; t=1756207875;
+	bh=9g7FODQvcbQaHmcsMS69z3l2e7bKxOUQfFK8Gf2ndls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=piVJux3U1JS5lnh6ClvcrkPb1/eswHKeSkJmRQaXsuKlm5Xtc6VAGjfpJgMH0AX0M
-	 lcN4ulAu4MZ6YLLlmJnUefd0P9yCZJZWOlgriWlA9FRXQMP1AMPWIMO8ijsQ2gtHe7
-	 dJm2pfCvvtc8lcq4nBlGbXQIO8ohTyNQSKDLzrrQ=
+	b=IosT0W2txnMiPBxo8QE69h+QqMX27jVTl9HWSds7VJT5+SSsAmdbWbLlEMAnAcLCE
+	 9tCIprlDnXouxs1FfjbatEIyWBACpnrfgiOk4yPz877MdZ1Bi9G/Y4AUalCD39nkmd
+	 8k2pNxyC4XWtg4GLxES5eUftZmqNhTEoAgwQYpjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KernelCI bot <bot@kernelci.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 513/644] ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+	stable <stable@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.16 320/457] usb: typec: maxim_contaminant: re-enable cc toggle if cc is open and port is clean
 Date: Tue, 26 Aug 2025 13:10:04 +0200
-Message-ID: <20250826110959.217522769@linuxfoundation.org>
+Message-ID: <20250826110945.262074207@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 87c4e1459e80bf65066f864c762ef4dc932fad4b ]
+commit a381c6d6f646226924809d0ad01a9465786da463 upstream.
 
-After commit d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper
-flags and language target"), which updated as-instr to use the
-'assembler-with-cpp' language option, the Kbuild version of as-instr
-always fails internally for arch/arm with
+Presently in `max_contaminant_is_contaminant()` if there's no
+contaminant detected previously, CC is open & stopped toggling and no
+contaminant is currently present, TCPC.RC would be programmed to do DRP
+toggling. However, it didn't actively look for a connection. This would
+lead to Type-C not detect *any* new connections. Hence, in the above
+situation, re-enable toggling & program TCPC to look for a new
+connection.
 
-  <command-line>: fatal error: asm/unified.h: No such file or directory
-  compilation terminated.
+Also, return early if TCPC was looking for connection as this indicates
+TCPC has neither detected a potential connection nor a change in
+contaminant state.
 
-because '-include' flags are now taken into account by the compiler
-driver and as-instr does not have '$(LINUXINCLUDE)', so unified.h is not
-found.
+In addition, once dry detection is complete (port is dry), restart
+toggling.
 
-This went unnoticed at the time of the Kbuild change because the last
-use of as-instr in Kbuild that arch/arm could reach was removed in 5.7
-by commit 541ad0150ca4 ("arm: Remove 32bit KVM host support") but a
-stable backport of the Kbuild change to before that point exposed this
-potential issue if one were to be reintroduced.
-
-Follow the general pattern of '-include' paths throughout the tree and
-make unified.h absolute using '$(srctree)' to ensure KBUILD_AFLAGS can
-be used independently.
-
-Closes: https://lore.kernel.org/CACo-S-1qbCX4WAVFA63dWfHtrRHZBTyyr2js8Lx=Az03XHTTHg@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper flags and language target")
-Reported-by: KernelCI bot <bot@kernelci.org>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-[ adapted to missing -Wa ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 02b332a06397e ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |   53 +++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -126,7 +126,7 @@ endif
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -329,6 +329,39 @@ static int max_contaminant_enable_dry_de
+ 	return 0;
+ }
  
- # Need -Uarm for gcc < 3.x
- KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
--KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) $(arch-y) $(tune-y) -include asm/unified.h -msoft-float
-+KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) $(arch-y) $(tune-y) -include $(srctree)/arch/arm/include/asm/unified.h -msoft-float
++static int max_contaminant_enable_toggling(struct max_tcpci_chip *chip)
++{
++	struct regmap *regmap = chip->data.regmap;
++	int ret;
++
++	/* Disable dry detection if enabled. */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL,
++				 FIELD_PREP(CCLPMODESEL,
++					    LOW_POWER_MODE_DISABLE));
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL1, CCCONNDRY, 0);
++	if (ret)
++		return ret;
++
++	ret = max_tcpci_write8(chip, TCPC_ROLE_CTRL, TCPC_ROLE_CTRL_DRP |
++			       FIELD_PREP(TCPC_ROLE_CTRL_CC1,
++					  TCPC_ROLE_CTRL_CC_RD) |
++			       FIELD_PREP(TCPC_ROLE_CTRL_CC2,
++					  TCPC_ROLE_CTRL_CC_RD));
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT);
++	if (ret)
++		return ret;
++
++	return max_tcpci_write8(chip, TCPC_COMMAND, TCPC_CMD_LOOK4CONNECTION);
++}
++
+ bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce,
+ 				    bool *cc_handled)
+ {
+@@ -345,6 +378,12 @@ bool max_contaminant_is_contaminant(stru
+ 	if (ret < 0)
+ 		return false;
  
- CHECKFLAGS	+= -D__arm__
- 
++	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
++		if (chip->contaminant_state == DETECTED)
++			return true;
++		return false;
++	}
++
+ 	if (chip->contaminant_state == NOT_DETECTED || chip->contaminant_state == SINK) {
+ 		if (!disconnect_while_debounce)
+ 			msleep(100);
+@@ -377,6 +416,12 @@ bool max_contaminant_is_contaminant(stru
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
+ 			}
++
++			ret = max_contaminant_enable_toggling(chip);
++			if (ret)
++				dev_err(chip->dev,
++					"Failed to enable toggling, ret=%d",
++					ret);
+ 		}
+ 	} else if (chip->contaminant_state == DETECTED) {
+ 		if (!(cc_status & TCPC_CC_STATUS_TOGGLING)) {
+@@ -384,6 +429,14 @@ bool max_contaminant_is_contaminant(stru
+ 			if (chip->contaminant_state == DETECTED) {
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
++			} else {
++				ret = max_contaminant_enable_toggling(chip);
++				if (ret) {
++					dev_err(chip->dev,
++						"Failed to enable toggling, ret=%d",
++						ret);
++					return true;
++				}
+ 			}
+ 		}
+ 	}
 
 
 
