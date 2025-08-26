@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71005B36BD1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8991B36982
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BC991C805A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662831C27BF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D114405F7;
-	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1233570B9;
+	Tue, 26 Aug 2025 14:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZrErkez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruap/oKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EF8352060;
-	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A833570B3;
+	Tue, 26 Aug 2025 14:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218562; cv=none; b=KlLBQJlLkCpkAmp7byNM7cSRF5TJNAkCLKgr7ECeWQAouysjPIcU2IoXDHMQrFnssViaKlGt4OKmzQ44/ErtJ/z3yqzcWK6vuhFRA4eppdwmLpWTjR3PF/RAUZOSpa0ebn7ujkvt+uMyAVz4dXNiPnT63daBDPhIKt6R/pHmqUY=
+	t=1756217519; cv=none; b=LoFkvvlHKuA+HlvcNRmfkb08fmAO+t/tKKgnW66xzX7DTWCduDvPrOmEtblI2x9MfkdvXeQk+eO7/d2AKvOYV7m3KcmmUxfMT6MsH6IoYDryT0z9BQQ59wLnN9G2snMAc3cV+UPqXPA/R9jsa2yfeXupjqzCMFF8cidKxA71CP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218562; c=relaxed/simple;
-	bh=RigU6pJDtRFjQ9c2hepaGg5ocE0OLXzaiXv9TOkufqQ=;
+	s=arc-20240116; t=1756217519; c=relaxed/simple;
+	bh=HcnkHIKAatVQWxm6COxr5A8FuHOFcJynOvRRn8GNZjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMO5xqqv2e6IwmI3IBdxOUDuHEwOrDnxqiSzx7LGzXMH96K/1Gd18her2U1BFyNRQUkkCCmTRfKLdbCMSeT1q9FNJfWRggANNU9bY+l4kHnaDp7HHfhWx/bovNU3+odVl8Ea6qpbnomwoCRf0MptQksttTdnFJVFYpBv2wqkYNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZrErkez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95EAC113D0;
-	Tue, 26 Aug 2025 14:29:21 +0000 (UTC)
+	 MIME-Version; b=h/vYu9V1EEU69gjvbnx/+Wmi9iwLPZ2ptN5ZL1Mx8QX+X9SpV2SqcrBMYCq5u0mIsyLEhVrI+AznHXJZ4q9RRDCbOj2VCYgdqOS3Hem84vtlpMyqDE680L0Gcm+SLY6IzP94n1dIywbyza6UtGoAlpXBzfdGmABg3eg/eRL9CI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruap/oKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4C3C4CEF1;
+	Tue, 26 Aug 2025 14:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218562;
-	bh=RigU6pJDtRFjQ9c2hepaGg5ocE0OLXzaiXv9TOkufqQ=;
+	s=korg; t=1756217519;
+	bh=HcnkHIKAatVQWxm6COxr5A8FuHOFcJynOvRRn8GNZjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZrErkez578t11xXTlSWe2VE3U/EJOXXGzxsrpGYdl4vJWD8Ri5YYjnz0MzWtiO99
-	 MlRka+q16q22YeI2LfO3hk+ZE+8cgQw0pwahd5LUCQ4EmsxQxyHzKybVD6jr0bJnZ/
-	 SIAGVCb64oxkGglrnijPn1FcdtrpYBpJD6ZEuw9g=
+	b=ruap/oKSL49CWY6h9TYm2UVzae7hLjaF6PJyXPx+hSteupoQk4953tBx9ylBbng7H
+	 f5nYCkpxcH5ec/CtDU4iczaX8+qaK87wsomcWmnz50oY2DHDWz52yZDuvd64P9+8u6
+	 jtd4S6eMXgYxbYyG2BeDQtxOzsEs7W7+rBumgr7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 016/403] memstick: core: Zero initialize id_reg in h_memstick_read_dev_id()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 132/523] scsi: isci: Fix dma_unmap_sg() nents value
 Date: Tue, 26 Aug 2025 13:05:42 +0200
-Message-ID: <20250826110906.212632271@linuxfoundation.org>
+Message-ID: <20250826110927.758707023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 21b34a3a204ed616373a12ec17dc127ebe51eab3 upstream.
+[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
 
-A new warning in clang [1] points out that id_reg is uninitialized then
-passed to memstick_init_req() as a const pointer:
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-  drivers/memstick/core/memstick.c:330:59: error: variable 'id_reg' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    330 |                 memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
-        |                                                                         ^~~~~~
-
-Commit de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull
-warning") intentionally passed this variable uninitialized to avoid an
--Wnonnull warning from a NULL value that was previously there because
-id_reg is never read from the call to memstick_init_req() in
-h_memstick_read_dev_id(). Just zero initialize id_reg to avoid the
-warning, which is likely happening in the majority of builds using
-modern compilers that support '-ftrivial-auto-var-init=zero'.
-
-Cc: stable@vger.kernel.org
-Fixes: de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull warning")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2105
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250715-memstick-fix-uninit-const-pointer-v1-1-f6753829c27a@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/core/memstick.c |    2 +-
+ drivers/scsi/isci/request.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -324,7 +324,7 @@ EXPORT_SYMBOL(memstick_init_req);
- static int h_memstick_read_dev_id(struct memstick_dev *card,
- 				  struct memstick_request **mrq)
- {
--	struct ms_id_register id_reg;
-+	struct ms_id_register id_reg = {};
- 
- 	if (!(*mrq)) {
- 		memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index a4129e456efa..b375245ce2cd 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -2914,7 +2914,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
+ 					 task->total_xfer_len, task->data_dir);
+ 		else  /* unmap the sgl dma addresses */
+ 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
+-				     request->num_sg_entries, task->data_dir);
++				     task->num_scatter, task->data_dir);
+ 		break;
+ 	case SAS_PROTOCOL_SMP: {
+ 		struct scatterlist *sg = &task->smp_task.smp_req;
+-- 
+2.39.5
+
 
 
 
