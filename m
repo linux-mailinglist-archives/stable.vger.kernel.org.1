@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB193B369AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8A5B367E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69EE18E3E02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C24338E4024
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612001CD1F;
-	Tue, 26 Aug 2025 14:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394DD35082A;
+	Tue, 26 Aug 2025 13:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4Nzb+wP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xk7s5bc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19958223338;
-	Tue, 26 Aug 2025 14:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95352F0671;
+	Tue, 26 Aug 2025 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217976; cv=none; b=Frq/8hW1CsRQYL6R07Y0Rskzha6/Cea8LDxoMluM6Jmw7V/5DKc0WCokL4DpUElLHZzc+AdioEbmWQfFMNsFmounVNxnh2mO92x1KO00GZCcbRrb7GFo4hvP4IY6V6mzrYo+FIoJ3DMaiMqL0gxiIBed7f1OyPSbUK/nchPd6MM=
+	t=1756216693; cv=none; b=StJEhrWokE/bXUoUbV4ScEuWMfbJ0FUTWmb29ku46ElJsyqCGpH8HChSwyxiwKIh2fO5DY1D0JcW72+pkro9Z6sEr1lw0FfGuPJ6W1I+peT58DMDdjJVeWhxWax9rK3KldlLCtSjh6zVJfBbaNbKn7BwrHLpFlCfgupOKaxoajc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217976; c=relaxed/simple;
-	bh=go3AzjVbv6MRKBiY6KYTphkt6TB9GXG7pUQPsi8jCkc=;
+	s=arc-20240116; t=1756216693; c=relaxed/simple;
+	bh=Wfa1li5jLEYu4ZHbFenM2XERtAmrJIANC6XOaM2XjB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/5CIheGIqCflezWSjqLOeky6ylrA9WvQWByGtb1tPEPgISBwMsZfhBMQnME3Uh9TwQmm8kljNbJVEYz7jkhnW1tFeRli3yoAbN0SQ9VdqnqabSzQQfd+lPyj5YCRmn1PSML8iThFUo4F0LFdunm7OPhr+PZmhasyJUig1hy0/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4Nzb+wP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD9DC113CF;
-	Tue, 26 Aug 2025 14:19:35 +0000 (UTC)
+	 MIME-Version; b=RAv+hkWJRlaC8xbvMwlP6GCksMVR3BCj6eUlafBgQq8QPBCFDOasTMmKrspRiJsI2jrldbrat7Ad9KCVsaIa8nhqXFCFRSvDKSCJ3qwgJf+RsuiOozD+dGibGIAIXcpv6roItE3MgFNX7Ej7r3NSDx/At00ih0v165npBHrMUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xk7s5bc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A78C4CEF1;
+	Tue, 26 Aug 2025 13:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217976;
-	bh=go3AzjVbv6MRKBiY6KYTphkt6TB9GXG7pUQPsi8jCkc=;
+	s=korg; t=1756216692;
+	bh=Wfa1li5jLEYu4ZHbFenM2XERtAmrJIANC6XOaM2XjB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4Nzb+wPwVg33cZt5EGec7XQJEfljqUsW5hyAXchv3+AGdNTcGgBNpYHI8a6t57BD
-	 czGofjJm5xnJyEjSIy6onyHgmdyxJw01UPtW1W+AMr3FIdcXUZFppkoLwq+cyOulko
-	 wN+I2udy4mzf72W17KjxiJFAymgHGQQItSUkk6mA=
+	b=Xk7s5bc7GFBKPJRfPp8FI0QN2ssJR2X/M7t+aElFd3GcZCttaMTjhRUFQGpVvLL5D
+	 VIkCp/Iq9L4iiWTCQNAiTs9haUKRY/WB2PLx12uMsoqq76bNNC3/Cu8lqVZDbtYfAF
+	 ubmNJrwpabZxDtf7aPMG177rJ01sDn7lLd3o1kog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 5.10 347/523] parisc: Makefile: fix a typo in palo.conf
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Yi Yang <yiyang13@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 466/644] Revert "vgacon: Add check for vc_origin address range in vgacon_scroll()"
 Date: Tue, 26 Aug 2025 13:09:17 +0200
-Message-ID: <20250826110933.027297519@linuxfoundation.org>
+Message-ID: <20250826110958.028111743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
+commit e4fc307d8e24f122402907ebf585248cad52841d upstream.
 
-Correct "objree" to "objtree". "objree" is not defined.
+This reverts commit 864f9963ec6b4b76d104d595ba28110b87158003.
 
-Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
+The patch is wrong as it checks vc_origin against vc_screenbuf,
+while in text mode it should compare against vga_vram_base.
+
+As such it broke VGA text scrolling, which can be reproduced like this:
+(1) boot a kernel that is configured to use text mode VGA-console
+(2) type commands:  ls -l /usr/bin | less -S
+(3) scroll up/down with cursor-down/up keys
+
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Cc: stable@vger.kernel.org
+Cc: Yi Yang <yiyang13@huawei.com>
+Cc: GONG Ruiqi <gongruiqi1@huawei.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    2 +-
+ drivers/video/console/vgacon.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -141,7 +141,7 @@ palo lifimage: vmlinuz
- 	fi
- 	@if test ! -f "$(PALOCONF)"; then \
- 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
--		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
-+		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
- 		echo 'You should check it and re-run "make palo".'; \
- 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
- 		false; \
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1170,7 +1170,7 @@ static bool vgacon_scroll(struct vc_data
+ 				     c->vc_screenbuf_size - delta);
+ 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
+ 			vga_rolled_over = 0;
+-		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
++		} else
+ 			c->vc_origin -= delta;
+ 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+ 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
 
 
 
