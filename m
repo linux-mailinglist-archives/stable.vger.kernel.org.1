@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A05B36818
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1089B362AD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094D25811AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91E82A79AD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F700345741;
-	Tue, 26 Aug 2025 14:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8573469FD;
+	Tue, 26 Aug 2025 13:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfFurcQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USeyVYGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4A1E7C08;
-	Tue, 26 Aug 2025 14:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB7A3469EC;
+	Tue, 26 Aug 2025 13:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216961; cv=none; b=Ng++TeIWfU3oB5xGMD3wn7j5sfxGnY3+EIqfFiqt8u1E8MPcBzuCI7CIYLnUBz8kSi4Ruw7/Uu6ea7htiyaAgwKzg+Cf4JYRQYwYTJpWVixrFlHv9FJssa/hOJm60IRX/YkVQgBHcgI8SkkywO2ZzDtII/F+ifqexT23pZG6RY4=
+	t=1756213973; cv=none; b=cE17ywxlrG0GUsp3wgwgzD3Fs9+yToa8l36/PVOIV2ZQDWJgm2sm8C3blng8NlMg3w1v37ZJTvk+MziRbwxUN42ygDaLtc78ReHWphnaOZZh6JV72OBBm3Fj96IDU3pMAGoJiCw9nCntL3Zca/cfI8t0/m+htdWZeq23WKMCEKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216961; c=relaxed/simple;
-	bh=XtFooGdewyaJDnvh37CDBzzC15Apr4Fwr5Z2swuNOUM=;
+	s=arc-20240116; t=1756213973; c=relaxed/simple;
+	bh=5aYy8jbJv5fJSCTvfdVT3kfT2ezTzWspFJAwSXxhhx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcfU0LHNYsUcTFRXpvMaX1XS7qx4LzAPM/rHNT0pddqqIZmE7iZ93dNUdq96aotVisL9RtFrg1GGEdq7niOntjkJDf+VhK/zpych5FjNKxEJ4f0BMtpXjz2gLeGhD8BrBPAAK3nDYotW3Q1kTurfFHXs5EXxROuz+U7XhO06G4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfFurcQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62EEC4CEF1;
-	Tue, 26 Aug 2025 14:02:40 +0000 (UTC)
+	 MIME-Version; b=J7FqSGJ99WK1VdBGKmEC96y1pWDf9mFIyds+KTVc1o0OHBLYrOy62NE7+C24Nkc5DK+jKs6qyM41d+EDKmEoAI+9WmVBdICaWj2XgbxQT/kf8JwC51xJERa+lBAnDUCrKly0iWQsPRjKQzRqTwq353Xdg1jqd/qcFXgOplF/Mds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USeyVYGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5D3C113CF;
+	Tue, 26 Aug 2025 13:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216961;
-	bh=XtFooGdewyaJDnvh37CDBzzC15Apr4Fwr5Z2swuNOUM=;
+	s=korg; t=1756213972;
+	bh=5aYy8jbJv5fJSCTvfdVT3kfT2ezTzWspFJAwSXxhhx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfFurcQYEGAEcVGt9BdObMKaaF3Omyjvaa+g2i5XWlaTTbGhwkAnZXYSgkVHBrzET
-	 3N0+8of2BCrujWbc0wTV21UQRggkUBuBOv84aVs3gnfNwKNT6oZbJyKHYSk7p1LoMg
-	 o02kSnfuaxlWe5MLQT8EI4VZM2tqAWDF8qKmJJAU=
+	b=USeyVYGJHTPo50QJIJu1pHq0fkAj6Al2oru0/XFBC9EXCheZNSc+RD4TSNIJ9le4g
+	 fz6nL03PCM3UrC+wtgU0QR9585nUgQkITOpOur+bc9LOtTdWS0pBbwh77xuWSzks/x
+	 AUpn4MjtoHe8ujjAi35sUxCIOQFgM35sMEGiKm+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Vagin <avagin@gmail.com>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 575/644] use uniform permission checks for all mount propagation changes
-Date: Tue, 26 Aug 2025 13:11:06 +0200
-Message-ID: <20250826111000.779189458@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>
+Subject: [PATCH 6.6 518/587] cdx: Fix off-by-one error in cdx_rpmsg_probe()
+Date: Tue, 26 Aug 2025 13:11:07 +0200
+Message-ID: <20250826111006.173402439@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
+commit 300a0cfe9f375b2843bcb331bcfa7503475ef5dd upstream.
 
-do_change_type() and do_set_group() are operating on different
-aspects of the same thing - propagation graph.  The latter
-asks for mounts involved to be mounted in namespace(s) the caller
-has CAP_SYS_ADMIN for.  The former is a mess - originally it
-didn't even check that mount *is* mounted.  That got fixed,
-but the resulting check turns out to be too strict for userland -
-in effect, we check that mount is in our namespace, having already
-checked that we have CAP_SYS_ADMIN there.
+In cdx_rpmsg_probe(), strscpy() is incorrectly called with the length of
+the source string (excluding the NUL terminator) rather than the size of
+the destination buffer. This results in one character less being copied
+from 'cdx_rpmsg_id_table[0].name' to 'chinfo.name'.
 
-What we really need (in both cases) is
-	* only touch mounts that are mounted.  That's a must-have
-constraint - data corruption happens if it get violated.
-	* don't allow to mess with a namespace unless you already
-have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
+Use the destination buffer size instead to ensure the name is copied
+correctly.
 
-That's an equivalent of what do_set_group() does; let's extract that
-into a helper (may_change_propagation()) and use it in both
-do_set_group() and do_change_type().
-
-Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 2a226927d9b8 ("cdx: add rpmsg communication channel for CDX")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://lore.kernel.org/r/20250806090512.121260-2-thorsten.blum@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ drivers/cdx/controller/cdx_rpmsg.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 9e1717692be3..35d63bb3b22d 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2296,6 +2296,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
- 	return attach_recursive_mnt(mnt, p, mp, false);
- }
+diff --git a/drivers/cdx/controller/cdx_rpmsg.c b/drivers/cdx/controller/cdx_rpmsg.c
+index 04b578a0be17..61f1a290ff08 100644
+--- a/drivers/cdx/controller/cdx_rpmsg.c
++++ b/drivers/cdx/controller/cdx_rpmsg.c
+@@ -129,8 +129,7 @@ static int cdx_rpmsg_probe(struct rpmsg_device *rpdev)
  
-+static int may_change_propagation(const struct mount *m)
-+{
-+        struct mnt_namespace *ns = m->mnt_ns;
-+
-+	 // it must be mounted in some namespace
-+	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
-+		 return -EINVAL;
-+	 // and the caller must be admin in userns of that namespace
-+	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
-+		 return -EPERM;
-+	 return 0;
-+}
-+
- /*
-  * Sanity check the flags to change_mnt_propagation.
-  */
-@@ -2332,10 +2345,10 @@ static int do_change_type(struct path *path, int ms_flags)
- 		return -EINVAL;
+ 	chinfo.src = RPMSG_ADDR_ANY;
+ 	chinfo.dst = rpdev->dst;
+-	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name,
+-		strlen(cdx_rpmsg_id_table[0].name));
++	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name, sizeof(chinfo.name));
  
- 	namespace_lock();
--	if (!check_mnt(mnt)) {
--		err = -EINVAL;
-+	err = may_change_propagation(mnt);
-+	if (err)
- 		goto out_unlock;
--	}
-+
- 	if (type == MS_SHARED) {
- 		err = invent_group_ids(mnt, recurse);
- 		if (err)
-@@ -2730,18 +2743,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
- 
- 	namespace_lock();
- 
--	err = -EINVAL;
--	/* To and From must be mounted */
--	if (!is_mounted(&from->mnt))
--		goto out;
--	if (!is_mounted(&to->mnt))
--		goto out;
--
--	err = -EPERM;
--	/* We should be allowed to modify mount namespaces of both mounts */
--	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
-+	err = may_change_propagation(from);
-+	if (err)
- 		goto out;
--	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
-+	err = may_change_propagation(to);
-+	if (err)
- 		goto out;
- 
- 	err = -EINVAL;
+ 	cdx_mcdi->ept = rpmsg_create_ept(rpdev, cdx_rpmsg_cb, NULL, chinfo);
+ 	if (!cdx_mcdi->ept) {
 -- 
 2.50.1
 
