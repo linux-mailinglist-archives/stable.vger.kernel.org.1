@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC9AB36BFC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0B4B35E17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A595854F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 731C31BC1ECF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB1D352092;
-	Tue, 26 Aug 2025 14:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DC830BF55;
+	Tue, 26 Aug 2025 11:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qinqnGbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ou/sqpQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786EC352090;
-	Tue, 26 Aug 2025 14:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40362FDC38;
+	Tue, 26 Aug 2025 11:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219029; cv=none; b=YTEvPO5G+NGohx3N9g43r7DpRQfSHNpY+skcY7UZGSdBdXjKPeagipQnYbLJeDVxeS/E94tkPumA9Y77Ma+ON/aKMIVvBNBOgZtrNeWQWFjZAV1Vleph9P75oUL2ayx08284wVYgR6P7I7OwzNoaKG9LuwJN851ahvr5Kn1/Ofs=
+	t=1756208612; cv=none; b=udCoUAy+XzGtuFQQWYAdIOpojG3YMyl4IzhT0MxHjPzZWM1qKKFNpU8Vbyho1shsHrfO+HZQ11//EX0ZwglSqhEg+TEVCz17JhAzgi1Edtg6AfhbVnfIQurQtxgBuzc2h1GMCpD2XN6v1sPU9EerHkBCMarV0MutjKL2a3O2dp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219029; c=relaxed/simple;
-	bh=q5xxLu0F/GFLy2pUx3e2VG6iBI5M3437jTRF1WICNKw=;
+	s=arc-20240116; t=1756208612; c=relaxed/simple;
+	bh=ZEpLhtT7lnzyN9yufGnAlFtcO9ZjpZLBUTxDoLb737U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Amoy7YhF5qr9ftBe6tlf8ujXJgGBLfopXTTA55nGNYixxxpGP4cSypChdAOyMF4+Wpq6vfcWRVeQnWAwsgq17jcsUnl34s73fdnkXouqtqRL+yOhuj9Ogs/UeMA3m/2zBTULf9DX1Us5kS+061bn7W80UVzA9OjfM/aoELMI34g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qinqnGbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087E2C4CEF1;
-	Tue, 26 Aug 2025 14:37:08 +0000 (UTC)
+	 MIME-Version; b=eOhzZqgYT9GktMGsoyeLQnzdRXVJhXeoCAlnKAYdgOdExki6nnM1J3qfanprzyElDDlyI1R49ERu6rGvUQMYAcsqnJRPJq71PEhJHuDOC+v8X6MOT2cQkVZ8QKsDe1ss7T/wJUkt+btIn2kTke0NzXPhaeVvIMRjqSHu0yywJb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ou/sqpQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555F4C4CEF1;
+	Tue, 26 Aug 2025 11:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219029;
-	bh=q5xxLu0F/GFLy2pUx3e2VG6iBI5M3437jTRF1WICNKw=;
+	s=korg; t=1756208612;
+	bh=ZEpLhtT7lnzyN9yufGnAlFtcO9ZjpZLBUTxDoLb737U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qinqnGbFMHzm0R5iEbzJvF8hTHnNnN4yhwyQQo1sQ43Xo0En3dvWNYVcQOjGFGjCb
-	 CxudzscdnNe9rB0SaefMMP4+05pA6JhmbS3TP1sxTwAoB2iBF0LgJKrednsM+pZInO
-	 AjS0bxTk9GHqp0lLhmFbBau4cQsQIyo9l8vhXytI=
+	b=ou/sqpQoYRpNUYjlgdmauz6nz7hVNmS2FGjFZ4oE/Rag78RPgl9KwnJUe0pfzyfDm
+	 ULseNZkY+nigZot3TZiXAuDGeEOKoHfJ1MBePqI4+0bz8KHqHV7L3hkNEmAWq38uuS
+	 EIPd3D9iUD1P42+KhI+XJ7g/786j1xUKN5Bwl7kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 226/403] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 137/322] selftests: mptcp: pm: check flush doesnt reset limits
 Date: Tue, 26 Aug 2025 13:09:12 +0200
-Message-ID: <20250826110913.073779740@linuxfoundation.org>
+Message-ID: <20250826110919.186622467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
+commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
 
-CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
-B53_PVLAN_PORT_MASK register.
+This modification is linked to the parent commit where the received
+ADD_ADDR limit was accidentally reset when the endpoints were flushed.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
+To validate that, the test is now flushing endpoints after having set
+new limits, and before checking them.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index d41c9006a028..1816a5b56d51 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -502,6 +502,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
- 	unsigned int i;
- 	u16 pvlan;
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -198,6 +198,7 @@ set_limits 1 9 2>/dev/null
+ check "get_limits" "${default_limits}" "subflows above hard limit"
  
-+	/* BCM5325 CPU port is at 8 */
-+	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
-+		cpu_port = B53_CPU_PORT;
-+
- 	/* Enable the IMP port to be in the same VLAN as the other ports
- 	 * on a per-port basis such that we only have Port i and IMP in
- 	 * the same VLAN.
--- 
-2.39.5
-
+ set_limits 8 8
++flush_endpoint  ## to make sure it doesn't affect the limits
+ check "get_limits" "$(format_limits 8 8)" "set limits"
+ 
+ flush_endpoint
 
 
 
