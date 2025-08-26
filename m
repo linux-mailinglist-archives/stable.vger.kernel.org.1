@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CF0B35BA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B6DB36B48
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D229B1BA3718
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB949189E95C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8F131813A;
-	Tue, 26 Aug 2025 11:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CC3350D72;
+	Tue, 26 Aug 2025 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5laHqTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sY5GGFKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B4D318146;
-	Tue, 26 Aug 2025 11:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63D350D5F;
+	Tue, 26 Aug 2025 14:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207354; cv=none; b=XuonFycZsBRHBC9GJil8FVq2xhs2ANaxXx+9VAu8KyFXq40g33We8PW9lE2exrF5+43846Ea/xTNf1uQApxyl5NsWXZ5KkjjZ2TP/Ki+k+QA/h6ft4BYAZCWegH7yJdl+aBmn7v/xYpcTXBnvQF68iL6gDqC8JLFQYW+S8XVBA8=
+	t=1756218644; cv=none; b=dVHBtDH89ac06+R3l80MFlJqteXqbdYlpPlCXQLzXXHm58hWx0yR8GhbH3LCAe1enyltrjSL5AA+VEN9j6X9kbqUoPu4/Q3tb2HN0NY5gTNDmghGSYd8ILjAPmWo6FpKn7Wv1fpX+h4FvWI7O34kXWod04xber3U8hyfNYyZZe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207354; c=relaxed/simple;
-	bh=wE/GsqGrTsNH2STFZNGiwor1PXVfFWj302nPfpmg3sg=;
+	s=arc-20240116; t=1756218644; c=relaxed/simple;
+	bh=+O7cxkulEW2wE35tfN2CaAUrIyG5R2JlvGgK4qSVzbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEJAo5DlhNvL6P/R5+777ePyhbZ9QfKDx9f23kz9euBYvWX07/cG5fENhjG0Bz+sb7P7iv0MvGkEnvNj8mvhtY5utuDGXqNc8kYHKx9O+cSH+MgWZjquGXO32kl27N5ZuR73ZK5+XqsDJVwzfMB18Idog0MjkWbORH5BqthM9SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5laHqTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBE1C4CEF1;
-	Tue, 26 Aug 2025 11:22:33 +0000 (UTC)
+	 MIME-Version; b=FaYQbY3ccsYnRq+joJAetFjjs7YN+YTHXf1MPYXw2vAzwV83zfvjHStivTMSNWWab3Hl0eCW/IAGzJhyWS+a+wDVRPPon4C/yXUfFOeTdKdBl6qHU6/XUGnq1ztg4zNbAejVvOkfbIxAcTTSXV8FU8zwwZB3HVHV+0N2sr0vHbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sY5GGFKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BB6C113D0;
+	Tue, 26 Aug 2025 14:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207354;
-	bh=wE/GsqGrTsNH2STFZNGiwor1PXVfFWj302nPfpmg3sg=;
+	s=korg; t=1756218643;
+	bh=+O7cxkulEW2wE35tfN2CaAUrIyG5R2JlvGgK4qSVzbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5laHqTKdpdVtbaEV8EwmQuV7BCXtY+wTcLcRyW8JvKr5VWA0lqH7Ig09dMuRbAtN
-	 85lP2IbLhe4mGQhdLRaAi95RZ6cOcvKJ58PN+66KjJVpm4YcaLVg9ml+T2iyMfjEeR
-	 D2cCfb8cX5b5wS/y2ZeXX6fX5iwhl75Lcms1o/Xc=
+	b=sY5GGFKNmuhmh1/TnFBwv7wbu6dpnCEiWtffEOSLI/AqssAtYVtUVnXTaOgSsX3fE
+	 FIkx4Yhgnu2R/ZRyQiUKqSwbe4QzzhiycOMunaNvt0EBHnlUsecZysNH6SZUqvFHoD
+	 wI5b2ThgwsK1rqK5h7jchunncA/SN6c2cqoJJUXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jialin Wang <wjl.linux@gmail.com>,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 119/457] proc: proc_maps_open allow proc_mem_open to return NULL
+	Denis OSTERLAND-HEIM <denis.osterland@diehl.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 077/403] pps: fix poll support
 Date: Tue, 26 Aug 2025 13:06:43 +0200
-Message-ID: <20250826110940.317125610@linuxfoundation.org>
+Message-ID: <20250826110908.548599723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jialin Wang <wjl.linux@gmail.com>
+From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
 
-commit c0e1b774f68bdbea1618e356e30672c7f1e32509 upstream.
+[ Upstream commit 12c409aa1ec2592280a2ddcc66ff8f3c7f7bb171 ]
 
-The commit 65c66047259f ("proc: fix the issue of proc_mem_open returning
-NULL") caused proc_maps_open() to return -ESRCH when proc_mem_open()
-returns NULL.  This breaks legitimate /proc/<pid>/maps access for kernel
-threads since kernel threads have NULL mm_struct.
+Because pps_cdev_poll() returns unconditionally EPOLLIN,
+a user space program that calls select/poll get always an immediate data
+ready-to-read response. As a result the intended use to wait until next
+data becomes ready does not work.
 
-The regression causes perf to fail and exit when profiling a kernel
-thread:
+User space snippet:
 
-  # perf record -v -g -p $(pgrep kswapd0)
-  ...
-  couldn't open /proc/65/task/65/maps
+    struct pollfd pollfd = {
+      .fd = open("/dev/pps0", O_RDONLY),
+      .events = POLLIN|POLLERR,
+      .revents = 0 };
+    while(1) {
+      poll(&pollfd, 1, 2000/*ms*/); // returns immediate, but should wait
+      if(revents & EPOLLIN) { // always true
+        struct pps_fdata fdata;
+        memset(&fdata, 0, sizeof(memdata));
+        ioctl(PPS_FETCH, &fdata); // currently fetches data at max speed
+      }
+    }
 
-This patch partially reverts the commit to fix it.
+Lets remember the last fetch event counter and compare this value
+in pps_cdev_poll() with most recent event counter
+and return 0 if they are equal.
 
-Link: https://lkml.kernel.org/r/20250807165455.73656-1-wjl.linux@gmail.com
-Fixes: 65c66047259f ("proc: fix the issue of proc_mem_open returning NULL")
-Signed-off-by: Jialin Wang <wjl.linux@gmail.com>
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+Co-developed-by: Rodolfo Giometti <giometti@enneenne.com>
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+Fixes: eae9d2ba0cfc ("LinuxPPS: core support")
+Link: https://lore.kernel.org/all/f6bed779-6d59-4f0f-8a59-b6312bd83b4e@enneenne.com/
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/c3c50ad1eb19ef553eca8a57c17f4c006413ab70.camel@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pps/pps.c          | 11 +++++++++--
+ include/linux/pps_kernel.h |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -212,8 +212,8 @@ static int proc_maps_open(struct inode *
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 2d008e0d116a..ea966fc67d28 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -41,6 +41,9 @@ static __poll_t pps_cdev_poll(struct file *file, poll_table *wait)
  
- 	priv->inode = inode;
- 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
--	if (IS_ERR_OR_NULL(priv->mm)) {
--		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-+	if (IS_ERR(priv->mm)) {
-+		int err = PTR_ERR(priv->mm);
+ 	poll_wait(file, &pps->queue, wait);
  
- 		seq_release_private(inode, file);
- 		return err;
++	if (pps->last_fetched_ev == pps->last_ev)
++		return 0;
++
+ 	return EPOLLIN | EPOLLRDNORM;
+ }
+ 
+@@ -186,9 +189,11 @@ static long pps_cdev_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		fdata.info.assert_sequence = pps->assert_sequence;
+ 		fdata.info.clear_sequence = pps->clear_sequence;
+ 		fdata.info.assert_tu = pps->assert_tu;
+@@ -272,9 +277,11 @@ static long pps_cdev_compat_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		compat.info.assert_sequence = pps->assert_sequence;
+ 		compat.info.clear_sequence = pps->clear_sequence;
+ 		compat.info.current_mode = pps->current_mode;
+diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+index c7abce28ed29..aab0aebb529e 100644
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -52,6 +52,7 @@ struct pps_device {
+ 	int current_mode;			/* PPS mode at event time */
+ 
+ 	unsigned int last_ev;			/* last PPS event id */
++	unsigned int last_fetched_ev;		/* last fetched PPS event id */
+ 	wait_queue_head_t queue;		/* PPS event queue */
+ 
+ 	unsigned int id;			/* PPS source unique ID */
+-- 
+2.39.5
+
 
 
 
