@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414A8B36671
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9D5B3604A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09009564432
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3669E1BC006D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9104434A306;
-	Tue, 26 Aug 2025 13:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A431EEA49;
+	Tue, 26 Aug 2025 12:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Rs7VT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERNcY5wu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFE6341660;
-	Tue, 26 Aug 2025 13:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA5214883F;
+	Tue, 26 Aug 2025 12:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215914; cv=none; b=g54dsm8XhXTT+LOSzE0/Je8erHpuuNVGePudgMzPFxu6LZzeCws3TdJmJ1N4jDmNKapWOyEu5flAdtzUXLJpelH9DUUu+ejrJC0pQSvXtkdkHseDqwL5sWBrk1HIgUm3p8233zB7PX4oZdLBGZT5qWx/9cDu//OYe7zKLOrBnqU=
+	t=1756212946; cv=none; b=FsAw+SRr2EP31iuv3/yU+qjUyDI3pn9H1q9Qp1awPpFVoKdLGthxDs6XlchfBAGB4AoakvM/f1897CBJqANRZm80lh4D+bJ2rkMpSNdf7krtevJ/X37TJzmyKFCjZsAmiERK5/pObr+2S8bHYr4R1A9EeJZQfSrqlCN3JhM3cDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215914; c=relaxed/simple;
-	bh=EMGnNm0wX9+J4iKqWtnU4b+OiEJDQElESWUI7h4kHeI=;
+	s=arc-20240116; t=1756212946; c=relaxed/simple;
+	bh=ZivF05qv0kSCQUL9ptJeUfJhQKBYkfqn0BTUfGpJLkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOdh1qsdKCVTlgJ+MdQKqC7HgRaSy4EqGvx+1Rv9Cp94LCmGpKuVSPtep50kHWha35ciJBO64n2aiXQktW7AH+cSuFPnkACrHJaZOVCUzXV229oqiuBuODIOUkKFQoLQ9lIL4DgJI9ufdva1Ee6bs0waWNifGSaz4CXHF39WoY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Rs7VT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5351C4CEF1;
-	Tue, 26 Aug 2025 13:45:13 +0000 (UTC)
+	 MIME-Version; b=tBCL9jqQt2hOMkxROh+KOc9KmJsHBnmvjk4fARfytSTURzFePFRdpV+tppKF1r0x1ahSFCFaEdT4Cj7Ki5RKXGdFDlTqZKnfl1XH/GuYYpqNv8AXMqdIN2ChwAbfVGfeRTChtZFXGHLqglBgAmOLIPjCZNdlllIM2m6lBZuGKtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERNcY5wu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1959C4CEF1;
+	Tue, 26 Aug 2025 12:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215914;
-	bh=EMGnNm0wX9+J4iKqWtnU4b+OiEJDQElESWUI7h4kHeI=;
+	s=korg; t=1756212946;
+	bh=ZivF05qv0kSCQUL9ptJeUfJhQKBYkfqn0BTUfGpJLkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7Rs7VT/oQu+2deGqOC0OtG+TamlBYg6smVQyRJbZTMxI0m06dxGfxPqVVnGdyc1E
-	 vQAqA6C3CWEmvIeTL6VsrKGD6lHNPkE6fu9S2ZJrCZjFE3hCwl9zhyrhhT3MTXzNas
-	 r4uF+TZXEKEaa++SNr/vsfT9kWzaRm5KsMW9WKhQ=
+	b=ERNcY5wuj3ddae7qcPBf6W8GJN6ud16j8LXeDC3RNsKmRBOUt3yb603coMjyQbLYP
+	 atWWL+zpefysRaZQIEjbHOymsBcBbfBEhwIzh+gE4RSKKRy9VCXYwve88XnZFxL+ku
+	 vWI2cq2fyGcxPEop+PfFXYWcaY/RQcVaZSvrbMzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 213/644] f2fs: doc: fix wrong quota mount option description
+Subject: [PATCH 6.6 155/587] wifi: cfg80211: Fix interface type validation
 Date: Tue, 26 Aug 2025 13:05:04 +0200
-Message-ID: <20250826110951.712843703@linuxfoundation.org>
+Message-ID: <20250826110956.890862201@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 81b6ecca2f15922e8d653dc037df5871e754be6e ]
+[ Upstream commit 14450be2332a49445106403492a367412b8c23f4 ]
 
-We should use "{usr,grp,prj}jquota=" to disable journaled quota,
-rather than using off{usr,grp,prj}jquota.
+Fix a condition that verified valid values of interface types.
 
-Fixes: 4b2414d04e99 ("f2fs: support journalled quota")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233537.7ad199ca5939.I0ac1ff74798bf59a87a57f2e18f2153c308b119b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/f2fs.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/cfg80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
-index 7fe50b0bccde..f3e9ba8d6892 100644
---- a/Documentation/filesystems/f2fs.rst
-+++ b/Documentation/filesystems/f2fs.rst
-@@ -211,9 +211,9 @@ usrjquota=<file>	 Appoint specified file and type during mount, so that quota
- grpjquota=<file>	 information can be properly updated during recovery flow,
- prjjquota=<file>	 <quota file>: must be in root directory;
- jqfmt=<quota type>	 <quota type>: [vfsold,vfsv0,vfsv1].
--offusrjquota		 Turn off user journalled quota.
--offgrpjquota		 Turn off group journalled quota.
--offprjjquota		 Turn off project journalled quota.
-+usrjquota=		 Turn off user journalled quota.
-+grpjquota=		 Turn off group journalled quota.
-+prjjquota=		 Turn off project journalled quota.
- quota			 Enable plain user disk quota accounting.
- noquota			 Disable all plain disk quota option.
- whint_mode=%s		 Control which write hints are passed down to block
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 2fb3151ea7c9..5b3a63c377d6 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -559,7 +559,7 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
+ {
+ 	int i;
+ 
+-	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
++	if (WARN_ON(iftype >= NUM_NL80211_IFTYPES))
+ 		return NULL;
+ 
+ 	if (iftype == NL80211_IFTYPE_AP_VLAN)
 -- 
 2.39.5
 
