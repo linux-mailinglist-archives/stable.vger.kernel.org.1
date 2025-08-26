@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384D7B362B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13341B35E7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6BA8465CE3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C16189699C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154571C4609;
-	Tue, 26 Aug 2025 13:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C88286D57;
+	Tue, 26 Aug 2025 11:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0VrbjZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcQ+aosM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B2D1A83ED;
-	Tue, 26 Aug 2025 13:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2E749C;
+	Tue, 26 Aug 2025 11:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213983; cv=none; b=nWQxjE1gmwjl9r4AuhKtoC6FIuy+3BSTIE5cIOzY3raazrATah4zwHW5B+iEv34Z/QUme61hksjoQCXHay8tm9Bcxda4rXjDVF/aHoH7GVA3zZPR79MTUGLARsOlrx1nTWNgu26/vfzaIYiun0GMhWZ9dUX94MAPVkilFom3yRc=
+	t=1756208962; cv=none; b=XEgqSMeKb2nvfay+RjQtU9/cKx8cHYOQ/oLhhWP++EWjI+eV7p276nK83x/Iv3B8+uLkWi0jOh4AE7GLuoMQHlSiMBe3DJI4Ncg0u9D1K5b7/PMRyeVhe2yHMbPEtwVMhSZM3wDe7Op93ZFKGNc7pQQdJO+hm2hTPbQWQfyha/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213983; c=relaxed/simple;
-	bh=xHkB9U9ODLeUUdws5FwQLvfSeotzW5Y5CLjVg7derjI=;
+	s=arc-20240116; t=1756208962; c=relaxed/simple;
+	bh=g2ugz56UH4UxpyF6377pVLx93r8msBeVDQi7osjDABQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akp66akoCpjnXuGaAjuTSgzSCvRMjnn3HJd8OYz+aZyZCaxJ6g/RidDRj2JSvp7KRGcEAft2yNnFM5kF7kL97L3XQDBKawVZ9K8LJTvvYyJI9X3HGirO4sLWOOiAbN3lDokmGxqvX1T5LB0z8Zsm26NOFPzhpAsJWuwTaLuaVnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0VrbjZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04009C4CEF1;
-	Tue, 26 Aug 2025 13:13:02 +0000 (UTC)
+	 MIME-Version; b=ol1m1vczf5T84HmpOUF607UX3p1w5QMzkR9upq6WhBlVkqZTK/9rfgPDvZDs0OGioX9SupDdPJfvBd9Tty8f/PenrVS3naydaeh0sYry9RcSSfM3btE1BkNIeXdWlceDjKEknWCH7G0xeBWu3dnhY4Zf6VD9r/Tm6kCPEIQ2ufc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcQ+aosM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FA7C4CEF4;
+	Tue, 26 Aug 2025 11:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213983;
-	bh=xHkB9U9ODLeUUdws5FwQLvfSeotzW5Y5CLjVg7derjI=;
+	s=korg; t=1756208961;
+	bh=g2ugz56UH4UxpyF6377pVLx93r8msBeVDQi7osjDABQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0VrbjZtQjVv9q9DwzKkGnyjBVVvnzi5KJlW+Xw6X75xQtgYvckkNY1hwmKLOnJUB
-	 gsUUnpKskecie6zNRW8WK+nA2rH5YVntGLcmyRfQi494WpoMLi7HVMKu+KlZB5SfS+
-	 lmrnAtrKWZxt7ZcYGVbfiKBxiWVan6BgSmgGK8Tw=
+	b=gcQ+aosM5S+xe1tDDHSFzj3sFQwLYQN95VFlkE+bepZrIPBtVbPDUfTviniccmFTp
+	 aPpPWDvkAoXRo6JxftIcLWMyBJ3of4Cmx3hwqX7fLoZkDv0df5vHQHitkrrxGKjlPx
+	 ajUb50ALRbZcvnqXiSxQXmayhwRxBxaNKCqRbZCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 546/587] usb: typec: maxim_contaminant: disable low power mode when reading comparator values
+Subject: [PATCH 6.12 280/322] Bluetooth: hci_event: fix MTU for BN == 0 in CIS Established
 Date: Tue, 26 Aug 2025 13:11:35 +0200
-Message-ID: <20250826111006.907857877@linuxfoundation.org>
+Message-ID: <20250826110922.836716480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit cabb6c5f4d9e7f49bdf8c0a13c74bd93ee35f45a ]
+[ Upstream commit 0b3725dbf61b51e7c663834811b3691157ae17d6 ]
 
-Low power mode is enabled when reading CC resistance as part of
-`max_contaminant_read_resistance_kohm()` and left in that state.
-However, it's supposed to work with 1uA current source. To read CC
-comparator values current source is changed to 80uA. This causes a storm
-of CC interrupts as it (falsely) detects a potential contaminant. To
-prevent this, disable low power mode current sourcing before reading
-comparator values.
+BN == 0x00 in CIS Established means no isochronous data for the
+corresponding direction (Core v6.1 pp. 2394). In this case SDU MTU
+should be 0.
 
-Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250814-fix-upstream-contaminant-v1-1-801ce8089031%40google.com
-Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-1-6c8d6c3adafb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted macro names from CCLPMODESEL to CCLPMODESEL_MASK ]
+However, the specification does not say the Max_PDU_C_To_P or P_To_C are
+then zero.  Intel AX210 in Framed CIS mode sets nonzero Max_PDU for
+direction with zero BN.  This causes failure later when we try to LE
+Setup ISO Data Path for disabled direction, which is disallowed (Core
+v6.1 pp. 2750).
+
+Fix by setting SDU MTU to 0 if BN == 0.
+
+Fixes: 2be22f1941d5f ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/maxim_contaminant.c |    6 ++++++
- drivers/usb/typec/tcpm/tcpci_maxim.h       |    1 +
- 2 files changed, 7 insertions(+)
+ net/bluetooth/hci_event.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/typec/tcpm/maxim_contaminant.c
-+++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
-@@ -5,6 +5,7 @@
-  * USB-C module to reduce wakeups due to contaminants.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/irqreturn.h>
- #include <linux/module.h>
-@@ -189,6 +190,11 @@ static int max_contaminant_read_comparat
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Disable low power mode */
-+	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL_MASK,
-+				 FIELD_PREP(CCLPMODESEL_MASK,
-+					    LOW_POWER_MODE_DISABLE));
-+
- 	/* Sleep to allow comparators settle */
- 	usleep_range(5000, 6000);
- 	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL, TCPC_TCPC_CTRL_ORIENTATION, PLUG_ORNT_CC1);
---- a/drivers/usb/typec/tcpm/tcpci_maxim.h
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim.h
-@@ -21,6 +21,7 @@
- #define CCOVPDIS                                BIT(6)
- #define SBURPCTRL                               BIT(5)
- #define CCLPMODESEL_MASK                        GENMASK(4, 3)
-+#define LOW_POWER_MODE_DISABLE                  0
- #define ULTRA_LOW_POWER_MODE                    BIT(3)
- #define CCRPCTRL_MASK                           GENMASK(2, 0)
- #define UA_1_SRC                                1
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 38643ffa65a9..768bd5fd808f 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6725,8 +6725,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		qos->ucast.out.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
+ 					  1000);
+-		qos->ucast.in.sdu = le16_to_cpu(ev->c_mtu);
+-		qos->ucast.out.sdu = le16_to_cpu(ev->p_mtu);
++		qos->ucast.in.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
++		qos->ucast.out.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
+ 		qos->ucast.in.phy = ev->c_phy;
+ 		qos->ucast.out.phy = ev->p_phy;
+ 		break;
+@@ -6740,8 +6740,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		qos->ucast.in.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
+ 					  1000);
+-		qos->ucast.out.sdu = le16_to_cpu(ev->c_mtu);
+-		qos->ucast.in.sdu = le16_to_cpu(ev->p_mtu);
++		qos->ucast.out.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
++		qos->ucast.in.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
+ 		qos->ucast.out.phy = ev->c_phy;
+ 		qos->ucast.in.phy = ev->p_phy;
+ 		break;
+-- 
+2.50.1
+
 
 
 
