@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D48B36046
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242B1B368E3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1EE3BF475
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E47AD1BC7DB4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6398226861;
-	Tue, 26 Aug 2025 12:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE982350D6A;
+	Tue, 26 Aug 2025 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD7mRVBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0mXj+o0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943161A00F0;
-	Tue, 26 Aug 2025 12:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA12345758;
+	Tue, 26 Aug 2025 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212925; cv=none; b=bW6cGtLQSUVlOCdCpYJm76iOf0oclAFrGWswpkFCOogPipjKp42/RNDmT5q9koSszXYXzPayGgeuZNVsIUQfmpCaJT/5FduXvho9JWZGPk6ozthTIdpy70fzzJayYCdUazivxZWk5xb9nC+tmz9/P3Gxo+FbKGMYDf3/S2Yfkgk=
+	t=1756217303; cv=none; b=aMDWDshBSo65K8EttHafoXBYrnWFl/+C3HDSPmGZ6E7yToJxP59sEVwhAl1O99RDAbCkTUhRQaZJNPMtfsEo5WSM0di5F1ETrsHQ1bH62AQT2F1V398SHfjuvanBv/AUJF/ZvfiHbu4fqHOE3xSs9xIVx1Za/rYXe7/twZorUxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212925; c=relaxed/simple;
-	bh=DRan3se7oChc002wZsqGEaPsoxldn8aAO5DuJBDWjS0=;
+	s=arc-20240116; t=1756217303; c=relaxed/simple;
+	bh=7qjgB5e8tLCbzJlwCiAv8cAFGo6vTL+8gVyIHagJX70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyUOXUVYQOG3V/LiUznoswB1xJjrTGAjTlaRGS4Kk+xUf1keMiguSnc5iLGrXVeef4b8YMElNW/hZ5Gat43UXjay1XfkBcLYdaqB2OH/5ENWdOY/a9HFBRuxV+0597iAfvXJ8aDTW+W2Jm2MBcg1BVK9MlVZktWwZHSQNwclh7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD7mRVBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33E3C4CEF1;
-	Tue, 26 Aug 2025 12:55:24 +0000 (UTC)
+	 MIME-Version; b=h9IfoeOpOpsHDpf9CKnakAucb3hbVhQyRrdtAKQo6zyakk2GY5qjyQDkutAmBQ6TdOHVWL0+0Wu7FxOl2Ukgr/ozEQAt1MAhtyC7JXGPrLQXhyH+4GS9anQykwOeHLBXUjpZ2fckTAbJ5pDff2d60pyR4rQmy5yRf+6REvDEjoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0mXj+o0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20150C4CEF1;
+	Tue, 26 Aug 2025 14:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212925;
-	bh=DRan3se7oChc002wZsqGEaPsoxldn8aAO5DuJBDWjS0=;
+	s=korg; t=1756217303;
+	bh=7qjgB5e8tLCbzJlwCiAv8cAFGo6vTL+8gVyIHagJX70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lD7mRVBpXpDwk+gskieLHhwmRBPEBbvoXLrL74x/eZ5+8Hf3QQZgRbK8zUNEOrOWW
-	 q89E3DYjCjrgwEJwgdMNmmcXB3AXkRRiijEDQ6ot9xzz/mKhS7V0d1Gl6r2q9XIQyk
-	 C50OVhyFaIbCdtYttgqwaYrzkPUtYlzLNpy3iwnY=
+	b=k0mXj+o0yGfG4lcVmIOqSbYmCateZgmYu7AanVngCobnlAD0sggvbAZaJt2pK2sa6
+	 abmWXF9q0buhFFvFo075hy85v94UHWpV5UFbnU5yQ96Rapcyhv0t1VdsqsJPmG1rva
+	 xW+tbkc+24rwyi7wNl15Tq1reyDK6Sr7FgeD0AKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/587] rcu: Protect ->defer_qs_iw_pending from data race
+Subject: [PATCH 5.10 092/523] staging: nvec: Fix incorrect null termination of battery manufacturer
 Date: Tue, 26 Aug 2025 13:05:02 +0200
-Message-ID: <20250826110956.841023505@linuxfoundation.org>
+Message-ID: <20250826110926.818084301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
+[ Upstream commit a8934352ba01081c51d2df428e9d540aae0e88b5 ]
 
-On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
-invoked within an interrupts-disabled region of code [1], it will invoke
-rcu_read_unlock_special(), which uses an irq-work handler to force the
-system to notice when the RCU read-side critical section actually ends.
-That end won't happen until interrupts are enabled at the soonest.
+The battery manufacturer string was incorrectly null terminated using
+bat_model instead of bat_manu. This could result in an unintended
+write to the wrong field and potentially incorrect behavior.
 
-In some kernels, such as those booted with rcutree.use_softirq=y, the
-irq-work handler is used unconditionally.
+fixe the issue by correctly null terminating the bat_manu string.
 
-The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
-updated by the irq-work handler and is both read and updated by
-rcu_read_unlock_special().  This resulted in the following KCSAN splat:
-
-------------------------------------------------------------------------
-
-BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
-
-read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
- rcu_read_unlock_special+0x175/0x260
- __rcu_read_unlock+0x92/0xa0
- rt_spin_unlock+0x9b/0xc0
- __local_bh_enable+0x10d/0x170
- __local_bh_enable_ip+0xfb/0x150
- rcu_do_batch+0x595/0xc40
- rcu_cpu_kthread+0x4e9/0x830
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
- rcu_preempt_deferred_qs_handler+0x1e/0x30
- irq_work_single+0xaf/0x160
- run_irq_workd+0x91/0xc0
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-no locks held by irq_work/8/88.
-irq event stamp: 200272
-hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
-hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
-softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-
-------------------------------------------------------------------------
-
-The problem is that irq-work handlers run with interrupts enabled, which
-means that rcu_preempt_deferred_qs_handler() could be interrupted,
-and that interrupt handler might contain an RCU read-side critical
-section, which might invoke rcu_read_unlock_special().  In the strict
-KCSAN mode of operation used by RCU, this constitutes a data race on
-the ->defer_qs_iw_pending field.
-
-This commit therefore disables interrupts across the portion of the
-rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
-field.  This suffices because this handler is not a fast path.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Fixes: 32890b983086 ("Staging: initial version of the nvec driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250719080755.3954373-1-alok.a.tiwari@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/nvec/nvec_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 94b715139f52..de727f2568bf 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -612,10 +612,13 @@ notrace void rcu_preempt_deferred_qs(struct task_struct *t)
-  */
- static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- {
-+	unsigned long flags;
- 	struct rcu_data *rdp;
- 
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
-+	local_irq_save(flags);
- 	rdp->defer_qs_iw_pending = false;
-+	local_irq_restore(flags);
- }
- 
- /*
+diff --git a/drivers/staging/nvec/nvec_power.c b/drivers/staging/nvec/nvec_power.c
+index 0e861c4bfcbf..590b801c5992 100644
+--- a/drivers/staging/nvec/nvec_power.c
++++ b/drivers/staging/nvec/nvec_power.c
+@@ -194,7 +194,7 @@ static int nvec_power_bat_notifier(struct notifier_block *nb,
+ 		break;
+ 	case MANUFACTURER:
+ 		memcpy(power->bat_manu, &res->plc, res->length - 2);
+-		power->bat_model[res->length - 2] = '\0';
++		power->bat_manu[res->length - 2] = '\0';
+ 		break;
+ 	case MODEL:
+ 		memcpy(power->bat_model, &res->plc, res->length - 2);
 -- 
 2.39.5
 
