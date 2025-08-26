@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FF9B35C98
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0081B362BB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBA647B313D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0FF7C5A7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F358632A3C8;
-	Tue, 26 Aug 2025 11:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD898338F2B;
+	Tue, 26 Aug 2025 13:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3U/Tsk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dlTL3yc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14FA3093BA;
-	Tue, 26 Aug 2025 11:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA1727707;
+	Tue, 26 Aug 2025 13:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208040; cv=none; b=gsymKodtSiBsPBhgytp4MKxzU66LNs8nyAgSYQ8KOi5fJN+pPs2AkR4EFcujWHbH5kV4+yCMVPXh37oJfziHWPCcfbK63P7kp5jdqva/HYpjfNmTts1VXf5F6OWh1yOaXjCFXS6ktUbyyrqZSQkvMtRmUrnDPDDy5QTpKxJAxsU=
+	t=1756214042; cv=none; b=o9deSuseenzc4/NB0OuBkIpJgs/psZx14XO5jNTMRTIoQTd3RxN7Ov/z9UgQ/a5qYZHr2NRQVEHamy7nDxBc6rN52HDAAY5o2lsdOr46HuvkSO8Z/VSQO1IBVkKb+ursX/HKqaWgFlw24bWPEYUIVs5tlUyrdPHL+RT7z16y3Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208040; c=relaxed/simple;
-	bh=HpFta0HVhpPpnUPrPrkpSZQHAwFaKUT8eDqZ6iO/EiI=;
+	s=arc-20240116; t=1756214042; c=relaxed/simple;
+	bh=s8swVv3WIBSg39D4bNzBU/mDr6GvxI2PfvplPtitx1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fX/QcOp0ZetuSf87FefgNidv9Z6daxylwtvJ9npOFeDwdKTjp/J7vEcFMES6Sf5WL4N4z3Miyf5vZXsd81nXbKPfP79xrVmt+mKENd2JGodfiP14xNa3UVAl2khGI+XuQuti8cbwDDNZ2yz7EtxBGzVhvsd6b0pGV/2dXIOaiSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3U/Tsk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ABAC4CEF1;
-	Tue, 26 Aug 2025 11:33:59 +0000 (UTC)
+	 MIME-Version; b=AGfn628FhmsEb4xp0O6YymjK47PoYS5zLqU0xzZ55rKIwtIhLAZlCVpSKPITpiER+vUPxG1kuvFtVWCztXb+6wc/6RMhXNZkyqDrN2xTXO6xzMmKyXi6R7YiQ4rr0XeTp9sJMXpHKjXICV3+aZpxOFnIQX48YDPRmkTH3gkmFv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dlTL3yc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3778C4CEF1;
+	Tue, 26 Aug 2025 13:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208040;
-	bh=HpFta0HVhpPpnUPrPrkpSZQHAwFaKUT8eDqZ6iO/EiI=;
+	s=korg; t=1756214042;
+	bh=s8swVv3WIBSg39D4bNzBU/mDr6GvxI2PfvplPtitx1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3U/Tsk63hTof6CNuXUt1jgLuXBvkdoRz/goPu555ck3mctc5iIpUpnfAsCnhwx1R
-	 4xwGEUrxV1LuDXBINU1COg7qhbT00HE8Yl104aFoHiG2r5Zwt2aS2ylO0+3M6sllXM
-	 w3keEato7uU3brOMBvaLGPfHHWiy1RcYfMH7h3h8=
+	b=1dlTL3yc8dn89dnC2PSPJeQB14YZHs8aTn9C75Pe5iwKMC9kZXYEev/v7OpkqnPTr
+	 cAT473hdJZ8dApxRvuElREdspzPYS3p6NwPri+5AD0IY92V7VBeWtX2Vo7iv4lD7vC
+	 aRunZeyyOhBV/e3syCcBP03ft/dgbD0qaaMJ6Mdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rhee <jordanrhee@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 413/457] gve: prevent ethtool ops after shutdown
+Subject: [PATCH 6.6 548/587] spi: spi-fsl-lpspi: Clamp too high speed_hz
 Date: Tue, 26 Aug 2025 13:11:37 +0200
-Message-ID: <20250826110947.501326271@linuxfoundation.org>
+Message-ID: <20250826111006.960062862@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rhee <jordanrhee@google.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
+[ Upstream commit af357a6a3b7d685e7aa621c6fb1d4ed6c349ec9e ]
 
-A crash can occur if an ethtool operation is invoked
-after shutdown() is called.
+Currently the driver is not able to handle the case that a SPI device
+specifies a higher spi-max-frequency than half of per-clk:
 
-shutdown() is invoked during system shutdown to stop DMA operations
-without performing expensive deallocations. It is discouraged to
-unregister the netdev in this path, so the device may still be visible
-to userspace and kernel helpers.
+    per-clk should be at least two times of transfer speed
 
-In gve, shutdown() tears down most internal data structures. If an
-ethtool operation is dispatched after shutdown(), it will dereference
-freed or NULL pointers, leading to a kernel panic. While graceful
-shutdown normally quiesces userspace before invoking the reboot
-syscall, forced shutdowns (as observed on GCP VMs) can still trigger
-this path.
+Fix this by clamping to the max possible value and use the minimum SCK
+period of 2 cycles.
 
-Fix by calling netif_device_detach() in shutdown().
-This marks the device as detached so the ethtool ioctl handler
-will skip dispatching operations to the driver.
-
-Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
-Signed-off-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 77736a98b859 ("spi: lpspi: add the error info of transfer speed setting")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20250807100742.9917-1-wahrenst@gmx.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index d1aeb722d48f..36a6d766b638 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2726,6 +2726,8 @@ static void gve_shutdown(struct pci_dev *pdev)
- 	struct gve_priv *priv = netdev_priv(netdev);
- 	bool was_up = netif_running(priv->dev);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 9e2541dee56e..fa899ab2014c 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -330,13 +330,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 	}
  
-+	netif_device_detach(netdev);
-+
- 	rtnl_lock();
- 	netdev_lock(netdev);
- 	if (was_up && gve_close(priv->dev)) {
+ 	if (config.speed_hz > perclk_rate / 2) {
+-		dev_err(fsl_lpspi->dev,
+-		      "per-clk should be at least two times of transfer speed");
+-		return -EINVAL;
++		div = 2;
++	} else {
++		div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
+ 	}
+ 
+-	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
+-
+ 	for (prescale = 0; prescale <= prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+ 		if (scldiv >= 0 && scldiv < 256) {
 -- 
 2.50.1
 
