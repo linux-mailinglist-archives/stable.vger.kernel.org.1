@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-174951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C823EB365C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF07B36090
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01E6056480C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D41E84E430F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1404086A;
-	Tue, 26 Aug 2025 13:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3091F239B;
+	Tue, 26 Aug 2025 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO79JOx9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upRS4KF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B06F221290;
-	Tue, 26 Aug 2025 13:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A58A206F23;
+	Tue, 26 Aug 2025 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215747; cv=none; b=F7LYS5NDxrhPYjE9LDtcwAX+jbeLk/Rn28CFjbDlwlP+/hIQqf611yqYu3zwyJ9JSXBrWQUh8tOf0OUKKWf6UamOAjz3u9VWIl5mOb74MYWLnj2Sr1fucZN3bKSACRJcaZgtzBSF9R3VTeU4r0vixqnDAsu2+ygVUrQDUxZCkIg=
+	t=1756212844; cv=none; b=a90tHeBUco0o6MDoQLGv6lBPbAGCj/J5fQO/6ZM2t6goU1zfaz+LWY+SWFzn4thYoybn7bmIKKHcDb8i7BngCfq5gOd2MR8Z4/UdRU7NBiKmy9N3VzbptT1g57JM41JE//2c5Ni1HUEAJwTde8VkMBZhn5uUh6uk3Ymm51K6nBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215747; c=relaxed/simple;
-	bh=PDK6Eo5Kh+t3187ubBDmyW67tp/tpXz5mNuGE7HBp+o=;
+	s=arc-20240116; t=1756212844; c=relaxed/simple;
+	bh=kftSc76U4+CRwj4G0R2HLC2tzQ52s+2dbiRmbNa6liE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7pE498tRVb8v9JeP73TS5XOmHsgHEh7kJriIcSzEDTiE/MBxiDP5ilr1KzczVfEEV34R7/Gsw/iv6omwkHGHyXasweZwKz1YAv8mf5Qj51hnwh8A5z6d5qnp5l11DI3NEhym9Rz1/zVu2Gquscv3oiUaguU9qt1oXLqiV/O9PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PO79JOx9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B737BC113CF;
-	Tue, 26 Aug 2025 13:42:26 +0000 (UTC)
+	 MIME-Version; b=p9FwyrpD+O7ueNN3m7vFgWel0dAmcdOFFma838i8k2z44WKFq0hNuabAxpGCLsP481Kc4rk2uwS+GIg7DaqMH+UmRBBb1cNQgN1OV8RQsN0HCmyo58rebtecnniyOR9zuapvy+2bT5LD4yEGxZSgBepCRoRiirZL+Z+nlsoNPZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upRS4KF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE9BC113CF;
+	Tue, 26 Aug 2025 12:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215747;
-	bh=PDK6Eo5Kh+t3187ubBDmyW67tp/tpXz5mNuGE7HBp+o=;
+	s=korg; t=1756212844;
+	bh=kftSc76U4+CRwj4G0R2HLC2tzQ52s+2dbiRmbNa6liE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PO79JOx9bbmD2k7jEleKFF29at7GnKkqa2meE6aKU3xJnxrIQIUBHt4Id+xz1xpyS
-	 JIrSYsDv/S7PVSP2EQeNPuENEEGwvtYhB76Y5EEjEN/6NiFt0USfJWN4e0MCiJ3FBH
-	 AHBNSaiHPPsmYsFk6G7dM754Uvklb8PlYFJ9xUYo=
+	b=upRS4KF00wUgVy8a85+DHeZiRwgT1jKuh0QjCqY25LQdAAQANy6udON+NzQxTG4th
+	 G699AXvrD91meETFgUb8rbDqqCTzws0kuTp6pEGERmplqqk1/mUcuX4xk6AC1TfgGc
+	 3zt8foKX5G32RU+Bn3pvHaMsRGudCygvENJLmZ+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/644] um: rtc: Avoid shadowing err in uml_rtc_start()
+Subject: [PATCH 6.6 092/587] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
 Date: Tue, 26 Aug 2025 13:04:01 +0200
-Message-ID: <20250826110950.201176840@linuxfoundation.org>
+Message-ID: <20250826110955.277208963@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-Remove the declaration of 'err' inside the 'if (timetravel)' block,
-as it would otherwise be unavailable outside that block, potentially
-leading to uml_rtc_start() returning an uninitialized value.
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
 
-Fixes: dde8b58d5127 ("um: add a pseudo RTC")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
+
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/rtc_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
-index 7c3cec4c68cf..006a5a164ea9 100644
---- a/arch/um/drivers/rtc_user.c
-+++ b/arch/um/drivers/rtc_user.c
-@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
- 	int err;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 2abf20736702..22db720b128b 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -715,6 +715,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		}
+ 	}
  
- 	if (timetravel) {
--		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
-+		err = os_pipe(uml_rtc_irq_fds, 1, 1);
- 		if (err)
- 			goto fail;
- 	} else {
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		dev_err(ghes->dev,
++			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
++	}
++
+ 	return queued;
+ }
+ 
 -- 
 2.39.5
 
