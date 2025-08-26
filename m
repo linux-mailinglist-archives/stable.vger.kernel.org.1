@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422C1B35E80
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B25B35CB7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2F7561C3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAF287C50BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014DB2BEFF0;
-	Tue, 26 Aug 2025 11:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07984341655;
+	Tue, 26 Aug 2025 11:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6piMnq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqvT4NA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B162926C3A4;
-	Tue, 26 Aug 2025 11:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C153376A9;
+	Tue, 26 Aug 2025 11:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208984; cv=none; b=gg7ibWCKRS9aiaxuR50qxNIWCuZG5OAZXWPVKgQDLFzesTHTjzD2zKMnMOG/JewGD7MTmf3T1hge5uVvtDW1e36zLUu/KL1q80+BzlMZqP0LZKDrbqELVHuFLS3oCpJaGqwusmIku6mP4Tqje2tSGSEyezMnJzl7M801UP9Fn3o=
+	t=1756208160; cv=none; b=FgIG+7Dp0fPeBqbRrqDexLCGNdDQsPDRjwZh3+AsSHWyNv1maaI9+JyU46EgqvvboCTbfldLtRUdwJau1thj46WDVvRu9jHABMPxxPcJmwUeCL7bGPm77UYNErjPmKXvdV0KOdVKhZy8IVCGnol/g9+9Aq4XSEo/6Ci8xmusYBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208984; c=relaxed/simple;
-	bh=W2forvrUfe+StYD280/r7GhXKxTyAzC7bMEUaQI2w2U=;
+	s=arc-20240116; t=1756208160; c=relaxed/simple;
+	bh=/n783Cr5t3UTJ7vjNBsmAPgjx/O/gXQCqMkwcrcqmw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvQwy4l8VuNLrrKTBiGcaOQscOtJc9k3vAawCKH9X1HlAd5O6cGXKskeV55TgMTYfKsCTmoBuQOPSxLKwjhHBYwtJJPs14N52F0/8CzhyGyOtc5hBjHkY0UGVMWtPkOTQvKYGAse/5m+uz9r7oensdjkEGpzHsg4LvWPoZ/fOYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6piMnq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437ADC4CEF1;
-	Tue, 26 Aug 2025 11:49:44 +0000 (UTC)
+	 MIME-Version; b=HA5+PRCKRtOHDKZdrjHieerzS98klnOeNNIRSmAr5mN9x0SK1b6ORTK1VF8Bb3L1va1+qt5WLBhRB8FE/fdzTgtbf+Ji9empZIzo9KImEHBdy1QHkOQmTnDEHq1DitsxI3zmHmGZ+nFywMBnSq2asdOm90KvNCVxI2wmSk3XnPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqvT4NA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0843BC4CEF1;
+	Tue, 26 Aug 2025 11:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208984;
-	bh=W2forvrUfe+StYD280/r7GhXKxTyAzC7bMEUaQI2w2U=;
+	s=korg; t=1756208160;
+	bh=/n783Cr5t3UTJ7vjNBsmAPgjx/O/gXQCqMkwcrcqmw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6piMnq7HqUmv7qQvZiqq4fxNllZMvxCXrFXGmXkm83M+N6LCDpWIZpGI+URA9IOh
-	 j1lysgfmlMeUPaooz2RKOhyslHT4VmFxHvoqR/8cjhY0y/TxMzlip5Zzftx4d1H59q
-	 whd6eg1m8CxTrJDGqYWWZywsQSaFGHKFSCuhyjPQ=
+	b=AqvT4NA1mNyab1TOjZ5+56uYS+t8QOHvzvmMk4P8hqrVXVusl8QToJnHSxzHTif6f
+	 rMPJ6yspao6em7r5dv6QAXVe6jLvrXqXtEnq+1ZIxqR2IQee0s4W1kXbiR/JOBVoBp
+	 lsQrHj5vTxSEkIE5o+YXOGIiadQUByam6awzh5yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 321/322] netfilter: nf_reject: dont leak dst refcount for loopback packets
+Subject: [PATCH 6.16 452/457] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
 Date: Tue, 26 Aug 2025 13:12:16 +0200
-Message-ID: <20250826110923.813369479@linuxfoundation.org>
+Message-ID: <20250826110948.455097714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
+[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
 
-recent patches to add a WARN() when replacing skb dst entry found an
-old bug:
+The entry of the validators table for UAC3 feature unit is defined
+with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
+UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
 
-WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
-WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
-WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
-[..]
-Call Trace:
- nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
- nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
- expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
- ..
-
-This is because blamed commit forgot about loopback packets.
-Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
-
-Instead of checking hook just check if the skb already has a route
-attached to it.
-
-Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
+Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
- net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ sound/usb/validate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 87fd945a0d27..0d3cb2ba6fc8 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -247,8 +247,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (!oth)
- 		return;
- 
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(oldskb) < 0)
-+	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
- 		return;
- 
- 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-@@ -321,8 +320,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
- 	if (iph->frag_off & htons(IP_OFFSET))
- 		return;
- 
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	if (skb_csum_unnecessary(skb_in) ||
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 9ae2b2725bf9..c3d64c4b69d7 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -293,7 +293,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	fl6.fl6_sport = otcph->dest;
- 	fl6.fl6_dport = otcph->source;
- 
--	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
-+	if (!skb_dst(oldskb)) {
- 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
- 		if (!dst)
- 			return;
-@@ -397,8 +397,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
- 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
- 		skb_in->dev = net->loopback_dev;
- 
--	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
--	    nf_reject6_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index 4f4e8e87a14c..a0d55b77c994 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+-	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
++	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+ 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
 -- 
 2.50.1
 
