@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DABB364A8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C867BB36CD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 043C98A595A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A37A07030
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0CA33437B;
-	Tue, 26 Aug 2025 13:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678F735CEBF;
+	Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp689Lcx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv08jTk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47C265CC0;
-	Tue, 26 Aug 2025 13:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF635CEB9;
+	Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215091; cv=none; b=B3BO3oH6v2r2P70LnYhgp+4HgI3x7u8j2jpp5Y0J8PWKg6i+KCCWAuI4VkbvM8TtvImE4wFpvRVW87+5jHOgQJlJql9MPfHLFqVdQIbFXDyUkXl4OuxSE3a0GcO8ANaR2xKHkKxYIUsEYSwAIktC6y7oqF7JV2ExfelmHZX6gvc=
+	t=1756219248; cv=none; b=Ex8hzRC/pnOtR6//8mrgIVpJ7Rb1aYv2bt6QWhFFwseyvOb5DitW3TdH+INwq7+wU0eP3zXsAd1XY33FgTehadoXiH8u0VsSobsPsrQxf2x3M9dE/zLnh2wZ3T+I9NseSNjYJ5o15m1uVN0Q6ZwBbqUmAOMEwkRMD2r9nUMx/rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215091; c=relaxed/simple;
-	bh=AaoVGldjq1BgTsfRHqHDAgffoboUzCsBWtRRV+wNRXY=;
+	s=arc-20240116; t=1756219248; c=relaxed/simple;
+	bh=AUkjyWrCuzcmpZ/6aUAxNfbTvyj1w+dOrVdcbpYei0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKTNMS08eT/v/bRs4rpNUWXVZuwbQaFzGKZ7RuaNmyu7UbZH6Y8V8rPhkv7G3ZELRJOH+mz2SNCyQgOU88UtHT5Dd6YFj2oPqXeeqTUtTBIOr8vrFJ/pji6rGfqgTGO5nNnAmrC8DTUvpYW11a3CwcnonrH+6kEsNsOZzDW+B90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp689Lcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E29AC4CEF1;
-	Tue, 26 Aug 2025 13:31:30 +0000 (UTC)
+	 MIME-Version; b=VxjO6Pqhzz3fz+LJloB0RP15pyl0cakHGFOn7hoyj5HX2a5+SVCUZxRl3ZzyWi8hCRmuvQEai320bO/jv5gBDobfL9EOvlJu5SRh/JonqAhKXT/4JF3zsIbX0nAyNCwXSGZoLeBm/68G0N+GIXEXoK3RcfUs2fKakZ9i4vEBq54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv08jTk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D15C4CEF1;
+	Tue, 26 Aug 2025 14:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215090;
-	bh=AaoVGldjq1BgTsfRHqHDAgffoboUzCsBWtRRV+wNRXY=;
+	s=korg; t=1756219248;
+	bh=AUkjyWrCuzcmpZ/6aUAxNfbTvyj1w+dOrVdcbpYei0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp689Lcx04OcjZZ6HnOgMu0i/bIZdDeAzg7e3l5yXe2bCK0bfXryslZhPNR9jhbSd
-	 HiOwIAKZdn4gGN9/+aQNC0JZgWfcD5vp/Z/4Z8c4C5XMFWHzNNKwHIAuYjfX7uqvYy
-	 I24pJXAVfNqvKQ650ndZvfx8+ynTyBulyUnnHJTg=
+	b=Yv08jTk0aXdOE4ZJ+b4PpxgwQf8jo7LKRmICnL4LtKtlYKtDIuD/s+Zf501659F2V
+	 F4Q3UdHZQ50mY8C1Uolb1Fw8eX8PMkLfB2iH5sXIOXS/gIUsZGrlKVhUJEccDnFlmG
+	 Mvh/IrI1mswCCPQCvGMzWrn6zpKmizqNdmskVPNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 382/482] mptcp: plug races between subflow fail and subflow creation
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Scott GUO <scottzhguo@tencent.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 309/403] squashfs: fix memory leak in squashfs_fill_super
 Date: Tue, 26 Aug 2025 13:10:35 +0200
-Message-ID: <20250826110940.266819144@linuxfoundation.org>
+Message-ID: <20250826110915.349104423@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,203 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit def5b7b2643ebba696fc60ddf675dca13f073486 upstream.
+commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
 
-We have races similar to the one addressed by the previous patch between
-subflow failing and additional subflow creation. They are just harder to
-trigger.
+If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
+allocated memory (sb->s_fs_info).
 
-The solution is similar. Use a separate flag to track the condition
-'socket state prevent any additional subflow creation' protected by the
-fallback lock.
+Fix this by moving the call to sb_min_blocksize to before memory is
+allocated.
 
-The socket fallback makes such flag true, and also receiving or sending
-an MP_FAIL option.
-
-The field 'allow_infinite_fallback' is now always touched under the
-relevant lock, we can drop the ONCE annotation on write.
-
-Fixes: 478d770008b0 ("mptcp: send out MP_FAIL when data checksum fails")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250714-net-mptcp-fallback-races-v1-2-391aff963322@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in subflow.c, because commit f1f26512a9bf ("mptcp: use plain
-  bool instead of custom binary enum") and commit 46a5d3abedbe
-  ("mptcp: fix typos in comments") are not in this version. Both are
-  causing conflicts in the context, and the same modifications can still
-  be applied. Same in protocol.h with commit b8dc6d6ce931 ("mptcp: fix
-  rcv buffer auto-tuning"). Conflicts in protocol.c because commit
-  ee2708aedad0 ("mptcp: use get_retrans wrapper") is not in this version
-  and refactor the code in __mptcp_retrans(), but the modification can
-  still be applied, just not at the same indentation level. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
+Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: Scott GUO <scottzhguo@tencent.com>
+Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c       |    8 +++++++-
- net/mptcp/protocol.c |   11 ++++++-----
- net/mptcp/protocol.h |    7 +++++--
- net/mptcp/subflow.c  |   19 ++++++++++++++-----
- 4 files changed, 32 insertions(+), 13 deletions(-)
+ fs/squashfs/super.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -309,8 +309,14 @@ void mptcp_pm_mp_fail_received(struct so
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -74,10 +74,15 @@ static int squashfs_fill_super(struct su
+ 	unsigned short flags;
+ 	unsigned int fragments;
+ 	u64 lookup_table_start, xattr_id_table_start, next_table;
+-	int err;
++	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
  
- 	pr_debug("fail_seq=%llu\n", fail_seq);
+ 	TRACE("Entered squashfs_fill_superblock\n");
  
--	if (!READ_ONCE(msk->allow_infinite_fallback))
-+	/* After accepting the fail, we can't create any other subflows */
-+	spin_lock_bh(&msk->fallback_lock);
-+	if (!msk->allow_infinite_fallback) {
-+		spin_unlock_bh(&msk->fallback_lock);
- 		return;
++	if (!devblksize) {
++		errorf(fc, "squashfs: unable to set blocksize\n");
++		return -EINVAL;
 +	}
-+	msk->allow_subflows = false;
-+	spin_unlock_bh(&msk->fallback_lock);
- 
- 	if (!subflow->fail_tout) {
- 		pr_debug("send MP_FAIL response and infinite map\n");
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -885,7 +885,7 @@ void mptcp_data_ready(struct sock *sk, s
- static void mptcp_subflow_joined(struct mptcp_sock *msk, struct sock *ssk)
- {
- 	mptcp_subflow_ctx(ssk)->map_seq = READ_ONCE(msk->ack_seq);
--	WRITE_ONCE(msk->allow_infinite_fallback, false);
-+	msk->allow_infinite_fallback = false;
- 	mptcp_event(MPTCP_EVENT_SUB_ESTABLISHED, msk, ssk, GFP_ATOMIC);
- }
- 
-@@ -897,7 +897,7 @@ static bool __mptcp_finish_join(struct m
- 		return false;
- 
- 	spin_lock_bh(&msk->fallback_lock);
--	if (__mptcp_check_fallback(msk)) {
-+	if (!msk->allow_subflows) {
- 		spin_unlock_bh(&msk->fallback_lock);
- 		return false;
- 	}
-@@ -2707,7 +2707,7 @@ static void __mptcp_retrans(struct sock
- 		dfrag->already_sent = max(dfrag->already_sent, info.sent);
- 		tcp_push(ssk, 0, info.mss_now, tcp_sk(ssk)->nonagle,
- 			 info.size_goal);
--		WRITE_ONCE(msk->allow_infinite_fallback, false);
-+		msk->allow_infinite_fallback = false;
- 	}
- 	spin_unlock_bh(&msk->fallback_lock);
- 
-@@ -2835,7 +2835,8 @@ static int __mptcp_init_sock(struct sock
- 	WRITE_ONCE(msk->first, NULL);
- 	inet_csk(sk)->icsk_sync_mss = mptcp_sync_mss;
- 	WRITE_ONCE(msk->csum_enabled, mptcp_is_checksum_enabled(sock_net(sk)));
--	WRITE_ONCE(msk->allow_infinite_fallback, true);
-+	msk->allow_infinite_fallback = true;
-+	msk->allow_subflows = true;
- 	msk->recovery = false;
- 
- 	mptcp_pm_data_init(msk);
-@@ -3673,7 +3674,7 @@ bool mptcp_finish_join(struct sock *ssk)
- 	/* active subflow, already present inside the conn_list */
- 	if (!list_empty(&subflow->node)) {
- 		spin_lock_bh(&msk->fallback_lock);
--		if (__mptcp_check_fallback(msk)) {
-+		if (!msk->allow_subflows) {
- 			spin_unlock_bh(&msk->fallback_lock);
- 			return false;
- 		}
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -314,12 +314,14 @@ struct mptcp_sock {
- 		u64	time;	/* start time of measurement window */
- 		u64	rtt_us; /* last maximum rtt of subflows */
- 	} rcvq_space;
-+	bool		allow_subflows;
- 
- 	u32 setsockopt_seq;
- 	char		ca_name[TCP_CA_NAME_MAX];
- 
--	spinlock_t	fallback_lock;	/* protects fallback and
--					 * allow_infinite_fallback
-+	spinlock_t	fallback_lock;	/* protects fallback,
-+					 * allow_infinite_fallback and
-+					 * allow_join
- 					 */
- };
- 
-@@ -991,6 +993,7 @@ static inline bool __mptcp_try_fallback(
- 		return false;
- 	}
- 
-+	msk->allow_subflows = false;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
- 	spin_unlock_bh(&msk->fallback_lock);
- 	return true;
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1168,20 +1168,29 @@ static void subflow_sched_work_if_closed
- 		mptcp_schedule_work(sk);
- }
- 
--static void mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
-+static bool mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	unsigned long fail_tout;
- 
-+	/* we are really failing, prevent any later subflow join */
-+	spin_lock_bh(&msk->fallback_lock);
-+	if (!msk->allow_infinite_fallback) {
-+		spin_unlock_bh(&msk->fallback_lock);
-+		return false;
-+	}
-+	msk->allow_subflows = false;
-+	spin_unlock_bh(&msk->fallback_lock);
 +
- 	/* greceful failure can happen only on the MPC subflow */
- 	if (WARN_ON_ONCE(ssk != READ_ONCE(msk->first)))
--		return;
-+		return false;
+ 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
+ 	if (sb->s_fs_info == NULL) {
+ 		ERROR("Failed to allocate squashfs_sb_info\n");
+@@ -85,12 +90,7 @@ static int squashfs_fill_super(struct su
+ 	}
+ 	msblk = sb->s_fs_info;
  
- 	/* since the close timeout take precedence on the fail one,
- 	 * no need to start the latter when the first is already set
- 	 */
- 	if (sock_flag((struct sock *)msk, SOCK_DEAD))
--		return;
-+		return true;
+-	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+-	if (!msblk->devblksize) {
+-		errorf(fc, "squashfs: unable to set blocksize\n");
+-		return -EINVAL;
+-	}
+-
++	msblk->devblksize = devblksize;
+ 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
  
- 	/* we don't need extreme accuracy here, use a zero fail_tout as special
- 	 * value meaning no fail timeout at all;
-@@ -1193,6 +1202,7 @@ static void mptcp_subflow_fail(struct mp
- 	tcp_send_ack(ssk);
- 
- 	mptcp_reset_tout_timer(msk, subflow->fail_tout);
-+	return true;
- }
- 
- static bool subflow_check_data_avail(struct sock *ssk)
-@@ -1261,12 +1271,11 @@ fallback:
- 		    (subflow->mp_join || subflow->valid_csum_seen)) {
- 			subflow->send_mp_fail = 1;
- 
--			if (!READ_ONCE(msk->allow_infinite_fallback)) {
-+			if (!mptcp_subflow_fail(msk, ssk)) {
- 				subflow->reset_transient = 0;
- 				subflow->reset_reason = MPTCP_RST_EMIDDLEBOX;
- 				goto reset;
- 			}
--			mptcp_subflow_fail(msk, ssk);
- 			WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_DATA_AVAIL);
- 			return true;
- 		}
+ 	mutex_init(&msblk->meta_index_mutex);
 
 
 
