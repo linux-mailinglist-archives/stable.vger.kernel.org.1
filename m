@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A526DB368CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2406B36044
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774F61BC7B32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238B417E6F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAE434A325;
-	Tue, 26 Aug 2025 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FB61DE4F6;
+	Tue, 26 Aug 2025 12:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0MyUPkF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkZpAg0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B62C2C0F9C;
-	Tue, 26 Aug 2025 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318E414883F;
+	Tue, 26 Aug 2025 12:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217324; cv=none; b=AZhrZTlK+5zwSlAEiQtVRij1ash0NefjrtzvAGpxUfStEPYo2i65/xOg3RRT1xWDD83OE4EYzBjHjNK2v9FMW7olZ4GgwqL2PFkqSQLrhRRVj1U63WpFTEzS3CGPiAMHvLqpDtmJ2v1Kfx0phnGne4lsetjixEbPUbmnDVl0l1w=
+	t=1756212941; cv=none; b=dp9ZoY2P+cvp5FHWwkO6C3q0/0WaEqWX4mz5SfmgorERTchd0i/sb18lMS4bqlqS/3pnYVG8JMgbwdLjNKhYuAEw07gr0PRCTP3UtFpmDsvERdYRdK44Yr8sN33g7Z6TcPNRaH5bV1olLldrn7xuC8lBESbMucObECfpKPcIiUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217324; c=relaxed/simple;
-	bh=PvxsK4xYXP5soo8yR70TRvHL2cc2h4zCZjKz4GgCqBw=;
+	s=arc-20240116; t=1756212941; c=relaxed/simple;
+	bh=O0+T5/f65bXMiNyTs9su2pRr6au5cyjTA+8d3l0J/28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fToPXj3fdBhlEPL07M/6poh15Y86GyaGrcHEotnrb96A6FP+jh/Tqrf6zgFOiZBit2MCxK4ooEJQvXMuWbR4RJOoarztVYsleb1YFdTDke50+B4qUn158sHf5ym4aD8UuYhJcu6/I8iL5UGsJK6FseQqjN/mL2JaHuCgCXEhuGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0MyUPkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EFEC4CEF1;
-	Tue, 26 Aug 2025 14:08:43 +0000 (UTC)
+	 MIME-Version; b=l51xrgju67hST1GWBaMhm1HuEPqmELqb1YrU9xJ9KzsFqQnEUbaI6W68hOY3LBlWJGGn9MUWs/A+pCVPqGsB2MDpgViN4iecgciJWxRrq893mb4yonkAChs6FIpmqNOVfL4jlojXochPK3Aqe7vmC80bHNpwSrtxyK/bnbOYT88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkZpAg0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46FBC4CEF1;
+	Tue, 26 Aug 2025 12:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217324;
-	bh=PvxsK4xYXP5soo8yR70TRvHL2cc2h4zCZjKz4GgCqBw=;
+	s=korg; t=1756212941;
+	bh=O0+T5/f65bXMiNyTs9su2pRr6au5cyjTA+8d3l0J/28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0MyUPkFX8lI3rNFMhSdE4YMlJlvKb1x69DGM6HcLvHroyx5O9O4nxsVH0YWijzGZ
-	 C55d4qhfpd1aelxwe1ai9sEp1/0HXsIVXX+gHfcmsjbY16eOg/0gNj4qUfxkMlGQDz
-	 NiEQzE5DLb55AiagzJO1DW8IocWVC1k43wqm++Fw=
+	b=mkZpAg0CQ5ro0U6kYbGn9aG2dt75cgeWnJICg3YSeeuummxqaGPrEFJJ9d7Z22l/C
+	 jsdmssjWFkm14JBFJOYcx/b2plOkbwK8oI/nBXQgpUKTAm155kenAa7tDsotUWqHIR
+	 BPAnY4wo5ZQfHqpfGTbnCJA0ca5brRWJSdNU1JqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 069/523] nilfs2: reject invalid file types when reading inodes
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 130/587] soc: qcom: mdt_loader: Actually use the e_phoff
 Date: Tue, 26 Aug 2025 13:04:39 +0200
-Message-ID: <20250826110926.275664298@linuxfoundation.org>
+Message-ID: <20250826110956.263813162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
+[ Upstream commit 47e339cac89143709e84a3b71ba8bd9b2fdd2368 ]
 
-To prevent inodes with invalid file types from tripping through the vfs
-and causing malfunctions or assertion failures, add a missing sanity check
-when reading an inode from a block device.  If the file type is not valid,
-treat it as a filesystem error.
+Rather than relying/assuming that the tools generating the firmware
+places the program headers immediately following the ELF header, use
+e_phoff as intended to find the program headers.
 
-Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
-Fixes: 05fe58fdc10d ("nilfs2: inode operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-3-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/mdt_loader.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -517,11 +517,18 @@ static int __nilfs_read_inode(struct sup
- 		inode->i_op = &nilfs_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &nilfs_aops;
--	} else {
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		inode->i_op = &nilfs_special_inode_operations;
- 		init_special_inode(
- 			inode, inode->i_mode,
- 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
-+	} else {
-+		nilfs_error(sb,
-+			    "invalid file type bits in mode 0%o for inode %lu",
-+			    inode->i_mode, ino);
-+		err = -EIO;
-+		goto failed_unmap;
- 	}
- 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
- 	brelse(bh);
+diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+index 6f177e46fa0f..8de1d478bec2 100644
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -85,7 +85,7 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -137,7 +137,7 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+ 	void *data;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	if (ehdr->e_phnum < 2)
+ 		return ERR_PTR(-EINVAL);
+@@ -217,7 +217,7 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -272,7 +272,7 @@ static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_na
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		/*
+@@ -314,7 +314,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 
+ 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+-- 
+2.39.5
+
 
 
 
