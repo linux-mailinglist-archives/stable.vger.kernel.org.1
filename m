@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3165EB36645
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1784B36BBF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C35437BCE48
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 862EF5A187D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE31302CA6;
-	Tue, 26 Aug 2025 13:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A337D35A28A;
+	Tue, 26 Aug 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+x4YSin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxYdLzhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFF934F49D;
-	Tue, 26 Aug 2025 13:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616243568F3;
+	Tue, 26 Aug 2025 14:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216378; cv=none; b=nWOA4hniYI8xCNVFXmhFpW9AqoXcvhU6F95MJ5tP+9ZOUCbKezenmCB6URTmchslBlahfeER6Wcz1DJE7bQ22BWU3VtD9n0wtUBjBulnG/eGpNwjlapFO+XJo6yOCWZbr4yFKuSnaFoqVyi5pW/AE4W8owIbaGhZ8I/yzcEECXo=
+	t=1756218920; cv=none; b=WfJfwZhgnz3rL04QDUH7ao0DVmDAyrS/8VtJuyVthjGUwbmtfB7Y8EpNh1oBh4f5zLiHmVMgS/Uu2rN5/9ROCE0uUI9Azm1KrWRsDEAimuaGFcrt75d01mIXggMdpVHzqmSAjH4V213JrCZru4U08VvfIRg2O3Ib4GWLazfC3R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216378; c=relaxed/simple;
-	bh=Y+lvTnYHl/LD99vbkLTlvxgs4xiiXS0BeQoNssiX7g0=;
+	s=arc-20240116; t=1756218920; c=relaxed/simple;
+	bh=kEV67ClEMn5EfBRA2DJ4DWWpEKIOnA2YUuNgTHeA5Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRA4xADGF9NjM31Ij0WwbiWgJ3uHtIdQOmgUMoIpR/kE3cDRj3yDwDwXnQtxpnTPC5LfIuSuU8S4piOmoP0rrGOSMRtvaSYITznM1uYEKA8O9BP7hMIInUgmY1VgbC5b9YEVRjfZ005dqMPAy8Yqg5g0NBtueZ6joL3l7DoJCa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+x4YSin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57231C4CEF1;
-	Tue, 26 Aug 2025 13:52:58 +0000 (UTC)
+	 MIME-Version; b=B1PH0RnjPb/tmYoaNt76yn/QtKLeDRSHvuXUfZSWHDVgCB/QALMWoO2/Er/aexTDPUzfGhCp6oEu60YSwEwe2GIMEfaKUHQzRXs2hnKVFLZOibqrZGzt+ImEOn/nszxWw8IloA9ndgeOlg5K0QGhjw07a259zgRaDDaS+3WcQjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxYdLzhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CECC4CEF1;
+	Tue, 26 Aug 2025 14:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216378;
-	bh=Y+lvTnYHl/LD99vbkLTlvxgs4xiiXS0BeQoNssiX7g0=;
+	s=korg; t=1756218917;
+	bh=kEV67ClEMn5EfBRA2DJ4DWWpEKIOnA2YUuNgTHeA5Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+x4YSin5wN+5z1XzgtvRdWYUwU6XjnJrTV8nPt6iM3H/6QEk4dVk/xLYLW7B/7Vz
-	 rgvcOy9QaAle9A6eAQqB1fOZmA3MwsGcqkxM2wd7EfdQyNtBtc4JAKHahdgEagNH7C
-	 7CnYp8oLa78YwYXB/GVszvdL2HAK4FzmOGH+NaiY=
+	b=yxYdLzhATn0EIid8RZLbQjvHlx5VfKd0nY3o0oQGM0R3RPujfOQQy6CnTm0uy7iSw
+	 //KQZ6jvCj5wbxTR2WGlD8X2Q8QntPuxR+F5S+Mi0xIWrarFowRiiVJpFQTLwXdPuf
+	 WLGODLOJ7LNyCjf4YPRyYk01A2QztmEBo1R3FT4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Showrya M N <showrya@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 387/644] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 152/403] vsock: Do not allow binding to VMADDR_PORT_ANY
 Date: Tue, 26 Aug 2025 13:07:58 +0200
-Message-ID: <20250826110956.030375435@linuxfoundation.org>
+Message-ID: <20250826110911.080522737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Showrya M N <showrya@chelsio.com>
+From: Budimir Markovic <markovicbudimir@gmail.com>
 
-[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
+commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
 
-In case of an ib_fast_reg_mr allocation failure during iSER setup, the
-machine hits a panic because iscsi_conn->dd_data is initialized
-unconditionally, even when no memory is allocated (dd_size == 0).  This
-leads invalid pointer dereference during connection teardown.
+It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
+cause a use-after-free when a connection is made to the bound socket.
+The socket returned by accept() also has port VMADDR_PORT_ANY but is not
+on the list of unbound sockets. Binding it will result in an extra
+refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
+the binding until socket destruction).
 
-Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
+Modify the check in __vsock_bind_connectible() to also prevent binding
+to VMADDR_PORT_ANY.
 
-Panic trace:
-------------
- iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
- iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
- BUG: unable to handle page fault for address: fffffffffffffff8
- RIP: 0010:swake_up_locked.part.5+0xa/0x40
- Call Trace:
-  complete+0x31/0x40
-  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
-  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
-  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
-  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
-  ? netlink_lookup+0x12f/0x1b0
-  ? netlink_deliver_tap+0x2c/0x200
-  netlink_unicast+0x1ab/0x280
-  netlink_sendmsg+0x257/0x4f0
-  ? _copy_from_user+0x29/0x60
-  sock_sendmsg+0x5f/0x70
-
-Signed-off-by: Showrya M N <showrya@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libiscsi.c | 3 ++-
+ net/vmw_vsock/af_vsock.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
-index d422e8fd7137..225aa8279960 100644
---- a/drivers/scsi/libiscsi.c
-+++ b/drivers/scsi/libiscsi.c
-@@ -3104,7 +3104,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
- 	conn = cls_conn->dd_data;
- 	memset(conn, 0, sizeof(*conn) + dd_size);
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -487,7 +487,8 @@ static int __vsock_bind_stream(struct vs
+ 		unsigned int i;
  
--	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
-+	if (dd_size)
-+		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
- 	conn->session = session;
- 	conn->cls_conn = cls_conn;
- 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
--- 
-2.39.5
-
+ 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
+-			if (port <= LAST_RESERVED_PORT)
++			if (port == VMADDR_PORT_ANY ||
++			    port <= LAST_RESERVED_PORT)
+ 				port = LAST_RESERVED_PORT + 1;
+ 
+ 			new_addr.svm_port = port++;
 
 
 
