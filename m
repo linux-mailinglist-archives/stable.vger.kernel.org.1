@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44369B36A4D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A79CB36117
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895218E24C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 226742A020C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A37352FDF;
-	Tue, 26 Aug 2025 14:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E3B1D47B4;
+	Tue, 26 Aug 2025 13:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNfSAT8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRp4Ttjb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FDA34F496;
-	Tue, 26 Aug 2025 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CE018DB2A;
+	Tue, 26 Aug 2025 13:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217818; cv=none; b=teddqDlKvgZYoHT3OoW/2OUJLK8q6FayjZFjLbozPaP+8YKVAoYbPsQqmAJ0IYjjY77fZEoodfl9fuM8aF9VPswwIkfigjw81JAfBRDVb4eOQx0Dj45TanJ7zXr1cjTlg9/vrX33Cja+Hw+8QXzMEJ9qHF8JMYMYmucpbxd4S0A=
+	t=1756213392; cv=none; b=mvumLjfgjeSz/dhDp7cZQjd8afQQi7xHRU1jHeDz1n52smt21n2Ep6ggZOhOzTMiD5kaOJeqydzbVRdKj84izEkDBTBALSOQdCYKe+4RHfWY9OYuFsqPPxiTTXWMldtO6lr/IrZu8GEcxlNg8JGO/j9vJgvGBB7TX2LA7W0Nlgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217818; c=relaxed/simple;
-	bh=+ODs0a6v/pa2Bq8GHBC1fy63Syk9N5khm5iE6K/S43s=;
+	s=arc-20240116; t=1756213392; c=relaxed/simple;
+	bh=iJ9Pr95qhKAY9cfW3TnFd0or4iBy3VA0kpxm55Z+7K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m6npmi4XRY3Q9vAcjPqqyQrw0ckDs76kCTG6k+ZJypWt6LVkLOo0JgI79WjPTrm5D+fgYDd1ZATbQ6UstBNFyEw1L/1l7jQcWT+16jj8xXoNlDVvi5doi2xfbT61oaIISL3GPXw5dq81QGVdRpZJP1elC+GpSF1x+Q4lbJyed1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNfSAT8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC1C4CEF1;
-	Tue, 26 Aug 2025 14:16:55 +0000 (UTC)
+	 MIME-Version; b=tOT5rGDnE6fq/mIgwgPcZNRz5JqfJF5LwgBX7XRxbH6iSBKm3P/uJjwCjvM7bjBxEPDTZTXxG+6eAnXU+tspt6iZ/KQnKGJcgAXV+TaezmFhxPrVFXe5MpdfThAp5ZIf40VSJu7FNJG75LhjFr2JYyKvv2O+TH5DsnWwvYoT2WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRp4Ttjb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D57C4CEF1;
+	Tue, 26 Aug 2025 13:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217816;
-	bh=+ODs0a6v/pa2Bq8GHBC1fy63Syk9N5khm5iE6K/S43s=;
+	s=korg; t=1756213391;
+	bh=iJ9Pr95qhKAY9cfW3TnFd0or4iBy3VA0kpxm55Z+7K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNfSAT8kRu0GxQg+KtFVKRUsPQN9Kq5FO1kb8vs6MnLR33Wr21hZwUM9EqqjsGiOV
-	 tbdq9j1zlJ7/Oz6yRyJ0hyarpjMNBMM2M1a/fcB5PoHJuSH29x6Sx7PfTKZzmDD/DI
-	 iPHppnAtqzsxIQTuRUegt+ei5XBw4+u1Vc8aA/ik=
+	b=iRp4TtjbnYnI+vJOu7icmNFb5tLSmzbbQmhKnp22zqsdZRASZjvmDys5LWd/1qF3t
+	 3gsa8A3c2qoUZnay/jYSSDWCWdWdAHPFCvE/O/3RHsbwUq03KIR6RF3heJmAWEQarL
+	 FC5fDuIvpG1Mtxkt73yk5So1kYZHZlm8esSr+vQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	stable <stable@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/523] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+Subject: [PATCH 6.6 329/587] serial: 8250: fix panic due to PSLVERR
 Date: Tue, 26 Aug 2025 13:07:58 +0200
-Message-ID: <20250826110931.037869868@linuxfoundation.org>
+Message-ID: <20250826111001.283668377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
+commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
 
-The buffer bgx_sel used in snprintf() was too small to safely hold
-the formatted string "BGX%d" for all valid bgx_id values. This caused
-a -Wformat-truncation warning with `Werror` enabled during build.
+When the PSLVERR_RESP_EN parameter is set to 1, the device generates
+an error response if an attempt is made to read an empty RBR (Receive
+Buffer Register) while the FIFO is enabled.
 
-Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
-snprintf() to ensure safety and suppress the warning.
+In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
+UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
+dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
+function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
+Execution proceeds to the serial_port_in(port, UART_RX).
+This satisfies the PSLVERR trigger condition.
 
-Build warning:
-  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
-‘bgx_acpi_match_id’:
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
-directive output may be truncated writing between 1 and 3 bytes into a
-region of size 2 [-Werror=format-truncation=]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                             ^~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-directive argument in the range [0, 255]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                         ^~~~~~~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+When another CPU (e.g., using printk()) is accessing the UART (UART
+is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
+(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
+dw8250_force_idle().
 
-compiler warning due to insufficient snprintf buffer size.
+Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
+to fix this issue.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Panic backtrace:
+[    0.442336] Oops - unknown exception [#1]
+[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
+[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
+...
+[    0.442416] console_on_rootfs+0x26/0x70
+
+Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
+Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
+[ Applied fix to serial8250_do_startup() instead of serial8250_initialize() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index f0e48b9373d6..0a71909bb2ee 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1430,9 +1430,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
- {
- 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct bgx *bgx = context;
--	char bgx_sel[5];
-+	char bgx_sel[7];
- 
--	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-+	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
- 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
- 		pr_warn("Invalid link device\n");
- 		return AE_OK;
--- 
-2.39.5
-
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2375,9 +2375,8 @@ int serial8250_do_startup(struct uart_po
+ 	/*
+ 	 * Now, initialize the UART
+ 	 */
+-	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+-
+ 	spin_lock_irqsave(&port->lock, flags);
++	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+ 	if (up->port.flags & UPF_FOURPORT) {
+ 		if (!up->port.irq)
+ 			up->port.mctrl |= TIOCM_OUT1;
 
 
 
