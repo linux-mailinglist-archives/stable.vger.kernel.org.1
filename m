@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0124B35C41
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198F3B36D36
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10AE27C3E49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F174C986DDF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5852F8BD9;
-	Tue, 26 Aug 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E715735FC18;
+	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysJZ16YK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UM40mwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A9332144B;
-	Tue, 26 Aug 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9F435CEDD;
+	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207762; cv=none; b=BFGh3dYQAFz4rl80QUy425fFHMSya7SdhhAooaoiruOwsAwZZD8tRH+UKtYURm2j0VKUA/qq9WG4dM9wisHcE3LA4evJuOfyqukogaTgMKM71EtfyNMbI6nLb1XV2Me0F6tPO6fX0ISIjMjl9dIYiIA+mKwjFbhNQcgle1Q3xuY=
+	t=1756219133; cv=none; b=Ys0gHeuJ71u40mCg2S5QaKeLIUbKqbvHosPeIaKtgInSlQ9Vx36caadayoEOCYDPqEEbSvwcFo03V67ttD3kpIMeqINf1XtOv0swrfjPWZDUXIlU2TjtuYo38rIsN/DIVG7szmKst6KxB9DFiSoDsN/HZ48Gcaka8tJge5qzpkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207762; c=relaxed/simple;
-	bh=KMI+pmI4o9QQxwYY7NjPvlYRmU36lzzdAwo514y+Pxs=;
+	s=arc-20240116; t=1756219133; c=relaxed/simple;
+	bh=iv80kTbURV7XkPcx5qwWq/gkV+DFb6+dDMZBpn+nEpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj1vg1PSkkbEmJ8FWK7IaVyJUlMt+vc+iqrEY0JzSmh14hbAjNqvY1+qQi7FYSE+9zZx+GWIv7BXxpk5mmy9poFsM+TEJr780+mM5hGFyqmZc7Ifm3J7DqwdTUkDiEHEA7XbkgFlMoV69MTmhjirSkDum7nkpkd9foY64ed9KWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysJZ16YK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F2CC4CEF1;
-	Tue, 26 Aug 2025 11:29:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MDdvW/dT7g4fLcs9cJwJFYLmpw7Vr4ZLeRiwpbKYH3jScBjMoaLdiQfGq7tMFvEsHnQPQ1dz3aoKiytK3eAM+HZ49PIu6lkNnSD4zhK+njlwEQ0mo2MJDLEpMXXKrIfn0jwjfIZi8JMWDEbJS1vNfnRglOR/IZWhHTBpdVPjDD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UM40mwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7C0C4CEF1;
+	Tue, 26 Aug 2025 14:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207762;
-	bh=KMI+pmI4o9QQxwYY7NjPvlYRmU36lzzdAwo514y+Pxs=;
+	s=korg; t=1756219133;
+	bh=iv80kTbURV7XkPcx5qwWq/gkV+DFb6+dDMZBpn+nEpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysJZ16YKK2BD5uMLU3DAGJx+wPTXdrzwgHDpUDwP1/+sVuV22kDH+sDOOYte7USTv
-	 ka3+otiOnvwaukJ48VsSX8dji37JYaQ5Kz5Gdfrj0UX+WVvH0GMz9+qR0hh2l81pdv
-	 PH8vBBsKRb7ReQx2HXMag9ZXGcRaUSVteARHm3I0=
+	b=0UM40mwk36bwDAdkysrslIKEEsFOXdD1wwc7YZwVUzT90VNDVH+TW5NKO9pRlgcYT
+	 d4Vv9IZl3Obzm0U+XDSrKPGEtKNMYKzSLdMJMRFDFaHq0PNlKZqLSsvQDYyJdRoWV1
+	 TQtlitmXRj1HHV8cjcMUguQ0VpsD/pYBORwtWGJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>
-Subject: [PATCH 6.16 307/457] most: core: Drop device reference after usage in get_channel()
-Date: Tue, 26 Aug 2025 13:09:51 +0200
-Message-ID: <20250826110944.951654481@linuxfoundation.org>
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 266/403] net: phy: smsc: add proper reset flags for LAN8710A
+Date: Tue, 26 Aug 2025 13:09:52 +0200
+Message-ID: <20250826110914.156105614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-commit b47b493d6387ae437098112936f32be27f73516c upstream.
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-In get_channel(), the reference obtained by bus_find_device_by_name()
-was dropped via put_device() before accessing the device's driver data
-Move put_device() after usage to avoid potential issues.
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-Fixes: 2485055394be ("staging: most: core: drop device reference")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/most/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/most/core.c
-+++ b/drivers/most/core.c
-@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
- 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
- 	if (!dev)
- 		return NULL;
--	put_device(dev);
- 	iface = dev_get_drvdata(dev);
-+	put_device(dev);
- 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
- 		if (!strcmp(dev_name(&c->dev), mdev_ch))
- 			return c;
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index e387c219f17d..68bb94f970f6 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -306,6 +306,7 @@ static struct phy_driver smsc_phy_driver[] = {
+ 	/* PHY_BASIC_FEATURES */
+ 	.flags		= PHY_RST_AFTER_CLK_EN,
+ 
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
+ 
+ 	/* basic functions */
+-- 
+2.39.5
+
 
 
 
