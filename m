@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4955B35CD1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CFBB35D52
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1436036806C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27B0E7BA980
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34662BE03C;
-	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C751B284B5B;
+	Tue, 26 Aug 2025 11:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLHtXlZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esI3jGBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1269319866;
-	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5A3312803;
+	Tue, 26 Aug 2025 11:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207734; cv=none; b=PthkvLo2Mk1EQD+Sj2mQHAsZcRJWpleByo5gnq/T4TjIPuYHmKeGIURjhqjtl7UzayITSf7TJgTKxGSY7w1ezAYTyXJfyyCg5IyBI65lkcg1DpzdlD2/Ka3LEDkDHaco2UCbMr19DBKsByT9qj7pHmWkZeHjfuIO2eDOCmiuwEQ=
+	t=1756208582; cv=none; b=ElXrTnFcbsw9Zj1FPJqHMX8uUAjpveZKuRcZorXSFw94T6ssqeWmxK93PoxiyRjC8beBhWGzt04MOEEVdIsR2nVUvmDq7IBA9dmJGW8xnZ9tdsloiyF9x7bjux3AsHPx8qHngFC8bN+UKEo8r1Aj0L1o1FBxutQfEFymlyYPpag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207734; c=relaxed/simple;
-	bh=1exOucgY1EIRq9pEePlxOKtR9c5cTtlSiq9bptPTDVQ=;
+	s=arc-20240116; t=1756208582; c=relaxed/simple;
+	bh=GpAIaiwyQn0Qi9LSIM/VgHnRrb2LgfrMhOiQ3Kh8GR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQoVi9ZIMypPUQVWTxRJFKyek7M67F3ZkLfrMR/LlI8qFG0hCY0hbNkci6mLGNuSqUuyYwwR/gBckwyYtzuwzobRVoRxXLp8AwIwuOIcEfvSDzE20EL5ui7X5bXPxJ9EQUPScOwnCd+5XPOP4dD60mncQxYm3eE/Nr4plZL0PhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLHtXlZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C365C4CEF1;
-	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
+	 MIME-Version; b=YWB1NtsbzdPEDC3TCLQazX/rwLYe9TaFDCplvkuiRDaaaE/ddBjwAWGZUj6Zpv7MIvK0zhVwSGn95+M2t9+FqlvIPIQjNcNkJBwX+0wR4nEslPLoEjhn6pIvzzKhchmlfY67pRC6CmRDPMJT3qmybGYr+GuZoCPo4ygiD9XGfuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esI3jGBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2347C4CEF1;
+	Tue, 26 Aug 2025 11:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207734;
-	bh=1exOucgY1EIRq9pEePlxOKtR9c5cTtlSiq9bptPTDVQ=;
+	s=korg; t=1756208582;
+	bh=GpAIaiwyQn0Qi9LSIM/VgHnRrb2LgfrMhOiQ3Kh8GR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLHtXlZVAHnNRfM8CJ/vzoj88azKBDJXqFu5QeUUiXlgLnMzV8lEh/E2U7kkAsbAz
-	 rFqRbEqqKXYi9/hKfeH36gcjd6QISSWYZo3YvGvuRtKgXXDNoyRzARY7uSUWiz0kYX
-	 ebCJsHRnfBzApzrvdtxjzL37997h0zN8YMrge0O0=
+	b=esI3jGBvO4trLIRLYNKQM+Z0gv9r8FSW4IxJJUndMLSzWs68+YetNbokWlAuDFKak
+	 K0123Qytqq1ueMalsx5L1+dFUstZ0vEzYhEBwSVx+wH7iGey8VBgehLKCrAHxknKN1
+	 lzG0DGKglbY8hCMZn2QLxsf8K+ryECECLHHSszjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.16 297/457] ftrace: Also allocate and copy hash for reading of filter files
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 166/322] mmc: sdhci-pci-gli: Add a new function to simplify the code
 Date: Tue, 26 Aug 2025 13:09:41 +0200
-Message-ID: <20250826110944.719317758@linuxfoundation.org>
+Message-ID: <20250826110919.932266625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
+commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 upstream.
 
-Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
-the pointer to the global tracer hash to its iterator. Unlike the writer
-that allocates a copy of the hash, the reader keeps the pointer to the
-filter hashes. This is problematic because this pointer is static across
-function calls that release the locks that can update the global tracer
-hashes. This can cause UAF and similar bugs.
+In preparation to fix replay timer timeout, add
+sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
-Allocate and copy the hash for reading the filter files like it is done
-for the writers. This not only fixes UAF bugs, but also makes the code a
-bit simpler as it doesn't have to differentiate when to free the
-iterator's hash between writers and readers.
-
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
-Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
-Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
-Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -4665,13 +4665,17 @@ ftrace_regex_open(struct ftrace_ops *ops
- 	        } else {
- 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
- 		}
-+	} else {
-+		if (hash)
-+			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
-+		else
-+			iter->hash = EMPTY_HASH;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -215,6 +215,20 @@
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
 +	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
+@@ -535,7 +549,6 @@ static void gl9750_hw_setting(struct sdh
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+ 	struct pci_dev *pdev;
+-	int aer;
+ 	u32 value;
  
--		if (!iter->hash) {
--			trace_parser_put(&iter->parser);
--			goto out_unlock;
--		}
--	} else
--		iter->hash = hash;
-+	if (!iter->hash) {
-+		trace_parser_put(&iter->parser);
-+		goto out_unlock;
-+	}
+ 	pdev = slot->chip->pdev;
+@@ -554,12 +567,7 @@ static void gl9750_hw_setting(struct sdh
+ 	pci_set_power_state(pdev, PCI_D0);
  
- 	ret = 0;
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
  
-@@ -6547,9 +6551,6 @@ int ftrace_regex_release(struct inode *i
- 		ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
- 						      iter->hash, filter_hash);
- 		mutex_unlock(&ftrace_lock);
--	} else {
--		/* For read only, the hash is the ops hash */
--		iter->hash = NULL;
- 	}
+ 	gl9750_wt_off(host);
+ }
+@@ -734,7 +742,6 @@ static void sdhci_gl9755_set_clock(struc
+ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+-	int aer;
+ 	u32 value;
  
- 	mutex_unlock(&iter->ops->func_hash->regex_lock);
+ 	gl9755_wt_on(pdev);
+@@ -769,12 +776,7 @@ static void gl9755_hw_setting(struct sdh
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9755_wt_off(pdev);
+ }
 
 
 
