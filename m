@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-172967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C517AB35B07
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34D4B3606F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5643A9AE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE861BC0FD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08AC283FDF;
-	Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D1F1F9F73;
+	Tue, 26 Aug 2025 12:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYPB9ZPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9WDJU7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5B9277C8C;
-	Tue, 26 Aug 2025 11:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31A81E51E1;
+	Tue, 26 Aug 2025 12:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207030; cv=none; b=UEqppsX0EkriMQPJ53JTekLAASVDVT01lMZly6x4IHl0CsaYbXROMifcgrRAUDNFb/EwNSlwy2aSmfvpRsp+voln/2FZtEcntBQqQxEhfUpONl5hglkgqbraArupKrXwazikWWAqBiUMbb2ZfWR7EHtjXRww/XI8ejDfZLF26MM=
+	t=1756213016; cv=none; b=d0B7e8iXNA7U92a8KRYhleuavCvQx86nr7gidUCHLZq/hTqURAyetu7QvRayDfYfubmOb3ObM2EOzEPKgl0BqsR1jSmyOEgXpNs2ot7HBDuCs7z7+V/UxkCmRtJkcQkppB+53D8q40y+HXXEsH7/MIjTz36ofkM3Lx51ec3sIao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207030; c=relaxed/simple;
-	bh=Um4glkktq2BsM/0gj8OeeGJRIt1KoX2UOBHr9Zh2xtE=;
+	s=arc-20240116; t=1756213016; c=relaxed/simple;
+	bh=Pilra5kor0eTop2X9kn5H/vBed6lAASEmY/vAP2F+s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zi9AVFBrOZ79TVuFbXE7XW1p5qqReOkhiqPZfFl9xUthkWyjWRJQwuH0Nzg38etFXoD1MgySjOdzbqJCUSCIL5UTvR30IJM0vVPdCwh3vaGf2CLA3/yQzTZdh/2td6NLYZlrzpYgE6GNkvMDtCHNSqDyqUixJg6ZrwIpbyxRb7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYPB9ZPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55E0C4CEF1;
-	Tue, 26 Aug 2025 11:17:09 +0000 (UTC)
+	 MIME-Version; b=kgBO4S/cSCm9rsHHv88L94evAmg7M3R2rjVqV44/wSmn2R1+RTQIaobRiJNTOnv8JFZGMrRPTRGVzd+aJtbybb2Dhwj8TLsiMT5rlUF6MOzXLAfSDAqX98daebbO6vx7tCws5SIqyCC7paw/ZKmXMI+pObQAJFAR6g1JaObBtgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9WDJU7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5D9C4CEF1;
+	Tue, 26 Aug 2025 12:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207030;
-	bh=Um4glkktq2BsM/0gj8OeeGJRIt1KoX2UOBHr9Zh2xtE=;
+	s=korg; t=1756213016;
+	bh=Pilra5kor0eTop2X9kn5H/vBed6lAASEmY/vAP2F+s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYPB9ZPkQaFX3/I33tWhubNUr7mK8Bs7spO0bI+fSQXH8RL7Y2tdzJGVPgUaAPVkJ
-	 RHyYuxznB08aNt6diUP0SevUoNS9q4W06krE0f0QIZmzqRwfDp8HXQxyaKsngthS3W
-	 PqNyJw2zY0S65BrZsmB1TF+XcM+Gu04CjkN/cA+A=
+	b=b9WDJU7GMGzPg9BHLCAJ1DKk/RPL07FD08VVGcl+Dn34/L3NPbTIF21EHRPgVT2IT
+	 slmZZlLfiDTqCYgKeHshR9GSuI3kqf1CjiX/S3si4sTF4Yp0nlpyFVd/dO++XgHTL3
+	 0Y2Fz3X6sJ2hgyoaDJdFBN+ZIvGH+bTAq/2nyW9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 024/457] crypto: ccp - Fix SNP panic notifier unregistration
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 159/587] perf/cxlpmu: Remove unintended newline from IRQ name format string
 Date: Tue, 26 Aug 2025 13:05:08 +0200
-Message-ID: <20250826110937.930223934@linuxfoundation.org>
+Message-ID: <20250826110956.991492165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit ab8b9fd39c45b7760093528cbef93e7353359d82 upstream.
+[ Upstream commit 3e870815ccf5bc75274158f0b5e234fce6f93229 ]
 
-Panic notifiers are invoked with RCU read lock held and when the
-SNP panic notifier tries to unregister itself from the panic
-notifier callback itself it causes a deadlock as notifier
-unregistration does RCU synchronization.
+The IRQ name format string used in devm_kasprintf() mistakenly included
+a newline character "\n".
+This could lead to confusing log output or misformatted names in sysfs
+or debug messages.
 
-Code flow for SNP panic notifier:
-snp_shutdown_on_panic() ->
-__sev_firmware_shutdown() ->
-__sev_snp_shutdown_locked() ->
-atomic_notifier_chain_unregister(.., &snp_panic_notifier)
+This fix removes the newline to ensure proper IRQ naming.
 
-Fix SNP panic notifier to unregister itself during SNP shutdown
-only if panic is not in progress.
-
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: stable@vger.kernel.org
-Fixes: 19860c3274fb ("crypto: ccp - Register SNP panic notifier only if SNP is enabled")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://lore.kernel.org/r/20250624194350.109790-3-alok.a.tiwari@oracle.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/perf/cxl_pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 8fb94c5f006a..17edc6bf5622 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1787,8 +1787,14 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
- 	sev->snp_initialized = false;
- 	dev_dbg(sev->dev, "SEV-SNP firmware shutdown\n");
+diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
+index 308c9969642e..c03df0f52889 100644
+--- a/drivers/perf/cxl_pmu.c
++++ b/drivers/perf/cxl_pmu.c
+@@ -881,7 +881,7 @@ static int cxl_pmu_probe(struct device *dev)
+ 		return rc;
+ 	irq = rc;
  
--	atomic_notifier_chain_unregister(&panic_notifier_list,
--					 &snp_panic_notifier);
-+	/*
-+	 * __sev_snp_shutdown_locked() deadlocks when it tries to unregister
-+	 * itself during panic as the panic notifier is called with RCU read
-+	 * lock held and notifier unregistration does RCU synchronization.
-+	 */
-+	if (!panic)
-+		atomic_notifier_chain_unregister(&panic_notifier_list,
-+						 &snp_panic_notifier);
+-	irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_overflow\n", dev_name);
++	irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_overflow", dev_name);
+ 	if (!irq_name)
+ 		return -ENOMEM;
  
- 	/* Reset TMR size back to default */
- 	sev_es_tmr_size = SEV_TMR_SIZE;
 -- 
-2.50.1
+2.39.5
 
 
 
