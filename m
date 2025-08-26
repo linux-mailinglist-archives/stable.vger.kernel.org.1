@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297C4B35DF8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C686B36283
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6007C784D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57F10464D24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257F729D29B;
-	Tue, 26 Aug 2025 11:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C7C343D98;
+	Tue, 26 Aug 2025 13:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzoMU3c5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zShlb5cz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC28D29BDAC;
-	Tue, 26 Aug 2025 11:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28631FBCB5;
+	Tue, 26 Aug 2025 13:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208966; cv=none; b=fnrYSA5L9ZC3Z6OmgtLVmkr15vK7Rrr3LjTm8d4oa4zA3hg5zSiTqO1jw1ZuvjqG5+Ptxazu1byZG6j3mEhLvOGnIB+QUQ7PhTVC3CSJVIVDArrq+HY1DesB6H3miiY5NywuURQYePm8W3WeB7IwaQaQf8u+YFxbcn1lOmU0i6g=
+	t=1756213943; cv=none; b=gprm3x65eg5+KgMZ5J7AoC4ejTN8Uu9Yetbz7xAip3kWAapgfi5U0KJHt97Gcyo/gNInLIl214A/o+HFN9ShAAPN6Jf4NDlGQM/+3OD1KvNdU1qxH67MttzwcZ5Z4BFNlSxMR0aIrK9xFWQnHfvWCSbFnm7QHDCmn+GxlOGUrz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208966; c=relaxed/simple;
-	bh=/UcG3K5rMWGBMgZ724C2q1sVf4UEYIDG8XhN69UNP8k=;
+	s=arc-20240116; t=1756213943; c=relaxed/simple;
+	bh=cSRL/PURCwaYTPk40boywtp8J9n3BDu1bTmo+v3mWBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnxycNjEIanxkrGm2GAiFWewpKQaLXtZQ9Bb7pneHqUEDbP/wOfWO7q5KYDbgfNJmV6YmgEWJBsS2A3Cw4Rgt6EpxvSZax7xdx+SjUkSSz6jRFjzGLCaaaYO8P6Y9zx6KtRTNkB7gj9JNIdixTqiEG8ZYotSB155mVO8h75O8vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzoMU3c5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224EEC4CEF1;
-	Tue, 26 Aug 2025 11:49:25 +0000 (UTC)
+	 MIME-Version; b=jaYVX85oEg1jABUxjHTTPIW3xq5HRDwRBxjaeELzSd/asfVzaprrqGCsVHssFrS5xzY+qHEg8n0+OXQk6IfwdISsc1fatMiXSup78SJ5dfktbPPFJWYETQY/eDddBXMvv5LtdjZA/sv1SZq/EPy5cpNMkWnGyPDDiqG42ToPNGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zShlb5cz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5903CC4CEF1;
+	Tue, 26 Aug 2025 13:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208966;
-	bh=/UcG3K5rMWGBMgZ724C2q1sVf4UEYIDG8XhN69UNP8k=;
+	s=korg; t=1756213943;
+	bh=cSRL/PURCwaYTPk40boywtp8J9n3BDu1bTmo+v3mWBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzoMU3c5ufC7XDnlSiSkQ+CsDkHGwZtS1XlAUWBQY9vPzq76+KPxjCIBliWcJzDkS
-	 0w08NVLdxKcSorvkSuIMpJx39odkEiXx8qrXldfXSISroyMLImqo7dqEupxXT9QDDf
-	 XhxSREjpXNrxlpGtEmxcScP2blPuaK+5LhSzmu4M=
+	b=zShlb5cz3m0O1ZkcXL7qnMeS0dOJaPNOdjHipOP5mC6U2P1DM09aA+FfzlVYgCLvp
+	 mEbmp514/NnUd/CFi2XecTO7wwdfgLVx4/Tu20/ccQNae9pGA/IkkJAKt82mQMVRUv
+	 8tlKTg5icOz/vB1ub5yqf+SUFIu5uGFpIn/bE2Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/322] net: xilinx: axienet: Fix RX skb ring management in DMAengine mode
+Subject: [PATCH 6.6 538/587] iio: light: as73211: Ensure buffer holes are zeroed
 Date: Tue, 26 Aug 2025 13:11:27 +0200
-Message-ID: <20250826110922.643603163@linuxfoundation.org>
+Message-ID: <20250826111006.697768428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit fd980bf6e9cdae885105685259421164f843ca55 ]
+[ Upstream commit 433b99e922943efdfd62b9a8e3ad1604838181f2 ]
 
-Submit multiple descriptors in axienet_rx_cb() to fill Rx skb ring. This
-ensures the ring "catches up" on previously missed allocations.
+Given that the buffer is copied to a kfifo that ultimately user space
+can read, ensure we zero it.
 
-Increment Rx skb ring head pointer after BD is successfully allocated.
-Previously, head pointer was incremented before verifying if descriptor is
-successfully allocated and has valid entries, which could lead to ring
-state inconsistency if descriptor setup failed.
-
-These changes improve reliability by maintaining adequate descriptor
-availability and ensuring proper ring buffer state management.
-
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Link: https://patch.msgid.link/20250813135559.1555652-1-suraj.gupta2@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patch.msgid.link/20250802164436.515988-2-jic23@kernel.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/light/as73211.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 2d47b35443af..1775e060d39d 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1119,6 +1119,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	struct axienet_local *lp = data;
- 	struct sk_buff *skb;
- 	u32 *app_metadata;
-+	int i;
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -573,7 +573,7 @@ static irqreturn_t as73211_trigger_handl
+ 	struct {
+ 		__le16 chan[4];
+ 		s64 ts __aligned(8);
+-	} scan;
++	} scan = { };
+ 	int data_result, ret;
  
- 	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
- 	skb = skbuf_dma->skb;
-@@ -1137,7 +1138,10 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	u64_stats_add(&lp->rx_packets, 1);
- 	u64_stats_add(&lp->rx_bytes, rx_len);
- 	u64_stats_update_end(&lp->rx_stat_sync);
--	axienet_rx_submit_desc(lp->ndev);
-+
-+	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
-+				   RX_BUF_NUM_DEFAULT); i++)
-+		axienet_rx_submit_desc(lp->ndev);
- 	dma_async_issue_pending(lp->rx_chan);
- }
- 
-@@ -1394,7 +1398,6 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
- 	if (!skbuf_dma)
- 		return;
- 
--	lp->rx_ring_head++;
- 	skb = netdev_alloc_skb(ndev, lp->max_frm_size);
- 	if (!skb)
- 		return;
-@@ -1419,6 +1422,7 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
- 	skbuf_dma->desc = dma_rx_desc;
- 	dma_rx_desc->callback_param = lp;
- 	dma_rx_desc->callback_result = axienet_dma_rx_cb;
-+	lp->rx_ring_head++;
- 	dmaengine_submit(dma_rx_desc);
- 
- 	return;
--- 
-2.50.1
-
+ 	mutex_lock(&data->mutex);
 
 
 
