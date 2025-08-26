@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE9BB36BB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5298B35C25
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B11DB5857CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E523366308
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8296235AACE;
-	Tue, 26 Aug 2025 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DFB2F619C;
+	Tue, 26 Aug 2025 11:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zus/JWGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1tpAKqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E1E481CD;
-	Tue, 26 Aug 2025 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DB530BF64;
+	Tue, 26 Aug 2025 11:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219011; cv=none; b=reWOYvhcfz2bCadC8lO0vyIcqYnZyh19a1pTWMKfmZKOMVm8HxVhiHk/NpPSI4YuTWtSZfRL4VsnIlyFoBBl8UBWmgCBjoCmeFBgKYEZZPcG51Lfy9wvFtJomQIsNxVUVdD5IjtbUeArlBV8I/3Hhwj5PzaufhOg0eTK75xca1o=
+	t=1756207558; cv=none; b=cB0aa7b9jlDjCHPLDWt9B1AhP2+i0dH+lRf+KPTPeELEYXENNc0l3DznYQw5rNH+mTBGtvN0qTd8kLTA9F9TruDpEgSdb3ZjVCINTga0Y37i2VmRBWOJYEmkGcq3m7xzEFub0BQp6cfl+0HQxplr+60KSBxTMphr4+oQMCVBE18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219011; c=relaxed/simple;
-	bh=SNJBlsrp39NuH198n1VzJkD09LYiV0pvTE0Xs79H4SY=;
+	s=arc-20240116; t=1756207558; c=relaxed/simple;
+	bh=+UbxadlMm3M2skAAoZkU7SfemTjDdrNhL8J3/P8WQyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ju9EilsJ1vaKRz4kDlQWl+1OZl70Ltxl3eZQcD8mxDAW+e18cfen/okdueLFhrKJpwvG6FmUHzG4vvkesYADpUkRx91RQRlkreeBF+HkidfIPE2ddnqf4NCv8WOvHSAl8sJ72IRz39hvnfFOkNxGSxtG0s77pd5TK4hdSfaAsbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zus/JWGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AEEC4CEF1;
-	Tue, 26 Aug 2025 14:36:50 +0000 (UTC)
+	 MIME-Version; b=T/kzwncssiZZPYCzBUSlIh7cHpvQCB51Ig2afS3gSxPomHCcWLUbbgsTZxIZDbeLlXlBXv+649oG35y4/pqnzAJFPn7b83MULhSHHTjYzWL9h7URRlGdEsqY7ITnOEXaJTpMBSESt/ADFiqXHRxVXR+zNQunKttFQQQwcVC6zPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1tpAKqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B179C113CF;
+	Tue, 26 Aug 2025 11:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219011;
-	bh=SNJBlsrp39NuH198n1VzJkD09LYiV0pvTE0Xs79H4SY=;
+	s=korg; t=1756207558;
+	bh=+UbxadlMm3M2skAAoZkU7SfemTjDdrNhL8J3/P8WQyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zus/JWGaGjbHInNMdnO8zfqjXp1DicTJM2gzja86S0H3A7v7/cUREfIdYiI7Tmuyc
-	 UTTRbmPq47pzipqoT1bu0blShbAcedb3E+3Ywr5ivGTcjZnlYsvWjfBN+7zSTyC+aB
-	 iUiG+NjKP4v/aAFTgJBfBN0d0N8gaYwXdc2xs8r8=
+	b=U1tpAKqUor+o2Rhd8xDkpV9G6fWEYfWJCd25uo/1XWZ0MdPhOisf5R3dUiX7xig1H
+	 fi/L25dmNZ9vayz+ENfsjoJpMZD/F//vCAg1gI6PKTgoVXncDcHujNQlkCnD+EVLCS
+	 QQU23jRTxbZ8L4frqK8oKLz8imOhh5n+AhQbLeko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 187/403] ARM: rockchip: fix kernel hang during smp initialization
+	Eric Biggers <ebiggers@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.16 229/457] crypto: acomp - Fix CFI failure due to type punning
 Date: Tue, 26 Aug 2025 13:08:33 +0200
-Message-ID: <20250826110912.044945955@linuxfoundation.org>
+Message-ID: <20250826110943.032923009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+commit 962ddc5a7a4b04c007bba0f3e7298cda13c62efd upstream.
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+To avoid a crash when control flow integrity is enabled, make the
+workspace ("stream") free function use a consistent type, and call it
+through a function pointer that has that same type.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
-
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
-
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 42d9f6c77479 ("crypto: acomp - Move scomp stream allocation code into acomp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[Giovanni: Backport to 6.16.y. Removed logic in crypto/zstd.c as commit
+f5ad93ffb541 ("crypto: zstd - convert to acomp") is not going to be
+backported to stable.]
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ crypto/deflate.c                    |    7 ++++++-
+ include/crypto/internal/acompress.h |    5 +----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index 649e0a54784c..246a525d1d26 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
- 
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
- 
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
- 
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
-+
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
-+		}
-+	}
-+
-+	of_node_put(node);
+--- a/crypto/deflate.c
++++ b/crypto/deflate.c
+@@ -48,9 +48,14 @@ static void *deflate_alloc_stream(void)
+ 	return ctx;
  }
  
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
--- 
-2.39.5
-
++static void deflate_free_stream(void *ctx)
++{
++	kvfree(ctx);
++}
++
+ static struct crypto_acomp_streams deflate_streams = {
+ 	.alloc_ctx = deflate_alloc_stream,
+-	.cfree_ctx = kvfree,
++	.free_ctx = deflate_free_stream,
+ };
+ 
+ static int deflate_compress_one(struct acomp_req *req,
+--- a/include/crypto/internal/acompress.h
++++ b/include/crypto/internal/acompress.h
+@@ -63,10 +63,7 @@ struct crypto_acomp_stream {
+ struct crypto_acomp_streams {
+ 	/* These must come first because of struct scomp_alg. */
+ 	void *(*alloc_ctx)(void);
+-	union {
+-		void (*free_ctx)(void *);
+-		void (*cfree_ctx)(const void *);
+-	};
++	void (*free_ctx)(void *);
+ 
+ 	struct crypto_acomp_stream __percpu *streams;
+ 	struct work_struct stream_work;
 
 
 
