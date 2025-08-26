@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83400B368D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A510B36179
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 860E758338D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058BC1BC1050
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AAE352092;
-	Tue, 26 Aug 2025 14:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097651A9FB0;
+	Tue, 26 Aug 2025 12:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RARZR1JE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thKXoBH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10684350D4D;
-	Tue, 26 Aug 2025 14:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3BA1A00F0;
+	Tue, 26 Aug 2025 12:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217433; cv=none; b=ry+EwM1vWLMzcrkkjK3feegEQNnGrfqjGfvH8Pzsns1CiBUM2bThsO/PaDBLj/2N5+BLkm0409G5/tk1zwpDHXiKncWtxkNRZX61LuGm4dvUAbZWtPmc+/l9kLqa9qUbNC9NoieNpNt1ymUtnkCeqSl93HITk/OZPF0U+qzwbt8=
+	t=1756213053; cv=none; b=djeiq+zcI2ggaNCzJr7qiTNccv4/HQ6Y1kBbu5xHHFDwv3s9E02otZfvWPg4buNjWtQ9SQqLQjGWDa/3VOEnMN/W+sjPep23fGKaxPUXvOWZPRWv37FZZqtSdGfDseSiJBOD9ec5+46sRX7fQ3LhIO/pAQNwAahCKGbBCWhJF9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217433; c=relaxed/simple;
-	bh=ninqi6EdfPmGWQ9eaIjEvGYt4Xkq6QnUe7sxOdPpcyA=;
+	s=arc-20240116; t=1756213053; c=relaxed/simple;
+	bh=toJlEI3bikvCzxaUonCSBshVx9kEJpahWa7hkmbFVSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOp/6PEwtf1eMoX5pHWyr7GNXPOS1p4CZ2JHlLpJfN0mc4N5d2cbWrBkwN/nPMfIaNf2FIcNOuhnF9fXpPNgDt82nDYPSZ+uE1OJAek71qpeNm2mHkHuD2CI4V+QwvYGIL7k2/g2vfV+MjP0IKrZU9XLdHLK4Jf7+7qn5/uo2ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RARZR1JE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CF3C4CEF1;
-	Tue, 26 Aug 2025 14:10:32 +0000 (UTC)
+	 MIME-Version; b=sl0OIX5TeNq0DENMOs5sYwhOZGVa1E2j+e/SS4Db+8HGShuj7fjJhBME81f89JgmWAhlqshgtRiUTjwH5Hywxb9q3njuOSL/Y+UD8OLd+IsJMKhTeZyH2j4rLVJwVOqVGqXkyFA568Xar89Stm4y00gPEBh47V3LRVXBeuIku5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thKXoBH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB17C4CEF1;
+	Tue, 26 Aug 2025 12:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217432;
-	bh=ninqi6EdfPmGWQ9eaIjEvGYt4Xkq6QnUe7sxOdPpcyA=;
+	s=korg; t=1756213053;
+	bh=toJlEI3bikvCzxaUonCSBshVx9kEJpahWa7hkmbFVSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RARZR1JEYxRh57iUxyEHg4VgM8UlG2+hPsDnbSAu3yNIqjJz07mFOzyUbHw67PSmR
-	 6X8ob5yNrgs4MnVY2N6k/UF1fg72iSVR3Hove0tXUOOJZLuJDh6udHTp3UIlFlvSlu
-	 Nwf/9AELts7fHPYwj/Eqm246xLmXLBeXGL2s2Hmw=
+	b=thKXoBH+Z4cy2gNNXwwYlkL1Cebe8JYwRcLIjcDQHM+CUrmfkSNmgJnkBE2RkVReA
+	 ekJ9SWHJgiiq63izog7qMp9hSYQJ186Moe9+mcu5WCT63K5OrhUqzKN3wf2E04O3Mp
+	 t2AYevUtvpdyvtXbQMaI1CGhce+mLdylRQE418hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/523] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
-Date: Tue, 26 Aug 2025 13:05:52 +0200
-Message-ID: <20250826110927.999131185@linuxfoundation.org>
+Subject: [PATCH 6.6 204/587] ionic: clean dbpage in de-init
+Date: Tue, 26 Aug 2025 13:05:53 +0200
+Message-ID: <20250826110958.128091806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
+[ Upstream commit c9080abea1e69b8b1408ec7dec0acdfdc577a3e2 ]
 
-fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
-allocate a struct fb_modelist.  If that happens, the modelist stays empty but
-the driver continues to register.  Add a check for its return value to prevent
-poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
-Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
+Since the kern_dbpage gets set up in ionic_lif_init() and that
+function's error path will clean it if needed, the kern_dbpage
+on teardown should be cleaned in ionic_lif_deinit(), not in
+ionic_lif_free().  As it is currently we get a double call
+to iounmap() on kern_dbpage if the PCI ionic fails setting up
+the lif.  One example of this is when firmware isn't responding
+to AdminQ requests and ionic's first AdminQ call fails to
+setup the NotifyQ.
 
-Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Joe Damato <joe@dama.to>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imxfb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index d663e080b157..91f041f3a56f 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -1007,8 +1007,13 @@ static int imxfb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index bc7c5cd38596..1ac7a40fcc43 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3394,10 +3394,6 @@ void ionic_lif_free(struct ionic_lif *lif)
+ 	lif->info = NULL;
+ 	lif->info_pa = 0;
  
+-	/* unmap doorbell page */
+-	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
+-	lif->kern_dbpage = NULL;
+-
+ 	mutex_destroy(&lif->config_lock);
+ 	mutex_destroy(&lif->queue_lock);
  
- 	INIT_LIST_HEAD(&info->modelist);
--	for (i = 0; i < fbi->num_modes; i++)
--		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+	for (i = 0; i < fbi->num_modes; i++) {
-+		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to add videomode\n");
-+			goto failed_cmap;
-+		}
-+	}
+@@ -3423,6 +3419,9 @@ void ionic_lif_deinit(struct ionic_lif *lif)
+ 	ionic_lif_qcq_deinit(lif, lif->notifyqcq);
+ 	ionic_lif_qcq_deinit(lif, lif->adminqcq);
  
- 	/*
- 	 * This makes sure that our colour bitfield
++	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
++	lif->kern_dbpage = NULL;
++
+ 	ionic_lif_reset(lif);
+ }
+ 
 -- 
 2.39.5
 
