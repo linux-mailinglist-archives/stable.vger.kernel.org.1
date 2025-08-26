@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1437B36392
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43749B36785
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3F01BA5E3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7261E981658
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43592FC008;
-	Tue, 26 Aug 2025 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5455534F479;
+	Tue, 26 Aug 2025 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Agvb9DQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFI6Xf6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D731DEFF5;
-	Tue, 26 Aug 2025 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E834DCF6;
+	Tue, 26 Aug 2025 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214625; cv=none; b=dmiFlZh5wcFyd9sJqFmwEmmUfyOlvZBzAUNkR+05Ya8nldADoS7G0QO+935ggsdP2puuWTDKAomp/PUuG8F+UV/j0uHuOM2QZOov3n+GKxvVv4CP+aJMP/ZaRdFJeNmZCAfgqYiyQg7j1QJG4mYnDVt/2qPlaxorZH0ijDU97T4=
+	t=1756216329; cv=none; b=q0KKOSNQldZAflHs/dNGMbgP8Eq3t30TXZ5Ak7xlIbMiatvHz4Q3yznncV1UHSXyrdbI7YenI2FqzfJGRaPA2xMBtjT84fsZ0HUnq0FOkVSUOLUylyORE6dM4MRIbTrfvaw1A057OLvNo6Hn4rsD2TowSYUach/8g7tnM7DlETU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214625; c=relaxed/simple;
-	bh=goGyV4fxrrOq3Eff3CIkOpydTGUwLC28BecVDjYU7ZA=;
+	s=arc-20240116; t=1756216329; c=relaxed/simple;
+	bh=doF/d9IXudhVof52EcPa8e3GDmDNfwm26FtgnHBGJFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1txNJ0TE+cPF+ueGYd3bz7L6MdOwr0G6tasXxAf4MBh4RW6yE0l/quy+h3QrxAxnJjq0Lgo3eaUvNh1WPP0YZRVA065eaEg5ApKnIARTRzk7isPfoYjKKHdvxb3z7OQblIWKKM+3p7IIH5vAVu+agtut3pfSlI1/GGV+Urxltw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Agvb9DQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045C5C4CEF1;
-	Tue, 26 Aug 2025 13:23:44 +0000 (UTC)
+	 MIME-Version; b=ZID8qdaVtaNocllmctX7l6gS15aXowayNGyIafiks7kwRJeGX1FODBz9Ae8Vx1QTKyAhytvgaO6u9Iqz53CRXZLFakGjh/71nhUwanS2Td6fZsVQVpR2RkBjfCJiXBjgUnuHrI4O7u/gvXRttUgTsH9OLZ9zC51mC+x4wFGlZ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFI6Xf6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9596DC4CEF1;
+	Tue, 26 Aug 2025 13:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214625;
-	bh=goGyV4fxrrOq3Eff3CIkOpydTGUwLC28BecVDjYU7ZA=;
+	s=korg; t=1756216328;
+	bh=doF/d9IXudhVof52EcPa8e3GDmDNfwm26FtgnHBGJFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Agvb9DQCqCefEjrhDI2t525zjY8vEUP8OeqV9EBrcsJTuOViUfy8UfJH7TLhkwuR6
-	 i8r3HdkmVNzNyUl3bXbltCEMkQi+hjlpwE08p8w2/nxZqm9PBk/u4gTZ4ZBkZtVrCs
-	 FAzU56aV8NEzs4t8hD/+EpgZ931D8A6oSiFB6TRE=
+	b=IFI6Xf6nGU2OJzs6AMClM8fXjqxDtXG1+x+mORHVFBgDoEOgTzXd05X4EbDcK5+Rm
+	 aAI7TdZ1lZY1dJ/i8rrQTCHNuEHDjgOs5wy7kqW5f7JfR+qmw0s7Clzzbi602Qlibe
+	 ifPa9ocdPK9WhszxJqazv4G1DZoPjjOLLvw9OEP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Alex Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/482] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
+Subject: [PATCH 5.15 370/644] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
 Date: Tue, 26 Aug 2025 13:07:41 +0200
-Message-ID: <20250826110935.922302972@linuxfoundation.org>
+Message-ID: <20250826110955.585196188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
+[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
 
-Fix Smatch-detected error:
-drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
-error: uninitialized symbol 'r'.
+When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
+helpers use BUG() unconditionally.
 
-Smatch detects a possible use of the uninitialized variable 'r' in
-dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
-skipped and 'r' is returned without being set, leading to undefined
-behavior.
+This code should not be reached, as callers of these functions should
+always check for is_vlan_dev() first, but the usage of BUG() is not
+recommended, replace it with WARN_ON() instead.
 
-Initialize 'r' to 0 before the loop. This ensures that if there are no
-devices to iterate over, the function still returns a defined value.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/if_vlan.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-index 4abe1e2f8ad8..cbcfadbdd51d 100644
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -1062,7 +1062,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
- 	struct dmz_target *dmz = ti->private;
- 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
- 	sector_t capacity;
--	int i, r;
-+	int i, r = 0;
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index 64cfe7cd292c..3728e3978f83 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -248,19 +248,19 @@ vlan_for_each(struct net_device *dev,
  
- 	for (i = 0; i < dmz->nr_ddevs; i++) {
- 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+ static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return NULL;
+ }
+ 
+ static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
+ static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
