@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1729BB369FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD04B35CE5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97EE1C429ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1CA47C5747
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA9F350D5F;
-	Tue, 26 Aug 2025 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F201FECAB;
+	Tue, 26 Aug 2025 11:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lip+5x0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5Jw5nL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9A2C0F60;
-	Tue, 26 Aug 2025 14:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ED13074AA;
+	Tue, 26 Aug 2025 11:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217861; cv=none; b=GFPtzzsul/bIa3xC5sjO/8H/EQPg0+v4M19i5UFfWUTSa7qr4Y1Pk9NA87M2yjTG/UCtjzDh4DChxKNxLW4CLDyXoWo0CagBqlF+oKvpd93TDLS9zunCi9FdzLqcW1wXHdyjwy7RxD4Xnh9Ac0tSINHuLLRr1c44zLy8LPXgjvE=
+	t=1756208322; cv=none; b=eiFjXeVU6CTgdRmLFCe3J7aV5aAsNT3/6DvLDkO4Wq6yFSAFRyRBvDElRPidzXX361OE1pq3TbcH1zaweAwCjTVMDLw3amTqV3JTU3AKnxPuOmMm3A796IhQ9ctoulKm1YQj+6o2+aVzwgXm3RQ125yBlh/fCmrwaxuXNQA0/Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217861; c=relaxed/simple;
-	bh=O1y36TJV/tpEokJ6ii8hqmu95/QRrewMWUjSn135ra8=;
+	s=arc-20240116; t=1756208322; c=relaxed/simple;
+	bh=MWZQrjFZLREQctS6BI7pESEqW2NH7WgI1opYOuITU/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrWc7alxniOPypwAOsibmaNQ4UyZ5np+P4OzXJdOxEbd67aQP58RLXXRAWCCHTJS5jeoVVsbMtFNxcOzy/PQPuNFlpZzNP8aKyYCOVBbE5rS333769eoznLTWgIWaGPsjYFUns9PKlV6iFDQhNDDEoj8zwlTzwaESop447Kdguw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lip+5x0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41214C4CEF1;
-	Tue, 26 Aug 2025 14:17:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LI/nO0ozBtlLUbgN6y+MLqQgSOFgAUttBWx2Byx0gL1HRvUo64GSPrxEqapSxX/O0S4i4LbzCXxNZDWD8OYNMnAtkGKJ84uEz6xWrpGTjK56WuD60Dd7j/+7v62lbhUqPLbSCYQSo9G/009jFBJF8veVbX4R5Erbst+QLtbW01k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5Jw5nL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51174C4CEF1;
+	Tue, 26 Aug 2025 11:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217860;
-	bh=O1y36TJV/tpEokJ6ii8hqmu95/QRrewMWUjSn135ra8=;
+	s=korg; t=1756208322;
+	bh=MWZQrjFZLREQctS6BI7pESEqW2NH7WgI1opYOuITU/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lip+5x0k2thA02gVs0S4bxi4hKP/NGQNFPbQtMSpYATpNuT7Ed/pvg1vMH7f+rgV0
-	 WkwezWkxbxNIUbct7H7lg9mZ2JwU5HUUYp/y1x1t0WUV36A0CebGPrQRPqpa+VFhyB
-	 7csHOS7JyAhDZNO1l5sOzWq20+5hOfl28WpnMkNs=
+	b=k5Jw5nL560YiWi+VjrNUNcUMxZ1c/cL9sIvuNr7IfO5PCIkzLuaUA36CfOnJ1jYJ8
+	 hFDnO9foVW2piT8HhWVRElQcwMlIFZhNNXgsPjfLeIIu3wXptMWLEC3iiI4QitIdYP
+	 EZl3dXOCG9aOVGIq83G/OT/KVhitG6qaqKtUvbbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/523] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.12 066/322] pwm: mediatek: Handle hardware enable and clock enable separately
 Date: Tue, 26 Aug 2025 13:08:01 +0200
-Message-ID: <20250826110931.112695817@linuxfoundation.org>
+Message-ID: <20250826110917.194555621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
+commit 704d918341c378c5f9505dfdf32d315e256d3846 upstream.
 
-If the device configuration fails (if `dma_dev->device_config()`),
-`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
-leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
+Stop handling the clocks in pwm_mediatek_enable() and
+pwm_mediatek_disable(). This is a preparing change for the next commit
+that requires that clocks and the enable bit are handled separately.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also move these two functions a bit further up in the source file to
+make them usable in pwm_mediatek_config(), which is needed in the next
+commit, too.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 04bf6ecf7d55..85e0fa7d902b 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
- 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -115,6 +115,26 @@ static inline void pwm_mediatek_writel(s
+ 	writel(value, chip->regs + chip->soc->reg_offset[num] + offset);
+ }
  
- 	/* Make DMA channel work with LPB FIFO data register */
--	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
--		ret = -EINVAL;
--		goto err_dma_prep;
--	}
-+	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
-+		return -EINVAL;
++static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value |= BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
++static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value &= ~BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
+ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       int duty_ns, int period_ns)
+ {
+@@ -177,35 +197,6 @@ out:
+ 	return ret;
+ }
  
- 	sg_init_table(&sg, 1);
+-static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-	int ret;
+-
+-	ret = pwm_mediatek_clk_enable(chip, pwm);
+-	if (ret < 0)
+-		return ret;
+-
+-	value = readl(pc->regs);
+-	value |= BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	return 0;
+-}
+-
+-static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-
+-	value = readl(pc->regs);
+-	value &= ~BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	pwm_mediatek_clk_disable(chip, pwm);
+-}
+-
+ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			      const struct pwm_state *state)
+ {
+@@ -215,8 +206,10 @@ static int pwm_mediatek_apply(struct pwm
+ 		return -EINVAL;
  
--- 
-2.39.5
-
+ 	if (!state->enabled) {
+-		if (pwm->state.enabled)
++		if (pwm->state.enabled) {
+ 			pwm_mediatek_disable(chip, pwm);
++			pwm_mediatek_clk_disable(chip, pwm);
++		}
+ 
+ 		return 0;
+ 	}
+@@ -225,8 +218,11 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled)
+-		err = pwm_mediatek_enable(chip, pwm);
++	if (!pwm->state.enabled) {
++		err = pwm_mediatek_clk_enable(chip, pwm);
++		if (!err)
++			pwm_mediatek_enable(chip, pwm);
++	}
+ 
+ 	return err;
+ }
 
 
 
