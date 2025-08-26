@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6114B3630D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBF4B35AFB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C620A2A2B7A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15387C25AC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAE1259CB2;
-	Tue, 26 Aug 2025 13:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C9B2C15A8;
+	Tue, 26 Aug 2025 11:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUp9AtFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDBrzaCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB86221704;
-	Tue, 26 Aug 2025 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E346C293C44;
+	Tue, 26 Aug 2025 11:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214169; cv=none; b=QULP2M8ZLjAYlXu+ui3gUeFHz1vsTdZ9Mn/6d9wt+6aOuWh6+h/hhvQAMFP8PV+YFzT61F8Lt4I3gYsXk3V7bYNi6zMzPv/vVkfEbR3Wb885ivB+6hAk5p+Hcq96iua+nHYBsfAErw8WFvMsG22AwM81FAxjZp6YTQEI9OnpZU4=
+	t=1756207002; cv=none; b=LT+8W2LCm2Q3pADgMZMgoLEQOgkziXVQUhtNlM1NDvsuj1H1vPMa0ReYXzkYVg7TpJg8kllg8buyuSAl6Mqm2u8+tONhBFpCaqRMwjna8pq1ME70NRFllMid69WxHVWYhuUpr/6+1jlX0Bw6V8DrNXyPXCWeyo5TV75ZCbe7Wc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214169; c=relaxed/simple;
-	bh=dsFub4ro80sA/nUBVOT4/EdOY/jU2Qe/dULBz2DhCgw=;
+	s=arc-20240116; t=1756207002; c=relaxed/simple;
+	bh=bbRsokqEYQlkWnl58W7AjoIca6tsrlNAR3Ml2b39fao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXRiHbbYz6VxzdSWgTS7cb+OtBplWclcKU5dA60wxekUKSVJXzfPr6Hfeql7lauWMOLHjczzj/UGcIMLIxXa67pvmEjqkQfMOF+AXAx4/COfnTYJFHXr/y5p/ScI080NzWn+7JOxqMz4cUss2ImlF4PklGhIBawpG6BMGr2vOGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUp9AtFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51363C4CEF1;
-	Tue, 26 Aug 2025 13:16:08 +0000 (UTC)
+	 MIME-Version; b=LtVcLGmxkqGuorwgIh7TkgDkvufTRDWUa0g+Hfq75+sGoMvxjyUpWouNLebDk2fHDc82/Ro14X286HjfrlrZlb66x+pdbjYE25Io5Y/aWUDKSwUMs3cCyVaWec7xEomWjlvXxKPyv/W6KL7u+LjwHzTPWtuFUobh0xj3jmWnh9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDBrzaCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BD3C4CEF1;
+	Tue, 26 Aug 2025 11:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214168;
-	bh=dsFub4ro80sA/nUBVOT4/EdOY/jU2Qe/dULBz2DhCgw=;
+	s=korg; t=1756207001;
+	bh=bbRsokqEYQlkWnl58W7AjoIca6tsrlNAR3Ml2b39fao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUp9AtFYy/6FdIwc62h6TcWmCV8N0l2clYIO9uAarQg5uF90UVFhAMFdHu+kqtgJw
-	 s9lxzfB2gCXtQ8JOd4hbNqlxt5uR87G+GhEnNMy1ugRt5rr5yx0WmxrSkRBue37MJQ
-	 6yXBNrFhSRnnLLVYUxj95A08QrH2hm1bEj0N5LYI=
+	b=FDBrzaCK5YvbNe3zc5TDCHtLXiTXVNxFBXtaLEPnzBcIg2rAk/acFu+p/+ZuBt6/L
+	 JDTMMVon0fAd9zybsdrMvPjoI5UaIbc4UgHsqC+Bg/NzWW147LpwIHexUttsVLHpUR
+	 cT0COvukS69s+ANMx0ILkmHXxrU0oAS1FNdF2sTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/482] KVM: VMX: Handle forced exit due to preemption timer in fastpath
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.16 005/457] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
 Date: Tue, 26 Aug 2025 13:04:49 +0200
-Message-ID: <20250826110931.700166275@linuxfoundation.org>
+Message-ID: <20250826110937.433074315@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 11776aa0cfa7d007ad1799b1553bdcbd830e5010 ]
+commit 51888393cc64dd0462d0b96c13ab94873abbc030 upstream.
 
-Handle VMX preemption timer VM-Exits due to KVM forcing an exit in the
-exit fastpath, i.e. avoid calling back into handle_preemption_timer() for
-the same exit.  There is no work to be done for forced exits, as the name
-suggests the goal is purely to get control back in KVM.
+For all practical purposes, there is no difference between the situation
+in which a given device is not ignoring children and its active child
+count is nonzero and the situation in which its runtime PM usage counter
+is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
+device's usage counter and return 1 in the latter case.
 
-In addition to shaving a few cycles, this will allow cleanly separating
-handle_fastpath_preemption_timer() from handle_preemption_timer(), e.g.
-it's not immediately obvious why _apparently_ calling
-handle_fastpath_preemption_timer() twice on a "slow" exit is necessary:
-the "slow" call is necessary to handle exits from L2, which are excluded
-from the fastpath by vmx_vcpu_run().
+For consistency, make it do so in the former case either by adjusting
+pm_runtime_get_conditional() and update the related kerneldoc comments
+accordingly.
 
-Link: https://lore.kernel.org/r/20240110012705.506918-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
+Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/base/power/runtime.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 96bbccd9477c..c804ad001a79 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5941,12 +5941,15 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
- 	if (unlikely(vmx->loaded_vmcs->hv_timer_soft_disabled))
- 		return EXIT_FASTPATH_REENTER_GUEST;
- 
--	if (!vmx->req_immediate_exit) {
--		kvm_lapic_expired_hv_timer(vcpu);
--		return EXIT_FASTPATH_REENTER_GUEST;
--	}
-+	/*
-+	 * If the timer expired because KVM used it to force an immediate exit,
-+	 * then mission accomplished.
-+	 */
-+	if (vmx->req_immediate_exit)
-+		return EXIT_FASTPATH_EXIT_HANDLED;
- 
--	return EXIT_FASTPATH_NONE;
-+	kvm_lapic_expired_hv_timer(vcpu);
-+	return EXIT_FASTPATH_REENTER_GUEST;
- }
- 
- static int handle_preemption_timer(struct kvm_vcpu *vcpu)
--- 
-2.50.1
-
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1191,10 +1191,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
+  *
+  * Return -EINVAL if runtime PM is disabled for @dev.
+  *
+- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
+- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
+- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
+- * without changing the usage counter.
++ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
++ * is set, or (2) @dev is not ignoring children and its active child count is
++ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
++ * the usage counter of @dev and return 1.
++ *
++ * Otherwise, return 0 without changing the usage counter.
+  *
+  * If @ign_usage_count is %true, this function can be used to prevent suspending
+  * the device when its runtime PM status is %RPM_ACTIVE.
+@@ -1216,7 +1218,8 @@ static int pm_runtime_get_conditional(st
+ 		retval = -EINVAL;
+ 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
+ 		retval = 0;
+-	} else if (ign_usage_count) {
++	} else if (ign_usage_count || (!dev->power.ignore_children &&
++		   atomic_read(&dev->power.child_count) > 0)) {
+ 		retval = 1;
+ 		atomic_inc(&dev->power.usage_count);
+ 	} else {
+@@ -1249,10 +1252,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_acti
+  * @dev: Target device.
+  *
+  * Increment the runtime PM usage counter of @dev if its runtime PM status is
+- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
+- * it returns 1. If the device is in a different state or its usage_count is 0,
+- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
+- * in which case also the usage_count will remain unmodified.
++ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
++ * ignoring children and its active child count is nonzero.  1 is returned in
++ * this case.
++ *
++ * If @dev is in a different state or it is not in use (that is, its usage
++ * counter is 0, or it is ignoring children, or its active child count is 0),
++ * 0 is returned.
++ *
++ * -EINVAL is returned if runtime PM is disabled for the device, in which case
++ * also the usage counter of @dev is not updated.
+  */
+ int pm_runtime_get_if_in_use(struct device *dev)
+ {
 
 
 
