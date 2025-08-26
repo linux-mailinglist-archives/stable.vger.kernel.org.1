@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-174715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FE0B364D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19094B367D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D64D28E3848
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99079566CA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253F92D191E;
-	Tue, 26 Aug 2025 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2192F35337D;
+	Tue, 26 Aug 2025 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRIvPI2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EblfReLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D368B20CCCA;
-	Tue, 26 Aug 2025 13:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D366C353371;
+	Tue, 26 Aug 2025 14:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215125; cv=none; b=u0PqH9OIWnqba0UPOSrwK6gjF4uekfNha4cIcZvFH07qL/qxFtAK2gOehxTXllcQHB7UtmzSQih3gSE8k732k1ukeLuOnUqmgMBxNNIh3beSgH+FBB6HhKjv7GV9enxmB4h7wj2/ZoBnBmtrrDtACfetFdIyJK3+B7QqnkEWy5I=
+	t=1756216834; cv=none; b=EgxBKABxDoFWpLLfYpIsHqL63EZh2p0fyCIDD07s3FqQDKdoS84cYz4amybCKueZN67889or3TeI3a0EoSD9XCaZaAjVsZwyjuYydcZf45Ec3c8qQ29v1orfQoSIPZVOxfURFJh2HJsBtqRjtGTj2Am2cCoJBj1qw96Kgn2GLQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215125; c=relaxed/simple;
-	bh=I85j/AD2wiT/soPUl19YZP32SYTUbZrQf9PdSy6JWIg=;
+	s=arc-20240116; t=1756216834; c=relaxed/simple;
+	bh=m57b2/F3nTwCFb2VN4U+17TKgZXj5GYaySd4eEAI82M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJgnadS/EF0vQIF9ulYGfh3nQwKcbCkbhu4v4sHOBoqv99gumnzlRYA6Cy70Mz0wkZFDxG4yER2W+C59r1YgmneV4S2W+XjNTWrsJ63Vm8dlr8GnrPXzfOOcdLywFJgfXMyyn60DrOkLbrK8PsmpUvqRv0/91Nt1IENBR0pRMHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRIvPI2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638A8C4CEF1;
-	Tue, 26 Aug 2025 13:32:05 +0000 (UTC)
+	 MIME-Version; b=XobXVdzA/S4Hkxb2f05Z6+BKDuWeD/TP5rPKDkOAE0mQ8UcbyJNPhuF99yRJsis1fEUgcks09hkz3TigUTGXy59yHCHtng/Xgnnq+1/YtBRUejrwJm1A9Q1UxO5dpvLF5X3IbxpIjQ72KoxAHJSzEh0+qrQoNsX297FCBkujYA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EblfReLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6697EC113CF;
+	Tue, 26 Aug 2025 14:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215125;
-	bh=I85j/AD2wiT/soPUl19YZP32SYTUbZrQf9PdSy6JWIg=;
+	s=korg; t=1756216834;
+	bh=m57b2/F3nTwCFb2VN4U+17TKgZXj5GYaySd4eEAI82M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRIvPI2c9Q6UASwtEolr+wmjgEi2g6oqiDG+mLE6Rh29OZ4rThaky8MauhWVOgwo/
-	 JEsVXeNgdrSQcMoCJP16pcwP46YDcj/B4laIEsjimWNuTf2/ymeyppdxyT5X5eFJiG
-	 /MftRCTgNUnNnJJNBFYxmwOQahynudx0Bndeub/8=
+	b=EblfReLtpRxCTSrV2nbHL/ZWNdrA4FAmYlwSLo/q5eun0OI0dZKsi2s/a1I3K15ts
+	 Mp+yzNoUQwCy3mq5YULrtQ20u+rnWLOHq/HxnfMF1VB/c33RQ1kxmNcq2OA0LM1ZDc
+	 TL/110fR14e7L9cRUDsBnQgvCfwjoXwOVayoDyQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Herton R. Krzesinski" <herton@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Gavin Shan <gshan@redhat.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 397/482] mm/debug_vm_pgtable: clear page table entries at destroy_args()
-Date: Tue, 26 Aug 2025 13:10:50 +0200
-Message-ID: <20250826110940.635650661@linuxfoundation.org>
+	Dipanjan Das <mail.dipanjan.das@gmail.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 560/644] mptcp: do not queue data on closed subflows
+Date: Tue, 26 Aug 2025 13:10:51 +0200
+Message-ID: <20250826111000.406786353@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herton R. Krzesinski <herton@redhat.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit dde30854bddfb5d69f30022b53c5955a41088b33 upstream.
+commit c886d70286bf3ad411eb3d689328a67f7102c6ae upstream.
 
-The mm/debug_vm_pagetable test allocates manually page table entries for
-the tests it runs, using also its manually allocated mm_struct.  That in
-itself is ok, but when it exits, at destroy_args() it fails to clear those
-entries with the *_clear functions.
+Dipanjan reported a syzbot splat at close time:
 
-The problem is that leaves stale entries.  If another process allocates an
-mm_struct with a pgd at the same address, it may end up running into the
-stale entry.  This is happening in practice on a debug kernel with
-CONFIG_DEBUG_VM_PGTABLE=y, for example this is the output with some extra
-debugging I added (it prints a warning trace if pgtables_bytes goes
-negative, in addition to the warning at check_mm() function):
+WARNING: CPU: 1 PID: 10818 at net/ipv4/af_inet.c:153
+inet_sock_destruct+0x6d0/0x8e0 net/ipv4/af_inet.c:153
+Modules linked in: uio_ivshmem(OE) uio(E)
+CPU: 1 PID: 10818 Comm: kworker/1:16 Tainted: G           OE
+5.19.0-rc6-g2eae0556bb9d #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: events mptcp_worker
+RIP: 0010:inet_sock_destruct+0x6d0/0x8e0 net/ipv4/af_inet.c:153
+Code: 21 02 00 00 41 8b 9c 24 28 02 00 00 e9 07 ff ff ff e8 34 4d 91
+f9 89 ee 4c 89 e7 e8 4a 47 60 ff e9 a6 fc ff ff e8 20 4d 91 f9 <0f> 0b
+e9 84 fe ff ff e8 14 4d 91 f9 0f 0b e9 d4 fd ff ff e8 08 4d
+RSP: 0018:ffffc9001b35fa78 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000002879d0 RCX: ffff8881326f3b00
+RDX: 0000000000000000 RSI: ffff8881326f3b00 RDI: 0000000000000002
+RBP: ffff888179662674 R08: ffffffff87e983a0 R09: 0000000000000000
+R10: 0000000000000005 R11: 00000000000004ea R12: ffff888179662400
+R13: ffff888179662428 R14: 0000000000000001 R15: ffff88817e38e258
+FS:  0000000000000000(0000) GS:ffff8881f5f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020007bc0 CR3: 0000000179592000 CR4: 0000000000150ee0
+Call Trace:
+ <TASK>
+ __sk_destruct+0x4f/0x8e0 net/core/sock.c:2067
+ sk_destruct+0xbd/0xe0 net/core/sock.c:2112
+ __sk_free+0xef/0x3d0 net/core/sock.c:2123
+ sk_free+0x78/0xa0 net/core/sock.c:2134
+ sock_put include/net/sock.h:1927 [inline]
+ __mptcp_close_ssk+0x50f/0x780 net/mptcp/protocol.c:2351
+ __mptcp_destroy_sock+0x332/0x760 net/mptcp/protocol.c:2828
+ mptcp_worker+0x5d2/0xc90 net/mptcp/protocol.c:2586
+ process_one_work+0x9cc/0x1650 kernel/workqueue.c:2289
+ worker_thread+0x623/0x1070 kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:302
+ </TASK>
 
-[    2.539353] debug_vm_pgtable: [get_random_vaddr         ]: random_vaddr is 0x7ea247140000
-[    2.539366] kmem_cache info
-[    2.539374] kmem_cachep 0x000000002ce82385 - freelist 0x0000000000000000 - offset 0x508
-[    2.539447] debug_vm_pgtable: [init_args                ]: args->mm is 0x000000002267cc9e
-(...)
-[    2.552800] WARNING: CPU: 5 PID: 116 at include/linux/mm.h:2841 free_pud_range+0x8bc/0x8d0
-[    2.552816] Modules linked in:
-[    2.552843] CPU: 5 UID: 0 PID: 116 Comm: modprobe Not tainted 6.12.0-105.debug_vm2.el10.ppc64le+debug #1 VOLUNTARY
-[    2.552859] Hardware name: IBM,9009-41A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW910.00 (VL910_062) hv:phyp pSeries
-[    2.552872] NIP:  c0000000007eef3c LR: c0000000007eef30 CTR: c0000000003d8c90
-[    2.552885] REGS: c0000000622e73b0 TRAP: 0700   Not tainted  (6.12.0-105.debug_vm2.el10.ppc64le+debug)
-[    2.552899] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002822  XER: 0000000a
-[    2.552954] CFAR: c0000000008f03f0 IRQMASK: 0
-[    2.552954] GPR00: c0000000007eef30 c0000000622e7650 c000000002b1ac00 0000000000000001
-[    2.552954] GPR04: 0000000000000008 0000000000000000 c0000000007eef30 ffffffffffffffff
-[    2.552954] GPR08: 00000000ffff00f5 0000000000000001 0000000000000048 0000000000004000
-[    2.552954] GPR12: 00000003fa440000 c000000017ffa300 c0000000051d9f80 ffffffffffffffdb
-[    2.552954] GPR16: 0000000000000000 0000000000000008 000000000000000a 60000000000000e0
-[    2.552954] GPR20: 4080000000000000 c0000000113af038 00007fffcf130000 0000700000000000
-[    2.552954] GPR24: c000000062a6a000 0000000000000001 8000000062a68000 0000000000000001
-[    2.552954] GPR28: 000000000000000a c000000062ebc600 0000000000002000 c000000062ebc760
-[    2.553170] NIP [c0000000007eef3c] free_pud_range+0x8bc/0x8d0
-[    2.553185] LR [c0000000007eef30] free_pud_range+0x8b0/0x8d0
-[    2.553199] Call Trace:
-[    2.553207] [c0000000622e7650] [c0000000007eef30] free_pud_range+0x8b0/0x8d0 (unreliable)
-[    2.553229] [c0000000622e7750] [c0000000007f40b4] free_pgd_range+0x284/0x3b0
-[    2.553248] [c0000000622e7800] [c0000000007f4630] free_pgtables+0x450/0x570
-[    2.553274] [c0000000622e78e0] [c0000000008161c0] exit_mmap+0x250/0x650
-[    2.553292] [c0000000622e7a30] [c0000000001b95b8] __mmput+0x98/0x290
-[    2.558344] [c0000000622e7a80] [c0000000001d1018] exit_mm+0x118/0x1b0
-[    2.558361] [c0000000622e7ac0] [c0000000001d141c] do_exit+0x2ec/0x870
-[    2.558376] [c0000000622e7b60] [c0000000001d1ca8] do_group_exit+0x88/0x150
-[    2.558391] [c0000000622e7bb0] [c0000000001d1db8] sys_exit_group+0x48/0x50
-[    2.558407] [c0000000622e7be0] [c00000000003d810] system_call_exception+0x1e0/0x4c0
-[    2.558423] [c0000000622e7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-(...)
-[    2.558892] ---[ end trace 0000000000000000 ]---
-[    2.559022] BUG: Bad rss-counter state mm:000000002267cc9e type:MM_ANONPAGES val:1
-[    2.559037] BUG: non-zero pgtables_bytes on freeing mm: -6144
+The root cause of the problem is that an mptcp-level (re)transmit can
+race with mptcp_close() and the packet scheduler checks the subflow
+state before acquiring the socket lock: we can try to (re)transmit on
+an already closed ssk.
 
-Here the modprobe process ended up with an allocated mm_struct from the
-mm_struct slab that was used before by the debug_vm_pgtable test.  That is
-not a problem, since the mm_struct is initialized again etc., however, if
-it ends up using the same pgd table, it bumps into the old stale entry
-when clearing/freeing the page table entries, so it tries to free an entry
-already gone (that one which was allocated by the debug_vm_pgtable test),
-which also explains the negative pgtables_bytes since it's accounting for
-not allocated entries in the current process.
+Fix the issue checking again the subflow socket status under the
+subflow socket lock protection. Additionally add the missing check
+for the fallback-to-tcp case.
 
-As far as I looked pgd_{alloc,free} etc.  does not clear entries, and
-clearing of the entries is explicitly done in the free_pgtables->
-free_pgd_range->free_p4d_range->free_pud_range->free_pmd_range->
-free_pte_range path.  However, the debug_vm_pgtable test does not call
-free_pgtables, since it allocates mm_struct and entries manually for its
-test and eg.  not goes through page faults.  So it also should clear
-manually the entries before exit at destroy_args().
-
-This problem was noticed on a reboot X number of times test being done on
-a powerpc host, with a debug kernel with CONFIG_DEBUG_VM_PGTABLE enabled.
-Depends on the system, but on a 100 times reboot loop the problem could
-manifest once or twice, if a process ends up getting the right mm->pgd
-entry with the stale entries used by mm/debug_vm_pagetable.  After using
-this patch, I couldn't reproduce/experience the problems anymore.  I was
-able to reproduce the problem as well on latest upstream kernel (6.16).
-
-I also modified destroy_args() to use mmput() instead of mmdrop(), there
-is no reason to hold mm_users reference and not release the mm_struct
-entirely, and in the output above with my debugging prints I already had
-patched it to use mmput, it did not fix the problem, but helped in the
-debugging as well.
-
-Link: https://lkml.kernel.org/r/20250731214051.4115182-1-herton@redhat.com
-Fixes: 3c9b84f044a9 ("mm/debug_vm_pgtable: introduce struct pgtable_debug_args")
-Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d5f49190def6 ("mptcp: allow picking different xmit subflows")
+Reported-by: Dipanjan Das <mail.dipanjan.das@gmail.com>
+Reviewed-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/debug_vm_pgtable.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    8 +++++++-
+ net/mptcp/protocol.h |   11 +++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -1063,29 +1063,34 @@ static void __init destroy_args(struct p
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1350,6 +1350,9 @@ static int mptcp_sendmsg_frag(struct soc
+ 			 info->limit > dfrag->data_len))
+ 		return 0;
  
- 	/* Free page table entries */
- 	if (args->start_ptep) {
-+		pmd_clear(args->pmdp);
- 		pte_free(args->mm, args->start_ptep);
- 		mm_dec_nr_ptes(args->mm);
++	if (unlikely(!__tcp_can_send(ssk)))
++		return -EAGAIN;
++
+ 	/* compute send limit */
+ 	info->mss_now = tcp_send_mss(ssk, &info->size_goal, info->flags);
+ 	copy = info->size_goal;
+@@ -1512,7 +1515,8 @@ static struct sock *mptcp_subflow_get_se
+ 	if (__mptcp_check_fallback(msk)) {
+ 		if (!msk->first)
+ 			return NULL;
+-		return sk_stream_memory_free(msk->first) ? msk->first : NULL;
++		return __tcp_can_send(msk->first) &&
++		       sk_stream_memory_free(msk->first) ? msk->first : NULL;
  	}
  
- 	if (args->start_pmdp) {
-+		pud_clear(args->pudp);
- 		pmd_free(args->mm, args->start_pmdp);
- 		mm_dec_nr_pmds(args->mm);
- 	}
+ 	/* re-use last subflow, if the burst allow that */
+@@ -1638,6 +1642,8 @@ void __mptcp_push_pending(struct sock *s
  
- 	if (args->start_pudp) {
-+		p4d_clear(args->p4dp);
- 		pud_free(args->mm, args->start_pudp);
- 		mm_dec_nr_puds(args->mm);
- 	}
+ 			ret = mptcp_sendmsg_frag(sk, ssk, dfrag, &info);
+ 			if (ret <= 0) {
++				if (ret == -EAGAIN)
++					continue;
+ 				mptcp_push_release(ssk, &info);
+ 				goto out;
+ 			}
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -599,16 +599,19 @@ void mptcp_info2sockaddr(const struct mp
+ 			 struct sockaddr_storage *addr,
+ 			 unsigned short family);
  
--	if (args->start_p4dp)
-+	if (args->start_p4dp) {
-+		pgd_clear(args->pgdp);
- 		p4d_free(args->mm, args->start_p4dp);
-+	}
+-static inline bool __mptcp_subflow_active(struct mptcp_subflow_context *subflow)
++static inline bool __tcp_can_send(const struct sock *ssk)
+ {
+-	struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++	/* only send if our side has not closed yet */
++	return ((1 << inet_sk_state_load(ssk)) & (TCPF_ESTABLISHED | TCPF_CLOSE_WAIT));
++}
  
- 	/* Free vma and mm struct */
- 	if (args->vma)
- 		vm_area_free(args->vma);
++static inline bool __mptcp_subflow_active(struct mptcp_subflow_context *subflow)
++{
+ 	/* can't send if JOIN hasn't completed yet (i.e. is usable for mptcp) */
+ 	if (subflow->request_join && !subflow->fully_established)
+ 		return false;
  
- 	if (args->mm)
--		mmdrop(args->mm);
-+		mmput(args->mm);
+-	/* only send if our side has not closed yet */
+-	return ((1 << ssk->sk_state) & (TCPF_ESTABLISHED | TCPF_CLOSE_WAIT));
++	return __tcp_can_send(mptcp_subflow_tcp_sock(subflow));
  }
  
- static struct page * __init
+ void mptcp_subflow_set_active(struct mptcp_subflow_context *subflow);
 
 
 
