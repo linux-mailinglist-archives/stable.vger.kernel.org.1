@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21BDB3661F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F41B36378
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011CA1BC7FF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228D32A28D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145BC350837;
-	Tue, 26 Aug 2025 13:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1419234AAE0;
+	Tue, 26 Aug 2025 13:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrN4tdNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0TpE5in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47C735082B;
-	Tue, 26 Aug 2025 13:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56F33431FE;
+	Tue, 26 Aug 2025 13:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216008; cv=none; b=qyQnwr9h34v1mE9A7/xG7OvFMgQbe+N1JD9h8pTbLS4GK9LWgDaRDvlmI/foL0ExkyFnfWVa+UcQi9vvC/IVKTRf5w11vIJvA+Qo6vEaZBk2VMl1Q3epEEumgCP26Eqy4Sbr0LEn9JV2GCOtR/VCqI6sojnT4Z1IbE3eBWMHqgQ=
+	t=1756214387; cv=none; b=PKJ/d6jgnZ7Zc+M8O3bqeGv7dFzHNewh8Q7l4ROhkzYT1+elFl+TW3EjWl7xm7Wo0hVJIgDUUz48KDZKPfPFtYa1JbCZZf3Rgj2QTyr19TPJSOhymO+BC/8gcYy6EaJZZXsH7wtwv+RBBRSz8DCbCrpEBhZPXBvFaiSCZe+9mUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216008; c=relaxed/simple;
-	bh=GbJLm2QcFSGw+Tfw+gRKb32MXjY3CpSRohwtOMQQgy4=;
+	s=arc-20240116; t=1756214387; c=relaxed/simple;
+	bh=2D6QSr4o0o3rKeU/M/mvqghnBrnEklTrYCoxEr0vC/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rX2T0KFxYC2JtHYFugHAA6ttpGaokN+UmsNoUtIWvj86sjFbqnqRsHcjJOpu6HTwBZzhj1QnTMZ/IK7EQaxmRGA3o0N8lQktgR9EK3QSA/dgFcGEJ6FXm/vuxFzcBSqoaPnV37SVbjvkILA4yKWEtr8KegNeaRd+1A+U2rfUs0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrN4tdNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562E2C113CF;
-	Tue, 26 Aug 2025 13:46:48 +0000 (UTC)
+	 MIME-Version; b=pyBhzZfl168WPOrzQ/C0lwbEfPA5+8dT2V5YodQ1eHNQUJG9qZdkcfFGqVQB5eWD+CAA881Cvj5ZNFuMPir3tco+BwPgl24MvG57d8KPmqDrY4oA+bivkiWmcIInmriz48nXApY/1Lfkqsht/70u9rNTCL9XZNPXo/8FzVkG208=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0TpE5in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021C6C4CEF1;
+	Tue, 26 Aug 2025 13:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216008;
-	bh=GbJLm2QcFSGw+Tfw+gRKb32MXjY3CpSRohwtOMQQgy4=;
+	s=korg; t=1756214387;
+	bh=2D6QSr4o0o3rKeU/M/mvqghnBrnEklTrYCoxEr0vC/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NrN4tdNvby3xVhr3ndxtC6y3d5Zm8Z/mvroHRrP/V3LrelX3Lv1h8UYZtjU4WQ4fO
-	 TVQCaZGpOFFWSF0AWJfbUnmFsrf2dZ8jToQkxeu3NksAmJ1hWwA73FUF4bBqWMdn4o
-	 3zqaoMHyVNAwi96ecCd4gZZAo38ZWocJPVlKtUEs=
+	b=m0TpE5inhwhvpKwYJeleEgKddIWw9QVl61biGTJ3V1zeE9amYhBwo2xZ4MKWavZni
+	 Zc18VzPiWCTSGL26LPSWlxGyVkQ/4UQ6qPLILXcK+3KrqhmV9Gy8as1Pl9tlMWoV8+
+	 ccA9m/oEODRWoedC/AzFJuyXvpZfRvKtwVQo8nDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quang Le <quanglex97@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 249/644] net/packet: fix a race in packet_set_ring() and packet_notifier()
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/482] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
 Date: Tue, 26 Aug 2025 13:05:40 +0200
-Message-ID: <20250826110952.560762604@linuxfoundation.org>
+Message-ID: <20250826110932.979871608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quang Le <quanglex97@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 01d3c8417b9c1b884a8a981a3b886da556512f36 upstream.
+[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
 
-When packet_set_ring() releases po->bind_lock, another thread can
-run packet_notifier() and process an NETDEV_UP event.
+Clear power.needs_force_resume in pm_runtime_reinit() in case it has
+been set by pm_runtime_force_suspend() invoked from a driver remove
+callback.
 
-This race and the fix are both similar to that of commit 15fe076edea7
-("net/packet: fix a race in packet_bind() and packet_notifier()").
-
-There too the packet_notifier NETDEV_UP event managed to run while a
-po->bind_lock critical section had to be temporarily released. And
-the fix was similarly to temporarily set po->num to zero to keep
-the socket unhooked until the lock is retaken.
-
-The po->bind_lock in packet_set_ring and packet_notifier precede the
-introduction of git history.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250801175423.2970334-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/base/power/runtime.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4506,10 +4506,10 @@ static int packet_set_ring(struct sock *
- 	spin_lock(&po->bind_lock);
- 	was_running = po->running;
- 	num = po->num;
--	if (was_running) {
--		WRITE_ONCE(po->num, 0);
-+	WRITE_ONCE(po->num, 0);
-+	if (was_running)
- 		__unregister_prot_hook(sk, false);
--	}
-+
- 	spin_unlock(&po->bind_lock);
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 313ccb7e7764..61d8ebc2de59 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1753,6 +1753,11 @@ void pm_runtime_reinit(struct device *dev)
+ 				pm_runtime_put(dev->parent);
+ 		}
+ 	}
++	/*
++	 * Clear power.needs_force_resume in case it has been set by
++	 * pm_runtime_force_suspend() invoked from a driver remove callback.
++	 */
++	dev->power.needs_force_resume = false;
+ }
  
- 	synchronize_net();
-@@ -4541,10 +4541,10 @@ static int packet_set_ring(struct sock *
- 	mutex_unlock(&po->pg_vec_lock);
- 
- 	spin_lock(&po->bind_lock);
--	if (was_running) {
--		WRITE_ONCE(po->num, num);
-+	WRITE_ONCE(po->num, num);
-+	if (was_running)
- 		register_prot_hook(sk);
--	}
-+
- 	spin_unlock(&po->bind_lock);
- 	if (pg_vec && (po->tp_version > TPACKET_V2)) {
- 		/* Because we don't support block-based V3 on tx-ring */
+ /**
+-- 
+2.39.5
+
 
 
 
