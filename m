@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E83B36365
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AD3B35D5B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BD631896DAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A131BA5039
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73DA343214;
-	Tue, 26 Aug 2025 13:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FCF321F30;
+	Tue, 26 Aug 2025 11:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEzJWets"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkqwJ7gE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63819322A1E;
-	Tue, 26 Aug 2025 13:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052DA20C001;
+	Tue, 26 Aug 2025 11:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214522; cv=none; b=V6hyDyFjl8URqH8FEXr1MUm+otNZ8z8buKUC17IxT2cZlSAS6HFCX4lhIlHauNhmlKaUdijusxA9sAwYxA/pLVQVdxZCbO9QdwTaz5XddhK22xcpaWOhnMpU2P2zH2scU4Y0NeUh1G7eY3phuqdZpnTexL2exKf2qtVwmvpnKfk=
+	t=1756208249; cv=none; b=Js6rrUSK7F+RORbGOO4adjjB+1ZyuheSiGaVTd1BZe3hH1dPQfiuz6Z7nVo1xIjtGKwrls71TPgyiuQTIjhNMaHJHCwTYXYCtjo4vX65+ITZV6yvIicKNMArDbx01ayjmzIWzAFiHJ41ql8fCZUmap4yg5N34YFjvysN8RftxOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214522; c=relaxed/simple;
-	bh=+NcZmecy0kUWG56/viLpnzJqLLwN09pEaM7b0CQhxw8=;
+	s=arc-20240116; t=1756208249; c=relaxed/simple;
+	bh=5NpZsi8kGd16utynqtWJwbO5H+PEoF+f8p49GAv95RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dQ+uoDc1RtswaIztnKfBYhy5wyp+pINDeBvMMpG77P5xJyhn3WFHcV5L83E9KEoPHsHOT9BN2J+nGmVi6OVbTbLv30f5pzKzWXQSFAPV/vy4SRabVTl/LoGiI8YGfPf1MwJ+owdMZC0h2F2C4WCfr5GdUl7zptHitEaL81GyR1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEzJWets; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC93C113CF;
-	Tue, 26 Aug 2025 13:22:01 +0000 (UTC)
+	 MIME-Version; b=LCsK4ZMW2Y4JofCqLnIQlsMnSRbBpP92/SdSTZjALfA9kJDVGxRZyJt38K4uADaFFh1xCFY/ZNNJ7Lg9nC5my95poidkel0GIQIeDThyqZ/0A+KD5eNnD9g7aCVKELfHd/dIi9+85KvZqx5BEvBbxGom4mEqVld9zfoSxyaadLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkqwJ7gE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0F5C4CEF1;
+	Tue, 26 Aug 2025 11:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214522;
-	bh=+NcZmecy0kUWG56/viLpnzJqLLwN09pEaM7b0CQhxw8=;
+	s=korg; t=1756208248;
+	bh=5NpZsi8kGd16utynqtWJwbO5H+PEoF+f8p49GAv95RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEzJWetsrC/U44cZCevtkJOzHp1EobekKxiw6FQTXPhG4d2FyCgrAu6knwHn/JjpT
-	 DqmOOVR/J/Ot+XIYj4XzOIAOJoirx4jD/S3PqI8kge9l/os8Sn8epmeOpkCHV2Jzod
-	 TYZSshLDFhF0yRMQQu+9+i8IE/FSdl+mNMtDzoEM=
+	b=jkqwJ7gEC+BwkQWDNsKSc0W6qP0EQGKUi/RfQJVgrkcVY69L+K4dgvtIpo4z/fgR+
+	 DOKgrXQE5jlHBX8XYrIxXk2qZPfwtUMJCiiPxg3EaVV/T35uwZVf0aMI0NRnkksTAK
+	 FMFGzSG/jrVcXJ7GTM2SljXhu2kJe6f7IEKjZBlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/482] drm/ttm: Respect the shrinker core free target
+	Damien Le Moal <dlemoal@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 007/322] dm: Check for forbidden splitting of zone write operations
 Date: Tue, 26 Aug 2025 13:07:02 +0200
-Message-ID: <20250826110934.986358578@linuxfoundation.org>
+Message-ID: <20250826110915.382151250@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
+commit 409f9287dab3b53bffe8d28d883a529028aa6a42 upstream.
 
-Currently the TTM shrinker aborts shrinking as soon as it frees pages from
-any of the page order pools and by doing so it can fail to respect the
-freeing target which was configured by the shrinker core.
+DM targets must not split zone append and write operations using
+dm_accept_partial_bio() as doing so is forbidden for zone append BIOs,
+breaks zone append emulation using regular write BIOs and potentially
+creates deadlock situations with queue freeze operations.
 
-We use the wording "can fail" because the number of freed pages will
-depend on the presence of pages in the pools and the order of the pools on
-the LRU list. For example if there are no free pages in the high order
-pools the shrinker core may require multiple passes over the TTM shrinker
-before it will free the default target of 128 pages (assuming there are
-free pages in the low order pools). This inefficiency can be compounded by
-the pool LRU where multiple further calls into the TTM shrinker are
-required to end up looking at the pool with pages.
+Modify dm_accept_partial_bio() to add missing BUG_ON() checks for all
+these cases, that is, check that the BIO is a write or write zeroes
+operation. This change packs all the zone related checks together under
+a static_branch_unlikely(&zoned_enabled) and done only if the target is
+a zoned device.
 
-Improve this by never freeing less than the shrinker core has requested.
-
-At the same time we start reporting the number of scanned pages (freed in
-this case), which prevents the core shrinker from giving up on the TTM
-shrinker too soon and moving on.
-
-v2:
- * Simplify loop logic. (Christian)
- * Improve commit message.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f211268ed1f9 ("dm: Use the block layer zone append emulation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Link: https://lore.kernel.org/r/20250625093327.548866-6-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/md/dm.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index 393b97b4a991..a223208b83e0 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -592,7 +592,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
- 	synchronize_shrinkers();
- }
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1307,8 +1307,9 @@ out:
+ /*
+  * A target may call dm_accept_partial_bio only from the map routine.  It is
+  * allowed for all bio types except REQ_PREFLUSH, REQ_OP_ZONE_* zone management
+- * operations, REQ_OP_ZONE_APPEND (zone append writes) and any bio serviced by
+- * __send_duplicate_bios().
++ * operations, zone append writes (native with REQ_OP_ZONE_APPEND or emulated
++ * with write BIOs flagged with BIO_EMULATES_ZONE_APPEND) and any bio serviced
++ * by __send_duplicate_bios().
+  *
+  * dm_accept_partial_bio informs the dm that the target only wants to process
+  * additional n_sectors sectors of the bio and the rest of the data should be
+@@ -1341,11 +1342,19 @@ void dm_accept_partial_bio(struct bio *b
+ 	unsigned int bio_sectors = bio_sectors(bio);
  
--/* As long as pages are available make sure to release at least one */
- static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
- 					    struct shrink_control *sc)
- {
-@@ -600,9 +599,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 	BUG_ON(dm_tio_flagged(tio, DM_TIO_IS_DUPLICATE_BIO));
+-	BUG_ON(op_is_zone_mgmt(bio_op(bio)));
+-	BUG_ON(bio_op(bio) == REQ_OP_ZONE_APPEND);
+ 	BUG_ON(bio_sectors > *tio->len_ptr);
+ 	BUG_ON(n_sectors > bio_sectors);
  
- 	do
- 		num_freed += ttm_pool_shrink();
--	while (!num_freed && atomic_long_read(&allocated_pages));
-+	while (num_freed < sc->nr_to_scan &&
-+	       atomic_long_read(&allocated_pages));
- 
--	return num_freed;
-+	sc->nr_scanned = num_freed;
++	if (static_branch_unlikely(&zoned_enabled) &&
++	    unlikely(bdev_is_zoned(bio->bi_bdev))) {
++		enum req_op op = bio_op(bio);
 +
-+	return num_freed ?: SHRINK_STOP;
- }
++		BUG_ON(op_is_zone_mgmt(op));
++		BUG_ON(op == REQ_OP_WRITE);
++		BUG_ON(op == REQ_OP_WRITE_ZEROES);
++		BUG_ON(op == REQ_OP_ZONE_APPEND);
++	}
++
+ 	*tio->len_ptr -= bio_sectors - n_sectors;
+ 	bio->bi_iter.bi_size = n_sectors << SECTOR_SHIFT;
  
- /* Return the number of pages available or SHRINK_EMPTY if we have none */
--- 
-2.39.5
-
 
 
 
