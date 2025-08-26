@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6ECB363D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B91CB36180
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B405D1BC7C55
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004B48A2174
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E873F13FD86;
-	Tue, 26 Aug 2025 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9100423B60A;
+	Tue, 26 Aug 2025 13:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBZLtyNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EizF2LIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B85AD4B;
-	Tue, 26 Aug 2025 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDAF1D47B4;
+	Tue, 26 Aug 2025 13:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214787; cv=none; b=eiJWQ/9zs2yb/XMOtDBcHYOEWsR7V/DqDHLFTBp4pKUYwb7xQmvqOJtzjKhQe5T7wCC2c9ojkVvl1rTIOGB45paxmBG4twpLdq5VAgueuf5xhoKBaUVVf9dtPlM604PqKVlYq+h91lhmi2V/NHN9imh5vsgwZg4+DUobN6/HWqM=
+	t=1756213509; cv=none; b=jejAJgRGfaa7TRPp3Nh+REeiJ2k8MORBiIRNjvCbAFVKwTHvgNUBz8ppEJJKv9kjif0LpwXHZJTxes06UEEitHVLMKPvan40+RRguqDrvBvnwN9y88cmhmxZ6y+aIZRnOv4IUK9Df5GeQpsHTdhp/b0Cs81flv4zg89VfyHJcfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214787; c=relaxed/simple;
-	bh=F0m7+a4xBFY0GwzHIvtJ0O/Sv6Q77yHkGtfEoJPCCNs=;
+	s=arc-20240116; t=1756213509; c=relaxed/simple;
+	bh=86o8EN5FksI9I/I63zCijRiP/iKbokbnFd2/lSb6xOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIHKGEw+FYWsWNxlJ2JGnGy4o7dVkUPRkNh9OybhQI7kK063X5Nv1r+WoKqYqwalZru8MzYXgZNnla4wCSMvzXN+3/UHjSxY5O4mrNmfzj1QPdolukvmCS2KUX3TcgUjDN1A4vBKXf5N+LuTNBm1ZE0MCVVItM9BfeUS9czzLnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBZLtyNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BFEC4CEF1;
-	Tue, 26 Aug 2025 13:26:27 +0000 (UTC)
+	 MIME-Version; b=CX1717G2TBKrMv7V50xdGNaHrV3mLVIbomMYUE7l7jPYNROYRMsMSrvlkKqAhistsYSpX2Q9eA5RBxxBfqDpBK/RuWey1rNEgyAdM3mnE5uqeGVTGBW8MCxAJWvrsXW3/Fu6g8omsib4xquFEnnVmxgxSOMVesOcSWsBzOyjJQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EizF2LIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F1FC4CEF1;
+	Tue, 26 Aug 2025 13:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214787;
-	bh=F0m7+a4xBFY0GwzHIvtJ0O/Sv6Q77yHkGtfEoJPCCNs=;
+	s=korg; t=1756213509;
+	bh=86o8EN5FksI9I/I63zCijRiP/iKbokbnFd2/lSb6xOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBZLtyNn+SneHv0VYtJGCBInROJTaECMvEMqYqjE0GteEs6qZmbA20mNT0Vu8D/7T
-	 Shhd4pbNyFGT0BdpMCfUJ4bfVpXtEJyNs9vIcaHqn3hJfhOEnrOdqkLF7CBkRoVxXn
-	 Wg5KQKqMnZNFoljiNDFdiTOiajWqDYDCKGdiSIKo=
+	b=EizF2LICPJCJGqxeLHSMhQnIPggKgXKO7CL0xfzrvgqHuGqnifgVsrv3VzazhH0F4
+	 gtO87fSjWg0e9T0agvIzTiHBqgnb5/LTIV2Bi56xzGZTkaV1O6y1zr/M8jfrGp7qdX
+	 bk46Su68mWSCiOj+l0rjd5rTIgXsX7tFjbzuacoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Stan Johnson <userm57@yahoo.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 6.1 269/482] m68k: Fix lost column on framebuffer debug console
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.6 373/587] wifi: ath11k: fix dest ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:08:42 +0200
-Message-ID: <20250826110937.411568717@linuxfoundation.org>
+Message-ID: <20250826111002.395008352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 210a1ce8ed4391b64a888b3fb4b5611a13f5ccc7 upstream.
+commit 8c1ba5091fa9a2d1478da63173b16a701bdf86bb upstream.
 
-Move the cursor position rightward after rendering the character,
-not before. This avoids complications that arise when the recursive
-console_putc call has to wrap the line and/or scroll the display.
-This also fixes the linewrap bug that crops off the rightmost column.
+Add the missing memory barrier to make sure that destination ring
+descriptors are read after the head pointers to avoid using stale data
+on weakly ordered architectures like aarch64.
 
-When the cursor is at the bottom of the display, a linefeed will not
-move the cursor position further downward. Instead, the display scrolls
-upward. Avoid the repeated add/subtract sequence by way of a single
-subtraction at the initialization of console_struct_num_rows.
+The barrier is added to the ath11k_hal_srng_access_begin() helper for
+symmetry with follow-on fixes for source ring buffer corruption which
+will add barriers to ath11k_hal_srng_access_end().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/9d4e8c68a456d5f2bc254ac6f87a472d066ebd5e.1743115195.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org	# 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-2-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/kernel/head.S |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath11k/ce.c    |    3 ---
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    3 ---
+ drivers/net/wireless/ath/ath11k/hal.c   |   12 +++++++++++-
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3404,6 +3404,7 @@ L(console_clear_loop):
+--- a/drivers/net/wireless/ath/ath11k/ce.c
++++ b/drivers/net/wireless/ath/ath11k/ce.c
+@@ -393,9 +393,6 @@ static int ath11k_ce_completed_recv_next
+ 		goto err;
+ 	}
  
- 	movel	%d4,%d1				/* screen height in pixels */
- 	divul	%a0@(FONT_DESC_HEIGHT),%d1	/* d1 = max num rows */
-+	subql	#1,%d1				/* row range is 0 to num - 1 */
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
  
- 	movel	%d0,%a2@(Lconsole_struct_num_columns)
- 	movel	%d1,%a2@(Lconsole_struct_num_rows)
-@@ -3550,15 +3551,14 @@ func_start	console_putc,%a0/%a1/%d0-%d7
- 	cmpib	#10,%d7
- 	jne	L(console_not_lf)
- 	movel	%a0@(Lconsole_struct_cur_row),%d0
--	addil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	movel	%a0@(Lconsole_struct_num_rows),%d1
- 	cmpl	%d1,%d0
- 	jcs	1f
--	subil	#1,%d0
--	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	console_scroll
-+	jra	L(console_exit)
- 1:
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_row)
- 	jra	L(console_exit)
+ 	*skb = pipe->dest_ring->skb[sw_index];
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2662,9 +2662,6 @@ int ath11k_dp_process_rx(struct ath11k_b
+ try_again:
+ 	ath11k_hal_srng_access_begin(ab, srng);
  
- L(console_not_lf):
-@@ -3585,12 +3585,6 @@ L(console_not_cr):
-  */
- L(console_not_home):
- 	movel	%a0@(Lconsole_struct_cur_column),%d0
--	addql	#1,%a0@(Lconsole_struct_cur_column)
--	movel	%a0@(Lconsole_struct_num_columns),%d1
--	cmpl	%d1,%d0
--	jcs	1f
--	console_putc	#'\n'	/* recursion is OK! */
--1:
- 	movel	%a0@(Lconsole_struct_cur_row),%d1
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	while (likely(desc =
+ 	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
+ 									     srng))) {
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -796,13 +796,23 @@ u32 *ath11k_hal_srng_src_peek(struct ath
  
- 	/*
-@@ -3637,6 +3631,23 @@ L(console_do_font_scanline):
- 	addq	#1,%d1
- 	dbra	%d7,L(console_read_char_scanline)
- 
-+	/*
-+	 *	Register usage in the code below:
-+	 *	a0 = pointer to console globals
-+	 *	d0 = cursor column
-+	 *	d1 = cursor column limit
-+	 */
+ void ath11k_hal_srng_access_begin(struct ath11k_base *ab, struct hal_srng *srng)
+ {
++	u32 hp;
 +
-+	lea	%pc@(L(console_globals)),%a0
-+
-+	movel	%a0@(Lconsole_struct_cur_column),%d0
-+	addql	#1,%d0
-+	movel	%d0,%a0@(Lconsole_struct_cur_column)	/* Update cursor pos */
-+	movel	%a0@(Lconsole_struct_num_columns),%d1
-+	cmpl	%d1,%d0
-+	jcs	L(console_exit)
-+	console_putc	#'\n'		/* Line wrap using tail recursion */
-+
- L(console_exit):
- func_return	console_putc
+ 	lockdep_assert_held(&srng->lock);
  
+ 	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+ 	} else {
+-		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++
++		if (hp != srng->u.dst_ring.cached_hp) {
++			srng->u.dst_ring.cached_hp = hp;
++			/* Make sure descriptor is read after the head
++			 * pointer.
++			 */
++			dma_rmb();
++		}
+ 
+ 		/* Try to prefetch the next descriptor in the ring */
+ 		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
 
 
 
