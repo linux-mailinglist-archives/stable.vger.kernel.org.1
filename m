@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73776B36BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395A4B368A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F3F7BE367
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5555C8A7010
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B3E352060;
-	Tue, 26 Aug 2025 14:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97B52BEC45;
+	Tue, 26 Aug 2025 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7xw/9xK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ng/R4Vep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EBF341AA6;
-	Tue, 26 Aug 2025 14:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DF0350D5D;
+	Tue, 26 Aug 2025 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219495; cv=none; b=e77xqSqufADF9h6BJ3eZ/617w+jb/26rBW5jUNj5ybB7A4pHCEerStR7dQO8wcaSvxnm3AlFvHv9I7CRQ+JgcRcMu0S/9IWIM+AdazoN0bF+tpci/gnVrVn9xlOACJGlRUVq7gJDE9T+ovNDXJGHf7+VDf/Ew8yEtNUIOMrJ4JE=
+	t=1756217000; cv=none; b=BiAVED3IRLLsM+2AdOCL8vqNQ7zJJm9vbirVvqrd8IUVdMtYnTmfIPHbn7ZZIigcnUZcn9I6+A+9ZlLnIXHSHH5WhAxJKieRZgSbNPRcPd7TixIsbYISiSlYZqhTLNMoyPrG7l584S2hwB1M+OBvoNkaWnzH6x5JrRB2KEtiqrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219495; c=relaxed/simple;
-	bh=xnRSBTlmvlORcuXWCZtYqGEpRvA6Qbj51tCaRepXVoc=;
+	s=arc-20240116; t=1756217000; c=relaxed/simple;
+	bh=tUh0H3/5w1+JSNUlL4MS3Xuep+vgn2srVcRXBDcygvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7yTe5G9Io3pHM9uUoX7jneVlRPa0fvMg0y8mrHBIEGHcaNPfnKeDE5lpOeGb1e4yUDjO0WSnFLm89zBPaS9oRXVHag2BdYmu1vrUCgXqIz0XWM0tliFj1WYiT2Bn9GXGr/Q5P0+reo251gTGgvculQ8+4gwDKXDhIqcoz6M+6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7xw/9xK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B932C4CEF1;
-	Tue, 26 Aug 2025 14:44:54 +0000 (UTC)
+	 MIME-Version; b=JFhQxpnwVevCLGKLR4+iL/+QgAGGmAWCQ7KkGAZ2siw6PGenrSMboLevDQ2gvTR47k+95V0mwxt+9rFBxnsUQiSH8RTIbJl2TvK5QIPMsMnnvfUxBksW2L2hGy8OLT/qdZsnOPPxZsRGfXoYY+zeVNDLWpxO/GMat9Dm2mXqWTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ng/R4Vep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2B1C4CEF1;
+	Tue, 26 Aug 2025 14:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219494;
-	bh=xnRSBTlmvlORcuXWCZtYqGEpRvA6Qbj51tCaRepXVoc=;
+	s=korg; t=1756217000;
+	bh=tUh0H3/5w1+JSNUlL4MS3Xuep+vgn2srVcRXBDcygvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7xw/9xKjIJWC2Z7haQfR/iMRcSkVurkc+uYmGI6PybahBt54xYLljkeP1IkTHBa2
-	 2xkBPZ1ykWPI/yZdS4HQdhAuZxbfgtX83wH3pQZDtsJwS/2hVsWXKhQCvrka87RK4D
-	 L0bGW7cCmRzS+D6yqpgOCL/oBsYVUGQk8YnqD2zA=
+	b=ng/R4VepVZMWS+JtZ0S2tq4AK1INhZRGFoR9ProJDH69spXnFshgGB+QIh3XG8RSM
+	 dgWUAqRqHdg3unaosuhByJRMrc/UqzkDZHkJUX1cxt+OT+96rmjRAg6dVFk5k4cumL
+	 pH3vIB+n04ILS958tg8f7V9ayWI8g8k41w5U3PXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@mellanox.com>,
-	Ido Schimmel <idosch@mellanox.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 386/403] selftests: forwarding: tc_actions.sh: add matchall mirror test
+	Waiman Long <longman@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 621/644] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
 Date: Tue, 26 Aug 2025 13:11:52 +0200
-Message-ID: <20250826110917.682840395@linuxfoundation.org>
+Message-ID: <20250826111001.945123474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@mellanox.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 075c8aa79d541ea08c67a2e6d955f6457e98c21c ]
+[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
 
-Add test for matchall classifier with mirred egress mirror action.
+The following lockdep splat was observed.
 
-Signed-off-by: Jiri Pirko <jiri@mellanox.com>
-Signed-off-by: Ido Schimmel <idosch@mellanox.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[  812.359086] ============================================
+[  812.359089] WARNING: possible recursive locking detected
+[  812.359097] --------------------------------------------
+[  812.359100] runtest.sh/30042 is trying to acquire lock:
+[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
+[  812.359131]
+[  812.359131] but task is already holding lock:
+[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
+     :
+[  812.359267] Call Trace:
+[  812.359272]  <TASK>
+[  812.359367]  cpus_read_lock+0x3c/0xe0
+[  812.359382]  static_key_enable+0xe/0x20
+[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
+[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
+[  812.359411]  cgroup_file_write+0x1c7/0x660
+[  812.359467]  kernfs_fop_write_iter+0x358/0x530
+[  812.359479]  vfs_write+0xabe/0x1250
+[  812.359529]  ksys_write+0xf9/0x1d0
+[  812.359558]  do_syscall_64+0x5f/0xe0
+
+Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
+and hotplug lock order"), the ordering of cpu hotplug lock
+and cpuset_mutex had been reversed. That patch correctly
+used the cpuslocked version of the static branch API to enable
+cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
+same for cpusets_insane_config_key.
+
+The cpusets_insane_config_key can be enabled in the
+check_insane_mems_config() which is called from update_nodemask()
+or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
+cpuset_mutex held. Deadlock can happen with a pending hotplug event that
+tries to acquire the cpu hotplug write lock which will block further
+cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
+switching to use static_branch_enable_cpuslocked().
+
+Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/tc_actions.sh |   26 +++++++++++++------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/tc_actions.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
-@@ -2,7 +2,8 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- ALL_TESTS="gact_drop_and_ok_test mirred_egress_redirect_test \
--	mirred_egress_mirror_test gact_trap_test"
-+	mirred_egress_mirror_test matchall_mirred_egress_mirror_test \
-+	gact_trap_test"
- NUM_NETIFS=4
- source tc_common.sh
- source lib.sh
-@@ -50,6 +51,9 @@ switch_destroy()
- mirred_egress_test()
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index b40f86a3f605..78c499021768 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -408,7 +408,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
  {
- 	local action=$1
-+	local protocol=$2
-+	local classifier=$3
-+	local classifier_args=$4
- 
- 	RET=0
- 
-@@ -62,9 +66,9 @@ mirred_egress_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched without redirect rule inserted"
- 
--	tc filter add dev $swp1 ingress protocol ip pref 1 handle 101 flower \
--		$tcflags dst_ip 192.0.2.2 action mirred egress $action \
--		dev $swp2
-+	tc filter add dev $swp1 ingress protocol $protocol pref 1 handle 101 \
-+		$classifier $tcflags $classifier_args \
-+		action mirred egress $action dev $swp2
- 
- 	$MZ $h1 -c 1 -p 64 -a $h1mac -b $h2mac -A 192.0.2.1 -B 192.0.2.2 \
- 		-t ip -q
-@@ -72,10 +76,11 @@ mirred_egress_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_err $? "Did not match incoming $action packet"
- 
--	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
-+	tc filter del dev $swp1 ingress protocol $protocol pref 1 handle 101 \
-+		$classifier
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 
--	log_test "mirred egress $action ($tcflags)"
-+	log_test "mirred egress $classifier $action ($tcflags)"
- }
- 
- gact_drop_and_ok_test()
-@@ -187,12 +192,17 @@ cleanup()
- 
- mirred_egress_redirect_test()
- {
--	mirred_egress_test "redirect"
-+	mirred_egress_test "redirect" "ip" "flower" "dst_ip 192.0.2.2"
- }
- 
- mirred_egress_mirror_test()
- {
--	mirred_egress_test "mirror"
-+	mirred_egress_test "mirror" "ip" "flower" "dst_ip 192.0.2.2"
-+}
-+
-+matchall_mirred_egress_mirror_test()
-+{
-+	mirred_egress_test "mirror" "all" "matchall" ""
- }
- 
- trap cleanup EXIT
+ 	if (!cpusets_insane_config() &&
+ 		movable_only_nodes(nodes)) {
+-		static_branch_enable(&cpusets_insane_config_key);
++		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
+ 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
+ 			"Cpuset allocations might fail even with a lot of memory available.\n",
+ 			nodemask_pr_args(nodes));
+-- 
+2.50.1
+
 
 
 
