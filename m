@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28BCB36465
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA8DB366D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C874E2A317C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14EFC56675C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31530146D;
-	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F1F350D64;
+	Tue, 26 Aug 2025 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ju+NsOrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBgCFuwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F2418A6C4;
-	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B5334F49D;
+	Tue, 26 Aug 2025 13:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214659; cv=none; b=RtpLDaZq6AVfTqAMxCbhA0ui+2N5fPlYN0Lula9VVqMECcuQhPVNQ5e+/JVD8MVpB+AktGZFihfPxjXL+FHMTK/hK4mpidwQum49e8IQqjwa3LxHODdwFIwEbxqy6q0u5B+hlsepmcTZ9OvubUczcf/qcikN8XLGAll1Cjc2EpE=
+	t=1756216260; cv=none; b=szdZsdcQ21w3wZKfUchgobmU54hnImNwZ3m0AWUMwedLqmTDzYS0+IzNa3HwEofs/eXFDW+ZQwB1MQaH2gPtf7akoc9x/xKFXKmzl3W7DZsmBjX3P1OHwfec5yCcmIl50bj+dCKmmAs+sC7I8ukfTrjDX8PwkCQ25pApEd5anOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214659; c=relaxed/simple;
-	bh=7BBsoc0FYbSDuDlnzkQgjTClQ+vnnTAwCIn/8TDd10k=;
+	s=arc-20240116; t=1756216260; c=relaxed/simple;
+	bh=fuaXNmrn2483jiKLkv1Rz9yQ+DzKd4BYGxCLg4Rz3c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWmgs7ICdPFwhrATJSEr3O/bgX4pi2oiJX/HZCiHcHroYB9hGfwAo3fsemxuPojurVqSwZ0GmXAz6ZdsDfme9tG3QNkFk5ZABLvSjXzyCh7DVM7BZDi7mGidCXbYCyJ8IvH6FhEuQk+xgi0q6PHjW/WC9+EtLWFLy9S3m9xCNUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ju+NsOrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D803C4CEF1;
-	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
+	 MIME-Version; b=qiq3a1+HDnWSA+/WGvAMNr6YoMgJLChQn71MPh8Maa0fcMXUGX2LB7Ehsqm0DxsTSn03B47XI5zJydoQNtwYfPJlIeONKO7NEBSFGgEn8KToCVbt87vA9I+/aIKdz3xugObZ7KlJ2GQj2WcDlIipgsghipfYLrbNraHU8SrxaYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBgCFuwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A981C4CEF1;
+	Tue, 26 Aug 2025 13:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214659;
-	bh=7BBsoc0FYbSDuDlnzkQgjTClQ+vnnTAwCIn/8TDd10k=;
+	s=korg; t=1756216260;
+	bh=fuaXNmrn2483jiKLkv1Rz9yQ+DzKd4BYGxCLg4Rz3c0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ju+NsOrW/HhkLvq9ffxaTCQbeOKGoagP6SfjyKLcrUG7itNSPGtLToJrn9FupfJnO
-	 O0LZTnEevtJYJlN7DGXp7IUBf1Sm7g9jln4ghYhGxpQu0TC+OymP0SwlmaqKtP1jc7
-	 h82bacWygXHvP4A/CPM65vWv6esEOfiIEeoavvEA=
+	b=GBgCFuwhRvL7eAg2mj01XkKAJ3BYDsdKD4bwOZSWNrRlf0iKIwRYtbP0+n+IQzGEJ
+	 Z1wEZ/Qsp889Ln6k0ceMtgHqLXtaqRMM/gaWW+4RvbElqqWUVExOIlU+jyR0YvKYBZ
+	 OsqVsYUI0mPFINfilN9pP8Uu31P7Qt+r6YzAVUJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Mark Einon <mark.einon@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/482] fs/orangefs: use snprintf() instead of sprintf()
+Subject: [PATCH 5.15 342/644] et131x: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:07:13 +0200
-Message-ID: <20250826110935.254830232@linuxfoundation.org>
+Message-ID: <20250826110954.867159130@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
-
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Mark Einon <mark.einon@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index b57140ebfad0..cd4bfd92ebd6 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
+index f4edc616388c..1869c0635e56 100644
+--- a/drivers/net/ethernet/agere/et131x.c
++++ b/drivers/net/ethernet/agere/et131x.c
+@@ -2460,6 +2460,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb),
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2469,6 +2473,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2479,6 +2487,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb_headlen(skb) / 2,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					goto unmap_first_out;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2490,6 +2502,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 						    0,
+ 						    desc[frag].len_vlan,
+ 						    DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
++				goto unmap_out;
++
+ 			desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 			desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 			frag++;
+@@ -2579,6 +2594,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 		       &adapter->regs->global.watchdog_timer);
+ 	}
+ 	return 0;
++
++unmap_out:
++	// Unmap the body of the packet with map_page
++	while (--i) {
++		frag--;
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_page(&adapter->pdev->dev, dma_addr,
++			       desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++unmap_first_out:
++	// Unmap the header with map_single
++	while (frag--) {
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_single(&adapter->pdev->dev, dma_addr,
++				 desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
- 
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
+ static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
 -- 
 2.39.5
 
