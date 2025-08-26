@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C06BB364BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3046B35E4A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E514B5E2BC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D62914652F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E352264B8;
-	Tue, 26 Aug 2025 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681D833472E;
+	Tue, 26 Aug 2025 11:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omNcuLla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAZ7r0ti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CBD2857D2;
-	Tue, 26 Aug 2025 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFE733470A;
+	Tue, 26 Aug 2025 11:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215183; cv=none; b=ZELX8AhEF3iC6OooFZJ6eV3VLkeMASjmU42HsHCbi9OzKcV5hnbxPGLuat4J9O+mvlVNiZ9V3K/oeIIaZvWBB4c4/j/c65Zyjw/BkZwBqAGLp9ZeiIQZeXPtVmVuKRDNo+2iGcvEj5MbDgCQxlIEe9Tnvqt1InkNYDPMRdz22PI=
+	t=1756208739; cv=none; b=RnUg+dFS3sDfF1w80omYVZaVGM2JiIP19tTeUggj7FTNg4+o5AXozsswOUDDfFeP94sFsS/SCIdQQ03dVCHZeWDxQwtEuHYBLy2/tiPOeSE58cJ5odXeqFoMhBvMMUbw59bPPM2vkn8+edAGrqlxjFITFSykRnRk3shNHciWUdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215183; c=relaxed/simple;
-	bh=qNqRvr8RIPU5rhTgUx9vPJrPrxbzGOyoLfoMqY6J29I=;
+	s=arc-20240116; t=1756208739; c=relaxed/simple;
+	bh=vi3XrcnrlMJ08CyuxGHqbUTBSn6GF+0+YH+OUuZP43U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUIdU/O5jOiLCIMsDJymadx9TUJ35dF1jps42glwmiXjET6ejKWGOkAKMbgpcSrxe7E9dvfPXEywszTNkAd0MN3HmLRKpoJ6p1zOTKYvgJApBRMTFJplbs4VklKft0GppkJuhB7YzkTi2o7Vn60MjOWXlPw/YAQ+458nB401f8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omNcuLla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0FDC4CEF1;
-	Tue, 26 Aug 2025 13:33:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tBlyyBhCQGm/w5rCsWDUqyu1z352gsHgZ99t7RDHvCd5Ti0o4iTYuxufRwIl9+Erf/8Aftea/tcOVdqjEsvlJOjfz3vSEPgciyo4XQdocknpZGJ5Xgktj3TildaMeAQCDMn0Bqwbmg70RMYVhlTJrPXMmenxw1lsuX0Oc4JLxb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAZ7r0ti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FD1C113CF;
+	Tue, 26 Aug 2025 11:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215183;
-	bh=qNqRvr8RIPU5rhTgUx9vPJrPrxbzGOyoLfoMqY6J29I=;
+	s=korg; t=1756208738;
+	bh=vi3XrcnrlMJ08CyuxGHqbUTBSn6GF+0+YH+OUuZP43U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omNcuLlaZis/Ma179Hnvkhp/YAKWpq1JprNRhXesnxUKkagKM5rpdaBinm3ineDa2
-	 t4iddkVDesevcvDdiw9kHIZhrDqZxvbESbUnx4SLlCEaHheo20CPZw7BFhIkPsrpvx
-	 n1v55558l79rsYFXilwdNKSGIPhQd5sD+BpTrKnY=
+	b=JAZ7r0timqJH56nC2UUCPJNFrFDEkg9oVZMTvR1VkuGH0Pv82bJTLiFSrRe9VQiGw
+	 wQlc0wk0sN66sjp5JP9DlgaBC/F32H2oSFa97wSf3nhCDpQVrxsuDkd6JeNv5VJDWi
+	 NBv/Kx+xTLnqIKvIvQPw4h49ByXH5TZ1y214gZuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sumanth Gavini <sumanth.gavini@yahoo.com>
-Subject: [PATCH 6.1 388/482] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.12 226/322] usb: renesas-xhci: Fix External ROM access timeouts
 Date: Tue, 26 Aug 2025 13:10:41 +0200
-Message-ID: <20250826110940.414210365@linuxfoundation.org>
+Message-ID: <20250826110921.476574265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,109 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 5af1f84ed13a416297ab9ced7537f4d5ae7f329a upstream.
+commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
 
-Connections may be cleanup while waiting for the commands to complete so
-this attempts to check if the connection handle remains valid in case of
-errors that would lead to call hci_conn_failed:
+Increase the External ROM access timeouts to prevent failures during
+programming of External SPI EEPROM chips. The current timeouts are
+too short for some SPI EEPROMs used with uPD720201 controllers.
 
-BUG: KASAN: slab-use-after-free in hci_conn_failed+0x1f/0x160
-Read of size 8 at addr ffff888001376958 by task kworker/u3:0/52
+The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+the current timeout for Sector Erase issued by the controller before
+Page Program in renesas_fw_download_image() is also 100 ms. Neither
+timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
 
-CPU: 0 PID: 52 Comm: kworker/u3:0 Not tainted
-6.5.0-rc1-00527-g2dfe76d58d3a #5615
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.2-1.fc38 04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1d/0x70
- print_report+0xce/0x620
- ? __virt_addr_valid+0xd4/0x150
- ? hci_conn_failed+0x1f/0x160
- kasan_report+0xd1/0x100
- ? hci_conn_failed+0x1f/0x160
- hci_conn_failed+0x1f/0x160
- hci_abort_conn_sync+0x237/0x360
+MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
+PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
+= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
+that the maximum time required for Chip Erase opcode to complete is 2 s,
+and for Sector Erase it is 300 ms .
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
+MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
+PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
+(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
+"tCE" indicate that the maximum time required for Chip Erase opcode to
+complete is 3.2 s, and for Sector Erase it is 400 ms .
+
+Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
+and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
+to be sufficient for majority of SPI EEPROM chips.
+
+[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
+[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
+
+Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c |   43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+ drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5525,31 +5525,46 @@ static int hci_reject_conn_sync(struct h
+--- a/drivers/usb/host/xhci-pci-renesas.c
++++ b/drivers/usb/host/xhci-pci-renesas.c
+@@ -47,8 +47,9 @@
+ #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
+ #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
  
- int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- {
--	int err;
-+	int err = 0;
-+	u16 handle = conn->handle;
+-#define RENESAS_RETRY	10000
+-#define RENESAS_DELAY	10
++#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
++#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
++#define RENESAS_DELAY			10
  
- 	switch (conn->state) {
- 	case BT_CONNECTED:
- 	case BT_CONFIG:
--		return hci_disconnect_sync(hdev, conn, reason);
-+		err = hci_disconnect_sync(hdev, conn, reason);
-+		break;
- 	case BT_CONNECT:
- 		err = hci_connect_cancel_sync(hdev, conn);
--		/* Cleanup hci_conn object if it cannot be cancelled as it
--		 * likelly means the controller and host stack are out of sync.
--		 */
--		if (err) {
--			hci_dev_lock(hdev);
--			hci_conn_failed(conn, err);
--			hci_dev_unlock(hdev);
--		}
--		return err;
-+		break;
- 	case BT_CONNECT2:
--		return hci_reject_conn_sync(hdev, conn, reason);
-+		err = hci_reject_conn_sync(hdev, conn, reason);
-+		break;
- 	default:
- 		conn->state = BT_CLOSED;
--		break;
-+		return 0;
-+	}
-+
-+	/* Cleanup hci_conn object if it cannot be cancelled as it
-+	 * likelly means the controller and host stack are out of sync
-+	 * or in case of LE it was still scanning so it can be cleanup
-+	 * safely.
-+	 */
-+	if (err) {
-+		struct hci_conn *c;
-+
-+		/* Check if the connection hasn't been cleanup while waiting
-+		 * commands to complete.
-+		 */
-+		c = hci_conn_hash_lookup_handle(hdev, handle);
-+		if (!c || c != conn)
-+			return 0;
-+
-+		hci_dev_lock(hdev);
-+		hci_conn_failed(conn, err);
-+		hci_dev_unlock(hdev);
- 	}
+ #define RENESAS_FW_NAME	"renesas_usb_fw.mem"
  
--	return 0;
-+	return err;
- }
+@@ -407,7 +408,7 @@ static void renesas_rom_erase(struct pci
+ 	/* sleep a bit while ROM is erased */
+ 	msleep(20);
  
- static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
+-	for (i = 0; i < RENESAS_RETRY; i++) {
++	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
+ 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
+ 					      &status);
+ 		status &= RENESAS_ROM_STATUS_ERASE;
 
 
 
