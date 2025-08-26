@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9997B35E1F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79175B36ABD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C56362A80
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C99F4E2032
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5820E319858;
-	Tue, 26 Aug 2025 11:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F10C352067;
+	Tue, 26 Aug 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aah1gYXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kD5AaVeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16140393DD1;
-	Tue, 26 Aug 2025 11:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3063570BB;
+	Tue, 26 Aug 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208585; cv=none; b=fGqts3oS52UTr0ZTOU0wLtcqdlJQw4m1Qz81pIm/jiLNd8R0oCFPoEoE3bP04jl7RV1OT/y/EP41sPg1mpeM/GOvugIIEefoSZscoNH1zzZSrFmPJgMNWFiqcq4cd32vDS9X2J2vykUyJld6r31EHTP07DWaN+6gcY4Y4BBX+Bs=
+	t=1756219037; cv=none; b=XxZChbXvU5prg8NlIqDHKFZer+L2lgOPvCjElevbYYNBm5w5tB0rOu0vKT8FtOAj/8PFExEJjUPCp6PMvyd+Ekm4O+o2RlGeJQ66ZQnPV9ZSRjO1nIaNyZsa+MGgKgAXwBaLNSBT64d6FQjZNFnqfcJthqVRKLl08pLh3toT99k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208585; c=relaxed/simple;
-	bh=vJPOFWko7MzwmC/Lx2v40VktK12z79TWWdApNDpkQwc=;
+	s=arc-20240116; t=1756219037; c=relaxed/simple;
+	bh=+bDslmM1+1P4UhHL6Uly57GpQriD1py/ROA2orCMDVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s306xaNZGsqy1JEBgO+FC7KNQJy/q4AVGiFwM2UshdiQJbzJs6GsUyNp6qXjaIS4rvk1jCgRvflYf+OFCD3ifO4u3SKnnGgkAeaXgHeDFKwTMOeRXk1pGzNibMe3TF5Xn8JzzuYwSnOwmIFBDdCmU38jnKdWluhV5DQDOdUZ8Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aah1gYXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89964C4CEF1;
-	Tue, 26 Aug 2025 11:43:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O3kJdkpPhkWxzZ7P8TaDTRDriFMI0JZY6pqJcNV7Es+gmKw2Wy7409kcd96W+H0DObzgJDgvhUriZTyK2PnYLwsYxRvx2EUyzS5VXa0OXWlFRWlATPIH265gcNWm669a4At2LmLSz+Gpu/0wuT5z4mk3EVbR06TXDJzs9Krrf3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kD5AaVeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED99C4CEF1;
+	Tue, 26 Aug 2025 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208584;
-	bh=vJPOFWko7MzwmC/Lx2v40VktK12z79TWWdApNDpkQwc=;
+	s=korg; t=1756219037;
+	bh=+bDslmM1+1P4UhHL6Uly57GpQriD1py/ROA2orCMDVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aah1gYXuQUm5XYssZJNMJjOd0LewiewHylJGG2C+W2XnAOc9vU0OVrq2V9/UBnQXq
-	 1ntM038lW9G7nj2Ooau0hMs184A07c9g5lxQDFqdl7fBeFWyEeVpT6V/HrONV9aJcR
-	 1qpff+hn/wfPQ9c5SdL5TQVPwVcHiaCbD4WbmiSA=
+	b=kD5AaVeKjMzjPzQ7qZDrJJsJwcknGYxEGC0hoyrq6/lCaF1yg9OGRPmq8U8erBLTI
+	 06uef5fi+qKSkP0MEymHiooi4TTfRMlRR6vn6v/XP3NWZLnGj3RX9waHI4oP/9EjuX
+	 zl5Ves/vH7cqrewnbQCYKbh+bL0dutADNPr5IUE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/322] USB: typec: Use str_enable_disable-like helpers
+Subject: [PATCH 5.4 229/403] uapi: in6: restore visibility of most IPv6 socket options
 Date: Tue, 26 Aug 2025 13:09:15 +0200
-Message-ID: <20250826110919.261634245@linuxfoundation.org>
+Message-ID: <20250826110913.153737868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,260 +59,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 13b3af26a41538e5051baedba8678eba521a27d3 ]
+[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
 
-Replace ternary (condition ? "enable" : "disable") syntax with helpers
-from string_choices.h because:
-1. Simple function call with one argument is easier to read.  Ternary
-   operator has three arguments and with wrapping might lead to quite
-   long code.
-2. Is slightly shorter thus also easier to read.
-3. It brings uniformity in the text - same string.
-4. Allows deduping by the linker, which results in a smaller binary
-   file.
+A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
+hid the definitions of IPV6 options, because GCC was complaining
+about duplicates. The commit did not list the warnings seen, but
+trying to recreate them now I think they are (building iproute2):
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250114-str-enable-disable-usb-v1-3-c8405df47c19@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 1e61f6ab0878 ("usb: typec: fusb302: cache PD RX state")
+In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
+                 from rdma.h:16,
+                 from res.h:9,
+                 from res-ctx.c:7:
+../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
+  171 | #define IPV6_ADD_MEMBERSHIP     20
+      |         ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/netinet/in.h:37,
+                 from rdma.h:13:
+/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
+  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~
+../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
+  172 | #define IPV6_DROP_MEMBERSHIP    21
+      |         ^~~~~~~~~~~~~~~~~~~~
+/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
+  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~~
+
+Compilers don't complain about redefinition if the defines
+are identical, but here we have the kernel using the literal
+value, and glibc using an indirection (defining to a name
+of another define, with the same numerical value).
+
+Problem is, the commit in question hid all the IPV6 socket
+options, and glibc has a pretty sparse list. For instance
+it lacks Flow Label related options. Willem called this out
+in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
+
+  /* uapi/glibc weirdness may leave this undefined */
+  #ifndef IPV6_FLOWINFO
+  #define IPV6_FLOWINFO 11
+  #endif
+
+More interestingly some applications (socat) use
+a #ifdef IPV6_FLOWINFO to gate compilation of thier
+rudimentary flow label support. (For added confusion
+socat misspells it as IPV4_FLOWINFO in some places.)
+
+Hide only the two defines we know glibc has a problem
+with. If we discover more warnings we can hide more
+but we should avoid covering the entire block of
+defines for "IPV6 socket options".
+
+Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c                                |    7 ++--
- drivers/usb/typec/tcpm/fusb302.c                         |   24 +++++++--------
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c      |    3 +
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c |    3 +
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c       |    4 +-
- drivers/usb/typec/tcpm/tcpm.c                            |    7 ++--
- 6 files changed, 27 insertions(+), 21 deletions(-)
+ include/uapi/linux/in6.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -10,6 +10,7 @@
- #include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/usb/pd_vdo.h>
- #include <linux/usb/typec_mux.h>
- #include <linux/usb/typec_retimer.h>
-@@ -354,7 +355,7 @@ active_show(struct device *dev, struct d
- {
- 	struct typec_altmode *alt = to_typec_altmode(dev);
+diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
+index 9f2273a08356..acd32dc630c3 100644
+--- a/include/uapi/linux/in6.h
++++ b/include/uapi/linux/in6.h
+@@ -151,7 +151,6 @@ struct in6_flowlabel_req {
+ /*
+  *	IPV6 socket options
+  */
+-#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADDRFORM		1
+ #define IPV6_2292PKTINFO	2
+ #define IPV6_2292HOPOPTS	3
+@@ -168,8 +167,10 @@ struct in6_flowlabel_req {
+ #define IPV6_MULTICAST_IF	17
+ #define IPV6_MULTICAST_HOPS	18
+ #define IPV6_MULTICAST_LOOP	19
++#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADD_MEMBERSHIP	20
+ #define IPV6_DROP_MEMBERSHIP	21
++#endif
+ #define IPV6_ROUTER_ALERT	22
+ #define IPV6_MTU_DISCOVER	23
+ #define IPV6_MTU		24
+@@ -201,7 +202,6 @@ struct in6_flowlabel_req {
+ #define IPV6_IPSEC_POLICY	34
+ #define IPV6_XFRM_POLICY	35
+ #define IPV6_HDRINCL		36
+-#endif
  
--	return sprintf(buf, "%s\n", alt->active ? "yes" : "no");
-+	return sprintf(buf, "%s\n", str_yes_no(alt->active));
- }
- 
- static ssize_t active_store(struct device *dev, struct device_attribute *attr,
-@@ -630,7 +631,7 @@ static ssize_t supports_usb_power_delive
- {
- 	struct typec_partner *p = to_typec_partner(dev);
- 
--	return sprintf(buf, "%s\n", p->usb_pd ? "yes" : "no");
-+	return sprintf(buf, "%s\n", str_yes_no(p->usb_pd));
- }
- static DEVICE_ATTR_RO(supports_usb_power_delivery);
- 
-@@ -1688,7 +1689,7 @@ static ssize_t vconn_source_show(struct
- 	struct typec_port *port = to_typec_port(dev);
- 
- 	return sprintf(buf, "%s\n",
--		       port->vconn_role == TYPEC_SOURCE ? "yes" : "no");
-+		       str_yes_no(port->vconn_role == TYPEC_SOURCE));
- }
- static DEVICE_ATTR_RW(vconn_source);
- 
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -24,6 +24,7 @@
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/string.h>
-+#include <linux/string_choices.h>
- #include <linux/types.h>
- #include <linux/usb.h>
- #include <linux/usb/typec.h>
-@@ -733,7 +734,7 @@ static int tcpm_set_vconn(struct tcpc_de
- 
- 	mutex_lock(&chip->lock);
- 	if (chip->vconn_on == on) {
--		fusb302_log(chip, "vconn is already %s", on ? "On" : "Off");
-+		fusb302_log(chip, "vconn is already %s", str_on_off(on));
- 		goto done;
- 	}
- 	if (on) {
-@@ -746,7 +747,7 @@ static int tcpm_set_vconn(struct tcpc_de
- 	if (ret < 0)
- 		goto done;
- 	chip->vconn_on = on;
--	fusb302_log(chip, "vconn := %s", on ? "On" : "Off");
-+	fusb302_log(chip, "vconn := %s", str_on_off(on));
- done:
- 	mutex_unlock(&chip->lock);
- 
-@@ -761,7 +762,7 @@ static int tcpm_set_vbus(struct tcpc_dev
- 
- 	mutex_lock(&chip->lock);
- 	if (chip->vbus_on == on) {
--		fusb302_log(chip, "vbus is already %s", on ? "On" : "Off");
-+		fusb302_log(chip, "vbus is already %s", str_on_off(on));
- 	} else {
- 		if (on)
- 			ret = regulator_enable(chip->vbus);
-@@ -769,15 +770,14 @@ static int tcpm_set_vbus(struct tcpc_dev
- 			ret = regulator_disable(chip->vbus);
- 		if (ret < 0) {
- 			fusb302_log(chip, "cannot %s vbus regulator, ret=%d",
--				    on ? "enable" : "disable", ret);
-+				    str_enable_disable(on), ret);
- 			goto done;
- 		}
- 		chip->vbus_on = on;
--		fusb302_log(chip, "vbus := %s", on ? "On" : "Off");
-+		fusb302_log(chip, "vbus := %s", str_on_off(on));
- 	}
- 	if (chip->charge_on == charge)
--		fusb302_log(chip, "charge is already %s",
--			    charge ? "On" : "Off");
-+		fusb302_log(chip, "charge is already %s", str_on_off(charge));
- 	else
- 		chip->charge_on = charge;
- 
-@@ -854,16 +854,16 @@ static int tcpm_set_pd_rx(struct tcpc_de
- 	ret = fusb302_pd_set_auto_goodcrc(chip, on);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot turn %s auto GCRC, ret=%d",
--			    on ? "on" : "off", ret);
-+			    str_on_off(on), ret);
- 		goto done;
- 	}
- 	ret = fusb302_pd_set_interrupts(chip, on);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot turn %s pd interrupts, ret=%d",
--			    on ? "on" : "off", ret);
-+			    str_on_off(on), ret);
- 		goto done;
- 	}
--	fusb302_log(chip, "pd := %s", on ? "on" : "off");
-+	fusb302_log(chip, "pd := %s", str_on_off(on));
- done:
- 	mutex_unlock(&chip->lock);
- 
-@@ -1531,7 +1531,7 @@ static void fusb302_irq_work(struct work
- 	if (interrupt & FUSB_REG_INTERRUPT_VBUSOK) {
- 		vbus_present = !!(status0 & FUSB_REG_STATUS0_VBUSOK);
- 		fusb302_log(chip, "IRQ: VBUS_OK, vbus=%s",
--			    vbus_present ? "On" : "Off");
-+			    str_on_off(vbus_present));
- 		if (vbus_present != chip->vbus_present) {
- 			chip->vbus_present = vbus_present;
- 			tcpm_vbus_change(chip->tcpm_port);
-@@ -1562,7 +1562,7 @@ static void fusb302_irq_work(struct work
- 	if ((interrupt & FUSB_REG_INTERRUPT_COMP_CHNG) && intr_comp_chng) {
- 		comp_result = !!(status0 & FUSB_REG_STATUS0_COMP);
- 		fusb302_log(chip, "IRQ: COMP_CHNG, comp=%s",
--			    comp_result ? "true" : "false");
-+			    str_true_false(comp_result));
- 		if (comp_result) {
- 			/* cc level > Rd_threshold, detach */
- 			chip->cc1 = TYPEC_CC_OPEN;
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-@@ -12,6 +12,7 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/usb/pd.h>
- #include <linux/usb/tcpm.h>
- #include "qcom_pmic_typec.h"
-@@ -418,7 +419,7 @@ static int qcom_pmic_typec_pdphy_set_pd_
- 
- 	spin_unlock_irqrestore(&pmic_typec_pdphy->lock, flags);
- 
--	dev_dbg(pmic_typec_pdphy->dev, "set_pd_rx: %s\n", on ? "on" : "off");
-+	dev_dbg(pmic_typec_pdphy->dev, "set_pd_rx: %s\n", str_on_off(on));
- 
- 	return ret;
- }
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c
-@@ -12,6 +12,7 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/usb/pd.h>
- #include <linux/usb/tcpm.h>
- #include "qcom_pmic_typec.h"
-@@ -38,7 +39,7 @@ static int qcom_pmic_typec_pdphy_stub_se
- 	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
- 	struct device *dev = tcpm->dev;
- 
--	dev_dbg(dev, "set_pd_rx: %s\n", on ? "on" : "off");
-+	dev_dbg(dev, "set_pd_rx: %s\n", str_on_off(on));
- 
- 	return 0;
- }
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
-@@ -13,6 +13,7 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/usb/tcpm.h>
- #include <linux/usb/typec_mux.h>
- #include <linux/workqueue.h>
-@@ -562,7 +563,8 @@ done:
- 	spin_unlock_irqrestore(&pmic_typec_port->lock, flags);
- 
- 	dev_dbg(dev, "set_vconn: orientation %d control 0x%08x state %s cc %s vconn %s\n",
--		orientation, value, on ? "on" : "off", misc_to_vconn(misc), misc_to_cc(misc));
-+		orientation, value, str_on_off(on), misc_to_vconn(misc),
-+		misc_to_cc(misc));
- 
- 	return ret;
- }
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -21,6 +21,7 @@
- #include <linux/seq_file.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/string_choices.h>
- #include <linux/usb.h>
- #include <linux/usb/pd.h>
- #include <linux/usb/pd_ado.h>
-@@ -874,8 +875,8 @@ static int tcpm_enable_auto_vbus_dischar
- 
- 	if (port->tcpc->enable_auto_vbus_discharge) {
- 		ret = port->tcpc->enable_auto_vbus_discharge(port->tcpc, enable);
--		tcpm_log_force(port, "%s vbus discharge ret:%d", enable ? "enable" : "disable",
--			       ret);
-+		tcpm_log_force(port, "%s vbus discharge ret:%d",
-+			       str_enable_disable(enable), ret);
- 		if (!ret)
- 			port->auto_vbus_discharge_enabled = enable;
- 	}
-@@ -4429,7 +4430,7 @@ static void tcpm_unregister_altmodes(str
- 
- static void tcpm_set_partner_usb_comm_capable(struct tcpm_port *port, bool capable)
- {
--	tcpm_log(port, "Setting usb_comm capable %s", capable ? "true" : "false");
-+	tcpm_log(port, "Setting usb_comm capable %s", str_true_false(capable));
- 
- 	if (port->tcpc->set_partner_usb_comm_capable)
- 		port->tcpc->set_partner_usb_comm_capable(port->tcpc, capable);
+ /*
+  * Multicast:
+-- 
+2.39.5
+
 
 
 
