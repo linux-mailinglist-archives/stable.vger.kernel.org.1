@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94D8B36BC4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CD8B366BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94862A00A81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A322189DE8C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B549635AAAB;
-	Tue, 26 Aug 2025 14:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC9235083E;
+	Tue, 26 Aug 2025 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VW81LEbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPpxFXgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7331C33439F;
-	Tue, 26 Aug 2025 14:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCCA341ABD;
+	Tue, 26 Aug 2025 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218710; cv=none; b=i4PD5HsDg3amuLcxiXWVoFc/U/uxW8ngWEq2uFPPb6rSsiNypyC/2W7Ws/hWYHAQBryZ7V5bZbukuP2fXzRtxHLzWsR6JjjBeVLB7HtVqVrB1aRarqS6RRVWW+2At6yKwHDShEmd9GhHRcTxsDSrj5n3qa9gZZYrk+/Z6ZTMQ5w=
+	t=1756216250; cv=none; b=dV/j4yFHJ6XChaTF/wYxyQbJ1WE7852TJK9saLzHYhNSMX6Vua2u9e9uS6x9YJajqqe+m13N+I9XQaJ0HogJU6KtVf3JAsWJ8ij/h++NcysZ3vA6VGGzuwKrwB/hqZKI8iK6BA9VAqj/uNGDvyanA/ontVUS5W9uWf4dH/bNurE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218710; c=relaxed/simple;
-	bh=iNVnPpeLyjWxUFRcD77VubNvgyl3A3lJYyE3r6ripgg=;
+	s=arc-20240116; t=1756216250; c=relaxed/simple;
+	bh=VFVxXr9Jj7Hq5oNy0C4vBCfr+Xfa2ckvTqH4yNRTfdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW933XV3SvMMWhzhCS4qAXaKnQ/vsaPR7R+yeDo6kcKCUPfIUz/FOER1FFQD/YTWgoluWF6D45PVFCpkQyaSTLaduy7lxdsUPWNs3CGAKqLdDp0G5Hvh0WemdDr4axdWu7C1R3SFg1x5PMdyDkdHL5m7Kfyan05JOBO8Aevw0aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VW81LEbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054D8C4CEF1;
-	Tue, 26 Aug 2025 14:31:49 +0000 (UTC)
+	 MIME-Version; b=KKTWQOwu7Q7qAXZ8Tkyyu8B4MUMp9LSkYcg8Z5PkmDq8QkhaC+GYnn402M0ZCLUf+t0y+YPSrIaV476prpxYO1m5DLTRm4VzuDKNQ+K9UHkTw9M3LbdMkGpeFlAB54qgANK1VNOiqpuksgVjkwasZM0mLV43NgAbrMNb4zp3oss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPpxFXgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D2C4CEF1;
+	Tue, 26 Aug 2025 13:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218710;
-	bh=iNVnPpeLyjWxUFRcD77VubNvgyl3A3lJYyE3r6ripgg=;
+	s=korg; t=1756216250;
+	bh=VFVxXr9Jj7Hq5oNy0C4vBCfr+Xfa2ckvTqH4yNRTfdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VW81LEbNhgLgo7umiuTeZ/4tkBp7xcKpBV3gZ3v2ZyfzqQRQKIG4UdEpM10diUj2U
-	 Qb5CEvWRDF3zg24K+4D07y7d3IPcVvUcFmLzHJzc8VJ9PtUWwh80B1vGb1qu62fm1G
-	 mLmQ8rGFkETPmLewYBVYkfLcQYVEuyLDvHCXa5t8=
+	b=aPpxFXgXDetxW4Lq5VOElfw8kC72eDks8HCJEUmw2amRSHjEYBI2/91OG7C6pedHd
+	 SVbkJVTOjTl4MGeIsx7iz1mFxL4IL5auVS9KlMiOoznmRAlACkxuWRlgx/o/YfxDLO
+	 OHYjmDYaqS60NcmixqWMaAwZJ10LSJ6oKJLrWAa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Shannon Nelson <sln@onemain.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/403] selftests: rtnetlink.sh: remove esp4_offload after test
+Subject: [PATCH 5.15 338/644] ktest.pl: Prevent recursion of default variable options
 Date: Tue, 26 Aug 2025 13:07:09 +0200
-Message-ID: <20250826110909.523858324@linuxfoundation.org>
+Message-ID: <20250826110954.763242493@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiumei Mu <xmu@redhat.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 5b32321fdaf3fd1a92ec726af18765e225b0ee2b ]
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-The esp4_offload module, loaded during IPsec offload tests, should
-be reset to its default settings after testing.
-Otherwise, leaving it enabled could unintentionally affect subsequence
-test cases by keeping offload active.
+If a default variable contains itself, do not recurse on it.
 
-Without this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
-esp4_offload           12288  0
-esp4                   32768  1 esp4_offload
+For example:
 
-With this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
 
-Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
-Signed-off-by: Xiumei Mu <xmu@redhat.com>
-Reviewed-by: Shannon Nelson <sln@onemain.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/6d3a1d777c4de4eb0ca94ced9e77be8d48c5b12f.1753415428.git.xmu@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
+
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/rtnetlink.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
-index 3b929e031f59..0c343954a17b 100755
---- a/tools/testing/selftests/net/rtnetlink.sh
-+++ b/tools/testing/selftests/net/rtnetlink.sh
-@@ -744,6 +744,11 @@ kci_test_ipsec_offload()
- 	sysfsf=$sysfsd/ipsec
- 	sysfsnet=/sys/bus/netdevsim/devices/netdevsim0/net/
- 	probed=false
-+	esp4_offload_probed_default=false
-+
-+	if lsmod | grep -q esp4_offload; then
-+		esp4_offload_probed_default=true
-+	fi
- 
- 	# setup netdevsim since dummydev doesn't have offload support
- 	if [ ! -w /sys/bus/netdevsim/new_device ] ; then
-@@ -833,6 +838,7 @@ EOF
- 	fi
- 
- 	# clean up any leftovers
-+	! "$esp4_offload_probed_default" && lsmod | grep -q esp4_offload && rmmod esp4_offload
- 	echo 0 > /sys/bus/netdevsim/del_device
- 	$probed && rmmod netdevsim
- 
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 2109bd42c144..26544bba3f8f 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1351,7 +1351,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
 -- 
 2.39.5
 
