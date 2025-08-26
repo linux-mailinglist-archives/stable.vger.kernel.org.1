@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0DDB36BF8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675C2B367BC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E01A8E5C39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A322A8E5933
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095DA10E0;
-	Tue, 26 Aug 2025 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149C135082E;
+	Tue, 26 Aug 2025 13:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEWj+gFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8rZ4HC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD86350D7C;
-	Tue, 26 Aug 2025 14:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A76302CA6;
+	Tue, 26 Aug 2025 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218845; cv=none; b=koLdewqUnPCK7D67/xAxhC3N/J8Qaa6/3bACkeeNFJv+x9gH9+pjgNDUNzwMo1WXBlIEUK8Is4JOReXd2g/wtnhvd/MidSG5DSsw2rUP9y6cN8uIswOnQD3OkIvVxGkpeG6TsMsqzgxg1QTlHy8DOwjg3k/Suj/Pnd0cqx2f2L4=
+	t=1756216370; cv=none; b=m5pY6BHMlmOENgGJusy6axAwbnyHQJ9FiHsk3kHyPcb90VY8XU//+gCjzCbj3r4BLqyuHCC+YoH5HKa42Kqi1CB9Og25WAbBqUK8PPikpyL60Dv2t18IkrIC1p08+iIt4zS5vnRlMBm6eV5y68Ls1vCII6GlFMWrSW58yBKm0nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218845; c=relaxed/simple;
-	bh=DN3PSFwHBpY+fhHaMudo7O6eqT3t5jlhcYwe+tvCieY=;
+	s=arc-20240116; t=1756216370; c=relaxed/simple;
+	bh=K4/5XUaLDeDFaFWSoQr+FX5AlLE9S0c5EOFvvTFMFs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+PX5nH3qyj0XLjPM+LGnNiewuJK/V7yN7GBCGrvRwmUIK66K1gxfJwg3vSEIEPOJAaDDxHF09mUWrD0hgBcZ8MT9fKJYYTS5YO8BBfBOEkjZJs5Lfakg8sKTW99x1q88JjOKyLSODUeTWOOWy7qpP0Lc/XUkeIfoIrsuDxxZgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEWj+gFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1F5C4CEF1;
-	Tue, 26 Aug 2025 14:34:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TFsviTKGojPXO6go4YYgRwIvDu3B3OKGnQM0b6KacR6Qw7QwjDiiZ+yz2O1+Xyenm8rZ16ZVu+NGGjpRp1AIKjvrZ21LylZGct/vED10h6C/1tYF94sxofp33WBbw/cVof18/xoiotOW6itT5UWMCjYnnt1yYghniCWdXqrvTk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8rZ4HC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E0DC4CEF1;
+	Tue, 26 Aug 2025 13:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218845;
-	bh=DN3PSFwHBpY+fhHaMudo7O6eqT3t5jlhcYwe+tvCieY=;
+	s=korg; t=1756216370;
+	bh=K4/5XUaLDeDFaFWSoQr+FX5AlLE9S0c5EOFvvTFMFs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEWj+gFBPGMU8hu1gvVYi8LUQV8/iyC7gmxxgZms55I97+PGzqCPrQXzKPrzyeYCL
-	 VKpLR7EXMXgUGwrybYRZ6tyXcQ50V8mR5hS0JV20jTt6hapiK4GjPrpPgZnYEp8MoD
-	 jDRwGcYTf9/BM8ab9ytpwc4Ft80O6QdrViw3FL0g=
+	b=U8rZ4HC6wbgjUWsdvGOweeUkq9++HzZfj/B5gOhrPaSvmZ9X5CQOwyzNaN7nP3tom
+	 sN5Vk0rOTWCc15mV29oMRNd7Mv+tcKkXi8N/kTD5RGPGbl83UM8X7DqV+QEmMsvDJp
+	 iZTawp5KQ+a/8V4t4mhzPOyVnrV/CDeF73GKYfeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/403] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
+Subject: [PATCH 5.15 349/644] net: ipv4: fix incorrect MTU in broadcast routes
 Date: Tue, 26 Aug 2025 13:07:20 +0200
-Message-ID: <20250826110909.881506866@linuxfoundation.org>
+Message-ID: <20250826110955.046009110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
+[ Upstream commit 9e30ecf23b1b8f091f7d08b27968dea83aae7908 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Currently, __mkroute_output overrules the MTU value configured for
+broadcast routes.
 
-Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This buggy behaviour can be reproduced with:
+
+ip link set dev eth1 mtu 9000
+ip route del broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2
+ip route add broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2 mtu 1500
+
+The maximum packet size should be 1500, but it is actually 8000:
+
+ping -b 192.168.0.255 -s 8000
+
+Fix __mkroute_output to allow MTU values to be configured for
+for broadcast routes (to support a mixed-MTU local-area-network).
+
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Link: https://patch.msgid.link/20250710142714.12986-1-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/route.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-index 8a0e28aec928..0ecad398ed3d 100644
---- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
-+++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
- 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
- 
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- 	return err;
- }
-@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
- 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
- 
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- free_mem:
- 	if (token && dma_map) {
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index cbc584c386e9..df4cbf9ba288 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2565,7 +2565,6 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 	do_cache = true;
+ 	if (type == RTN_BROADCAST) {
+ 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
+-		fi = NULL;
+ 	} else if (type == RTN_MULTICAST) {
+ 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
+ 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
 -- 
 2.39.5
 
