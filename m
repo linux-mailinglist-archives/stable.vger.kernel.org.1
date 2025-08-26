@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-173691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF51EB35DE3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D6EB36830
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970F07C3FEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02FC1C40FF1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4721026C3A4;
-	Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EFB1494D9;
+	Tue, 26 Aug 2025 14:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5QuxSi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlxHmhDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D75749C;
-	Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF042AA4;
+	Tue, 26 Aug 2025 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208906; cv=none; b=YmiVnhVRtShmBzruaRBfX3+yiPU6boUOPW8tt3t8/yKAlColvhUUpcahOP4gAG7PN/A8ei9/xGtQl+lB2LrhUNM7kP8eKJEhwNRHNWDB8meF1u+if5ffz2jWponBhpIOYu9XJ6gDSgJUlR6gLIoZd3Ehr4a0GM0N3Xca/5yprQ4=
+	t=1756216982; cv=none; b=B5tsE3ipSaw9yUytjHmaGcaKSfRqNHtbuchfBshugDH0eRjTcD1T4b/HaPtuYkwQAwR+o6JqJtRM4X8lS5hrbPHUz2iYszkDIurZlf8XrjUs3u3Rk95PE4/21yrKNIfXdcBE62rnhjr9xzRYxPWtm9wtmaO8AVsODsfPYIi3pZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208906; c=relaxed/simple;
-	bh=KYXxTBks21uVp+5VKoCrsKW9rE2DCNVDR0uVo+Qd38U=;
+	s=arc-20240116; t=1756216982; c=relaxed/simple;
+	bh=ibXtUKLxCKqpRqGOBLbKgbKGrP5GqwlPD8xA4ZgSzGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ls2nZmRJ9luZkNbedBMNQsw/1txXLB8xf+2hmTpgK35f2R91/5LaHsnITR2FQ5R6TnyBOnb4u1P9/Q0RdsE1RGgzZeAIIRXmSFzUlzCMEkzng6QRCzD1ADR5W7hUWW2EuGsABafgqZH4z1hIv7nzKyBRsHEqz8Kx2W2QCwMsW2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5QuxSi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FFCC4CEF4;
-	Tue, 26 Aug 2025 11:48:25 +0000 (UTC)
+	 MIME-Version; b=btG7A9203a2r45/k3jL7incny3nwTy9/3Q73Q/Kf72kHmt84azNSkZOWc26ZAbZz0oGsvAma/Om2WdOL2Pr04MiXE1BNCPonUNlj4aD+UZin3X2yJqb/e3ZFb50Eg1R2DbL8mXL6ard0zfYCJ62pgAtDKycj2i+aiR+etsjhbQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlxHmhDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00495C4CEF1;
+	Tue, 26 Aug 2025 14:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208905;
-	bh=KYXxTBks21uVp+5VKoCrsKW9rE2DCNVDR0uVo+Qd38U=;
+	s=korg; t=1756216982;
+	bh=ibXtUKLxCKqpRqGOBLbKgbKGrP5GqwlPD8xA4ZgSzGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5QuxSi5TKsA4yPjZcIG3mkcCX6Yr1mRamZ5hBlDVxFJyL/ZQy1xr/xfTbYetQAaw
-	 U3dFMaZBOyIRC46FAiz43Oup9iY2AYbY7MDmVAnExVU3TCot6C1n0/cgKYcS1oWnXJ
-	 wtoc01vsc3ltaZiwppsatdvqfWDQScDSm3RXT9MA=
+	b=xlxHmhDsSYXUREM0NLkWVmqlEk85EfAIHNJIvH55tSjKsxW2r6Fl+jkvaIH971I8r
+	 Fw+UWBeAHR+g+a1UgZV3P4rDrX92xw4xLx/A6tt38DM77jNGvjnpFIpZfXwx4kEWg8
+	 GX3W/8XUmzlNDsW4CZD6bRSO6XOlAWA3OA+wt7B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 291/322] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
+Subject: [PATCH 5.15 615/644] tracing: Remove unneeded goto out logic
 Date: Tue, 26 Aug 2025 13:11:46 +0200
-Message-ID: <20250826110923.094171042@linuxfoundation.org>
+Message-ID: <20250826111001.791624522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minhong He <heminhong@kylinos.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
+[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
 
-The seg6_genl_sethmac() directly uses the algorithm ID provided by the
-userspace without verifying whether it is an HMAC algorithm supported
-by the system.
-If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
-will be dropped during encapsulation or decapsulation.
+Several places in the trace.c file there's a goto out where the out is
+simply a return. There's no reason to jump to the out label if it's not
+doing any more logic but simply returning from the function.
 
-Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Replace the goto outs with a return and remove the out labels.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_hmac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace.c |   37 ++++++++++++++-----------------------
+ 1 file changed, 14 insertions(+), 23 deletions(-)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index e955008e732b..5d21a74c1165 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -296,6 +296,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 	int err;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1605,7 +1605,7 @@ int trace_get_user(struct trace_parser *
  
-+	if (!__hmac_get_algo(hinfo->alg_id))
-+		return -EINVAL;
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1619,7 +1619,7 @@ int trace_get_user(struct trace_parser *
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				goto out;
++				return ret;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1629,8 +1629,7 @@ int trace_get_user(struct trace_parser *
+ 		/* only spaces were written */
+ 		if (isspace(ch) || !ch) {
+ 			*ppos += read;
+-			ret = read;
+-			goto out;
++			return read;
+ 		}
+ 	}
+ 
+@@ -1638,13 +1637,12 @@ int trace_get_user(struct trace_parser *
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else
++			return -EINVAL;
 +
- 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
- 					    rht_params);
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1659,15 +1657,11 @@ int trace_get_user(struct trace_parser *
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
  
--- 
-2.50.1
-
+ 	*ppos += read;
+-	ret = read;
+-
+-out:
+-	return ret;
++	return read;
+ }
+ 
+ /* TODO add a seq_buf_to_buffer() */
+@@ -2136,10 +2130,10 @@ int __init register_tracer(struct tracer
+ 	mutex_unlock(&trace_types_lock);
+ 
+ 	if (ret || !default_bootup_tracer)
+-		goto out_unlock;
++		return ret;
+ 
+ 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
+-		goto out_unlock;
++		return 0;
+ 
+ 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
+ 	/* Do we want this tracer to start on bootup? */
+@@ -2151,8 +2145,7 @@ int __init register_tracer(struct tracer
+ 	/* disable other selftests, since this will break it. */
+ 	disable_tracing_selftest("running a tracer");
+ 
+- out_unlock:
+-	return ret;
++	return 0;
+ }
+ 
+ static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
+@@ -8711,11 +8704,10 @@ ftrace_trace_snapshot_callback(struct tr
+  out_reg:
+ 	ret = tracing_alloc_snapshot_instance(tr);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = register_ftrace_function_probe(glob, tr, ops, count);
+ 
+- out:
+ 	return ret < 0 ? ret : 0;
+ }
+ 
+@@ -10231,7 +10223,7 @@ __init static int tracer_alloc_buffers(v
+ 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
+ 
+ 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
+-		goto out;
++		return -ENOMEM;
+ 
+ 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_buffer_mask;
+@@ -10344,7 +10336,6 @@ out_free_cpumask:
+ 	free_cpumask_var(global_trace.tracing_cpumask);
+ out_free_buffer_mask:
+ 	free_cpumask_var(tracing_buffer_mask);
+-out:
+ 	return ret;
+ }
+ 
 
 
 
