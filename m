@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-174021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C762B360E2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6910B36C58
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F97B1BA69ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 058F2A04938
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647161C1F12;
-	Tue, 26 Aug 2025 13:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A31335E4EF;
+	Tue, 26 Aug 2025 14:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAKe+6LC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQjWi6tc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2016D148850;
-	Tue, 26 Aug 2025 13:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EC35691E;
+	Tue, 26 Aug 2025 14:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213283; cv=none; b=bVBnBP2xtdDpWB2xKykMyi/koZzYVjY49F3LZecyBTJyB+/mUPOEcFbfqN+TunBIwugaiKQA796ZsNNCu3rVdBkrP6OGKleGJFUzra9hYY27uhGqx1S47GyvPv5JypL22vfMeCCLG/qhDgmlI5QVG9R7uJfPXmd/9maudFCWaJs=
+	t=1756218733; cv=none; b=e9/9V2Mw0Rkxuqy3WqMb6VXP3jG0eVgzRNDi4/8cDpM0XfgPviMXRrPnqZycoFOrGymfV+rUIZCqczNtkuXGN/MMCb3wy2aiDB/vq4Wf+7kkGc6jBb1p1YYas4aCJ+H4i/BYiQWre8UzefeeuF6QTfjkIP85XJjfaEVFDgjOHGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213283; c=relaxed/simple;
-	bh=PaPNy88rgm01dZDfPwLy/3sa7XWm3ftIFjM93c4MCnE=;
+	s=arc-20240116; t=1756218733; c=relaxed/simple;
+	bh=fypqpdXatTSWx5RexpY5Ek0FOq5X/tPlSJQbIk6Jtdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LiL2iKOL6Frf66zFobqFHRyAFh7ipQh8UQI5P4k6b+y3HhnJfoDj2kms7V7SdRJiQJZtPiNZKOY/bKwx8mbrEwyBu13XQaGS8WHXZPiXUGBBlHKOIEPr1wu55GT1rxPo99/5tnunK+8nbVj6dTE+lf8JOko9sWx0gQF+jMcTuY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAKe+6LC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4569C4CEF1;
-	Tue, 26 Aug 2025 13:01:22 +0000 (UTC)
+	 MIME-Version; b=Bsu+b8dTQji5TEAQcfZGSg7aEOCgnX6jiyu1BF41r3yVoUZNDVWEjGbRqZrv6rRhDiygogSL7BzD8nyybV6PgmK2/Pv0w8wFP3jyE0KfuSP2Q8vGnryJzVtNmy+z5xJZ6XFtYVsMIHY4Ebod63WcNk5dUajAAmMnedoAvSWpE+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQjWi6tc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE6BC4CEF1;
+	Tue, 26 Aug 2025 14:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213283;
-	bh=PaPNy88rgm01dZDfPwLy/3sa7XWm3ftIFjM93c4MCnE=;
+	s=korg; t=1756218733;
+	bh=fypqpdXatTSWx5RexpY5Ek0FOq5X/tPlSJQbIk6Jtdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAKe+6LC/MgyArdAGOQr6vBrsKVVGD0U0AbT6n6Gku4vRs2sm38d8MzCn7hwPYy9/
-	 tGR1KScwHBAuLgkTHvcGAQysU8To2GrZ07JGIRLFz9a6P0Avlf4FPAa/g+Mhjk3nPy
-	 e+OUGtLY7r1O0LOdWMd79mKuk4X51N+DOYsJfTYw=
+	b=RQjWi6tcnsQ4NXwOpw51jLWujawhf2TDX2RuX8rSJ0B578QSdwkCu2MU7g3DhXzn9
+	 eTJjWvMgjkcD0UEDSQUidmLd8QoFJXjQux9/6HGeDIb32mdZofEe4056j7paIC7odD
+	 qFnJMKwAeg0BSt1n8D/NnJjkjz+K6PWtxbzDh/us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mengbiao Xiong <xisme1998@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/587] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+Subject: [PATCH 5.4 111/403] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
 Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826111000.256912235@linuxfoundation.org>
+Message-ID: <20250826110909.752538935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Mengbiao Xiong <xisme1998@gmail.com>
 
-[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
+[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
 
-In blk_stack_limits(), we check that the t->chunk_sectors value is a
-multiple of the t->physical_block_size value.
+When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
+the ccp device causes the following crash:
 
-However, by finding the chunk_sectors value in bytes, we may overflow
-the unsigned int which holds chunk_sectors, so change the check to be
-based on sectors.
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
+[  204.978026] #PF: supervisor write access in kernel mode
+[  204.979126] #PF: error_code(0x0002) - not-present page
+[  204.980226] PGD 0 P4D 0
+[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
+...
+[  204.997852] Call Trace:
+[  204.999074]  <TASK>
+[  205.000297]  start_creating+0x9f/0x1c0
+[  205.001533]  debugfs_create_dir+0x1f/0x170
+[  205.002769]  ? srso_return_thunk+0x5/0x5f
+[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
+[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
+[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
+[  205.007709]  sp_init+0x5f/0x80 [ccp]
+[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
+[  205.010165]  ? srso_return_thunk+0x5/0x5f
+[  205.011376]  local_pci_probe+0x4f/0xb0
+[  205.012584]  pci_device_probe+0xdb/0x230
+[  205.013810]  really_probe+0xed/0x380
+[  205.015024]  __driver_probe_device+0x7e/0x160
+[  205.016240]  device_driver_attach+0x2f/0x60
+[  205.017457]  bind_store+0x7c/0xb0
+[  205.018663]  drv_attr_store+0x28/0x40
+[  205.019868]  sysfs_kf_write+0x5f/0x70
+[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
+[  205.022267]  vfs_write+0x308/0x440
+[  205.023453]  ksys_write+0x6d/0xe0
+[  205.024616]  __x64_sys_write+0x1e/0x30
+[  205.025778]  x64_sys_call+0x16ba/0x2150
+[  205.026942]  do_syscall_64+0x56/0x1e0
+[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  205.029276] RIP: 0033:0x7fbc36f10104
+[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+
+This patch sets ccp_debugfs_dir to NULL after destroying it in
+ccp5_debugfs_destroy, allowing the directory dentry to be
+recreated when rebinding the ccp device.
+
+Tested on AMD Ryzen 7 1700X.
+
+Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
+Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/ccp/ccp-debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 7019b8e204d9..021994f6d2d8 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -634,7 +634,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	}
+diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
+index a1055554b47a..dc26bc22c91d 100644
+--- a/drivers/crypto/ccp/ccp-debugfs.c
++++ b/drivers/crypto/ccp/ccp-debugfs.c
+@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
  
- 	/* chunk_sectors a multiple of the physical block size? */
--	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
-+	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
- 		t->chunk_sectors = 0;
- 		t->misaligned = 1;
- 		ret = -1;
+ void ccp5_debugfs_destroy(void)
+ {
++	mutex_lock(&ccp_debugfs_lock);
+ 	debugfs_remove_recursive(ccp_debugfs_dir);
++	ccp_debugfs_dir = NULL;
++	mutex_unlock(&ccp_debugfs_lock);
+ }
 -- 
 2.39.5
 
