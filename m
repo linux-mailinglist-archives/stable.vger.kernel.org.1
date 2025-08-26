@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-173822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0DB35FF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF12B365F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AC664635B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2222A7377
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2172A216E32;
-	Tue, 26 Aug 2025 12:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F84223A9A0;
+	Tue, 26 Aug 2025 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVtLPgtn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmn5PY2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F67081F;
-	Tue, 26 Aug 2025 12:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEE622AE5D;
+	Tue, 26 Aug 2025 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212756; cv=none; b=Jqy4BnvVZ6SbreZ4fgknsk/G/M4+iU6ys/5eU0H8iTscQJ5dTrS5jYaEPOhMALMwqKd04ZRF5/G2oIRNxNkaQ6RTTZbbNibGQH3iCZd92ZkAEyFHWXfgjDx2mblMfq5PtE8b4E4WboI6ph57aCldrRmkT0YSeYt99l0biYnIDJE=
+	t=1756215663; cv=none; b=lQBD+vFIcuuJOUKpLQ2xv9l3dKraRbF9N9hJRufFnUHmxLlCZ+sZbv3YvKmr3TNUrJGlewpXV46wAZfgwN1n9xqIFeC4flGqb80DtfNDIToU2lHVJIZ+9nmGgKpS9ikB9BDI9QRzN7Kg/7W95KYNB8AWYP7fse1yy4M4mSwehHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212756; c=relaxed/simple;
-	bh=QffHjhWXkbFu/TBSzgBFHDQkP1xdBdQ5Ran635j90Bs=;
+	s=arc-20240116; t=1756215663; c=relaxed/simple;
+	bh=1LtMola5zcum2x8D9yHG1XuVZn5soX1nKoQc0PuxOLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5sQIzokBUD/3BVFkYfGbjgI+3P3cnCuYf2nWD8Amed83S4tMtldB0fZG5zUxx8Z7/gsR7a16pN2K0Yddi43mLs1dnCIwZ8dQCMyLqPMlSjw80MZaf/BiA6RwJOo2BR+GTfv4/qPIGntQH1EJjKnrrKLDKHV+da+ZFSAZgTVSOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVtLPgtn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623FAC4CEF1;
-	Tue, 26 Aug 2025 12:52:36 +0000 (UTC)
+	 MIME-Version; b=FPCT0/u7GCNZPkdl8X6+XXHyHdRy8ZbbZeDcZ1yZojF23X8mU9oaGW/jn7WuOh0ZmWjgkWRzf5mxQPDBUcGK03asoPuHRLPcF/PXu+LmKvyOTKsrF8+LC4oZpKyeTW2S2uvkeDHXOPz3b6I/GwoJsl7ANpcPdq27pC+6ubqnQUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmn5PY2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B97C113D0;
+	Tue, 26 Aug 2025 13:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212756;
-	bh=QffHjhWXkbFu/TBSzgBFHDQkP1xdBdQ5Ran635j90Bs=;
+	s=korg; t=1756215663;
+	bh=1LtMola5zcum2x8D9yHG1XuVZn5soX1nKoQc0PuxOLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVtLPgtnMUJ1xWxnARfeNsX1mld8NENDZCaJ8dt+6PEHe/nFZRBYZ+/HGWeLwoBzx
-	 /C8asrpgb1YubAMWJEYs4cepcEsNvfaPpyFF4KwIX/7646F/E6TvZm/bAgceqtMN5G
-	 J2UFbxPObZzhXHhjjt/bc0PN3yuSLfqDnEOxhuC4=
+	b=tmn5PY2pZ+xPQwZ0eq1OfnRBDUL6m8mBiLBJuH6zVCQqanV73ce3lchSgAzFt++lP
+	 KYHA3Ht//2lAgwpugrplA3Gs9POqZpog9e2wiP49D0j5Mre7AOd2kMbzleTh0reY11
+	 xuwMQexEvlNBrUez3QQ8GlQ+exd+RxqS/6lc5gHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/587] ptp: prevent possible ABBA deadlock in ptp_clock_freerun()
+Subject: [PATCH 5.15 118/644] usb: misc: apple-mfi-fastcharge: Make power supply names unique
 Date: Tue, 26 Aug 2025 13:03:29 +0200
-Message-ID: <20250826110954.463345177@linuxfoundation.org>
+Message-ID: <20250826110949.446503652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit 2efe41234dbd0a83fdb7cd38226c2f70039a2cd3 ]
+[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
 
-syzbot reported the following ABBA deadlock:
+When multiple Apple devices are connected concurrently, the
+apple-mfi-fastcharge driver fails to probe the subsequent devices with
+the following error:
 
-       CPU0                           CPU1
-       ----                           ----
-  n_vclocks_store()
-    lock(&ptp->n_vclocks_mux) [1]
-        (physical clock)
-                                     pc_clock_adjtime()
-                                       lock(&clk->rwsem) [2]
-                                        (physical clock)
-                                       ...
-                                       ptp_clock_freerun()
-                                         ptp_vclock_in_use()
-                                           lock(&ptp->n_vclocks_mux) [3]
-                                              (physical clock)
-    ptp_clock_unregister()
-      posix_clock_unregister()
-        lock(&clk->rwsem) [4]
-          (virtual clock)
+    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
+    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
 
-Since ptp virtual clock is registered only under ptp physical clock, both
-ptp_clock and posix_clock must be physical clocks for ptp_vclock_in_use()
-to lock &ptp->n_vclocks_mux and check ptp->n_vclocks.
+This happens because the driver uses a fixed power supply name
+("apple_mfi_fastcharge") for all devices, causing a sysfs name
+conflict when a second device is connected.
 
-However, when unregistering vclocks in n_vclocks_store(), the locking
-ptp->n_vclocks_mux is a physical clock lock, but clk->rwsem of
-ptp_clock_unregister() called through device_for_each_child_reverse()
-is a virtual clock lock.
+Fix this by generating unique names using the USB bus and device
+number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
+connected device gets a unique power supply entry in sysfs.
 
-Therefore, clk->rwsem used in CPU0 and clk->rwsem used in CPU1 are
-different locks, but in lockdep, a false positive occurs because the
-possibility of deadlock is determined through lock-class.
+The change requires storing a copy of the power_supply_desc structure
+in the per-device mfi_device struct, since the name pointer needs to
+remain valid for the lifetime of the power supply registration.
 
-To solve this, lock subclass annotation must be added to the posix_clock
-rwsem of the vclock.
-
-Reported-by: syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7cfb66a237c4a5fb22ad
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250728062649.469882-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_private.h | 5 +++++
- drivers/ptp/ptp_vclock.c  | 7 +++++++
- 2 files changed, 12 insertions(+)
+ drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index a54124269c2f..3fbd1d68a9bc 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -20,6 +20,11 @@
- #define PTP_BUF_TIMESTAMPS 30
- #define PTP_DEFAULT_MAX_VCLOCKS 20
+diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
+index ac8695195c13..8e852f4b8262 100644
+--- a/drivers/usb/misc/apple-mfi-fastcharge.c
++++ b/drivers/usb/misc/apple-mfi-fastcharge.c
+@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
+ struct mfi_device {
+ 	struct usb_device *udev;
+ 	struct power_supply *battery;
++	struct power_supply_desc battery_desc;
+ 	int charge_type;
+ };
  
-+enum {
-+	PTP_LOCK_PHYSICAL = 0,
-+	PTP_LOCK_VIRTUAL,
-+};
-+
- struct timestamp_event_queue {
- 	struct ptp_extts_event buf[PTP_MAX_TIMESTAMPS];
- 	int head;
-diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
-index dcf752c9e045..7d08ff3b30fc 100644
---- a/drivers/ptp/ptp_vclock.c
-+++ b/drivers/ptp/ptp_vclock.c
-@@ -154,6 +154,11 @@ static long ptp_vclock_refresh(struct ptp_clock_info *ptp)
- 	return PTP_VCLOCK_REFRESH_INTERVAL;
- }
+@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
+ {
+ 	struct power_supply_config battery_cfg = {};
+ 	struct mfi_device *mfi = NULL;
++	char *battery_name;
+ 	int err;
  
-+static void ptp_vclock_set_subclass(struct ptp_clock *ptp)
-+{
-+	lockdep_set_subclass(&ptp->clock.rwsem, PTP_LOCK_VIRTUAL);
-+}
+ 	if (!mfi_fc_match(udev))
+@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
+ 	if (!mfi)
+ 		return -ENOMEM;
+ 
++	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
++				 udev->bus->busnum, udev->devnum);
++	if (!battery_name) {
++		err = -ENOMEM;
++		goto err_free_mfi;
++	}
 +
- static const struct ptp_clock_info ptp_vclock_info = {
- 	.owner		= THIS_MODULE,
- 	.name		= "ptp virtual clock",
-@@ -213,6 +218,8 @@ struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock)
- 		return NULL;
++	mfi->battery_desc = apple_mfi_fc_desc;
++	mfi->battery_desc.name = battery_name;
++
+ 	battery_cfg.drv_data = mfi;
+ 
+ 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+ 	mfi->battery = power_supply_register(&udev->dev,
+-						&apple_mfi_fc_desc,
++						&mfi->battery_desc,
+ 						&battery_cfg);
+ 	if (IS_ERR(mfi->battery)) {
+ 		dev_err(&udev->dev, "Can't register battery\n");
+ 		err = PTR_ERR(mfi->battery);
+-		kfree(mfi);
+-		return err;
++		goto err_free_name;
  	}
  
-+	ptp_vclock_set_subclass(vclock->clock);
-+
- 	timecounter_init(&vclock->tc, &vclock->cc, 0);
- 	ptp_schedule_worker(vclock->clock, PTP_VCLOCK_REFRESH_INTERVAL);
+ 	mfi->udev = usb_get_dev(udev);
+ 	dev_set_drvdata(&udev->dev, mfi);
  
+ 	return 0;
++
++err_free_name:
++	kfree(battery_name);
++err_free_mfi:
++	kfree(mfi);
++	return err;
+ }
+ 
+ static void mfi_fc_disconnect(struct usb_device *udev)
+@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
+ 	mfi = dev_get_drvdata(&udev->dev);
+ 	if (mfi->battery)
+ 		power_supply_unregister(mfi->battery);
++	kfree(mfi->battery_desc.name);
+ 	dev_set_drvdata(&udev->dev, NULL);
+ 	usb_put_dev(mfi->udev);
+ 	kfree(mfi);
 -- 
-2.50.1
+2.39.5
 
 
 
