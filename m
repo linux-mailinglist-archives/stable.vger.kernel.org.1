@@ -1,125 +1,139 @@
-Return-Path: <stable+bounces-172903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF933B350B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:05:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E515B350FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6566D487571
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:05:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286D61B26FE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F122641D8;
-	Tue, 26 Aug 2025 01:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77A225F98A;
+	Tue, 26 Aug 2025 01:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FZjQujsZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MPCO9S49"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB7E85C4A;
-	Tue, 26 Aug 2025 01:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B51223338;
+	Tue, 26 Aug 2025 01:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756170340; cv=none; b=oSA/J04nFMtG9bknw7Q/bvY49oUHfhJsf6jOhiaX3zFdwHlnsCDSEVm5QkPoq7w/jg6FzDsEG3GOMl06IO2NLXvxiQj4fYaKz6/PBoE3rbHVqEVixdSEJesDUODnoqCBfVun5qckZ1u2OkaJeIi9wrayhOOkeM/6hqKkHrBp0pA=
+	t=1756171655; cv=none; b=C+unoW/6JmGj3HGwaHh+eGTiKjnaiu17UzYL93De3bJ+qsaGDpQDGqiEBbWwpp7Yuvztf2nonGW2IKaGVFuJuC+Yu9lDqv9j8J0qAOwBcif5OgWRWckENIxUm8+tKn+FRTqeOUfeYiIByAgdWE0lxHgWz0tO5bBgAvmw8fR2/rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756170340; c=relaxed/simple;
-	bh=JngFn+jzgyIn12/qv12mpOgI7nfL8G9DKZcKVXiPB9I=;
-	h=Date:To:From:Subject:Message-Id; b=P18r7nFKpqCN/3neQMiUNSxm+Uabg8bszbKMP/mcxDbdNOkp4bTcx7hmnNBz0pQhmBXZwWViuixXq1mxzyIyMYawRmA3a44IG6qgoRL6QPOCBckX41qUHWbRjQLZbX4SaFuvTb5D6kd6PR/XOS+5FU0WsB5MVWTEJluVlpNJSV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FZjQujsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90CEC4CEED;
-	Tue, 26 Aug 2025 01:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756170339;
-	bh=JngFn+jzgyIn12/qv12mpOgI7nfL8G9DKZcKVXiPB9I=;
-	h=Date:To:From:Subject:From;
-	b=FZjQujsZhEPNHPJQIaigp1jBB11uAyVv5YFpFl7y5KR8yc/wOz7vea6exDk2XSeJo
-	 gvxnCV7C2sP6LhgorcvhG/vjhJ9yi2HmuTaOf9sEDHKWFsq9eJ14foMyer5aNnE2M8
-	 Jw0PSzo+DJp9joQLk48/ThwhYEpeSqyQXAS003JE=
-Date: Mon, 25 Aug 2025 18:05:38 -0700
-To: mm-commits@vger.kernel.org,vkuznets@redhat.com,stable@vger.kernel.org,ryncsn@gmail.com,okozina@redhat.com,kernelfans@gmail.com,gmazyland@gmail.com,dyoung@redhat.com,dave.hansen@intel.com,coxu@redhat.com,bhe@redhat.com,berrange@redhat.com,leitao@debian.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250826010539.A90CEC4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1756171655; c=relaxed/simple;
+	bh=AdpUiE/wJBetOMVQkBzJaBKwSBZOYbe+QTmNwnaCSQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JHh7umgEJP70HMP65shWTGbfGkHUnB6QcUsO9/vqn4B+ckeO9+TGwSEvOdFq/cPmCqzaCdxPpRr1fKZbbiXT2PlkJuLF5+udEUZ7PKh+1wu7DWTnq+EHXTnbbI1i/dV+CuwGl9KU6lawn+Et8BdnFwDvmlEhJEdFOk/p7bPjlsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MPCO9S49; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756171654; x=1787707654;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AdpUiE/wJBetOMVQkBzJaBKwSBZOYbe+QTmNwnaCSQY=;
+  b=MPCO9S49GZdQsI1kKswkFPkBdualcRdG3yv4qop5eRO7upk3P/PO4rPE
+   Reg+sQbYmMgK7QmN8gzuldAIq4vqIAvwgdVVbGSLBgHQ6rjA8vu2FnOy5
+   oL2qVAXu2v8oyMaWAEnTQ7LzFf4P8nIbUXfY9fUYtcuOZGBhd0q7BWri4
+   yp9U56XV2q83J1ojtkhU5fpsuFnWBRa9JzYRyLY8sXTZ9DARE2IgzUljr
+   LLaTQc9KYh5TOJ/IHHrUcSPSCPGW98uu5JZOFWR8x0lrxY/pYvJRB+p1H
+   e/Viq9z/ceZ3qve4DfYFBYdFT1NQopUk1PBd2xWYLYO2AnBGzxXINn5VA
+   Q==;
+X-CSE-ConnectionGUID: /ee054CfSDOtQj3cDmHDEQ==
+X-CSE-MsgGUID: pLZfGXMeSma8SyJrj8LWog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="75847554"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="75847554"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 18:27:33 -0700
+X-CSE-ConnectionGUID: tIGsR0QISxaWhVKMXaVS4g==
+X-CSE-MsgGUID: znpgCPBKTXW8CYZBlzEZYw==
+X-ExtLoop1: 1
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 18:27:29 -0700
+Message-ID: <b0f613ce-7aad-4b1d-b6a1-4acc1d6c489e@linux.intel.com>
+Date: Tue, 26 Aug 2025 09:25:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Dave Hansen <dave.hansen@intel.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "security@kernel.org" <security@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
+ <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
+ <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
+ <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 8/26/25 06:36, Dave Hansen wrote:
+> On 8/22/25 20:26, Baolu Lu wrote:
+>> +static struct {
+>> +    /* list for pagetable_dtor_free() */
+>> +    struct list_head dtor;
+>> +    /* list for __free_page() */
+>> +    struct list_head page;
+>> +    /* list for free_pages() */
+>> +    struct list_head pages;
+>> +    /* protect all the ptdesc lists */
+>> +    spinlock_t lock;
+>> +    struct work_struct work;
+> 
+> Could you explain a bit why this now needs three separate lists? Seems
+> like pure overkill.
 
-The patch titled
-     Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
+Yes, sure.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
+The three separate lists are needed because we're handling three
+distinct types of page deallocation. Grouping the pages this way allows
+the workqueue handler to free each type using the correct function.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+- pagetable_dtor_free(): This is for freeing PTE pages, which require
+   specific cleanup of a ptdesc structure.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  - __free_page(): This is for freeing a single page.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+  - free_pages(): This is for freeing a contiguous block of pages that
+    were allocated together.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Using separate lists for each type ensures that every page is handled
+correctly without having to check the page's type at runtime.
 
-------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
-Date: Thu Aug 21 04:11:21 2025 -0700
+This seems like overkill, it was chosen to ensure functional
+correctness. Any better solution?
 
-Add an explicit initialization for the random member of the kbuf structure
-within the image_load function in arch/arm64/kernel/kexec_image.c. 
-Setting kbuf.random to zero ensures a deterministic and clean starting
-state for the buffer used during kernel image loading, avoiding this UBSAN
-issue later, when kbuf.random is read.
-
-  [   32.362488] UBSAN: invalid-load in ./include/linux/kexec.h:210:10
-  [   32.362649] load of value 252 is not a valid value for type '_Bool'
-
-Link: https://lkml.kernel.org/r/oninomspajhxp4omtdapxnckxydbk2nzmrix7rggmpukpnzadw@c67o7njgdgm3
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: "Daniel P. Berrange" <berrange@redhat.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Liu Pingfan <kernelfans@gmail.com>
-Cc: Milan Broz <gmazyland@gmail.com>
-Cc: Ondrej Kozina <okozina@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/arm64/kernel/kexec_image.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/arm64/kernel/kexec_image.c~kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader
-+++ a/arch/arm64/kernel/kexec_image.c
-@@ -76,6 +76,7 @@ static void *image_load(struct kimage *i
- 	kbuf.buf_min = 0;
- 	kbuf.buf_max = ULONG_MAX;
- 	kbuf.top_down = false;
-+	kbuf.random = 0;
- 
- 	kbuf.buffer = kernel;
- 	kbuf.bufsz = kernel_len;
-_
-
-Patches currently in -mm which might be from leitao@debian.org are
-
-kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
-
+Thanks,
+baolu
 
