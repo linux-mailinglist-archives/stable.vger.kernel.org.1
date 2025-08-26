@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813C1B3647B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62142B35E52
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 786BD4673A8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64A8464F6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F298227EFE7;
-	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF5B319858;
+	Tue, 26 Aug 2025 11:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWhOGZbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTmQZnTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA721B4F1F;
-	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD86393DD1;
+	Tue, 26 Aug 2025 11:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215037; cv=none; b=E64PZiTdnKqRzOamXweg8fIQBAmH7Gur6WvSPbNSmp68lGD9VrcqfCGNqat/ZIeXgOwAP8H4SyZ04+Sg7OnTGb7YJ+m/YyAjtAdUjAykrB9eNMhcEHcJKW79KvmzgOG2XQXNj+VA3IqxI+fwzpBuhlTtOwnb+X4oEOpNoeBWhAU=
+	t=1756208678; cv=none; b=V/Rr6nxOctq3v8C5LbE1quJJiBJeDsVnQbguygV+7dtVBkD3UvhfrQAn41k5yt1+I4Pe/HZePkjOngzKkQxepP/+oI/hofophHbmXI6bsKZzRg+ZcDny7215rrtgc/C6/Z4xDfwdud7Ms6EZi4FC8wjfJpGoTn2ZY7cBNM3nfe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215037; c=relaxed/simple;
-	bh=eV33mho/LclILNhXfmJFl7eeS4FZp4c3DE2aHmGRP+o=;
+	s=arc-20240116; t=1756208678; c=relaxed/simple;
+	bh=ClVYT/+zUHrMDaHmVp77iJ21ziy5cExuFUMhCqNbkRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KN5NlSG7JrOtL0cS1fXXFafXkzNUmAm/eM0usQuCbM2+MEA4dl5q4oFz6jF4XzVTur5S9Fp98f6nISitvwMGKkhygieiWAm2Y4+sfuPq2DL9jTL4d5OyVykHxB99tr6b4PRNNJTtLlmHuIJpYKei0+qx3iSZE+3XGHW+vnVQTe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWhOGZbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40819C4CEF1;
-	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
+	 MIME-Version; b=H5po+NoDNRwZe25rNan80YlQ3fEYPAw9z6IiBQ9578xjS91lAZSWwZ0hQltMt8ufzzvkB1O6Un8tbi1ZAa1lsWOvnp/18w/qtQdJIr0SgfuKI3n277lCTysmmlZ33AroWL2f74X1QRxA4/FDfdH28CuSbZRP5+Fe4O3qGhlmpGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTmQZnTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5DBC4CEF4;
+	Tue, 26 Aug 2025 11:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215037;
-	bh=eV33mho/LclILNhXfmJFl7eeS4FZp4c3DE2aHmGRP+o=;
+	s=korg; t=1756208678;
+	bh=ClVYT/+zUHrMDaHmVp77iJ21ziy5cExuFUMhCqNbkRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWhOGZbq1+uW43dl8+28CpuwmMF4JTm7ZL8QfdbpMpvyt7JO+F78wjO3bWbaNDoQJ
-	 ICOZioffxJzyy3leDZmQ0/Bp1Gcq+NIK0rRDSkosLlVJhBUUbUqmS6PJRDso5lBKYF
-	 CGAPCEXURgjp9NBCflD2TnGG4CQU437RfZnzzEsA=
+	b=cTmQZnTeBY2PLK90KkEuMu6Y0mLCoLi6tAzXD2n2FcROPj1+MI7ekEsyeizcgbdNm
+	 SmzUGD9Qk8IzF4MhIcPameJAUdrYtun0QUTtcRIolL5rt/uLJY+R50gkpSESCNJXU9
+	 PGS+2qDeZY2T7rqbaN9EOuSqFv3S7LY3qJJWOjyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 364/482] net_sched: sch_ets: implement lockless ets_dump()
+Subject: [PATCH 6.12 202/322] arm64: dts: ti: k3-am6*: Add boot phase flag to support MMC boot
 Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826110939.826019659@linuxfoundation.org>
+Message-ID: <20250826110920.856325549@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
+[ Upstream commit db3cd905b8c8cd40f15a34e30a225704bb8a2fcb ]
 
-Instead of relying on RTNL, ets_dump() can use READ_ONCE()
-annotations, paired with WRITE_ONCE() ones in ets_change().
+The bootph-all flag was introduced in dt-schema
+(dtschema/schemas/bootph.yaml) to define node usage across
+different boot phases.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+For eMMC and SD boot modes, voltage regulator nodes, io-expander
+nodes, gpio nodes, and MMC nodes need to be present in all boot
+stages, so add missing bootph-all phase flag to these nodes to
+support SD boot and eMMC boot.
+
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://lore.kernel.org/r/20250429151454.4160506-2-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: a0b8da04153e ("arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts |   12 ++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts  |    2 ++
+ 2 files changed, 14 insertions(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,7 +651,7 @@ static int ets_qdisc_change(struct Qdisc
+--- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
+@@ -69,6 +69,7 @@
+ 		gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
+ 		states = <1800000 0x0>,
+ 			 <3300000 0x1>;
++		bootph-all;
+ 	};
+ };
  
- 	sch_tree_lock(sch);
+@@ -77,12 +78,14 @@
+ 		pinctrl-single,pins = <
+ 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
+ 		>;
++		bootph-all;
+ 	};
  
--	q->nbands = nbands;
-+	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
- 			list_add_tail(&q->classes[i].alist, &q->active);
-@@ -663,11 +663,11 @@ static int ets_qdisc_change(struct Qdisc
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
--	q->nstrict = nstrict;
-+	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+ 	main_gpio1_ioexp_intr_pins_default: main-gpio1-ioexp-intr-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM62X_IOPAD(0x01d4, PIN_INPUT, 7) /* (C13) UART0_RTSn.GPIO1_23 */
+ 		>;
++		bootph-all;
+ 	};
  
- 	for (i = 0; i < q->nbands; i++)
--		q->classes[i].quantum = quanta[i];
-+		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
+ 	pmic_irq_pins_default: pmic-irq-default-pins {
+@@ -118,6 +121,7 @@
  
- 	for (i = oldbands; i < q->nbands; i++) {
- 		q->classes[i].qdisc = queues[i];
-@@ -681,7 +681,7 @@ static int ets_qdisc_change(struct Qdisc
- 	for (i = q->nbands; i < oldbands; i++) {
- 		qdisc_put(q->classes[i].qdisc);
- 		q->classes[i].qdisc = NULL;
--		q->classes[i].quantum = 0;
-+		WRITE_ONCE(q->classes[i].quantum, 0);
- 		q->classes[i].deficit = 0;
- 		gnet_stats_basic_sync_init(&q->classes[i].bstats);
- 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-@@ -738,6 +738,7 @@ static int ets_qdisc_dump(struct Qdisc *
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct nlattr *opts;
- 	struct nlattr *nest;
-+	u8 nbands, nstrict;
- 	int band;
- 	int prio;
- 	int err;
-@@ -750,21 +751,22 @@ static int ets_qdisc_dump(struct Qdisc *
- 	if (!opts)
- 		goto nla_err;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&main_gpio1_ioexp_intr_pins_default>;
++		bootph-all;
+ 	};
  
--	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
-+	nbands = READ_ONCE(q->nbands);
-+	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
- 		goto nla_err;
+ 	exp2: gpio@23 {
+@@ -229,6 +233,14 @@
+ 	DVDD-supply = <&buck2_reg>;
+ };
  
--	if (q->nstrict &&
--	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
-+	nstrict = READ_ONCE(q->nstrict);
-+	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
- 		goto nla_err;
++&main_gpio0 {
++	bootph-all;
++};
++
++&main_gpio1 {
++	bootph-all;
++};
++
+ &gpmc0 {
+ 	ranges = <0 0 0x00 0x51000000 0x01000000>; /* CS0 space. Min partition = 16MB */
+ };
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -301,6 +301,7 @@
+ 			AM62AX_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
+ 			AM62AX_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
+ 		>;
++		bootph-all;
+ 	};
  
--	if (q->nbands > q->nstrict) {
-+	if (nbands > nstrict) {
- 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
- 		if (!nest)
- 			goto nla_err;
+ 	main_mmc1_pins_default: main-mmc1-default-pins {
+@@ -603,6 +604,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mmc0_pins_default>;
+ 	disable-wp;
++	bootph-all;
+ };
  
--		for (band = q->nstrict; band < q->nbands; band++) {
-+		for (band = nstrict; band < nbands; band++) {
- 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
--					q->classes[band].quantum))
-+					READ_ONCE(q->classes[band].quantum)))
- 				goto nla_err;
- 		}
- 
-@@ -776,7 +778,8 @@ static int ets_qdisc_dump(struct Qdisc *
- 		goto nla_err;
- 
- 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
--		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
-+		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
-+			       READ_ONCE(q->prio2band[prio])))
- 			goto nla_err;
- 	}
- 
+ &sdhci1 {
 
 
 
