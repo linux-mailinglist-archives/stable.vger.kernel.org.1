@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33D7B36B7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1599CB36A24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA52A00D00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAA5F982281
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC552FC89C;
-	Tue, 26 Aug 2025 14:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9C5350840;
+	Tue, 26 Aug 2025 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuA8/JQd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2fz4L+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A0A352FFA;
-	Tue, 26 Aug 2025 14:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E028314A;
+	Tue, 26 Aug 2025 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218700; cv=none; b=K+3OXP+VwSpjrT73oNmPJg7vqIX4uPl6fp+FoitP/zyiyjwcMJnZG7EPsG3XMRRBHWK6gDG7J6aPqQ30jVyPl2yFxUpKWPXG/YE2PGks8OA/6CuBTw0fAIz53oFVeGcLwtPmjKpYRuCoOsMt4Ul3/4/NNCUKeW/L6nPjP65EZcs=
+	t=1756217588; cv=none; b=S2Nw6nY2uyDuH9aABkEzm6AW47qvxyNnZIPRmVFEn5VeEROV4FMTOKKTUkYCwaALOVx9/xvGZFWsJwInLfuA8OmI2RZZWlJBpZRXuQfBLQc1n69I2+dnHbfNNfVTbsMbyT4RMjN1acoZQtAqEivKGOkNA5Qg19hx22dOKHDhL50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218700; c=relaxed/simple;
-	bh=DZdC0USCzLy7Qp8o38Tspq3/TNT+IHw2L3sHfHGwlO4=;
+	s=arc-20240116; t=1756217588; c=relaxed/simple;
+	bh=EkMIUuKtuhep+L6vYKB0bB6QxAqPr2fVYYH3u3t0G9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+NlXnY7V4b2dM7bQPCsRrvSt3ZnQIpFSy2OKHBBEFLTYXcv33jIh9UZ4xUg+CpucxcGE5HBdN30wmwk2HZo/SOVOyWjVU5uqH50qzkMZW9HE2gma8wN85lW1r21lkl8gIFS76Z9GEwnOKgHhr7uTFu4mOqHDU2xyNK8xRerG2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuA8/JQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B7CC4CEF1;
-	Tue, 26 Aug 2025 14:31:39 +0000 (UTC)
+	 MIME-Version; b=J6zzrw2r4n67jSVRt1ZQxE8pCBNeqe+dlYyswqbLfj/kSGB3JKXCAj5N18eT388fO9pKUIw29yMbJkktkTrnLB5ft5P46hXVJxwoJI5DCdABR1SRM/DMJ5vMVyEPaV1EdRSaKwIe+yqxi6LzUnQQmrwIJ1ZVvUB0QeLgf+oRqY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2fz4L+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA010C4CEF1;
+	Tue, 26 Aug 2025 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218699;
-	bh=DZdC0USCzLy7Qp8o38Tspq3/TNT+IHw2L3sHfHGwlO4=;
+	s=korg; t=1756217588;
+	bh=EkMIUuKtuhep+L6vYKB0bB6QxAqPr2fVYYH3u3t0G9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fuA8/JQdWlOIBGhRghsdilr6xAxmOiDy9BrABt7uGn9IC3wp4MPXhgmwm3l2pWpFN
-	 idBRbjNXYWWCgzvFR6zLD+Xj4jILoxhdFDoHhOkzMKyUCQfx+WON9cGuYssO9uhnDK
-	 opOy6acDMwo9AvZ7WVgOEW6nAt/IlAW3nvhuK7Hw=
+	b=a2fz4L+aCuzFCt37QYuvNb6wEgLXPN3TEenUee2G+N4LHQbQmDL0a/1NRjJLy7Tgf
+	 MOWi9wLqgEeZAjfia9hT/BUYKjtviOhw6Wz4eehMN0gjNjN4FZlpm/P1nK4uOFmZ9z
+	 MdtgudlZ6lNAcFllJSLZc1fiFObMGcETDio4UTJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/403] samples: mei: Fix building on musl libc
+	lei lu <llfamsec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 198/523] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
 Date: Tue, 26 Aug 2025 13:06:48 +0200
-Message-ID: <20250826110908.799932338@linuxfoundation.org>
+Message-ID: <20250826110929.330984927@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 239df3e4b4752524e7c0fb3417c218d8063654b4 ]
+commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
 
-The header bits/wordsize.h is glibc specific and on building on musl
-with allyesconfig results in
+Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
+the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
+race with a confirmed client expiring and fail to get a reference. That
+could later lead to a UAF.
 
-samples/mei/mei-amt-version.c:77:10: fatal error: bits/wordsize.h: No such file or directory
-   77 | #include <bits/wordsize.h>
-      |          ^~~~~~~~~~~~~~~~~
+Fix this by getting a reference early in the case where there is an
+extant confirmed client. If that fails then treat it as if there were no
+confirmed client found at all.
 
-mei-amt-version.c build file without bits/wordsize.h on musl and glibc.
+In the case where the unconfirmed client is expiring, just fail and
+return the result from get_client_locked().
 
-However on musl we get the follwing error without sys/time.h
-
-samples/mei/mei-amt-version.c: In function 'mei_recv_msg':
-samples/mei/mei-amt-version.c:159:24: error: storage size of 'tv' isn't known
-  159 |         struct timeval tv;
-      |                        ^~
-samples/mei/mei-amt-version.c:160:9: error: unknown type name 'fd_set'
-  160 |         fd_set set;
-      |         ^~~~~~
-samples/mei/mei-amt-version.c:168:9: error: implicit declaration of function 'FD_ZERO' [-Wimplicit-function-declaration]
-  168 |         FD_ZERO(&set);
-      |         ^~~~~~~
-samples/mei/mei-amt-version.c:169:9: error: implicit declaration of function 'FD_SET'; did you mean 'L_SET'? [-Wimplicit-function-declaration]
-  169 |         FD_SET(me->fd, &set);
-      |         ^~~~~~
-      |         L_SET
-samples/mei/mei-amt-version.c:170:14: error: implicit declaration of function 'select' [-Wimplicit-function-declaration]
-  170 |         rc = select(me->fd + 1, &set, NULL, NULL, &tv);
-      |              ^~~~~~
-samples/mei/mei-amt-version.c:171:23: error: implicit declaration of function 'FD_ISSET' [-Wimplicit-function-declaration]
-  171 |         if (rc > 0 && FD_ISSET(me->fd, &set)) {
-      |                       ^~~~~~~~
-samples/mei/mei-amt-version.c:159:24: warning: unused variable 'tv' [-Wunused-variable]
-  159 |         struct timeval tv;
-      |                        ^~
-
-Hence the the file has been included.
-
-Fixes: c52827cc4ddf ("staging/mei: add mei user space example")
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Link: https://lore.kernel.org/r/20250702135955.24955-1-listout@listout.xyz
+Reported-by: lei lu <llfamsec@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
+Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/mei/mei-amt-version.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/samples/mei/mei-amt-version.c b/samples/mei/mei-amt-version.c
-index 32234481ad7d..9e8028e45e3b 100644
---- a/samples/mei/mei-amt-version.c
-+++ b/samples/mei/mei-amt-version.c
-@@ -69,11 +69,11 @@
- #include <string.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
-+#include <sys/time.h>
- #include <unistd.h>
- #include <errno.h>
- #include <stdint.h>
- #include <stdbool.h>
--#include <bits/wordsize.h>
- #include <linux/mei.h>
- 
- /*****************************************************************************
--- 
-2.39.5
-
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4284,10 +4284,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 	}
+ 	status = nfs_ok;
+ 	if (conf) {
+-		old = unconf;
+-		unhash_client_locked(old);
+-		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
+-	} else {
++		if (get_client_locked(conf) == nfs_ok) {
++			old = unconf;
++			unhash_client_locked(old);
++			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
++		} else {
++			conf = NULL;
++		}
++	}
++
++	if (!conf) {
+ 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
+ 		if (old) {
+ 			status = nfserr_clid_inuse;
+@@ -4304,10 +4310,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 			}
+ 			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
++		status = get_client_locked(unconf);
++		if (status != nfs_ok) {
++			old = NULL;
++			goto out;
++		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+ 	}
+-	get_client_locked(conf);
+ 	spin_unlock(&nn->client_lock);
+ 	if (conf == unconf)
+ 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
 
 
 
