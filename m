@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42875B3646E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4D5B367EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CED208E012B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5663982FB7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433FC322C87;
-	Tue, 26 Aug 2025 13:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC1D34AAE3;
+	Tue, 26 Aug 2025 13:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqqRdGmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrXpsbNl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C872D060B;
-	Tue, 26 Aug 2025 13:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497B534A315;
+	Tue, 26 Aug 2025 13:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214886; cv=none; b=MeHj8jCgWf82W9PaZa77lMlxt0/NlHpXxzHxjmEVpf0KskmStUR+SNCFrEKpXKw0Jolp6DYaag/OnVJ97tAINO/EHHau8/o9JPgexC8YJZvWovCToDE256HVW2eD7l99c5/YscPsfxdp7DrxVNdW7MODWcHK0EKHOifnwWaDud8=
+	t=1756216635; cv=none; b=bqvMaYvLI4jfSIgOZ7Aev9FpHPE1yTwMH1TjsTvR72eal+hPj9/uCpADIdo6ptarf7ege9uNVVKDl+4hjtHDwi8DSQm/VOB3PS9Z053UWIcLqQJZmHUmfcSNGo1x58EP508FmWydQmGRKnx0/nW7+Pt1tv113Ki5hGKj9ix+sr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214886; c=relaxed/simple;
-	bh=iZYfWUmdZDqvvaHX1+y29MkitxNv9EUS9o/amOKAefo=;
+	s=arc-20240116; t=1756216635; c=relaxed/simple;
+	bh=ODNx0Q/OY2RIe7WOZYYGJP1MExq8daKcxA8zObLeNEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SazPEUrFWHCRvlHowthZDd3OLD5U0VWw40Q7PTSp61Z//wIDMAALdHzvJKoM2aOzMPQA1LSNk09GPAPWzxWYNZQExzWb9Sr/iZU6JtBXi5BE4ug+hkF8xbkRKjR8J4xqRUutlyazwvPqUzAR0iZZY2xmGK5ot3KZeVlVHj9MIVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqqRdGmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C89C4CEF1;
-	Tue, 26 Aug 2025 13:28:05 +0000 (UTC)
+	 MIME-Version; b=e0LsZsgE9nXEWVqhoIL8R1cRaXTRu3PIJSml/YeKo4tLgDPEabtihFjW6AdJq6PzsCkJUUHHx/pOCyETatY/ptdM/QL/+/tnZQ+6D4hWyoxfs9TU7Df/c5oL9BVyeXxr3n28DUyR9hjw79Apa0tSV/3FAWKfdasVbfdhqF5EbQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrXpsbNl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B3EC4CEF1;
+	Tue, 26 Aug 2025 13:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214885;
-	bh=iZYfWUmdZDqvvaHX1+y29MkitxNv9EUS9o/amOKAefo=;
+	s=korg; t=1756216635;
+	bh=ODNx0Q/OY2RIe7WOZYYGJP1MExq8daKcxA8zObLeNEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqqRdGmvUzWrPnreva9atx44BbIMmsP2fGFIFn2/9Ee0QF0bBpetL7bew/ACro8ui
-	 BKfk4kX7XDYSdS2fXsReLFQNrWC0ArySHUATwT7eyBrhX3t0rzURUXsUOD6Xao2S/r
-	 kxvN23kTfu/dcTXyZKDCyCWsaxc0QfM4V2nDza+k=
+	b=BrXpsbNlE/zLikNid/09bT+YnQg79bTnwf5qa1N861g35WPuhsqDzQKbc5rcSPeIT
+	 mfgiBooP2/p503aPMRYosL6w6I9BBaoGmEX4PFPDCEodOSyXwGPpKRzywN8J0+42ja
+	 1+ypwDfujuwh+I5Ng7cMMBKp6U9ED/EMMmmKYSFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 306/482] mtd: rawnand: renesas: Add missing check after DMA map
+	stable@kernel.org,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 468/644] ext4: fix fsmap end of range reporting with bigalloc
 Date: Tue, 26 Aug 2025 13:09:19 +0200
-Message-ID: <20250826110938.359095714@linuxfoundation.org>
+Message-ID: <20250826110958.077651066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit 79e441ee47949376e3bc20f085cf017b70523d0f upstream.
+commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
 
-The DMA map functions can fail and should be tested for errors.
+With bigalloc enabled, the logic to report last extent has a bug since
+we try to use cluster units instead of block units. This can cause an
+issue where extra incorrect entries might be returned back to the
+user. This was flagged by generic/365 with 64k bs and -O bigalloc.
 
-Fixes: d8701fe890ec ("mtd: rawnand: renesas: Add new NAND controller driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+** Details of issue **
+
+The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
+only 1 bg.
+
+$ xfs_io -c "fsmap -d" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128   /* sb */
+  1: 253:48 [128..255]: special 102:1 128   /* gdt */
+  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
+  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
+  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
+  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
+  7: 253:48 [4352..6911]: inodes 2560
+  8: 253:48 [6912..538623]: unknown 531712
+  9: 253:48 [538624..10485759]: free space 9947136
+
+The issue can be seen with:
+
+$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128
+  1: 253:48 [384..2047]: unknown 1664
+
+Only the first entry was expected to be returned but we get 2. This is
+because:
+
+ext4_getfsmap_datadev()
+  first_cluster, last_cluster = 0
+  ...
+  info->gfi_last = true;
+  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
+    fsb = C2B(1) = 16
+    fslen = 0
+    ...
+    /* Merge in any relevant extents from the meta_list */
+    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
+      ...
+      // since fsb = 16, considers all metadata which starts before 16 blockno
+      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
+        info->gfi_next_fsblk = 1
+      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
+        info->gfi_next_fsblk = 2
+      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
+        info->gfi_next_fsblk = 3
+      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
+        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
+          // emits an extra entry ** BUG **
+        }
+    }
+
+Fix this by directly calling ext4_getfsmap_datadev() with a dummy
+record that has fmr_physical set to (end_fsb + 1) instead of
+last_cluster + 1. By using the block instead of cluster we get the
+correct behavior.
+
+Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
+is okay since the gfi_lastfree and metadata checks in
+ext4_getfsmap_datadev_helper() are anyways redundant when we only want
+to emit the last allocated block of the range, as we have already
+taken care of emitting metadata and any last free blocks.
+
+Cc: stable@kernel.org
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/renesas-nand-controller.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/fsmap.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/renesas-nand-controller.c
-+++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
-@@ -426,6 +426,9 @@ static int rnandc_read_page_hw_ecc(struc
- 	/* Configure DMA */
- 	dma_addr = dma_map_single(rnandc->dev, rnandc->buf, mtd->writesize,
- 				  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(rnandc->dev, dma_addr))
-+		return -ENOMEM;
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
+ 	ext4_group_t end_ag;
+ 	ext4_grpblk_t first_cluster;
+ 	ext4_grpblk_t last_cluster;
++	struct ext4_fsmap irec;
+ 	int error = 0;
+ 
+ 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
+@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
+ 			goto err;
+ 	}
+ 
+-	/* Report any gaps at the end of the bg */
++	/*
++	 * The dummy record below will cause ext4_getfsmap_helper() to report
++	 * any allocated blocks at the end of the range.
++	 */
++	irec.fmr_device = 0;
++	irec.fmr_physical = end_fsb + 1;
++	irec.fmr_length = 0;
++	irec.fmr_owner = EXT4_FMR_OWN_FREE;
++	irec.fmr_flags = 0;
 +
- 	writel(dma_addr, rnandc->regs + DMA_ADDR_LOW_REG);
- 	writel(mtd->writesize, rnandc->regs + DMA_CNT_REG);
- 	writel(DMA_TLVL_MAX, rnandc->regs + DMA_TLVL_REG);
-@@ -606,6 +609,9 @@ static int rnandc_write_page_hw_ecc(stru
- 	/* Configure DMA */
- 	dma_addr = dma_map_single(rnandc->dev, (void *)rnandc->buf, mtd->writesize,
- 				  DMA_TO_DEVICE);
-+	if (dma_mapping_error(rnandc->dev, dma_addr))
-+		return -ENOMEM;
-+
- 	writel(dma_addr, rnandc->regs + DMA_ADDR_LOW_REG);
- 	writel(mtd->writesize, rnandc->regs + DMA_CNT_REG);
- 	writel(DMA_TLVL_MAX, rnandc->regs + DMA_TLVL_REG);
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
+-					     0, info);
++	error = ext4_getfsmap_helper(sb, info, &irec);
+ 	if (error)
+ 		goto err;
+ 
 
 
 
