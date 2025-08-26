@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FDBB365F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6DFB36308
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E456A567999
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16FCB4676A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33ECC341678;
-	Tue, 26 Aug 2025 13:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6B340DAE;
+	Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOG7VPJ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guUoI/QQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31A9341660;
-	Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C15338F32;
+	Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215808; cv=none; b=XXMcQCAJZnfs+j9GknvVyku8UxXuwtmMUMjLIYomniSILRDWfpTaYGVstpvo+NMGReHtK5M/cmcZHrIiv7bOBAV7hmLptnJYPZpc54R80S5iD8HHRwtYOfZjHsXilfgA7BMbgshNGTEvw5CYHSJ+e8B66JEtH6q0ExNDO6M4NsI=
+	t=1756214150; cv=none; b=E3rf4zesjFoABHF+Q4q8nlNOH4SsS/AqAQYQg9oXV5TR10KcOZzihKksme1yJL5JCpeKRzflBq48CfriEZUeWIhfRC882ymtABh2I+9XPc97nX8g46TMKApEUcM5A5qRvmh8UaSIt10SjGq0C+dXcjrHjlPFwMEmtbUdBltKOJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215808; c=relaxed/simple;
-	bh=62fYf+MRMu+OaeRFVLbJoEB8IVoIrVHsCS/dkAprHZc=;
+	s=arc-20240116; t=1756214150; c=relaxed/simple;
+	bh=S/cqH8oPXa/2kYAXTpiP05rQ7Uhdwqmr9WE0okhNU2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4peLTO7KEunp6IxB3fuUlOW3J6v6Zw+oqYKQEHVB0EQ6ezDMxfL+7ColhRREuKI4lcBwaud5H46mfqe5cwNKXKEcZ6w7wdpoxLxq1fus7kVcaak6S6z1AHQu3tWjjRVNmWcNJTLEDmeh4QOaLaNJPq/CwE/smuxARctvc11Xkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOG7VPJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BF3C4CEF1;
-	Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
+	 MIME-Version; b=Zf+/dN+3exIAp5VBOmo5hAFbUQNZnh1OW4Rmqn8JueE6/JutPiYoxGTPst5sHBobHZl6RcTLWtZdjN7t5wlphcr567af9ATklyAJIAxqn5toZncpAeO5ppWcnX0NdfVOVovPYBcGVXUpVzA4DXWbuyw0K4BS/JttBJJiQb+BBDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guUoI/QQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF967C4CEF1;
+	Tue, 26 Aug 2025 13:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215807;
-	bh=62fYf+MRMu+OaeRFVLbJoEB8IVoIrVHsCS/dkAprHZc=;
+	s=korg; t=1756214150;
+	bh=S/cqH8oPXa/2kYAXTpiP05rQ7Uhdwqmr9WE0okhNU2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOG7VPJ2xYyov2okQOQD0M839q+YfmGrI5eS1Eu55t/lrnhG5UjW9IK7aIZ4KiIv8
-	 nall+WtabiWc49D4inF8WVlWR+ED/KMA1QusQxj703+zfw/Plzw3e4t+MGQCUuTb43
-	 cExT5JV/6lTUbau7EyWO937u+pfIGgxGq2Oy8+t4=
+	b=guUoI/QQEJxilKKH1iMO03D/y5JAEzKnDaKCWiFVwtgR8w/7mXOIXfCuUsl0q1oVY
+	 N/AvYRtvDRPKCrVp6+Q5V/SQuI6Zs9Syu7Kbq/u1xL3epNEVoRbhRx7a8rMbfh8NDo
+	 QeL0cP7rv0JPjt8Z4hDGyd++0QIRRrwTYBQu3m5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/644] pinctrl: sunxi: Fix memory leak on krealloc failure
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 012/482] net: gianfar: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:04:25 +0200
-Message-ID: <20250826110950.784597069@linuxfoundation.org>
+Message-ID: <20250826110931.086706203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
+commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
 
-In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
-the pinctrl_map array, the function returns -ENOMEM directly
-without freeing the previously allocated *map buffer. This results
-in a memory leak of the original kmalloc_array allocation.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
+
+Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
+Cc: stable@vger.kernel.org	# 4.18
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-index 30ca0fe5c31a..afe41ea0ff1e 100644
---- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-+++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-@@ -335,6 +335,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	const char *function, *pin_prop;
- 	const char *group;
- 	int ret, npins, nmaps, configlen = 0, i = 0;
-+	struct pinctrl_map *new_map;
+--- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
++++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+@@ -1466,8 +1466,10 @@ static int gfar_get_ts_info(struct net_d
+ 	if (ptp_node) {
+ 		ptp_dev = of_find_device_by_node(ptp_node);
+ 		of_node_put(ptp_node);
+-		if (ptp_dev)
++		if (ptp_dev) {
+ 			ptp = platform_get_drvdata(ptp_dev);
++			put_device(&ptp_dev->dev);
++		}
+ 	}
  
- 	*map = NULL;
- 	*num_maps = 0;
-@@ -409,9 +410,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	 * We know have the number of maps we need, we can resize our
- 	 * map array
- 	 */
--	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
--	if (!*map)
--		return -ENOMEM;
-+	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
-+	if (!new_map) {
-+		ret = -ENOMEM;
-+		goto err_free_map;
-+	}
-+
-+	*map = new_map;
- 
- 	return 0;
- 
--- 
-2.39.5
-
+ 	if (ptp)
 
 
 
