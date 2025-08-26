@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-172951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE04AB35ADE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729A6B36614
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 461D27C18E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:13:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF368E6968
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB132C0260;
-	Tue, 26 Aug 2025 11:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A99C34A32D;
+	Tue, 26 Aug 2025 13:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVzmIzR4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srko8t4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD53E30BF54;
-	Tue, 26 Aug 2025 11:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AF834A322;
+	Tue, 26 Aug 2025 13:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756206786; cv=none; b=CvJ6lULwfwldKDPipsqukU4eoMAT1U+bVizanUNdp0ECuXlG4CEXSXUZGmeSCWsSKsVqLv21TcPiUVnBAWftYu/zz0qwKFoTtViMoFApC9qbkBiMgKjjE9HvbqTmxuc3Id2HDkdzoIq8TIi9Yz4HUvIkkbVPGUrrT5XEdikXVps=
+	t=1756215909; cv=none; b=oTPS/T+ijCXNI9lHwlW611rFJ6pT1ZNeavCV6ZfG7dtSRsugi2HSebi37/AP2hspCjnK21TwJ3VU3luxxogPVRmLS0wcRiDs7qBzWId3ANFkhSqGs/bFei9Hjua2ln+tgXv47uM72jdikpuXmqmwsUKIkBaKByCnKW1AihUxZV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756206786; c=relaxed/simple;
-	bh=vnIUCqZnhpM9DupUM30pyBId8glvfqvvm+SLU7mNF7A=;
+	s=arc-20240116; t=1756215909; c=relaxed/simple;
+	bh=whvJc9C5EDg6+EbMIHis0cXEPqUeVYL55dgx66v03Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMdl7aRjujjtQaRRPcJyTgrxvvwXiIbq/MxKKYwNrj8JUtRF6qdX2SihHj7OKXeinNtcpYAIw1QE8US7lpr1YJo+qftwAxaQx3ftuS43YcoBOD81auXiElV9SQxT0JLky4AqW6dYSTcou4/YZRjujXADPTfdKc8FyguGcjPsIek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVzmIzR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEE2C4CEF1;
-	Tue, 26 Aug 2025 11:13:05 +0000 (UTC)
+	 MIME-Version; b=IHgzhFMBS2SKBZFxq4kxR63xqUruHJMVvbEbWT4NAjSW9xC/5Qh0c/9TgBD+czTgUxi8/FreO8Scb+gdf7s2F74lFPBb7H0nCBCUcUQ4q5cvYuiDAPGHcVW/XCo1EdtWiMI+DjOETPhGbl+MWCINZaNfkCb5u0cNdPFJKwG1lpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srko8t4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980C3C116B1;
+	Tue, 26 Aug 2025 13:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756206786;
-	bh=vnIUCqZnhpM9DupUM30pyBId8glvfqvvm+SLU7mNF7A=;
+	s=korg; t=1756215909;
+	bh=whvJc9C5EDg6+EbMIHis0cXEPqUeVYL55dgx66v03Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVzmIzR4xKNg4IWtKa1J4pTvKU+qlCAcnmywPo4Z2cPbCTCQ2tz55vJddhlgvadvs
-	 G3bPnM8JrP9AiPfG7V7i7Lp2pp8yoZ+F7NXcknKlQ3ujOKbhzCGyia6wJloVSHERKa
-	 uDa+705FIa+wlV+PyPfa+Kcz8vSMHTBooHechH88=
+	b=srko8t4F6Wo2IliLf3lxXwi/KR8cnfylRwtZxnYerJvY6n71T3l8cUf/BpEGS4JlD
+	 2bFMce17KuyfjoGju4PSA5rLPpRhG7h/CuBV8mMwSk2ia5gVKHU2ZfwNDI+8t90M35
+	 qMZhYvWhASeTFi0nDPELcjJfucb4M1KWNrvtLfvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	stable <stable@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 001/457] serial: 8250: fix panic due to PSLVERR
+Subject: [PATCH 5.15 194/644] dmaengine: nbpfaxi: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:04:45 +0200
-Message-ID: <20250826110937.332593945@linuxfoundation.org>
+Message-ID: <20250826110951.259951241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
+[ Upstream commit c6ee78fc8f3e653bec427cfd06fec7877ee782bd ]
 
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
-
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
-
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
-
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-[ adapted to inline code structure without separate serial8250_initialize helper function ]
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250707075752.28674-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/nbpfaxi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2376,9 +2376,8 @@ int serial8250_do_startup(struct uart_po
- 	/*
- 	 * Now, initialize the UART
- 	 */
--	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
--
- 	uart_port_lock_irqsave(port, &flags);
-+	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 	if (up->port.flags & UPF_FOURPORT) {
- 		if (!up->port.irq)
- 			up->port.mctrl |= TIOCM_OUT1;
+diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+index bbedf57e3612..94e7e3290691 100644
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -712,6 +712,9 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 		list_add_tail(&ldesc->node, &lhead);
+ 		ldesc->hwdesc_dma_addr = dma_map_single(dchan->device->dev,
+ 					hwdesc, sizeof(*hwdesc), DMA_TO_DEVICE);
++		if (dma_mapping_error(dchan->device->dev,
++				      ldesc->hwdesc_dma_addr))
++			goto unmap_error;
+ 
+ 		dev_dbg(dev, "%s(): mapped 0x%p to %pad\n", __func__,
+ 			hwdesc, &ldesc->hwdesc_dma_addr);
+@@ -738,6 +741,16 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 	spin_unlock_irq(&chan->lock);
+ 
+ 	return ARRAY_SIZE(dpage->desc);
++
++unmap_error:
++	while (i--) {
++		ldesc--; hwdesc--;
++
++		dma_unmap_single(dchan->device->dev, ldesc->hwdesc_dma_addr,
++				 sizeof(hwdesc), DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
+ 
+ static void nbpf_desc_put(struct nbpf_desc *desc)
+-- 
+2.39.5
+
 
 
 
