@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5295B3607F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67605B35BE9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136127AC95A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AAB0363D5F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A61118A6C4;
-	Tue, 26 Aug 2025 13:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B632FD7DE;
+	Tue, 26 Aug 2025 11:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKZ8fnZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HavRSs2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402193A1B5;
-	Tue, 26 Aug 2025 13:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC152F619C;
+	Tue, 26 Aug 2025 11:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213275; cv=none; b=eHHUKbfhaG5qs+lSXc6yMK5R9HkN1v0tk7+/Y+JHT0hkGrIOt4YxZ3eZQ7FvcXfw5gMOjnw+5n8c4GIXf4rI9ozYlMvEImkGEBHknFz6BjlFXcQ7aWOioEhoWy3u5b304jfNQZYVOxwycbmHC4JajYHeIcBWuDQS7MS2JYmCZfA=
+	t=1756207438; cv=none; b=gEJWBzrTuONnIXo6XjB2nVFphbjTWpxfDtBrBKVIs+79E/O1Nh6Jexv8Z7APatTfHoqYHTa669JGS4WcNpVvaoGFjhuP1mwXaGzHMjOpZ/eMZEV5iCMtEHYvIbxx3HAy7730twNNkHKxjtjhFVbKD7iiDE97skAr2R2Dk32XhbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213275; c=relaxed/simple;
-	bh=bkgD5nGQlXNYZ6TrqK+lcVhjFQx6Twxes37VsY+tYlk=;
+	s=arc-20240116; t=1756207438; c=relaxed/simple;
+	bh=Fsn4ZAYhWzaaBM9gHyPLq0FNkbPdbtCgdDg3eulWVZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8PCrGKcfRAH1vr4C2g9aK5AZv8KyJSlvWmKF+WPS81mw1/wzt26Qlu+gvt88lU6XnAwllTZXKFtiNoiIZ79B64dBCI2BzxdEQyVAW5w3ABd6CdNWDmMPcen+0p5ECo2leJq5z3UbUrJK+ABpXEF0hdx8XgQplfMnCgL5mh0vno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKZ8fnZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CCAC4CEF1;
-	Tue, 26 Aug 2025 13:01:14 +0000 (UTC)
+	 MIME-Version; b=Gi/xelov1UCw/Fsgo2tzu+Uy13crOl2zNlFavMMmAcOLmvOgv96CW7I20bWKCh5RfWtirU32H2j+lWsvif1TJ+xzLWDB7HFmSTMd8hjBP9FqgT2KPRGjpZgOFPIeNhOtgfP3xCb4pD1G9gl4yosNWwotfi4WWHb3EtUIkMvhuF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HavRSs2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB53C4CEF1;
+	Tue, 26 Aug 2025 11:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213275;
-	bh=bkgD5nGQlXNYZ6TrqK+lcVhjFQx6Twxes37VsY+tYlk=;
+	s=korg; t=1756207438;
+	bh=Fsn4ZAYhWzaaBM9gHyPLq0FNkbPdbtCgdDg3eulWVZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKZ8fnZWw5ek2iaYCjPukWTNEzsqKQhXDyWVb5DVGfr10hi3HwFOWXI4jHWtBrABq
-	 mmG1zxtUwzpfKFJCcz+mD2CmyNQtD0dE45ctXJ+D1S3XGlB82rCVs7/RdhqOxDqpGu
-	 6dRvi+LcLMB84jhoZ3HF0etCV1xIGyeOViyM8pxw=
+	b=HavRSs2w8YuAT3Kl4yzlaIAFMTg5XtfNNIcKBdrEuj7ZhNKIZ8RYAywW8qjJYQYPH
+	 0EsYivBp6oM/6iJxw2wOI5IjnkKJpJyHj/UFz3QWHuE5aVxqtXWyzyQHvsxIDC/O0E
+	 BrodF+DXSFnk7855DkJ8lTQz14RoUJ2/K+YIF/jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/587] ipmi: Fix strcpy source and destination the same
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.16 150/457] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
 Date: Tue, 26 Aug 2025 13:07:14 +0200
-Message-ID: <20250826111000.179711621@linuxfoundation.org>
+Message-ID: <20250826110941.079158096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
+commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
 
-The source and destination of some strcpy operations was the same.
-Split out the part of the operations that needed to be done for those
-particular calls so the unnecessary copy wasn't done.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clamp the value if the user provides a param that will result in an invalid
+fps.
+
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Cc: stable@vger.kernel.org
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 17 deletions(-)
+ drivers/media/platform/qcom/venus/core.h |    2 ++
+ drivers/media/platform/qcom/venus/vdec.c |    5 ++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
-index 9a459257489f..ca149ca8ccd6 100644
---- a/drivers/char/ipmi/ipmi_watchdog.c
-+++ b/drivers/char/ipmi/ipmi_watchdog.c
-@@ -1190,14 +1190,8 @@ static struct ipmi_smi_watcher smi_watcher = {
- 	.smi_gone = ipmi_smi_gone
- };
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -28,6 +28,8 @@
+ #define VIDC_RESETS_NUM_MAX		2
+ #define VIDC_MAX_HIER_CODING_LAYER 6
  
--static int action_op(const char *inval, char *outval)
-+static int action_op_set_val(const char *inval)
- {
--	if (outval)
--		strcpy(outval, action);
++#define VENUS_MAX_FPS			240
++
+ extern int venus_fw_debug;
+ 
+ struct freq_tbl {
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
+ 
+-	if (!us_per_frame)
+-		return -EINVAL;
 -
--	if (!inval)
--		return 0;
--
- 	if (strcmp(inval, "reset") == 0)
- 		action_val = WDOG_TIMEOUT_RESET;
- 	else if (strcmp(inval, "none") == 0)
-@@ -1208,18 +1202,26 @@ static int action_op(const char *inval, char *outval)
- 		action_val = WDOG_TIMEOUT_POWER_DOWN;
- 	else
- 		return -EINVAL;
--	strcpy(action, inval);
- 	return 0;
- }
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
  
--static int preaction_op(const char *inval, char *outval)
-+static int action_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preaction);
-+		strcpy(outval, action);
- 
- 	if (!inval)
- 		return 0;
-+	rv = action_op_set_val(inval);
-+	if (!rv)
-+		strcpy(action, inval);
-+	return rv;
-+}
- 
-+static int preaction_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "pre_none") == 0)
- 		preaction_val = WDOG_PRETIMEOUT_NONE;
- 	else if (strcmp(inval, "pre_smi") == 0)
-@@ -1232,18 +1234,26 @@ static int preaction_op(const char *inval, char *outval)
- 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
- 	else
- 		return -EINVAL;
--	strcpy(preaction, inval);
- 	return 0;
- }
- 
--static int preop_op(const char *inval, char *outval)
-+static int preaction_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preop);
-+		strcpy(outval, preaction);
- 
- 	if (!inval)
- 		return 0;
-+	rv = preaction_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preaction, inval);
-+	return 0;
-+}
- 
-+static int preop_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "preop_none") == 0)
- 		preop_val = WDOG_PREOP_NONE;
- 	else if (strcmp(inval, "preop_panic") == 0)
-@@ -1252,7 +1262,22 @@ static int preop_op(const char *inval, char *outval)
- 		preop_val = WDOG_PREOP_GIVE_DATA;
- 	else
- 		return -EINVAL;
--	strcpy(preop, inval);
-+	return 0;
-+}
-+
-+static int preop_op(const char *inval, char *outval)
-+{
-+	int rv;
-+
-+	if (outval)
-+		strcpy(outval, preop);
-+
-+	if (!inval)
-+		return 0;
-+
-+	rv = preop_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preop, inval);
- 	return 0;
- }
- 
-@@ -1289,18 +1314,18 @@ static int __init ipmi_wdog_init(void)
- {
- 	int rv;
- 
--	if (action_op(action, NULL)) {
-+	if (action_op_set_val(action)) {
- 		action_op("reset", NULL);
- 		pr_info("Unknown action '%s', defaulting to reset\n", action);
- 	}
- 
--	if (preaction_op(preaction, NULL)) {
-+	if (preaction_op_set_val(preaction)) {
- 		preaction_op("pre_none", NULL);
- 		pr_info("Unknown preaction '%s', defaulting to none\n",
- 			preaction);
- 	}
- 
--	if (preop_op(preop, NULL)) {
-+	if (preop_op_set_val(preop)) {
- 		preop_op("preop_none", NULL);
- 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
- 	}
--- 
-2.39.5
-
+ 	inst->fps = fps;
+ 	inst->timeperframe = *timeperframe;
 
 
 
