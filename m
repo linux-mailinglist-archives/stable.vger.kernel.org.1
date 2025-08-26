@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-173047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B427B35B47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141B6B3694C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601F93AE948
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D771C567808
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6E534165A;
-	Tue, 26 Aug 2025 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B123570BF;
+	Tue, 26 Aug 2025 14:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Vm87/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5XTzSnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07466239573;
-	Tue, 26 Aug 2025 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738A434F48B;
+	Tue, 26 Aug 2025 14:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207237; cv=none; b=dvMzI9Vn/r/BxIHiqQ7be2h5zvSdiPkVHE1RwUCssbCJs0hL0oUXhoDT9SpUlOV2b8llvAQDp1LWij/DouWqsV0b6u17v1+CjUavBySTkY+3/psDZP0jJ8XqWIEPJfpTxGZ9WMIISgqEHFcoNgg7Bbpizw+4k8c/titmFSPgFcU=
+	t=1756217527; cv=none; b=NHVaRubqy0sh+WqBw05LKXJ935eCdkp5l+6Y+ZhO6ab8IASA9xRQpT3/9DPwAq61gyemMGaz8dqqNy2U62nNwEkWyncDvhcVlkOTwiPt7mOOV0Y3N6RZEZhHj9QpuPkh1KAF1JbiNcwc0IeYlzaKOl55akpPvgS80a0nRxsmnMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207237; c=relaxed/simple;
-	bh=MjX4S3qrbV1PBVOj9UGLNjCZMR/QdwoEaKwtM7Uq7xo=;
+	s=arc-20240116; t=1756217527; c=relaxed/simple;
+	bh=OtNwsaw8UzkL2nv/gYvK2/62XR+p8aaT8gHN55620yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMQyp7a3wB120Z1wKHwnyHTSQdbt2mpWch/xSiOOif97DpF+Ya0fp45yCc5nUg5vi5fYc6ah4tRo1Wx2guKDwJSbzsyYWaxVXc8t1XPhQ4c4pQxZrK1AwTBn3yqPVhSc8KUvZx5H3lCMGFZ3TiseRLZxj/s0Ta39CHDNiFLaOKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Vm87/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BE4C4CEF1;
-	Tue, 26 Aug 2025 11:20:36 +0000 (UTC)
+	 MIME-Version; b=TN0l8vn6FXgBpwm+AES/n0jrM9SN1SgGlYUutgiTSKCTSaq0NpQ4Karp0u3u0zeg17KR8q83wJaMNjQ8C7LlBD8FXV8Spybgpy6anbh9LTiYQiIVqyYWKiro7qdOC17Wtk2nhWSmsxHxdW8m5w/Ns+ZNHNPLM/6kA7guWIYP2kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5XTzSnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D2DC4CEF1;
+	Tue, 26 Aug 2025 14:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207236;
-	bh=MjX4S3qrbV1PBVOj9UGLNjCZMR/QdwoEaKwtM7Uq7xo=;
+	s=korg; t=1756217527;
+	bh=OtNwsaw8UzkL2nv/gYvK2/62XR+p8aaT8gHN55620yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/Vm87/q6voKy4bnNpA6NidnKj5zpZujhVXjTyERVPrDwSLvVh7XldgyCgBZI3mai
-	 Wf0tBqDAeFbRwoDELGJTg2UXw3S49FUuhl0vDe4O5Pgwp/h383eYSWWxUXPHS2wS70
-	 JcT0PcHPq38Po5XwefQzLxkNthwX9k4n7DkTlIpc=
+	b=z5XTzSnqfXs3kJ1NuiOLszD7w5KTY822kgcoV4e2TZ4qfCQX1eOSRcpRevwXGm8sF
+	 fSYPKcQsykdV4+yOgxW8tsVbqpfnwEKZeoOpNZE1lJAQRpTmbHVXc7ONCfsef4PJKA
+	 L22qaPBZnPAM7DncaJi1oCVehD6fZ35LOHWWQ2E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.16 103/457] PCI: imx6: Remove apps_reset toggling from imx_pcie_{assert/deassert}_core_reset
+	syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 177/523] ipv6: reject malicious packets in ipv6_gso_segment()
 Date: Tue, 26 Aug 2025 13:06:27 +0200
-Message-ID: <20250826110939.922523298@linuxfoundation.org>
+Message-ID: <20250826110928.824353638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +65,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d31eb217425591e100b475fad6360cd3da2073c6 upstream.
+[ Upstream commit d45cf1e7d7180256e17c9ce88e32e8061a7887fe ]
 
-apps_reset corresponds to LTSSM_EN in i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP
-platforms. Since assertion/de-assertion of apps_reset is done in
-imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable(), remove it from
-imx_pcie_assert_core_reset() and imx_pcie_deassert_core_reset().
+syzbot was able to craft a packet with very long IPv6 extension headers
+leading to an overflow of skb->transport_header.
 
-This also fixes a failure in enumerating the PI7C9X2G608GP (hotplug) chip
-reliably on i.MX8MM, as reported by Tim.
+This 16bit field has a limited range.
 
-It should be noted that only i.MX7D, i.MX8MQ, i.MX8MM, and i.MX8MP
-platforms have the apps_reset logic, so this change doesn't have any effect
-on other platforms.
+Add skb_reset_transport_header_careful() helper and use it
+from ipv6_gso_segment()
 
-Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()")
-Reported-by: Tim Harvey <tharvey@gateworks.com>
-Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com/
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: reworded commit subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Tim Harvey <tharvey@gateworks.com> # imx8mp-venice-gw74xx (i.MX8MP + hotplug capable switch)
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250709033722.2924372-2-hongxing.zhu@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 0 UID: 0 PID: 5871 Comm: syz-executor211 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+ RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Call Trace:
+ <TASK>
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+  skb_gso_segment include/net/gso.h:83 [inline]
+  validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+  validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+  sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+  __dev_xmit_skb net/core/dev.c:4102 [inline]
+  __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
+
+Fixes: d1da932ed4ec ("ipv6: Separate ipv6 offload support")
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/688a1a05.050a0220.5d226.0008.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730131738.3385939-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 23 +++++++++++++++++++++++
+ net/ipv6/ip6_offload.c |  4 +++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -860,7 +860,6 @@ static int imx95_pcie_core_reset(struct
- static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
- {
- 	reset_control_assert(imx_pcie->pciephy_reset);
--	reset_control_assert(imx_pcie->apps_reset);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 3248e4aeec03..ca7f2a2c3e3f 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2519,6 +2519,29 @@ static inline void skb_reset_transport_header(struct sk_buff *skb)
+ 	skb->transport_header = skb->data - skb->head;
+ }
  
- 	if (imx_pcie->drvdata->core_reset)
- 		imx_pcie->drvdata->core_reset(imx_pcie, true);
-@@ -872,7 +871,6 @@ static void imx_pcie_assert_core_reset(s
- static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
- {
- 	reset_control_deassert(imx_pcie->pciephy_reset);
--	reset_control_deassert(imx_pcie->apps_reset);
- 
- 	if (imx_pcie->drvdata->core_reset)
- 		imx_pcie->drvdata->core_reset(imx_pcie, false);
-@@ -1247,6 +1245,9 @@ static int imx_pcie_host_init(struct dw_
- 		}
- 	}
- 
-+	/* Make sure that PCIe LTSSM is cleared */
-+	imx_pcie_ltssm_disable(dev);
++/**
++ * skb_reset_transport_header_careful - conditionally reset transport header
++ * @skb: buffer to alter
++ *
++ * Hardened version of skb_reset_transport_header().
++ *
++ * Returns: true if the operation was a success.
++ */
++static inline bool __must_check
++skb_reset_transport_header_careful(struct sk_buff *skb)
++{
++	long offset = skb->data - skb->head;
 +
- 	ret = imx_pcie_deassert_core_reset(imx_pcie);
- 	if (ret < 0) {
- 		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
++	if (unlikely(offset != (typeof(skb->transport_header))offset))
++		return false;
++
++	if (unlikely(offset == (typeof(skb->transport_header))~0U))
++		return false;
++
++	skb->transport_header = offset;
++	return true;
++}
++
+ static inline void skb_set_transport_header(struct sk_buff *skb,
+ 					    const int offset)
+ {
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index 673f02ea62aa..c145be2fd6e4 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -111,7 +111,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		skb_reset_transport_header(skb);
++		if (!skb_reset_transport_header_careful(skb))
++			goto out;
++
+ 		segs = ops->callbacks.gso_segment(skb, features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
+-- 
+2.39.5
+
 
 
 
