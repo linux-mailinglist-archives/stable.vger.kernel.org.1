@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-175995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C58B36AF6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E381B3666F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE9E1C266A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B3185629D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE6A3570B0;
-	Tue, 26 Aug 2025 14:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CC634F491;
+	Tue, 26 Aug 2025 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J60IztIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfhvE13Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E924F352FEC;
-	Tue, 26 Aug 2025 14:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A74350D7C;
+	Tue, 26 Aug 2025 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218510; cv=none; b=MzGEJyTSYRPeU5lmmcl7KJukb84I8+nCz0b/BUgqZSQiy8v8E8yoxSORdsfHoKXplneVZHrRGCmOHLhuKzw/ZSGUWFC7VdN2NEbD0e+fJ78NnEPp6jKye9DtFVa4i4eRRTN9jdK3Rs0/dJfQ9O5O8uxUNEC6xeYfrnvGGhB6TB8=
+	t=1756216090; cv=none; b=C8ZDKH2O6WCNSPgTKT8kq31fmQmsEepSpoY54BHighquJvT5La/CbHP1CHXGYltJwndGulEz+kgSD0wA9Dv8geztMHYcxJo1yy9XjDgYGCjvbyaSnNx/EwUoy1+98lVZZerWozdK4xlbFrsNsE0DZFz/15m4wqUcNZ4FaoqhjeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218510; c=relaxed/simple;
-	bh=LiRvn+o7xchiFniUR8aRwekq2RI331iT6F3ZaHjbbqU=;
+	s=arc-20240116; t=1756216090; c=relaxed/simple;
+	bh=1Eeicl2ftS3CSaSECQwomQP4Z8VRpl9r2AA15m/Wwco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWZ6H6lD1NaysoNK2vzR5xFDs6aGpipLHJyM4DSBP9FLrNXc2UjvqQcL7cmpn500MU2glFX3ExBII62r2fEUpbIS99m3d2ILIOKv0LCGC1ZnIQopzXYjz67+Z3QSQmM3LSBPOv/clz5pGzviU49cpFPhCTkAnz7JZdyBJtEvMTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J60IztIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4DEC4CEF1;
-	Tue, 26 Aug 2025 14:28:29 +0000 (UTC)
+	 MIME-Version; b=cNM3L5O3S/Jbqk9AbNx4JhiyzqFjtqlawaG9MmEk7AXo5ijVtZZCINzYHRft5svhAW5qJHHHvE+XlbUB+31Biiof5NCuY76m2IIJtOGB7S5Pr8Nq07rYCwYJYpbrF2ZkpURd7oyCALTTEal0OPcUE8WDvACt07ot74RM9eTxH2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfhvE13Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D034EC4CEF1;
+	Tue, 26 Aug 2025 13:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218509;
-	bh=LiRvn+o7xchiFniUR8aRwekq2RI331iT6F3ZaHjbbqU=;
+	s=korg; t=1756216090;
+	bh=1Eeicl2ftS3CSaSECQwomQP4Z8VRpl9r2AA15m/Wwco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J60IztIxD+ssHXWw3eUtspgeWmcchcdeWlqyE+NH9OHP58W4iL7Xc7oXaB0RHMgCG
-	 4HKHizsI6obHhalRJJ1F3ktinl+8oD5jeiZAC9DqJUbfIec8cNb43P772lp0xiyPuR
-	 Gi3CyBh4zgTFfrVRIhTYALO7CelcJ+n3nlMvQA6g=
+	b=gfhvE13ZJs5atoZG2wVQ5TCUdmno12Dl4vR2gBnwgPQlLergTDS1H/voB+IxVdaaz
+	 sW0hytzfosdft44hkeetaMkGgxBHYpdJc5VLF4URtikUryfEowBN7zZcCABC7R0zNY
+	 sI2P1MnXBpNG1O7jJP6HOd13Rk98P2xSHjroRvjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.4 028/403] comedi: das6402: Fix bit shift out of bounds
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 263/644] net: gianfar: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:05:54 +0200
-Message-ID: <20250826110906.581409184@linuxfoundation.org>
+Message-ID: <20250826110952.892771606@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Johan Hovold <johan@kernel.org>
 
-commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
+commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
 
-When checking for a supported IRQ number, the following test is used:
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
-	if ((1 << it->options[1]) & 0x8cec) {
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
-
-Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
+Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
+Cc: stable@vger.kernel.org	# 4.18
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers/das6402.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/comedi/drivers/das6402.c
-+++ b/drivers/staging/comedi/drivers/das6402.c
-@@ -569,7 +569,8 @@ static int das6402_attach(struct comedi_
- 	das6402_reset(dev);
+--- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
++++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+@@ -1461,8 +1461,10 @@ static int gfar_get_ts_info(struct net_d
+ 	if (ptp_node) {
+ 		ptp_dev = of_find_device_by_node(ptp_node);
+ 		of_node_put(ptp_node);
+-		if (ptp_dev)
++		if (ptp_dev) {
+ 			ptp = platform_get_drvdata(ptp_dev);
++			put_device(&ptp_dev->dev);
++		}
+ 	}
  
- 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
--	if ((1 << it->options[1]) & 0x8cec) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0x8cec) {
- 		ret = request_irq(it->options[1], das6402_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+ 	if (ptp)
 
 
 
