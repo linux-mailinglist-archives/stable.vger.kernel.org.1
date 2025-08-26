@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-176320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7A1B36C2C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1530B367BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8925A1BC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5168A9840A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2948C352080;
-	Tue, 26 Aug 2025 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C2134AAE3;
+	Tue, 26 Aug 2025 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUIg3zfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPwKat0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9F9350843;
-	Tue, 26 Aug 2025 14:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DB02FDC44;
+	Tue, 26 Aug 2025 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219351; cv=none; b=GNL3CXRLuwryCVoFz1dxUsmAs/leIf8Ynq4a3NRBWjpT3aNUXxOC9uzsp2KDu0ZfW8rwDTCWvAS7VUUsehKfTRVglnCDWtnQGli8aD3Gjx88IP+LHgPISMA/ebY9nQXKAqGrLej4LEFk83TocGmLoyyt6FKn6OfFL3NAJf/A+VU=
+	t=1756216893; cv=none; b=Ky9ij8P6oUNlTN/zCmVOclAtcj9RzYsRvvvwIQUs1WaxNIfINXQNTdP1mE1oyR8sNQN/PymAytHWN8R3ja+XUb4M1g9qHL7LdKm5H6vI5mQX3d/IuRRs9nkt9g5rq7r+h1U2yM6ETYKgHoBWwDuYjzbigrqGCaREeKIKwNGRGSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219351; c=relaxed/simple;
-	bh=/gP7oUwHkx0gMqhKgSRqm8fIQlddIfvHr5KKpcNxF9U=;
+	s=arc-20240116; t=1756216893; c=relaxed/simple;
+	bh=YLG4lUru4EHVLeYLRsrv1eHpkpxd+NIR8Fh5ngMY77Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOmtIZwG/nowGIkcCJCa4xhVqT1FUy5OU1HZMPlE9V/3FEViyzDJ4wKdT6mynm2Gk/tr/bQQ56GG3JBazn2n2Vnw5et2ZQT2D8eQC0MMh/qSaAXbG7DA6S+uDrURD8IOGVxcLSuG4a4LeOJy+VEk8OgUoxabHrboTe67nz7/8E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUIg3zfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485FCC4CEF1;
-	Tue, 26 Aug 2025 14:42:31 +0000 (UTC)
+	 MIME-Version; b=DnlQaetlMP4C5BjSmJwnUXqUsxVPrQfYVgvo/XY0nDzqle/hfyRe3QwyUyoVZIHgOTubL1EqX1nRBIWLwl0tSio8b8oUQ9wIoqDcxhAu/4LsZxFcK5UKrJMIe7fls2/I27e9kqT+psrDkKg9nhviCdTStJrkBjwM4vrcwCibum0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPwKat0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00799C4CEF1;
+	Tue, 26 Aug 2025 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219351;
-	bh=/gP7oUwHkx0gMqhKgSRqm8fIQlddIfvHr5KKpcNxF9U=;
+	s=korg; t=1756216893;
+	bh=YLG4lUru4EHVLeYLRsrv1eHpkpxd+NIR8Fh5ngMY77Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUIg3zfsF/coHemkwGlaKBtQa/iWflAFbQULX8ZqhXOprUsSMgUNktyzHwtrn2G3W
-	 390rxdYnSI6MTfGnGj/JSfPnZJfn+5zQaEZBPDO4dSzEf4NjQMMjtWjIXtDq4qrbTt
-	 jo/fk+v1oBOlQfvuje6o7nv9bLMJDqdZ9aMcr5Rk=
+	b=fPwKat0TLm3HgQcJDw/0gRQ0J63gG6DbYuyN5HbPDNDKvZlBjqRt1voQOWpWi4KmS
+	 jay/F8oLH6FMUZ0IiodpjZgrXoK/ZzYsD3alq3s4dX8FfOxOSg5RxENctRsLVbN9e0
+	 X1ZRtNpwG4DyETL6OdDVcqFeteoEFynqkCkS4mMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 347/403] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-Date: Tue, 26 Aug 2025 13:11:13 +0200
-Message-ID: <20250826110916.457706458@linuxfoundation.org>
+	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 583/644] comedi: pcl726: Prevent invalid irq number
+Date: Tue, 26 Aug 2025 13:11:14 +0200
+Message-ID: <20250826111000.979809522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 ]
+commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+The reproducer passed in an irq number(0x80008000) that was too large,
+which triggered the oob.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+Added an interrupt number check to prevent users from passing in an irq
+number that was too large.
 
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
+If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
+because it shifts a 1-bit into the sign bit (which is UB in C).
+Possible solutions include reducing the upper bound on the
+`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
 
-See also:
+The old code would just not attempt to request the IRQ if the
+`options[1]` value were invalid.  And it would still configure the
+device without interrupts even if the call to `request_irq` returned an
+error.  So it would be better to combine this test with the test below.
 
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Minor context adjustment ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
+Cc: stable <stable@kernel.org> # 5.13+
+Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
+Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/comedi/drivers/pcl726.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -392,6 +392,7 @@ static int hmm_vma_walk_hole(unsigned lo
- 	return hmm_vma_walk_hole_(addr, end, fault, write_fault, walk);
- }
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline uint64_t pmd_to_hmm_pfn_flags(struct hmm_range *range, pmd_t pmd)
- {
- 	if (pmd_protnone(pmd))
-@@ -401,7 +402,6 @@ static inline uint64_t pmd_to_hmm_pfn_fl
- 				range->flags[HMM_PFN_VALID];
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 		unsigned long end, uint64_t *pfns, pmd_t pmd)
- {
+--- a/drivers/comedi/drivers/pcl726.c
++++ b/drivers/comedi/drivers/pcl726.c
+@@ -329,7 +329,8 @@ static int pcl726_attach(struct comedi_d
+ 	 * Hook up the external trigger source interrupt only if the
+ 	 * user config option is valid and the board supports interrupts.
+ 	 */
+-	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (board->irq_mask & (1U << it->options[1]))) {
+ 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
