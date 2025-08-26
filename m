@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352E4B36120
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF8FB363FE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C9387B8878
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2833C8A6506
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290A5223DE5;
-	Tue, 26 Aug 2025 13:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C90AD4B;
+	Tue, 26 Aug 2025 13:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2OgUdAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDWDcPuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F28FBF0;
-	Tue, 26 Aug 2025 13:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FCC34CF9;
+	Tue, 26 Aug 2025 13:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213609; cv=none; b=d+BYBJ665c+bV++InbLb6g5cIneqyRJ38JsRg2VAy6iMjWhmwAUI+6qdwW4NxJkqOJW0UsblXqsGdVb2d65Wa6lRUbMZS5YvKjOxXlNujVO/owl6brjqGOWN3En4ziccWNVr6UoT+o+fB3zwVfRndpCyVGJSVRx7g+Fkxll7n8s=
+	t=1756214803; cv=none; b=aMbzPKJlTYofR3Jow2JSv1E7ooFiMQL67LH2ctQOZpLS6lG/LulFSavsL7YVxoRq1oxtqazAz0Pi6k53KcKY/Z6tEoo2c4gvyYoKOtwEWSQuOqGORdkElXhRqezPpKsoXJGPZt6EF9fJaVAVsLPYHpRIlDs9CtLsQxTLA2RN+y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213609; c=relaxed/simple;
-	bh=7kR4G+yk2r/hAjDj+G8V/BHU2epqu70ngXAduDFtqWc=;
+	s=arc-20240116; t=1756214803; c=relaxed/simple;
+	bh=6CgimN1RakXd40mwQMSfAeregfnE0rPBc4WCMcZUAac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e772XOs/rk+IN92ttWsWbhC1gqE3zM/B0V9Z1q5kbrqEx+qg0Dwe4hcORSt54T6RV1GUzdi29GwvtGNrfuHZrlugt5CzruVe4YK/SqE8AmdSlPOTv6QFhtrSepKFBdwQVfn5l6TAeEKetveoN627HXPUwvPObmzvXVBIDp2+Ouo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2OgUdAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CC4C4CEF1;
-	Tue, 26 Aug 2025 13:06:49 +0000 (UTC)
+	 MIME-Version; b=JytnHTLuoFK8xRzAivsbb+MttHpXJCG8rv8/H7updN1URle0bx6ow6lTpW99FYq5Dldr7QM8aWf+/3eaduqZRXF2Dd/AI3bfvjWKwg8I/eoZWcfcP8zAPbGVkePCAbS2yRvYDbB9R3M3AVWgiwa2pVvLQWZIqBVamD4sWeCcsZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDWDcPuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B33C4CEF1;
+	Tue, 26 Aug 2025 13:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213609;
-	bh=7kR4G+yk2r/hAjDj+G8V/BHU2epqu70ngXAduDFtqWc=;
+	s=korg; t=1756214803;
+	bh=6CgimN1RakXd40mwQMSfAeregfnE0rPBc4WCMcZUAac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2OgUdAcXYGPQRolZQNRKEO1lJ5jnzDzrF6kYneSlDvW7yGYB1mC9xT4P77I1B8/r
-	 slYJNAmd47LmioTFpiPUV4dj4QeiVAGaMpxb+xGubcmL0HuEp7LPc0ctCa0o9P4Zl1
-	 BNnNjvJkV6t5hRuoyyIoSbDzJ6LD07w9kkTBxIwU=
+	b=PDWDcPuE8BdKUHuqI+Tn6rCDOlBOrgboSKUVn4zk9peh+m9TMa09vBiC8pDypt13I
+	 ztCsv/hS9CqKXVwZYApBVpKk3Ih7bTyQ1d2asJJ+cW9q5NllRQ1nUqqG04tD3ItLwb
+	 5iKXZE0QvRLdKGHqsim3GcnLgguW8ZTQ9FLo6ARo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 379/587] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	stable <stable@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.1 275/482] vt: keyboard: Dont process Unicode characters in K_OFF mode
 Date: Tue, 26 Aug 2025 13:08:48 +0200
-Message-ID: <20250826111002.546928764@linuxfoundation.org>
+Message-ID: <20250826110937.566968062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
+commit b1cc2092ea7a52e2c435aee6d2b1bcb773202663 upstream.
 
-The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
-integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
-represent millidegrees Celcius.
+We don't process Unicode characters if the virtual terminal is in raw
+mode, so there's no reason why we shouldn't do the same for K_OFF
+(especially since people would expect K_OFF to actually turn off all VT
+key processing).
 
-Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
-scaling") properly addressed the incorrect scaling in the
-pwm_auto_point_temp_store implementation but erroneously scaled
-the pwm_auto_point_pwm_show (pwm value) instead of the
-pwm_auto_point_temp_show (temp value) resulting in:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 25500
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 4500
-
-Fix the scaling of these attributes:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 255
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 45000
-
-Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/gsc-hwmon.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/vt/keyboard.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/gsc-hwmon.c
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -65,7 +65,7 @@ static ssize_t pwm_auto_point_temp_show(
- 		return ret;
- 
- 	ret = regs[0] | regs[1] << 8;
--	return sprintf(buf, "%d\n", ret * 10);
-+	return sprintf(buf, "%d\n", ret * 100);
- }
- 
- static ssize_t pwm_auto_point_temp_store(struct device *dev,
-@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(s
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
- 
--	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
- }
- 
- static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
+--- a/drivers/tty/vt/keyboard.c
++++ b/drivers/tty/vt/keyboard.c
+@@ -1496,7 +1496,7 @@ static void kbd_keycode(unsigned int key
+ 		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
+ 						KBD_UNICODE, &param);
+ 		if (rc != NOTIFY_STOP)
+-			if (down && !raw_mode)
++			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
+ 				k_unicode(vc, keysym, !down);
+ 		return;
+ 	}
 
 
 
