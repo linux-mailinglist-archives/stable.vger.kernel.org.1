@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1254FB3633B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89D4B3672C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C1E1BC15C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9067F171CC3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C39242D7B;
-	Tue, 26 Aug 2025 13:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA5835209D;
+	Tue, 26 Aug 2025 13:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjzN/Gq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAdfMNzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E8187554;
-	Tue, 26 Aug 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A4035209B;
+	Tue, 26 Aug 2025 13:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214437; cv=none; b=GvqDP08wdlsTNeUFmdBjsu9e2SXAVn6eieexQotHz6QeRJJM4VA1JKBYI2au6sCg3K3urQMSJkwJg9FSK5AZLhgOd3vWWIV7IF8drHQZWaySVc71WyngPeszLRUKWxk9zn2hgxayixQqx6GTvG4b8XysSJDMoHsOIg7ziQipMRI=
+	t=1756216242; cv=none; b=bUpg2L1z8CFEyuYU/Wpv53O9ffOm58aV5qkOmUX+RfA+uukQgBg0Dl42z0tW/bbxDt7YoTwfLGXZB3nDmc7zsU+kw7pwD0wGm3FNis7JsDfWTk2QSB3GfqmMCdrGXi+0thHXD4rJNPzKKp2trnCwxUSDA46RuAo9WSDjGpEC7A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214437; c=relaxed/simple;
-	bh=jkCCGhCaTPKxcp9oL7W03OL1kZXSdCsRnPLV24GjlLc=;
+	s=arc-20240116; t=1756216242; c=relaxed/simple;
+	bh=UH6vlYuOU1DF7XTwvs8SXjrgQb8cR8MMf52iNYncTBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUzV39jrbWjhqR7UCqZTcY2cxLGarCrIrjY7TXq6ieEZ9+vmeVGEEROZl8SzirG3SJQW16s8S0ffWFG/trxfnRf3ZayMD4ervIg7RRZeGxdG5RAsD7qA9scC2GEq09XMRTTJ+zSZXEA5ITrQMyNVnsvL0IcaodAim4VKQR+EuS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjzN/Gq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5403FC4CEF1;
-	Tue, 26 Aug 2025 13:20:37 +0000 (UTC)
+	 MIME-Version; b=pWyYJLV1Slq3M41GuwjVuSJqQBmkBKVxhRnFbckei4bVpDmvBO2VHcZl3oxm0ZaxfBo4iC/7jjLAFN1BtmDCsoMHc4PrdqC/N9Xc3o8aICjiGxerV6nusao43jNgXgHSvvEyIP5YAUOtqV5d2X403jwMmCn84wwnf3cAZ3gEjco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAdfMNzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB38C113CF;
+	Tue, 26 Aug 2025 13:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214437;
-	bh=jkCCGhCaTPKxcp9oL7W03OL1kZXSdCsRnPLV24GjlLc=;
+	s=korg; t=1756216242;
+	bh=UH6vlYuOU1DF7XTwvs8SXjrgQb8cR8MMf52iNYncTBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjzN/Gq+aFZrC63R1w+Ebe8SXlI+tUBNimj1WCMn/cjVXfw+XhXv6TtWk9d2aElr3
-	 rmKYe+IWb8s2BjUtgChi9FaVkEDVN17AoMUo33coCNhsgxnhn7cUmwBeSPHwp0smcz
-	 yIv9BkRklXz/1ZpP148NCaag1dI6bbLWPo6zbUPk=
+	b=UAdfMNzEnzTSOwqKBf8le8J1QA2PdanRHnHTNOs4KD9GnuxpMG7Z8bCaBNT1ANPqk
+	 nuTp/a74kqq++Ry4mFDSCkPlTBnNHEz803Xc8phAtfj8I80WShxt8kx7/6OoVVej6Y
+	 48t5ADtvUyVTvTVvm9UdF/DAdZg72PlBIXkDZRSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jay Chen <shawn2000100@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/482] wifi: rtw89: Fix rtw89_mac_power_switch() for USB
-Date: Tue, 26 Aug 2025 13:06:30 +0200
-Message-ID: <20250826110934.203292070@linuxfoundation.org>
+Subject: [PATCH 5.15 300/644] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
+Date: Tue, 26 Aug 2025 13:06:31 +0200
+Message-ID: <20250826110953.819870892@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Jay Chen <shawn2000100@gmail.com>
 
-[ Upstream commit e2b71603333a9dd73ee88347d8894fffc3456ac1 ]
+[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
 
-Clear some bits in some registers in order to allow RTL8851BU to power
-on. This is done both when powering on and when powering off because
-that's what the vendor driver does.
+There is a subtle contradiction between sections of the xHCI 1.2 spec
+regarding the initialization of Input Endpoint Context fields. Section
+4.8.2 ("Endpoint Context Initialization") states that all fields should
+be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
+specifies that the Average TRB Length (avg_trb_len) field shall be
+greater than 0, and explicitly notes (p.454): "Software shall set
+Average TRB Length to '8' for control endpoints."
 
-Also tested with RTL8832BU and RTL8832CU.
+Strictly setting all fields to 0 during initialization conflicts with
+the specific recommendation for control endpoints. In practice, setting
+avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
+value is used for bandwidth calculation.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/a39da939-d640-4486-ad38-f658f220afc8@gmail.com
+Motivation: Our company is developing a custom Virtual xHC hardware
+platform that strictly follows the xHCI spec and its recommendations.
+During validation, we observed that enumeration fails and a parameter
+error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
+not set to 8 as recommended by Section 6.2.3. This demonstrates the
+importance of assigning a meaningful, non-zero value to avg_trb_len,
+even in virtualized or emulated environments.
+
+This patch explicitly sets avg_trb_len to 8 for EP0 in
+xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
+prevent potential issues with xHCI host controllers that enforce the
+spec strictly.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
+Signed-off-by: Jay Chen <shawn2000100@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 19 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h |  1 +
- 2 files changed, 20 insertions(+)
+ drivers/usb/host/xhci-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 4a1c9e18c530..f15a2c6874cb 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1093,6 +1093,23 @@ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev)
- 	rtw89_mac_send_rpwm(rtwdev, state, true);
- }
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 149128b89100..43cbaadf933d 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1209,6 +1209,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
+ 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
+ 				   dev->eps[0].ring->cycle_state);
  
-+static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
-+{
-+	u32 boot_mode;
++	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
 +
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_USB)
-+		return;
-+
-+	boot_mode = rtw89_read32_mask(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	if (!boot_mode)
-+		return;
-+
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFN_ONMAC);
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_STATUS1, B_AX_AUTO_WLPON);
-+	rtw89_write32_clr(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
-+}
-+
- static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- {
- #define PWR_ACT 1
-@@ -1102,6 +1119,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- 	int ret;
- 	u8 val;
+ 	trace_xhci_setup_addressable_virt_device(dev);
  
-+	rtw89_mac_power_switch_boot_mode(rtwdev);
-+
- 	if (on) {
- 		cfg_seq = chip->pwr_on_seq;
- 		cfg_func = chip->ops->pwr_on_func;
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 0291aff94016..52dd24a6216d 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -157,6 +157,7 @@
- 
- #define R_AX_SYS_STATUS1 0x00F4
- #define B_AX_SEL_0XC0_MASK GENMASK(17, 16)
-+#define B_AX_AUTO_WLPON BIT(10)
- #define B_AX_PAD_HCI_SEL_V2_MASK GENMASK(5, 3)
- #define MAC_AX_HCI_SEL_SDIO_UART 0
- #define MAC_AX_HCI_SEL_MULTI_USB 1
+ 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
 -- 
 2.39.5
 
