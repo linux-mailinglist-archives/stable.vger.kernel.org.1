@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BA9B3668B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F038B36941
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4277A1C2318C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1AD1BC7502
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D3934166B;
-	Tue, 26 Aug 2025 13:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE112192F2;
+	Tue, 26 Aug 2025 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSGqTxTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlfVgrPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B8734A32E;
-	Tue, 26 Aug 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAC42BEC45;
+	Tue, 26 Aug 2025 14:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216192; cv=none; b=fwHKI4HfzwLaPVdmbh1MNDwwta6leB41ZYjVPxsS3S92POR2hIkXp4Jdioou9U8r0YbAHmt0Rdp3pup7xYfzf0KIoyjyuMA5qFrZZbEOrRD2ud5Zu2oy4SHj8A0G5QEd3E8VaOOAZDb+CMxmVrT8n+ZUO4PUjGKlPrDX4JfUefg=
+	t=1756217696; cv=none; b=ZYM3Ik+j1ZWxzyY8WRzOxo9KbOiVfwDkfIZZgn7mPqBmjCXX+byKknQXs3VnCrxPIXoIg+hoQW/o1P+mWnsgGmZGiWT5cnF3tL1F81g6ZppuSVBGqY+kRaJyMW+6J9aE7ykYIrORpkntcjTzlIZTYsskv94GaK6HdtNVbv4Z+xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216192; c=relaxed/simple;
-	bh=MpaSvR5DLCvf8O3cRpprGshLSN79sKuC+UmzM2+/Kkw=;
+	s=arc-20240116; t=1756217696; c=relaxed/simple;
+	bh=cvpdV7MvMEjtjg71HLkHKSqFOgzo1wp93HtFwTsPh/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uB5DmEZEZ43Cbr4GDT7CNA/PVCENx+4FhVIb3+/r9wAWKTHpVL4MzfD120GA1xB6jGn1Ctv2fUJmTpdrT6Z8NLmgWCHpm4hRwJoI6VYio3vV09ZKS+Zrswu/V/CGQHeGcxC5cnbWjcQ0AHp7Y50NEW3Nf5BjZO7Sp8hTyAPU5a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSGqTxTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5182BC4CEF1;
-	Tue, 26 Aug 2025 13:49:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ngc/LTLT1FWV3cy43uqRVdD7tgFJ6p6TemWd47w1cv4+KjFyRPTHOsJokHW2Kw/E75aWPJGcZDemf6U+YxCJQC+WsIZ04RZm0OGHJU197dd6IATKtXzhCf9iVt/FU8qBG7DSQQx6nJeIfsxmusUmXVG4yT3CTScVfMfhjypnviM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlfVgrPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C896C4CEF1;
+	Tue, 26 Aug 2025 14:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216192;
-	bh=MpaSvR5DLCvf8O3cRpprGshLSN79sKuC+UmzM2+/Kkw=;
+	s=korg; t=1756217695;
+	bh=cvpdV7MvMEjtjg71HLkHKSqFOgzo1wp93HtFwTsPh/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSGqTxTmOmMsMUrgsTAAkckYJlTaq536c5eYXq8OD6UiD1cuvrI7Uh0LBUnsiPyfR
-	 fKLyX6Du+S2L7MtuCrk63HanU31yjUuuv0CWS0WshoKS3ySYaxjCI5Tg0+Qndtk7l+
-	 Q3b+dHjwIHVLHjyEq0VeF44Tvnz05i7WTl1nd9WQ=
+	b=tlfVgrPEDlxdufqdOuYCbmNarI8lwLYSg0DVr1dNeKWbVsyckUwXS1pmS5V73O11d
+	 1C1CbBdHNWT7/2XvjY7HZox/kUGVv0qWXRNmrBEgVPgsJbdiFIOYrfMU8kReFmL9px
+	 si8BLLN/0c+PdTdOAgDZfOPQ26YxNYXE8JHX5Qdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 319/644] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+	Ma Ke <make24@iscas.ac.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 200/523] sunvdc: Balance device refcount in vdc_port_mpgroup_check
 Date: Tue, 26 Aug 2025 13:06:50 +0200
-Message-ID: <20250826110954.289345986@linuxfoundation.org>
+Message-ID: <20250826110929.381602883@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/sunvdc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 72087e05b5a5..250ea9ec5f0c 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -860,6 +860,8 @@ static void __ghes_panic(struct ghes *ghes,
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -968,8 +968,10 @@ static bool vdc_port_mpgroup_check(struc
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
- 	if (!panic_timeout)
--- 
-2.39.5
-
+ 	return false;
+ }
 
 
 
