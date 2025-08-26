@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FD9B362D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E1DB36041
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78513B0302
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B14F1BA4814
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D142F8BC9;
-	Tue, 26 Aug 2025 13:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C45122127D;
+	Tue, 26 Aug 2025 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQp2LknL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwtO557l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD4834AAE8;
-	Tue, 26 Aug 2025 13:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE34D1A5BBC;
+	Tue, 26 Aug 2025 12:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214123; cv=none; b=Q7wGLUsDz9POEgQgiJ5WH+ajdXO4CsYoBnwrzCBykoc1APfXTXx7uDaLL6uaACar03AGr5vCkon7bRjU/mTftGJ8pZEDA8P/kzqR5Q1tncYGjhQArLoGGs1NCF5n0vE4C0/hIJM+RjJpysoo9Zhfx/G6l07p3Fogs5BjkF+L56w=
+	t=1756212919; cv=none; b=Upp+Fa05SVgPVLnvcO81wDfR23Dgrq5lCrIosnzhgBAw+uzVQmKOjNXoiqti9PuEKacWA1iv02Qj0VuGfmqvNf3IMBhQ0jvNJ4yC13B1tJ522d7J9eQvIkUaSiNBGA3BxyLWhjkOBhgXYK8bDXRgUviAM/bHq2DdUvuGHNeAmT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214123; c=relaxed/simple;
-	bh=uZUG65esQhKKnYsQ+8tGwQ3PvYrtm9YMsRTu+Bcppz0=;
+	s=arc-20240116; t=1756212919; c=relaxed/simple;
+	bh=l66oGZdqiTcOQ2L/hTGaEIz+itd2O7u2VEMPIvU/SKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlSgpwMCeBmgFKzpgsSgBF4s5MhzfV4WJtuC8eJJVY3W1DMFFsPTiRh36NoN9h/YQfwMKneYxJ5VUdyErnwZjK9S4N8XaGydlFUe/1/yWsePQmFmYFzULwzH2fWX4WiszQ1kv+OCIEv9yAyEiSA3svpZ6mIUlgjEZwARbYVuEfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQp2LknL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE61C4CEF1;
-	Tue, 26 Aug 2025 13:15:22 +0000 (UTC)
+	 MIME-Version; b=QQAEu9oB7md02WYlSFKQsERZe5gh/BbGOiSPmwDlN0Tu+m4IWaxDXTGdk4F2dlAHAEwaamdPPTk3/UMLH9La64Izih2ADPRAAWByTUSd1JUBZ0gH31DmwQZiQhjhH3NMEz6/whOVngNlP5twfnAbTgDFzKI30WL16Lj8jrI909Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwtO557l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C9FC4CEF1;
+	Tue, 26 Aug 2025 12:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214123;
-	bh=uZUG65esQhKKnYsQ+8tGwQ3PvYrtm9YMsRTu+Bcppz0=;
+	s=korg; t=1756212917;
+	bh=l66oGZdqiTcOQ2L/hTGaEIz+itd2O7u2VEMPIvU/SKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQp2LknLRyd/x/xob7kJFtwVT0d2vo9YLUYJ2Qo+LaTLwmRtTawoeSmAq1ZT6I33T
-	 cnK+RYd1aE+A/w42cUeJjArPiK8lUfa907HSXVB/XscLQgcimmgJEVOovLtFQnn/yt
-	 xtLWeBtPF2SY0hPo5aBJ7Cl7JMyffBW7yXN6P6GE=
+	b=gwtO557lYjiB5bNDif5hg9j2pTlcC0gHA5o/XtQX4gzHG3i7f4Bd15MCO0H+3Kro0
+	 r3GO1v/XqTalsP4EPwqQq7Lq9CRBu/5XvvUUjGlA2CRCSQa7dN2u7CX0ZN9ZXaJZlu
+	 WV5AdTP0svmC8TSIJAohq1IZ293O/iBeq3wRIU3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Haoran Jiang <jianghaoran@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 020/482] LoongArch: BPF: Fix jump offset calculation in tailcall
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/587] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
 Date: Tue, 26 Aug 2025 13:04:33 +0200
-Message-ID: <20250826110931.288673442@linuxfoundation.org>
+Message-ID: <20250826110956.109680727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Jiang <jianghaoran@kylinos.cn>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit cd39d9e6b7e4c58fa77783e7aedf7ada51d02ea3 upstream.
+[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
 
-The extra pass of bpf_int_jit_compile() skips JIT context initialization
-which essentially skips offset calculation leaving out_offset = -1, so
-the jmp_offset in emit_bpf_tail_call is calculated by
+code mistakenly used a hardcoded index (codec[1]) instead of
+iterating, over the codec array using the loop variable i.
+Use codec[i] instead of codec[1] to match the loop iteration.
 
-"#define jmp_offset (out_offset - (cur_offset))"
-
-is a negative number, which is wrong. The final generated assembly are
-as follow.
-
-54:	bgeu        	$a2, $t1, -8	    # 0x0000004c
-58:	addi.d      	$a6, $s5, -1
-5c:	bltz        	$a6, -16	    # 0x0000004c
-60:	alsl.d      	$t2, $a2, $a1, 0x3
-64:	ld.d        	$t2, $t2, 264
-68:	beq         	$t2, $zero, -28	    # 0x0000004c
-
-Before apply this patch, the follow test case will reveal soft lock issues.
-
-cd tools/testing/selftests/bpf/
-./test_progs --allow=tailcalls/tailcall_bpf2bpf_1
-
-dmesg:
-watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [test_progs:25056]
-
-Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Reviewed-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |   21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ sound/pci/intel8x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -201,11 +201,9 @@ bool bpf_jit_supports_kfunc_call(void)
- 	return true;
- }
- 
--/* initialized on the first pass of build_body() */
--static int out_offset = -1;
--static int emit_bpf_tail_call(struct jit_ctx *ctx)
-+static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
- {
--	int off;
-+	int off, tc_ninsn = 0;
- 	u8 tcc = tail_call_reg(ctx);
- 	u8 a1 = LOONGARCH_GPR_A1;
- 	u8 a2 = LOONGARCH_GPR_A2;
-@@ -215,7 +213,7 @@ static int emit_bpf_tail_call(struct jit
- 	const int idx0 = ctx->idx;
- 
- #define cur_offset (ctx->idx - idx0)
--#define jmp_offset (out_offset - (cur_offset))
-+#define jmp_offset (tc_ninsn - (cur_offset))
- 
- 	/*
- 	 * a0: &ctx
-@@ -225,6 +223,7 @@ static int emit_bpf_tail_call(struct jit
- 	 * if (index >= array->map.max_entries)
- 	 *	 goto out;
- 	 */
-+	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
- 	off = offsetof(struct bpf_array, map.max_entries);
- 	emit_insn(ctx, ldwu, t1, a1, off);
- 	/* bgeu $a2, $t1, jmp_offset */
-@@ -256,15 +255,6 @@ static int emit_bpf_tail_call(struct jit
- 	emit_insn(ctx, ldd, t3, t2, off);
- 	__build_epilogue(ctx, true);
- 
--	/* out: */
--	if (out_offset == -1)
--		out_offset = cur_offset;
--	if (cur_offset != out_offset) {
--		pr_err_once("tail_call out_offset = %d, expected %d!\n",
--			    cur_offset, out_offset);
--		return -1;
--	}
--
- 	return 0;
- 
- toofar:
-@@ -789,7 +779,7 @@ static int build_insn(const struct bpf_i
- 	/* tail call */
- 	case BPF_JMP | BPF_TAIL_CALL:
- 		mark_tail_call(ctx);
--		if (emit_bpf_tail_call(ctx) < 0)
-+		if (emit_bpf_tail_call(ctx, i) < 0)
- 			return -EINVAL;
- 		break;
- 
-@@ -1170,7 +1160,6 @@ out:
- 	if (tmp_blinded)
- 		bpf_jit_prog_release_other(prog, prog == orig_prog ? tmp : orig_prog);
- 
--	out_offset = -1;
- 
- 	return prog;
- }
+diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
+index ae285c0a629c..f3df6fe2b7f1 100644
+--- a/sound/pci/intel8x0.c
++++ b/sound/pci/intel8x0.c
+@@ -2252,7 +2252,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
+ 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
+ 			for (i = 1; i < 4; i++) {
+ 				if (pcm->r[0].codec[i]) {
+-					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
++					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
+ 					break;
+ 				}
+ 			}
+-- 
+2.39.5
+
 
 
 
