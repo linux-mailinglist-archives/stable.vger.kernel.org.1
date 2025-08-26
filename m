@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678F9B36709
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B78B35B5D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86B1C8E4615
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6DD3B4153
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C96D34DCED;
-	Tue, 26 Aug 2025 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E052E88B7;
+	Tue, 26 Aug 2025 11:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSKkfk7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y55GfDnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE8922128B;
-	Tue, 26 Aug 2025 13:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6132BE653;
+	Tue, 26 Aug 2025 11:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216231; cv=none; b=N6+YibQY8PxTU8zfTxgJYbbFstIJJSF2s/MD0BAoNcmhXN1qbCIppj85OC3nXOfVtSU8Ot030FEylKefLv856jycnHV5iEmvW0GzSPgX8uudUKzTxL8FQ2unoq1TOEJHumv58hUCKqlmk6Zq6L5m5zeRDZkwkqwAlAUhPb/gMSM=
+	t=1756207329; cv=none; b=N5eTC5dFG5AU1A9cp89iwVIYra85wHiK+pPUq5sLHnsrV4DuNj2KyFJLutaocTMIkWmWVlQviQNhWAaPEaQIr+pZksmm9QYOsDobdZFFt/SXYK9oGBrvXl7/bf4G6cohUbI1caClFSPDMEejO6E0ufe82r4KE+6rLMmlMtyKAes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216231; c=relaxed/simple;
-	bh=wxdMLo64txTmTLxdS1Favepo2SD83VRS3Rn2fdwX3OM=;
+	s=arc-20240116; t=1756207329; c=relaxed/simple;
+	bh=5pL+cwObd+jAjCMoxvbJXfIAAVDw+tbyPHmkymYwnc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiipGCGx/DDud/8ccMTTG5rgzd2Ib/6UUHAzxBD1z6Pz4obrLc7ZwXFSmwf08x+zQGnUwhrnOz4Uey8uBZdVs5rU+mzZ/OIYrp5AvsHFhjeEQgvK+utEePoFgP2kdjDSAETbEBFhPv0ntSn3l1MPRqnxqt4xEm2X0afFBDKcFc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSKkfk7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C5EC4CEF1;
-	Tue, 26 Aug 2025 13:50:31 +0000 (UTC)
+	 MIME-Version; b=o02mpN50HGePgADYf2Scs4j3gKVcfUZeM6bYCPPqfQGBBeEi11TgOX2xyzi5zbcdW4TSyPyDfN5rNq3CSRDPu00GX0gKs6CR+M6egeZPsVJkVftYL+w+K5yARZfJdhSnAS913hKZBMUHjGXYPmIdNJqp02a2EZsplquFxV3gkus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y55GfDnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C340CC4CEF4;
+	Tue, 26 Aug 2025 11:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216231;
-	bh=wxdMLo64txTmTLxdS1Favepo2SD83VRS3Rn2fdwX3OM=;
+	s=korg; t=1756207329;
+	bh=5pL+cwObd+jAjCMoxvbJXfIAAVDw+tbyPHmkymYwnc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSKkfk7n5/TPLzcbh7ue6gJsW8RnvyCBkl6Y+Y1aLogBbyItYCGSOeeZ11oaEXCJg
-	 sUofAjisBg7BCBXpxt3zoeD1/Gs0BKh9m9tTFFz8t4DThwKuE1bTdT8hK6GrFw2zgH
-	 uFJGR4xOplQm+3We+oMAR+KtRzwNcIb6ZhI8W5jY=
+	b=Y55GfDnt3W7N+tOgiWE64Y8e41ZFlJIyJALegtXcOBM//XeEayLHHaPTeu3uhqDmO
+	 nYxL4NDORNw1jQpQuQroN61g++mQpGcBs6kBfVSMB5rqjiMyafq9oIeIXTjyhJJcUh
+	 l0OKJLoV92vRh6LLh0YkYncYk8LCYwk54FsDppAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 332/644] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
+	Naushir Patuck <naush@raspberrypi.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 139/457] media: pisp_be: Fix pm_runtime underrun in probe
 Date: Tue, 26 Aug 2025 13:07:03 +0200
-Message-ID: <20250826110954.614772077@linuxfoundation.org>
+Message-ID: <20250826110940.810413780@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
+commit e9bb2eacc7222ff8210903eb3b7d56709cc53228 upstream.
 
-The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
-buffer if either string argument is too long. This triggers a compiler
-warning.
-Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
-overflow.
+During the probe() routine, the PiSP BE driver needs to power up the
+interface in order to identify and initialize the hardware.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
-Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
-Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The driver resumes the interface by calling the
+pispbe_runtime_resume() function directly, without going
+through the pm_runtime helpers, but later suspends it by calling
+pm_runtime_put_autosuspend().
+
+This causes a PM usage count imbalance at probe time, notified by the
+runtime_pm framework with the below message in the system log:
+
+ pispbe 1000880000.pisp_be: Runtime PM usage count underflow!
+
+Fix this by resuming the interface using the pm runtime helpers instead
+of calling the resume function directly and use the pm_runtime framework
+in the probe() error path. While at it, remove manual suspend of the
+interface in the remove() function. The driver cannot be unloaded if in
+use, so simply disable runtime pm.
+
+To simplify the implementation, make the driver depend on PM as the
+RPI5 platform where the ISP is integrated in uses the PM framework by
+default.
+
+Fixes: 12187bd5d4f8 ("media: raspberrypi: Add support for PiSP BE")
+Cc: stable@vger.kernel.org
+Tested-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_ca0132.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/raspberrypi/pisp_be/Kconfig   |    1 +
+ drivers/media/platform/raspberrypi/pisp_be/pisp_be.c |    5 ++---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index a922c5079880..57c51dc985d9 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -4402,7 +4402,7 @@ static int add_tuning_control(struct hda_codec *codec,
- 	}
- 	knew.private_value =
- 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
--	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
-+	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
- 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
- }
+--- a/drivers/media/platform/raspberrypi/pisp_be/Kconfig
++++ b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+@@ -3,6 +3,7 @@ config VIDEO_RASPBERRYPI_PISP_BE
+ 	depends on V4L_PLATFORM_DRIVERS
+ 	depends on VIDEO_DEV
+ 	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on PM
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select MEDIA_CONTROLLER
+ 	select VIDEOBUF2_DMA_CONTIG
+--- a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
++++ b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+@@ -1726,7 +1726,7 @@ static int pispbe_probe(struct platform_
+ 	pm_runtime_use_autosuspend(pispbe->dev);
+ 	pm_runtime_enable(pispbe->dev);
  
--- 
-2.39.5
-
+-	ret = pispbe_runtime_resume(pispbe->dev);
++	ret = pm_runtime_resume_and_get(pispbe->dev);
+ 	if (ret)
+ 		goto pm_runtime_disable_err;
+ 
+@@ -1748,7 +1748,7 @@ static int pispbe_probe(struct platform_
+ disable_devs_err:
+ 	pispbe_destroy_devices(pispbe);
+ pm_runtime_suspend_err:
+-	pispbe_runtime_suspend(pispbe->dev);
++	pm_runtime_put(pispbe->dev);
+ pm_runtime_disable_err:
+ 	pm_runtime_dont_use_autosuspend(pispbe->dev);
+ 	pm_runtime_disable(pispbe->dev);
+@@ -1762,7 +1762,6 @@ static void pispbe_remove(struct platfor
+ 
+ 	pispbe_destroy_devices(pispbe);
+ 
+-	pispbe_runtime_suspend(pispbe->dev);
+ 	pm_runtime_dont_use_autosuspend(pispbe->dev);
+ 	pm_runtime_disable(pispbe->dev);
+ }
 
 
 
