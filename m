@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2E8B35B7A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FAEB36C3D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8631F3A5D06
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD318E4A67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39470299959;
-	Tue, 26 Aug 2025 11:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E59D35334E;
+	Tue, 26 Aug 2025 14:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeBpQJJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJFwPx30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E502BEC2B;
-	Tue, 26 Aug 2025 11:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B4A405F7;
+	Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207441; cv=none; b=FZIqJiCzUMzUvIJ7h5JEIpG1aOar2cddr1nLgaQbJnlNV0jHQqeVzafPskxrgGqxtNLwCR61ecDJ+lziJ/ir5Zc92K2kFfWX449wKyeFP7k8A/yjMm11ovlVJ9VoVc53rms7xe1W7rxd372LVUA6Qng0o01ursGtNamD+3iU6kQ=
+	t=1756218726; cv=none; b=kf1y0NHszes5FFP3NBHwhZjAxjoZTyO3zERK2mSH4woHjKjUupY1Qv70iLunjwQ7sByXOhGuOkEDlihuv3OR0LbtFuzDUBmZ8HqSWOYIxV7PgnUSvcqyftL+kG7DvLBsYDNZDrjLESReSjGB2gbbu2ZIAIuIpnSgnObTWtcT61M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207441; c=relaxed/simple;
-	bh=6bzFszY9fq93FbzYlmvg6DZoHg3AsexLR2h75Q3x5W8=;
+	s=arc-20240116; t=1756218726; c=relaxed/simple;
+	bh=fN+GpC/g211AkIg1D2eds4Rxgc+Ti/RgtQyIco7bdS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vADenSzl9YHpvMNma8jzI6NbCsl0RyXedrJ6erXQ9ztwX7X6j0DeUVNf8Y2fqk+rzTd+rV0zKGonBUAQFW08NIYxUkzNCl+0u1wJfwkvuxKycuiMYTKfIx7jEajnCScNGcbqcFnItnyEQoqpotW2OT2xRp2QkP1KKsYMlnENVa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeBpQJJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA1C4CEF4;
-	Tue, 26 Aug 2025 11:24:00 +0000 (UTC)
+	 MIME-Version; b=I7206wEeFysV1+8Cc9lefYrzAdKTkxIulABzxXbOZeQz1SMFpYbPsTmY/IAukLtnV/i7XFYS7CovffecsWR+U7W0AhefP1tn7lDpglqqy7gIoQzCXn5dGFg/icIFQJNnm5mtbEN03JAtJ3nd/J9Z5pRahANAA6XIfDfPcWR/fYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJFwPx30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C9CC113D0;
+	Tue, 26 Aug 2025 14:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207440;
-	bh=6bzFszY9fq93FbzYlmvg6DZoHg3AsexLR2h75Q3x5W8=;
+	s=korg; t=1756218725;
+	bh=fN+GpC/g211AkIg1D2eds4Rxgc+Ti/RgtQyIco7bdS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qeBpQJJTUhGDu+lfxKR3RpC5KETRGin06ftkP0PHSkQ8JggZ13DX/Zsb0r+ZxTezo
-	 P++/s76kFozOf1baGTm3hd9K4VoCA8QlvD5yQDoeBx+REIey7ViZvJvUqCH4Dx43nn
-	 pam7DvZ8rPm1BX/wkm8kVdlVUd7nkAy54BmybTe4=
+	b=NJFwPx30oIuk6kdyZ4J//O6QK8azpJ3f4MwqBibotHsXHUp9iSFoStCMcEan71FLR
+	 uaD/tZdQzUq1wFu/OmlzAu6tswkDv4HWGT5u3Yf6QZgUq4pqPU0pmc0r584ILj6YyP
+	 HOGgOwSbb/qFs0Qtas97/gKlrGkOxmZaKZqWxxMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.16 151/457] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
+	Charles Han <hanchunchao@inspur.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 109/403] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
 Date: Tue, 26 Aug 2025 13:07:15 +0200
-Message-ID: <20250826110941.103886370@linuxfoundation.org>
+Message-ID: <20250826110909.696588660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
+[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
+function returns NULL. Fix the max14577_charger_probe functionby returning
+-ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
 
-Clamp the param if the user provides a value that will result in an invalid
-fps.
+This fixes the below smatch warning:
+max14577_charger_probe() warn: passing zero to 'PTR_ERR'
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/venc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/power/supply/max14577_charger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
+diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
+index 8a59feac6468..90b97736ac2a 100644
+--- a/drivers/power/supply/max14577_charger.c
++++ b/drivers/power/supply/max14577_charger.c
+@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ 		struct platform_device *pdev)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODATA);
+ }
+ #endif /* CONFIG_OF */
  
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
+@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
+ 	chg->max14577 = max14577;
  
- 	inst->timeperframe = *timeperframe;
- 	inst->fps = fps;
+ 	chg->pdata = max14577_charger_dt_init(pdev);
+-	if (IS_ERR_OR_NULL(chg->pdata))
++	if (IS_ERR(chg->pdata))
+ 		return PTR_ERR(chg->pdata);
+ 
+ 	ret = max14577_charger_reg_init(chg);
+-- 
+2.39.5
+
 
 
 
