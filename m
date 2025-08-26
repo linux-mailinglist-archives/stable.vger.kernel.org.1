@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-175339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52740B367AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60ACB36A2C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14FF563AC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170D51C4426A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4B034AB15;
-	Tue, 26 Aug 2025 13:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBB234F47C;
+	Tue, 26 Aug 2025 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBWn0Y6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGasiFDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5379260586;
-	Tue, 26 Aug 2025 13:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759D734DCC9;
+	Tue, 26 Aug 2025 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216774; cv=none; b=QiQKD/cWwlwiseT8Otf64KztGaTusgpB55l/6vMsGB2Z8BA2Cr1d0i3LLig0iqVepIEhCMLk6CRN3d20H6/c+fEGC7u3A9gt/Ux5sN9qnfSt+V4b+pxWDNAvYWa3HbewWiB4YpLemcHuJN74GOla09wEZzkGKf2PNg8rYsDzdvE=
+	t=1756218093; cv=none; b=ThcmxW+rdE66Z4Kt4fvGy9u7kLRdxyqRXDGc9SSKU/3Y/E/a2aD5vrJRginElVJs04T9SbLRMWHzyVVR9o5MXdfPjwHUY3IzbN+FlRD+0Wj2HwiO8JhhxPlq5C72mcXq9RWfE5l172W0g9t/gCp0aqYzcUmwfKg84pn1JxrNlx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216774; c=relaxed/simple;
-	bh=dBQF8b13im/x9HtAI3ksvcR6P+wBnbtOyYPZESwLIqA=;
+	s=arc-20240116; t=1756218093; c=relaxed/simple;
+	bh=HSi0AgVEkj8YUdcl4Rkqb2+c1O3fC229JBDibq3OL+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYGUbjgivMvdoDYbFyLABI6PLDb202jjWb9T5zOfjeFgtf8oeH2GGLMj4CbKnzvGExxJXDTCOHDvkEdORvhxOI34O79IrobcvH9nq+VrBnNze/AM0Zm++33+YHPTPgK0lWEd0nflUmKzORzZ1UCYi+Dy1wSSZSzI49WqDO0f2JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBWn0Y6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00329C4CEF1;
-	Tue, 26 Aug 2025 13:59:33 +0000 (UTC)
+	 MIME-Version; b=eDWzgA8sDGtmsKr4kfFlCiAL+evl6Yhi2jjCjJ1C0tht4X3VVP7Kp8wnxbZZK3PpTNPMPQiC4golgCZYuYquXf1zrnQurP2PxHo55APEf5b4FztTMU6Bj41D1quY1ScpqeVqFhXvoa5m6tvUHQeuv43AS6gJDeQTmaAiPDrG1dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGasiFDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B427FC113CF;
+	Tue, 26 Aug 2025 14:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216773;
-	bh=dBQF8b13im/x9HtAI3ksvcR6P+wBnbtOyYPZESwLIqA=;
+	s=korg; t=1756218093;
+	bh=HSi0AgVEkj8YUdcl4Rkqb2+c1O3fC229JBDibq3OL+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBWn0Y6BEDMoldo2kw6jMvSckgzJtydzntXpfGR8jZl3EUxMhKYEwrymfBPaAKjln
-	 Ib6ZowxMt/riGqWdqmhDBBIH1ywU8Rwq2bn6U7qdl0WIegnFw+aJvLq77ocfX0M/Jb
-	 Z+Xw/iNrHf7nN1rz7k6WjBU4CRNYlpCfbINByrVQ=
+	b=MGasiFDbC0SAcbONxqxJHPp6NtQXYd//1jheW3Q080pre9xlgpj6QsPCDVfzth/eH
+	 uuVyp00QOfgWFFWoX4tom15YBt1Nl0dDIrn92RutCAwOXoZhg3npLnUxesUtssu/SD
+	 5S4qXO4VL9AXRgnmhpvq2VpIku3+6tSPq/T2C9fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Julian Orth <ju.orth@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.15 508/644] mm: reinstate ability to map write-sealed memfd mappings read-only
-Date: Tue, 26 Aug 2025 13:09:59 +0200
-Message-ID: <20250826110959.090151654@linuxfoundation.org>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 390/523] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+Date: Tue, 26 Aug 2025 13:10:00 +0200
+Message-ID: <20250826110934.079954823@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,236 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 8ec396d05d1b737c87311fb7311f753b02c2a6b1 ]
+commit 342debc12183b51773b3345ba267e9263bdfaaef upstream.
 
-Patch series "mm: reinstate ability to map write-sealed memfd mappings
-read-only".
+After making all ->qlen_notify() callbacks idempotent, now it is safe to
+remove the check of qlen!=0 from both fq_codel_dequeue() and
+codel_qdisc_dequeue().
 
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
-
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
-
-This series reworks how we both permit write-sealed mappings being mapped
-read-only and disallow mprotect() from undoing the write-seal, fixing this
-regression.
-
-We also add a regression test to ensure that we do not accidentally
-regress this in future.
-
-Thanks to Julian Orth for reporting this regression.
-
-This patch (of 2):
-
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
-
-This was previously unnecessarily disallowed, despite the man page
-documentation indicating that it would be, thereby limiting the usefulness
-of F_SEAL_WRITE logic.
-
-We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
-seal (one which disallows future writes to the memfd) to also be used for
-F_SEAL_WRITE.
-
-For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
-read-only mapping to disallow mprotect() from overriding the seal - an
-operation performed by seal_check_write(), invoked from shmem_mmap(), the
-f_op->mmap() hook used by shmem mappings.
-
-By extending this to F_SEAL_WRITE and critically - checking
-mapping_map_writable() to determine if we may map the memfd AFTER we
-invoke shmem_mmap() - the desired logic becomes possible.  This is because
-mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
-have cleared.
-
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
-
-We reinstate this functionality by moving the check out of shmem_mmap()
-and instead performing it in do_mmap() at the point at which VMA flags are
-being determined, which seems in any case to be a more appropriate place
-in which to make this determination.
-
-In order to achieve this we rework memfd seal logic to allow us access to
-this information using existing logic and eliminate the clearing of
-VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
-instead.
-
-Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
-Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/memfd.h |   14 ++++++++++++
- include/linux/mm.h    |   58 ++++++++++++++++++++++++++++++++++----------------
- mm/memfd.c            |    2 -
- mm/mmap.c             |    4 +++
- 4 files changed, 59 insertions(+), 19 deletions(-)
+ net/sched/sch_codel.c    |    5 +----
+ net/sched/sch_fq_codel.c |    6 ++----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
---- a/include/linux/memfd.h
-+++ b/include/linux/memfd.h
-@@ -6,11 +6,25 @@
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_deque
+ 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
+ 			    drop_func, dequeue_func);
  
- #ifdef CONFIG_MEMFD_CREATE
- extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned long arg);
-+unsigned int *memfd_file_seals_ptr(struct file *file);
- #else
- static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned long a)
- {
- 	return -EINVAL;
- }
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->stats.drop_count && sch->q.qlen) {
++	if (q->stats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
+ 		q->stats.drop_count = 0;
+ 		q->stats.drop_len = 0;
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -314,10 +314,8 @@ begin:
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+ 	flow->deficit -= qdisc_pkt_len(skb);
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->cstats.drop_count && sch->q.qlen) {
 +
-+static inline unsigned int *memfd_file_seals_ptr(struct file *file)
-+{
-+	return NULL;
-+}
- #endif
- 
-+/* Retrieve memfd seals associated with the file, if any. */
-+static inline unsigned int memfd_file_seals(struct file *file)
-+{
-+	unsigned int *sealsp = memfd_file_seals_ptr(file);
-+
-+	return sealsp ? *sealsp : 0;
-+}
-+
- #endif /* __LINUX_MEMFD_H */
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3286,6 +3286,37 @@ void mem_dump_obj(void *object);
- static inline void mem_dump_obj(void *object) {}
- #endif
- 
-+static inline bool is_write_sealed(int seals)
-+{
-+	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
-+}
-+
-+/**
-+ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
-+ *                      in which case writes should be disallowing moving
-+ *                      forwards.
-+ * @seals: the seals to check
-+ * @vm_flags: the VMA flags to check
-+ *
-+ * Returns whether readonly sealed, in which case writess should be disallowed
-+ * going forward.
-+ */
-+static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
-+{
-+	/*
-+	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
-+	 * MAP_SHARED and read-only, take care to not allow mprotect to
-+	 * revert protections on such mappings. Do this only for shared
-+	 * mappings. For private mappings, don't need to mask
-+	 * VM_MAYWRITE as we still want them to be COW-writable.
-+	 */
-+	if (is_write_sealed(seals) &&
-+	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-  *                    handle them.
-@@ -3297,24 +3328,15 @@ static inline void mem_dump_obj(void *ob
-  */
- static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
--		/*
--		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * write seals are active.
--		 */
--		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
--			return -EPERM;
--
--		/*
--		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
--		 * MAP_SHARED and read-only, take care to not allow mprotect to
--		 * revert protections on such mappings. Do this only for shared
--		 * mappings. For private mappings, don't need to mask
--		 * VM_MAYWRITE as we still want them to be COW-writable.
--		 */
--		if (vma->vm_flags & VM_SHARED)
--			vma->vm_flags &= ~(VM_MAYWRITE);
--	}
-+	if (!is_write_sealed(seals))
-+		return 0;
-+
-+	/*
-+	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-+	 * write seals are active.
-+	 */
-+	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
-+		return -EPERM;
- 
- 	return 0;
- }
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -133,7 +133,7 @@ static int memfd_wait_for_pins(struct ad
- 	return error;
- }
- 
--static unsigned int *memfd_file_seals_ptr(struct file *file)
-+unsigned int *memfd_file_seals_ptr(struct file *file)
- {
- 	if (shmem_file(file))
- 		return &SHMEM_I(file_inode(file))->seals;
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -47,6 +47,7 @@
- #include <linux/pkeys.h>
- #include <linux/oom.h>
- #include <linux/sched/mm.h>
-+#include <linux/memfd.h>
- 
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
-@@ -1486,6 +1487,7 @@ unsigned long do_mmap(struct file *file,
- 
- 	if (file) {
- 		struct inode *inode = file_inode(file);
-+		unsigned int seals = memfd_file_seals(file);
- 		unsigned long flags_mask;
- 
- 		if (!file_mmap_ok(file, inode, pgoff, len))
-@@ -1524,6 +1526,8 @@ unsigned long do_mmap(struct file *file,
- 			vm_flags |= VM_SHARED | VM_MAYSHARE;
- 			if (!(file->f_mode & FMODE_WRITE))
- 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
-+			else if (is_readonly_sealed(seals, vm_flags))
-+				vm_flags &= ~VM_MAYWRITE;
- 			fallthrough;
- 		case MAP_PRIVATE:
- 			if (!(file->f_mode & FMODE_READ))
++	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+ 					  q->cstats.drop_len);
+ 		q->cstats.drop_count = 0;
 
 
 
