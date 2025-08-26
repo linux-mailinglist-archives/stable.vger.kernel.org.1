@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5DFB3643D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A01B35E78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5987B9870
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78AED188F843
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CC92FDC5C;
-	Tue, 26 Aug 2025 13:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD05749C;
+	Tue, 26 Aug 2025 11:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxAVliK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUmFs7sH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29431FBCB5;
-	Tue, 26 Aug 2025 13:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584E1200112;
+	Tue, 26 Aug 2025 11:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215364; cv=none; b=Gg9W9EisxWq99+GJiPIJ5kt0xKuuX16d7DpfFc2GcRv6CgJtYEvItvzHnqBuc6EwyWWf86vz7IjxC8OUwK4jO0y9kChbLhLf4W8BLoiAQ4tegevkOCudpl7EBuhEDIFdyxsbhEvK2KhS5omNl0XrzoDjvkHirs3jz6287yKRMEo=
+	t=1756208916; cv=none; b=dKYXoBzDWwmuYmxfCqBzUIs5FlWCDJQC0Lk3DWuLIRekHiEnNO3o3doozhQKMnV9vuXYTXGcixJwKsHJhusfofa+4PNZhpWBYmmg2FWBTEAZlmMVFiW54tzY5mz2MGRVmv/dnPARsyBodYoKr7o6dWQgrlhGpCMhI/i9RZiIKnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215364; c=relaxed/simple;
-	bh=BnJpyGK4pwVFH1oq5ZeQZbQBTjbcWKnRhufbeYsw/tk=;
+	s=arc-20240116; t=1756208916; c=relaxed/simple;
+	bh=5qY0+5o/00NDpuuXLV/zw6kd0bDl8wMLruIK9FDe+sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUjPVDopDgupPPMYg6e0A2HEVdNnDC8uzvwQYjNyMiI2OA4H1j4b4DXl7ltnjlxcawwQ+422f2VTiHTYawiF7CVLflw/T4TxdGvIoynTSMX3U9SVq8OSkLlDhrjJyyxTU13bzjL5eaieAcxw7JvTbohVHxwIsUykVjBxXYNrimc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxAVliK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DBAC4CEF1;
-	Tue, 26 Aug 2025 13:36:04 +0000 (UTC)
+	 MIME-Version; b=J7gX5ouN0UYrQBiNulh0PZ0GbYEls0COURIgsvKz9FPvmIG2zi6xJIRJsiNCtCfBiXOy0b9jRdDyncICbdUVW50Gq3MXj4iomvTJMfpyshKqmoNk4yzidEZAuBufda9Mqy5h21cyfgpw4ck75jBeFJZP2oz0jyjwjIAPKXbb0jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUmFs7sH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA147C4CEF1;
+	Tue, 26 Aug 2025 11:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215364;
-	bh=BnJpyGK4pwVFH1oq5ZeQZbQBTjbcWKnRhufbeYsw/tk=;
+	s=korg; t=1756208916;
+	bh=5qY0+5o/00NDpuuXLV/zw6kd0bDl8wMLruIK9FDe+sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxAVliK9b/jP/WUaQ33PL7FhIj+kYXuIuzIvVf9Bw4pbvZIKWczPb7PQ2pH7W05Z2
-	 QsdsBQicSTAN/H11EfxO7qgDmBjQve/f0ZLIm74ROdwy4uuVhEVa7qnJd1e+pTcIs6
-	 9elLsnjZ18afPHAhjLWnL/COSW9t3+Eq35GjdfXo=
+	b=MUmFs7sH1jFrOjplrZx5kiaTDV1GLDsfxdv2KvK+R/3PqQeg/88fjEKxJCFSKYbzQ
+	 6W4l86p4jNgY/E0hVUFu6TOGLJLD4lPJd3DoQ8ZJ0FFUAl/eHnEeg5LB/ptuAgDf9/
+	 0lPTkBcBrfRuE4re3LzCR0lBZ7B/xa64uBPBbX6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anantha Prabhu <anantha.prabhu@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/482] RDMA/bnxt_re: Fix to initialize the PBL array
+Subject: [PATCH 6.12 294/322] net: ti: icssg-prueth: Fix HSR and switch offload Enablement during firwmare reload.
 Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826110942.091887244@linuxfoundation.org>
+Message-ID: <20250826110923.163373874@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anantha Prabhu <anantha.prabhu@broadcom.com>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit 806b9f494f62791ee6d68f515a8056c615a0e7b2 ]
+[ Upstream commit 01792bc3e5bdafa171dd83c7073f00e7de93a653 ]
 
-memset the PBL page pointer and page map arrays before
-populating the SGL addresses of the HWQ.
+To enable HSR / Switch offload, certain configurations are needed.
+Currently they are done inside icssg_change_mode(). This function only
+gets called if we move from one mode to another without bringing the
+links up / down.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Anantha Prabhu <anantha.prabhu@broadcom.com>
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-5-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Once in HSR / Switch mode, if we bring the links down and bring it back
+up again. The callback sequence is,
+
+- emac_ndo_stop()
+	Firmwares are stopped
+- emac_ndo_open()
+	Firmwares are loaded
+
+In this path icssg_change_mode() doesn't get called and as a result the
+configurations needed for HSR / Switch is not done.
+
+To fix this, put all these configurations in a separate function
+icssg_enable_fw_offload() and call this from both icssg_change_mode()
+and emac_ndo_open()
+
+Fixes: 56375086d093 ("net: ti: icssg-prueth: Enable HSR Tx duplication, Tx Tag and Rx Tag offload")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Link: https://patch.msgid.link/20250814105106.1491871-1-danishanwar@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 72 +++++++++++---------
+ 1 file changed, 41 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 203350c6e00f..4962d68bf217 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -121,6 +121,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 	pbl->pg_arr = vmalloc(pages * sizeof(void *));
- 	if (!pbl->pg_arr)
- 		return -ENOMEM;
-+	memset(pbl->pg_arr, 0, pages * sizeof(void *));
- 
- 	pbl->pg_map_arr = vmalloc(pages * sizeof(dma_addr_t));
- 	if (!pbl->pg_map_arr) {
-@@ -128,6 +129,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 		pbl->pg_arr = NULL;
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index ddbc4624ae88..055c5765bd86 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -240,6 +240,44 @@ static void prueth_emac_stop(struct prueth *prueth)
  	}
-+	memset(pbl->pg_map_arr, 0, pages * sizeof(dma_addr_t));
- 	pbl->pg_count = 0;
- 	pbl->pg_size = sginfo->pgsize;
+ }
  
++static void icssg_enable_fw_offload(struct prueth *prueth)
++{
++	struct prueth_emac *emac;
++	int mac;
++
++	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
++		emac = prueth->emac[mac];
++		if (prueth->is_hsr_offload_mode) {
++			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
++				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
++			else
++				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
++		}
++
++		if (prueth->is_switch_mode || prueth->is_hsr_offload_mode) {
++			if (netif_running(emac->ndev)) {
++				icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
++						  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
++						  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
++						  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
++						  ICSSG_FDB_ENTRY_BLOCK,
++						  true);
++				icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
++						  BIT(emac->port_id) | DEFAULT_PORT_MASK,
++						  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
++						  true);
++				if (prueth->is_hsr_offload_mode)
++					icssg_vtbl_modify(emac, DEFAULT_VID,
++							  DEFAULT_PORT_MASK,
++							  DEFAULT_UNTAG_MASK, true);
++				icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
++				if (prueth->is_switch_mode)
++					icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
++			}
++		}
++	}
++}
++
+ static int prueth_emac_common_start(struct prueth *prueth)
+ {
+ 	struct prueth_emac *emac;
+@@ -690,6 +728,7 @@ static int emac_ndo_open(struct net_device *ndev)
+ 		ret = prueth_emac_common_start(prueth);
+ 		if (ret)
+ 			goto free_rx_irq;
++		icssg_enable_fw_offload(prueth);
+ 	}
+ 
+ 	flow_cfg = emac->dram.va + ICSSG_CONFIG_OFFSET + PSI_L_REGULAR_FLOW_ID_BASE_OFFSET;
+@@ -1146,8 +1185,7 @@ static int prueth_emac_restart(struct prueth *prueth)
+ 
+ static void icssg_change_mode(struct prueth *prueth)
+ {
+-	struct prueth_emac *emac;
+-	int mac, ret;
++	int ret;
+ 
+ 	ret = prueth_emac_restart(prueth);
+ 	if (ret) {
+@@ -1155,35 +1193,7 @@ static void icssg_change_mode(struct prueth *prueth)
+ 		return;
+ 	}
+ 
+-	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
+-		emac = prueth->emac[mac];
+-		if (prueth->is_hsr_offload_mode) {
+-			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
+-				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
+-			else
+-				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
+-		}
+-
+-		if (netif_running(emac->ndev)) {
+-			icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
+-					  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
+-					  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
+-					  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
+-					  ICSSG_FDB_ENTRY_BLOCK,
+-					  true);
+-			icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
+-					  BIT(emac->port_id) | DEFAULT_PORT_MASK,
+-					  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
+-					  true);
+-			if (prueth->is_hsr_offload_mode)
+-				icssg_vtbl_modify(emac, DEFAULT_VID,
+-						  DEFAULT_PORT_MASK,
+-						  DEFAULT_UNTAG_MASK, true);
+-			icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
+-			if (prueth->is_switch_mode)
+-				icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
+-		}
+-	}
++	icssg_enable_fw_offload(prueth);
+ }
+ 
+ static int prueth_netdevice_port_link(struct net_device *ndev,
 -- 
 2.50.1
 
