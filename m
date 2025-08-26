@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5DCB36111
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB1CB366E0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0775E1D77
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E341C25FB7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF141AB52D;
-	Tue, 26 Aug 2025 13:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9775C352FFF;
+	Tue, 26 Aug 2025 13:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Ihs48s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKyXJRT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0232BAF7;
-	Tue, 26 Aug 2025 13:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D52350D46;
+	Tue, 26 Aug 2025 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213322; cv=none; b=lcoxoLc2y3hVR3Ki2vg3srInSPKyvEkaDFqnlkw10wf2THIszUIAk4b4esA371hcO8ktdpNogl1AmM0mD2ZpitDu3ZnHHEbulQwP6xW2z20mSfYJAeFolZdbQ4dfwx35z+wxUbXpUoKxPSowGayobzZJnsTbJ3U5g8aiRYb5qRI=
+	t=1756216308; cv=none; b=IdUWFFgMoBmldNCVGzbWdtblXuVeakAfo+XE9tXwGfT6u2eEb8MbrRyyPWEagBAN/8L4eOWtd25TngiJ0EO6cg0vX7aMPnQ4L4+K3P1qa6qysA/z2m+acYU3zuXHqIiiXQv6pY/MyiCTXtroDAqnShITo1ncOFwa4hX8x2+o7rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213322; c=relaxed/simple;
-	bh=8wrf5EBOjtsoH69hGZyrFMH93Q1oZYQJD2zL9gfXoP4=;
+	s=arc-20240116; t=1756216308; c=relaxed/simple;
+	bh=Z86WqDwcXjrWl9EZiIFvKk5ijFSj2zumM64EDbhvJAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIsRRkMddkg8DxwN/CAijV5Qen8tCFM3tlgCc5Ac6yjygIoXaEEO2bN1K82XaBRVsKDNcalRHH0BgsB4iqkICv5dGt90+KBxMpTvSDndWQ09zbJP3dGDuWL+Au2RLBF2A+jGGFleoM7uBcyrov7FRIfF3v4HuyZh7O6WQ9hpmtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Ihs48s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA3CC4CEF1;
-	Tue, 26 Aug 2025 13:02:02 +0000 (UTC)
+	 MIME-Version; b=XZ/zacBksUc6PhnQd9H+Uh237NHmvttKNwAPYCNBprP2FsnPox+0/BBLsozUYMkE9XlP5RvnFJ6r6yGe5bH/Mg7S+2X7T5LfSPqw9r19++7cgYqcF/waoAII8ToNhoc/Vh9yQ1ExoIiO8e0FyiCvSWrIEZA7nqdCOqU3xbq0wIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKyXJRT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED7C4CEF1;
+	Tue, 26 Aug 2025 13:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213322;
-	bh=8wrf5EBOjtsoH69hGZyrFMH93Q1oZYQJD2zL9gfXoP4=;
+	s=korg; t=1756216307;
+	bh=Z86WqDwcXjrWl9EZiIFvKk5ijFSj2zumM64EDbhvJAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8Ihs48sWq37ljvA/mL0dXwdapficlilXpyBiKe9pIjpSWusM+XwLnVk2vjjgh9FU
-	 zO1iePh/r/YGhzNo8GDNezqDgbydSDoNF30dJ6KD3rojKN0UIrLXVcVt9UW62TuaEt
-	 jS0XrMqI9EO5n4nJ2ZCtz0wRioNyqjD1qBp+rj9U=
+	b=WKyXJRT73KK/suxnlwyfoEBxfohmsa+wdjQyelKbDm5idA0RaZ8c7UZyEd0pmNhs5
+	 QAYp4T7xkpHAU67O+n8HkKfw1eHoK90HGUoKwrKYc9IEK4FN7tsqeRsqnt1ZDNAYiu
+	 KQ41ZkmR7Hv8sgXFCiYXEnVNcMzA8mqhU3wFdFE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 305/587] usb: typec: ucsi: Update power_supply on power role change
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 363/644] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
 Date: Tue, 26 Aug 2025 13:07:34 +0200
-Message-ID: <20250826111000.680241284@linuxfoundation.org>
+Message-ID: <20250826110955.409525329@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-commit 7616f006db07017ef5d4ae410fca99279aaca7aa upstream.
+[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
 
-The current power direction of an USB-C port also influences the
-power_supply's online status, so a power role change should also update
-the power_supply.
+Ensure descriptor is freed on error to avoid memory leak.
 
-Fixes an issue on some systems where plugging in a normal USB device in
-for the first time after a reboot will cause upower to erroneously
-consider the system to be connected to AC power.
-
-Cc: stable <stable@kernel.org>
-Fixes: 0e6371fbfba3 ("usb: typec: ucsi: Report power supply changes")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250721-fix-ucsi-pwr-dir-notify-v1-1-e53d5340cb38@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -910,6 +910,7 @@ static void ucsi_handle_connector_change
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index f1d07ddb3f83..2c5358fc05b1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2561,6 +2561,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	struct iwl_fw_dump_desc *desc;
+ 	unsigned int delay = 0;
+ 	bool monitor_only = false;
++	int ret;
  
- 	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
- 		typec_set_pwr_role(con->port, role);
-+		ucsi_port_psy_changed(con);
+ 	if (trigger) {
+ 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
+@@ -2591,7 +2592,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	desc->trig_desc.type = cpu_to_le32(trig);
+ 	memcpy(desc->trig_desc.data, str, len);
  
- 		/* Complete pending power role swap */
- 		if (!completion_done(&con->complete))
+-	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	if (ret)
++		kfree(desc);
++
++	return ret;
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
+ 
+-- 
+2.39.5
+
 
 
 
