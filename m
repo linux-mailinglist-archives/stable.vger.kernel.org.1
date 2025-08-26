@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-173725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89CDB35E09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A405AB35D42
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E4653A60FE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4724B1BA4817
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489F32BE7A7;
-	Tue, 26 Aug 2025 11:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC0F321459;
+	Tue, 26 Aug 2025 11:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6MeE5r3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVdqfqce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC02283FDF;
-	Tue, 26 Aug 2025 11:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAC829D26A;
+	Tue, 26 Aug 2025 11:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208995; cv=none; b=k6jktn+LVG8BPZiZC7nC8IgM7JOnpmwA3PYW1ZXOtfnefzLCXwJdKyIEk7iKyJ7Y5n78qv5H4SajLTVQPoLM/gHA2T8IM2ddqmdnRiIwpZOgzqLedCjAPf5v+LXmjtZ4kbOUk0yzHn6KYAN8aVyc3OYDoIDHv+4PFw40X/Sehjo=
+	t=1756208111; cv=none; b=MqTCqyrfpSJPr4OUUnJY2HCQ58CXgC9cyQJ1XvIMIBQvotvYXfMT2h2+rJy6uE7TCBIdFQf9G4Lc3BTYek9xdnp2QkYQG2kyWZlHrlnhCUK11gSFEjMb+o5bs9iX7IOUKQXL1l8tskwy6PQJNHZzs2WMoUpdIwleErNs54W5ZGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208995; c=relaxed/simple;
-	bh=ndCmgxChmYn6/pzaKCVhQL3xveSv3/ULTstG/GjbAGY=;
+	s=arc-20240116; t=1756208111; c=relaxed/simple;
+	bh=EQdF+Odisoh3tOeVDVfeuPwlACFPaM/RxvTGX5/4iCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVJEavQuztZAX0hja+JzH3UbJ52B4rPTaOUNHRHWmXPC64Z6ZQusmyquBSTDaH0EonMVu5Xw+FDcAQMkphD0VJeGRv+jpgPOV+t9tRqXEAfFCqdubt5uYI2O1L528dysiGFvjAPmcIZ2xNu9zE7gITBVr2AwHaHRawbtTHy27n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6MeE5r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828E2C4CEF1;
-	Tue, 26 Aug 2025 11:49:54 +0000 (UTC)
+	 MIME-Version; b=oZikQbN7y5AQb/D0UB8xFBgi0m6nlijceB3BkfeZPFp7/UecJCMbGXabc+eox13h7KMISqi1QfbrED+Tx2HF21rP0jII64enZHCVNrHGyoyz4EVY3iPJaUKTkkw2T3KcoA98ctcj2ToTM0PFBR27GRFtqi51ttiBstIG1E5FFDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVdqfqce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F09C4CEF1;
+	Tue, 26 Aug 2025 11:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208994;
-	bh=ndCmgxChmYn6/pzaKCVhQL3xveSv3/ULTstG/GjbAGY=;
+	s=korg; t=1756208110;
+	bh=EQdF+Odisoh3tOeVDVfeuPwlACFPaM/RxvTGX5/4iCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6MeE5r3NsaS9WrB4hix/eUbVmYNYah9XKJJhlSzMvjxpzKHqNjinM4AlzztD/mmq
-	 yy2azLsjyAFy18JUTVqGW2nuUvd4ALEyePHRWWIsgaretDcfJG+cOdHiGNBpC7ckMz
-	 VPBJ5PEYkjX1wgzI6ZGfQQ/nVPm7iaLnBHytZ38I=
+	b=hVdqfqceDcTvtHaT07gPly8aNQmzTpo0lm4gMn4AbPV6s4692FxzrGaa4z/YC7hXa
+	 QATPfIEdJ6jhOjr4gaXjV82UullTr4XKfvKtvkh7SebNubGhW+iiGW5WTPFkvZTOmk
+	 WyQ2mkJvQ2LT8t4s6RKLFKRkTZqaNIJDwPFw69Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 310/322] bonding: update LACP activity flag after setting lacp_active
+Subject: [PATCH 6.16 441/457] block: fix lockdep warning caused by lock dependency in elv_iosched_store
 Date: Tue, 26 Aug 2025 13:12:05 +0200
-Message-ID: <20250826110923.547165092@linuxfoundation.org>
+Message-ID: <20250826110948.184477685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +66,466 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit b64d035f77b1f02ab449393342264b44950a75ae ]
+[ Upstream commit f5a6604f7a4405450e4a1f54e5430f47290c500f ]
 
-The port's actor_oper_port_state activity flag should be updated immediately
-after changing the lacp_active option to reflect the current mode correctly.
+Recent lockdep reports [1] have revealed a potential deadlock caused by a
+lock dependency between the percpu allocator lock and the elevator lock.
+This issue can be avoided by ensuring that the allocation and release of
+scheduler tags (sched_tags) are performed outside the elevator lock.
+Furthermore, the queue does not need to be remain frozen during these
+operations.
 
-Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250815062000.22220-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To address this, move all sched_tags allocations and deallocations outside
+of both the ->elevator_lock and the ->freeze_lock. Since the lifetime of
+the elevator queue and its associated sched_tags is closely tied, the
+allocated sched_tags are now stored in the elevator queue structure. Then,
+during the actual elevator switch (which runs under ->freeze_lock and
+->elevator_lock), the pre-allocated sched_tags are assigned to the
+appropriate q->hctx. Once the elevator switch is complete and the locks
+are released, the old elevator queue and its associated sched_tags are
+freed.
+
+This commit specifically addresses the allocation/deallocation of sched_
+tags during elevator switching. Note that sched_tags may also be allocated
+in other contexts, such as during nr_hw_queues updates. Supporting that
+use case will require batch allocation/deallocation, which will be handled
+in a follow-up patch.
+
+This restructuring ensures that sched_tags memory management occurs
+entirely outside of the ->elevator_lock and ->freeze_lock context,
+eliminating the lock dependency problem seen during scheduler updates.
+
+[1] https://lore.kernel.org/all/0659ea8d-a463-47c8-9180-43c719e106eb@linux.ibm.com/
+
+Reported-by: Stefan Haberland <sth@linux.ibm.com>
+Closes: https://lore.kernel.org/all/0659ea8d-a463-47c8-9180-43c719e106eb@linux.ibm.com/
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250730074614.2537382-3-nilay@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 2d82f3bd8910 ("blk-mq: fix lockdep warning in __blk_mq_update_nr_hw_queues")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_3ad.c     | 25 +++++++++++++++++++++++++
- drivers/net/bonding/bond_options.c |  1 +
- include/net/bond_3ad.h             |  1 +
- 3 files changed, 27 insertions(+)
+ block/blk-mq-sched.c | 155 +++++++++++++++++++++++--------------------
+ block/blk-mq-sched.h |   8 ++-
+ block/elevator.c     |  40 +++++++++--
+ block/elevator.h     |  14 +++-
+ 4 files changed, 136 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index c6807e473ab7..a51305423d28 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -2869,6 +2869,31 @@ void bond_3ad_update_lacp_rate(struct bonding *bond)
- 	spin_unlock_bh(&bond->mode_lock);
+diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
+index 359e0704e09b..2d6d1ebdd8fb 100644
+--- a/block/blk-mq-sched.c
++++ b/block/blk-mq-sched.c
+@@ -374,64 +374,17 @@ bool blk_mq_sched_try_insert_merge(struct request_queue *q, struct request *rq,
+ }
+ EXPORT_SYMBOL_GPL(blk_mq_sched_try_insert_merge);
+ 
+-static int blk_mq_sched_alloc_map_and_rqs(struct request_queue *q,
+-					  struct blk_mq_hw_ctx *hctx,
+-					  unsigned int hctx_idx)
+-{
+-	if (blk_mq_is_shared_tags(q->tag_set->flags)) {
+-		hctx->sched_tags = q->sched_shared_tags;
+-		return 0;
+-	}
+-
+-	hctx->sched_tags = blk_mq_alloc_map_and_rqs(q->tag_set, hctx_idx,
+-						    q->nr_requests);
+-
+-	if (!hctx->sched_tags)
+-		return -ENOMEM;
+-	return 0;
+-}
+-
+-static void blk_mq_exit_sched_shared_tags(struct request_queue *queue)
+-{
+-	blk_mq_free_rq_map(queue->sched_shared_tags);
+-	queue->sched_shared_tags = NULL;
+-}
+-
+ /* called in queue's release handler, tagset has gone away */
+ static void blk_mq_sched_tags_teardown(struct request_queue *q, unsigned int flags)
+ {
+ 	struct blk_mq_hw_ctx *hctx;
+ 	unsigned long i;
+ 
+-	queue_for_each_hw_ctx(q, hctx, i) {
+-		if (hctx->sched_tags) {
+-			if (!blk_mq_is_shared_tags(flags))
+-				blk_mq_free_rq_map(hctx->sched_tags);
+-			hctx->sched_tags = NULL;
+-		}
+-	}
++	queue_for_each_hw_ctx(q, hctx, i)
++		hctx->sched_tags = NULL;
+ 
+ 	if (blk_mq_is_shared_tags(flags))
+-		blk_mq_exit_sched_shared_tags(q);
+-}
+-
+-static int blk_mq_init_sched_shared_tags(struct request_queue *queue)
+-{
+-	struct blk_mq_tag_set *set = queue->tag_set;
+-
+-	/*
+-	 * Set initial depth at max so that we don't need to reallocate for
+-	 * updating nr_requests.
+-	 */
+-	queue->sched_shared_tags = blk_mq_alloc_map_and_rqs(set,
+-						BLK_MQ_NO_HCTX_IDX,
+-						MAX_SCHED_RQ);
+-	if (!queue->sched_shared_tags)
+-		return -ENOMEM;
+-
+-	blk_mq_tag_update_sched_shared_tags(queue);
+-
+-	return 0;
++		q->sched_shared_tags = NULL;
  }
  
-+/**
-+ * bond_3ad_update_lacp_active - change the lacp active
-+ * @bond: bonding struct
-+ *
-+ * Update actor_oper_port_state when lacp_active is modified.
-+ */
-+void bond_3ad_update_lacp_active(struct bonding *bond)
+ void blk_mq_sched_reg_debugfs(struct request_queue *q)
+@@ -458,8 +411,75 @@ void blk_mq_sched_unreg_debugfs(struct request_queue *q)
+ 	mutex_unlock(&q->debugfs_mutex);
+ }
+ 
++void blk_mq_free_sched_tags(struct elevator_tags *et,
++		struct blk_mq_tag_set *set)
 +{
-+	struct port *port = NULL;
-+	struct list_head *iter;
-+	struct slave *slave;
-+	int lacp_active;
++	unsigned long i;
 +
-+	lacp_active = bond->params.lacp_active;
-+	spin_lock_bh(&bond->mode_lock);
-+	bond_for_each_slave(bond, slave, iter) {
-+		port = &(SLAVE_AD_INFO(slave)->port);
-+		if (lacp_active)
-+			port->actor_oper_port_state |= LACP_STATE_LACP_ACTIVITY;
-+		else
-+			port->actor_oper_port_state &= ~LACP_STATE_LACP_ACTIVITY;
++	/* Shared tags are stored at index 0 in @tags. */
++	if (blk_mq_is_shared_tags(set->flags))
++		blk_mq_free_map_and_rqs(set, et->tags[0], BLK_MQ_NO_HCTX_IDX);
++	else {
++		for (i = 0; i < et->nr_hw_queues; i++)
++			blk_mq_free_map_and_rqs(set, et->tags[i], i);
 +	}
-+	spin_unlock_bh(&bond->mode_lock);
++
++	kfree(et);
 +}
 +
- size_t bond_3ad_stats_size(void)
++struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
++		unsigned int nr_hw_queues)
++{
++	unsigned int nr_tags;
++	int i;
++	struct elevator_tags *et;
++	gfp_t gfp = GFP_NOIO | __GFP_ZERO | __GFP_NOWARN | __GFP_NORETRY;
++
++	if (blk_mq_is_shared_tags(set->flags))
++		nr_tags = 1;
++	else
++		nr_tags = nr_hw_queues;
++
++	et = kmalloc(sizeof(struct elevator_tags) +
++			nr_tags * sizeof(struct blk_mq_tags *), gfp);
++	if (!et)
++		return NULL;
++	/*
++	 * Default to double of smaller one between hw queue_depth and
++	 * 128, since we don't split into sync/async like the old code
++	 * did. Additionally, this is a per-hw queue depth.
++	 */
++	et->nr_requests = 2 * min_t(unsigned int, set->queue_depth,
++			BLKDEV_DEFAULT_RQ);
++	et->nr_hw_queues = nr_hw_queues;
++
++	if (blk_mq_is_shared_tags(set->flags)) {
++		/* Shared tags are stored at index 0 in @tags. */
++		et->tags[0] = blk_mq_alloc_map_and_rqs(set, BLK_MQ_NO_HCTX_IDX,
++					MAX_SCHED_RQ);
++		if (!et->tags[0])
++			goto out;
++	} else {
++		for (i = 0; i < et->nr_hw_queues; i++) {
++			et->tags[i] = blk_mq_alloc_map_and_rqs(set, i,
++					et->nr_requests);
++			if (!et->tags[i])
++				goto out_unwind;
++		}
++	}
++
++	return et;
++out_unwind:
++	while (--i >= 0)
++		blk_mq_free_map_and_rqs(set, et->tags[i], i);
++out:
++	kfree(et);
++	return NULL;
++}
++
+ /* caller must have a reference to @e, will grab another one if successful */
+-int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
++int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e,
++		struct elevator_tags *et)
  {
- 	return nla_total_size_64bit(sizeof(u64)) + /* BOND_3AD_STAT_LACPDU_RX */
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index d1b095af253b..e27d913b487b 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1634,6 +1634,7 @@ static int bond_option_lacp_active_set(struct bonding *bond,
- 	netdev_dbg(bond->dev, "Setting LACP active to %s (%llu)\n",
- 		   newval->string, newval->value);
- 	bond->params.lacp_active = newval->value;
-+	bond_3ad_update_lacp_active(bond);
+ 	unsigned int flags = q->tag_set->flags;
+ 	struct blk_mq_hw_ctx *hctx;
+@@ -467,40 +487,33 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
+ 	unsigned long i;
+ 	int ret;
  
+-	/*
+-	 * Default to double of smaller one between hw queue_depth and 128,
+-	 * since we don't split into sync/async like the old code did.
+-	 * Additionally, this is a per-hw queue depth.
+-	 */
+-	q->nr_requests = 2 * min_t(unsigned int, q->tag_set->queue_depth,
+-				   BLKDEV_DEFAULT_RQ);
+-
+-	eq = elevator_alloc(q, e);
++	eq = elevator_alloc(q, e, et);
+ 	if (!eq)
+ 		return -ENOMEM;
+ 
++	q->nr_requests = et->nr_requests;
++
+ 	if (blk_mq_is_shared_tags(flags)) {
+-		ret = blk_mq_init_sched_shared_tags(q);
+-		if (ret)
+-			goto err_put_elevator;
++		/* Shared tags are stored at index 0 in @et->tags. */
++		q->sched_shared_tags = et->tags[0];
++		blk_mq_tag_update_sched_shared_tags(q);
+ 	}
+ 
+ 	queue_for_each_hw_ctx(q, hctx, i) {
+-		ret = blk_mq_sched_alloc_map_and_rqs(q, hctx, i);
+-		if (ret)
+-			goto err_free_map_and_rqs;
++		if (blk_mq_is_shared_tags(flags))
++			hctx->sched_tags = q->sched_shared_tags;
++		else
++			hctx->sched_tags = et->tags[i];
+ 	}
+ 
+ 	ret = e->ops.init_sched(q, eq);
+ 	if (ret)
+-		goto err_free_map_and_rqs;
++		goto out;
+ 
+ 	queue_for_each_hw_ctx(q, hctx, i) {
+ 		if (e->ops.init_hctx) {
+ 			ret = e->ops.init_hctx(hctx, i);
+ 			if (ret) {
+-				eq = q->elevator;
+-				blk_mq_sched_free_rqs(q);
+ 				blk_mq_exit_sched(q, eq);
+ 				kobject_put(&eq->kobj);
+ 				return ret;
+@@ -509,10 +522,8 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
+ 	}
  	return 0;
+ 
+-err_free_map_and_rqs:
+-	blk_mq_sched_free_rqs(q);
++out:
+ 	blk_mq_sched_tags_teardown(q, flags);
+-err_put_elevator:
+ 	kobject_put(&eq->kobj);
+ 	q->elevator = NULL;
+ 	return ret;
+diff --git a/block/blk-mq-sched.h b/block/blk-mq-sched.h
+index 1326526bb733..0cde00cd1c47 100644
+--- a/block/blk-mq-sched.h
++++ b/block/blk-mq-sched.h
+@@ -18,10 +18,16 @@ void __blk_mq_sched_restart(struct blk_mq_hw_ctx *hctx);
+ 
+ void blk_mq_sched_dispatch_requests(struct blk_mq_hw_ctx *hctx);
+ 
+-int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e);
++int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e,
++		struct elevator_tags *et);
+ void blk_mq_exit_sched(struct request_queue *q, struct elevator_queue *e);
+ void blk_mq_sched_free_rqs(struct request_queue *q);
+ 
++struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
++		unsigned int nr_hw_queues);
++void blk_mq_free_sched_tags(struct elevator_tags *et,
++		struct blk_mq_tag_set *set);
++
+ static inline void blk_mq_sched_restart(struct blk_mq_hw_ctx *hctx)
+ {
+ 	if (test_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+diff --git a/block/elevator.c b/block/elevator.c
+index 939b0c590fbe..e9dc837b7b70 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -54,6 +54,8 @@ struct elv_change_ctx {
+ 	struct elevator_queue *old;
+ 	/* for registering new elevator */
+ 	struct elevator_queue *new;
++	/* holds sched tags data */
++	struct elevator_tags *et;
+ };
+ 
+ static DEFINE_SPINLOCK(elv_list_lock);
+@@ -132,7 +134,7 @@ static struct elevator_type *elevator_find_get(const char *name)
+ static const struct kobj_type elv_ktype;
+ 
+ struct elevator_queue *elevator_alloc(struct request_queue *q,
+-				  struct elevator_type *e)
++		struct elevator_type *e, struct elevator_tags *et)
+ {
+ 	struct elevator_queue *eq;
+ 
+@@ -145,6 +147,7 @@ struct elevator_queue *elevator_alloc(struct request_queue *q,
+ 	kobject_init(&eq->kobj, &elv_ktype);
+ 	mutex_init(&eq->sysfs_lock);
+ 	hash_init(eq->hash);
++	eq->et = et;
+ 
+ 	return eq;
  }
-diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
-index 2053cd8e788a..dba369a2cf27 100644
---- a/include/net/bond_3ad.h
-+++ b/include/net/bond_3ad.h
-@@ -307,6 +307,7 @@ int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
- 			 struct slave *slave);
- int bond_3ad_set_carrier(struct bonding *bond);
- void bond_3ad_update_lacp_rate(struct bonding *bond);
-+void bond_3ad_update_lacp_active(struct bonding *bond);
- void bond_3ad_update_ad_actor_settings(struct bonding *bond);
- int bond_3ad_stats_fill(struct sk_buff *skb, struct bond_3ad_stats *stats);
- size_t bond_3ad_stats_size(void);
+@@ -165,7 +168,6 @@ static void elevator_exit(struct request_queue *q)
+ 	lockdep_assert_held(&q->elevator_lock);
+ 
+ 	ioc_clear_queue(q);
+-	blk_mq_sched_free_rqs(q);
+ 
+ 	mutex_lock(&e->sysfs_lock);
+ 	blk_mq_exit_sched(q, e);
+@@ -591,7 +593,7 @@ static int elevator_switch(struct request_queue *q, struct elv_change_ctx *ctx)
+ 	}
+ 
+ 	if (new_e) {
+-		ret = blk_mq_init_sched(q, new_e);
++		ret = blk_mq_init_sched(q, new_e, ctx->et);
+ 		if (ret)
+ 			goto out_unfreeze;
+ 		ctx->new = q->elevator;
+@@ -626,8 +628,10 @@ static void elv_exit_and_release(struct request_queue *q)
+ 	elevator_exit(q);
+ 	mutex_unlock(&q->elevator_lock);
+ 	blk_mq_unfreeze_queue(q, memflags);
+-	if (e)
++	if (e) {
++		blk_mq_free_sched_tags(e->et, q->tag_set);
+ 		kobject_put(&e->kobj);
++	}
+ }
+ 
+ static int elevator_change_done(struct request_queue *q,
+@@ -640,6 +644,7 @@ static int elevator_change_done(struct request_queue *q,
+ 				&ctx->old->flags);
+ 
+ 		elv_unregister_queue(q, ctx->old);
++		blk_mq_free_sched_tags(ctx->old->et, q->tag_set);
+ 		kobject_put(&ctx->old->kobj);
+ 		if (enable_wbt)
+ 			wbt_enable_default(q->disk);
+@@ -658,9 +663,16 @@ static int elevator_change_done(struct request_queue *q,
+ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
+ {
+ 	unsigned int memflags;
++	struct blk_mq_tag_set *set = q->tag_set;
+ 	int ret = 0;
+ 
+-	lockdep_assert_held(&q->tag_set->update_nr_hwq_lock);
++	lockdep_assert_held(&set->update_nr_hwq_lock);
++
++	if (strncmp(ctx->name, "none", 4)) {
++		ctx->et = blk_mq_alloc_sched_tags(set, set->nr_hw_queues);
++		if (!ctx->et)
++			return -ENOMEM;
++	}
+ 
+ 	memflags = blk_mq_freeze_queue(q);
+ 	/*
+@@ -680,6 +692,11 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
+ 	blk_mq_unfreeze_queue(q, memflags);
+ 	if (!ret)
+ 		ret = elevator_change_done(q, ctx);
++	/*
++	 * Free sched tags if it's allocated but we couldn't switch elevator.
++	 */
++	if (ctx->et && !ctx->new)
++		blk_mq_free_sched_tags(ctx->et, set);
+ 
+ 	return ret;
+ }
+@@ -690,6 +707,7 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
+  */
+ void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e)
+ {
++	struct blk_mq_tag_set *set = q->tag_set;
+ 	struct elv_change_ctx ctx = {};
+ 	int ret = -ENODEV;
+ 
+@@ -697,15 +715,25 @@ void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e)
+ 
+ 	if (e && !blk_queue_dying(q) && blk_queue_registered(q)) {
+ 		ctx.name = e->elevator_name;
+-
++		ctx.et = blk_mq_alloc_sched_tags(set, set->nr_hw_queues);
++		if (!ctx.et) {
++			WARN_ON_ONCE(1);
++			goto unfreeze;
++		}
+ 		mutex_lock(&q->elevator_lock);
+ 		/* force to reattach elevator after nr_hw_queue is updated */
+ 		ret = elevator_switch(q, &ctx);
+ 		mutex_unlock(&q->elevator_lock);
+ 	}
++unfreeze:
+ 	blk_mq_unfreeze_queue_nomemrestore(q);
+ 	if (!ret)
+ 		WARN_ON_ONCE(elevator_change_done(q, &ctx));
++	/*
++	 * Free sched tags if it's allocated but we couldn't switch elevator.
++	 */
++	if (ctx.et && !ctx.new)
++		blk_mq_free_sched_tags(ctx.et, set);
+ }
+ 
+ /*
+diff --git a/block/elevator.h b/block/elevator.h
+index a4de5f9ad790..adc5c157e17e 100644
+--- a/block/elevator.h
++++ b/block/elevator.h
+@@ -23,6 +23,15 @@ enum elv_merge {
+ struct blk_mq_alloc_data;
+ struct blk_mq_hw_ctx;
+ 
++struct elevator_tags {
++	/* num. of hardware queues for which tags are allocated */
++	unsigned int nr_hw_queues;
++	/* depth used while allocating tags */
++	unsigned int nr_requests;
++	/* shared tag is stored at index 0 */
++	struct blk_mq_tags *tags[];
++};
++
+ struct elevator_mq_ops {
+ 	int (*init_sched)(struct request_queue *, struct elevator_queue *);
+ 	void (*exit_sched)(struct elevator_queue *);
+@@ -113,6 +122,7 @@ struct request *elv_rqhash_find(struct request_queue *q, sector_t offset);
+ struct elevator_queue
+ {
+ 	struct elevator_type *type;
++	struct elevator_tags *et;
+ 	void *elevator_data;
+ 	struct kobject kobj;
+ 	struct mutex sysfs_lock;
+@@ -152,8 +162,8 @@ ssize_t elv_iosched_show(struct gendisk *disk, char *page);
+ ssize_t elv_iosched_store(struct gendisk *disk, const char *page, size_t count);
+ 
+ extern bool elv_bio_merge_ok(struct request *, struct bio *);
+-extern struct elevator_queue *elevator_alloc(struct request_queue *,
+-					struct elevator_type *);
++struct elevator_queue *elevator_alloc(struct request_queue *,
++		struct elevator_type *, struct elevator_tags *);
+ 
+ /*
+  * Helper functions.
 -- 
 2.50.1
 
