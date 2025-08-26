@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B578B36063
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7766B3695D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E1E5E32A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5EF1C822B1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6023238149;
-	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAD350D45;
+	Tue, 26 Aug 2025 14:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuZC11gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWCvMPbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CEF221DA5;
-	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438CF35083D;
+	Tue, 26 Aug 2025 14:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212956; cv=none; b=hwljgXvPuToa/LYlz62UiMW/kIbPwCn/zZxV+jw4RGFfaClCBREPVXXN28rG9rhhPiFDSSkNvyeiLbF3b+iPfzYx7/wzn6eL7NVi/ToPNZ6c2ex9nmcnqF2y7fDbYzauzb9T5+sGvbDrFFs89kmeZve5fH1lrQPqO0zI3DcCZGo=
+	t=1756217425; cv=none; b=SHIdUZz6fasAmZmSOzg5B1lLr5rJmMg1leNJfKtyrTsh11D3CW1hRz+LZkKhby87is63+c4y1cPv7c9giHZ+VEJKp8YXXmDkd8niRZM3sju6NNJsdF/dlNTqK68iW7UG7YeCHFmax/+EJ3fwCdB4MWU1pYbCaL3kfTIK/N8hUIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212956; c=relaxed/simple;
-	bh=pkBLlfIg+/Zo4Dx5LU3Sh+NfodsgUPL8/vFz5ajqyhc=;
+	s=arc-20240116; t=1756217425; c=relaxed/simple;
+	bh=ABLKyKWOBgq3sTXKImbokhEIs5hk2tWy72iRzqLCiPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyGYtk3wrOl9EvzQ5Q7XoQwHZjhrPbAPERi9SpMgvQUy6XUT1hT/NOwPYo8aENK366IymPb6BdYA0qs5CHXoogMzZ/zlGrgVYIaO1vSHujDds2R44yiQUBcfRRMj2HwWpzGDTzIaTdVMPwASb/Pb5MGa9/1nHH+rlUsmfm5bZSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuZC11gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6EEC19421;
-	Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
+	 MIME-Version; b=M3LKTcMaSH193dEhBFsgR8NIcregLOPXDcLlK5b/NHBG2wtfuJl8E75DGpxX1MACUAVs9ojdw7yWnxJzXzDr0J1aJ/psoeh5ODbNP8qwaFj0pDPUZWmhoV10pLPRAVOFI2DFANjfOD5gfNvQaEGMVvRBGVfLDrflxQiP0BsfAno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWCvMPbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71CBC113D0;
+	Tue, 26 Aug 2025 14:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212956;
-	bh=pkBLlfIg+/Zo4Dx5LU3Sh+NfodsgUPL8/vFz5ajqyhc=;
+	s=korg; t=1756217425;
+	bh=ABLKyKWOBgq3sTXKImbokhEIs5hk2tWy72iRzqLCiPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SuZC11gk8Wnc8Pk/nBlLCEWEXDrjxxcg3rL2CQa7Fp3X5CzDefbQ/vg0tVH1VA77E
-	 XOjYT5/NrR99xL6ZwgTJCQdDE2On1yx5ya7UJH9qADcJL064RUCKQRmlA7Tw+pVr4w
-	 f8PoWQw6uOkuUkDIAFYgB5wkLwAfSRfOXCNlKYD8=
+	b=FWCvMPbR7lGftJJK3oIkYNUi0OrJ9uNy7IJWHM8IyCKHgzxjBlzeUNvpI9zG+LNXi
+	 UlxIkVyCHkcOgRnTmuYao6mxy2KxGHLyAV/nfzh+dT9O1RV+RY1yWnL+fXO+TAKpIs
+	 zvFPkQpBOGTsvktJsjjmol4+qxKA7eWuF0GRSXt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/587] ipv6: mcast: Check inet6_dev->dead under idev->mc_lock in __ipv6_dev_mc_inc().
-Date: Tue, 26 Aug 2025 13:05:16 +0200
-Message-ID: <20250826110957.193865882@linuxfoundation.org>
+Subject: [PATCH 5.10 107/523] net/sched: Restrict conditions for adding duplicating netems to qdisc tree
+Date: Tue, 26 Aug 2025 13:05:17 +0200
+Message-ID: <20250826110927.173420564@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit dbd40f318cf2f59759bd170c401adc20ba360a3e ]
+[ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
 
-Since commit 63ed8de4be81 ("mld: add mc_lock for protecting
-per-interface mld data"), every multicast resource is protected
-by inet6_dev->mc_lock.
+netem_enqueue's duplication prevention logic breaks when a netem
+resides in a qdisc tree with other netems - this can lead to a
+soft lockup and OOM loop in netem_dequeue, as seen in [1].
+Ensure that a duplicating netem cannot exist in a tree with other
+netems.
 
-RTNL is unnecessary in terms of protection but still needed for
-synchronisation between addrconf_ifdown() and __ipv6_dev_mc_inc().
+Previous approaches suggested in discussions in chronological order:
 
-Once we removed RTNL, there would be a race below, where we could
-add a multicast address to a dead inet6_dev.
+1) Track duplication status or ttl in the sk_buff struct. Considered
+too specific a use case to extend such a struct, though this would
+be a resilient fix and address other previous and potential future
+DOS bugs like the one described in loopy fun [2].
 
-  CPU1                            CPU2
-  ====                            ====
-  addrconf_ifdown()               __ipv6_dev_mc_inc()
-                                    if (idev->dead) <-- false
-    dead = true                       return -ENODEV;
-    ipv6_mc_destroy_dev() / ipv6_mc_down()
-      mutex_lock(&idev->mc_lock)
-      ...
-      mutex_unlock(&idev->mc_lock)
-                                    mutex_lock(&idev->mc_lock)
-                                    ...
-                                    mutex_unlock(&idev->mc_lock)
+2) Restrict netem_enqueue recursion depth like in act_mirred with a
+per cpu variable. However, netem_dequeue can call enqueue on its
+child, and the depth restriction could be bypassed if the child is a
+netem.
 
-The race window can be easily closed by checking inet6_dev->dead
-under inet6_dev->mc_lock in __ipv6_dev_mc_inc() as addrconf_ifdown()
-will acquire it after marking inet6_dev dead.
+3) Use the same approach as in 2, but add metadata in netem_skb_cb
+to handle the netem_dequeue case and track a packet's involvement
+in duplication. This is an overly complex approach, and Jamal
+notes that the skb cb can be overwritten to circumvent this
+safeguard.
 
-Let's check inet6_dev->dead under mc_lock in __ipv6_dev_mc_inc().
+4) Prevent the addition of a netem to a qdisc tree if its ancestral
+path contains a netem. However, filters and actions can cause a
+packet to change paths when re-enqueued to the root from netem
+duplication, leading us to the current solution: prevent a
+duplicating netem from inhabiting the same tree as other netems.
 
-Note that now __ipv6_dev_mc_inc() no longer depends on RTNL and
-we can remove ASSERT_RTNL() there and the RTNL comment above
-addrconf_join_solict().
+[1] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+[2] https://lwn.net/Articles/719297/
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250702230210.3115355-4-kuni1840@gmail.com
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250708164141.875402-1-will@willsroot.io
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |  7 +++----
- net/ipv6/mcast.c    | 11 +++++------
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ net/sched/sch_netem.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index f6188bd9f55b..1c3b0ba289fb 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -2193,13 +2193,12 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
- 	in6_ifa_put(ifp);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 22f5d9421f6a..951156d7e548 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -962,6 +962,41 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
  }
  
--/* Join to solicited addr multicast group.
-- * caller must hold RTNL */
-+/* Join to solicited addr multicast group. */
- void addrconf_join_solict(struct net_device *dev, const struct in6_addr *addr)
- {
- 	struct in6_addr maddr;
- 
--	if (dev->flags&(IFF_LOOPBACK|IFF_NOARP))
-+	if (READ_ONCE(dev->flags) & (IFF_LOOPBACK | IFF_NOARP))
- 		return;
- 
- 	addrconf_addr_solict_mult(addr, &maddr);
-@@ -3834,7 +3833,7 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
- 	 *	   Do not dev_put!
- 	 */
- 	if (unregister) {
--		idev->dead = 1;
-+		WRITE_ONCE(idev->dead, 1);
- 
- 		/* protected by rtnl_lock */
- 		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index e153dac47a53..160b452f75e7 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -906,23 +906,22 @@ static struct ifmcaddr6 *mca_alloc(struct inet6_dev *idev,
- static int __ipv6_dev_mc_inc(struct net_device *dev,
- 			     const struct in6_addr *addr, unsigned int mode)
- {
--	struct ifmcaddr6 *mc;
- 	struct inet6_dev *idev;
--
--	ASSERT_RTNL();
-+	struct ifmcaddr6 *mc;
- 
- 	/* we need to take a reference on idev */
- 	idev = in6_dev_get(dev);
--
- 	if (!idev)
- 		return -EINVAL;
- 
--	if (idev->dead) {
-+	mutex_lock(&idev->mc_lock);
++static const struct Qdisc_class_ops netem_class_ops;
 +
-+	if (READ_ONCE(idev->dead)) {
-+		mutex_unlock(&idev->mc_lock);
- 		in6_dev_put(idev);
- 		return -ENODEV;
- 	}
++static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
++			       struct netlink_ext_ack *extack)
++{
++	struct Qdisc *root, *q;
++	unsigned int i;
++
++	root = qdisc_root_sleeping(sch);
++
++	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
++		if (duplicates ||
++		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
++			goto err;
++	}
++
++	if (!qdisc_dev(root))
++		return 0;
++
++	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
++		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
++			if (duplicates ||
++			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
++				goto err;
++		}
++	}
++
++	return 0;
++
++err:
++	NL_SET_ERR_MSG(extack,
++		       "netem: cannot mix duplicating netems with other netems in tree");
++	return -EINVAL;
++}
++
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1023,6 +1058,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
++
++	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
++	if (ret)
++		goto unlock;
++
+ 	q->duplicate = qopt->duplicate;
  
--	mutex_lock(&idev->mc_lock);
- 	for_each_mc_mclock(idev, mc) {
- 		if (ipv6_addr_equal(&mc->mca_addr, addr)) {
- 			mc->mca_users++;
+ 	/* for compatibility with earlier versions.
 -- 
 2.39.5
 
