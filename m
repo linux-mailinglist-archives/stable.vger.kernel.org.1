@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-173902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74C4B36067
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B8AB35B1C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56B9F68149C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2171C5E2681
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8D21E411C;
-	Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F6F334717;
+	Tue, 26 Aug 2025 11:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXzLJh8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLHs2YQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABC91EB9F2;
-	Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859A22F9982;
+	Tue, 26 Aug 2025 11:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212967; cv=none; b=VBdSl2dga920EHg462toRAEgM1LkeyY4WccKya7KbF/bX8/RQzcqT39kKHeZ+lvilZHDl38hgESCLeE2GDksHDDIFtYb4jItXCE1r6oibMwSdlS+D1dzPB/pqZkotVQYG49QRcG1dmvd2F7NkM41JKpb7pMGErg+0mRt2zx48Xo=
+	t=1756207062; cv=none; b=K6HcgoPzGxRJRO9yGggdfJfZOY5za1irx6aAm7CvwRaOKKE5kyN+MuYDonJaN4eCZKMYk2SbgOqNkMnuG72vopyw1iQYr4UVrYldnH6IM+iZ5v6vF+yyajF1uTFW4f+yQtXnG68fUnGtHoRYx/AsWuObLNhOxxGN9csIYUl2AA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212967; c=relaxed/simple;
-	bh=zv3K83PCnvY5YoofCZvwZhulpa2sXYoIDJNroRbPgbw=;
+	s=arc-20240116; t=1756207062; c=relaxed/simple;
+	bh=6q/TKRakhhD3RQKdPDwX4BCMX+RSW7f0di/MuVzpY+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4EDxsVK1GaZ3nNMR5oVPSOX2ZcIcW2flk6sDYmi3AYAKpyIZrbuUoCp0c1EQauVIU2Qck3PhWaBKrytr3JEVsLRVrwAzEk8/y7Aa5DLHRNz3CGA2cOWKSZfssiE47Wn0NOp7521FzGicpIkliVqESi9zA6eXXFrW32ue2wLnQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXzLJh8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA249C4CEF4;
-	Tue, 26 Aug 2025 12:56:06 +0000 (UTC)
+	 MIME-Version; b=X0sDZYQLzypgiDY0+cjC0FTsKdhfUTKT1YmubmuIw/Iprl8abxR0BkTRuiX+Lmdi+6ytJt4rM//Wy6xaGy198j4eLa7NU5pXIUgfC9rDNsWKAe8G0cmXx9tzvmcwui/ZmYKLsbnj/2TYuGqzBMuAWFixPJkqO6bU2VoGobayI98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLHs2YQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E80CC4CEF4;
+	Tue, 26 Aug 2025 11:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212967;
-	bh=zv3K83PCnvY5YoofCZvwZhulpa2sXYoIDJNroRbPgbw=;
+	s=korg; t=1756207062;
+	bh=6q/TKRakhhD3RQKdPDwX4BCMX+RSW7f0di/MuVzpY+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXzLJh8qwiIjUziV4bR3EIuxdmo/q6O24Z3mospInYKuPoBDQ2FEGXzYsGCFaudCz
-	 3tHccLzhOuaY+iwOL6M/5zYOJm6f/JvVhwucj6rXtuWSKL+Fycg3HuHok/2fyOHpT0
-	 DlZDiwX+wcoks+XPnK8ORjzPb3G9smZ2JjubHBbY=
+	b=ZLHs2YQ2ppCO7RHa8r/T2lmB2s1POayhEAs5plg+1TDV1gv6pmghrspc8m7UG+GY+
+	 hamDl6cfAkHVUaThIYwu4RuvNqDI9zdIiMguRSBz+nIyrJHemw4OiOuiOq0U3Ki1jB
+	 W8zD4Fk6EzCQ8bbPxImQMkqklLjukfNzvohX9Zi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/587] wifi: rtw89: Disable deep power saving for USB/SDIO
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.16 036/457] tracing: fprobe-event: Sanitize wildcard for fprobe event name
 Date: Tue, 26 Aug 2025 13:05:20 +0200
-Message-ID: <20250826110957.295859865@linuxfoundation.org>
+Message-ID: <20250826110938.237136264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
+commit ec879e1a0be8007aa232ffedcf6a6445dfc1a3d7 upstream.
 
-Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
-is called in atomic context and accessing hardware registers results in
-"scheduling while atomic" errors.
+Fprobe event accepts wildcards for the target functions, but unless user
+specifies its event name, it makes an event with the wildcards.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /sys/kernel/tracing # echo 'f mutex*' >> dynamic_events
+  /sys/kernel/tracing # cat dynamic_events
+  f:fprobes/mutex*__entry mutex*
+  /sys/kernel/tracing # ls events/fprobes/
+  enable         filter         mutex*__entry
+
+To fix this, replace the wildcard ('*') with an underscore.
+
+Link: https://lore.kernel.org/all/175535345114.282990.12294108192847938710.stgit@devnote2/
+
+Fixes: 334e5519c375 ("tracing/probes: Add fprobe events for tracing function entry and exit.")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 21e9ec8768b5..c172ef13c954 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1996,6 +1996,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -2204,7 +2204,7 @@ static inline bool is_good_system_name(c
+ static inline void sanitize_event_name(char *name)
  {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	while (*name++ != '\0')
+-		if (*name == ':' || *name == '.')
++		if (*name == ':' || *name == '.' || *name == '*')
+ 			*name = '_';
+ }
  
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
-+		return RTW89_PS_MODE_NONE;
-+
- 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
- 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
- 		return RTW89_PS_MODE_NONE;
--- 
-2.39.5
-
 
 
 
