@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C867BB36CD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDA7B35D3E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A37A07030
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CF0366BB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678F735CEBF;
-	Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2603314DC;
+	Tue, 26 Aug 2025 11:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv08jTk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEaJADUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF635CEB9;
-	Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC06732144B;
+	Tue, 26 Aug 2025 11:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219248; cv=none; b=Ex8hzRC/pnOtR6//8mrgIVpJ7Rb1aYv2bt6QWhFFwseyvOb5DitW3TdH+INwq7+wU0eP3zXsAd1XY33FgTehadoXiH8u0VsSobsPsrQxf2x3M9dE/zLnh2wZ3T+I9NseSNjYJ5o15m1uVN0Q6ZwBbqUmAOMEwkRMD2r9nUMx/rg=
+	t=1756207959; cv=none; b=svAuTYhPEpO8mJp/nh67R1Igyfqn8kkSe0i3LfraWEiRlk1tsal6HpySnN9rwUliWWOCAEG+MPdR5XvUxs7DqFRWrrnEgSsJ38JSyf3QeLidUN1RS1y+ghQdfITMuY7R6nyeV3DOsX5NI/O4nvNMcF3OGiLFqNlkGbllzxJIczs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219248; c=relaxed/simple;
-	bh=AUkjyWrCuzcmpZ/6aUAxNfbTvyj1w+dOrVdcbpYei0Y=;
+	s=arc-20240116; t=1756207959; c=relaxed/simple;
+	bh=EsIEF7sA6l0MGnJFV9ECiExtaeORaF91/VRUI7lEAxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxjO6Pqhzz3fz+LJloB0RP15pyl0cakHGFOn7hoyj5HX2a5+SVCUZxRl3ZzyWi8hCRmuvQEai320bO/jv5gBDobfL9EOvlJu5SRh/JonqAhKXT/4JF3zsIbX0nAyNCwXSGZoLeBm/68G0N+GIXEXoK3RcfUs2fKakZ9i4vEBq54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv08jTk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D15C4CEF1;
-	Tue, 26 Aug 2025 14:40:47 +0000 (UTC)
+	 MIME-Version; b=gdgWpmN0m13V5OiUyWKCHRQRhUOEBfKUDM0kuUVhZ+uWoRkvlFNRwdL7R8F1x1Ed7lhR0OQZKndZq5PoEQR6x18k76ChCWxzqMVbIiJ/nQ0p7rxMsvP+p/vapicR4g85Ak+tUmmYsV9FKKr7SO9VS4Y9tQ39h4wtMSntOrcXUKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEaJADUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83DAC4CEF1;
+	Tue, 26 Aug 2025 11:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219248;
-	bh=AUkjyWrCuzcmpZ/6aUAxNfbTvyj1w+dOrVdcbpYei0Y=;
+	s=korg; t=1756207956;
+	bh=EsIEF7sA6l0MGnJFV9ECiExtaeORaF91/VRUI7lEAxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yv08jTk0aXdOE4ZJ+b4PpxgwQf8jo7LKRmICnL4LtKtlYKtDIuD/s+Zf501659F2V
-	 F4Q3UdHZQ50mY8C1Uolb1Fw8eX8PMkLfB2iH5sXIOXS/gIUsZGrlKVhUJEccDnFlmG
-	 Mvh/IrI1mswCCPQCvGMzWrn6zpKmizqNdmskVPNw=
+	b=mEaJADUDeQpBRXCYaNg2EyUmhbT5Duq/bxO6DazMclONzgm8yWH7bvIuH3YUThcjS
+	 /Aqnm1jptgiSh72xUt7QAUUHCvBwohiMQ3hei53ZvHBnUmxKuObbeuRxIUqcVfV69a
+	 aNzF0JT76eFZVM0sHhVJDm+XrYaKz6+icARJT+jU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Scott GUO <scottzhguo@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 309/403] squashfs: fix memory leak in squashfs_fill_super
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 351/457] iosys-map: Fix undefined behavior in iosys_map_clear()
 Date: Tue, 26 Aug 2025 13:10:35 +0200
-Message-ID: <20250826110915.349104423@linuxfoundation.org>
+Message-ID: <20250826110945.997187858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
+[ Upstream commit 5634c8cb298a7146b4e38873473e280b50e27a2c ]
 
-If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
-allocated memory (sb->s_fs_info).
+The current iosys_map_clear() implementation reads the potentially
+uninitialized 'is_iomem' boolean field to decide which union member
+to clear. This causes undefined behavior when called on uninitialized
+structures, as 'is_iomem' may contain garbage values like 0xFF.
 
-Fix this by moving the call to sb_min_blocksize to before memory is
-allocated.
+UBSAN detects this as:
+    UBSAN: invalid-load in include/linux/iosys-map.h:267
+    load of value 255 is not a valid value for type '_Bool'
 
-Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
-Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: Scott GUO <scottzhguo@tencent.com>
-Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by unconditionally clearing the entire structure with memset(),
+eliminating the need to read uninitialized data and ensuring all
+fields are set to known good values.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14639
+Fixes: 01fd30da0474 ("dma-buf: Add struct dma-buf-map for storing struct dma_buf.vaddr_ptr")
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250718105051.2709487-1-nitin.r.gote@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/iosys-map.h | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -74,10 +74,15 @@ static int squashfs_fill_super(struct su
- 	unsigned short flags;
- 	unsigned int fragments;
- 	u64 lookup_table_start, xattr_id_table_start, next_table;
--	int err;
-+	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
- 
- 	TRACE("Entered squashfs_fill_superblock\n");
- 
-+	if (!devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
- 	if (sb->s_fs_info == NULL) {
- 		ERROR("Failed to allocate squashfs_sb_info\n");
-@@ -85,12 +90,7 @@ static int squashfs_fill_super(struct su
- 	}
- 	msblk = sb->s_fs_info;
- 
--	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
--	if (!msblk->devblksize) {
--		errorf(fc, "squashfs: unable to set blocksize\n");
--		return -EINVAL;
+diff --git a/include/linux/iosys-map.h b/include/linux/iosys-map.h
+index 4696abfd311c..3e85afe794c0 100644
+--- a/include/linux/iosys-map.h
++++ b/include/linux/iosys-map.h
+@@ -264,12 +264,7 @@ static inline bool iosys_map_is_set(const struct iosys_map *map)
+  */
+ static inline void iosys_map_clear(struct iosys_map *map)
+ {
+-	if (map->is_iomem) {
+-		map->vaddr_iomem = NULL;
+-		map->is_iomem = false;
+-	} else {
+-		map->vaddr = NULL;
 -	}
--
-+	msblk->devblksize = devblksize;
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
++	memset(map, 0, sizeof(*map));
+ }
  
- 	mutex_init(&msblk->meta_index_mutex);
+ /**
+-- 
+2.50.1
+
 
 
 
