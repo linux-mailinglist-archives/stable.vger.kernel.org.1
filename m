@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C01DB36571
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F156EB362A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD095562C57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB8FD7C0362
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C51F2F60C1;
-	Tue, 26 Aug 2025 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A37C2FF657;
+	Tue, 26 Aug 2025 13:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEYWGZl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nttF00yG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A365200112;
-	Tue, 26 Aug 2025 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB31F308F34;
+	Tue, 26 Aug 2025 13:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215362; cv=none; b=rvwO83B+rMdM2QQu5XpdwPVvjQTejLVtPr+/0d4uJVacVxTnpZv6ISXazaTs3YLQXpC3P2o/dtYQfWTOlP4m65JtME0uAigG23RW7WI8bTIEPnDXVHKoKdjpamttkRTNJU6o/4twJLYn9qjMiJlK1UqOOH4w4oVOzFRZIQnqoZQ=
+	t=1756213997; cv=none; b=t2ADi13E/xXSSEerJlLlT/8HT2i9AL5aTx9lJq/yWHuneFm0IWfyZ4FpNbMWeiUA14OQB27tNY4byyhmOrS6s2crZgU1vCTaSgDRBXv6w6YEXSjPuv38T1N5HIfKtoI7hSfIq/XlPC47hhEZVQd/G/7IJIg9umF54m+SZiMmkdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215362; c=relaxed/simple;
-	bh=BKOK7dNJ+lf86P0cCuZPLTeWSBBDpV+cz8SHw0u/QQQ=;
+	s=arc-20240116; t=1756213997; c=relaxed/simple;
+	bh=/nDt8HxDDyKOrKDqNgLu4II45B1Bj2XrSCe6AZo79fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5O4EKntESudALEQBsqDJAeY9bPTbMicZZYA9OGxrFJAZIg57eU04nQGffbvxWFKOH64N7VgIUlZ9EcnjxkuJTRD8w23MRKww3jSbBbaTzkSHpDIEdRIqe6u20byuVQ3vCqg6nuIwM9cxXiBo4TJikYsvK1YMTGGYxoukX7ni1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEYWGZl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF5DC4CEF1;
-	Tue, 26 Aug 2025 13:36:01 +0000 (UTC)
+	 MIME-Version; b=OJ2dg1V6H/FXKmxX8HCeSwImCvnbDgvUQuJZ3dlTzA/peKZzoeNSDIBxFc+3buvyszqKcMcuX6/GkBTgPlsxkaYOvKWqX3uxWcpowt2WY2hUzagW5JYJbKqQHTexZWLZGidEdiRAegiNfVUPRKhYgH33BIuPmu60h0b6dXt3bnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nttF00yG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311D2C4CEF1;
+	Tue, 26 Aug 2025 13:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215361;
-	bh=BKOK7dNJ+lf86P0cCuZPLTeWSBBDpV+cz8SHw0u/QQQ=;
+	s=korg; t=1756213996;
+	bh=/nDt8HxDDyKOrKDqNgLu4II45B1Bj2XrSCe6AZo79fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEYWGZl2b3r9+1Z3qJTvIncRG9nRl6z1LCSrRMlRQewDUnVn/PcO4xPm+iyt3EE77
-	 7zKRDHI4UbJYIJrhnuNZE7cQIOSfDXT9uDfOcNE4NJih4DI+pUONxRZR5ZA/+8A3GU
-	 uPU5lumytJOWfM6pzI6bJmoD4ym/JHqHEKJGf1NE=
+	b=nttF00yGvdzt60flf/zfCg3W4ydOdaEuI/LMyaWuI3PMJKwN+baxVb6Khjxm9tlhh
+	 rxonEsv05rq/Ms1vRuowycm+cdXk9eE79QHXKKwBj+j4UD8jPA3jInKLfldlQpiq48
+	 /uwmaPYByh7jhwaJ49IdfCSjGQX0ew0fc/BkfR30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Boshi Yu <boshiyu@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 455/482] RDMA/erdma: Fix ignored return value of init_kernel_qp
+Subject: [PATCH 6.6 559/587] Bluetooth: hci_event: fix MTU for BN == 0 in CIS Established
 Date: Tue, 26 Aug 2025 13:11:48 +0200
-Message-ID: <20250826110942.068510854@linuxfoundation.org>
+Message-ID: <20250826111007.247338095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boshi Yu <boshiyu@linux.alibaba.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit d5c74713f0117d07f91eb48b10bc2ad44e23c9b9 ]
+[ Upstream commit 0b3725dbf61b51e7c663834811b3691157ae17d6 ]
 
-The init_kernel_qp interface may fail. Check its return value and free
-related resources properly when it does.
+BN == 0x00 in CIS Established means no isochronous data for the
+corresponding direction (Core v6.1 pp. 2394). In this case SDU MTU
+should be 0.
 
-Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
-Reviewed-by: Cheng Xu <chengyou@linux.alibaba.com>
-Signed-off-by: Boshi Yu <boshiyu@linux.alibaba.com>
-Link: https://patch.msgid.link/20250725055410.67520-3-boshiyu@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+However, the specification does not say the Max_PDU_C_To_P or P_To_C are
+then zero.  Intel AX210 in Framed CIS mode sets nonzero Max_PDU for
+direction with zero BN.  This causes failure later when we try to LE
+Setup ISO Data Path for disabled direction, which is disallowed (Core
+v6.1 pp. 2750).
+
+Fix by setting SDU MTU to 0 if BN == 0.
+
+Fixes: 2be22f1941d5f ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index 2edf0d882c6a..cc2b20c8b050 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -727,7 +727,9 @@ int erdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attrs,
- 		if (ret)
- 			goto err_out_cmd;
- 	} else {
--		init_kernel_qp(dev, qp, attrs);
-+		ret = init_kernel_qp(dev, qp, attrs);
-+		if (ret)
-+			goto err_out_xa;
- 	}
- 
- 	qp->attrs.max_send_sge = attrs->cap.max_send_sge;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 3b22ce3aa95b..c06010c0d882 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6664,8 +6664,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		qos->ucast.out.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
+ 					  1000);
+-		qos->ucast.in.sdu = le16_to_cpu(ev->c_mtu);
+-		qos->ucast.out.sdu = le16_to_cpu(ev->p_mtu);
++		qos->ucast.in.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
++		qos->ucast.out.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
+ 		qos->ucast.in.phy = ev->c_phy;
+ 		qos->ucast.out.phy = ev->p_phy;
+ 		break;
+@@ -6679,8 +6679,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		qos->ucast.in.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->p_latency),
+ 					  1000);
+-		qos->ucast.out.sdu = le16_to_cpu(ev->c_mtu);
+-		qos->ucast.in.sdu = le16_to_cpu(ev->p_mtu);
++		qos->ucast.out.sdu = ev->c_bn ? le16_to_cpu(ev->c_mtu) : 0;
++		qos->ucast.in.sdu = ev->p_bn ? le16_to_cpu(ev->p_mtu) : 0;
+ 		qos->ucast.out.phy = ev->c_phy;
+ 		qos->ucast.in.phy = ev->p_phy;
+ 		break;
 -- 
 2.50.1
 
