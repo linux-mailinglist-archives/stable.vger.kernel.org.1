@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8DBB35D87
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DC1B35E62
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E422D3632B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 254E01BC1396
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24D2338F3E;
-	Tue, 26 Aug 2025 11:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38C284B5B;
+	Tue, 26 Aug 2025 11:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usnk5XgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yas+L+LD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E34320330;
-	Tue, 26 Aug 2025 11:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C07200112;
+	Tue, 26 Aug 2025 11:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208144; cv=none; b=R9SeDaLjKrftu9cqO1CpwnAl7AqHTjtfEJrbn/BwT8ccjx22UBXe6B6QWYGP762B3f0T8dBgoeTak4L8jK2RdOYdK9jHHiZFRIpByFczXMhrw3XqNRgbgP0vbXukwOwXZ4g9REkSsK8DNE4b0850z1iHX9dj4Rb6F6ff6UGyGfU=
+	t=1756208885; cv=none; b=riGRKovopUr+/ETFigaGUpio/yEsCWWkD2sPoIYZNV2+34pVtG9WsaaZ4hOgPKq2xivO6H2FAf6cMD/z2qyF+fGkUcH5+2Wns/hrOpB4zpfHPlh7gbUB98CWcwE9TMQU0Bq42HP+u8NfRWKEUTRl8qJ9UIA9mLj1l7POVBot/Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208144; c=relaxed/simple;
-	bh=wnFd3va8o1lOkU4Mz7/rQyJ7/1A8Mn9key71JuqBsIw=;
+	s=arc-20240116; t=1756208885; c=relaxed/simple;
+	bh=OI4Q8ElkOcT15UjbFAf4sk6bgPWfzwWT7PwqZrwXpds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Va302UVlw3MZfaXaDU0YiA3VLETpTRjc2FwCPQQUNWchXzOcABAlnWy9jO8dkpTepsdUD5kOQi4eSQrLOTA4KyrMQ5W+C0OreRc7js9CIRVmuKXmXq1x8fOC/+VAaRUlMjx9xKClvCsZ3/WDzqjY+yapXdbMZ9AtTrDqx2/qW94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usnk5XgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354C6C4CEF1;
-	Tue, 26 Aug 2025 11:35:44 +0000 (UTC)
+	 MIME-Version; b=Iu3ykRTMCZE+QhXBt7lRoUnZn682WS7+0aKd3waEEWY0x0oNFJuM0AdAzIydMcPTXSdQ3TvVuu/L/ACMbxd1+qEUlpLcQ4jLt6PzdSEXDXQY+Le+0RNZZiM7AXBswcEs4i9DJ3lszmm9TsQCOv6JKWD2Ej7OlsT58XC7acN/dgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yas+L+LD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C72EC4CEF1;
+	Tue, 26 Aug 2025 11:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208144;
-	bh=wnFd3va8o1lOkU4Mz7/rQyJ7/1A8Mn9key71JuqBsIw=;
+	s=korg; t=1756208884;
+	bh=OI4Q8ElkOcT15UjbFAf4sk6bgPWfzwWT7PwqZrwXpds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usnk5XgP/yB42zo2AzQdaRv2cCEOgkjaIrHqDcFvzZnEtmfbHEfUxDIa+YE4C3DuT
-	 ihTDpNp/t49qN58F9qI+cXKFw31awR6AFqOqnEUgXho5yZPaqV3W5GxiFCefumnp9f
-	 tpvQKjk99fD/RwQbfH5dDNLFptY7kOkBJdgtVOEY=
+	b=Yas+L+LDtu8ng0EzMGuqb/9+cZh5zqk/7S4dpzBi9wcrAw0t55PmZjWiegtp1WZ5+
+	 YU6IW9GQ01qh6XKS8IkBCU2PyxJlhpPKNIOfhJjO9jrQo30XV1rKrveJIvuez5zdCa
+	 GhTn19c5IReG4YqIdHGvPA2YjFFJm0FNT6CJwHUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Drew Fustini <fustini@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 414/457] net: stmmac: thead: Enable TX clock before MAC initialization
+Subject: [PATCH 6.12 283/322] rust: alloc: fix `rusttest` by providing `Cmalloc::aligned_layout` too
 Date: Tue, 26 Aug 2025 13:11:38 +0200
-Message-ID: <20250826110947.526191615@linuxfoundation.org>
+Message-ID: <20250826110922.908766318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 6d6714bf0c4e8eb2274081b4b023dfa01581c123 ]
+[ Upstream commit 0f580d5d3d9d9cd0953695cd32e43aac3a946338 ]
 
-The clk_tx_i clock must be supplied to the MAC for successful
-initialization. On TH1520 SoC, the clock is provided by an internal
-divider configured through GMAC_PLLCLK_DIV register when using RGMII
-interface. However, currently we don't setup the divider before
-initialization of the MAC, resulting in DMA reset failures if the
-bootloader/firmware doesn't enable the divider,
+Commit fde578c86281 ("rust: alloc: replace aligned_size() with
+Kmalloc::aligned_layout()") provides a public `aligned_layout` function
+in `Kamlloc`, but not in `Cmalloc`, and thus uses of it will trigger an
+error in `rusttest`.
 
-[    7.839601] thead-dwmac ffe7060000.ethernet eth0: Register MEM_TYPE_PAGE_POOL RxQ-0
-[    7.938338] thead-dwmac ffe7060000.ethernet eth0: PHY [stmmac-0:02] driver [RTL8211F Gigabit Ethernet] (irq=POLL)
-[    8.160746] thead-dwmac ffe7060000.ethernet eth0: Failed to reset the dma
-[    8.170118] thead-dwmac ffe7060000.ethernet eth0: stmmac_hw_setup: DMA engine initialization failed
-[    8.179384] thead-dwmac ffe7060000.ethernet eth0: __stmmac_open: Hw setup failed
+Such a user appeared in the following commit 22ab0641b939 ("rust: drm:
+ensure kmalloc() compatible Layout"):
 
-Let's simply write GMAC_PLLCLK_DIV_EN to GMAC_PLLCLK_DIV to enable the
-divider before MAC initialization. Note that for reconfiguring the
-divisor, the divider must be disabled first and re-enabled later to make
-sure the new divisor take effect.
+    error[E0599]: no function or associated item named `aligned_layout` found for struct `alloc::allocator_test::Cmalloc` in the current scope
+       --> rust/kernel/drm/device.rs:100:31
+        |
+    100 |         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
+        |                               ^^^^^^^^^^^^^^ function or associated item not found in `Cmalloc`
+        |
+       ::: rust/kernel/alloc/allocator_test.rs:19:1
+        |
+    19  | pub struct Cmalloc;
+        | ------------------ function or associated item `aligned_layout` not found for this struct
 
-The exact clock rate doesn't affect MAC's initialization according to my
-test. It's set to the speed required by RGMII when the linkspeed is
-1Gbps and could be reclocked later after link is up if necessary.
+Thus add an equivalent one for `Cmalloc`.
 
-Fixes: 33a1a01e3afa ("net: stmmac: Add glue layer for T-HEAD TH1520 SoC")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Drew Fustini <fustini@kernel.org>
-Link: https://patch.msgid.link/20250815104803.55294-1-ziyao@disroot.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fde578c86281 ("rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20250816204215.2719559-1-ojeda@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ rust/kernel/alloc/allocator_test.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-index f2946bea0bc2..6c6c49e4b66f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-@@ -152,7 +152,7 @@ static int thead_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
- static int thead_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
- {
- 	struct thead_dwmac *dwmac = plat->bsp_priv;
--	u32 reg;
-+	u32 reg, div;
+diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+index c37d4c0c64e9..ec13385489df 100644
+--- a/rust/kernel/alloc/allocator_test.rs
++++ b/rust/kernel/alloc/allocator_test.rs
+@@ -22,6 +22,17 @@ pub type Kmalloc = Cmalloc;
+ pub type Vmalloc = Kmalloc;
+ pub type KVmalloc = Kmalloc;
  
- 	switch (plat->mac_interface) {
- 	case PHY_INTERFACE_MODE_MII:
-@@ -164,6 +164,13 @@ static int thead_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
- 	case PHY_INTERFACE_MODE_RGMII_RXID:
- 	case PHY_INTERFACE_MODE_RGMII_TXID:
- 		/* use pll */
-+		div = clk_get_rate(plat->stmmac_clk) / rgmii_clock(SPEED_1000);
-+		reg = FIELD_PREP(GMAC_PLLCLK_DIV_EN, 1) |
-+		      FIELD_PREP(GMAC_PLLCLK_DIV_NUM, div);
++impl Cmalloc {
++    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requested size and alignment of
++    /// `layout`.
++    pub fn aligned_layout(layout: Layout) -> Layout {
++        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
++        // `layout.align()` which together with the slab guarantees means that `Kmalloc` will return
++        // a properly aligned object (see comments in `kmalloc()` for more information).
++        layout.pad_to_align()
++    }
++}
 +
-+		writel(0, dwmac->apb_base + GMAC_PLLCLK_DIV);
-+		writel(reg, dwmac->apb_base + GMAC_PLLCLK_DIV);
-+
- 		writel(GMAC_GTXCLK_SEL_PLL, dwmac->apb_base + GMAC_GTXCLK_SEL);
- 		reg = GMAC_TX_CLK_EN | GMAC_TX_CLK_N_EN | GMAC_TX_CLK_OUT_EN |
- 		      GMAC_RX_CLK_EN | GMAC_RX_CLK_N_EN;
+ extern "C" {
+     #[link_name = "aligned_alloc"]
+     fn libc_aligned_alloc(align: usize, size: usize) -> *mut crate::ffi::c_void;
 -- 
 2.50.1
 
