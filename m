@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898FBB36806
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A05FB36B56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDAF1C410C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C912B986596
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001AE350847;
-	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F109035AAB6;
+	Tue, 26 Aug 2025 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAweuX2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSjOy5tr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B056434F49D;
-	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB2D352FFF;
+	Tue, 26 Aug 2025 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216992; cv=none; b=ebyZXdZDVgq1Pj2dw1I3a9YKS2q2sXZKdpun45IuuqFj+jsnELGxyFp14DWnxS40XxrgXZJ//UZBC1he7e/A6gX3VF3sZaW6QSDibHtcKGmrIDIerVID4B8QNQFLuHTpgL4CImDwNYmtPq1qjYB0aiElVZppn4Azk/VDcprhxhY=
+	t=1756218384; cv=none; b=F8MgqDR5E0uWgtZo6suhfhCVYQ8oV3O4LScfhoys+6uuTyhSmOmSt1hG4hLArn7MwNaJYI1zeIl26MBLTZmXQ18TyrU1QAQYFITOBhfyuUanTg2UVRxhHgdwaWFnRxu5ckvb06cVxxmMGn0cEii8yFNUZ5Z9vhe+1L7prB0//Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216992; c=relaxed/simple;
-	bh=1NV3RSgeR7Kp9hoJNkyGXwpiajxI3hqjBRYZpxBlSlQ=;
+	s=arc-20240116; t=1756218384; c=relaxed/simple;
+	bh=rOL7SMgwNeWDyPpdW6X0uRWobSIn5BNiX5iOPvc4JnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0easFNHN4npHLH6fjniUJpYAJk/TQf5ML7OLb8N4zxozbi09OpiJGRyIaknNQsmTDlJYtOoOOqRtbNDY6BWKKOUAE0FZlP2XMznEoajUvBCnfCaUpjn48dceHeBifRJrjwOJ+d7INd2Igw6zJMao3O98xoyA3f1ee5AEB3DhN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAweuX2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445ABC19422;
-	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
+	 MIME-Version; b=r8A1eOujIyTsrllOp7GyePR4HyQApY4dnI4n0T/ZmCIeY0KYVBGX3P/eZrSZhMDdYhdJODnsR8jPeuS/Er9iAj+jG+fkHas+CnzNs3fM7o1p5SR55yf15k9RVrJE/5ar9bM4ygtCyQ2iN+PMEcrsXWDU0nhG2dHCo3r5ESI4e84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSjOy5tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AA6C4CEF1;
+	Tue, 26 Aug 2025 14:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216992;
-	bh=1NV3RSgeR7Kp9hoJNkyGXwpiajxI3hqjBRYZpxBlSlQ=;
+	s=korg; t=1756218384;
+	bh=rOL7SMgwNeWDyPpdW6X0uRWobSIn5BNiX5iOPvc4JnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAweuX2V0jdK1G6wZWASJbIboPb8KHsZh1H4/hUzKte3ydirfzzgC/8Wmnm+D+BbJ
-	 tYghxFom3RwhdAR3+DQIM+juY6dLU+FGuhja9soLfvNp1yQYMiPOx7hdvQup/aSeJC
-	 mmEwRt+Y5zJtPX0tKAlTuoE67LxwugxccUR1MhfA=
+	b=YSjOy5trpnax4m5SlF0a41xdKs0XtfPqzMH+7Pbvat8aosUkblkjSFXmBPqKQmyG8
+	 RYYszFQ0VxS6GgUmd66HMSierYOp24lcsGZ2OnY/1BEbWNTXbF+NWqwFZRaAZhi6dT
+	 bJjzx+jIKka2KCGB5PDJGadciH5bO9mgQL35bGg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianxiang Peng <txpeng@tencent.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Hui Li <caelli@tencent.com>,
-	stable@kernel.org
-Subject: [PATCH 5.15 619/644] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
+	Armando Budianto <sprite@gnuweeb.org>,
+	Simon Horman <horms@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Subject: [PATCH 5.10 500/523] net: usbnet: Fix the wrong netif_carrier_on() call
 Date: Tue, 26 Aug 2025 13:11:50 +0200
-Message-ID: <20250826111001.894416321@linuxfoundation.org>
+Message-ID: <20250826110936.773440242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianxiang Peng <txpeng@tencent.com>
+From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
 
-commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
+commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
 
-Since
+The commit referenced in the Fixes tag causes usbnet to malfunction
+(identified via git bisect). Post-commit, my external RJ45 LAN cable
+fails to connect. Linus also reported the same issue after pulling that
+commit.
 
-  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+The code has a logic error: netif_carrier_on() is only called when the
+link is already on. Fix this by moving the netif_carrier_on() call
+outside the if-statement entirely. This ensures it is always called
+when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
+of the link state.
 
-resctrl_cpu_detect() has been moved from common CPU initialization code to
-the vendor-specific BSP init helper, while Hygon didn't put that call in their
-code.
-
-This triggers a division by zero fault during early booting stage on our
-machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
-to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
-
-Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Hui Li <caelli@tencent.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Cc: stable@vger.kernel.org
+Cc: Armando Budianto <sprite@gnuweeb.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
+Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
+Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
+Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
+Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/hygon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/usbnet.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -14,6 +14,7 @@
- #include <asm/cacheinfo.h>
- #include <asm/spec-ctrl.h>
- #include <asm/delay.h>
-+#include <asm/resctrl.h>
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1071,6 +1071,9 @@ static void __handle_link_change(struct
+ 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
+ 		return;
  
- #include "cpu.h"
- 
-@@ -239,6 +240,8 @@ static void bsp_init_hygon(struct cpuinf
- 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
- 		}
- 	}
++	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++		netif_carrier_on(dev->net);
 +
-+	resctrl_cpu_detect(c);
- }
- 
- static void early_init_hygon(struct cpuinfo_x86 *c)
+ 	if (!netif_carrier_ok(dev->net)) {
+ 		/* kill URBs for reading packets to save bus bandwidth */
+ 		unlink_urbs(dev, &dev->rxq);
+@@ -1080,9 +1083,6 @@ static void __handle_link_change(struct
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
+-		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
+-			netif_carrier_on(dev->net);
+-
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
 
 
 
