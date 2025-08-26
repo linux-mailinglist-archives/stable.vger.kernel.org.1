@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-174950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15310B3657C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA99B36890
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5AE51896A6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBDC581A47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ECE202C46;
-	Tue, 26 Aug 2025 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6106734AB0D;
+	Tue, 26 Aug 2025 14:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW3lDOWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTepAsn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954BD27EFE7;
-	Tue, 26 Aug 2025 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7451DF985;
+	Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215744; cv=none; b=kTX06lMWlhMUFXaOdRZOTA4E854XlbAQ0Ce+9sk9BbGNn/3vX/SXBtdrzxPEd2/FW7mwkfGKTC4eGB6JkvcQTj89q04IZUoiYDvIX1BAK0LTT/7YnvUxKFLeTrXX2FioKAfJxpxFRhmLWB/xFjp0IFGV7k6RtlDPKKvmjweewOA=
+	t=1756217248; cv=none; b=e23XGyDxb0mIsY0a5iP2qElnfQX5EUHhFs/eUsTp+cKl+2dfz6Q49KHo0nd9xy3nc9e2DDjDbDVYyKuS/S7b92n1Npo0qqeIEfSNcEmw3RIrXrJlKG3zLZHuiZ49ydsxStO8JIzExhluVh7iJemPCb1Du3OlOM/Jotjpyw6ohFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215744; c=relaxed/simple;
-	bh=jUgHxUKwtL/wDA+u9Rh+d9EUqBhVy5Zmdtlga3hdPtA=;
+	s=arc-20240116; t=1756217248; c=relaxed/simple;
+	bh=4ij4clBkrML2URglrU+rXNaycp7YvX5Yie02zK87inA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLMksptaiPIJ1zRhUaMU5j4C7q3L+1j1SYGJjDfKRE2UEht2INpVHpmUXINpLlE2Olgt8+EK9eSnHCgKbj80amjGQbG2nys8c9QnkuBU4kORj/VCGBAwT1GbeHWPRZqPjMFHmdvRJR23jtNw+kBppRNWoshMa6N/DmEVdQCVVmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW3lDOWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28783C4CEF1;
-	Tue, 26 Aug 2025 13:42:23 +0000 (UTC)
+	 MIME-Version; b=tiSyaQC5ycu44VimHXYWZnvUYwki9DrgqyDeC2lcu32keCSvb2NuHgSE+y6vCmwoh6A96PC8rbhbRTtyZVsy2lnmiF9ArPcfrVh/eHwniid5RoQdTkbWS2XjvbUJaxqtesvwfNxuxZFFGNQ0OGNM/3+nzV8/QqvTaalGj+yS0DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTepAsn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EFAC4CEF1;
+	Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215744;
-	bh=jUgHxUKwtL/wDA+u9Rh+d9EUqBhVy5Zmdtlga3hdPtA=;
+	s=korg; t=1756217247;
+	bh=4ij4clBkrML2URglrU+rXNaycp7YvX5Yie02zK87inA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YW3lDOWOM8c+XVQ4yiRjIXQPrdcAWfrpNJbFdGwmeieTEwnvjNg9wYg6MWVIHB/1q
-	 bZXlZKujTi776RqNKg0KL/wf6FgWqJ0uXJosqaoYRrD5CEldskMXsnjSXFRiAgGeMd
-	 oGYAgnTAtKv02yGOJPso9zp0wgEZ3sm0EQUmO/f8=
+	b=sTepAsn5XaDBZADRyM4CmxN4ARszCDYqHkT+OcrcHl4CeiDOO/dNCdx5bpigAh1CM
+	 7u6desrYe+4qxOTqM7A93x15GkaFcUVyRQishSpK1qUPHOKoijKGjpakyZJJxRxW5b
+	 itbjCXYnPkd9z/Z0f733TYjFe/FxUHiozNpnyRPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/644] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 030/523] comedi: das6402: Fix bit shift out of bounds
 Date: Tue, 26 Aug 2025 13:04:00 +0200
-Message-ID: <20250826110950.176829160@linuxfoundation.org>
+Message-ID: <20250826110925.342583345@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
+commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+When checking for a supported IRQ number, the following test is used:
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+	if ((1 << it->options[1]) & 0x8cec) {
+
+However, `it->options[i]` is an unchecked `int` value from userspace, so
+the shift amount could be negative or out of bounds.  Fix the test by
+requiring `it->options[1]` to be within bounds before proceeding with
+the original test.  Valid `it->options[1]` values that select the IRQ
+will be in the range [1,15]. The value 0 explicitly disables the use of
+interrupts.
+
+Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/staging/comedi/drivers/das6402.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 7f7e7add44e7..cdaf8469d484 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -263,7 +263,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
--- 
-2.39.5
-
+--- a/drivers/staging/comedi/drivers/das6402.c
++++ b/drivers/staging/comedi/drivers/das6402.c
+@@ -569,7 +569,8 @@ static int das6402_attach(struct comedi_
+ 	das6402_reset(dev);
+ 
+ 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
+-	if ((1 << it->options[1]) & 0x8cec) {
++	if (it->options[1] > 0 && it->options[1] < 16 &&
++	    (1 << it->options[1]) & 0x8cec) {
+ 		ret = request_irq(it->options[1], das6402_interrupt, 0,
+ 				  dev->board_name, dev);
+ 		if (ret == 0) {
 
 
 
