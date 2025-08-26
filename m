@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4B2B36A29
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1895B36870
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108C48E75D4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9D0498369A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C8350842;
-	Tue, 26 Aug 2025 14:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4604352FE1;
+	Tue, 26 Aug 2025 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXw9z+Oa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8V0G/C3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C8D299A94;
-	Tue, 26 Aug 2025 14:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72321352081;
+	Tue, 26 Aug 2025 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218072; cv=none; b=FUpcSMsh94QBdiBZd259nUwjEbpGoL2uRym1Ih5PZs47vhsUwWgTu7Nx6yzjLJIA2rpNtGJVgCzts6sj6C3fCZr939KKWzd+hIWkZ+KCODO5kooHqpyUvIEUZVmBe1+B4CL8LATwTO49C7xzPsUUEef75l7ZBYOF7H1PCyaYFfU=
+	t=1756216724; cv=none; b=JZhpleUG8BN9uj18yO/iT4h+I4O03n1d6vsfnQuJ2GvpNdMFsqin1K66xQVsBVz4GFzdP3+7zLKRYpSl1o0C3qjkAlNIDf3th79ZvQvKWExcfgMch2dUcKl0cuK9dfYn6KhjmqwaY8xgaJ1YFEj1aOBXwU1x8UO9pF+Ww5uIGLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218072; c=relaxed/simple;
-	bh=VD/IV/8ZNlwSoKr8CnBOLrGveHshnpsoNQM7ZYfqfyE=;
+	s=arc-20240116; t=1756216724; c=relaxed/simple;
+	bh=yaLxVBfFj+GbO1OJ7pqf4g+j/GpdhFFn+PYBQqqqn04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBtGf4EosSR4tWvLciDJ9H0QtSFDpa4bbTdmYZscqd9tmpFpXwQas23fwLWN49eMkXaBwZagmmmyze6L2WCGYtLapx11s0XyaAi570IRqAjqVlRmsDkt2N6ChRA4PKDXtAH0qGeWe2McVl3WDpWh2whQLJB0os1PmlpU2jh6GYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXw9z+Oa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67DEC4CEF1;
-	Tue, 26 Aug 2025 14:21:11 +0000 (UTC)
+	 MIME-Version; b=oUSlu0epf5JMYkdVsKmQFtZZINXzTWSsK0x3Mf+w6whSGmfgspEIGcoyh7abkQnQvqYjiiSSKf+iUJqBZyv24ByjKttRbXoHv8L55+SugmX+i+rrtXk3SNroZsK4R+q8V9yv/pGyhkbJk6kuoHEX0ebY4sy5jNS0Ya+pTQTqHnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8V0G/C3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F25DC4CEF1;
+	Tue, 26 Aug 2025 13:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218072;
-	bh=VD/IV/8ZNlwSoKr8CnBOLrGveHshnpsoNQM7ZYfqfyE=;
+	s=korg; t=1756216724;
+	bh=yaLxVBfFj+GbO1OJ7pqf4g+j/GpdhFFn+PYBQqqqn04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXw9z+OaCbRxMrKMa1ORDMYGQGkYH3nGMdWyPU1QMg2lpYWKm6YHi8y45CQ+0heH3
-	 1BemkDene7+mxKD9L9VfS/HOYTY0/2BpQWn9Pq9wfakJpAt8C9hd2epdOp5J3hRuZe
-	 d5DZ721dJ6XqXHaYYLxjXQJfumoNr145ICIvNmpQ=
+	b=V8V0G/C3s7ubeyOvV8EiwR6TQufmajq1vGzztZaR80yPGdMpQVdXbh80ccpPzs6b+
+	 0rlvDmZIvFYoiyNSiaNIhpEF+/SAWM0eHvWH1K/VaiYhxD874gR+/wHoCb8B0/eTc/
+	 I+dOx7ubtw8jkMYQe9DG/7U6x+vcFuekT8n7jY5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vedang Nagar <quic_vnagar@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 383/523] media: venus: Add a check for packet size after reading from shared memory
+	Thomas Dreibholz <dreibh@simula.no>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 502/644] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
 Date: Tue, 26 Aug 2025 13:09:53 +0200
-Message-ID: <20250826110933.909746869@linuxfoundation.org>
+Message-ID: <20250826110958.937117030@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vedang Nagar <quic_vnagar@quicinc.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 49befc830daa743e051a65468c05c2ff9e8580e6 upstream.
+commit 68fc0f4b0d25692940cdc85c68e366cae63e1757 upstream.
 
-Add a check to ensure that the packet size does not exceed the number of
-available words after reading the packet header from shared memory. This
-ensures that the size provided by the firmware is safe to process and
-prevent potential out-of-bounds memory access.
+A flush of the MPTCP endpoints should not affect the MPTCP limits. In
+other words, 'ip mptcp endpoint flush' should not change 'ip mptcp
+limits'.
 
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+But it was the case: the MPTCP_PM_ATTR_RCV_ADD_ADDRS (add_addr_accepted)
+limit was reset by accident. Removing the reset of this counter during a
+flush fixes this issue.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
-Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: Thomas Dreibholz <dreibh@simula.no>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/579
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-2-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/mptcp/pm_netlink.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -240,6 +240,7 @@ static int venus_write_queue(struct venu
- static int venus_read_queue(struct venus_hfi_device *hdev,
- 			    struct iface_queue *queue, void *pkt, u32 *tx_req)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1582,7 +1582,6 @@ static void __flush_addrs(struct list_he
+ static void __reset_counters(struct pm_nl_pernet *pernet)
  {
-+	struct hfi_pkt_hdr *pkt_hdr = NULL;
- 	struct hfi_queue_header *qhdr;
- 	u32 dwords, new_rd_idx;
- 	u32 rd_idx, wr_idx, type, qsize;
-@@ -305,6 +306,9 @@ static int venus_read_queue(struct venus
- 			memcpy(pkt, rd_ptr, len);
- 			memcpy(pkt + len, queue->qmem.kva, new_rd_idx << 2);
- 		}
-+		pkt_hdr = (struct hfi_pkt_hdr *)(pkt);
-+		if ((pkt_hdr->size >> 2) != dwords)
-+			return -EINVAL;
- 	} else {
- 		/* bad packet received, dropping */
- 		new_rd_idx = qhdr->write_idx;
+ 	WRITE_ONCE(pernet->add_addr_signal_max, 0);
+-	WRITE_ONCE(pernet->add_addr_accept_max, 0);
+ 	WRITE_ONCE(pernet->local_addr_max, 0);
+ 	pernet->addrs = 0;
+ }
 
 
 
