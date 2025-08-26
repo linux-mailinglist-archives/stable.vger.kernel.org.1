@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F6AB36AEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAD8B35B83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDCB758796D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD85B1BA2D6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AE835207C;
-	Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B04322752;
+	Tue, 26 Aug 2025 11:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQe9lQk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W1hb/YS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27583341AA1;
-	Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307A1299959;
+	Tue, 26 Aug 2025 11:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218602; cv=none; b=s1HCP6/n28VjKhU7nbmgb+xOwV0wGDG+IdIG62MVQoyrr9y+AgUX4Wo/VVQcCR7qMKiXl2KReJksdp6D/4pREmP0/uHriWaTAVrPg1cQKcXnZcEoe8ZLxrzCYndawB11sCLFtLO/tZbqgt0Zw2siQXOt0cXxSBTJK4lW1cZ9KYQ=
+	t=1756207242; cv=none; b=E/Kkdx7tCzVCX/rqxwdZXDWAoZ77BcTXGv/uJw91+o8QrMYC0Mki2S2d9kT/39QkuwCOxzEbHrBo4LisJgE3XVd0K5Vw4b50ELInKej+9lbkgZyWZqFvR5uB7UhEqcheSZ3BEJZ5HEFleRxKIV7JfyQbYa1blmwafECpzlekR6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218602; c=relaxed/simple;
-	bh=VmwON/ubGKqSd/ZgU/Ex8O8da8yxzYBv4Amr61JM1wk=;
+	s=arc-20240116; t=1756207242; c=relaxed/simple;
+	bh=O86CINMT6IcAx3oHREfSL0FNfc/OR8ehgAl9LaXoc28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZlCtpZMeCtpGqq1lAs671MDfvnYez8xenztxQVuD/Q7h+CsF4USKXHK6JSgjgA/cXZ/1b3pxKZg73KH65xwzX/6TTucOiHWZnyOwD9hVfzQF+YPt/tjDtFzXeXzBRPgImw19FnKTgIbDYHvNuNqvACGmG3+Fc4U74Q18rrKMhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQe9lQk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09329C4CEF1;
-	Tue, 26 Aug 2025 14:30:00 +0000 (UTC)
+	 MIME-Version; b=AOpVUmTayrTqupusC87ly6aKsNbYlzC0LZVw0kuogdzhbVNNltIKT+7tScRG202D5sHW9fp55TJ2QmTYMU0V1WnVukC7UxgU5bVItRAOXOI9vnUHoilKVHiMzicjwe82sQ5ruGGepXMj8QgXKTxkqfINxmYHPQLHYE80XWB4K/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W1hb/YS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5CDC4CEF1;
+	Tue, 26 Aug 2025 11:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218602;
-	bh=VmwON/ubGKqSd/ZgU/Ex8O8da8yxzYBv4Amr61JM1wk=;
+	s=korg; t=1756207241;
+	bh=O86CINMT6IcAx3oHREfSL0FNfc/OR8ehgAl9LaXoc28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQe9lQk6IKy/w1u8fiuc+zuKwl+gukDcvyZ2231w44WxNhqLsU/rA7DuAA6Ds/iIp
-	 hc26L40wyAv8Tstvtyxr3mWti41LbHKbLxUN+RUez+5Hnwz/C12dsJQrUt9qWp2AJ2
-	 VcoUDNivV7FBMZprgVTfVltBVBb7DuFhodkiLtFs=
+	b=0W1hb/YSi74uKI/AJ44/o2NQHKiSACU+BZxZ2Ik5JsJeCG9M82chzAvzWpL1K5hf+
+	 06vq+NZuARCUizq+aDBCCt7gw85IRkzudyKTYbPLifFQ/PH4bzgFGL0iwDB7l4908Q
+	 TCPTNkLmFalPWe/zU9R9iVC6piSLDRrnRFZ7DLdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/403] comedi: comedi_test: Fix possible deletion of uninitialized timers
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH 6.16 105/457] vsock/virtio: Validate length in packet header before skb_put()
 Date: Tue, 26 Aug 2025 13:06:29 +0200
-Message-ID: <20250826110907.786510019@linuxfoundation.org>
+Message-ID: <20250826110939.970196259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Will Deacon <will@kernel.org>
 
-commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
+commit 0dab92484474587b82e8e0455839eaf5ac7bf894 upstream.
 
-In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
-`&devpriv->ao_timer` are initialized after the allocation of the device
-private data by `comedi_alloc_devpriv()` and the subdevices by
-`comedi_alloc_subdevices()`.  The function may return with an error
-between those function calls.  In that case, `waveform_detach()` will be
-called by the Comedi core to clean up.  The check that
-`waveform_detach()` uses to decide whether to delete the timers is
-incorrect.  It only checks that the device private data was allocated,
-but that does not guarantee that the timers were initialized.  It also
-needs to check that the subdevices were allocated.  Fix it.
+When receiving a vsock packet in the guest, only the virtqueue buffer
+size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
+virtio_vsock_skb_rx_put() uses the length from the packet header as the
+length argument to skb_put(), potentially resulting in SKB overflow if
+the host has gone wonky.
 
-Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
-Cc: stable@vger.kernel.org # 6.15+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
-[ file location from drivers/comedi to drivers/staging/comedi and timer_delete_sync() to del_timer_sync(). ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate the length as advertised by the packet header before calling
+virtio_vsock_skb_rx_put().
+
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-3-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers/comedi_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/comedi/drivers/comedi_test.c
-+++ b/drivers/staging/comedi/drivers/comedi_test.c
-@@ -790,7 +790,7 @@ static void waveform_detach(struct comed
- {
- 	struct waveform_private *devpriv = dev->private;
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(str
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		for (;;) {
++			unsigned int len, payload_len;
++			struct virtio_vsock_hdr *hdr;
+ 			struct sk_buff *skb;
+-			unsigned int len;
  
--	if (devpriv) {
-+	if (devpriv && dev->n_subdevices) {
- 		del_timer_sync(&devpriv->ai_timer);
- 		del_timer_sync(&devpriv->ao_timer);
- 	}
+ 			if (!virtio_transport_more_replies(vsock)) {
+ 				/* Stop rx until the device processes already
+@@ -642,11 +643,18 @@ static void virtio_transport_rx_work(str
+ 			vsock->rx_buf_nr--;
+ 
+ 			/* Drop short/long packets */
+-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
++			if (unlikely(len < sizeof(*hdr) ||
+ 				     len > virtio_vsock_skb_len(skb))) {
+ 				kfree_skb(skb);
+ 				continue;
+ 			}
++
++			hdr = virtio_vsock_hdr(skb);
++			payload_len = le32_to_cpu(hdr->len);
++			if (unlikely(payload_len > len - sizeof(*hdr))) {
++				kfree_skb(skb);
++				continue;
++			}
+ 
+ 			virtio_vsock_skb_rx_put(skb);
+ 			virtio_transport_deliver_tap_pkt(skb);
 
 
 
