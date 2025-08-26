@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3398B35BFA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A88B36954
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F49A1885106
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0196758102D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1682BEFF0;
-	Tue, 26 Aug 2025 11:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFD8350D4D;
+	Tue, 26 Aug 2025 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTWQOx67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkdg0mzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B1D239573;
-	Tue, 26 Aug 2025 11:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF72350835;
+	Tue, 26 Aug 2025 14:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207525; cv=none; b=WYlzsnjfSN4lx3OS2T3e0N5abZrDuYOFNwzcwO4HBuefqXyTgnm/eiFmB9LTWn/jekgzJ462WleAewUQ7SxZXtTQEXYuTkTO7U6IcCa4XAnDDpAPeI03nAkvtl1/Htc2tCR3DA/N7/szwmewMbDF8w52ra1vfH2+HcbXUSTwUD4=
+	t=1756217744; cv=none; b=R0dppTrvrzqh8WR3ct0msIrnEQm4jgn0Ta5KsfJadrmI7ZPaxW9gTov+yY15fGdtAIUJBUFDaAIFzsYa3s5nU7WQBvFOSFIn/KeDh8nr6owgHwMkrzR16NcdtiLnTl4ip6O6us6RB2wwqIZooThLZgArOoM3z8t3UrDCCmE3vJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207525; c=relaxed/simple;
-	bh=lzMXDcnzhnvnFcAfm2Fv2h+pKdXWAYvJyf4wOpi7//Q=;
+	s=arc-20240116; t=1756217744; c=relaxed/simple;
+	bh=BuGjjd5bRFxIAwk8Z+Mgd1BTT+BZOrfZZ+d5Xs267so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPrOLeH/7pswyzDnnzUVNrq58QLk65CReSrfbc6bVhiiiWPP4Cae2w8Osc/Xvtj8X3ZfShaPMxHhY5vwgMOMwpO95v2sLqO3L2YXyeQqkPgRZJ8LE4awqJRJXbVCrkiLKYLhs9h/WDOo58rdJmLg58wXodvo2NfZCN7EMF1E2s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTWQOx67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBB2C4CEF1;
-	Tue, 26 Aug 2025 11:25:24 +0000 (UTC)
+	 MIME-Version; b=hQL+dpzofzzFszoglKkzYv0Yl3TKmqhugDWO/w6nl18fMebXOrJNV/C8U/RbBbjE5O8RwWqNYtAguwLHs3oc/yFtD81RwYGZQu+M0Q1peoRFjy+c6NV+jDmJJORYRHJSzD34C6xlCsCa4vHTjCVzuDU87DD2cmL7ZTBfV2B/+9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkdg0mzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3B3C113D0;
+	Tue, 26 Aug 2025 14:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207525;
-	bh=lzMXDcnzhnvnFcAfm2Fv2h+pKdXWAYvJyf4wOpi7//Q=;
+	s=korg; t=1756217743;
+	bh=BuGjjd5bRFxIAwk8Z+Mgd1BTT+BZOrfZZ+d5Xs267so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTWQOx67c83f1Te2cGCBKDOMSUXIfu9AwxR8Nj9w8GWLWXUdmS82i/oSfdrv0hOR7
-	 YAUZZbw1PP8O2ikZytM0GzF9f/vP3bSfSOs0M4RvNP+lQbA6QylpFlnpaqKp69aOwC
-	 fii/v831mNtoVWIeAeBeF+7FF837IPlVLGkDnsgc=
+	b=bkdg0mzovcAnCjt6yyS1w7VkSwetDiM5JvfhfbcnFLx1sV8qwUTLBtmA+9Wuc9YdP
+	 1NMNDAHcQuLY9amNmInmRpYsVmLP/Qvb/FLh3t96hdaQ1x8DgBXp6i3wZVM340R22F
+	 q69bwcaUYe4N25CGzPLFZLDfU9QhwbXun/SXB9Iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Mangesh Gadre <Mangesh.Gadre@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 184/457] drm/amdgpu: Update supported modes for GC v9.5.0
+	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
+	Juergen Gross <jgross@suse.com>,
+	Elliott Mitchell <ehem+xen@m5p.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 258/523] xen/netfront: Fix TX response spurious interrupts
 Date: Tue, 26 Aug 2025 13:07:48 +0200
-Message-ID: <20250826110941.919860841@linuxfoundation.org>
+Message-ID: <20250826110930.790892545@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
 
-commit 389d79a195a9f71a103b39097ee8341a7ca60927 upstream.
+[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
 
-For GC v9.5.0 SOCs, both CPX and QPX compute modes are also supported in
-NPS2 mode.
+We found at Vates that there are lot of spurious interrupts when
+benchmarking the xen-net PV driver frontend. This issue appeared with a
+patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
+harden netfront against event channel storms"). On an iperf benchmark,
+spurious interrupts can represent up to 50% of the interrupts.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Acked-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9d1ac25c7f830e0132aa816393b1e9f140e71148)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Spurious interrupts are interrupts that are rised for nothing, there is
+no work to do. This appends because the function that handles the
+interrupts ("xennet_tx_buf_gc") is also called at the end of the request
+path to garbage collect the responses received during the transmission
+load.
+
+The request path is doing the work that the interrupt handler should
+have done otherwise. This is particurary true when there is more than
+one vcpu and get worse linearly with the number of vcpu/queue.
+
+Moreover, this problem is amplifyed by the penalty imposed by a spurious
+interrupt. When an interrupt is found spurious the interrupt chip will
+delay the EOI to slowdown the backend. This delay will allow more
+responses to be handled by the request path and then there will be more
+chance the next interrupt will not find any work to do, creating a new
+spurious interrupt.
+
+This causes performance issue. The solution here is to remove the calls
+from the request path and let the interrupt handler do the processing of
+the responses. This approch removes most of the spurious interrupts
+(<0.05%) and also has the benefit of freeing up cycles in the request
+path, allowing it to process more work, which improves performance
+compared to masking the spurious interrupt one way or another.
+
+This optimization changes a part of the code that is present since the
+net frontend driver was upstreamed. There is no similar pattern in the
+other xen PV drivers. Since the first commit of xen-netfront is a blob
+that doesn't explain all the design choices I can only guess why this
+specific mecanism was here. This could have been introduce to compensate
+a slow backend at the time (maybe the backend was fixed or optimize
+later) or a small queue. In 18 years, both frontend and backend gain lot
+of features and optimizations that could have obsolete the feature of
+reaping completions from the TX path.
+
+Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
+guest(s):
+
+Without this patch on the :
+vm -> dom0: 4.5Gb/s
+vm -> vm:   7.0Gb/s
+
+Without XSA-391 patch (revert of b27d47950e48):
+vm -> dom0: 8.3Gb/s
+vm -> vm:   8.7Gb/s
+
+With XSA-391 and this patch:
+vm -> dom0: 11.5Gb/s
+vm -> vm:   12.6Gb/s
+
+v2:
+- add revewed and tested by tags
+- resend with the maintainers in the recipients list
+
+v3:
+- remove Fixes tag but keep the commit ref in the explanation
+- add a paragraph on why this code was here
+
+Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/xen-netfront.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-@@ -453,6 +453,7 @@ static int __aqua_vanjaram_get_px_mode_i
- 					    uint16_t *nps_modes)
- {
- 	struct amdgpu_device *adev = xcp_mgr->adev;
-+	uint32_t gc_ver = amdgpu_ip_version(adev, GC_HWIP, 0);
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index bad9e549d533..34c4770bf555 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -638,8 +638,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
  
- 	if (!num_xcp || !nps_modes || !(xcp_mgr->supp_xcp_modes & BIT(px_mode)))
- 		return -EINVAL;
-@@ -476,12 +477,14 @@ static int __aqua_vanjaram_get_px_mode_i
- 		*num_xcp = 4;
- 		*nps_modes = BIT(AMDGPU_NPS1_PARTITION_MODE) |
- 			     BIT(AMDGPU_NPS4_PARTITION_MODE);
-+		if (gc_ver == IP_VERSION(9, 5, 0))
-+			*nps_modes |= BIT(AMDGPU_NPS2_PARTITION_MODE);
- 		break;
- 	case AMDGPU_CPX_PARTITION_MODE:
- 		*num_xcp = NUM_XCC(adev->gfx.xcc_mask);
- 		*nps_modes = BIT(AMDGPU_NPS1_PARTITION_MODE) |
- 			     BIT(AMDGPU_NPS4_PARTITION_MODE);
--		if (amdgpu_sriov_vf(adev))
-+		if (gc_ver == IP_VERSION(9, 5, 0))
- 			*nps_modes |= BIT(AMDGPU_NPS2_PARTITION_MODE);
- 		break;
- 	default:
+-	xennet_tx_buf_gc(queue);
+-
+ 	return 0;
+ }
+ 
+@@ -851,9 +849,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
+ 
+-	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
+-	xennet_tx_buf_gc(queue);
+-
+ 	if (!netfront_tx_slot_available(queue))
+ 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
+ 
+-- 
+2.39.5
+
 
 
 
