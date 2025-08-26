@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA01B35C10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A63B3615B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4132364AEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DC602A554B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266B22248A5;
-	Tue, 26 Aug 2025 11:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9689E242D6A;
+	Tue, 26 Aug 2025 13:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN2MYphr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULOG1u6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E0F17332C;
-	Tue, 26 Aug 2025 11:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529E720FA81;
+	Tue, 26 Aug 2025 13:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207540; cv=none; b=R6u9ukq8vQLEFmJ1omAbdfVHMkBjVs+65bR3nA/Jvd7fhT6EbQKUT9nJAy0u6ywdM6+nVFL6R9PPNsgCENO2k30OQ5h29pOgwSNNpeFGggvMhuN4u4pPYDd3eJQzn1GDJbRztezAGC/ZzEjWlbUeV4L2vhX7wU1mDFqTzVeHMrQ=
+	t=1756213438; cv=none; b=DGihd5t7hAr3AeM+I7aGWVJbodBzU5tfTwtawhJu6QQj0J3+YUbbVPONzkRCBbEU3wJXXAGy1cTDWWwgpvRrx7lH6l5kOMEA/U4A/VwpLjpfyzWfPaxtgEq75y00KxczNhdlaKbWVbAJj2+sc22cep9X9gxoltm5pr1kItHrpeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207540; c=relaxed/simple;
-	bh=t4lzVz4WuJBNiDjFP+HlD9XtZS57a0X4rOTKau76KYo=;
+	s=arc-20240116; t=1756213438; c=relaxed/simple;
+	bh=NcmvQyL/cdSENtphRJUEWjvJo1ybHz++tXTd4l94j9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpc7ut8wMcTai/jv6xHH+HU+pdZplVZyKax9nVWubH/TDZU3S0eG1fOkLR3EMFW26A/g4tueNXbKc9FVQuWzEs373vcR3xgsDrpbK00qqxy2WglkRaO5jlEL3aWkkKY8EwbbmRv4SqG/dMsAcE0cjEd/pyH4iBkeemq/FQtfA+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN2MYphr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07895C4CEF1;
-	Tue, 26 Aug 2025 11:25:39 +0000 (UTC)
+	 MIME-Version; b=uhBaVqRlsHdW6l4OQLQehOd0zbYydvYhvKuDvkMHeLCiykGukpqvI4p/Q45ZA4D3TYzJL7nJbhVPH0BYoNVsXQ9V9jrjFgkoqhcYi4aR3wTzcHY21Q5p6NFmJGW5M5GpeSVv47j641WdqRIK1eEu6WZirMMwq+60PmMdUQjwAyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULOG1u6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB30EC4CEF1;
+	Tue, 26 Aug 2025 13:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207540;
-	bh=t4lzVz4WuJBNiDjFP+HlD9XtZS57a0X4rOTKau76KYo=;
+	s=korg; t=1756213438;
+	bh=NcmvQyL/cdSENtphRJUEWjvJo1ybHz++tXTd4l94j9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cN2MYphrWwHo9Vvf/3qZWtRT2oa/P8hBJAJiyusjlUX5luAmlCe/w9WUgmekTzhIC
-	 cCxMfZzpzdxjcLmph5PVmyy+L+VVUEetAnOdpEjJlDzWieME4w35MT3IKma75MaUiC
-	 KNa8oJWQbOmxeG/LscdaEFwOc2o9TgfiL7n4qbJ0=
+	b=ULOG1u6OKU4sr8wwfE9S0MZSBwKQkDcivwsKq3624MFPJZaXGWc/nTvPL6++PGKX8
+	 wZktIQgwg4MLfoMlReTeQdR2wH17yUcifhxTidOIELX3JbMgOywbxCV/rwR/LN4dQS
+	 cI5yQplb0znVQ+823GK17Sr+PLTO+hLZ0r4WR+Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vacek <neelx@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 214/457] btrfs: abort transaction on unexpected eb generation at btrfs_copy_root()
+	stable@kernel.org,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 349/587] ext4: fix fsmap end of range reporting with bigalloc
 Date: Tue, 26 Aug 2025 13:08:18 +0200
-Message-ID: <20250826110942.653075162@linuxfoundation.org>
+Message-ID: <20250826111001.791869523@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 33e8f24b52d2796b8cfb28c19a1a7dd6476323a8 ]
+commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
 
-If we find an unexpected generation for the extent buffer we are cloning
-at btrfs_copy_root(), we just WARN_ON() and don't error out and abort the
-transaction, meaning we allow to persist metadata with an unexpected
-generation. Instead of warning only, abort the transaction and return
--EUCLEAN.
+With bigalloc enabled, the logic to report last extent has a bug since
+we try to use cluster units instead of block units. This can cause an
+issue where extra incorrect entries might be returned back to the
+user. This was flagged by generic/365 with 64k bs and -O bigalloc.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+** Details of issue **
+
+The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
+only 1 bg.
+
+$ xfs_io -c "fsmap -d" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128   /* sb */
+  1: 253:48 [128..255]: special 102:1 128   /* gdt */
+  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
+  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
+  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
+  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
+  7: 253:48 [4352..6911]: inodes 2560
+  8: 253:48 [6912..538623]: unknown 531712
+  9: 253:48 [538624..10485759]: free space 9947136
+
+The issue can be seen with:
+
+$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
+
+  0: 253:48 [0..127]: static fs metadata 128
+  1: 253:48 [384..2047]: unknown 1664
+
+Only the first entry was expected to be returned but we get 2. This is
+because:
+
+ext4_getfsmap_datadev()
+  first_cluster, last_cluster = 0
+  ...
+  info->gfi_last = true;
+  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
+    fsb = C2B(1) = 16
+    fslen = 0
+    ...
+    /* Merge in any relevant extents from the meta_list */
+    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
+      ...
+      // since fsb = 16, considers all metadata which starts before 16 blockno
+      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
+        info->gfi_next_fsblk = 1
+      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
+        info->gfi_next_fsblk = 2
+      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
+        info->gfi_next_fsblk = 3
+      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
+        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
+          // emits an extra entry ** BUG **
+        }
+    }
+
+Fix this by directly calling ext4_getfsmap_datadev() with a dummy
+record that has fmr_physical set to (end_fsb + 1) instead of
+last_cluster + 1. By using the block instead of cluster we get the
+correct behavior.
+
+Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
+is okay since the gfi_lastfree and metadata checks in
+ext4_getfsmap_datadev_helper() are anyways redundant when we only want
+to emit the last allocated block of the range, as we have already
+taken care of emitting metadata and any last free blocks.
+
+Cc: stable@kernel.org
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/ext4/fsmap.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -283,7 +283,14 @@ int btrfs_copy_root(struct btrfs_trans_h
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
+ 	ext4_group_t end_ag;
+ 	ext4_grpblk_t first_cluster;
+ 	ext4_grpblk_t last_cluster;
++	struct ext4_fsmap irec;
+ 	int error = 0;
  
- 	write_extent_buffer_fsid(cow, fs_info->fs_devices->metadata_uuid);
+ 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
+@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
+ 			goto err;
+ 	}
  
--	WARN_ON(btrfs_header_generation(buf) > trans->transid);
-+	if (unlikely(btrfs_header_generation(buf) > trans->transid)) {
-+		btrfs_tree_unlock(cow);
-+		free_extent_buffer(cow);
-+		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
+-	/* Report any gaps at the end of the bg */
++	/*
++	 * The dummy record below will cause ext4_getfsmap_helper() to report
++	 * any allocated blocks at the end of the range.
++	 */
++	irec.fmr_device = 0;
++	irec.fmr_physical = end_fsb + 1;
++	irec.fmr_length = 0;
++	irec.fmr_owner = EXT4_FMR_OWN_FREE;
++	irec.fmr_flags = 0;
 +
- 	if (new_root_objectid == BTRFS_TREE_RELOC_OBJECTID)
- 		ret = btrfs_inc_ref(trans, root, cow, 1);
- 	else
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
+-					     0, info);
++	error = ext4_getfsmap_helper(sb, info, &irec);
+ 	if (error)
+ 		goto err;
+ 
 
 
 
