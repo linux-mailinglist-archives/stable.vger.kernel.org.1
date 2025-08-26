@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A978AB36253
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8791AB365D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E157A84C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215F78E5F63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAF427EFE7;
-	Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F5D342CA2;
+	Tue, 26 Aug 2025 13:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dX0HtBPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCoi9FCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1171A23A4;
-	Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B4A1ACEDA;
+	Tue, 26 Aug 2025 13:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214179; cv=none; b=VuNskHzAKw/CfMtmOs8JS8cD24p1+VlP/wX+EvmMwvr4+45rNs022pN/9vLAGuwAMIpit8F7tENn6Bi9KPlL6Y1vFVR5sB4k85P4b3171eq5beauHhDXR1mCbXf49ls5G0gmpy0IVrywVMqrqM8u73nqg6m36RGkp7xb+41u03o=
+	t=1756215810; cv=none; b=phrt2Dtv1u5KAbc1a+gtNg4X6NWbpFNM7AnaIAGu8eelpB1yEVRA8yd+sZKgRktA9nXjHNskWbfcN4yJDBIvyF4psEY4vV8M+Hnkaqf1XbDlGaFJqx/OGYrUV5xdHcQZ6egBtLddj9vRSO6S9QOcI8kesMXw4elflHtz3GXB9lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214179; c=relaxed/simple;
-	bh=dukydRT4itf/w/M6hfzvZLpX/0Cg7RdzqA3tq4WUECs=;
+	s=arc-20240116; t=1756215810; c=relaxed/simple;
+	bh=tfAlqPpNPlH/notxQnvJ85FciOUA9gKpgt2pHUznglk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRzo+dudNBZTmqPPsvPbhseaNP1WkQJAjJNl5hXEeFcpNvJo6vey/+TJayrZRAsTL1XjuautJyLuU38cp5e4+mZw4RVf0ApUi4Xu7SkCjZljfIvN0v659cOJXBnXjiFuiBSn5zmldEFQzTtIVXoEE8zywh8goR6gK6pU7I57x0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dX0HtBPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E011FC4CEF1;
-	Tue, 26 Aug 2025 13:16:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IPCIcJkljxZaE0r4292b4J+i39O7dLLBTtRAqxeJKiGYxxt9/LlPS4aeIGHGPAKWOzB2BTZs6oo/n9OBMafdkSo3ltKDersu1EZcQsehAA3uWTcEsbMdefxWWhm99F/Czh6lm6pCcrDCMv67zG3pTQj97qO/BfEF0c2ieGpF1dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCoi9FCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DDEC4AF0E;
+	Tue, 26 Aug 2025 13:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214179;
-	bh=dukydRT4itf/w/M6hfzvZLpX/0Cg7RdzqA3tq4WUECs=;
+	s=korg; t=1756215810;
+	bh=tfAlqPpNPlH/notxQnvJ85FciOUA9gKpgt2pHUznglk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dX0HtBPrH8CONNkadzzwn7PFSZRBeeT138xQx5x+XLzAXFdSaTaRTn4VjL+9dbW31
-	 hPC0G8mdYDYYNpa7Va6Tb4y+mzqXIciISAWuJumvI9cufquV+LnjcU/TNYs5Q9CxJL
-	 QwjYK69nkUye9T2tLxX6SD+OKjb2u8sTW/TlL0ZQ=
+	b=tCoi9FCic8b6v1v1APqRF9F/3gwm4/BbVVliZ77YKv9lnHr0aQn0q/K6qQEm/a6Dg
+	 vknvyeHFojEACNG4L34BeZGLgLsBFpxBvZRhDw2nO7E0CBcyvClhwgS3pLLCkQT0/j
+	 oozcnDunr/IIh1oMiVxjQDkne2dSkRwCxA6V3Fqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 013/482] net: mtk_eth_soc: fix device leak at probe
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 175/644] clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
 Date: Tue, 26 Aug 2025 13:04:26 +0200
-Message-ID: <20250826110931.114017244@linuxfoundation.org>
+Message-ID: <20250826110950.807914120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
+[ Upstream commit ce8a9096699500e2c5bca09dde27b16edda5f636 ]
 
-The reference count to the WED devices has already been incremented when
-looking them up using of_find_device_by_node() so drop the bogus
-additional reference taken during probe.
+The fpfd_max frequency should be set to 450 MHz instead of 300 MHz.
+Well, it actually depends on the platform speed grade but we are being
+conservative for ultrascale so let's be consistent. In a following
+change we will set these limits at runtime.
 
-Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
-Cc: stable@vger.kernel.org	# 5.19
-Cc: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20250519-dev-axi-clkgen-limits-v6-1-bc4b3b61d1d4@analog.com
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/clk-axi-clkgen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -1074,7 +1074,6 @@ void mtk_wed_add_hw(struct device_node *
- 	if (!pdev)
- 		goto err_of_node_put;
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index bb5cd9d38993..df9a4c778351 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -118,7 +118,7 @@ static const struct axi_clkgen_limits axi_clkgen_zynqmp_default_limits = {
  
--	get_device(&pdev->dev);
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		goto err_put_device;
+ static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
+ 	.fpfd_min = 10000,
+-	.fpfd_max = 300000,
++	.fpfd_max = 450000,
+ 	.fvco_min = 600000,
+ 	.fvco_max = 1200000,
+ };
+-- 
+2.39.5
+
 
 
 
