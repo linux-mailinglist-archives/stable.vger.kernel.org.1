@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A416B36B2A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E095DB36A59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9438D2A5522
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C4188E5BD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E25B35082E;
-	Tue, 26 Aug 2025 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E643570A7;
+	Tue, 26 Aug 2025 14:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOhRpW/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC9VFj1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C91494D9;
-	Tue, 26 Aug 2025 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC1C3568F8;
+	Tue, 26 Aug 2025 14:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218770; cv=none; b=os0MdGUG8eyX4SgG3ea9oJbyqDHFyhNa7cjFMeSjLv4HIdWkOTWoiOcyz3ELQKd0wyxkPmyQihGb/sibgU8Bvc3TL7RmATTzYy1rp3Svdt93N4snTRowhxp3R5FmE7omW0bI5a0C4UkNRo52a/u9a/CyFyFol9PQPc5y5SukCJc=
+	t=1756217701; cv=none; b=rN/Bokh2lbZzWmJfoPtPZw32xbZ41xxBo8BotUemTlUIHhvcmmz1whpy6XdRxzdXBDw79eEdlVz9P0MFetneADJePN8WvmJbjmGUCqX1cFR4vXRttZkmAwjIVYv/vH/ORVG/xifoQMGRhBGuCyFfwtyqPYm8tymnZ6H68tbU5GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218770; c=relaxed/simple;
-	bh=NMaiA8lPve8C0hOn7Vu5M7mV46pWuTlEE5RY1jrM3o4=;
+	s=arc-20240116; t=1756217701; c=relaxed/simple;
+	bh=DOexs8crp6RQmpdjitHE1l6IqmAVlxYnGS38QHxMHtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4amwBSqz1qxy8NTtlmPYF/odFX7Lqh0aCJR4RKStYxBWB6jn9QiLXlqik5y5kpmuyTBTgdz19FuZNZnOZdYXdVsSOoo82gplEhrQNUQiWMPa+lWa5eIJI/TXW8r7oBwmwaknt5Q40xa7h4rklM8fDjjj/XNhccozpn1Iz7zc1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOhRpW/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14E4C113CF;
-	Tue, 26 Aug 2025 14:32:49 +0000 (UTC)
+	 MIME-Version; b=uty7L4jF8jpW+f0+p5JjCKxLF+yYE4t/ux7ehGZVpO8iWLZbmQhLEPoEhpGwfS8eV8M69jL+CrVhnUX7zI/1vCnLqsOp9wSkwIkDrhBYca76jX8r6M8yl/sy7ieVKyP8i5EVbziKRxsGeKZaZoRJl/Rfsqt4TaJBP+zAVrdhwa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC9VFj1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D573FC113D0;
+	Tue, 26 Aug 2025 14:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218770;
-	bh=NMaiA8lPve8C0hOn7Vu5M7mV46pWuTlEE5RY1jrM3o4=;
+	s=korg; t=1756217701;
+	bh=DOexs8crp6RQmpdjitHE1l6IqmAVlxYnGS38QHxMHtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOhRpW/SVtW5YJcyifnr5MARhWPx0HmymuaHI1CJoGcazUq3kMCowZ0SKtpUHol9W
-	 c59wkKwPABC37ex+EEVp96VdD5qbheiNiTbqjX4lGDlPsjKjzIc4M2U2IkhY7jqQwt
-	 CiaOy6Nq8lrFdeCmjLJTCWZ4HBvcpnighPPhv1vs=
+	b=QC9VFj1xv/2OJnq4VzYWFfiqQc1B3zFI2C7anGcZvYcgrEBspWXtC5ZXkkl964CE9
+	 3hnmYoH7JEOPyHDB1LWzWk0KH5q+StkyMA2YrjFUPwH4h5X25NMHpPhfk+MwTASDKS
+	 ubegaPoEX25IR6XHZ4JrmUMDkr+SlE7Kuu0sU3XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ricky Wu <ricky_wu@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 127/403] mtd: rawnand: atmel: Fix dma_mapping_error() address
+Subject: [PATCH 5.10 243/523] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
 Date: Tue, 26 Aug 2025 13:07:33 +0200
-Message-ID: <20250826110910.248197283@linuxfoundation.org>
+Message-ID: <20250826110930.434083536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
+[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
 
-It seems like what was intended is to test if the dma_map of the
-previous line failed but the wrong dma address was passed.
+In the error path of sd_set_power_mode() we don't update host->power_mode,
+which could lead to an imbalance of the runtime PM usage count. Fix this by
+always updating host->power_mode.
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Ricky Wu <ricky_wu@realtek.com>
+Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 997910bec727..a54ad340f1e2 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -370,7 +370,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
- 	dma_cookie_t cookie;
+diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+index 1be3a355f10d..ab7023d956eb 100644
+--- a/drivers/mmc/host/rtsx_usb_sdmmc.c
++++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
+ 		err = sd_power_on(host);
+ 	}
  
- 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
--	if (dma_mapping_error(nc->dev, dev_dma)) {
-+	if (dma_mapping_error(nc->dev, buf_dma)) {
- 		dev_err(nc->dev,
- 			"Failed to prepare a buffer for DMA access\n");
- 		goto err;
+-	if (!err)
+-		host->power_mode = power_mode;
+-
++	host->power_mode = power_mode;
+ 	return err;
+ }
+ 
 -- 
 2.39.5
 
