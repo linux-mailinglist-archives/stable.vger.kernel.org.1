@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED55DB36862
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BDDB36414
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F4A9840F8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 756AB7BE12B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484B122128B;
-	Tue, 26 Aug 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E80D334717;
+	Tue, 26 Aug 2025 13:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIuqK8g0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4ZeYPRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028A71494D9;
-	Tue, 26 Aug 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD04200112;
+	Tue, 26 Aug 2025 13:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216896; cv=none; b=p5lEvJkhbPJxfgb5u47hWlVVqGCMUbeQVcSoSg1W4WhfgJOPmfKR3yPEd1q2UgFu6nFp8olW8LdRU/zOlE4uFHE/bB5P744rKT3hkb9o6ka2Hs/zFcUHpjo50U9TS1eNR6r33JIa3BRDJF1TxKDXVG8O3jism7GBYFoxTLy63IA=
+	t=1756215276; cv=none; b=fk9iNwUFBJrf6rlNK/zro/twci/4nPchsdNBWgrYk/V5veQvN0+CP9VkOYGz/RkjpDo4LSHHbGI6Wo6310uRu3pizR24zjE17Fxg3jc/BD3k0s9dzoQ70J0hRMBdqi7RrSGIi2MRbXqelLIDOFUD2eKfMJX6YISDcgb60psq9uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216896; c=relaxed/simple;
-	bh=ePzAQaD/uumj52/Vt7sv10Oe7Egbsn3ZvDrFdfqJPEQ=;
+	s=arc-20240116; t=1756215276; c=relaxed/simple;
+	bh=wWwbj8aqHPvAiNTZcspDmBdGCrBAKoWDz2orRmcq0AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcTRw0192KRB66vT1YlbciPs1WLdh9rFdvwit+Kx/ldBhWFtnwKUiv0UI5twSPCsrkmoT2zT5gUrQVD2ObqeOw6pFyiZ6ji726zm0QDt03YsVY5RQOUkKnYc/p5BDlFpHIHL4YEqhtxY24uOMSroaWR3zihbS9st5E+8tZiL41k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIuqK8g0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889ADC4CEF1;
-	Tue, 26 Aug 2025 14:01:35 +0000 (UTC)
+	 MIME-Version; b=gY4N9NWl+iCQ3MEeoC1DFLbnkr6L/I3oenOVxESxVAFJg99npvosNnB8742oTU4+wgY8RwZWwW0Xc+JCsdmUg1s1YvFrio4uczVkC9XaXL4Zmb6WJPh4clnDgagnQHkfPepE3NzYC06/vvZdovj7Fe6ssaSaPqpABvg81zJnJoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4ZeYPRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2035C4CEF1;
+	Tue, 26 Aug 2025 13:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216895;
-	bh=ePzAQaD/uumj52/Vt7sv10Oe7Egbsn3ZvDrFdfqJPEQ=;
+	s=korg; t=1756215276;
+	bh=wWwbj8aqHPvAiNTZcspDmBdGCrBAKoWDz2orRmcq0AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIuqK8g06JvmMnYDr0oJzxc43jOkwQc70BNp/RTd77NiIbMMYwiDpr3TVZj88uUkm
-	 XEQmf64xHho3jCHHWYsY8gSIiXb3HbGPaJv6er+AhGm9cEXk/e75Ek7Bp8rXzTLkvU
-	 UpCMtaoyNrHRE81Cu5BOvFagP38WwWnntyGi5pTA=
+	b=D4ZeYPRGXyqh36HoKrX/kviqeUoeQcy0PXGaIPttlZlYn0aKHODTqTjuN2R6uSumr
+	 C7Gvpd7S69BruKUwY+TDo/KVrCTfEAf68bSBtq6BKJsrrfVT+k905vOogu+AE373GT
+	 OT0BsT8rbOMVf01tFVUAU39i3mMzN7ETZi8U0/pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com,
-	syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 584/644] comedi: Fix use of uninitialized memory in do_insn_ioctl() and do_insnlist_ioctl()
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 422/482] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
 Date: Tue, 26 Aug 2025 13:11:15 +0200
-Message-ID: <20250826111001.006504041@linuxfoundation.org>
+Message-ID: <20250826110941.253326327@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 3cd212e895ca2d58963fdc6422502b10dd3966bb upstream.
+commit 58577118cc7cec9eb7c1836bf88f865ff2c5e3a3 upstream.
 
-syzbot reports a KMSAN kernel-infoleak in `do_insn_ioctl()`.  A kernel
-buffer is allocated to hold `insn->n` samples (each of which is an
-`unsigned int`).  For some instruction types, `insn->n` samples are
-copied back to user-space, unless an error code is being returned.  The
-problem is that not all the instruction handlers that need to return
-data to userspace fill in the whole `insn->n` samples, so that there is
-an information leak.  There is a similar syzbot report for
-`do_insnlist_ioctl()`, although it does not have a reproducer for it at
-the time of writing.
+During a device-initiated disconnect, the End Transfer command resets
+the event filter, allowing a new xferNotReady event to be generated
+before the controller is fully halted. Processing this late event
+incorrectly triggers a Start Transfer, which prevents the controller
+from halting and results in a DSTS.DEVCTLHLT bit polling timeout.
 
-One culprit is `insn_rw_emulate_bits()` which is used as the handler for
-`INSN_READ` or `INSN_WRITE` instructions for subdevices that do not have
-a specific handler for that instruction, but do have an `INSN_BITS`
-handler.  For `INSN_READ` it only fills in at most 1 sample, so if
-`insn->n` is greater than 1, the remaining `insn->n - 1` samples copied
-to userspace will be uninitialized kernel data.
+Ignore the late xferNotReady event if the controller is already in a
+disconnected state.
 
-Another culprit is `vm80xx_ai_insn_read()` in the "vm80xx" driver.  It
-never returns an error, even if it fails to fill the buffer.
-
-Fix it in `do_insn_ioctl()` and `do_insnlist_ioctl()` by making sure
-that uninitialized parts of the allocated buffer are zeroed before
-handling each instruction.
-
-Thanks to Arnaud Lecomte for their fix to `do_insn_ioctl()`.  That fix
-replaced the call to `kmalloc_array()` with `kcalloc()`, but it is not
-always necessary to clear the whole buffer.
-
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Reported-by: syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a5e45f768aab5892da5d
-Reported-by: syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fb4362a104d45ab09cf9
-Cc: stable <stable@kernel.org> # 5.13+
-Cc: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250725125324.80276-1-abbotti@mev.co.uk
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250807090700.2397190-1-khtsai@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/dwc3/gadget.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1582,6 +1582,9 @@ static int do_insnlist_ioctl(struct come
- 				memset(&data[n], 0, (MIN_SAMPLES - n) *
- 						    sizeof(unsigned int));
- 			}
-+		} else {
-+			memset(data, 0, max_t(unsigned int, n, MIN_SAMPLES) *
-+					sizeof(unsigned int));
- 		}
- 		ret = parse_insn(dev, insns + i, data, file);
- 		if (ret < 0)
-@@ -1665,6 +1668,8 @@ static int do_insn_ioctl(struct comedi_d
- 			memset(&data[insn->n], 0,
- 			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
- 		}
-+	} else {
-+		memset(data, 0, n_data * sizeof(unsigned int));
- 	}
- 	ret = parse_insn(dev, insn, data, file);
- 	if (ret < 0)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3590,6 +3590,15 @@ static void dwc3_gadget_endpoint_transfe
+ static void dwc3_gadget_endpoint_transfer_not_ready(struct dwc3_ep *dep,
+ 		const struct dwc3_event_depevt *event)
+ {
++	/*
++	 * During a device-initiated disconnect, a late xferNotReady event can
++	 * be generated after the End Transfer command resets the event filter,
++	 * but before the controller is halted. Ignore it to prevent a new
++	 * transfer from starting.
++	 */
++	if (!dep->dwc->connected)
++		return;
++
+ 	dwc3_gadget_endpoint_frame_from_event(dep, event);
+ 
+ 	/*
 
 
 
