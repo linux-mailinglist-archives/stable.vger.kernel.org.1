@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8431B362B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F2DB35EB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA558A67FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD625614C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3931F334723;
-	Tue, 26 Aug 2025 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A8D26C3A4;
+	Tue, 26 Aug 2025 11:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rEPlHgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7i5jH9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF3730146D;
-	Tue, 26 Aug 2025 13:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458E220330;
+	Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214032; cv=none; b=e7vCDXsRXqD1/czv/+QMVfx4NNs+N2ZGP2Mdb8Il/11XmWpqnq+vjAhHnDtV1m7O36EBskE5yrAU9o66Fd2eIZrIjh/TG1v0EMSv3NGDJ2AvF7mUIl9YHRckFArP6pY9KY/Qj2AKavNRzlnZ+YaUhLww1Tvw6vyA7ku2Fki9Cao=
+	t=1756208947; cv=none; b=NGcqm//zVnHzGIfoLXoIqJmPJa/1C3Zm6vyvTh8eZ4EfYCkx0fURpvnf/W3LXgTeq0FOPWWuRgu4fBvNeQZe4YLh7/VRr+AVNfK+O87EK3Qz5nAtjZQcO1cC1VTJprFuy86pZj9KYvgQVNVjlxLqLXyy4pFjIdD+l0ujH6AVOYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214032; c=relaxed/simple;
-	bh=7NK0pFe9PK9mHVYGtQg9YrnpL7UBbcSEQcMsX31LVPM=;
+	s=arc-20240116; t=1756208947; c=relaxed/simple;
+	bh=Tjv39MeuglFATuGR3fS9fWNh1u4DfSaWUSJNmc9jzn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNH5H7i9OZXATQ5wnMLT8C3b51dLOa+XxouLuadlHWJ0rmvW4M9yqQvLzVsCQQ5ynEw8FwSbPFN8hqLABD0pb+nU0pOr3Js8amISYiCUiNDrkPehIzoO98Cvv9OD76g0dRA/lzFElV5AD7U6XTs6OS6J8QJb7lhX1Gmij9eGgeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rEPlHgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21DC4CEF1;
-	Tue, 26 Aug 2025 13:13:51 +0000 (UTC)
+	 MIME-Version; b=DVrCira5VDcIROAXeLBxkR0DM2cLiCTemGpq4s6/lSjVBRtWbpFqBHPlZh3aHIf0ObugCRtRcvj1XtUD11B9A6vOlO3qekj7k6SLVoVdqA5SOkN88I8uaSy3ZGhPaC3ZlSjJ+2bI1fMyZMKNv5ZPe2Ls1byGKf7HLiReeKre8ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7i5jH9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C267C4CEF1;
+	Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214031;
-	bh=7NK0pFe9PK9mHVYGtQg9YrnpL7UBbcSEQcMsX31LVPM=;
+	s=korg; t=1756208946;
+	bh=Tjv39MeuglFATuGR3fS9fWNh1u4DfSaWUSJNmc9jzn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rEPlHgo06sSWqhBjcVMUIlX9c7qBPhUls2QSUgFPTARmfz8/4OnUJgb9lMVDXVB5
-	 mCE+zf5/+7Jnzke1oeSAoYifQFtrNl4cvpIclD1Rc7c7iAt3B2jfHtBjz4s4LINVXN
-	 TR2Zebmofv16HuxxSybmHvRkT2VlPOVQnQ4HV2LA=
+	b=b7i5jH9h1M7u7Evgxy3fiNDiGJydwq7/iBUchGZ/Xpj3OTlAO0NeHuX6nkhJ7yp18
+	 XPGMVbpFRsq8KTv3oLAQIICc1wBnYf0Ip3iyiMbpevquW7/0jWvHTnvKu1z4OzB34u
+	 KYkv2QI3IFf0jHDdD5z59zRPup30EHjTPI9Rm4Sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rhee <jordanrhee@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
+	ValdikSS <iam@valdikss.org.ru>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 571/587] gve: prevent ethtool ops after shutdown
+Subject: [PATCH 6.12 305/322] igc: fix disabling L1.2 PCI-E link substate on I226 on init
 Date: Tue, 26 Aug 2025 13:12:00 +0200
-Message-ID: <20250826111007.561681984@linuxfoundation.org>
+Message-ID: <20250826110923.423075416@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rhee <jordanrhee@google.com>
+From: ValdikSS <iam@valdikss.org.ru>
 
-[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
+[ Upstream commit 1468c1f97cf32418e34dbb40b784ed9333b9e123 ]
 
-A crash can occur if an ethtool operation is invoked
-after shutdown() is called.
+Device ID comparison in igc_is_device_id_i226 is performed before
+the ID is set, resulting in always failing check on init.
 
-shutdown() is invoked during system shutdown to stop DMA operations
-without performing expensive deallocations. It is discouraged to
-unregister the netdev in this path, so the device may still be visible
-to userspace and kernel helpers.
+Before the patch:
+* L1.2 is not disabled on init
+* L1.2 is properly disabled after suspend-resume cycle
 
-In gve, shutdown() tears down most internal data structures. If an
-ethtool operation is dispatched after shutdown(), it will dereference
-freed or NULL pointers, leading to a kernel panic. While graceful
-shutdown normally quiesces userspace before invoking the reboot
-syscall, forced shutdowns (as observed on GCP VMs) can still trigger
-this path.
+With the patch:
+* L1.2 is properly disabled both on init and after suspend-resume
 
-Fix by calling netif_device_detach() in shutdown().
-This marks the device as detached so the ethtool ioctl handler
-will skip dispatching operations to the driver.
+How to test:
+Connect to the 1G link with 300+ mbit/s Internet speed, and run
+the download speed test, such as:
 
-Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
-Signed-off-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
+    curl -o /dev/null http://speedtest.selectel.ru/1GB
+
+Without L1.2 disabled, the speed would be no more than ~200 mbit/s.
+With L1.2 disabled, the speed would reach 1 gbit/s.
+Note: it's required that the latency between your host and the remote
+be around 3-5 ms, the test inside LAN (<1 ms latency) won't trigger the
+issue.
+
+Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
+Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
+Signed-off-by: ValdikSS <iam@valdikss.org.ru>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250819222000.3504873-6-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index ec189f0703f9..241a541b8edd 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2373,6 +2373,8 @@ static void gve_shutdown(struct pci_dev *pdev)
- 	struct gve_priv *priv = netdev_priv(netdev);
- 	bool was_up = netif_carrier_ok(priv->dev);
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 2a0c5a343e47..aadc0667fa04 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6987,6 +6987,13 @@ static int igc_probe(struct pci_dev *pdev,
+ 	adapter->port_num = hw->bus.func;
+ 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
  
-+	netif_device_detach(netdev);
++	/* PCI config space info */
++	hw->vendor_id = pdev->vendor;
++	hw->device_id = pdev->device;
++	hw->revision_id = pdev->revision;
++	hw->subsystem_vendor_id = pdev->subsystem_vendor;
++	hw->subsystem_device_id = pdev->subsystem_device;
 +
- 	rtnl_lock();
- 	if (was_up && gve_close(priv->dev)) {
- 		/* If the dev was up, attempt to close, if close fails, reset */
+ 	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
+ 	if (igc_is_device_id_i226(hw))
+ 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
+@@ -7013,13 +7020,6 @@ static int igc_probe(struct pci_dev *pdev,
+ 	netdev->mem_start = pci_resource_start(pdev, 0);
+ 	netdev->mem_end = pci_resource_end(pdev, 0);
+ 
+-	/* PCI config space info */
+-	hw->vendor_id = pdev->vendor;
+-	hw->device_id = pdev->device;
+-	hw->revision_id = pdev->revision;
+-	hw->subsystem_vendor_id = pdev->subsystem_vendor;
+-	hw->subsystem_device_id = pdev->subsystem_device;
+-
+ 	/* Copy the default MAC and PHY function pointers */
+ 	memcpy(&hw->mac.ops, ei->mac_ops, sizeof(hw->mac.ops));
+ 	memcpy(&hw->phy.ops, ei->phy_ops, sizeof(hw->phy.ops));
 -- 
 2.50.1
 
