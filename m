@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAC6B35D3A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9736DB3677B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49B9D7C35BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85BF1C28031
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFFA29BDB8;
-	Tue, 26 Aug 2025 11:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584A8350D63;
+	Tue, 26 Aug 2025 13:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEIn62l3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2DHnRMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEA923D7FA;
-	Tue, 26 Aug 2025 11:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BD9343218;
+	Tue, 26 Aug 2025 13:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208535; cv=none; b=q6GNZvsooyVqwDbBXhRCZFtVfStOOOZkQDWp2xGvO2jtB7Rpw9PJda7L55ZESTpAto3Tk4Fd7+PgV+c06cOEoYc32NKrFi0gIcyZLQElFhJMw0zIkkahSCrzaxo2l21yClFGPqb7vULDc5dPKtR7kOY7k+w4GMoJZBycTCAXNbE=
+	t=1756216685; cv=none; b=S86jogmzvkpswmw0GpoMpu+PC0MTpuVR26534dt+Easq3o6nUMN28vfBWKYYu+yKJg5Rw2vVWgqvR/4JR3j6UGhHYBsi3GS+/A/8lUK+0JLrdXn8WXpcM7RIaJHfqSAJgVV6TObUzYg7X7TsgnZLKtJu8c7+FnupZjclHdvzDtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208535; c=relaxed/simple;
-	bh=jSqW7/60qVkNya74Us+95Y/AdgHp5UdtWi1pYAzl20c=;
+	s=arc-20240116; t=1756216685; c=relaxed/simple;
+	bh=w1hSzjOthFMBe8PLUnAbAwrdtfAzb2dt8GNI0lWziDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ju6owWS4fjamlQcWzdXn/lWg3Bye7GiSBnTSGXSiTICx8NQ0tTkllPUnCLzsvYPhoFo5cT/ZXFSH6Z9nBFDddrFDmewQDdKJOhPHB1m6Wrm0nVzz+RyRtQTq13gEmEoXQXPSKD+5xmquyKGxHB10duQ0BNT8vKCZTnldtg7rqP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEIn62l3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71960C4CEF1;
-	Tue, 26 Aug 2025 11:42:14 +0000 (UTC)
+	 MIME-Version; b=i610vOdLB3gZnJ4U0aeNG7kov6DI+cOuFs61QknaLQI4V/g/7sRj45tx/YvOoW0RvkFolWUOI9gEdpCQvT0PHGPIy6nL6f8/5CTlPX+KbqN/AAinIcyrmCauaKI/q8WZUKa3U4c6W15zkBb1je1kHe8dWqCAVFr8GROtwukGN8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2DHnRMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C60C4CEF1;
+	Tue, 26 Aug 2025 13:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208534;
-	bh=jSqW7/60qVkNya74Us+95Y/AdgHp5UdtWi1pYAzl20c=;
+	s=korg; t=1756216685;
+	bh=w1hSzjOthFMBe8PLUnAbAwrdtfAzb2dt8GNI0lWziDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEIn62l3Z3dPX1CYix/mO+JkjnWUTRYFAKCP3lOF1jJplLB1E+klYga0s6+7IsBN/
-	 qPCTCZkR6HNHiolwDn8OFwVgVn6CRLNyIypaqcCI7PZvZ+xaWTuDNqdyhs5cioa5DY
-	 uqLMl1sGwdQCb/WxiJYW5frKe3DMgG4fyjh/oX88=
+	b=g2DHnRMZsQdNApOZER2YnNRHQOkBlQqXSH+0kEIgeUZDFc5uLeA3xGMfC7VPRLi8+
+	 yuGtteLwnIo3hIvSJShtjakKv5i6ooLOdoY5p/jdVQKOayvJD/U3WvQxArY3M9DhW2
+	 CVQ/QlW1dpq8Pdok3uFoxk/ywRN12bG6LwKCfhZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/322] btrfs: zoned: requeue to unused block group list if zone finish failed
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 473/644] scsi: mpi3mr: Fix race between config read submit and interrupt completion
 Date: Tue, 26 Aug 2025 13:09:24 +0200
-Message-ID: <20250826110919.488107052@linuxfoundation.org>
+Message-ID: <20250826110958.204334015@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 62be7afcc13b2727bdc6a4c91aefed6b452e6ecc ]
+commit e6327c4acf925bb6d6d387d76fc3bd94471e10d8 upstream.
 
-btrfs_zone_finish() can fail for several reason. If it is -EAGAIN, we need
-to try it again later. So, put the block group to the retry list properly.
+The "is_waiting" flag was updated after calling complete(), which could
+lead to a race where the waiting thread wakes up before the flag is
+cleared. This may cause a missed wakeup or stale state check.
 
-Failing to do so will keep the removable block group intact until remount
-and can causes unnecessary ENOSPC.
+Reorder the operations to update "is_waiting" before signaling completion
+to ensure consistent state.
 
-Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Cc: stable@vger.kernel.org
+Co-developed-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1646,8 +1646,10 @@ void btrfs_delete_unused_bgs(struct btrf
- 		ret = btrfs_zone_finish(block_group);
- 		if (ret < 0) {
- 			btrfs_dec_block_group_ro(block_group);
--			if (ret == -EAGAIN)
-+			if (ret == -EAGAIN) {
-+				btrfs_link_bg_list(block_group, &retry_list);
- 				ret = 0;
-+			}
- 			goto next;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -372,8 +372,8 @@ static void mpi3mr_process_admin_reply_d
+ 				    mrioc->facts.reply_sz);
+ 			}
+ 			if (cmdptr->is_waiting) {
+-				complete(&cmdptr->done);
+ 				cmdptr->is_waiting = 0;
++				complete(&cmdptr->done);
+ 			} else if (cmdptr->callback)
+ 				cmdptr->callback(mrioc, cmdptr);
  		}
- 
 
 
 
