@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4DBB367B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCC9B35DAC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE1305803D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D57B84E4130
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524BF2BEC45;
-	Tue, 26 Aug 2025 13:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45FE21D3C0;
+	Tue, 26 Aug 2025 11:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVB80F6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYbUXm+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3761341ABD;
-	Tue, 26 Aug 2025 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7198831CA7C;
+	Tue, 26 Aug 2025 11:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216748; cv=none; b=GhUoZkyr+uuLnxhdh4HOV6vPtE4YmhdMd2jmHeG9XmD4axNS37r9WeC0HuWXuphQl2/0Xl8M5DlU1F1HR0IP4WNhUoIuRA0sTgTXuOTHyQM4fUiEisYnd3nG4vH22NKmjgW4C+LhE7yR79ZXYq39G7dWi5V68xxODeU3F7BhS7Q=
+	t=1756208788; cv=none; b=b+3MT06d2CAAoLSsMrnzbbOajHVHS/zhR6LsJBR9jN637065zHzzSinVQNSm1YcTDizF2SiYUtcbfay/ft9tNEPXI4RQnITO68W/uXfqwRBq6mQ6atE1aPEzlIg/X1TE/iB6hEN53fqLXlLizI5+80FbL4kLrGnoSesI1h/tuP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216748; c=relaxed/simple;
-	bh=aPQwKdzhGFFhER0+PtTE6+uR+GyOgC7lQ18kIyWTPpQ=;
+	s=arc-20240116; t=1756208788; c=relaxed/simple;
+	bh=6yvxxPjL32KMwrfsYjmW3ILnfm5rLnDcxFjGwYFYBp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3NpuTyl6n8QoLi+7Pkr2qlcWAqhE8EpoidpmuL5aqkWdoSiJD/jyUr/89Y9GmDafN42VIplw7w/BhyBXuzGy4dyc48VIf8txmJQ6ZrWuBu9eJQkNR8HO+qRd87NCnYpx6EyMN+8ea6o6IUmPnhwVT9UgA42ZRre+tD2Q5VJu1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVB80F6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E83AC4CEF1;
-	Tue, 26 Aug 2025 13:59:07 +0000 (UTC)
+	 MIME-Version; b=u1sZPBie8K/ofRNXy70PrvsrBmafDR2qivJxExTr3KhAFJQhsiUr5W+A57x6W42T9ZDJyooRSU9IMOxvXo0A2TPqBc4kqvdL9s7OLFBep9d0oqBZ1hPjtncnE4kQGKQB8hNw2BQR/iangHEUstWh7d3QzXVOxvl5B0B5iZEocbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYbUXm+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CF2C4CEF1;
+	Tue, 26 Aug 2025 11:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216747;
-	bh=aPQwKdzhGFFhER0+PtTE6+uR+GyOgC7lQ18kIyWTPpQ=;
+	s=korg; t=1756208788;
+	bh=6yvxxPjL32KMwrfsYjmW3ILnfm5rLnDcxFjGwYFYBp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVB80F6AVVKHsp2Ln5zSHc+S5uSM6D8zhtFRJjQ8t+BkX90tv/lnx269Rl8xUXQ+N
-	 2Sz/m0dsOhIxUXO0RCrfy3vB0VjNKv2PEZKaADTzowPY2pB7EJhzOOzQoVWS2FOz9t
-	 jVIkTynjo2hvXojwuddZqp+mxV9BNtt7GwXSInT4=
+	b=WYbUXm+31zvp/P+aUoGjS5ZzzuYEmilZNZF3SyDf4r41E3AWOjaXYtSQpJnVIdU+7
+	 KibotPcU5i479TB5ixn/1/gAtzZTwUTdA10nk20f00UIPCopLuZDH0FtPu6PLjAret
+	 tG94MLy+cxYwt8gb8AeXatCDmln2zhAqQ6TqOA3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 528/644] net: enetc: fix device and OF node leak at probe
+Subject: [PATCH 6.12 204/322] arm64: dts: ti: k3-am6*: Remove disable-wp for eMMC
 Date: Tue, 26 Aug 2025 13:10:19 +0200
-Message-ID: <20250826110959.595470034@linuxfoundation.org>
+Message-ID: <20250826110920.906860313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed ]
+[ Upstream commit ef839ba8142f14513ba396a033110526b7008096 ]
 
-Make sure to drop the references to the IERB OF node and platform device
-taken by of_parse_phandle() and of_find_device_by_node() during probe.
+Remove disable-wp flag for eMMC nodes since this flag is
+only applicable to SD according to the binding doc
+(mmc/mmc-controller-common.yaml).
 
-Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For eMMC, this flag should be ignored but lets remove
+anyways to cleanup sdhci nodes.
+
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://lore.kernel.org/r/20250429151454.4160506-4-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: a0b8da04153e ("arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi               |    1 -
+ arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts                |    1 -
+ arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi              |    1 -
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts                       |    1 -
+ arch/arm64/boot/dts/ti/k3-am62p5-sk.dts                       |    1 -
+ arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi                |    1 -
+ arch/arm64/boot/dts/ti/k3-am642-evm.dts                       |    1 -
+ arch/arm64/boot/dts/ti/k3-am654-base-board.dts                |    1 -
+ arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-common.dtsi |    1 -
+ arch/arm64/boot/dts/ti/k3-am69-sk.dts                         |    1 -
+ 10 files changed, 10 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1206,6 +1206,7 @@ static int enetc_pf_register_with_ierb(s
- 	struct device_node *node = pdev->dev.of_node;
- 	struct platform_device *ierb_pdev;
- 	struct device_node *ierb_node;
-+	int ret;
+--- a/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-phycore-som.dtsi
+@@ -317,7 +317,6 @@
+ &sdhci0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mmc0_pins_default>;
+-	disable-wp;
+ 	non-removable;
+ 	status = "okay";
+ };
+--- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+@@ -821,7 +821,6 @@
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&emmc_pins_default>;
+-	disable-wp;
+ 	status = "okay";
+ };
  
- 	/* Don't register with the IERB if the PF itself is disabled */
- 	if (!node || !of_device_is_available(node))
-@@ -1213,16 +1214,25 @@ static int enetc_pf_register_with_ierb(s
+--- a/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-phycore-som.dtsi
+@@ -324,7 +324,6 @@
+ &sdhci0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mmc0_pins_default>;
+-	disable-wp;
+ 	non-removable;
+ 	status = "okay";
+ };
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -603,7 +603,6 @@
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mmc0_pins_default>;
+-	disable-wp;
+ 	bootph-all;
+ };
  
- 	ierb_node = of_find_compatible_node(NULL, NULL,
- 					    "fsl,ls1028a-enetc-ierb");
--	if (!ierb_node || !of_device_is_available(ierb_node))
-+	if (!ierb_node)
- 		return -ENODEV;
+--- a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+@@ -446,7 +446,6 @@
+ 	status = "okay";
+ 	non-removable;
+ 	ti,driver-strength-ohm = <50>;
+-	disable-wp;
+ 	bootph-all;
+ };
  
-+	if (!of_device_is_available(ierb_node)) {
-+		of_node_put(ierb_node);
-+		return -ENODEV;
-+	}
-+
- 	ierb_pdev = of_find_device_by_node(ierb_node);
- 	of_node_put(ierb_node);
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+@@ -419,7 +419,6 @@
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_mmc0_pins_default>;
+-	disable-wp;
+ };
  
- 	if (!ierb_pdev)
- 		return -EPROBE_DEFER;
+ &sdhci1 {
+--- a/arch/arm64/boot/dts/ti/k3-am642-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+@@ -584,7 +584,6 @@
+ 	status = "okay";
+ 	non-removable;
+ 	ti,driver-strength-ohm = <50>;
+-	disable-wp;
+ 	bootph-all;
+ };
  
--	return enetc_ierb_register_pf(ierb_pdev, pdev);
-+	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
-+
-+	put_device(&ierb_pdev->dev);
-+
-+	return ret;
- }
+--- a/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+@@ -456,7 +456,6 @@
+ 	bus-width = <8>;
+ 	non-removable;
+ 	ti,driver-strength-ohm = <50>;
+-	disable-wp;
+ };
  
- static int enetc_pf_probe(struct pci_dev *pdev,
+ /*
+--- a/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-common.dtsi
+@@ -50,5 +50,4 @@
+ 	bus-width = <8>;
+ 	non-removable;
+ 	ti,driver-strength-ohm = <50>;
+-	disable-wp;
+ };
+--- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
+@@ -926,7 +926,6 @@
+ 	status = "okay";
+ 	non-removable;
+ 	ti,driver-strength-ohm = <50>;
+-	disable-wp;
+ };
+ 
+ &main_sdhci1 {
 
 
 
