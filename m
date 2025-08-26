@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6056B36AB0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49DEB35B91
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7816616ACB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12871627D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264C535209D;
-	Tue, 26 Aug 2025 14:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB39E33A010;
+	Tue, 26 Aug 2025 11:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbTQiXn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1UPxvtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C3350D7B;
-	Tue, 26 Aug 2025 14:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7407627A917;
+	Tue, 26 Aug 2025 11:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218525; cv=none; b=iABeYZVzxFqHfek/8wqw8W72QhSIBEIm5V/kdEtLuxV8rTtf0XHJXNE+wTTC23fhXXwawdxnX9ZvmW1rcchHi/og7BjkNjq0o//3IH7HduLRPieCgKAKrKNFI7vWYZaMN1wbd5lGiCUCSJuxu4gnKBkY4thnEuVlpYiOtNL2/s0=
+	t=1756207167; cv=none; b=P517YqyBX2UsX51+PM1kI0kwHbv561A0EOTn7jyBEYAhGUqsNlZsXkB+bcfjVBYP/QRL0/mmgPZQ3n+EHChjR3i14NLfVoM4lhqlEZDt/3kc/KiSfoo88fDrtd1emfOTl3sox2G1m1xBJQTovwlR/y4g+OkfTQZGXYw8qHMP7E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218525; c=relaxed/simple;
-	bh=bNBb3/FCzoasehtV7FWsVrtde68gjNm6sbYoVGsaLFs=;
+	s=arc-20240116; t=1756207167; c=relaxed/simple;
+	bh=pZfN5dPqyETPQ+vZesTXnuhL8oabO8Vb7O0Vc1jobJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uh0XXRE+OY8Xhdih9WgMAfmcUUFIX3x+bXp7dPMDjHv3r1MFgxRwvA5491eRbHpPp7mlbubds99OGEVc8/4PUEfpYKf77YnM2uj572YAjGjALkRIsfIMz7XaV0rclhy/VtJopBOyTEmHPEmTc/UXKpA4pg3/S0iQF2nVTAGL52U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbTQiXn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6F3C4CEF1;
-	Tue, 26 Aug 2025 14:28:44 +0000 (UTC)
+	 MIME-Version; b=l7y0H1MUw3WPIsDQ/5puZJkVRKMoPvgO9TurfRiYPl4iTklWna47fpcZcOpOkJxEUi4YlHV+KRl5Be2lWHaveoIIxrdyA899fZcPXNaf4zhFJGeozCSmSApctYdbUYcwTXMD+PMXhaUmg60MSCy39aYZtnvHw9UtidlzkkbG/6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1UPxvtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C02C4CEF1;
+	Tue, 26 Aug 2025 11:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218525;
-	bh=bNBb3/FCzoasehtV7FWsVrtde68gjNm6sbYoVGsaLFs=;
+	s=korg; t=1756207167;
+	bh=pZfN5dPqyETPQ+vZesTXnuhL8oabO8Vb7O0Vc1jobJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbTQiXn6bqnUfmSPuPD2e7grDqnUC45BC7h1sXDtk3dgE60n9nLLA37rC12zJlcnC
-	 6VdMylMV/aAq13JceuiCGnyShJ7vlJ+fDrTKcBPt8OnvwPR984WXybtd20U4+7ynaz
-	 BV80YII8LBJ+1CZAqCzzExr9JvZuIFMlnydRDl4Y=
+	b=J1UPxvtX0iyzxbYM2ZvOopo2IL+g7kjFDHFzhhjn370rQ54C0kdrmXDESOOEwHEcA
+	 boNMwYP4qYxYoq2O4ly2zeX51Kg3pYj46NXxHpbi3D8aUpmulpRwNRQRe4Rq4iuLFg
+	 aD+A77xvPRnY7D5aNy+dFn8DkHl/QosL5uV3vxII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/403] usb: net: sierra: check for no status endpoint
+	kernel test robot <lkp@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 075/457] iio: imu: bno055: fix OOB access of hw_xlate array
 Date: Tue, 26 Aug 2025 13:05:59 +0200
-Message-ID: <20250826110906.728944622@linuxfoundation.org>
+Message-ID: <20250826110939.227271110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
+commit 399b883ec828e436f1a721bf8551b4da8727e65b upstream.
 
-The driver checks for having three endpoints and
-having bulk in and out endpoints, but not that
-the third endpoint is interrupt input.
-Rectify the omission.
+Fix a potential out-of-bounds array access of the hw_xlate array in
+bno055.c.
 
-Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
-Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In bno055_get_regmask(), hw_xlate was iterated over the length of the
+vals array instead of the length of the hw_xlate array. In the case of
+bno055_gyr_scale, the vals array is larger than the hw_xlate array,
+so this could result in an out-of-bounds access. In practice, this
+shouldn't happen though because a match should always be found which
+breaks out of the for loop before it iterates beyond the end of the
+hw_xlate array.
+
+By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
+sure we are iterating over the correct length.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sierra_net.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/imu/bno055/bno055.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index 6f9ec5ce61dcc..a8f8134fab36c 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -694,6 +694,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 			status);
- 		return -ENODEV;
- 	}
-+	if (!dev->status) {
-+		dev_err(&dev->udev->dev, "No status endpoint found");
-+		return -ENODEV;
-+	}
- 	/* Initialize sierra private data */
- 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
- 	if (!priv)
--- 
-2.39.5
-
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
+ 	int len;
+ 	int *fusion_vals;
+ 	int *hw_xlate;
++	int hw_xlate_len;
+ 	int type;
+ };
+ 
+@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
+ 	1000, 1877467, 2000, 1877467,
+ };
+ 
++static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
+ static struct bno055_sysfs_attr bno055_gyr_scale = {
+ 	.vals = bno055_gyr_scale_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
+ 	.fusion_vals = (int[]){1, 900},
+-	.hw_xlate = (int[]){4, 3, 2, 1, 0},
++	.hw_xlate = bno055_gyr_scale_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
+ 	.type = IIO_VAL_FRACTIONAL,
+ };
+ 
+ static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
++static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
+ static struct bno055_sysfs_attr bno055_gyr_lpf = {
+ 	.vals = bno055_gyr_lpf_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
+ 	.fusion_vals = (int[]){32},
+-	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
++	.hw_xlate = bno055_gyr_lpf_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
+ 	.type = IIO_VAL_INT,
+ };
+ 
+@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno
+ 
+ 	idx = (hwval & mask) >> shift;
+ 	if (attr->hw_xlate)
+-		for (i = 0; i < attr->len; i++)
++		for (i = 0; i < attr->hw_xlate_len; i++)
+ 			if (attr->hw_xlate[i] == idx) {
+ 				idx = i;
+ 				break;
 
 
 
