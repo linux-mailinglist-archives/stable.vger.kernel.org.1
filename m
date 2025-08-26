@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACCFB36881
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AB4B362DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F81D5806C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCF48A381C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9425A34DCCB;
-	Tue, 26 Aug 2025 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AF6341677;
+	Tue, 26 Aug 2025 13:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zu1sUkO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDHlFYC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52834A338;
-	Tue, 26 Aug 2025 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A230F34166A;
+	Tue, 26 Aug 2025 13:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217332; cv=none; b=Yrkx7o9QjRInqxWWGaToTpyeJD//XjLkGkLYU7kkEcbC6eeAKal8q/IM9e5p4YG4wJKj2EJb3znkXoxfcL3OrdoZJcBtx67hbkSe674Wvz6k/USlAzdgKizKqfrlJGGuJ+l85JZtbQCcWDWjGA++ucKcuPepDZgc4V9IUyCEH74=
+	t=1756214147; cv=none; b=ZUUiyCForJkE7fi9QjxBrjYaxK9txwndZeAZzKf6/LKqmJp53zyQ4PtODRhpsZ6VHr3SSzNjS9veTW/W8dzzT8L92QTfMVcqaCyYty2CVpnm5BLi2melnKgbRLxYM6gQGTnKE1TjcfRjW2sxak0D3EOUV+A3iNSANRPZVV0pd98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217332; c=relaxed/simple;
-	bh=AFxB4hD66AG5bpDA7zgesIeayVaTESltu9kLsebdKto=;
+	s=arc-20240116; t=1756214147; c=relaxed/simple;
+	bh=dL2aNfFTZHuNMh+vDrMdVbKs8WQJpz2ONyqxvLgMozs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es4Pb1pL/gWJ/3Q2Jho51H32uekOyviyFpb7g/vCvPITC//CRKKCvxudts8QaT6h1aiv6KiqjIbaF+NkEeSHRRpr9y3UXtDb6fGQDQEs3LRpVLqL2gdK8aRLqTagnsnAZE7+8V2txEr6DlaygGT8UWg7jbBx+KMcoIxg4xJLfkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zu1sUkO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DC3C4CEF1;
-	Tue, 26 Aug 2025 14:08:51 +0000 (UTC)
+	 MIME-Version; b=VdhMpc8CEYQzKjxhTXcXMyPK26/bifiPzKq7+PilVbb0pIzGMMiN/EWtTo/hfw8wursxIbnKkk+M8DbmdAzfrCZvwi6Aa3l5y7I8lenPH9djW++uHbRjE49lwDZ9NFylyNg8OMyULnwYOPwLfaHUKT4Dsuq7BAoIyNNLnpe876Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDHlFYC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A3EC4CEF1;
+	Tue, 26 Aug 2025 13:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217332;
-	bh=AFxB4hD66AG5bpDA7zgesIeayVaTESltu9kLsebdKto=;
+	s=korg; t=1756214147;
+	bh=dL2aNfFTZHuNMh+vDrMdVbKs8WQJpz2ONyqxvLgMozs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zu1sUkO/ADP8Y58WfBu3m5l17LMG/ZxRG1P8e89gyK8ljdOwa4SCO5np37bKRPi2b
-	 RStEmTPc9rOv4hheGnZwISttjYXtqCDpcVG1VKBSZPlAlaZPVQP3K8fib2mZ5D+RV3
-	 e1UCI3IytTG9I9aUR/zgeV45m3GNbhUEFAOY5Yss=
+	b=WDHlFYC3ZOdAfk6bdspLg9CMoNRo6zikz9RFJye3WCWLFOiPCfIN9uF+99HBrzvp+
+	 Y2jylkr/pO/OJ3Y55ZBjhQXdUzlY1r0k98EHg4ViwmNOJK4RLIjSaVT9MQ8rqXWPRH
+	 3GFlwHiEGHDWdqZKelqaXFgQQ/tKlEbipQDVprGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Dadap <ddadap@nvidia.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/523] ALSA: hda: Add missing NVIDIA HDA codec IDs
+Subject: [PATCH 6.1 029/482] KVM: x86: Plumb in the vCPU to kvm_x86_ops.hwapic_isr_update()
 Date: Tue, 26 Aug 2025 13:04:42 +0200
-Message-ID: <20250826110926.348153365@linuxfoundation.org>
+Message-ID: <20250826110931.523484074@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Dadap <ddadap@nvidia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit e0a911ac86857a73182edde9e50d9b4b949b7f01 upstream.
+[ Upstream commit 76bce9f10162cd4b36ac0b7889649b22baf70ebd ]
 
-Add codec IDs for several NVIDIA products with HDA controllers to the
-snd_hda_id_hdmi[] patch table.
+Pass the target vCPU to the hwapic_isr_update() vendor hook so that VMX
+can defer the update until after nested VM-Exit if an EOI for L1's vAPIC
+occurs while L2 is active.
 
-Signed-off-by: Daniel Dadap <ddadap@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/aF24rqwMKFWoHu12@ddadap-lakeline.nvidia.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ change patch_tegra234_hdmi function calls to patch_tegra_hdmi ]
+Note, commit d39850f57d21 ("KVM: x86: Drop @vcpu parameter from
+kvm_x86_ops.hwapic_isr_update()") removed the parameter with the
+justification that doing so "allows for a decent amount of (future)
+cleanup in the APIC code", but it's not at all clear what cleanup was
+intended, or if it was ever realized.
+
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Tested-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20241128000010.4051275-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: account for lack of kvm_x86_call(), drop vmx/x86_ops.h change]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/lapic.c            | 8 ++++----
+ arch/x86/kvm/vmx/vmx.c          | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -4354,6 +4354,8 @@ HDA_CODEC_ENTRY(0x10de002d, "Tegra186 HD
- HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HDMI/DP1", patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
-+HDA_CODEC_ENTRY(0x10de0033, "SoC 33 HDMI/DP",	patch_tegra_hdmi),
-+HDA_CODEC_ENTRY(0x10de0035, "SoC 35 HDMI/DP",	patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
-@@ -4392,15 +4394,32 @@ HDA_CODEC_ENTRY(0x10de0097, "GPU 97 HDMI
- HDA_CODEC_ENTRY(0x10de0098, "GPU 98 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0099, "GPU 99 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009a, "GPU 9a HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de009b, "GPU 9b HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de009c, "GPU 9c HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a1, "GPU a1 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a8, "GPU a8 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a9, "GPU a9 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00aa, "GPU aa HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ab, "GPU ab HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ad, "GPU ad HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ae, "GPU ae HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00af, "GPU af HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00b0, "GPU b0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00b1, "GPU b1 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c0, "GPU c0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c1, "GPU c1 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c3, "GPU c3 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c4, "GPU c4 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c5, "GPU c5 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x67663d82, "Arise 82 HDMI/DP",	patch_gf_hdmi),
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 17b4e61a52b9..6db42ee82032 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1552,7 +1552,7 @@ struct kvm_x86_ops {
+ 	bool (*check_apicv_inhibit_reasons)(enum kvm_apicv_inhibit reason);
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+ 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
+-	void (*hwapic_isr_update)(int isr);
++	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
+ 	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
+ 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 42eec987ac3d..3d65d6a023c9 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -587,7 +587,7 @@ static inline void apic_set_isr(int vec, struct kvm_lapic *apic)
+ 	 * just set SVI.
+ 	 */
+ 	if (unlikely(apic->apicv_active))
+-		static_call_cond(kvm_x86_hwapic_isr_update)(vec);
++		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, vec);
+ 	else {
+ 		++apic->isr_count;
+ 		BUG_ON(apic->isr_count > MAX_APIC_VECTOR);
+@@ -632,7 +632,7 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+ 	 * and must be left alone.
+ 	 */
+ 	if (unlikely(apic->apicv_active))
+-		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
++		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, apic_find_highest_isr(apic));
+ 	else {
+ 		--apic->isr_count;
+ 		BUG_ON(apic->isr_count < 0);
+@@ -2554,7 +2554,7 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	if (apic->apicv_active) {
+ 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
+ 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, -1);
+-		static_call_cond(kvm_x86_hwapic_isr_update)(-1);
++		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, -1);
+ 	}
+ 
+ 	vcpu->arch.apic_arb_prio = 0;
+@@ -2847,7 +2847,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+ 	if (apic->apicv_active) {
+ 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
+ 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, apic_find_highest_irr(apic));
+-		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
++		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
+ 	}
+ 	kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 	if (ioapic_in_kernel(vcpu->kvm))
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 9a5cb896229f..721ba6ddb121 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6708,7 +6708,7 @@ static void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+ 	put_page(page);
+ }
+ 
+-static void vmx_hwapic_isr_update(int max_isr)
++static void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
+ {
+ 	u16 status;
+ 	u8 old;
+-- 
+2.50.1
+
 
 
 
