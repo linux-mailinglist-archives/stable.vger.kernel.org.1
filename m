@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E168DB3602B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBB1B36517
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAEBE1BA5218
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F31FC7BB79C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD11B0420;
-	Tue, 26 Aug 2025 12:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5349C3431FD;
+	Tue, 26 Aug 2025 13:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sM+mA+gD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gU31Ouo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9D12CD88;
-	Tue, 26 Aug 2025 12:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1041D26B747;
+	Tue, 26 Aug 2025 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212865; cv=none; b=jcsDzTSdt1Wsz/d7BcGgbh2RNi4g63aJFzjL8zo4LHODTmytRqZ3J6COZ91+oJiLxcKwcXLPyHQuzqxQWATjT0zUrI8r5MHinZYmT+cnvLdRf5z6Doah3cjm1Dlka+4gmrgVhh5lDLk8RXdB74XmVYvOheqWdgm8mwSJEGM/gw0=
+	t=1756215858; cv=none; b=awJ8+JQsTmtHsJ79Apos+2xHIXxELc2jo0pQy1ERT8iMQO9oN/cQ8+SYhDT0iWbmXqw8nJdemgE2pVm2+tcRmjzp1lyOLJl6Wm92dcAF5TAoYhGUxA7byZQNFo5YRRVSZyW4rWUtuXd4ovdpUDtx9IJQXdDm8PzfMxSvS6nll8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212865; c=relaxed/simple;
-	bh=Jv7tUiMyr8OiUzFn09Rmyy21PSUaNySG1QvRd+my3BU=;
+	s=arc-20240116; t=1756215858; c=relaxed/simple;
+	bh=EhO5/GVmxP29CyYjCvy4Bg/FhJxjTQkJ3psTtU79EMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clZnkIwLTAsp5p7+f47ccNrAUKmniQjv07nchpABaBGvQFdoPKnT7KHk5Z0zxL2iUR//mosZm/WJlz6oMhppbO8ELx44vVNV3BWWl9e3O/+O/MWqMfnhWSuVjM8U2qIkeVsOcUDXzXbx9dhoi/veFDN/xUZgZ4kevZVo50hS7ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sM+mA+gD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FA4C4CEF1;
-	Tue, 26 Aug 2025 12:54:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NVgl7ehpBqsiF98WROX9mEd+uFOunc7MHSlGOTSL6k4BjDVCjkjXxMULurbifIWLlNuG3wG1KZ3zlcwJgGU+TjQn1s8ttOVKFXda0D4JmoXi1qTOtQqPFV/U79kus931+WJ6lMHG7gBkPmpPb5FO4IepPtMec7QawTVoES87uIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gU31Ouo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E07BC4CEF1;
+	Tue, 26 Aug 2025 13:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212865;
-	bh=Jv7tUiMyr8OiUzFn09Rmyy21PSUaNySG1QvRd+my3BU=;
+	s=korg; t=1756215854;
+	bh=EhO5/GVmxP29CyYjCvy4Bg/FhJxjTQkJ3psTtU79EMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sM+mA+gDGMw7VtuxwL1/2LqJBfOKp3OZhlhH1aZrLTKMHV0T7rM4hFNBKZ05aOOZP
-	 vo15+95RKd7oubYOhR1vzAe8Ev7o20bv7GK7udcYCh78xn+YZO6EfCPUJ3MeBiVjCk
-	 IESX0KbbY1PNVJWC/q3NaGeJ9DlXyZfo0dvlgGMk=
+	b=2gU31OuoSU2N3EAux9HGTpr+ceKkyau+YPvap5AuAZH3v1sqBdpgliOR3x+Q81usI
+	 lbQYGwIIR2VtNErs5OaIuw3LmbgH1ZxQZmsOqe5INq0fvMCir5eP6m1lfukPyZInyg
+	 ZEQHQwS01vg44UT4OkDEXj3faLdcQFxxTq+WtcQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Michalec <tmichalec@google.com>,
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/587] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
+Subject: [PATCH 5.15 190/644] soundwire: stream: restore params when prepare ports fail
 Date: Tue, 26 Aug 2025 13:04:41 +0200
-Message-ID: <20250826110956.312780618@linuxfoundation.org>
+Message-ID: <20250826110951.164627137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Michalec <tmichalec@google.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
+[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
 
-If cros_typec_probe is called before EC device is registered,
-cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
-loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
-cros_ec_spi.ko).
+The bus->params should be restored if the stream is failed to prepare.
+The issue exists since beginning. The Fixes tag just indicates the
+first commit that the commit can be applied to.
 
-Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
-the probe function can be called again after EC device is registered.
-
-Signed-off-by: Tomasz Michalec <tmichalec@google.com>
-Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_typec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soundwire/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
-index 66fdc6fa73ec..76807ceb313a 100644
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -1179,8 +1179,8 @@ static int cros_typec_probe(struct platform_device *pdev)
- 
- 	typec->ec = dev_get_drvdata(pdev->dev.parent);
- 	if (!typec->ec) {
--		dev_err(dev, "couldn't find parent EC device\n");
--		return -ENODEV;
-+		dev_warn(dev, "couldn't find parent EC device\n");
-+		return -EPROBE_DEFER;
+diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+index 8f9f4ee7860c..1b62cdadb089 100644
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1575,7 +1575,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream,
+ 		if (ret < 0) {
+ 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
+ 				ret);
+-			return ret;
++			goto restore_params;
+ 		}
  	}
  
- 	platform_set_drvdata(pdev, typec);
 -- 
 2.39.5
 
