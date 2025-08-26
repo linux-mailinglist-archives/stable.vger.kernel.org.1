@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-174793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8325AB365C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC063B35D49
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99B1A562AC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803B61BA48C0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DC630AAD2;
-	Tue, 26 Aug 2025 13:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086BB3090CD;
+	Tue, 26 Aug 2025 11:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziKwUK2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiPpKKUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B730AAD8;
-	Tue, 26 Aug 2025 13:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C61FECAB;
+	Tue, 26 Aug 2025 11:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215333; cv=none; b=YRRQUKtrVwZN4gPOAACNS4z5ffKlv9u8X0cA/cSuRXf+RhndLsZ1em+XXHX65ldOQXVvoa9/elXr2Uj4U4Qc3eaw4VHWdyLXd2WB1Xz935qbGmftkGZvd7T5a7rNzoIoxRZ5WvoXvRHeihHwSSfNHuCsO92GarseDn3helYvNpM=
+	t=1756208115; cv=none; b=Sym9/icYiBOvFs4/MKoVFrEN4/qHQKvO6oY4fqqWVtewu6RGmbRXZmQTKGcjb2C69XuM19RjLua0yly/KIcsafSfxsNPqagPjIHEt+MCTfii4nhXsHrSH2kA/iHF3l9FYR0uS2lJM+xZoGvQ24B6Iwa6nbhV2NmLYLxoBEfnoGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215333; c=relaxed/simple;
-	bh=CCv/YFhL3jfymzwLesDB/FNScEyiZP67qwLWsfe1z8c=;
+	s=arc-20240116; t=1756208115; c=relaxed/simple;
+	bh=OReVZQPQ1+xgQUT/zxW7XMYnU0cdrkndbOTJWUwNh4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NECZXXltSvGyfaQptVWXDtIQOBPWn2AslAbXjM0vJWcsJxDHRy36VFmntF2vZTMZjmPB/3iNONqlgjb7Ss9yQo9QywvFKlTjhko+d7DXK4R7EUvUb4wnx3U/udIhaLK5jH+9waXds+r2YlSmkkp/qbJCgTiop6S9z9mdUGWTMyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziKwUK2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2631C116B1;
-	Tue, 26 Aug 2025 13:35:32 +0000 (UTC)
+	 MIME-Version; b=cjbc74gk/pqjT4sw5lLnr0uOgpoIUqe6FdOA0sSjGYUwhkzI5cuB7QHcUHx2VDvO0Ck82G7QvKG8zd8OYPAnJxUyoBniDXsRIFwwt8546/Fl1X6fS5aF5EsiCuVzBhiDMDtgDjLLyUq5iyz4TF0lnJOmGaFWHmAnaM6vCOc9UC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiPpKKUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BBEC4CEF1;
+	Tue, 26 Aug 2025 11:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215333;
-	bh=CCv/YFhL3jfymzwLesDB/FNScEyiZP67qwLWsfe1z8c=;
+	s=korg; t=1756208115;
+	bh=OReVZQPQ1+xgQUT/zxW7XMYnU0cdrkndbOTJWUwNh4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziKwUK2KF+TS7zd/NVakHX5kQDABD28OoQZbdm7lnIDULVn3uBzILYILk5L4M/sBm
-	 ukRflB+Mk1l490IRDSvgboOn3z4C73QccNropODR17Hsa3C+ovz0zxWC0mbNA8LYby
-	 v+15tMYtjlBq1K1w5lnLRIbOvo4asyDxM+ioDrnM=
+	b=XiPpKKUj2J80+8KOuPoZowMLltJ1Q+Eq3WPMRuIDapIMTfBd0rr5DzQ/rHFrUT7W2
+	 YHigOW8vi1m0NVdd6JyPxwyWivb5fR98mKkybGO7aax3u4LbOz3MdQpp2odKRNVHah
+	 dgt50d2bH09AS1V1qGsxneZcb+4k+drXUZZvzcT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 474/482] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
+Subject: [PATCH 6.16 443/457] blk-mq: fix lockdep warning in __blk_mq_update_nr_hw_queues
 Date: Tue, 26 Aug 2025 13:12:07 +0200
-Message-ID: <20250826110942.529257288@linuxfoundation.org>
+Message-ID: <20250826110948.233001612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 15de71d06a400f7fdc15bf377a2552b0ec437cf5 ]
+[ Upstream commit 2d82f3bd8910eb65e30bb2a3c9b945bfb3b6d661 ]
 
-The following setup can trigger a WARNING in htb_activate due to
-the condition: !cl->leaf.q->q.qlen
+Commit 5989bfe6ac6b ("block: restore two stage elevator switch while
+running nr_hw_queue update") reintroduced a lockdep warning by calling
+blk_mq_freeze_queue_nomemsave() before switching the I/O scheduler.
 
-tc qdisc del dev lo root
-tc qdisc add dev lo root handle 1: htb default 1
-tc class add dev lo parent 1: classid 1:1 \
-       htb rate 64bit
-tc qdisc add dev lo parent 1:1 handle f: \
-       cake memlimit 1b
-ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
+The function blk_mq_elv_switch_none() calls elevator_change_done().
+Running this while the queue is frozen causes a lockdep warning.
 
-This is because the low memlimit leads to a low buffer_limit, which
-causes packet dropping. However, cake_enqueue still returns
-NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
-empty child qdisc. We should return NET_XMIT_CN when packets are
-dropped from the same tin and flow.
+Fix this by reordering the operations: first, switch the I/O scheduler
+to 'none', and then freeze the queue. This ensures that elevator_change_done()
+is not called on an already frozen queue. And this way is safe because
+elevator_set_none() does freeze queue before switching to none.
 
-I do not believe return value of NET_XMIT_CN is necessary for packet
-drops in the case of ack filtering, as that is meant to optimize
-performance, not to signal congestion.
+Also we still have to rely on blk_mq_elv_switch_back() for switching
+back, and it has to cover unfrozen queue case.
 
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: William Liu <will@willsroot.io>
-Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250819033601.579821-1-will@willsroot.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Nilay Shroff <nilay@linux.ibm.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Fixes: 5989bfe6ac6b ("block: restore two stage elevator switch while running nr_hw_queue update")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250815131737.331692-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ block/blk-mq.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 12dd4d41605c..d99e1603c32a 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1761,7 +1761,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	ktime_t now = ktime_get();
- 	struct cake_tin_data *b;
- 	struct cake_flow *flow;
--	u32 idx;
-+	u32 idx, tin;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 4cb2f5ca8656..355db0abe44b 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -5031,6 +5031,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 	unsigned int memflags;
+ 	int i;
+ 	struct xarray elv_tbl, et_tbl;
++	bool queues_frozen = false;
  
- 	/* choose flow to insert into */
- 	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
-@@ -1771,6 +1771,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		__qdisc_drop(skb, to_free);
- 		return ret;
+ 	lockdep_assert_held(&set->tag_list_lock);
+ 
+@@ -5054,9 +5055,6 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 		blk_mq_sysfs_unregister_hctxs(q);
  	}
-+	tin = (u32)(b - q->tins);
- 	idx--;
- 	flow = &b->flows[idx];
  
-@@ -1938,13 +1939,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		q->buffer_max_used = q->buffer_used;
+-	list_for_each_entry(q, &set->tag_list, tag_set_list)
+-		blk_mq_freeze_queue_nomemsave(q);
+-
+ 	/*
+ 	 * Switch IO scheduler to 'none', cleaning up the data associated
+ 	 * with the previous scheduler. We will switch back once we are done
+@@ -5066,6 +5064,9 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 		if (blk_mq_elv_switch_none(q, &elv_tbl))
+ 			goto switch_back;
  
- 	if (q->buffer_used > q->buffer_limit) {
-+		bool same_flow = false;
- 		u32 dropped = 0;
-+		u32 drop_id;
++	list_for_each_entry(q, &set->tag_list, tag_set_list)
++		blk_mq_freeze_queue_nomemsave(q);
++	queues_frozen = true;
+ 	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0)
+ 		goto switch_back;
  
- 		while (q->buffer_used > q->buffer_limit) {
- 			dropped++;
--			cake_drop(sch, to_free);
-+			drop_id = cake_drop(sch, to_free);
-+
-+			if ((drop_id >> 16) == tin &&
-+			    (drop_id & 0xFFFF) == idx)
-+				same_flow = true;
- 		}
- 		b->drop_overlimit += dropped;
-+
-+		if (same_flow)
-+			return NET_XMIT_CN;
+@@ -5089,8 +5090,12 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
  	}
- 	return NET_XMIT_SUCCESS;
- }
+ switch_back:
+ 	/* The blk_mq_elv_switch_back unfreezes queue for us. */
+-	list_for_each_entry(q, &set->tag_list, tag_set_list)
++	list_for_each_entry(q, &set->tag_list, tag_set_list) {
++		/* switch_back expects queue to be frozen */
++		if (!queues_frozen)
++			blk_mq_freeze_queue_nomemsave(q);
+ 		blk_mq_elv_switch_back(q, &elv_tbl, &et_tbl);
++	}
+ 
+ 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
+ 		blk_mq_sysfs_register_hctxs(q);
 -- 
 2.50.1
 
