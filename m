@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B4B3635F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF00B3667A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA3A560134
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DAA3B3A84
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDB4341AA5;
-	Tue, 26 Aug 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA22834DCCA;
+	Tue, 26 Aug 2025 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBztmmRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNuljIHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A621DAC95;
-	Tue, 26 Aug 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B1934DCC3;
+	Tue, 26 Aug 2025 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214316; cv=none; b=tPhu41aztJAZtUpGymVlV/KywQ23uFN5yL1ADJj2+QcQpbjX/6HRYC4gQtibbDSc66lgSTve08nYv7VqYsmORvNaKhdYExrNOPNW66a1BrGg8AXm3iUDMWI/hVQgW+wZmqP3JN4gaPW0y2NdErDr1ys2MpXWVnW6jWRS5XYvI1w=
+	t=1756216024; cv=none; b=caXQtlm9+wdfYfRglupe67IkPq8lzUR/txC93d6gIakB9p15/BZWUmYp3Pr4HjmMmQZvs2vT54w3nTz/3IfnsHvzAWf+pv+HY7YrZPwLwVK0y51LIfWk32U2U8LULqs37KTeWm3hml5jAolYCPG/xX3PdNuwU5Nd30E8WQ8jVq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214316; c=relaxed/simple;
-	bh=EFlAC02XwrjbH4yWZaeNupxlmh90o6MCKihjlL9DCng=;
+	s=arc-20240116; t=1756216024; c=relaxed/simple;
+	bh=auo579tYFXwU3zuskgAAJskq7JIAZevlmxRSKWrLIPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmAifMN75F/VW0MtgC6sClXJvTrmX9uwJ749MFOMiCaXsTy8dCI4bX+ywaWR4ZfW4hbwIT/dNGy6ij4QGWSyXa0TAyTZc4hnvV8LiV+IqRtPyjsc3ddEYR9aaoYcG9ib6jurSlIALMskzlBnY70DE3YsfsdwUooei0kXbkxqR+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBztmmRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856E4C4CEF1;
-	Tue, 26 Aug 2025 13:18:35 +0000 (UTC)
+	 MIME-Version; b=WFVKCuB9sDxBk+aJWYt9wMWaznOFdmkIH9mLdkkz3JASC+eK8r2w5jHKMZAArXnwYnyEmxrIvWcW7kQOoRNsqDQaspuY8Gd7Aq/v0Wf31IiO8hJg+nOAqTgFDy5u1wufGruA5vYa840N5ToMNGLms4ekW30UGzqlsdgnBuKQfvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNuljIHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A393C4CEF1;
+	Tue, 26 Aug 2025 13:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214315;
-	bh=EFlAC02XwrjbH4yWZaeNupxlmh90o6MCKihjlL9DCng=;
+	s=korg; t=1756216024;
+	bh=auo579tYFXwU3zuskgAAJskq7JIAZevlmxRSKWrLIPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBztmmRP2Xwy3oh2meOGw2PNgWneSB4GAaMF2m9x8ozVZc0zb8bT0TriZoiWErisL
-	 GcfESTSNjgRucCPfLfXQubcebc/eTom5dt/ux1bTSYYESTT8HjMxwXTff3TO5gtmX1
-	 64lXWGVSxj3SqiLF9tHGJqnN8x3tih6ZVIV109q8=
+	b=aNuljIHOGBvT2Re5Y++fTgZjS2SreT8YAg10flNo+Nx9enDGPU28rlMrVZtLAxgWh
+	 WtCKuuTnjJFj61W9c0j/OnvMe0phAa8YJ3YYQE8foTpJBWjJxUAKJrfy8hrjgeoclN
+	 9kGAlMu5iIfYlWRolHl5DmrSwt848Fsz90Tgx0Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliav Farber <farbere@amazon.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/482] pps: clients: gpio: fix interrupt handling order in remove path
+	stable@kernel.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 255/644] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
 Date: Tue, 26 Aug 2025 13:05:46 +0200
-Message-ID: <20250826110933.124134209@linuxfoundation.org>
+Message-ID: <20250826110952.701658963@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliav Farber <farbere@amazon.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
+commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
 
-The interrupt handler in pps_gpio_probe() is registered after calling
-pps_register_source() using devm_request_irq(). However, in the
-corresponding remove function, pps_unregister_source() is called before
-the IRQ is freed, since devm-managed resources are released after the
-remove function completes.
+Hardware or bootloader will initialize TLB entries to any value, which
+may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
+family of cores this will trigger machine check exception and cause boot
+failure. On M5150 simulation this could happen 7 times out of 1000 boots.
 
-This creates a potential race condition where an interrupt may occur
-after the PPS source is unregistered but before the handler is removed,
-possibly leading to a kernel panic.
+Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
+TLB ENTRIHI unique value for collisions before it's written, and in case
+of collision try a different ASID.
 
-To prevent this, switch from devm-managed IRQ registration to manual
-management by using request_irq() and calling free_irq() explicitly in
-the remove path before unregistering the PPS source. This ensures the
-interrupt handler is safely removed before deactivating the PPS source.
-
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
+Cc: stable@kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pps/clients/pps-gpio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index bf3b6f1aa984..41e1fdbcda16 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -206,8 +206,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 	}
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -498,6 +498,60 @@ static int __init set_ntlb(char *str)
  
- 	/* register IRQ interrupt handler */
--	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
--			get_irqf_trigger_flags(data), data->info.name, data);
-+	ret = request_irq(data->irq, pps_gpio_irq_handler,
-+			  get_irqf_trigger_flags(data), data->info.name, data);
- 	if (ret) {
- 		pps_unregister_source(data->pps);
- 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
-@@ -224,6 +224,7 @@ static int pps_gpio_remove(struct platform_device *pdev)
- {
- 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
+ __setup("ntlb=", set_ntlb);
  
-+	free_irq(data->irq, data);
- 	pps_unregister_source(data->pps);
- 	del_timer_sync(&data->echo_timer);
- 	/* reset echo pin in any case */
--- 
-2.39.5
-
++/* Initialise all TLB entries with unique values */
++static void r4k_tlb_uniquify(void)
++{
++	int entry = num_wired_entries();
++
++	htw_stop();
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	while (entry < current_cpu_data.tlbsize) {
++		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
++		unsigned long asid = 0;
++		int idx;
++
++		/* Skip wired MMID to make ginvt_mmid work */
++		if (cpu_has_mmid)
++			asid = MMID_KERNEL_WIRED + 1;
++
++		/* Check for match before using UNIQUE_ENTRYHI */
++		do {
++			if (cpu_has_mmid) {
++				write_c0_memorymapid(asid);
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
++			} else {
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
++			}
++			mtc0_tlbw_hazard();
++			tlb_probe();
++			tlb_probe_hazard();
++			idx = read_c0_index();
++			/* No match or match is on current entry */
++			if (idx < 0 || idx == entry)
++				break;
++			/*
++			 * If we hit a match, we need to try again with
++			 * a different ASID.
++			 */
++			asid++;
++		} while (asid < asid_mask);
++
++		if (idx >= 0 && idx != entry)
++			panic("Unable to uniquify TLB entry %d", idx);
++
++		write_c0_index(entry);
++		mtc0_tlbw_hazard();
++		tlb_write_indexed();
++		entry++;
++	}
++
++	tlbw_use_hazard();
++	htw_start();
++	flush_micro_tlb();
++}
++
+ /*
+  * Configure TLB (for init or after a CPU has been powered off).
+  */
+@@ -537,7 +591,7 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+-	local_flush_tlb_all();
++	r4k_tlb_uniquify();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
