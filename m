@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92ED2B36565
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252A6B35F83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276BE566E7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B8E1890B65
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D0D221290;
-	Tue, 26 Aug 2025 13:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47F9EEAB;
+	Tue, 26 Aug 2025 12:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfBswuD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSWYpYq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF14D1F4CA9;
-	Tue, 26 Aug 2025 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606FE8462;
+	Tue, 26 Aug 2025 12:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215603; cv=none; b=g6iiW+Hat5KnxYv2aCsH/ttuSl43UZWNXJPM+uCsM/F1pnyRAye+e8tcEXQcc/QLazKCP8huScfTp+cbNuQVu3aEyX66RkGoHIJkLoNQdHh/MUYDjDxT3Msdu911aUXEK3pOL1vQD+kx2ar5GE8/+tHHD2yhXRULVA4pbpkOgXc=
+	t=1756212583; cv=none; b=rOUeX+tAfE4UGkgNAQ6t5Uj3sCsBr6oKttXelMi+uy0fhYXM1uJL3pd+/d6aX+cuxkpcnVfAAq1eU+bFuV0SggZqpKmclWA9LyRIKN/MZu1IEEnj+DOwVdTi8Yu18c9Xe62+GdLgEROIJPmZg+XJmQz2SYKQl7I/knPMeAXx9xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215603; c=relaxed/simple;
-	bh=GUnfJXnZoxxQr2e3fXLUIJXB+UNqHnezqH2urso/nwo=;
+	s=arc-20240116; t=1756212583; c=relaxed/simple;
+	bh=OwZAeJxyD5Vo8i6Bln8bhI7PwldRmbVFiYNkcIAubP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPw65Lay4VgEhmeNpk6mAQw2grAC0OnYsY6dwFPwoRq6JyrH9tHzGafWPTweEKhbp97GJZJ3one+sw5ZsYF+HHLbfWpoWRvHdMCvgHdw8mXxBTbhHWc121zUg586GZn6OYpVIIB1I3Iq7CyrO0KVD/uN7zKlDn/PBsTVpqmBd9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfBswuD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447E2C4CEF1;
-	Tue, 26 Aug 2025 13:40:02 +0000 (UTC)
+	 MIME-Version; b=nqdRMADgjcaHLdMGSCnWhPcBsIMj+yss+qzNCyIlxvfK0j5LdR87Etd8Do49IAdetZiApQo2Cd8h7m1CP5U3CSxNE4FKQq9Z+Y4GH9B43kaakhpBh7xWgSvRVAompTT1EXM1I7J31TheXrHJcZJp+e6NijsfIiT3UPCMKiv2/oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSWYpYq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18DDC4CEF1;
+	Tue, 26 Aug 2025 12:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215602;
-	bh=GUnfJXnZoxxQr2e3fXLUIJXB+UNqHnezqH2urso/nwo=;
+	s=korg; t=1756212583;
+	bh=OwZAeJxyD5Vo8i6Bln8bhI7PwldRmbVFiYNkcIAubP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfBswuD2tgBEtyM9bA0IjzjcR4eVfK5pPq5JBR42WKPvGN/mHtXVd5EKiEFCsYzzm
-	 DR4ykTTKM8Jv4VA2iZBoUNVWY59Fls7G8M5Fd30HD+SHvV0rhhqhVF5plhlafw8Vuj
-	 9Co/JUBFiuCUb67Tml/nnKJLyTRqphqY/HUbDEzw=
+	b=DSWYpYq11lLC5h+NeDdY4zsHSmjAv4ApKUBxKHvFjid3CcGpWa6ep2rm4ln6OzV9Z
+	 bFR0LvbGA2FPh2Jqc+T6DAC3cV4Z8UeP3pFB/jKOFSKWyFp1wOAj0b1a26Bo+NOheB
+	 LL+Y047/nEslrR21jX9reaAdIABLqhqrYkAuotTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
-	Drew Hamilton <drew.hamilton@zetier.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/644] usb: musb: fix gadget state on disconnect
-Date: Tue, 26 Aug 2025 13:02:36 +0200
-Message-ID: <20250826110948.110387786@linuxfoundation.org>
+	Harald Mommer <harald.mommer@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 008/587] gpio: virtio: Fix config space reading.
+Date: Tue, 26 Aug 2025 13:02:37 +0200
+Message-ID: <20250826110953.163232329@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Hamilton <drew.hamilton@zetier.com>
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
 
-commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
+commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
 
-When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
-echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
-/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
+Quote from the virtio specification chapter 4.2.2.2:
 
-Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
 
-Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
-to fix both cases.
-
-Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
-Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-virtio.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1909,6 +1909,7 @@ static int musb_gadget_stop(struct usb_g
- 	 * gadget driver here and have everything work;
- 	 * that currently misbehaves.
- 	 */
-+	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -539,7 +539,6 @@ static const char **virtio_gpio_get_name
  
- 	/* Force check of devctl register for PM runtime */
- 	schedule_delayed_work(&musb->irq_work, 0);
-@@ -2017,6 +2018,7 @@ void musb_g_disconnect(struct musb *musb
- 	case OTG_STATE_B_PERIPHERAL:
- 	case OTG_STATE_B_IDLE:
- 		musb_set_state(musb, OTG_STATE_B_IDLE);
-+		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
- 		break;
- 	case OTG_STATE_B_SRP_INIT:
- 		break;
+ static int virtio_gpio_probe(struct virtio_device *vdev)
+ {
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	u32 gpio_names_size;
+@@ -551,9 +550,11 @@ static int virtio_gpio_probe(struct virt
+ 		return -ENOMEM;
+ 
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 
 
 
