@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC8DB366AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB328B36964
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F76188E68E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5757D8E5F23
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D6E34F481;
-	Tue, 26 Aug 2025 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDE3352FD0;
+	Tue, 26 Aug 2025 14:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPUgSToD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abFh6j/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1658F34F485;
-	Tue, 26 Aug 2025 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4F352066;
+	Tue, 26 Aug 2025 14:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216237; cv=none; b=AmmgptV0lm1nV82njrqUfbzXu1DoiLQRv7o64yTig77q8A9LX6Q9NWwweTs7m6zRa9+8WfqB5Lh+6zgws07b/Mco3RnQi1HaHNFeR3iqSfjBhqkXCBpQxRKC3OFoyP3s87ze9SDCf4YFxqgZcXNmcSrO7TXiZBDvS9J9gZE3vFw=
+	t=1756217627; cv=none; b=b9d9tIT2LtkzYEXct4LcvbvIFIn3H+fXvYYtrXVXdOW4ZIQRl8JWpX4OZVYMemfUEzNqNplm/VnvzM+39uAKU4sNM3O4Rqlb1wTx3mH1shrZIA2hRf2M0zreEX9L0VhathHRfuL8CoK/vo+OV/yA1Njp21CEE9AbUo06IgXLGk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216237; c=relaxed/simple;
-	bh=nV5BLit3m7YBVwhMuedKZ+sZfcd4zxcfZBuf3l6y2yM=;
+	s=arc-20240116; t=1756217627; c=relaxed/simple;
+	bh=6X+vhEe38Eql3131+bwFzfEVysXSZ/4bYJzHmaMdYmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONl3TixKafV5IsPEfi+HjbbAXkqH3KQiY41UdVd0Jx9G6RtPnKUdkDDrvXdlN/Qy6YcglAJpYQD5twyolx4cXE7D0r6dzgUFbNaO7le48JeVFPwhK0wfjW4io4mVoHulFZohqR64bieJIwssQqptP4KHlyjsumlxjU84WI5yf6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPUgSToD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D859C116B1;
-	Tue, 26 Aug 2025 13:50:36 +0000 (UTC)
+	 MIME-Version; b=RlFOaR5N9t69HGgwsuj23KiC5Y1ZeMuY34PbeV2GXvYxcuoQYKYwkcTKcO0mZ0mc3yGb4XFbvq/NV190YnWnZRYY+EV1hM/vWfyRZ3MN7X+8bzqguzx9ytSOvJO0YF1cyFebO/MTLFEN1N4RAZXzT5lt1adPL/bExUTCjZEiyXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abFh6j/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494B4C4CEF1;
+	Tue, 26 Aug 2025 14:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216237;
-	bh=nV5BLit3m7YBVwhMuedKZ+sZfcd4zxcfZBuf3l6y2yM=;
+	s=korg; t=1756217627;
+	bh=6X+vhEe38Eql3131+bwFzfEVysXSZ/4bYJzHmaMdYmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPUgSToDQt/YZDoBwVfPtxK4qifHUUCpT2wW8H8Rf5zop7QpQ0aqCApN9VfaGbuUP
-	 Q9dODQK7dort5xEE27cpufEr8WP8RoMjenV2gjumPrS2Xn46Q1krKdSgvzVAcdnnGI
-	 XBAPEGpWJ9gryNLNxJYh2n3h0N3o6+MSoI/Oou0E=
+	b=abFh6j/9wFwKP9uTJUxYf0sKOxe/NsArK+IDrMXc2u9+RHzKtMGNSH9678ltYU4Ac
+	 nmRJAuzlyvur2jzu9H7K4G68Pc1MtsPxC44vLNIVMJiMDFc7VViLh5zyry+SQO0PO3
+	 zCmKwbu/moyGO6OWL0MbQafxZd/Bj8G9A1+QfJqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/644] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
+Subject: [PATCH 5.10 215/523] udf: Verify partition map count
 Date: Tue, 26 Aug 2025 13:07:05 +0200
-Message-ID: <20250826110954.665764512@linuxfoundation.org>
+Message-ID: <20250826110929.767113946@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
+[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
 
-Fix all macro related issues identified by checkpatch.pl:
+Verify that number of partition maps isn't insanely high which can lead
+to large allocation in udf_sb_alloc_partition_maps(). All partition maps
+have to fit in the LVD which is in a single block.
 
-  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
+Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/udf/super.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 5eccc8af839f..03cba220fff1 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2132,15 +2132,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_CLK_FREQMUL_SHIFT		18
- #define SND_RME_CLK_FREQMUL_MASK		0x7
- #define SND_RME_CLK_SYSTEM(x) \
--	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
-+	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
- #define SND_RME_CLK_AES(x) \
--	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SPDIF(x) \
--	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SYNC(x) \
--	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
-+	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
- #define SND_RME_CLK_FREQMUL(x) \
--	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
-+	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
- #define SND_RME_CLK_AES_LOCK			0x1
- #define SND_RME_CLK_AES_SYNC			0x4
- #define SND_RME_CLK_SPDIF_LOCK			0x2
-@@ -2149,9 +2149,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_SPDIF_FORMAT_SHIFT		5
- #define SND_RME_BINARY_MASK			0x1
- #define SND_RME_SPDIF_IF(x) \
--	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
- #define SND_RME_SPDIF_FORMAT(x) \
--	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 8dae5e73a00b..723184b1201f 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1410,7 +1410,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 	struct genericPartitionMap *gpm;
+ 	uint16_t ident;
+ 	struct buffer_head *bh;
+-	unsigned int table_len;
++	unsigned int table_len, part_map_count;
+ 	int ret;
  
- static const u32 snd_rme_rate_table[] = {
- 	32000, 44100, 48000, 50000,
+ 	bh = udf_read_tagged(sb, block, block, &ident);
+@@ -1431,7 +1431,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 					   "logical volume");
+ 	if (ret)
+ 		goto out_bh;
+-	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
++
++	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
++	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
++		udf_err(sb, "error loading logical volume descriptor: "
++			"Too many partition maps (%u > %u)\n", part_map_count,
++			table_len / (unsigned)sizeof(struct genericPartitionMap1));
++		ret = -EIO;
++		goto out_bh;
++	}
++	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
+ 	if (ret)
+ 		goto out_bh;
+ 
 -- 
 2.39.5
 
