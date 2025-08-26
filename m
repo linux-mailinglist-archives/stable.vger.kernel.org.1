@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-173355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A5DB35D71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C67D3B35E66
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6AB7362B1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BAD56181F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EE5342CA2;
-	Tue, 26 Aug 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC5F29D292;
+	Tue, 26 Aug 2025 11:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2HnDyil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2TBy5HW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A229A33439A;
-	Tue, 26 Aug 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C24E200112;
+	Tue, 26 Aug 2025 11:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208032; cv=none; b=orvRHnDGfQpfhBXrwFuKAH8CG2IUfVMZZExy4630sVhS0YBAl5cmxgsJ004HPCNqywoot6+2uWbn67v/OClNb8Xo0MaN6Dgb5nBk5ZBPF08cnSuttDIcdQx0hvsU34J4o+eArEx6FxQtIlTG3lGjZk6A7kmhc1uAfVPoibzwT/Y=
+	t=1756208960; cv=none; b=I+sIUnWfUN33ju6QvZqcYDwKlF0bqvcgIHL1a93Ryd3to648+Puo4qqeRvyLXRwVgTJmlv6Vny6GKxP8UZ8OKm1vjlRmUx+X17dXkcEkgO6DPSyuQ2XRDyBP3+YCdCun5tU7SIh235scYAhNXLFIQ9yhEHvUx5ctvMxkY+tXMe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208032; c=relaxed/simple;
-	bh=FKqOrWnliYqiV8I14JogT9Wes6Hb+XGv+pTySbx8IRQ=;
+	s=arc-20240116; t=1756208960; c=relaxed/simple;
+	bh=rIttr2jSlxhc896CXQczCR6aIquQGQg47MxbMnUQHbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYFvl+yyJwdBSnBBl2aLV1Mrg6v2/CudoXJJWYQNvsgng/ebra0GA06IE1TEDiyM3sGjcwGcFeMdk9nb1cHVtLD20oKkrZJHNPNtRbdtjWP1U5sQN4Oq0CaFSPluaheI+SXfCOQlJXyOwm8t5Fhg40mhB3ppUmOx1onyTMwp18k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2HnDyil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21829C113CF;
-	Tue, 26 Aug 2025 11:33:51 +0000 (UTC)
+	 MIME-Version; b=NlhWnfrimIh8rvGxT+Nu8EDS2cHV+u4XWtjKpB6SK3yyC1Cis5BjkhTzCgM8v7ItdsKPBkZEYxh8tvxTZcLfxycca6wH2hV93b7U7RfkcIwBsvalG3YTLOlhKJGs09Sy94n4ueqmWZmcpvF6yRYiseMpOaPqMNzSzNgKDTM5O8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2TBy5HW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD5FC4CEF1;
+	Tue, 26 Aug 2025 11:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208032;
-	bh=FKqOrWnliYqiV8I14JogT9Wes6Hb+XGv+pTySbx8IRQ=;
+	s=korg; t=1756208958;
+	bh=rIttr2jSlxhc896CXQczCR6aIquQGQg47MxbMnUQHbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2HnDyilHzZ4NXCba41vO/+cGSqOX7xvgJUi0QLTkAk5Z3UwDu2r6PcaAlWClHn7I
-	 /0SZTeLAR+9zBlV+dJEShz14DKiFJdVsGHbBk38W9zqWqhrSUw4xlpivd8qZozDySl
-	 zE0jzO5tFTqp/BE4QLxsQdQv5pk9vv0JfQkmloCM=
+	b=o2TBy5HWNU126C9jrTzZSKikdJyVmOYmNZ68BcUq2BfPXYiZOR3YYpJT1xoGTfBW7
+	 CApyuFNl8gxcEubo/qqLgre2joT8PEv+KqITuObwSrUSP+XwJ7pY947qpsi7onm6eY
+	 OKe0JuBvYMja2VEd8D4YqpBj5RvQk/GYhhBBU59g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 410/457] cifs: Fix oops due to uninitialised variable
+Subject: [PATCH 6.12 279/322] Bluetooth: hci_sync: Prevent unintended PA sync when SID is 0xFF
 Date: Tue, 26 Aug 2025 13:11:34 +0200
-Message-ID: <20250826110947.427266640@linuxfoundation.org>
+Message-ID: <20250826110922.813329637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,44 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yang Li <yang.li@amlogic.com>
 
-[ Upstream commit 453a6d2a68e54a483d67233c6e1e24c4095ee4be ]
+[ Upstream commit 4d19cd228bbe8ff84a63fe7b11bc756b4b4370c7 ]
 
-Fix smb3_init_transform_rq() to initialise buffer to NULL before calling
-netfs_alloc_folioq_buffer() as netfs assumes it can append to the buffer it
-is given.  Setting it to NULL means it should start a fresh buffer, but the
-value is currently undefined.
+After LE Extended Scan times out, conn->sid remains 0xFF,
+so the PA sync creation process should be aborted.
 
-Fixes: a2906d3316fc ("cifs: Switch crypto buffer to use a folio_queue rather than an xarray")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Btmon snippet from PA sync with SID=0xFF:
+
+< HCI Command: LE Set Extended.. (0x08|0x0042) plen 6  #74726 [hci0] 863.107927
+        Extended scan: Enabled (0x01)
+        Filter duplicates: Enabled (0x01)
+        Duration: 0 msec (0x0000)
+        Period: 0.00 sec (0x0000)
+> HCI Event: Command Complete (0x0e) plen 4            #74727 [hci0] 863.109389
+      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
+        Status: Success (0x00)
+< HCI Command: LE Periodic Ad.. (0x08|0x0044) plen 14  #74728 [hci0] 865.141168
+        Options: 0x0000
+        Use advertising SID, Advertiser Address Type and address
+        Reporting initially enabled
+        SID: 0xff
+        Adv address type: Random (0x01)
+        Adv address: 0D:D7:2C:E7:42:46 (Non-Resolvable)
+        Skip: 0x0000
+        Sync timeout: 20000 msec (0x07d0)
+        Sync CTE type: 0x0000
+> HCI Event: Command Status (0x0f) plen 4              #74729 [hci0] 865.143223
+      LE Periodic Advertising Create Sync (0x08|0x0044) ncmd 1
+        Status: Success (0x00)
+
+Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4bb065a6fbaa..d3e09b10dea4 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4496,7 +4496,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
- 	for (int i = 1; i < num_rqst; i++) {
- 		struct smb_rqst *old = &old_rq[i - 1];
- 		struct smb_rqst *new = &new_rq[i];
--		struct folio_queue *buffer;
-+		struct folio_queue *buffer = NULL;
- 		size_t size = iov_iter_count(&old->rq_iter);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index c7fd657c86ff..af86df9de941 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -7020,10 +7020,13 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
+ 	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
+ 	 * it.
+ 	 */
+-	if (conn->sid == HCI_SID_INVALID)
+-		__hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
+-					 HCI_EV_LE_EXT_ADV_REPORT,
+-					 conn->conn_timeout, NULL);
++	if (conn->sid == HCI_SID_INVALID) {
++		err = __hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
++					       HCI_EV_LE_EXT_ADV_REPORT,
++					       conn->conn_timeout, NULL);
++		if (err == -ETIMEDOUT)
++			goto done;
++	}
  
- 		orig_len += smb_rqst_len(server, old);
+ 	memset(&cp, 0, sizeof(cp));
+ 	cp.options = qos->bcast.options;
+@@ -7053,6 +7056,7 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
+ 		__hci_cmd_sync_status(hdev, HCI_OP_LE_PA_CREATE_SYNC_CANCEL,
+ 				      0, NULL, HCI_CMD_TIMEOUT);
+ 
++done:
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ 
+ 	/* Update passive scan since HCI_PA_SYNC flag has been cleared */
 -- 
 2.50.1
 
