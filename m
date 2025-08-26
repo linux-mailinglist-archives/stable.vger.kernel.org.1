@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0F4B360AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5F5B3637A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F0E3B90B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C79C3BC1D4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41271DD9D3;
-	Tue, 26 Aug 2025 12:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D2833A00A;
+	Tue, 26 Aug 2025 13:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHcjDzyp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFdMR6w7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D6D17A2EA;
-	Tue, 26 Aug 2025 12:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8111DAC95;
+	Tue, 26 Aug 2025 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213152; cv=none; b=R02MlsLDKYp5ea8qnLQolkwaOjirTX5RgEFTRDrS56bqWM7w/RwY/fVEhyLbZej9GGqRf68QNDPsiq2aEviymuT3rmVQn3fWdj7PxOdX43Wm/zOtgd3M+64x+nXqVaKfVDK/K0fyLHKQ1ID95gRJ+nwuz6/NAMUNr4eAgtLJuJ0=
+	t=1756214475; cv=none; b=UbmDiSg8Y0MtrBojVh9jj81UjEAs83oRTYkwnwy3pfCMK2RlFe4GDYE3f52v+6Eglnj5xw5lmZZ+/PMKcRRWUzBIO9EZBoOMI7VDqb2kOolbDC2qi4gohzKcpLQZqrpZjWueRwjD/NTZwT3wPELaDXca1orfYzEQMvEO/MT2sUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213152; c=relaxed/simple;
-	bh=6TVE0Aejbe0o8FMg6k/pasTyEHYk3yLVTMBJeOI/Oyo=;
+	s=arc-20240116; t=1756214475; c=relaxed/simple;
+	bh=NquCLpateTcFKeWqoseNdyjzpxqtfAee0OJed+c6k6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvD2a8+0H1b2itftJgsMutz6fLap2o8RJfTiyXJdFxVE9RwTGLbrLUwBswfMgBbZf2ELpPfcNn3mu8+RC5/o92yImg2jPz586nof9OTJxCmYVCkVYLd1+Ur193Ui+izerAD9j0Fqiy3zTZCbRR6CF90W+5S8eNa4Wtcvz/pq7eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHcjDzyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308A6C4CEF1;
-	Tue, 26 Aug 2025 12:59:12 +0000 (UTC)
+	 MIME-Version; b=S9TSNcgWHZ7kQMuhIRjtNdRGXkVUWa/HrpTsipbW7kbNp+Ps3LStithlQb5+QW3pZOdTd24QplbG4kEMR9u5+/2Z0UoH50xsU3qBVb5uGAq7kUD1ppyjHqZ5qSIgp8FqXBH2St92/9/D2mttYaLVax8gaMqAKkqOl0jo6+qNT+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFdMR6w7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E711C113D0;
+	Tue, 26 Aug 2025 13:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213152;
-	bh=6TVE0Aejbe0o8FMg6k/pasTyEHYk3yLVTMBJeOI/Oyo=;
+	s=korg; t=1756214474;
+	bh=NquCLpateTcFKeWqoseNdyjzpxqtfAee0OJed+c6k6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHcjDzyp/035dwQjTLbPeZz27wJKsWckYQa/fDJXVGBKeOtgeRXexld0UCixxtqiD
-	 kkXdlBKAXbxwc32w1fs23uB0a6xH2cuyvoHrDT9dtiwkjq2AeDC7P60vHm8CePLfCe
-	 Yx5TpzXLVPsp1zTOS5t1YsZgZdh4EuWQX4Ujur00=
+	b=MFdMR6w7WZTrUtFjTm8xtTUB6UXo0ZcfTGDCI9ijMukdQvNe1ZKSIojsDxsc9P4r+
+	 95bhhrhfdnPl+0ClCBOFEMm4JYtjmvcnpYb8z1J1ztLlh4x8K3kP6Umkf8McCCOGQD
+	 /zQe3yP5AOtJ0MBJbN0Kau4zgNrcdpp+G+R92/ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Mark Einon <mark.einon@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/587] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
-Date: Tue, 26 Aug 2025 13:06:12 +0200
-Message-ID: <20250826110958.609512224@linuxfoundation.org>
+Subject: [PATCH 6.1 120/482] et131x: Add missing check after DMA map
+Date: Tue, 26 Aug 2025 13:06:13 +0200
+Message-ID: <20250826110933.788510496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
-
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
-
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Mark Einon <mark.einon@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index c85647a0ba09..5fa1dd58ac42 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -298,7 +298,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
- 
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
+diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
+index 5fab589b3ddf..03e7f8084965 100644
+--- a/drivers/net/ethernet/agere/et131x.c
++++ b/drivers/net/ethernet/agere/et131x.c
+@@ -2459,6 +2459,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb),
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2468,6 +2472,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2478,6 +2486,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb_headlen(skb) / 2,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					goto unmap_first_out;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2489,6 +2501,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 						    0,
+ 						    desc[frag].len_vlan,
+ 						    DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
++				goto unmap_out;
++
+ 			desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 			desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 			frag++;
+@@ -2578,6 +2593,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 		       &adapter->regs->global.watchdog_timer);
+ 	}
+ 	return 0;
++
++unmap_out:
++	// Unmap the body of the packet with map_page
++	while (--i) {
++		frag--;
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_page(&adapter->pdev->dev, dma_addr,
++			       desc[frag].len_vlan, DMA_TO_DEVICE);
 +	}
- 
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -349,7 +353,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
- 
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
++
++unmap_first_out:
++	// Unmap the header with map_single
++	while (frag--) {
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_single(&adapter->pdev->dev, dma_addr,
++				 desc[frag].len_vlan, DMA_TO_DEVICE);
 +	}
++
++	return -ENOMEM;
+ }
  
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -1966,7 +1974,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
- 
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
- 
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
+ static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
 -- 
 2.39.5
 
