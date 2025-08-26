@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D684B36093
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC55B3671C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94BB83BC187
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B79D8E406C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3B11DD9D3;
-	Tue, 26 Aug 2025 12:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE51345726;
+	Tue, 26 Aug 2025 13:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mt+7tXHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fqvm1kNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A38C1C54A9;
-	Tue, 26 Aug 2025 12:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE4421ABDC;
+	Tue, 26 Aug 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213072; cv=none; b=I2ql74wP7g/5Bchm6Yg1XjpR/8EFFavUdDTwn90PHyeq9tfRHl4TiDcYWczEnqLDnAcbyA/+lKzwzTJKZORoRfBrxywhcgSDgXyCfZS57TdbAGreOaN1/Et7vbEMf/0l0spVZDFYuP2/Lsrtm/VTqHWOhlbGfe1AVy8fsMHB7G4=
+	t=1756216142; cv=none; b=G/zTPzT0yP9yIcmVhXd63cE7R2qzqHY+q0TMZFvvx8ukWBj1BeB94htE1rKlZoQfirCWARIl/sj/qrtCkBMb88Bx2+DazxZu9K0twkpsM9q3N2x3vED59tTPU0K0JtlahdaTGEvxRNabeTJTO3r1AYcvwi6PmlE5p5AV05EICs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213072; c=relaxed/simple;
-	bh=hOkVl3HO0QM8p+sQ6QA1vaU0spbDdcnc7dua39ZNEWQ=;
+	s=arc-20240116; t=1756216142; c=relaxed/simple;
+	bh=xkmVAjN+vkVTiyrNUpM7dZgjvNWAWnBI3PRoNu3Zwaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGG4tUUZVBKHi5MRZiep+aUlsGLrS/WK2k/yxIhbhij31BKttXo7JDZVTUz2f3p24eFputm+OhyhdqOYRHrU5Tnh6PYbT+eDnGM8a+afSEiSsL3wHvMntdLIPUUy1D91IHr2h17Ri/HcakPlsIvpC4cW2Hy4aCYBFPekEiRc+aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mt+7tXHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814F0C4CEF1;
-	Tue, 26 Aug 2025 12:57:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U9E+gZ3yHqbUxj3o2JQz4Y3+xCSHg/hcq5MYbHt/pVD4fBX6K14DIuk2b2zc/P5F5zUwB8Trponj4Cs6Idd+ipQCrrtISMutXsDqe5ZQeP2VP2Sj/+ANHJJmiWrSWWvMP3T0tnTHt4fyjx+REXMLeEYypRGbkBAPg4fvj2/fhyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fqvm1kNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9534C4CEF1;
+	Tue, 26 Aug 2025 13:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213071;
-	bh=hOkVl3HO0QM8p+sQ6QA1vaU0spbDdcnc7dua39ZNEWQ=;
+	s=korg; t=1756216142;
+	bh=xkmVAjN+vkVTiyrNUpM7dZgjvNWAWnBI3PRoNu3Zwaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mt+7tXHv9I23kIV4PkRdh8CNMCo3a0jcF4VLjYJTneplXaFV5iTHIB71K0ns1jc5Y
-	 FN2Ic9vlAIeBdu6zqjH7YqHpbUvYkUdC/wxaWY1oBt6s9he/OmcocjBG9puVZUTCWQ
-	 7xrYwkNhJr230FKHvSeXBE/1rbwhCZkKF9U+O9aw=
+	b=Fqvm1kNv53I01vNdLXW4B7G21Rz4eclTAS+n8ymW+Um/KLGy+Qc8VKlc1ftgYwzXK
+	 /1ioj4C2d2FxlJ/3eM1rQQ6wRnKsLXi2/Dll3yf0Na6u8OGEmnykTSGW7xjGASoOfp
+	 oYDIunkAGeyy3jeNrhETiM8wGU+4BItlVS07oDwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/587] selftests/bpf: Fix a user_ringbuf failure with arm64 64KB page size
+	Ma Ke <make24@iscas.ac.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 268/644] sunvdc: Balance device refcount in vdc_port_mpgroup_check
 Date: Tue, 26 Aug 2025 13:05:59 +0200
-Message-ID: <20250826110958.279756911@linuxfoundation.org>
+Message-ID: <20250826110953.013726536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit bbc7bd658ddc662083639b9e9a280b90225ecd9a ]
+commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
 
-The ringbuf max_entries must be PAGE_ALIGNED. See kernel function
-ringbuf_map_alloc(). So for arm64 64KB page size, adjust max_entries
-properly.
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250607013626.1553001-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/block/sunvdc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index dfff6feac12c..7e9a508c1571 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -21,8 +21,7 @@
- #include "../progs/test_user_ringbuf.h"
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -948,8 +948,10 @@ static bool vdc_port_mpgroup_check(struc
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
  
- static const long c_sample_size = sizeof(struct sample) + BPF_RINGBUF_HDR_SZ;
--static const long c_ringbuf_size = 1 << 12; /* 1 small page */
--static const long c_max_entries = c_ringbuf_size / c_sample_size;
-+static long c_ringbuf_size, c_max_entries;
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
  
- static void drain_current_samples(void)
- {
-@@ -424,7 +423,9 @@ static void test_user_ringbuf_loop(void)
- 	uint32_t remaining_samples = total_samples;
- 	int err;
- 
--	BUILD_BUG_ON(total_samples <= c_max_entries);
-+	if (!ASSERT_LT(c_max_entries, total_samples, "compare_c_max_entries"))
-+		return;
-+
- 	err = load_skel_create_user_ringbuf(&skel, &ringbuf);
- 	if (err)
- 		return;
-@@ -686,6 +687,9 @@ void test_user_ringbuf(void)
- {
- 	int i;
- 
-+	c_ringbuf_size = getpagesize(); /* 1 page */
-+	c_max_entries = c_ringbuf_size / c_sample_size;
-+
- 	for (i = 0; i < ARRAY_SIZE(success_tests); i++) {
- 		if (!test__start_subtest(success_tests[i].test_name))
- 			continue;
--- 
-2.39.5
-
+ 	return false;
+ }
 
 
 
