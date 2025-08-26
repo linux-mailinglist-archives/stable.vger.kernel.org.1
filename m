@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69E4B3635A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08496B36646
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BAFF8A82F3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314BB8E5545
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE2634A337;
-	Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7BA350854;
+	Tue, 26 Aug 2025 13:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgGxvAZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJooRzhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE7828FD;
-	Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FA2345758;
+	Tue, 26 Aug 2025 13:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214390; cv=none; b=r4a375+wRVLnxJPT0FEbK7WHJUzc4bEho3X2Zyg5NJxRV7HMeuA0HrmHwFHwWGj8NnWsw5juYAeaPnD6B3WxbF4YMfPg8pzBslS7UuNo00wDqT+7oMp5YjIq/HjtHAOeNcjvkRe/o6VyEUSFXU7UiKLS23/gkMpeMEXu/V0Y8QA=
+	t=1756216011; cv=none; b=dGO7VzWHR5cxWrpUoCpmrFxDPgRDnbmyNrs00nhWBWkEIg9y0j7Dh1Guc6YDiTI61vJ2qXmFayliIF3NKmihxJvC0wcGRjKDUWLIOBskChwbZdT43QC+pTXuhxrrojZh5vMZEMSl+a1btqN+/a+UU0/nLd3gY/iYjbi0Pv+yCHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214390; c=relaxed/simple;
-	bh=zLivDoERfX4JA+yfMKxnR0IXoQkYO/k5B6vW82HXzi0=;
+	s=arc-20240116; t=1756216011; c=relaxed/simple;
+	bh=hDYs+ju9iQLbH1FEAsxCAsS+uBluifoVMPdaFBY+IY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVVAascohclYY69zg+mhsS2Ifo/KcOlsvUMpIapLwv6tlIXykemAyqoZizqotvI1ByajaRu6fI8VbhlNxNlA+d58kl/q0CCNDBQCZ+iTHJtBN6dYHD4/mPW9joZz9XQYKsjiuv1lIuQbup/3jHjQZ6MgDLkt99Ji21OdD2w+1rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgGxvAZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB84C4CEF1;
-	Tue, 26 Aug 2025 13:19:49 +0000 (UTC)
+	 MIME-Version; b=AL7YiH1Gwuc9f4knXBI2iJbTfbqsnAbx/Os04q3qTStMQVGTy7SzoiUgPIzlvivnk06XjIXsT/rub1+8+6j7EjVlkOB+RIK9PHq/xrFESY5LxDL4LbTHkIx+vQ4um3K5MirujcgTg4+9JrUQte6KbKbTPCXPNtzwk1ZZzfjJssk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJooRzhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1DAC113CF;
+	Tue, 26 Aug 2025 13:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214390;
-	bh=zLivDoERfX4JA+yfMKxnR0IXoQkYO/k5B6vW82HXzi0=;
+	s=korg; t=1756216011;
+	bh=hDYs+ju9iQLbH1FEAsxCAsS+uBluifoVMPdaFBY+IY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgGxvAZ6wH31nhd18Pbmow2jblmGUgu1L+wH9Rj5EpjqvIOjEUm/5+qlY4tFn+69i
-	 llK8nfXQRzlnQyxS94ncYUPuwQaSDKaQaKtmk3Ln3O937COIK27KHyActNTMIriEB2
-	 vKvzwqv7aFESrk1PzY1ObZrzYJUoPjyYiaunUu4I=
+	b=xJooRzhe1pMiZnlHin9pe3Zz5EeQJrLdR1a8fnEQnBqvG3meGPQIndbEnvb5Z2StT
+	 Nbgu2zVVo5cb3emh+OjpB8gmG7FctVT/za3IdesiFlDTFc6y3H2owvh/5Ak9lTCiIO
+	 CPrQN/3sneLuhIXhBSZY2IUeTwzCi33wam50iMFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/482] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 250/644] vsock: Do not allow binding to VMADDR_PORT_ANY
 Date: Tue, 26 Aug 2025 13:05:41 +0200
-Message-ID: <20250826110933.003689035@linuxfoundation.org>
+Message-ID: <20250826110952.584407943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Budimir Markovic <markovicbudimir@gmail.com>
 
-[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
+commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
 
-According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
-means the read would block. Hence, the common implementation in
-nonblocking model will poll the file when the nonblocking read returns
-EAGAIN. However, when the target file is thermal zone, this mechanism
-will totally malfunction because thermal zone doesn't implement sysfs
-notification and thus the poll will never return.
+It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
+cause a use-after-free when a connection is made to the bound socket.
+The socket returned by accept() also has port VMADDR_PORT_ANY but is not
+on the list of unbound sockets. Binding it will result in an extra
+refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
+the binding until socket destruction).
 
-For example, the read in Golang implemnts such method and sometimes
-hangs at reading some thermal zones via sysfs.
+Modify the check in __vsock_bind_connectible() to also prevent binding
+to VMADDR_PORT_ANY.
 
-Change to return -ENODATA instead of -EAGAIN to userspace.
-
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/vmw_vsock/af_vsock.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index bd7596125461..7ee89e99acbf 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -39,10 +39,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -683,7 +683,8 @@ static int __vsock_bind_connectible(stru
+ 		unsigned int i;
  
- 	ret = thermal_zone_get_temp(tz, &temperature);
+ 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
+-			if (port <= LAST_RESERVED_PORT)
++			if (port == VMADDR_PORT_ANY ||
++			    port <= LAST_RESERVED_PORT)
+ 				port = LAST_RESERVED_PORT + 1;
  
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return sprintf(buf, "%d\n", temperature);
- 
--	return sprintf(buf, "%d\n", temperature);
-+	if (ret == -EAGAIN)
-+		return -ENODATA;
-+
-+	return ret;
- }
- 
- static ssize_t
--- 
-2.39.5
-
+ 			new_addr.svm_port = port++;
 
 
 
