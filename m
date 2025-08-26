@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBD5B36782
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D57EB363DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4137B8E6B64
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08A9B4679DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C31834F461;
-	Tue, 26 Aug 2025 13:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27886341674;
+	Tue, 26 Aug 2025 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjWeswC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SylXz0vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB9F286881;
-	Tue, 26 Aug 2025 13:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A402405E1;
+	Tue, 26 Aug 2025 13:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216338; cv=none; b=BBJKfFtA0cezev5LLs20S48hy0nLSe7gOY4Dgh/6+690kQ5XjSYy4+NP0TvG3MFBBPeSK9HSJpvo4Ri2OMJTofy4lTtOuNnIgEaFKKpqGxAkhTEpVFBhsNhuyb0zV0VPvN6II/7ATN8K2SGPudRDTMkeToD4+36mOMRJOlBVJw8=
+	t=1756214635; cv=none; b=hYRNowuEfSyUGQpmzBJS9Un9fB5uwgCJp7ssBCvfggwrio1YXw6d6y1ko6goNMlEIa+QHO3A+wrRsbvvrZODFurT4a59s/T2NvkSyn2ptOXrqgdX6MelDaHG7C6Kig2IKV5H2GwSvoX/96+TrEUrVpYYyJ6qeUrvA5g7oVNv6WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216338; c=relaxed/simple;
-	bh=SfA6hjqj1QSVTDhh5HzT6iBJpjATTMAc2aJnq7c+nfg=;
+	s=arc-20240116; t=1756214635; c=relaxed/simple;
+	bh=QNi4ETE9xdBq+TgeIfLTiwvRKagz7gSYEik0QTNj+2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GeYDC/zQxMNgxM/F3jCqp2s4cplEO6YUSIk0mTzzSglRFnSSsrILl8ovRWaIGCeG2u8nWvUbKdFRZUgncchHfPCWCOmmNEEBAqHDhi+l/a9zxnCs6SMgjXZerXoQh5bvg7+7KpWqipSuv0W88+To6LLXlTyAht0+Guc345C4Vrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjWeswC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70917C113CF;
-	Tue, 26 Aug 2025 13:52:16 +0000 (UTC)
+	 MIME-Version; b=twnTkejTvZTnkjrUB7+1XvkWb+fqTVjmvKTuo67w/pn/WQZ9RAJ1nbJ8ozY5fNPe4TSATLtXr+PeoqY8Jyig9W3DdHnWv4XUORrmEUFqDTWXDbgOWuVYUMYQQpGz1VuBc+bhGU4v/bo0vubOAhyeUr6zY2AOhN+KcMzzkLJxD4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SylXz0vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF0C113CF;
+	Tue, 26 Aug 2025 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216336;
-	bh=SfA6hjqj1QSVTDhh5HzT6iBJpjATTMAc2aJnq7c+nfg=;
+	s=korg; t=1756214635;
+	bh=QNi4ETE9xdBq+TgeIfLTiwvRKagz7gSYEik0QTNj+2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjWeswC7oU5OjxhCg+19gX/Ad2RSK3ONgkPONx/6EaJbRtjCIfHV36ijBGxTmACZT
-	 8asBe8CEmuioSvbGPdaIcpKOwJcNthS+C7Nl86SX8NrbpAxbx8sfTZjNRfmriC1B7c
-	 FUW7hfHDolS46JhrfT2qcNzPD5fYle+MuZ+jWi0I=
+	b=SylXz0vnb1YxuLCBu/0uhdd8XlSeCz6d4cIpGfa5+phaEHQe0QH3Y17vRZs12JQsC
+	 W0fFQUfuPuTHb1XaLLNqmiltZ3mdTVVI1x6J3xEW5lb8ZLBuAh+hNHnFKdPZe8ecyv
+	 SzSZGtQP4YFhLkgO2U23UcNPEd8pgGoAjWE6vuY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 373/644] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+Subject: [PATCH 6.1 211/482] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
 Date: Tue, 26 Aug 2025 13:07:44 +0200
-Message-ID: <20250826110955.662466419@linuxfoundation.org>
+Message-ID: <20250826110935.991922749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This change expands the oscillator stop flag (OSF) handling that has
+already been implemented for some chips to the ds1341 chip (DS1341 and
+DS1342 share a datasheet). This handling manages the validity of the RTC
+data in .read_time and .set_time based on the OSF.
+
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 091ca9ca49aa..2def9ed34beb 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1167,6 +1167,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1191,6 +1193,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1221,10 +1225,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
- 	}
- 
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
-+	}
-+
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
-+	}
- 
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index b2c539a42154..e5776545a8a0 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -92,6 +92,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 73f2dd3af4d4..530b9340db21 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -273,6 +273,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
+ 		if (tmp & DS1340_BIT_OSF)
+ 			return -EINVAL;
+ 		break;
++	case ds_1341:
++		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
++		if (ret)
++			return ret;
++		if (tmp & DS1337_BIT_OSF)
++			return -EINVAL;
++		break;
+ 	case ds_1388:
+ 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
+ 		if (ret)
+@@ -371,6 +378,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
+ 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
+ 				   DS1340_BIT_OSF, 0);
+ 		break;
++	case ds_1341:
++		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
++				   DS1337_BIT_OSF, 0);
++		break;
+ 	case ds_1388:
+ 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
+ 				   DS1388_BIT_OSF, 0);
 -- 
 2.39.5
 
