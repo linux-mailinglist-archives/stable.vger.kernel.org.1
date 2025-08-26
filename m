@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124A2B369E1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 598FEB35DF3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875E21C42856
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7397463239
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE67D34DCDA;
-	Tue, 26 Aug 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67342BF3E2;
+	Tue, 26 Aug 2025 11:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrxW8oPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1Vp7Q4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA962F49EA;
-	Tue, 26 Aug 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30B7199935;
+	Tue, 26 Aug 2025 11:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217847; cv=none; b=iwIycntL99LQXpUsm829FEUZ8s37gOmbu5747EZUoEzjXgHTyajA0iV+PtDxmGB0m3tGhcvniANegg8tJBlLLd8QPSeBhWXZN1yW1JLXaSt73lgxbAdGK7UeJYcPybe1cvuNFjmQU3MoD+0oGZGAJ4uu6jHlImkN7ZUBagEEWZU=
+	t=1756208387; cv=none; b=Vuokx1Ai8AeBhAFrkMuCK+VjR5gus5S6msc3a0IVbCqmKZ3Ol5NQGpjNuzwZsBmuSS2DjOYLYWJVnTP2s94O8zB5SOaEUTHcNfSJs2gfPY0xRaZVT3byKkU1SZZ6NiPApU7HSkYd7rJI6NeYd27JNCvyvBKf3mHgptT8Ub3xOHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217847; c=relaxed/simple;
-	bh=afsK6eidVQpEyg4co3W1Al3/2yq3VZ5Bysz3JnCvNTM=;
+	s=arc-20240116; t=1756208387; c=relaxed/simple;
+	bh=iXXPCgznM7fYb37kJe+fpJMP63Hdc0Nc/fjA1G1/mvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJFoatZfBZNgXndOnJdgAcpjzns6eygKqE3Zk1CUYNiticSAmLCTI5dUyepVP57neg/UhpbfjxNXaI2vBQqqhhhm7x5ec/QBKolaDfqUep891TGbKQ92ehlqQWUmNneinNfWh7jSvOmLmjSRMwun5206tehQp6Te9BBWuBMbqyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrxW8oPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11058C4CEF1;
-	Tue, 26 Aug 2025 14:17:26 +0000 (UTC)
+	 MIME-Version; b=WyEEZEcEPN5Ij/9GInt7HK2J9Kr8h17zeJbHCk2MMbR0b88/rktP72Z1PNxpe3Tzw1cGJS2XQt7yOo4oJBomL6NlKZ6msXWr1f559F1fC9XTzqn1IF/irHW7BGB7MPmf6aBcKgE/NtnvrQi5u1PWr7tp/S9hUd3Bv3jzmNBxt4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1Vp7Q4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD419C4CEF1;
+	Tue, 26 Aug 2025 11:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217847;
-	bh=afsK6eidVQpEyg4co3W1Al3/2yq3VZ5Bysz3JnCvNTM=;
+	s=korg; t=1756208387;
+	bh=iXXPCgznM7fYb37kJe+fpJMP63Hdc0Nc/fjA1G1/mvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrxW8oPEnFMJxXNVvfL3jCMpyvzSvhsnd+opZgc+E6FYnZ7NIk9Ipci4uXlWt4GiQ
-	 ci/6xUe08DUYPeRcxV1rPPkpVrlSk3ab0/h6aXBAjcVw/zm+h/6wl7/mc+0S6LjRyu
-	 mjayJEI+Z1lStP5xFwviupMFt30noZmSOQTjogtY=
+	b=g1Vp7Q4jU9PZzNKW49rTYoFpCAP0LAuSbrZHV2dE5ToCg4VZ1HSNTckHIyRqtn9eK
+	 u8W1meX1XXRYUMjyCVw+s6ZQyW2CjGGbHzYECAXR/SpHulR+5tZS625HzZ2mO2SgbT
+	 B5apG6UkHf4cUFy3oVfvvHa3vN7F9Nvy2QBS5csM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 296/523] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 091/322] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
 Date: Tue, 26 Aug 2025 13:08:26 +0200
-Message-ID: <20250826110931.750152283@linuxfoundation.org>
+Message-ID: <20250826110917.916414798@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+commit 4eab1c27ce1f0e89ab67b01bf1e4e4c75215708a upstream.
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+I have observed warning to occassionally trigger.
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
-
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/parisc/kernel/cache.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index 012731546cf6..3de6b0ff1627 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -126,4 +126,12 @@ void cleanup_tc(struct tc *tc);
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -841,7 +841,7 @@ void flush_cache_vmap(unsigned long star
+ 	}
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
--- 
-2.39.5
-
+ 	vm = find_vm_area((void *)start);
+-	if (WARN_ON_ONCE(!vm)) {
++	if (!vm) {
+ 		flush_cache_all();
+ 		return;
+ 	}
 
 
 
