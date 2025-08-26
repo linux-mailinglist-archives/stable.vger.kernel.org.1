@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-172907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AE2B350FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE495B35117
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8BA117C15F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE3BE241E70
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D24257830;
-	Tue, 26 Aug 2025 01:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075A31EDA2B;
+	Tue, 26 Aug 2025 01:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GwPYWe0s"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bvlqKOXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D90D14A8B;
-	Tue, 26 Aug 2025 01:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B8218C332;
+	Tue, 26 Aug 2025 01:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756171521; cv=none; b=BGwX0ochefXAdMhXM1/a80wyH/fDE2LpLymwsNvGnMpiyA/dh+LdP3LZ9AJevyOJG7SP2sAzkmYGk3ll3oW7GP///QDR9D9vq5DvgLRgBsYfHaqBTKTMOs7y4s8A9iACkMYAF2BEzPWmG0FM4bKi2ZsUmVGaWgQTTSI0sjYPiF4=
+	t=1756172531; cv=none; b=IipZJ85MwR+LxDt43g29FLhFexouqM1ZxpCGIC4iM/HjyGgn35f1Fm/aeLOka4BcGRsu82ZAZBNJ/rhkOBCMjN9UCVGAofIHiOTCkTobfo7/NeTMVd2Xi3+vxyWLctad48CuT3rW4yvJ9/dbOY0TJ0D1YoBHP270LuVApIg+cJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756171521; c=relaxed/simple;
-	bh=XaKsFiCrpF4WOiot84HlAt1C0T379kQZxh2FFYt8aaY=;
-	h=Date:To:From:Subject:Message-Id; b=CDzp2iwa1UX2xVJSu9EtjKWWXd/tSPLQKYocNvx9JLF3IVYKPL8Kbow7Ka+1ajDIv0QIo4imzmwd6kNQW+ncSJzExYNmbVPRl3d+K4BjaF1KvXQxgZ5e2N4cVTRdapqnqNx6VKMI5Mmf+QAvpjmjLKH/fLLxTKRnmSEm8iWN5v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GwPYWe0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F95AC4CEED;
-	Tue, 26 Aug 2025 01:25:18 +0000 (UTC)
+	s=arc-20240116; t=1756172531; c=relaxed/simple;
+	bh=iXNU1QxMYVnTQejECTKsj6Y/YWYm5nmLM5j6vXYpeZA=;
+	h=Date:To:From:Subject:Message-Id; b=fGamh049ezYdbE1cUAamo6AgRYfR8CuhPtxmuQWr/zEuBpeJS7o7wFrn2weG2XqH0TnV+vuI9PFHd82J4GEFkHUggCmxcMcJIY98zu6eYEJguINuv9nMugxgDLQTuUpq3G24QcLlyYyHS7dx5y+1NgusmmQX1NGXKbVyqHwkFPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bvlqKOXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0B8C4CEED;
+	Tue, 26 Aug 2025 01:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756171518;
-	bh=XaKsFiCrpF4WOiot84HlAt1C0T379kQZxh2FFYt8aaY=;
+	s=korg; t=1756172531;
+	bh=iXNU1QxMYVnTQejECTKsj6Y/YWYm5nmLM5j6vXYpeZA=;
 	h=Date:To:From:Subject:From;
-	b=GwPYWe0sFRoEehylGO6c2dn/xd+cYbbUf8gg2cShl8w07YYMYeXZZ69erB0DSCUJZ
-	 Vt0tCsff15fXFFvtms2uCIF5qTOZpSFpq27iAA2uBNhSAmgi3AScnTcetw9po2SDcX
-	 VUPtELWeUWUq0ONcXejrECnQow4nZTZlTMcTBodU=
-Date: Mon, 25 Aug 2025 18:25:18 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,leitao@debian.org,david@redhat.com,aha310510@gmail.com,akpm@linux-foundation.org
+	b=bvlqKOXWClUMned8xxuIeisuOU6YNs8K0S5xiHPdAOYTZL2fYt6RpWaBSrenucXYp
+	 lXd8rwH9CdqW2LPjA58WdW5/2usrIc86oS0d8kRIzuvdi7aBi6r8DnGhW4HlrnwmBf
+	 6sb76UJWQ+AR8j9Lj2gihDyRbh0v6Z7S4yOWvZ9c=
+Date: Mon, 25 Aug 2025 18:42:10 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ekffu200098@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250826012518.9F95AC4CEED@smtp.kernel.org>
+Subject: + mm-damon-core-set-quota-charged_from-to-jiffies-at-first-charge-window.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250826014211.2A0B8C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
+     Subject: mm/damon/core: set quota->charged_from to jiffies at first charge window
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
+     mm-damon-core-set-quota-charged_from-to-jiffies-at-first-charge-window.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-set-quota-charged_from-to-jiffies-at-first-charge-window.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,88 +73,86 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Jeongjun Park <aha310510@gmail.com>
-Subject: mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
-Date: Sun, 24 Aug 2025 03:21:15 +0900
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Subject: mm/damon/core: set quota->charged_from to jiffies at first charge window
+Date: Fri, 22 Aug 2025 11:50:57 +0900
 
-When restoring a reservation for an anonymous page, we need to check to
-freeing a surplus.  However, __unmap_hugepage_range() causes data race
-because it reads h->surplus_huge_pages without the protection of
-hugetlb_lock.
+Kernel initializes the "jiffies" timer as 5 minutes below zero, as shown
+in include/linux/jiffies.h
 
-And adjust_reservation is a boolean variable that indicates whether
-reservations for anonymous pages in each folio should be restored. 
-Therefore, it should be initialized to false for each round of the loop. 
-However, this variable is not initialized to false except when defining
-the current adjust_reservation variable.
+ /*
+ * Have the 32 bit jiffies value wrap 5 minutes after boot
+ * so jiffies wrap bugs show up earlier.
+ */
+ #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
 
-This means that once adjust_reservation is set to true even once within
-the loop, reservations for anonymous pages will be restored
-unconditionally in all subsequent rounds, regardless of the folio's state.
+And jiffies comparison help functions cast unsigned value to signed to
+cover wraparound
 
-To fix this, we need to add the missing hugetlb_lock, unlock the
-page_table_lock earlier so that we don't lock the hugetlb_lock inside the
-page_table_lock lock, and initialize adjust_reservation to false on each
-round within the loop.
+ #define time_after_eq(a,b) \
+  (typecheck(unsigned long, a) && \
+  typecheck(unsigned long, b) && \
+  ((long)((a) - (b)) >= 0))
 
-Link: https://lkml.kernel.org/r/20250823182115.1193563-1-aha310510@gmail.com
-Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
-Cc: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
+When quota->charged_from is initialized to 0, time_after_eq() can
+incorrectly return FALSE even after reset_interval has elapsed.  This
+occurs when (jiffies - reset_interval) produces a value with MSB=1, which
+is interpreted as negative in signed arithmetic.
+
+This issue primarily affects 32-bit systems because: On 64-bit systems:
+MSB=1 values occur after ~292 million years from boot (assuming HZ=1000),
+almost impossible.
+
+On 32-bit systems: MSB=1 values occur during the first 5 minutes after
+boot, and the second half of every jiffies wraparound cycle, starting from
+day 25 (assuming HZ=1000)
+
+When above unexpected FALSE return from time_after_eq() occurs, the
+charging window will not reset.  The user impact depends on esz value at
+that time.
+
+If esz is 0, scheme ignores configured quotas and runs without any limits.
+
+If esz is not 0, scheme stops working once the quota is exhausted.  It
+remains until the charging window finally resets.
+
+So, change quota->charged_from to jiffies at damos_adjust_quota() when it
+is considered as the first charge window.  By this change, we can avoid
+unexpected FALSE return from time_after_eq()
+
+Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ mm/damon/core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/hugetlb.c~mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range
-+++ a/mm/hugetlb.c
-@@ -5851,7 +5851,7 @@ void __unmap_hugepage_range(struct mmu_g
- 	spinlock_t *ptl;
- 	struct hstate *h = hstate_vma(vma);
- 	unsigned long sz = huge_page_size(h);
--	bool adjust_reservation = false;
-+	bool adjust_reservation;
- 	unsigned long last_addr_mask;
- 	bool force_flush = false;
+--- a/mm/damon/core.c~mm-damon-core-set-quota-charged_from-to-jiffies-at-first-charge-window
++++ a/mm/damon/core.c
+@@ -2111,6 +2111,10 @@ static void damos_adjust_quota(struct da
+ 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+ 		return;
  
-@@ -5944,6 +5944,7 @@ void __unmap_hugepage_range(struct mmu_g
- 					sz);
- 		hugetlb_count_sub(pages_per_huge_page(h), mm);
- 		hugetlb_remove_rmap(folio);
-+		spin_unlock(ptl);
- 
- 		/*
- 		 * Restore the reservation for anonymous page, otherwise the
-@@ -5951,14 +5952,16 @@ void __unmap_hugepage_range(struct mmu_g
- 		 * If there we are freeing a surplus, do not set the restore
- 		 * reservation bit.
- 		 */
-+		adjust_reservation = false;
++	/* First charge window */
++	if (!quota->total_charged_sz && !quota->charged_from)
++		quota->charged_from = jiffies;
 +
-+		spin_lock_irq(&hugetlb_lock);
- 		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
- 		    folio_test_anon(folio)) {
- 			folio_set_hugetlb_restore_reserve(folio);
- 			/* Reservation to be adjusted after the spin lock */
- 			adjust_reservation = true;
- 		}
--
--		spin_unlock(ptl);
-+		spin_unlock_irq(&hugetlb_lock);
- 
- 		/*
- 		 * Adjust the reservation for the region that will have the
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
 _
 
-Patches currently in -mm which might be from aha310510@gmail.com are
+Patches currently in -mm which might be from ekffu200098@gmail.com are
 
-mm-hugetlb-add-missing-hugetlb_lock-in-__unmap_hugepage_range.patch
+mm-damon-core-set-quota-charged_from-to-jiffies-at-first-charge-window.patch
+mm-damon-update-expired-description-of-damos_action.patch
+docs-mm-damon-design-fix-typo-s-sz_trtied-sz_tried.patch
+selftests-damon-test-no-op-commit-broke-damon-status.patch
+selftests-damon-test-no-op-commit-broke-damon-status-fix.patch
+mm-damon-tests-core-kunit-add-damos_commit_filter-test.patch
 
 
