@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B81B361A3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEFFB36A98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ABA67C6D7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B558A6CEE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B4320DD51;
-	Tue, 26 Aug 2025 13:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D00350D65;
+	Tue, 26 Aug 2025 14:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nL/HppD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yM3hDbxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50312223DF6;
-	Tue, 26 Aug 2025 13:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687E31985C;
+	Tue, 26 Aug 2025 14:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213578; cv=none; b=ps5YQL3DsnLmVFqkJt1y+7dqkJwlgS7uZuqD44TkDs1gl5EXtXSV8NZhpzXEssqorbXwiy5gKf2TnzX161qj/GRrATdwcDTiNzu6tG+pvKe1HORoNYw4wyLS9FukFrI2HoAfIrlqefQcjHgh4uzWh0Ho0DJnsX3MiCuTR3Wjx3E=
+	t=1756218039; cv=none; b=ebOsrtq4CMFgE9i+9OSqblcrXn7f/+98LdDVeci8jW9VL4O8mqzJwUz8sbcNmkIQWUi9FHQTX0h35fSDljX8YD58gDsr+qVp4w3bvsH+cu0QzyfxleBpZMB+XK5bLYGuDyEQ4vQhJljkTa0kNjUljOoq4LclI/CvEjLcaDTQdks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213578; c=relaxed/simple;
-	bh=Tbx8ElKOqxmXHEsrywL2mQdqi2793QgU7mJYmgiZpB0=;
+	s=arc-20240116; t=1756218039; c=relaxed/simple;
+	bh=7TWVcdezufxr2Ij0RdUA+C76oXXw3FvvYqtuWz2S8bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/ExdzA1mNsF0L3/phkQ6ADNLb2j0uKoNeYTYMFlKq0hXpdfWJQ+GSBzvQtwjvbUqNHC/KO6zEZva2/nQMyKZu69ly1Nds3aYZwH1yIboc5rbBSYcKjxzHosavsHiX5zZQRdO1oPjbT4aYIFepaoRt7OmxAS8mHsfROVerYFmSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nL/HppD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22B3C113CF;
-	Tue, 26 Aug 2025 13:06:17 +0000 (UTC)
+	 MIME-Version; b=hYaaCLG+O3YrHKtlWaZovi2Kb6QzWFnWAO18pMqOegG3+tzG8oFdCEfoKUwxk2YcmwkasnzCrTO9Py79ge/IjC/Vxrr1rZ8pSiqgdj8Tziz+9kHvM5cADRwltxSNBxpgrYNrNLHz5e6FMtsmtycZlBx27LN8uZGDx2mzvOrG2OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yM3hDbxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A10C4CEF1;
+	Tue, 26 Aug 2025 14:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213578;
-	bh=Tbx8ElKOqxmXHEsrywL2mQdqi2793QgU7mJYmgiZpB0=;
+	s=korg; t=1756218039;
+	bh=7TWVcdezufxr2Ij0RdUA+C76oXXw3FvvYqtuWz2S8bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nL/HppD1aGsZtx9NcCUbaPAnSohLbKt454It2n/bBectrF3sUPDxwCQFULISfrCgE
-	 aA0UbcIqj8kK07Wy3bih6BWwuDdCpJYwZbO55X81Pq+gIK/m+rQfZr97nCSJGvPIn2
-	 pR5G9CBU+in0gS8/H+Vz5MvmSfAM8qzXO6s0CWDk=
+	b=yM3hDbxS3uwqz/2+MnJiFdatY2r/EwsCE9EEcZz/YBvsafPLjjVa0WwQRtW3Av3uI
+	 QuGhJOqE53QE29IJkDTwjrqThbme+PWiKsd7McBK23Gp2UsE+kagFjGUxwDAJt9g3I
+	 N9JwmNW9BKBC7fXa3stby1cz27/owara2v1o4Hzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 400/587] parisc: Update comments in make_insert_tlb
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 339/523] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
 Date: Tue, 26 Aug 2025 13:09:09 +0200
-Message-ID: <20250826111003.099957776@linuxfoundation.org>
+Message-ID: <20250826110932.832543200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit cb22f247f371bd206a88cf0e0c05d80b8b62fb26 upstream.
+[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
 
-The following testcase exposed a problem with our read access checks
-in get_user() and raw_copy_from_user():
+Use the regmap_write() for software reset in fsl_sai_config_disable would
+cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
+commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
+FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
+instead of regmap_write() for these bit operations.
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-
-int main(int argc, char **argv)
-{
-  unsigned long page_size = sysconf(_SC_PAGESIZE);
-  char *p = malloc(3 * page_size);
-  char *p_aligned;
-
-  /* initialize memory region. If not initialized, write syscall below will correctly return EFAULT. */
-  if (1)
-	memset(p, 'X', 3 * page_size);
-
-  p_aligned = (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_size - 1));
-  /* Drop PROT_READ protection. Kernel and userspace should fault when accessing that memory region */
-  mprotect(p_aligned, page_size, PROT_NONE);
-
-  /* the following write() should return EFAULT, since PROT_READ was dropped by previous mprotect() */
-  int ret = write(2, p_aligned, 1);
-  if (!ret || errno != EFAULT)
-	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
-
-  return 0;
-}
-
-Because of the way _PAGE_READ is handled, kernel code never generates
-a read access fault when it access a page as the kernel privilege level
-is always less than PL1 in the PTE.
-
-This patch reworks the comments in the make_insert_tlb macro to try
-to make this clearer.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -499,6 +499,12 @@
- 	 * this happens is quite subtle, read below */
- 	.macro		make_insert_tlb	spc,pte,prot,tmp
- 	space_to_prot   \spc \prot        /* create prot id from space */
-+
-+#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
-+	/* need to drop DMB bit, as it's used as SPECIAL flag */
-+	depi		0,_PAGE_SPECIAL_BIT,1,\pte
-+#endif
-+
- 	/* The following is the real subtlety.  This is depositing
- 	 * T <-> _PAGE_REFTRAP
- 	 * D <-> _PAGE_DIRTY
-@@ -511,17 +517,18 @@
- 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
- 	 * trigger an access rights trap in user space if the user
- 	 * tries to read an unreadable page */
--#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
--	/* need to drop DMB bit, as it's used as SPECIAL flag */
--	depi		0,_PAGE_SPECIAL_BIT,1,\pte
--#endif
- 	depd            \pte,8,7,\prot
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index d81a9322b03d..0314d4257b2d 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -578,9 +578,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	 * are running concurrently.
+ 	 */
+ 	/* Software Reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
+ }
  
- 	/* PAGE_USER indicates the page can be read with user privileges,
- 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
--	 * contains _PAGE_READ) */
-+	 * contains _PAGE_READ). While the kernel can't directly write
-+	 * user pages which have _PAGE_WRITE zero, it can read pages
-+	 * which have _PAGE_READ zero (PL <= PL1). Thus, the kernel
-+	 * exception fault handler doesn't trigger when reading pages
-+	 * that aren't user read accessible */
- 	extrd,u,*=      \pte,_PAGE_USER_BIT+32,1,%r0
- 	depdi		7,11,3,\prot
-+
- 	/* If we're a gateway page, drop PL2 back to zero for promotion
- 	 * to kernel privilege (so we can execute the page as kernel).
- 	 * Any privilege promotion page always denys read and write */
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -710,11 +710,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	unsigned int ofs = sai->soc_data->reg_offset;
+ 
+ 	/* Software Reset for both Tx and Rx */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
+ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
+ 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
+@@ -1256,11 +1256,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
+ 
+ 	regcache_cache_only(sai->regmap, false);
+ 	regcache_mark_dirty(sai->regmap);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	usleep_range(1000, 2000);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
+ 
+ 	ret = regcache_sync(sai->regmap);
+ 	if (ret)
+-- 
+2.50.1
+
 
 
 
