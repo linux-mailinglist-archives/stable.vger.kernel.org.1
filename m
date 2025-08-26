@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4369B35D7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB915B36977
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8471881E90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3B75822B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7DC341659;
-	Tue, 26 Aug 2025 11:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E5935A28A;
+	Tue, 26 Aug 2025 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLp2XLoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn50gpQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C14338F54;
-	Tue, 26 Aug 2025 11:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A254D35A281;
+	Tue, 26 Aug 2025 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208270; cv=none; b=dQ9EEK68UMKG88RCh5OoZuUKtOWtXIOJ7KWv8qGLj9holqqP828u1IRp9A2YR78yyW+jl5+ZGENqe5U8icZk9IoC/R8JukcUpmZbXWiEBTKz7h33rlfxQT+RrUDhRbFlQh0Dht7AwcR5M5pEzLESGDK7O+m5VFBwnP/39Wcnt9I=
+	t=1756217725; cv=none; b=T/SfJWMqpyv6P0m2ZNACupr/SHtyV71Pfh9DyCcjV5XWWQMVg6d3YDJ+3aGHWQcYg21z9A4omytGdIP8ikNYOBJ9o+bKDLV5Rz56q/f9N5j9lOXPN/Gkx8Cz66HapEvg6CGHc8U69LewflMscow/MwgxdXcCv+64G0ZaWjv4XQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208270; c=relaxed/simple;
-	bh=feC+uPoT9tpxCojU0ahGcMMp59zeLUNg+JDEPcCa1dM=;
+	s=arc-20240116; t=1756217725; c=relaxed/simple;
+	bh=3/He20O2z8i4qpvy0zJjnWMo1zAYf/qkuFrhXlFEby0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFB5GplDLZnYzsOh2p52pxpomrhQsDbvT9aoqNvwjK7wagpmQnn70jVT0WakI1Xw+QwgHR2+1hLgp+VO3Krkeosrqxj4mk56LSXIdKNn2MVumCWJEOUKtgkHQnFRl/CGxZR36kEtv2ruSjr5rdVuMCw5excO2HzgaxLnTYyolec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLp2XLoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB81C4CEF1;
-	Tue, 26 Aug 2025 11:37:49 +0000 (UTC)
+	 MIME-Version; b=sZQdUr7Pn2nNgmh7c9jxZWNQ8+vOO+j4FmzFXhfShNpjmSoOuG927vkFh4DTkp0WvWts2Zsj1m4K+k3pwlLpsGVUUB/x8wBl7cpSbs4daziSZe3o6tNFUTzxRJpP4YiH/Xqbdjl19a7MvhAUxLZLmM/IABH8DphGLJvcQv+/4yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn50gpQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F5EC113D0;
+	Tue, 26 Aug 2025 14:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208269;
-	bh=feC+uPoT9tpxCojU0ahGcMMp59zeLUNg+JDEPcCa1dM=;
+	s=korg; t=1756217725;
+	bh=3/He20O2z8i4qpvy0zJjnWMo1zAYf/qkuFrhXlFEby0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLp2XLoVy9htKYNnmnb3E9Q+X5oTwrPP/gCW21eixe6B2GtHFdbxVMUTd8x7WyB9e
-	 k/upylQNmZUwEvY5eLMtkn3ychVmZX7VoOkmgVEcoKL9mORYo34/jHdcIJ0DR9b43H
-	 lH53YU7TR0bSTvEMpDFYQFh/BYHZdxlkkCZSUeys=
+	b=wn50gpQgwtHTWismjeLwt1yydV99UyP9l1Q839su9UdoOwunsykNvBPuiTch6aeyL
+	 UM5clkiVWncsG9dYSmANGf3vJ7Tn2feKI4ADBapEMxDfBKGoTQFDskpC5zHMr9sQGs
+	 ri8zc8z/6mc5wfKDVU8kEhwtiCJmMchQGZG7nF/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 047/322] scsi: dt-bindings: mediatek,ufs: Add ufs-disable-mcq flag for UFS host
+	Tomasz Michalec <tmichalec@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 252/523] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
 Date: Tue, 26 Aug 2025 13:07:42 +0200
-Message-ID: <20250826110916.555233345@linuxfoundation.org>
+Message-ID: <20250826110930.648490761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Macpaul Lin <macpaul.lin@mediatek.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-commit 794ff7a0a6e76af93c5ec09a49b86fe73373ca59 upstream.
+[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
 
-Add the 'mediatek,ufs-disable-mcq' property to the UFS device-tree
-bindings. This flag corresponds to the UFS_MTK_CAP_DISABLE_MCQ host
-capability recently introduced in the UFS host driver, allowing it to
-disable the Multiple Circular Queue (MCQ) feature when present.  The
-binding schema has also been updated to resolve DTBS check errors.
+If cros_typec_probe is called before EC device is registered,
+cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
+loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
+cros_ec_spi.ko).
 
-Cc: stable@vger.kernel.org
-Fixes: 46bd3e31d74b ("scsi: ufs: mediatek: Add UFS_MTK_CAP_DISABLE_MCQ")
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://lore.kernel.org/r/20250722085721.2062657-2-macpaul.lin@mediatek.com
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
+the probe function can be called again after EC device is registered.
+
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/chrome/cros_ec_typec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-index 32fd535a514a..20f341d25ebc 100644
---- a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-+++ b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
-@@ -33,6 +33,10 @@ properties:
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index 983daa220ee3..137f99c1848e 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -716,8 +716,8 @@ static int cros_typec_probe(struct platform_device *pdev)
  
-   vcc-supply: true
+ 	typec->ec = dev_get_drvdata(pdev->dev.parent);
+ 	if (!typec->ec) {
+-		dev_err(dev, "couldn't find parent EC device\n");
+-		return -ENODEV;
++		dev_warn(dev, "couldn't find parent EC device\n");
++		return -EPROBE_DEFER;
+ 	}
  
-+  mediatek,ufs-disable-mcq:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: The mask to disable MCQ (Multi-Circular Queue) for UFS host.
-+
- required:
-   - compatible
-   - clocks
+ 	platform_set_drvdata(pdev, typec);
 -- 
-2.50.1
+2.39.5
 
 
 
