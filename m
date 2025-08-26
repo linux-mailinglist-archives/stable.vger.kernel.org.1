@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C30B36861
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCA5B360CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6677EB6216A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E401BA5DD3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263303568EA;
-	Tue, 26 Aug 2025 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE2E230BDF;
+	Tue, 26 Aug 2025 13:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDur+hcH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00rXSDZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09C8352FD0;
-	Tue, 26 Aug 2025 14:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0E222A4EE;
+	Tue, 26 Aug 2025 13:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217484; cv=none; b=W2LxR3lOmvqp1jNpfQ3TGwjyTgrp95wVWOlGfxAbdNhBl6F+6tf26YYkziYKJQrvYvVaLDPD2TbN5VmJVF7KAO44s0IgIrQoUemvdA/LaWPs1DtMdI+uzR1nGoGeypwUj2Fu8toSS8nFyWrXpP0QkcWyxAQJEoxyijRGgBXlJ7w=
+	t=1756213212; cv=none; b=SfO2DuXRB5eMdvhuBB6kDFVtR39LIHGUEBQZVh1dO1IhPKLNOPnSbWNTQx38cbVQDDBiPS03CmDBX6rdVej0/mJai6HPE2J1hzFSf4YevTMHPWB6QLM9JmfCtLUOKUNRmTyGIoXYBS93cHbbHkjWK46fit9UFYgsYlJzcxE+s0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217484; c=relaxed/simple;
-	bh=lyssxg1o8H/1VoV0c36cdNB6CtmV06aJFl7tHHLPx8U=;
+	s=arc-20240116; t=1756213212; c=relaxed/simple;
+	bh=lMGBQNwLdG3+T1N2Wn6QJ7yXauxDufGTSx0KTB7PXPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kq82fwgUp+4W0EufBfnWVSWd1uC0XeAnEuAOWTj2f76Cqs+XDIn4rNOcAEH636jr8xWKbalXMU7PBMcU4r24dkpX/mxD4WYmN+gmHFFeAWiSDqpa292dkoYAlHgA+LwaAJmS9+7EIPQMhZT/lBkd1JZeyt6ey3VDys3xLn2Jqso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDur+hcH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAE5C4CEF1;
-	Tue, 26 Aug 2025 14:11:24 +0000 (UTC)
+	 MIME-Version; b=kEd/EvjFVpv4x5jGqjkkRz9XDaIKEqwiSDue0TYTwg1Q6PszFgcRb7WwG3Ehin4y8BVAhS6tgDHyZS+X+mY2rqvZBVZp1+ugoHyXa50naWFVx+WH6E8wWYh8HU5UZVDuX3LsJmYCdL/es0NMumbNbVisZGVb7alsn35PIRPKnkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00rXSDZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702FBC4CEF4;
+	Tue, 26 Aug 2025 13:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217484;
-	bh=lyssxg1o8H/1VoV0c36cdNB6CtmV06aJFl7tHHLPx8U=;
+	s=korg; t=1756213211;
+	bh=lMGBQNwLdG3+T1N2Wn6QJ7yXauxDufGTSx0KTB7PXPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDur+hcHw0tE1+c6Ix+w26ELI8rqUUSpOSnznfT0q4f8oDyCzQkhQnighX5zHDTzR
-	 joOO/N5yIB9Zj4YuUe4CcqiREHRlDpKBVfwYrllZaYumfMviTEaAkf4PIaTnkj6UPz
-	 0nyDJD0KknxmpRVguqHcJFiwl5ld8lARuADufLkg=
+	b=00rXSDZsFf4BVT4BiB6LXHDCzPhSYHCJHG5hD00inLA2rSQ1fdpuMWCyn5cFASwGG
+	 HoC3zBf6//oD16FD+93GueXeb2/ju9cw/SCreMdulIZV3Tm0ihlUCfN00vGfU2ux87
+	 EddKBjOmwh+ALazhbEFHCBQZFhHnyQPLmDyUYGqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/523] kconfig: qconf: fix ConfigList::updateListAllforAll()
+Subject: [PATCH 6.6 221/587] fbdev: fix potential buffer overflow in do_register_framebuffer()
 Date: Tue, 26 Aug 2025 13:06:10 +0200
-Message-ID: <20250826110928.420957235@linuxfoundation.org>
+Message-ID: <20250826110958.560164512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
 
-[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
+[ Upstream commit 523b84dc7ccea9c4d79126d6ed1cf9033cf83b05 ]
 
-ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
-are identical.
+The current implementation may lead to buffer overflow when:
+1.  Unregistration creates NULL gaps in registered_fb[]
+2.  All array slots become occupied despite num_registered_fb < FB_MAX
+3.  The registration loop exceeds array bounds
 
-Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
-to ConfigList class") was a misconversion.
+Add boundary check to prevent registered_fb[FB_MAX] access.
 
-Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index b889fe604e42..1c44c83f61a6 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -476,7 +476,7 @@ void ConfigList::updateListAllForAll()
- 	while (it.hasNext()) {
- 		ConfigList *list = it.next();
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 52bd3af54369..942b942f6bf9 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -943,6 +943,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 		if (!registered_fb[i])
+ 			break;
  
--		list->updateList();
-+		list->updateListAll();
- 	}
- }
++	if (i >= FB_MAX)
++		return -ENXIO;
++
+ 	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+ 		INIT_LIST_HEAD(&fb_info->modelist);
  
 -- 
 2.39.5
