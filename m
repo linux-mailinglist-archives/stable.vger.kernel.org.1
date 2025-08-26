@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BF2B36458
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B1FB36C88
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40F71C213AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E3D566FB4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6617A34166C;
-	Tue, 26 Aug 2025 13:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5CB352099;
+	Tue, 26 Aug 2025 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqmEn+fr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugXc7C15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E97340DA4;
-	Tue, 26 Aug 2025 13:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9DB35206F;
+	Tue, 26 Aug 2025 14:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214998; cv=none; b=aTUOP7hzTI4URV+HYsF5HSITT9UIks/PWH+Cca3ch76BsDwD8xR/lztE53mh7HyzopQTWYl7CktI2aCfUwgJD/A+57V619YUPXFjgv1QzqhsiKxDH3AODSIk1OSBVm0n4s2jr1DHcHTXhO/pQUJAlxysiDce9Db5ayY+r1k+LC0=
+	t=1756219157; cv=none; b=EKUGcu2jbrXycNhLklj3ohff9PTzj6vzYh84J6d+W8bxKaacuk5jqWHDc4JGcT79z4rQ47OqbawiwFGjs8D+zNUCZwlRvSNozJrkgdOAYi9wiviztDUPUpi6Y8MghXYIFbTualc7SZWt8Lx1YXifhnB9j8phv+iowqqqV2EgUDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214998; c=relaxed/simple;
-	bh=l8ycecylnMW2GIrfiLViNLKA4P/A7FDpFr1uv7XTlhM=;
+	s=arc-20240116; t=1756219157; c=relaxed/simple;
+	bh=rihpMrQutS5qf6Sz4ZchwcjAMo0FvSZ9tqBG4FMkl2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2yesQ3yMrKYaUur/BYWzunP5YmkP5Vz7LrYUvvUpLDP6WNjwvqFNrP7D3ia9ufbQcdEhRlPHI/997ovKFk6e6rX4EdYa+QDBMVeXKiAWr9vCDwX8T4kvcOWqOB8gdRB8ievI92TF2JR+GRXCWnk6+sAuhxfch6nLunSpOdF+nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqmEn+fr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76D6C4CEF1;
-	Tue, 26 Aug 2025 13:29:57 +0000 (UTC)
+	 MIME-Version; b=ceq2zrxsU3fFwhXTWOoqNnIzyUYFzELBp6lyaAG7Cx1vd0M7xvFvvocHdQp4ncL3CtPI9BIgwmJOYaCVU7IX/f+vuoEJOGKNXlv5cdW7cuMxLS9WKiL1c2BKUBmTVzDsFI9e62P5jNBlOCm5MNhVHvY43dl2gKyrqUHpOYA6WRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugXc7C15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F965C113CF;
+	Tue, 26 Aug 2025 14:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214998;
-	bh=l8ycecylnMW2GIrfiLViNLKA4P/A7FDpFr1uv7XTlhM=;
+	s=korg; t=1756219156;
+	bh=rihpMrQutS5qf6Sz4ZchwcjAMo0FvSZ9tqBG4FMkl2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqmEn+frIlzkP7Z0iCobveQNehK4WP61FlTYR5eEsHrT7hXbQ+5w0npTcpbcF19qt
-	 pPKj0DGBD8Nm5wigN52UcZkfstfm8CEEK5+ZxQ95kiRWGgfgZ3JGdsyepoaORfkPaV
-	 EsnzoqjPmwtpWs8YKamiXk36p3kn51HgzrOb+UlY=
+	b=ugXc7C15mggog4Fl69vFj3ewyXXaa7XByYWu/fmq5RpCJQ3ezYdhVvkS8zk10caJR
+	 OtF488ZbvLM7nr9+cZn8iZhOvetsCIOL9Btm/3L6a49eEi+xUp7jSUdfv1zUVFQwg1
+	 Du6/DSn8lzkKFlArHp6RO3ez0zOHjlpFlDZsO71A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 347/482] x86/mce/amd: Add default names for MCA banks and blocks
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 274/403] misc: rtsx: usb: Ensure mmc child device is active when card is present
 Date: Tue, 26 Aug 2025 13:10:00 +0200
-Message-ID: <20250826110939.404151932@linuxfoundation.org>
+Message-ID: <20250826110914.369407075@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
-a bank has additional blocks available.
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-Most MCA banks have a single thresholding block, so the block takes the same
-name as the bank.
-
-Unified Memory Controllers (UMCs) are a special case where there are two
-blocks and each has a unique name.
-
-However, the microarchitecture allows for five blocks. Any new MCA bank types
-with more than one block will be missing names for the extra blocks. The MCE
-sysfs will fail to initialize in this case.
-
-Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -1052,13 +1052,20 @@ static const char *get_name(unsigned int
- 	}
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+ }
  
- 	bank_type = smca_get_bank_type(cpu, bank);
--	if (bank_type >= N_SMCA_BANK_TYPES)
--		return NULL;
- 
- 	if (b && bank_type == SMCA_UMC) {
- 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
- 			return smca_umc_block_names[b->block];
--		return NULL;
-+	}
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
++{
++	pm_request_resume(dev);
++	return 0;
++}
 +
-+	if (b && b->block) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
-+		return buf_mcatype;
-+	}
-+
-+	if (bank_type >= N_SMCA_BANK_TYPES) {
-+		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
-+		return buf_mcatype;
- 	}
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
  
- 	if (per_cpu(smca_bank_counts, cpu)[bank_type] == 1)
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
+ }
+ 
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
+ {
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
