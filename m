@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9486B36222
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E41B36704
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 007F98A4914
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 062FFB62194
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DC6280334;
-	Tue, 26 Aug 2025 13:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86092350D63;
+	Tue, 26 Aug 2025 14:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aol4da7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LgtQKGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023F518F2FC;
-	Tue, 26 Aug 2025 13:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FEF30AAD8;
+	Tue, 26 Aug 2025 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213828; cv=none; b=r4NVdZYRoKsWpYhq0EMUahdY2gdNBOVLuWuBgu54Wc2lX0n6GA76Ag64C1oYZtTBzyx/rKgX+beY2IXJzUNIB5xkpApXf9oL5Uk2yGh+FNfH5ITvdncizKf9meTkom6eFZ4k6uy9r5FM2SeWBl5oNriVNBxFr/2NK8yWA3j+G5w=
+	t=1756216816; cv=none; b=rMyj7av8Q51r09e8u/2zj/4xXV1o7uXDwLst1DHN+MN36/pyL+gGHi4dJcMDBAwzseL2AXeGVTzk1YFG/DD564oKIuXN5Of5quVMCKYlSec0RcSjHEbVCJ0+VAiXjfj3dwWkrhWFl2vcI66CT8sYHWrz6b28HY069EiWedtXcnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213828; c=relaxed/simple;
-	bh=DZR8x/4cwv41eRLIYVjrHUFNeAFadr1h/AVPBL1HXAM=;
+	s=arc-20240116; t=1756216816; c=relaxed/simple;
+	bh=bzAR4yNG6NsdspXICqbYk+Rp+nBlhF244PqSc3qYino=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D290c6gr3pvNf5MomjfBZ/xQ5cdfIVyoauYK9eVlmTue0ovmy79I4o9Kre1nmV7PaKvfqDyvO7SNtTTH7RE1T8C4rR/CNlu5kgeqfsIh/LDXqIO2ebsAxPgSTpiFggBbTT9kSJSHrnXFvzRkGjXkcAuCKqzHdYnBwfkjw/cAuoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aol4da7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4EC4CEF1;
-	Tue, 26 Aug 2025 13:10:27 +0000 (UTC)
+	 MIME-Version; b=gBnZsABbDL/hODblCq8EKsO5Q1mDCUpuB2BNZjy2SffLExEkJ94OLJ6oF4+VLOncbAe8E0sgUhQRr1WryhnUvODH/JyE4jdbDmHoawjVluyXYmA1RNnIYtbD08rKMVhF71BlYw9vfoce6EnUhnp6i799J5ZgyBu30ICfczQ3gF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LgtQKGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B89C4CEF1;
+	Tue, 26 Aug 2025 14:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213827;
-	bh=DZR8x/4cwv41eRLIYVjrHUFNeAFadr1h/AVPBL1HXAM=;
+	s=korg; t=1756216814;
+	bh=bzAR4yNG6NsdspXICqbYk+Rp+nBlhF244PqSc3qYino=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aol4da7JepARsXbH88ycqy2hJ7rAsPRKNfJMJ+aIRM0Z6Umbqwxk46LbXpt2BIYtB
-	 izN/p6k7/1D3enRuZi3tPe6BnmT0AiCh3G6JURUpX+KMGUf1oFQZK6ByaSsE0wKyGX
-	 56RA72tGgn9VW31/bejOsGsiILLFR3u/yh6EwJQc=
+	b=1LgtQKGqzAW3FHckaa/i+HtM5aHimal7r1bCQN0TLfhApK+p0uvPsAyAOMb+eM4wr
+	 WldD5RWJUh0PUYBPf6I0WQ3IQIh8ftYRJc9blbXQrxSqgUoCVF6sJNx+me0Bn/7gDd
+	 8ToYVvV+ZU1sY3PhHl/FNryqp9CpdN0VHg5BWvsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 495/587] PCI: imx6: Delay link start until configfs start written
+Subject: [PATCH 5.15 553/644] selftests: mptcp: connect: also cover alt modes
 Date: Tue, 26 Aug 2025 13:10:44 +0200
-Message-ID: <20250826111005.573206186@linuxfoundation.org>
+Message-ID: <20250826111000.231412624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 2e6ea70690ddd1ffa422423fd0d4523e4dfe4b62 ]
+[ Upstream commit 37848a456fc38c191aedfe41f662cc24db8c23d9 ]
 
-According to Documentation/PCI/endpoint/pci-endpoint-cfs.rst, the Endpoint
-controller (EPC) should only start the link when userspace writes '1' to
-the '/sys/kernel/config/pci_ep/controllers/<EPC>/start' attribute, which
-ultimately results in calling imx_pcie_start_link() via
-pci_epc_start_store().
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
 
-To align with the documented behavior, do not start the link automatically
-when adding the EP controller.
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: reworded commit subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250709033722.2924372-3-hongxing.zhu@nxp.com
-[ imx_pcie_ltssm_enable() => imx6_pcie_ltssm_enable() ]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Drop userspace_pm.sh from TEST_PROGS ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1098,8 +1098,6 @@ static int imx6_add_pcie_ep(struct imx6_
- 		dev_err(dev, "failed to initialize endpoint\n");
- 		return ret;
- 	}
--	/* Start LTSSM. */
--	imx6_pcie_ltssm_enable(dev);
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -5,7 +5,8 @@ KSFT_KHDR_INSTALL := 1
  
- 	return 0;
- }
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g  -I$(top_srcdir)/usr/include
+ 
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
 
