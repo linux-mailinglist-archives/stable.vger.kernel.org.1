@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96189B35DB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7327B36A20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F6E3677AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D887A775C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EC732142D;
-	Tue, 26 Aug 2025 11:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5683568EA;
+	Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9/XmEj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKZ813n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D9D2BEC34;
-	Tue, 26 Aug 2025 11:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBF721D3F2;
+	Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208179; cv=none; b=MnowbuvsVJ01T1z0cPJui6NAUxW1YMN4iIJ6BzwhezfPjGRds3LqX2Q2ZU8GiM0qygmY2Dg4YF91BXc+KA2L1OST1Mo9idM7P5y75MZJEPrhAaU2SXpoQv7BTGOFL3oEDG4ON6uGk+RB5X44d65retfJKv5RDJl9V8e5X1vm2hQ=
+	t=1756218705; cv=none; b=cJvUmXyvbWieEUQkfKPjg2NuNAoY5StVBPTw21jLIHIqYfTiTWdTZbWWsueUkZWZWMvZuSTFi/ioH/tegDionq5Oaa9syhBlCJdSDPaWj6Qo3K/Xth88cd27NetvVsWpnoBnj/f0c8S/M1t1tl8salr+Ebnv1Ac0e0l5PV0Z3tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208179; c=relaxed/simple;
-	bh=KHR+mUHy2di2bVh/izGch6c7PWhgLDEevpTdzd/98yo=;
+	s=arc-20240116; t=1756218705; c=relaxed/simple;
+	bh=UVfJM669TvIwfGUcpAW13oP1F1js6BISR2v9yD2aIts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAwa1CKYriKmDpk/hc7AVcDl1nxg1hz6ehWN676uA+JEYdbnYTCNkCfPlcjnNzoA5cdrWjVRf2+Xb0g+wVTSvm6e7TtoEhvlsov81o9lNhCCujsfYToQ0hS9NL+x+zkHjz59gJaESJ1s7mstcHP9jiUW0i9ECqmAPc1OKLfUrqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9/XmEj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE56C4CEF1;
-	Tue, 26 Aug 2025 11:36:18 +0000 (UTC)
+	 MIME-Version; b=Jn6Vh3YMsn6Re3BDlX98UPGulGcvHeAGghyTd/i4oN4mLD6qaIv6PnkXUtnpAeC0BmAaIyyOx7Rc+yum2a7uk0kbZNbismmFAnxJ0My5D3nJ8iMefhQI1jJ8K7jHlVwcxMPRdRw5xeUDVmEz7PAGLHM5O9tfX1fKgROWNYaGZR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKZ813n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A64C4CEF1;
+	Tue, 26 Aug 2025 14:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208178;
-	bh=KHR+mUHy2di2bVh/izGch6c7PWhgLDEevpTdzd/98yo=;
+	s=korg; t=1756218705;
+	bh=UVfJM669TvIwfGUcpAW13oP1F1js6BISR2v9yD2aIts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9/XmEj9sjLJrfEWw5nS0B1KxNs3GyfQCtXdUH8ZeC62fDmk2dZtgMpbAz+LXPMUv
-	 SeKk/VZNBpO4dxyIm0tPXsymjdqZ1BpeHz5WXCsWRQzsdVtx8bbK/DZJPWsS2NcAcM
-	 Yj1VLPz2DUYVEE6aifwNvrgwZZZMYJmxFd074/d4=
+	b=RKZ813n0COMTm4G6ZDHp0Z8s7d9rs2vLDpSkc4Ph0S93dg7C6VmBIPxvJd/Or1kCk
+	 /RE1/vXofOUTRy7ziPyHkmXO8AykJww/1PTctIfjPvSQvQ+BZlZlyzOLA0SS/41JlM
+	 tjalIQPNheFWQFF/cPomFmR06j0fB1IrZ1/V1ybI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 6.12 012/322] usb: dwc3: meson-g12a: fix device leaks at unbind
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 101/403] can: kvaser_usb: Assign netdev.dev_port based on device channel index
 Date: Tue, 26 Aug 2025 13:07:07 +0200
-Message-ID: <20250826110915.537898126@linuxfoundation.org>
+Message-ID: <20250826110909.466310002@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
+[ Upstream commit c151b06a087a61c7a1790b75ee2f1d6edb6a8a45 ]
 
-Make sure to drop the references taken to the child devices by
-of_find_device_by_node() during probe on driver unbind.
+Assign netdev.dev_port based on the device channel index, to indicate the
+port number of the network device.
+While this driver already uses netdev.dev_id for that purpose, dev_port is
+more appropriate. However, retain dev_id to avoid potential regressions.
 
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3e66d0138c05 ("can: populate netdev::dev_id for udev discrimination")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250725123452.41-4-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -837,6 +837,9 @@ static void dwc3_meson_g12a_remove(struc
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index a96b22398407..602f0b3bbcdf 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -813,6 +813,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
  
- 	usb_role_switch_unregister(priv->role_switch);
+ 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
+ 	netdev->dev_id = channel;
++	netdev->dev_port = channel;
  
-+	put_device(priv->switch_desc.udc);
-+	put_device(priv->switch_desc.usb2_port);
-+
- 	of_platform_depopulate(dev);
+ 	dev->nets[channel] = priv;
  
- 	for (i = 0 ; i < PHY_COUNT ; ++i) {
+-- 
+2.39.5
+
 
 
 
