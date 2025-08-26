@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14165B36BFF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA65B3667D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490E31C812DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5AA46848E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7CF35CEA9;
-	Tue, 26 Aug 2025 14:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8963451A0;
+	Tue, 26 Aug 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzUHcZys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLtRvMqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B31B35AADD;
-	Tue, 26 Aug 2025 14:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF704350D53;
+	Tue, 26 Aug 2025 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218655; cv=none; b=DB2Vf0p0B+TDrjGbeGJN60DM/dMXr6JNr7130xnK3iRlGl7OjgKQtNksPz7rorw2u1668tRe+iIklzRdp6FAUqEzUeaNYF/Ne/SYEA5mwlHw6mc2HN68indEr5U1uLXTI9QgOUP/p9Ldo+tkuRmzCSJigE1jVNUPdeDsxahd8sI=
+	t=1756216105; cv=none; b=pT5Lu3DzPVrfyGyz0Fe4kvHokvGaxnePVNnDOg+Kvx1zttL8XZxG27IkkFfSEUc62Vl0TihNCEhmFhDyF2VKRfNSKm4ngmSk54LnV2tVSvi8bkmtcJvtIh/QP0WzPV//ksFgGJjNIgxBmAF3gVrNC+vV42r5EHMCci/v3IPT5Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218655; c=relaxed/simple;
-	bh=anTHzID9FuEVynkE+aZkJWRQNREpyCKWrdIgQD60gV0=;
+	s=arc-20240116; t=1756216105; c=relaxed/simple;
+	bh=N4Xf91yeCVS5jnUa4HSf3G6z16csF3RYpzLUWRvH9OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY61sKIkL1BmPVKJEXUAh+s36Zeqhs84z5UvCUAzt2M6QUKHu6PgX6+CnXa8eKof3q/n1z1h/P+ZpcgIBiM+TM1lu1A7tJgGvKEW2yUX4FiKy5W/XQ5h2hNb4QbxvUxm5PbARLDrhb2u+aJz4AtukHVewK35AFm69gUqzgq8XzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzUHcZys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CEBC4CEF1;
-	Tue, 26 Aug 2025 14:30:53 +0000 (UTC)
+	 MIME-Version; b=Xxu24gvDcnlWRbzlk2+USjxRyYzNeiH0vcVYBIEk5msELpIiVrHx3UoE4vlXye3pvzF2yjYWKYoEjJttq08+Wih8U15kbQjspqkX+ln8MM6yGkqQSs28EniM6bSLVLyZDHX0FJGEUZaRTaBQtFwLvU2lDvgt89rMdV7bmnUapqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLtRvMqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62668C4CEF1;
+	Tue, 26 Aug 2025 13:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218654;
-	bh=anTHzID9FuEVynkE+aZkJWRQNREpyCKWrdIgQD60gV0=;
+	s=korg; t=1756216105;
+	bh=N4Xf91yeCVS5jnUa4HSf3G6z16csF3RYpzLUWRvH9OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzUHcZysdpLyug5C9QYjUn3vFw2k0bleieY1XWOG0GRoLnelm6HbH+XZWO0Jgdl6T
-	 cZtiZp3do3xmP2numty4CsrNFbLYOx7drvCQiEkZnChUobAMNkGxWDcogd9U+2ebY7
-	 YVbALMos16ANn5/zmWFicAkxJmOwi1+NWjAgNJpk=
+	b=aLtRvMqy1RTFum3g0F3wlQbfxO6k3c4kqXwfB/uHbtbq3QrPZYujwNkn8wZn7zEMM
+	 JZosfuc6ZNt+MNEPGVMMrti67ECOuUB/i6dPqDp3dAK8VyYQ4vYYaJhUe/uNaYkUBl
+	 M4w4CbsmwEbq6BNFlg2XEeEqu5vU83opMPQ58Azg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.4 051/403] net_sched: sch_sfq: use a temporary work area for validating configuration
+	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 286/644] udf: Verify partition map count
 Date: Tue, 26 Aug 2025 13:06:17 +0200
-Message-ID: <20250826110907.269075859@linuxfoundation.org>
+Message-ID: <20250826110953.469436461@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 ]
+[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
 
-Many configuration parameters have influence on others (e.g. divisor
--> flows -> limit, depth -> limit) and so it is difficult to correctly
-do all of the validation before applying the configuration. And if a
-validation error is detected late it is difficult to roll back a
-partially applied configuration.
+Verify that number of partition maps isn't insanely high which can lead
+to large allocation in udf_sb_alloc_partition_maps(). All partition maps
+have to fit in the LVD which is in a single block.
 
-To avoid these issues use a temporary work area to update and validate
-the configuration and only then apply the configuration to the
-internal state.
-
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   56 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 12 deletions(-)
+ fs/udf/super.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch,
- 	struct red_parms *p = NULL;
- 	struct sk_buff *to_free = NULL;
- 	struct sk_buff *tail = NULL;
-+	unsigned int maxflows;
-+	unsigned int quantum;
-+	unsigned int divisor;
-+	int perturb_period;
-+	u8 headdrop;
-+	u8 maxdepth;
-+	int limit;
-+	u8 flags;
-+
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 4275d2bc0c36..69e4f00ce791 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1411,7 +1411,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 	struct genericPartitionMap *gpm;
+ 	uint16_t ident;
+ 	struct buffer_head *bh;
+-	unsigned int table_len;
++	unsigned int table_len, part_map_count;
+ 	int ret;
  
- 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
- 		return -EINVAL;
-@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
- 		return -EINVAL;
- 	}
+ 	bh = udf_read_tagged(sb, block, block, &ident);
+@@ -1432,7 +1432,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 					   "logical volume");
+ 	if (ret)
+ 		goto out_bh;
+-	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
 +
- 	sch_tree_lock(sch);
-+
-+	limit = q->limit;
-+	divisor = q->divisor;
-+	headdrop = q->headdrop;
-+	maxdepth = q->maxdepth;
-+	maxflows = q->maxflows;
-+	perturb_period = q->perturb_period;
-+	quantum = q->quantum;
-+	flags = q->flags;
-+
-+	/* update and validate configuration */
- 	if (ctl->quantum)
--		q->quantum = ctl->quantum;
--	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
-+		quantum = ctl->quantum;
-+	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
--		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-+		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
--		q->divisor = ctl->divisor;
--		q->maxflows = min_t(u32, q->maxflows, q->divisor);
-+		divisor = ctl->divisor;
-+		maxflows = min_t(u32, maxflows, divisor);
- 	}
- 	if (ctl_v1) {
- 		if (ctl_v1->depth)
--			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
-+			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
- 		if (p) {
--			swap(q->red_parms, p);
--			red_set_parms(q->red_parms,
-+			red_set_parms(p,
- 				      ctl_v1->qth_min, ctl_v1->qth_max,
- 				      ctl_v1->Wlog,
- 				      ctl_v1->Plog, ctl_v1->Scell_log,
- 				      NULL,
- 				      ctl_v1->max_P);
- 		}
--		q->flags = ctl_v1->flags;
--		q->headdrop = ctl_v1->headdrop;
-+		flags = ctl_v1->flags;
-+		headdrop = ctl_v1->headdrop;
- 	}
- 	if (ctl->limit) {
--		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
--		q->maxflows = min_t(u32, q->maxflows, q->limit);
-+		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
-+		maxflows = min_t(u32, maxflows, limit);
- 	}
++	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
++	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
++		udf_err(sb, "error loading logical volume descriptor: "
++			"Too many partition maps (%u > %u)\n", part_map_count,
++			table_len / (unsigned)sizeof(struct genericPartitionMap1));
++		ret = -EIO;
++		goto out_bh;
++	}
++	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
+ 	if (ret)
+ 		goto out_bh;
  
-+	/* commit configuration */
-+	q->limit = limit;
-+	q->divisor = divisor;
-+	q->headdrop = headdrop;
-+	q->maxdepth = maxdepth;
-+	q->maxflows = maxflows;
-+	WRITE_ONCE(q->perturb_period, perturb_period);
-+	q->quantum = quantum;
-+	q->flags = flags;
-+	if (p)
-+		swap(q->red_parms, p);
-+
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > q->limit) {
- 		dropped += sfq_drop(sch, &to_free);
+-- 
+2.39.5
+
 
 
 
