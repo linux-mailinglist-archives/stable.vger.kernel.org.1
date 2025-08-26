@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-173163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FEFB35C05
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EA0B36B4A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9C2364541
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5BFA583A7D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74A12BE7B2;
-	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499E1352FD0;
+	Tue, 26 Aug 2025 14:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BL6YX9/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBIHiLMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93938239573;
-	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030B1350D7C;
+	Tue, 26 Aug 2025 14:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207535; cv=none; b=C1MwgrBh+pJ9WlV5Y2tJxWgxcb4gt2VCPpT210sCLH8okFlZQr4uHirbGhvMaZ+9aVA4ISCZCX+YrOUXBzHdMQIhzVVVF+WXuUkUqEkLn4QCxuWKooaLnaVyp/jJ46979TZ/Vg+Gy9MLrNuZefIMTJ7uAj7CjLzo75PW53YarwA=
+	t=1756218825; cv=none; b=Tyw11Lv2S2tfwe7xk67FSjFaeeYBV2ItaJiRBcfbC2+KIaNSSIJ4uzUepeW626Cro/SPfhGC6N4NKDYBr4AHpCjkJymrNiBym3M9JrlKrldXjPL8K19FEoTOYMStw4aMjlC/1cG5rW4PfM1j/7NWYjBSX+72AUbl+ie9SnhrV3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207535; c=relaxed/simple;
-	bh=Nte42+I1cZEhUSdrfaUzXTqegPyLyt6BIiAje8oIrbI=;
+	s=arc-20240116; t=1756218825; c=relaxed/simple;
+	bh=Td0PuyMOHlyZ4vgFi1dm7A+Y4Lq+E7+6qVbRAR3ZB2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTh3BVczhgxKsaDTjNqpqBUE0a7mA7xSL6Q80pbLhKG56hHelR80oujOp5d7LfB/9/VOiDvDGFFkk0r9KoStOyDc7YZCKTux0uNTZ0KEZGApP27QvXmgxv8KI5qd290ls8RTQn32H2MfQHbFF+y1A5fC01n0YOlE3MFKf2+WkC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BL6YX9/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D081C4CEF1;
-	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
+	 MIME-Version; b=Tj4N6JVBhEx3H45d5vTK6rs7dKzwMNA+tHon0DeJTA6VvsLRdYcFrwA/9tjcBUEDwPgZmwA5F67BlIqWqA5bztUJunN2kP85YogQiilKkrHcBJGokT7/BqUGVHL94N7VtjJd+2jucoGW4Q42AjdIvi0W2GaLDUGwkdqXVvqZi70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBIHiLMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D34C4CEF1;
+	Tue, 26 Aug 2025 14:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207535;
-	bh=Nte42+I1cZEhUSdrfaUzXTqegPyLyt6BIiAje8oIrbI=;
+	s=korg; t=1756218824;
+	bh=Td0PuyMOHlyZ4vgFi1dm7A+Y4Lq+E7+6qVbRAR3ZB2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BL6YX9/tKGyRgpUUt3XFevUtZMmtgp3eRztxNhkHBWruKgN3Z46aB+7n5FfJmkYPp
-	 9bSVxxjbFRiZeLvrFrQjvpUUbkcaWSyuD/n35zN7kQH4KoM8kxZcAsQ/Dc06hHQvTX
-	 RiozrNunxjSh9zsCHoxqIL+vC8j/HiY1GVpi4A6M=
+	b=TBIHiLMtAt4cmN6xZSYtHOBBWqp27GmZaXvEWQ6WGnmNKhKGOx2D9rPc4fTBKT3Zw
+	 mOa762WcUYR4v/i4HoHao34SmrtQwPT1m8KaUSWPO4L9jnth+47JiPoeDK+KQvsda8
+	 3/QyH6bn+OVBYRApBQ+ubEOZgCUTB4SaDkKgCT3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Siyang Liu <Security@tencent.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 188/457] drm/amd/display: fix a Null pointer dereference vulnerability
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 146/403] smb: client: let recv_done() cleanup before notifying the callers.
 Date: Tue, 26 Aug 2025 13:07:52 +0200
-Message-ID: <20250826110942.015562424@linuxfoundation.org>
+Message-ID: <20250826110910.809760168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siyang Liu <Security@tencent.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 1bcf63a44381691d6192872801f830ce3250e367 upstream.
+[ Upstream commit bdd7afc6dca5e0ebbb75583484aa6ea9e03fbb13 ]
 
-[Why]
-A null pointer dereference vulnerability exists in the AMD display driver's
-(DC module) cleanup function dc_destruct().
-When display control context (dc->ctx) construction fails
-(due to memory allocation failure), this pointer remains NULL.
-During subsequent error handling when dc_destruct() is called,
-there's no NULL check before dereferencing the perf_trace member
-(dc->ctx->perf_trace), causing a kernel null pointer dereference crash.
+We should call put_receive_buffer() before waking up the callers.
 
-[How]
-Check if dc->ctx is non-NULL before dereferencing.
+For the internal error case of response->type being unexpected,
+we now also call smbd_disconnect_rdma_connection() instead
+of not waking up the callers at all.
 
-Link: https://lore.kernel.org/r/tencent_54FF4252EDFB6533090A491A25EEF3EDBF06@qq.com
-Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-(Updated commit text and removed unnecessary error message)
-Signed-off-by: Siyang Liu <Security@tencent.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9dd8e2ba268c636c240a918e0a31e6feaee19404)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that the SMBD_TRANSFER_DATA case still has problems,
+which will be addressed in the next commit in order to make
+it easier to review this one.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/cifs/smbdirect.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -938,17 +938,18 @@ static void dc_destruct(struct dc *dc)
- 	if (dc->link_srv)
- 		link_destroy_link_service(&dc->link_srv);
+diff --git a/fs/cifs/smbdirect.c b/fs/cifs/smbdirect.c
+index 0842a1af0b98..72df002e8ae3 100644
+--- a/fs/cifs/smbdirect.c
++++ b/fs/cifs/smbdirect.c
+@@ -495,7 +495,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
+ 		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
+ 			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(info);
+ 		goto error;
+ 	}
  
--	if (dc->ctx->gpio_service)
--		dal_gpio_service_destroy(&dc->ctx->gpio_service);
-+	if (dc->ctx) {
-+		if (dc->ctx->gpio_service)
-+			dal_gpio_service_destroy(&dc->ctx->gpio_service);
+@@ -512,8 +511,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		info->full_packet_received = true;
+ 		info->negotiate_done =
+ 			process_negotiation_response(response, wc->byte_len);
++		put_receive_buffer(info, response);
+ 		complete(&info->negotiate_completion);
+-		break;
++		return;
  
--	if (dc->ctx->created_bios)
--		dal_bios_parser_destroy(&dc->ctx->dc_bios);
-+		if (dc->ctx->created_bios)
-+			dal_bios_parser_destroy(&dc->ctx->dc_bios);
-+		kfree(dc->ctx->logger);
-+		dc_perf_trace_destroy(&dc->ctx->perf_trace);
+ 	/* SMBD data transfer packet */
+ 	case SMBD_TRANSFER_DATA:
+@@ -565,14 +565,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
  
--	kfree(dc->ctx->logger);
--	dc_perf_trace_destroy(&dc->ctx->perf_trace);
+ 		queue_work(info->workqueue, &info->recv_done_work);
+ 		return;
 -
--	kfree(dc->ctx);
--	dc->ctx = NULL;
-+		kfree(dc->ctx);
-+		dc->ctx = NULL;
-+	}
+-	default:
+-		log_rdma_recv(ERR,
+-			"unexpected response type=%d\n", response->type);
+ 	}
  
- 	kfree(dc->bw_vbios);
- 	dc->bw_vbios = NULL;
++	/*
++	 * This is an internal error!
++	 */
++	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
++	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
+ error:
+ 	put_receive_buffer(info, response);
++	smbd_disconnect_rdma_connection(info);
+ }
+ 
+ static struct rdma_cm_id *smbd_create_id(
+-- 
+2.39.5
+
 
 
 
