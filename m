@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5844B35FDA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48092B365E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFE6E1BA637A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6F8686AA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C39D224B14;
-	Tue, 26 Aug 2025 12:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90822FAC0A;
+	Tue, 26 Aug 2025 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2SwmBem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj8dl4XZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E9422DFB8;
-	Tue, 26 Aug 2025 12:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7596C28314A;
+	Tue, 26 Aug 2025 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212704; cv=none; b=RQSM4wfW+nOutJu/lV/vymTR+R/sr0szD7QGE9262Mzigy7RdmEOG17aDOK6sRqUG4HQ/VETG5iREx6D/KP3LuR8Bo4dlvKHV5i4TS78GX/GsiW2/1W8HrYL0GVoe+2/GSIlJg2JVNpWcOwEmFQVWKUwnMt1LUagwWTwwtc+hjc=
+	t=1756215773; cv=none; b=R9NCgsPXM+Br8VAU1qpigNhjdGH6gvXXc4lcMxbmcvTA1AcXSINi1lMgSFFt3HnLh1FQx3srwkQweu3GuooNEJH+Qtb+y5EtiAI/XKCh8RaL+My5+4NMwCiyyLKxqC6n5/GThtKR6mLX4gjSg8L6ibv8sHHBoVITU6ui7ZAh9G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212704; c=relaxed/simple;
-	bh=e8qXNcBzdnwZdwIimAfPE1ndY9WakBVi+pno2SXZFnI=;
+	s=arc-20240116; t=1756215773; c=relaxed/simple;
+	bh=dJwiZH+bdh+/jBMm4nDkr4isucKC6DFVaPYausoE19M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=if4xyviUENkabvYOAfBrD9RLD2rlIhesMbALuukk6gqkFWoXIrlkD/ett808hLZ0GfuKHmanO/ORSEeDKxdp+aNeUiAGgPwb9R2vYQTtndk0E+ctTiW59LuJcOQxOnHhNuwzBCNFS9NYR1VxDuXIMcm79w3SU786jkd4IPnpws4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2SwmBem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD729C4CEF1;
-	Tue, 26 Aug 2025 12:51:43 +0000 (UTC)
+	 MIME-Version; b=pFmYIBKjzhr+Nqau9l3EPtslzhNIWFT47yW3BcVDwsFO15DQcw/yZdw7DWArsrxhm89mRZ7bP5M1rTo7BvdtyJfm978fLag7SDVzNkzuiR7R+Ggii2MJuoXcfuyBUPfidIRe87Wf6Za6jo1BZPy+3tliwpczalGzTAk+MQVAHVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj8dl4XZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06055C4CEF1;
+	Tue, 26 Aug 2025 13:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212704;
-	bh=e8qXNcBzdnwZdwIimAfPE1ndY9WakBVi+pno2SXZFnI=;
+	s=korg; t=1756215773;
+	bh=dJwiZH+bdh+/jBMm4nDkr4isucKC6DFVaPYausoE19M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2SwmBemIxZ+vsroDdcR2mMY7uR42+eAH38qI8r8QpkFcnatVmPCbMn0CoJhG6GX7
-	 5gzECthhdmWe6YKshM0GJbFAkQ0s5d+myd/ZAgZucsN+CUvPb1ek2E/U9osH0jWpfz
-	 7y7FJnrgzXQ7l03istaw4TRfBBgqgyth5Pn2HKLQ=
+	b=Rj8dl4XZ7FQ0koe5omwj3uBEQel0VqZEdkn8Gd3Mkbpmjd/OQQW96pnC3IB6gO3D3
+	 TSkQUqhSs0QHyTBRtWqPMSSRJJDttpHAFbxxiQZLcQrs6GnGr3p2iKaNjMmkWHEDcb
+	 QsldW6ABJZYbTpkJZvvE0eiMU0Uy2Pj6SybPNrwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Jens Axboe <axboe@kernel.dk>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/587] loop: Avoid updating block size under exclusive owner
-Date: Tue, 26 Aug 2025 13:03:40 +0200
-Message-ID: <20250826110954.741061048@linuxfoundation.org>
+Subject: [PATCH 5.15 130/644] cpufreq: Initialize cpufreq-based frequency-invariance later
+Date: Tue, 26 Aug 2025 13:03:41 +0200
+Message-ID: <20250826110949.730999487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 7e49538288e523427beedd26993d446afef1a6fb ]
+[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
 
-Syzbot came up with a reproducer where a loop device block size is
-changed underneath a mounted filesystem. This causes a mismatch between
-the block device block size and the block size stored in the superblock
-causing confusion in various places such as fs/buffer.c. The particular
-issue triggered by syzbot was a warning in __getblk_slow() due to
-requested buffer size not matching block device block size.
+The cpufreq-based invariance is enabled in cpufreq_register_driver(),
+but never disabled after registration fails. Move the invariance
+initialization to where all other initializations have been successfully
+done to solve this problem.
 
-Fix the problem by getting exclusive hold of the loop device to change
-its block size. This fails if somebody (such as filesystem) has already
-an exclusive ownership of the block device and thus prevents modifying
-the loop device under some exclusive owner which doesn't expect it.
-
-Reported-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20250711163202.19623-2-jack@suse.cz
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 38 ++++++++++++++++++++++++++++++--------
- 1 file changed, 30 insertions(+), 8 deletions(-)
+ drivers/cpufreq/cpufreq.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 455e2a2b149f..ed004e1610dd 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1472,19 +1472,36 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
- 	return error;
- }
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index bbb0cbb2eb8c..7d7158fa70c5 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2841,15 +2841,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	cpufreq_driver = driver_data;
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
  
--static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
-+static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
-+			       struct block_device *bdev, unsigned long arg)
- {
- 	int err = 0;
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	if (driver_data->setpolicy)
+ 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
  
--	if (lo->lo_state != Lo_bound)
--		return -ENXIO;
+@@ -2880,6 +2871,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
+ 
 +	/*
-+	 * If we don't hold exclusive handle for the device, upgrade to it
-+	 * here to avoid changing device under exclusive owner.
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
 +	 */
-+	if (!(mode & BLK_OPEN_EXCL)) {
-+		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
-+		if (err)
-+			return err;
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("supports frequency invariance");
 +	}
 +
-+	err = mutex_lock_killable(&lo->lo_mutex);
-+	if (err)
-+		goto abort_claim;
-+
-+	if (lo->lo_state != Lo_bound) {
-+		err = -ENXIO;
-+		goto unlock;
-+	}
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
  
- 	err = blk_validate_block_size(arg);
- 	if (err)
- 		return err;
- 
- 	if (lo->lo_queue->limits.logical_block_size == arg)
--		return 0;
-+		goto unlock;
- 
- 	sync_blockdev(lo->lo_device);
- 	invalidate_bdev(lo->lo_device);
-@@ -1496,6 +1513,11 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
- 	loop_update_dio(lo);
- 	blk_mq_unfreeze_queue(lo->lo_queue);
- 
-+unlock:
-+	mutex_unlock(&lo->lo_mutex);
-+abort_claim:
-+	if (!(mode & BLK_OPEN_EXCL))
-+		bd_abort_claiming(bdev, loop_set_block_size);
- 	return err;
- }
- 
-@@ -1514,9 +1536,6 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
- 	case LOOP_SET_DIRECT_IO:
- 		err = loop_set_dio(lo, arg);
- 		break;
--	case LOOP_SET_BLOCK_SIZE:
--		err = loop_set_block_size(lo, arg);
--		break;
- 	default:
- 		err = -EINVAL;
- 	}
-@@ -1571,9 +1590,12 @@ static int lo_ioctl(struct block_device *bdev, blk_mode_t mode,
- 		break;
- 	case LOOP_GET_STATUS64:
- 		return loop_get_status64(lo, argp);
-+	case LOOP_SET_BLOCK_SIZE:
-+		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+		return loop_set_block_size(lo, mode, bdev, arg);
- 	case LOOP_SET_CAPACITY:
- 	case LOOP_SET_DIRECT_IO:
--	case LOOP_SET_BLOCK_SIZE:
- 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
- 			return -EPERM;
- 		fallthrough;
 -- 
 2.39.5
 
