@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CECB36D33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:10:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2037B361CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D5CA04097
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F79C2A710E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A0935AAC6;
-	Tue, 26 Aug 2025 14:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6D623A9A0;
+	Tue, 26 Aug 2025 13:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKAQCaqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1neuiODV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F188C350851;
-	Tue, 26 Aug 2025 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA501C5D72;
+	Tue, 26 Aug 2025 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219186; cv=none; b=ZydfbTX8OgKin2MB/8w97VTdu/JS7etPguUChqcX0NMSlb5f6KwIVOhJxxHswNZcGSjMDg3zKjVoeqsbppy5DUCkcZE0L0f5+HFRMMvExYTf0FrvbbaJNg0nZgfpSYmWcN9mLt7FlqdldQF3FIZWFvM0+1r+Oze+JFwajoP1HmA=
+	t=1756213664; cv=none; b=U7vCG/2DdnSOuQlmKecehH+rP54+dZQhTNNHTbJoGdOLHpRlBSEXq9Q+X4622tG2FySpGSBfYTE9ja4hVonb/UmiU2dKJvnS+uTSIlmYYggssJCohxENy00wnfgd+e3opviYz/c6iqeuSfMyRP1kzHZ28VQLjDtUdE2aSeXl6fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219186; c=relaxed/simple;
-	bh=eclj5VJOk+9I/uIFE9jcwk4T1iXsLWIA2nLem7mNYxo=;
+	s=arc-20240116; t=1756213664; c=relaxed/simple;
+	bh=H+j0nAxqi3Abc2oZMLm//XWa4gFuL7byT6Q+rS/+WKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIIQEmJB2agdkI6CNDLz60rBY6mXY4nbPhynBKXdxi2nLS7jHdyVfLksrreI4GMqtJ11+xV+liCVt8wFaea0SmgKGPQPyT5PFuUeqNffNQJ5YjOKnTskqXilGPD/RqliEIzx6IktvdStONrAZ+KmGg85w8XCcfCe/EtEafIlo08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKAQCaqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FA6C4CEF1;
-	Tue, 26 Aug 2025 14:39:45 +0000 (UTC)
+	 MIME-Version; b=HHwCIJuz+6b2Lw80LGn63TmRjYwFDW3DKS3dT0bbbJcZ1cFM4TQ6ga4Np9Ifo6l0fCU3D4QBE9M9TZnglZdwCproczTmJlsCnMxlio5QEsBKlStH9iHL24QktUnfBFv26JdUIDd8MJJzw3m8zDSDLSrJ/7tJlTbIpeFLQ56X2Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1neuiODV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F6BC4CEF1;
+	Tue, 26 Aug 2025 13:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219185;
-	bh=eclj5VJOk+9I/uIFE9jcwk4T1iXsLWIA2nLem7mNYxo=;
+	s=korg; t=1756213662;
+	bh=H+j0nAxqi3Abc2oZMLm//XWa4gFuL7byT6Q+rS/+WKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKAQCaqmACDHOS9ngxR5HRo2zlJvqMnheTxU7Hj45Rk+PiPBzqndFcPN7o+suNrIF
-	 qtPtulsCGKDQ8C6JAdgn9gFCPYu9JQDjq0/nmGfKo1auIv7SeNP9i6gGca/+csTXLx
-	 zHqgE1RO6acSID8yfrJ1KZYceNjrpGWSdtrSZaI4=
+	b=1neuiODVo1nyXBOq8L6R2RnoysWPaevqK8FxKgq/wR67tiQarmHzX+TgJnnZVFElw
+	 gKqV9bMfD5cWM6BCvaKs9ANMH7ZjBQBwL9eRW8BuJizvzxLgNxG4SYLiN+ABNcr89U
+	 T3Fi4NO8G+a+FD+ilzagOec8K8JFpDSuRYI9KW0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 255/403] PCI: pnv_php: Work around switches with broken presence detection
+Subject: [PATCH 6.6 432/587] net: Add net_passive_inc() and net_passive_dec().
 Date: Tue, 26 Aug 2025 13:09:41 +0200
-Message-ID: <20250826110913.869097238@linuxfoundation.org>
+Message-ID: <20250826111003.935147127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
+[ Upstream commit e57a6320215c3967f51ab0edeff87db2095440e4 ]
 
-The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
-was observed to incorrectly assert the Presence Detect Set bit in its
-capabilities when tested on a Raptor Computing Systems Blackbird system,
-resulting in the hot insert path never attempting a rescan of the bus
-and any downstream devices not being re-detected.
+net_drop_ns() is NULL when CONFIG_NET_NS is disabled.
 
-Work around this by additionally checking whether the PCIe data link is
-active or not when performing presence detection on downstream switches'
-ports, similar to the pciehp_hpc.c driver.
+The next patch introduces a function that increments
+and decrements net->passive.
 
-Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+As a prep, let's rename and export net_free() to
+net_passive_dec() and add net_passive_inc().
+
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/CANn89i+oUCt2VGvrbrweniTendZFEh+nwS=uonc004-aPkWy-Q@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250217191129.19967-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 59b33fab4ca4 ("smb: client: fix netns refcount leak after net_passive changes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ include/net/net_namespace.h |   16 ++++++++++++++++
+ net/core/net_namespace.c    |    8 ++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 3687a99383c1..800964c81e06 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -395,6 +395,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
- 	return 0;
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -293,6 +293,7 @@ static inline int check_net(const struct
  }
  
-+static int pcie_check_link_active(struct pci_dev *pdev)
+ void net_drop_ns(void *);
++void net_passive_dec(struct net *net);
+ 
+ #else
+ 
+@@ -322,8 +323,23 @@ static inline int check_net(const struct
+ }
+ 
+ #define net_drop_ns NULL
++
++static inline void net_passive_dec(struct net *net)
 +{
-+	u16 lnk_status;
-+	int ret;
-+
-+	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
-+	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
-+		return -ENODEV;
-+
-+	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
-+
-+	return ret;
++	refcount_dec(&net->passive);
++}
+ #endif
+ 
++static inline void net_passive_inc(struct net *net)
++{
++	refcount_inc(&net->passive);
 +}
 +
- static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
++/* Returns true if the netns initialization is completed successfully */
++static inline bool net_initialized(const struct net *net)
++{
++	return READ_ONCE(net->list.next);
++}
+ 
+ static inline void __netns_tracker_alloc(struct net *net,
+ 					 netns_tracker *tracker,
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -467,7 +467,7 @@ static void net_complete_free(void)
+ 
+ }
+ 
+-static void net_free(struct net *net)
++void net_passive_dec(struct net *net)
  {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-@@ -407,6 +421,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- 	 */
- 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
- 	if (ret >= 0) {
-+		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
-+			presence == OPAL_PCI_SLOT_EMPTY) {
-+			/*
-+			 * Similar to pciehp_hpc, check whether the Link Active
-+			 * bit is set to account for broken downstream bridges
-+			 * that don't properly assert Presence Detect State, as
-+			 * was observed on the Microsemi Switchtec PM8533 PFX
-+			 * [11f8:8533].
-+			 */
-+			if (pcie_check_link_active(php_slot->pdev) > 0)
-+				presence = OPAL_PCI_SLOT_PRESENT;
-+		}
-+
- 		*state = presence;
- 		ret = 0;
- 	} else {
--- 
-2.39.5
-
+ 	if (refcount_dec_and_test(&net->passive)) {
+ 		kfree(rcu_access_pointer(net->gen));
+@@ -485,7 +485,7 @@ void net_drop_ns(void *p)
+ 	struct net *net = (struct net *)p;
+ 
+ 	if (net)
+-		net_free(net);
++		net_passive_dec(net);
+ }
+ 
+ struct net *copy_net_ns(unsigned long flags,
+@@ -527,7 +527,7 @@ put_userns:
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(user_ns);
+-		net_free(net);
++		net_passive_dec(net);
+ dec_ucounts:
+ 		dec_net_namespaces(ucounts);
+ 		return ERR_PTR(rv);
+@@ -672,7 +672,7 @@ static void cleanup_net(struct work_stru
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(net->user_ns);
+-		net_free(net);
++		net_passive_dec(net);
+ 	}
+ }
+ 
 
 
 
