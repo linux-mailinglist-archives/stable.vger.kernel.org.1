@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FBFB36984
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F029B36101
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851E656425D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF7A1BA55CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C7731985C;
-	Tue, 26 Aug 2025 14:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3441CD1E4;
+	Tue, 26 Aug 2025 13:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikHsARUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQxy7N88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44CB1662E7;
-	Tue, 26 Aug 2025 14:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4031A8F84;
+	Tue, 26 Aug 2025 13:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217756; cv=none; b=XOcfJkFsVS2HiERuUHKSOobkEK2oABuYpNLr39Lx/njQ3AI94Eg9lb8H6OZag242c4x7RNANtHo0z9h4szhtJX8GpWWgI2gku3rOvDU3pjK43FD81LEaGd33EaQVUgFpQgsioAInMTtmhzB4ZDR8DBeA0PHBAFFgdz4c1StYhkE=
+	t=1756213375; cv=none; b=b1b4UV7eajrTfVVtB9fA/ht7vCXYuaQpcgGfF7+R/ZDU1Y2Pw2APt6GqCQsUtajS7w8b030WZvzUfmtLr0Fs5DAjKqY7k16Ie1lYGDButUQK3qU+g2ffpsPwrhBSE3rJu6Q0MreqKWqYR2P6ZeIe46/CRhj1eDjO5mSE9Sxk1QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217756; c=relaxed/simple;
-	bh=3FBKxPpoOhetmYgNRvcyu8LsG/GLnIfu8AVfS57lchE=;
+	s=arc-20240116; t=1756213375; c=relaxed/simple;
+	bh=W3xEbYQIoAl4Ff+IzNcJx8yRa3MXDBK9mKqUkHqGkN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPteGDMgIimgbTBCOZ2+hHoHMaPWAtfoVhuiuW02a9EehvYUrWmdATJsFyO0ydll6QjXMFz6nmyJqAeF8kHylDzi6UHVNlj8QRtKI3j4bYFk1KsRBqY8kRexJjsJQwPbAv9UblQPz3qQMFq1OolC95Cwmi4nMuzMA6KyRS99Bwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikHsARUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771D5C4CEF1;
-	Tue, 26 Aug 2025 14:15:55 +0000 (UTC)
+	 MIME-Version; b=mCPeCe3+WJOr/ri++wW4FBl4VbpZVSQKSlVj91UxxZgUvlyqhwhKEzbgOUsj4w0OtDX3Rs0NFOy4v3NomoxiORDldeJ/taT/XwNepjn0WZj/7I0j1YZN97tmw0vx6dOhYcvNOw7deJezEPLmEATozPjqUFdRVAKtMpcZp3D83sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQxy7N88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1591C4CEF1;
+	Tue, 26 Aug 2025 13:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217755;
-	bh=3FBKxPpoOhetmYgNRvcyu8LsG/GLnIfu8AVfS57lchE=;
+	s=korg; t=1756213375;
+	bh=W3xEbYQIoAl4Ff+IzNcJx8yRa3MXDBK9mKqUkHqGkN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikHsARURvf7AtkoEUTAlwDeqwtkLVhEpBkvtpRjfBLINLuKebXdZXsvOOltFygGlu
-	 EqzkOidkefGKGAbPbHzS+ocuKv7fpuUMcAGEp413wZTYrYe4/uqG5EV/4ErvDUjPh2
-	 6eaBa6cizvvhdpwnOQt3hx3IhZKeQ5CVFParRYvM=
+	b=nQxy7N88alsld9oiUhDdH4OIDUwOy0dibvBYeVQkTy3LE1UXmfY6Ajjjr1n/FidTy
+	 4Ps4IGb80ADE78TpZvKYGPiDdyOQTCLwbFMwZe7L/UtrGzvfTowxlB0FOfJHR2YnPj
+	 1pamrSp8URmCy97swzl/Mjj5nNWoOaGUq2xMlzw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 262/523] be2net: Use correct byte order and format string for TCP seq and ack_seq
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 323/587] media: uvcvideo: Do not mark valid metadata as invalid
 Date: Tue, 26 Aug 2025 13:07:52 +0200
-Message-ID: <20250826110930.888410603@linuxfoundation.org>
+Message-ID: <20250826111001.134910257@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
+commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
 
-The TCP header fields seq and ack_seq are 32-bit values in network
-byte order as (__be32). these fields were earlier printed using
-ntohs(), which converts only 16-bit values and produces incorrect
-results for 32-bit fields. This patch is changeing the conversion
-to ntohl(), ensuring correct interpretation of these sequence numbers.
+Currently, the driver performs a length check of the metadata buffer
+before the actual metadata size is known and before the metadata is
+decided to be copied. This results in valid metadata buffers being
+incorrectly marked as invalid.
 
-Notably, the format specifier is updated from %d to %u to reflect the
-unsigned nature of these fields.
+Move the length check to occur after the metadata size is determined and
+is decided to be copied.
 
-improves the accuracy of debug log messages for TCP sequence and
-acknowledgment numbers during TX timeouts.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index ff3ea24d2e3f..97cbe7737eb4 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1466,10 +1466,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 						 ntohs(tcphdr->source));
- 					dev_info(dev, "TCP dest port %d\n",
- 						 ntohs(tcphdr->dest));
--					dev_info(dev, "TCP sequence num %d\n",
--						 ntohs(tcphdr->seq));
--					dev_info(dev, "TCP ack_seq %d\n",
--						 ntohs(tcphdr->ack_seq));
-+					dev_info(dev, "TCP sequence num %u\n",
-+						 ntohl(tcphdr->seq));
-+					dev_info(dev, "TCP ack_seq %u\n",
-+						 ntohl(tcphdr->ack_seq));
- 				} else if (ip_hdr(skb)->protocol ==
- 					   IPPROTO_UDP) {
- 					udphdr = udp_hdr(skb);
--- 
-2.39.5
-
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -1414,12 +1414,6 @@ static void uvc_video_decode_meta(struct
+ 	if (!meta_buf || length == 2)
+ 		return;
+ 
+-	if (meta_buf->length - meta_buf->bytesused <
+-	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
+-		meta_buf->error = 1;
+-		return;
+-	}
+-
+ 	has_pts = mem[1] & UVC_STREAM_PTS;
+ 	has_scr = mem[1] & UVC_STREAM_SCR;
+ 
+@@ -1440,6 +1434,12 @@ static void uvc_video_decode_meta(struct
+ 				  !memcmp(scr, stream->clock.last_scr, 6)))
+ 		return;
+ 
++	if (meta_buf->length - meta_buf->bytesused <
++	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
++		meta_buf->error = 1;
++		return;
++	}
++
+ 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
+ 	local_irq_save(flags);
+ 	time = uvc_video_get_time();
 
 
 
