@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32535B35C6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DFBB36C56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 294057C17D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CB998274C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E202C3469FC;
-	Tue, 26 Aug 2025 11:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF17362066;
+	Tue, 26 Aug 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StK2lK00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwIVxbO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D03A34A309;
-	Tue, 26 Aug 2025 11:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF70362084;
+	Tue, 26 Aug 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207890; cv=none; b=R7IfBzENNXp5gq+hyYlZtEqsRdGQBKgc26wPMcoeUSEfHxbB9uB8wjWGoKWOD72CDp6Jz2I4FjHulTpKn6rhbxga2lkZ2SsOXGFMw2H9I+K///iAMTwBqIh92meDxVevFqBBuvsJkIMOjQGVCm9X+8meMdNyPsJNemRu8SkVVJA=
+	t=1756219266; cv=none; b=rtlHtE5NuMiLiaZTYZrd7/zj2cIL63vwHsh2rDR9isUXa+mXEaVVtcn0AzG9Fw/CVcEUWBJVvkurqHmS8Brl6TgRd1nEuB2yvsqddqZls3QOsxoQe++HlfpoEEwJBmLzITQ86Gd8Zyh1KfUC8ywiVZxVRRltiPHaW1PHQraKwPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207890; c=relaxed/simple;
-	bh=cuICioA197GvLGauqKEUD69IdZeFhCva+HKDDyu0gVc=;
+	s=arc-20240116; t=1756219266; c=relaxed/simple;
+	bh=6LmisT4qe/heEaj9YA0blcGVtv0oc0GRRIjh6+NNHH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R9TV+GjzrY4vWIxo/r7u0EAnsDgcXnML5hAKKINgdLG8OEG/JNx5Y+joMEzalQmwF1U6AivNeyFwl9ZU8x7TXaSyWTqrlyrSoRFzkw76mB/gen9HUBwghX8R+X8mhnS+8DFPd6+LbTZeo/Qy6+bCIG/x7giG4WWBEZzuKUFcqlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StK2lK00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B7CC4CEF1;
-	Tue, 26 Aug 2025 11:31:29 +0000 (UTC)
+	 MIME-Version; b=S0lmsEFsfs0VcUL4VDTtFK12CQWyfFpovbmgjN7ZgRq8FTYXlSb9LZJvuGeH8Lgi8pU/YLPZIZKzkhsGwQm598h+x9ipR224bHNT5NGlUtMlT3rfdVyjg49PTXKLQptCqQYMQfkW7hEIiPfqMzopDdoe1UWpLAHUXtzq2q9tXEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwIVxbO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDACC116B1;
+	Tue, 26 Aug 2025 14:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207890;
-	bh=cuICioA197GvLGauqKEUD69IdZeFhCva+HKDDyu0gVc=;
+	s=korg; t=1756219266;
+	bh=6LmisT4qe/heEaj9YA0blcGVtv0oc0GRRIjh6+NNHH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StK2lK00qzt3QmpO83xJyf2xJRdkz+OEqEQdPOQM8CS70H9FdH8jEcqAf4UU0TUAB
-	 mwgVAjKzdCkr/P3wef4qsGIzl85eOj1Q4AZfWOVyN03j2WmE24DC9QjLo3akfp5ESQ
-	 kWm7RKEmyaOvwDybTjS1LSbB3EP6s+ChQFFXj0rg=
+	b=ZwIVxbO4HqdvJNK0KG14RqsIf94Az0S6Q308vxtqBOuQbgf7K0cYzvl+1ud7Ed9X+
+	 WT2g3RvpKud6kioHN+cXEgQxTeVK6h2XqiaGpJFoAp+P/lVtfNzTPSwBrIrb8MZWPQ
+	 52v9l3WQ++UrabFQaa1b9f5evboW1Iuqo58puSq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suma Hegde <suma.hegde@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 357/457] platform/x86/amd/hsmp: Ensure sock->metric_tbl_addr is non-NULL
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 5.4 315/403] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
 Date: Tue, 26 Aug 2025 13:10:41 +0200
-Message-ID: <20250826110946.138579409@linuxfoundation.org>
+Message-ID: <20250826110915.519496664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suma Hegde <suma.hegde@amd.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-[ Upstream commit 2c78fb287e1f430b929f2e49786518350d15605c ]
+commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
 
-If metric table address is not allocated, accessing metrics_bin will
-result in a NULL pointer dereference, so add a check.
+dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
+get the number of mapped segments.
 
-Fixes: 5150542b8ec5 ("platform/x86/amd/hsmp: add support for metrics tbl")
-Signed-off-by: Suma Hegde <suma.hegde@amd.com>
-Link: https://lore.kernel.org/r/20250807100637.952729-1-suma.hegde@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
+Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
+Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/hsmp/hsmp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/fpga/zynq-fpga.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/hsmp/hsmp.c b/drivers/platform/x86/amd/hsmp/hsmp.c
-index 885e2f8136fd..19f82c1d3090 100644
---- a/drivers/platform/x86/amd/hsmp/hsmp.c
-+++ b/drivers/platform/x86/amd/hsmp/hsmp.c
-@@ -356,6 +356,11 @@ ssize_t hsmp_metric_tbl_read(struct hsmp_socket *sock, char *buf, size_t size)
- 	if (!sock || !buf)
- 		return -EINVAL;
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
+ 		}
+ 	}
  
-+	if (!sock->metric_tbl_addr) {
-+		dev_err(sock->dev, "Metrics table address not available\n");
-+		return -ENOMEM;
-+	}
-+
- 	/* Do not support lseek(), also don't allow more than the size of metric table */
- 	if (size != sizeof(struct hsmp_metric_table)) {
- 		dev_err(sock->dev, "Wrong buffer size\n");
--- 
-2.50.1
-
+-	priv->dma_nelms =
+-	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+-	if (priv->dma_nelms == 0) {
++	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
++	if (err) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+-		return -ENOMEM;
++		return err;
+ 	}
++	priv->dma_nelms = sgt->nents;
+ 
+ 	/* enable clock */
+ 	err = clk_enable(priv->clk);
 
 
 
