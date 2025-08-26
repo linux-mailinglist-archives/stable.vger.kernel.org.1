@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED7AB36166
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A521BB35BAE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1A92A5B00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AC9F7B0DEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED9122AE5D;
-	Tue, 26 Aug 2025 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BE92BE7B2;
+	Tue, 26 Aug 2025 11:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSovgYq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jmxg5+Us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E1C23315A;
-	Tue, 26 Aug 2025 13:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BA82BE03C;
+	Tue, 26 Aug 2025 11:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213457; cv=none; b=JpF8jYXwke8rrj1beh4qbRcqgfv/E2whvq+lLgWGWjJXTUyAP2LlKwJzJLOvEjwk/Ohcg6eZZO/gsZKuwwA9PVdbMTeu4fBRmwW8UbT6UXWD1aYK40p2fTmyQY0AEGoCJd38nH7hrxJNvhTvHb3n3eMVWBJBw0bfCivx5xcPxXM=
+	t=1756207611; cv=none; b=c0BjBtU96dqMe/MZCUBGaEwgnaIMcsX5J8bC1KdtmHvoyaN1L/ZcNHsiEzzNqLp9DRWQkEuvuJvegvc02mHKn9BNNO97Gzed6woiqtzAUmtwClp889rxtkZKphtsmbTWPbsIjSNKIQgM9yh1ljisNofONCk3Dbzp9KfvsAu2IQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213457; c=relaxed/simple;
-	bh=T3stmt5J9kfkVW7FPSi/olDD5zFHMinDHTXHQ+TNrdw=;
+	s=arc-20240116; t=1756207611; c=relaxed/simple;
+	bh=0EwureN04fJtLTN3RbThe8OgYgejt+D3IKlcdJTs1xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i87tZ8bL8aomAjj7UwHY8BAHshSDwdNOZ7reE0na+N+N0UW9j3/ltUu2bYRa5XHmwJrF7o5j7lKPFXpSGxP6xpsOFd6qsQ789pC4S+sGryLYs+tSMX60viZs2Ubzs9B7dxK71UW1VzECpOptqpOG4gtHJ8MgPzSPETa3K6TReJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSovgYq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB6DC4CEF1;
-	Tue, 26 Aug 2025 13:04:15 +0000 (UTC)
+	 MIME-Version; b=CJIMS38RSgNpiGM/7+iWOcDxrgXxXI4VJvL+3t054JQkdE0Uc4OjEYCx0ZZKVK+1QRed+CIjIraGn60b47thO8x9vvgIbHAXNTg2s4f6J1JDhZf9y6SMTlQKyfn/hN2OwIKNb8e6b0xvOLw+X5t2giutkxpY9g1MFyA9IZw2l7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jmxg5+Us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F31EC4CEF1;
+	Tue, 26 Aug 2025 11:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213456;
-	bh=T3stmt5J9kfkVW7FPSi/olDD5zFHMinDHTXHQ+TNrdw=;
+	s=korg; t=1756207611;
+	bh=0EwureN04fJtLTN3RbThe8OgYgejt+D3IKlcdJTs1xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSovgYq8CWjduiSiBxGTzZRGuJHdyfUyyXpbCQf17uh3+NpeVumpamtOyyIZhjFg+
-	 FlOia4DJvQ2dQwur2eBEzX9nPuJwOYfN2ys8UrGWdm+7DF1xcoknSE8/3ooL/4Q6XC
-	 GixtPP8Owckz7PooliBU0KInxI/d29CHExYqr2FQ=
+	b=Jmxg5+UsTCjLkPJ7JnCc9+WlpEE3D/lXM/33emyeJMPywFxIzvwD/xNl1WdB7bWpb
+	 EKiEGCyIymj8wxOvSNK5uK77v2VRgtc1+Mdb2P02KsBsH7A68rdeKCl9V3VsjaUqkt
+	 g2ugV0DGULMOOcJYwQBBx49UrAeMZJFkTSiVyn0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 354/587] btrfs: zoned: fix write time activation failure for metadata block group
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 219/457] btrfs: add comments on the extra btrfs specific subpage bitmaps
 Date: Tue, 26 Aug 2025 13:08:23 +0200
-Message-ID: <20250826111001.917493613@linuxfoundation.org>
+Message-ID: <20250826110942.775221169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 5c4b93f4c8e5c53574c1a48d66a27a2c68b414af upstream.
+[ Upstream commit 1e17738d6b76cdc76d240d64de87fa66ba2365f7 ]
 
-Since commit 13bb483d32ab ("btrfs: zoned: activate metadata block group on
-write time"), we activate a metadata block group at the write time. If the
-zone capacity is small enough, we can allocate the entire region before the
-first write. Then, we hit the btrfs_zoned_bg_is_full() in
-btrfs_zone_activate() and the activation fails.
+Unlike the iomap_folio_state structure, the btrfs_subpage structure has a
+lot of extra sub-bitmaps, namely:
 
-For a data block group, we activate it at the allocation time and we should
-check the fullness condition in the caller side. Add, a WARN to check the
-fullness condition.
+- writeback sub-bitmap
+- locked sub-bitmap
+  iomap_folio_state uses an atomic for writeback tracking, while it has
+  no per-block locked tracking.
 
-For a metadata block group, we don't need the fullness check because we
-activate it at the write time. Instead, activating it once it is written
-should be invalid. Catch that with a WARN too.
+  This is because iomap always locks a single folio, and submits dirty
+  blocks with that folio locked.
 
-Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+  But btrfs has async delalloc ranges (for compression), which are queued
+  with their range locked, until the compression is done, then marks the
+  involved range writeback and unlocked.
+
+  This means a range can be unlocked and marked writeback at seemingly
+  random timing, thus it needs the extra tracking.
+
+  This needs a huge rework on the lifespan of async delalloc range
+  before we can remove/simplify these two sub-bitmaps.
+
+- ordered sub-bitmap
+- checked sub-bitmap
+  These are for COW-fixup, but as I mentioned in the past, the COW-fixup
+  is not really needed anymore and these two flags are already marked
+  deprecated, and will be removed in the near future after comprehensive
+  tests.
+
+Add related comments to indicate we're actively trying to align the
+sub-bitmaps to the iomap ones.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: b1511360c8ac ("btrfs: subpage: keep TOWRITE tag until folio is cleaned")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/btrfs/subpage.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1992,10 +1992,15 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		goto out_unlock;
- 	}
- 
--	/* No space left */
--	if (btrfs_zoned_bg_is_full(block_group)) {
--		ret = false;
--		goto out_unlock;
-+	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA) {
-+		/* The caller should check if the block group is full. */
-+		if (WARN_ON_ONCE(btrfs_zoned_bg_is_full(block_group))) {
-+			ret = false;
-+			goto out_unlock;
-+		}
-+	} else {
-+		/* Since it is already written, it should have been active. */
-+		WARN_ON_ONCE(block_group->meta_write_pointer != block_group->start);
- 	}
- 
- 	for (i = 0; i < map->num_stripes; i++) {
+--- a/fs/btrfs/subpage.h
++++ b/fs/btrfs/subpage.h
+@@ -33,8 +33,22 @@ enum {
+ 	btrfs_bitmap_nr_uptodate = 0,
+ 	btrfs_bitmap_nr_dirty,
+ 	btrfs_bitmap_nr_writeback,
++	/*
++	 * The ordered and checked flags are for COW fixup, already marked
++	 * deprecated, and will be removed eventually.
++	 */
+ 	btrfs_bitmap_nr_ordered,
+ 	btrfs_bitmap_nr_checked,
++
++	/*
++	 * The locked bit is for async delalloc range (compression), currently
++	 * async extent is queued with the range locked, until the compression
++	 * is done.
++	 * So an async extent can unlock the range at any random timing.
++	 *
++	 * This will need a rework on the async extent lifespan (mark writeback
++	 * and do compression) before deprecating this flag.
++	 */
+ 	btrfs_bitmap_nr_locked,
+ 	btrfs_bitmap_nr_max
+ };
 
 
 
