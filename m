@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-174991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E1FB36515
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C018CB368D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA6BF7BB702
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66BA1C80AFD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED04D30AAD8;
-	Tue, 26 Aug 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593C32BEC45;
+	Tue, 26 Aug 2025 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+6XQemY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyyGt+YI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAB426B747;
-	Tue, 26 Aug 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153B5286881;
+	Tue, 26 Aug 2025 14:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215852; cv=none; b=H792+GEjt5kzx/vnICg5zB8gUmELCYbixTnoqwiSRicPH0YY/qWAlnWeK87Y3z4FFNE6WHI3f4NQz4FUL2ev7dktvQeCeD9cstuM1VPDc2gU3UpzDtaeAnWNVWTLDK0wK4W1otMn8rUqfKQMJaQSknuxDHE++mzS/ytS1CyuWDI=
+	t=1756217327; cv=none; b=a9pA+maJ4ypq0CDfWFYI6Id2kMmUv1tDzC6SXZMwZGXvFrfmv0R8KEcuqr0Fuw/zJkKtP25ULivW8e5sRGQ/cpNT+6g5XplZuWzU84e5RANy/H4ZfVBg0EbEeIwaAXji74FRZJvxptvphD+6GamJhbnwrtuu/hBdN9w/t07+qwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215852; c=relaxed/simple;
-	bh=1RCSKR4Zd33H7VU5reTCuJwc62bnbvbNnQrneh8ucd4=;
+	s=arc-20240116; t=1756217327; c=relaxed/simple;
+	bh=nPW5P6y6rNCF0YEld+vBVLvLlT8Oft1TfoUf+wDC2ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBIXmm7osbms4PRwscJc6seiHhnbhiR/JLjdQzWxcdf631hMC+Xv2ZOCnVemvaDnXSr1lq9/j6/iIGJCmxs9KTFLovvbDbzbXAtXffvnFtwX3bWhapzuZZbd8QOjMr4x1g5SqYyoqAIegF83GLe/ixCQEjUkdeggl324aB0VGgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+6XQemY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4E6C4CEF1;
-	Tue, 26 Aug 2025 13:44:11 +0000 (UTC)
+	 MIME-Version; b=qa08XU84Pekck7D9CDgO1vkVhf83x1kB7nWj3BkoZ4yAjPdgdz0dln6mMDnx3V/R+LnKALxiQCPzwj6RvEI7/2xRGRNKSJ8Zr1i5P+A/Gr8MNe4fazN3oTv+iLdBFtNcOsF0WB9QmUgbUGNTozAE6c41ezKu+CEpzPWMF/q/eHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyyGt+YI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB17C4CEF1;
+	Tue, 26 Aug 2025 14:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215852;
-	bh=1RCSKR4Zd33H7VU5reTCuJwc62bnbvbNnQrneh8ucd4=;
+	s=korg; t=1756217327;
+	bh=nPW5P6y6rNCF0YEld+vBVLvLlT8Oft1TfoUf+wDC2ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+6XQemYvk/CPhQg63TkxYtc7WwSZwS10qJkRJhvlwLxfobabDTbDf55NUa35Mt0A
-	 EY03ioWdKquOOcldF8YlbJ82eUdcy75j/x/UJBCKTzGJi8kgmxcKVqxjw7WyaXOgr+
-	 SxcGcn77DS8iOQ6/1IbbBplhB1XUJQG2b9pcBGuY=
+	b=PyyGt+YIWhhlPLM+uhadhMWfPTL1vYxiP5D+3b0yxeANsOZSWzVCMutvgVtI0Ha9E
+	 tMT50PIA+cNnDnrwDA9jI0XBmWB2DM1WJx03TywLmfaec/4WCDG6QCfKj9pqKpWOvh
+	 kUqDGYVMBtu8f13pQnRGnXncWMvSwv0oJYurQ+gI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 189/644] crypto: img-hash - Fix dma_unmap_sg() nents value
+	Michael Zhivich <mzhivich@akamai.com>
+Subject: [PATCH 5.10 070/523] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
 Date: Tue, 26 Aug 2025 13:04:40 +0200
-Message-ID: <20250826110951.141404213@linuxfoundation.org>
+Message-ID: <20250826110926.299094956@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Michael Zhivich <mzhivich@akamai.com>
 
-[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
+For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
+field in zen_patch_rev union on the stack may be garbage.  If so, it will
+prevent correct microcode check when consulting p.ucode_rev, resulting in
+incorrect mitigation selection.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+This is a stable-only fix.
 
-Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: 78192f511f40 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/img-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index 34b41cbcfa8d..28b75632d1d1 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
- 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -599,6 +599,8 @@ static bool amd_check_tsa_microcode(void
+ 	p.model		= c->x86_model;
+ 	p.ext_model	= c->x86_model >> 4;
+ 	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
  
- 	if (ctx->flags & DRIVER_FLAGS_SG)
--		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
-+		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
- 
- 	return 0;
- }
--- 
-2.39.5
-
+ 	if (c->x86 == 0x19) {
+ 		switch (p.ucode_rev >> 8) {
 
 
 
