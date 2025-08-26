@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE829B35B81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFE7B3693A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC15A16FCD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C36008E67D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A06334392;
-	Tue, 26 Aug 2025 11:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E8034F496;
+	Tue, 26 Aug 2025 14:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhFd6PZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFnaX0u7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D430BF54;
-	Tue, 26 Aug 2025 11:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E4C35AABB;
+	Tue, 26 Aug 2025 14:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207142; cv=none; b=VLT30VqV6V1v2DFRGpswYrwzdEc0wwh8OLy9CuqNeWcKV61Qrn3n8G8EwbBMv/Ij+wYfEJqkWcz6Ypt/wMeyP9HCGbfI8nKEDrJW7dWmXOfUoQE1szUPTWoFHpntLb7Q2QK7gBTaMoG94vIRwhUd63GeMgN/4wOxP3wqA9/R/Jk=
+	t=1756217514; cv=none; b=qwQIsJ1BxvQedGMrBkWZlVSDELfY4BJ9VGJH6rw7g8xtfLfY8L/CsgeDW0pdTTE4NLtm6n8CSobdnn8wiUkUmMjO6/prepl5rNaFGCAbXyIuj8ySuimtvv/yVdWTCfnWcQQNcTL1+dsH7yJjBeV1szXLvog8Xvu99O7RL9Qg1Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207142; c=relaxed/simple;
-	bh=QCCUZTsgJbBmNM2OSWeVF/bitHk8pfLXb+ORtw84fFo=;
+	s=arc-20240116; t=1756217514; c=relaxed/simple;
+	bh=i1RHUSfKF9TeWunGcND9WYhknd5HY2fYFXs5KQG8T0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C73gqSqp/Dmjfn3+uLsRclheBfLlArYbTB/Znu5wUk9vhDHSvrrIwYd0Ecknb4vdNiE3gs8OR/z3m5jAEOXeqIYBZiCYPkVUdbjqje6rqxzJx3M9E04RiNNFMdryMG8FCpxZUY8f7vz/V8bT1Q9r0NLzM36VQmlB+Y1HO1PmdoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhFd6PZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C0C4CEF1;
-	Tue, 26 Aug 2025 11:19:01 +0000 (UTC)
+	 MIME-Version; b=EkejGYDaayBaW4pTGSPrVohv0t02h30yTI+kToRoEQX0aF/pyDXQZ2kDQLJT7x/qtac++btd/kTO9Wr8rWCmaUQgXu/Wchl6whgevyLWIg6//RysxsDiuTs40XjWQNGvmMbCNOC7tGepoglrypGlFNhHfcHmCshOxbhT4xULRno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFnaX0u7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA0EC113D0;
+	Tue, 26 Aug 2025 14:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207142;
-	bh=QCCUZTsgJbBmNM2OSWeVF/bitHk8pfLXb+ORtw84fFo=;
+	s=korg; t=1756217513;
+	bh=i1RHUSfKF9TeWunGcND9WYhknd5HY2fYFXs5KQG8T0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhFd6PZsiV7VPo4NRgW9wNsQX0I90U17dn5/ED9W2UJ6A0VHXfDTrTxZbWME0lfSz
-	 bhfyY56GrtUKEZHRVdMwHkrzYeJKaJM/8IHSd41tokdrnzYhbQGZAvVaNRvcH+O4hM
-	 SwxI+jPGOi5wNN8JuenSFdzdFEXc1YIm5BT9iMzk=
+	b=XFnaX0u7xRUHSU92K5RswsJI5tzDdnOFunmDMam34uhzlaiiINQGE3EAaRJB5bdSY
+	 X/bm/1czukcLaPDIn4AGBFLWtauZjHReMInnXprBHx++E40nVCEIFMQM7XhqUoj5TN
+	 uqcCE4Ejg6hJpaTIjz7c+kMqONtk+DkaJIvOGBVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.16 066/457] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
+	Ben Hutchings <benh@debian.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 140/523] sh: Do not use hyphen in exported variable name
 Date: Tue, 26 Aug 2025 13:05:50 +0200
-Message-ID: <20250826110938.995406660@linuxfoundation.org>
+Message-ID: <20250826110927.952968663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Ben Hutchings <benh@debian.org>
 
-commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 upstream.
+[ Upstream commit c32969d0362a790fbc6117e0b6a737a7e510b843 ]
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+arch/sh/Makefile defines and exports ld-bfd to be used by
+arch/sh/boot/compressed/Makefile and arch/sh/boot/romimage/Makefile.
+However some shells, including dash, will not pass through environment
+variables whose name includes a hyphen.  Usually GNU make does not use
+a shell to recurse, but if e.g. $(srctree) contains '~' it will use a
+shell here.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+Other instances of this problem were previously fixed by commits
+2bfbe7881ee0 "kbuild: Do not use hyphen in exported variable name"
+and 82977af93a0d "sh: rename suffix-y to suffix_y".
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
+Rename the variable to ld_bfd.
 
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sh4&ver=4.13%7Erc5-1%7Eexp1&stamp=1502943967&raw=0
+Fixes: 7b022d07a0fd ("sh: Tidy up the ldscript output format specifier.")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sh/Makefile                 | 10 +++++-----
+ arch/sh/boot/compressed/Makefile |  4 ++--
+ arch/sh/boot/romimage/Makefile   |  4 ++--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1110,8 +1110,8 @@ static int exynos_ufs_post_link(struct u
- 	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
+diff --git a/arch/sh/Makefile b/arch/sh/Makefile
+index 2faebfd72eca..8e8e24227fff 100644
+--- a/arch/sh/Makefile
++++ b/arch/sh/Makefile
+@@ -103,16 +103,16 @@ UTS_MACHINE		:= sh
+ LDFLAGS_vmlinux		+= -e _stext
  
- 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+-ld-bfd			:= elf32-sh-linux
+-LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld-bfd)
++ld_bfd			:= elf32-sh-linux
++LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld_bfd)
+ KBUILD_LDFLAGS		+= -EL
+ else
+-ld-bfd			:= elf32-shbig-linux
+-LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld-bfd)
++ld_bfd			:= elf32-shbig-linux
++LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld_bfd)
+ KBUILD_LDFLAGS		+= -EB
+ endif
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
+-export ld-bfd
++export ld_bfd
+ 
+ head-y	:= arch/sh/kernel/head_32.o
+ 
+diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
+index 589d2d8a573d..d4baaaace17f 100644
+--- a/arch/sh/boot/compressed/Makefile
++++ b/arch/sh/boot/compressed/Makefile
+@@ -30,7 +30,7 @@ endif
+ 
+ ccflags-remove-$(CONFIG_MCOUNT) += -pg
+ 
+-LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
++LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(IMAGE_OFFSET) -e startup \
+ 		   -T $(obj)/../../kernel/vmlinux.lds
+ 
+ #
+@@ -68,7 +68,7 @@ $(obj)/vmlinux.bin.lzo: $(vmlinux.bin.all-y) FORCE
+ 
+ OBJCOPYFLAGS += -R .empty_zero_page
+ 
+-LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
++LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
+ 
+ $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/vmlinux.bin.$(suffix-y) FORCE
+ 	$(call if_changed,ld)
+diff --git a/arch/sh/boot/romimage/Makefile b/arch/sh/boot/romimage/Makefile
+index c7c8be58400c..17b03df0a8de 100644
+--- a/arch/sh/boot/romimage/Makefile
++++ b/arch/sh/boot/romimage/Makefile
+@@ -13,7 +13,7 @@ mmcif-obj-$(CONFIG_CPU_SUBTYPE_SH7724)	:= $(obj)/mmcif-sh7724.o
+ load-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-load-y)
+ obj-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-obj-y)
+ 
+-LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(load-y) -e romstart \
++LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(load-y) -e romstart \
+ 		   -T $(obj)/../../kernel/vmlinux.lds
+ 
+ $(obj)/vmlinux: $(obj)/head.o $(obj-y) $(obj)/piggy.o FORCE
+@@ -24,7 +24,7 @@ OBJCOPYFLAGS += -j .empty_zero_page
+ $(obj)/zeropage.bin: vmlinux FORCE
+ 	$(call if_changed,objcopy)
+ 
+-LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
++LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
+ 
+ $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/zeropage.bin arch/sh/boot/zImage FORCE
+ 	$(call if_changed,ld)
+-- 
+2.39.5
+
 
 
 
