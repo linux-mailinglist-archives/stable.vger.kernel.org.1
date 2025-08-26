@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BBAB36107
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5DBB366DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66B8C5E13B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68D8D1C23D3B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D645F2D7BF;
-	Tue, 26 Aug 2025 13:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4111C34166C;
+	Tue, 26 Aug 2025 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vShtZB8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZ5hgo3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F071494D9;
-	Tue, 26 Aug 2025 13:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F6E34AB15;
+	Tue, 26 Aug 2025 13:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213309; cv=none; b=JN5Sm5IXpPleeZGHtj1hikuHBT8YZz5mYYse0SX5Ul57xwDpOxjbYQdP4vPnklW3UGPp1HLAm3SyHmM0vFF41/cuv3TX/zyyDpnm3oDjYIY3THPimFSL900mSZIiqJUt/SZjA7L4chRphWZF8GIFcblDBD8is0F1QoS9cO2Vnao=
+	t=1756216295; cv=none; b=X+DtyC9R4VRhokD7w4vjTFB4Q3xadJmUFS0j5Id6amwDeXGSfuuMtAzvaMurkMJzuvZzwrwvtyqjrq1kLnHSQxA2NCF2m6ZoJC+6CwJhcMw3NLv6Wo0/h961Yl4VkYbahLIBzO1GsXvsiBr20MwW42PE9uSfVCKvyIVsqMaHTYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213309; c=relaxed/simple;
-	bh=q1KmHII3Wr9UMy7UAG9wotlqfcR3/8YJG95SwviRQ0o=;
+	s=arc-20240116; t=1756216295; c=relaxed/simple;
+	bh=e6bQ8cCEbO9nYL1raF/jhYyKNC3DpkwnnY1flQpoYtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcqVJvhkuvFLmx3OHTu7coWI9/ejmZh7FJMah38GfOcd55ai+QK7oO8kFheBCc5N6eS3UtJLZpwLFccUDwZrhBvrj5Mc50XOcZ8WLNdf+RmWzqzgZ+HA3TVyMf1Vn/FVqpEV9h7+cCDQ+XrSE6/e4ZTZNpzF/pzz7bRrM+BxCio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vShtZB8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2296CC4CEF1;
-	Tue, 26 Aug 2025 13:01:48 +0000 (UTC)
+	 MIME-Version; b=FCCspBcP+ROKvudIhRZk+vJrGFipsQyizQDSEO7NLVP1D5cQt/D48oZfzkDeiine4GOMWsDmwTXeL82dXNAUj7IMSjNwaQcu1KkCRen6SuO/D4po5Tg2tJWWeTqqMjlLHO9MUmoHbAEk+mBqBcrS99g5qFGxmGhYD935VkN32J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZ5hgo3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F4DC4CEF1;
+	Tue, 26 Aug 2025 13:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213309;
-	bh=q1KmHII3Wr9UMy7UAG9wotlqfcR3/8YJG95SwviRQ0o=;
+	s=korg; t=1756216294;
+	bh=e6bQ8cCEbO9nYL1raF/jhYyKNC3DpkwnnY1flQpoYtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vShtZB8S7P+5TktxnedqqH8smWMDR0BdJEcv3LffwHHxdSxILIxQ9TZgaU8OeghNf
-	 jjsndXblaoIQhjQCApALCwkbEgNai+Sfr/hMnz8QW6tdpIBnO+KoAuddajhy0ZPqvC
-	 LYfHtm5TNGGJD5O2vNm+aXIqULh2EUAG7/luRbQ4=
+	b=UZ5hgo3ihjGs7ms80ilJM2/L26mWdggcIlO55Vxqbmg8fcjWbR+UKTxh43oCAACeJ
+	 AwApL8OZLmU0QjM5UuihWjlts8sPv2DtHfLLAuBkv7RvgEojlYtHRKXEFLMhuxcZ/k
+	 QGa65UgB6re0bu4p4wRHY/Kbw9jpiLNfNbj+XEvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com,
-	Yi Liu <yi.l.liu@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.6 300/587] iommufd: Prevent ALIGN() overflow
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	zhangjianrong <zhangjianrong5@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 358/644] net: thunderbolt: Fix the parameter passing of tb_xdomain_enable_paths()/tb_xdomain_disable_paths()
 Date: Tue, 26 Aug 2025 13:07:29 +0200
-Message-ID: <20250826111000.556566735@linuxfoundation.org>
+Message-ID: <20250826110955.277608655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: zhangjianrong <zhangjianrong5@huawei.com>
 
-commit b42497e3c0e74db061eafad41c0cd7243c46436b upstream.
+[ Upstream commit 8ec31cb17cd355cea25cdb8496d9b3fbf1321647 ]
 
-When allocating IOVA the candidate range gets aligned to the target
-alignment. If the range is close to ULONG_MAX then the ALIGN() can
-wrap resulting in a corrupted iova.
+According to the description of tb_xdomain_enable_paths(), the third
+parameter represents the transmit ring and the fifth parameter represents
+the receive ring. tb_xdomain_disable_paths() is the same case.
 
-Open code the ALIGN() using get_add_overflow() to prevent this.
-This simplifies the checks as we don't need to check for length earlier
-either.
+[Jakub] Mika says: it works now because both rings ->hop is the same
 
-Consolidate the two copies of this code under a single helper.
-
-This bug would allow userspace to create a mapping that overlaps with some
-other mapping or a reserved range.
-
-Cc: stable@vger.kernel.org
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://patch.msgid.link/all/1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250625051149.GD2824380@black.fi.intel.com
+Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
+Link: https://patch.msgid.link/20250628094920.656658-1-zhangjianrong5@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   41 +++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ drivers/net/thunderbolt.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -69,36 +69,45 @@ struct iopt_area *iopt_area_contig_next(
- 	return iter->area;
- }
+diff --git a/drivers/net/thunderbolt.c b/drivers/net/thunderbolt.c
+index 470852f7a64d..ba9f7062f5a7 100644
+--- a/drivers/net/thunderbolt.c
++++ b/drivers/net/thunderbolt.c
+@@ -380,9 +380,9 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
  
--static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
--				    unsigned long length,
--				    unsigned long iova_alignment,
--				    unsigned long page_offset)
-+static bool __alloc_iova_check_range(unsigned long *start, unsigned long last,
-+				     unsigned long length,
-+				     unsigned long iova_alignment,
-+				     unsigned long page_offset)
- {
--	if (span->is_used || span->last_hole - span->start_hole < length - 1)
-+	unsigned long aligned_start;
-+
-+	/* ALIGN_UP() */
-+	if (check_add_overflow(*start, iova_alignment - 1, &aligned_start))
- 		return false;
-+	aligned_start &= ~(iova_alignment - 1);
-+	aligned_start |= page_offset;
+ 		ret = tb_xdomain_disable_paths(net->xd,
+ 					       net->local_transmit_path,
+-					       net->rx_ring.ring->hop,
++					       net->tx_ring.ring->hop,
+ 					       net->remote_transmit_path,
+-					       net->tx_ring.ring->hop);
++					       net->rx_ring.ring->hop);
+ 		if (ret)
+ 			netdev_warn(net->dev, "failed to disable DMA paths\n");
  
--	span->start_hole = ALIGN(span->start_hole, iova_alignment) |
--			   page_offset;
--	if (span->start_hole > span->last_hole ||
--	    span->last_hole - span->start_hole < length - 1)
-+	if (aligned_start >= last || last - aligned_start < length - 1)
- 		return false;
-+	*start = aligned_start;
- 	return true;
- }
+@@ -631,9 +631,9 @@ static void tbnet_connected_work(struct work_struct *work)
+ 		goto err_free_rx_buffers;
  
--static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
- 				    unsigned long length,
- 				    unsigned long iova_alignment,
- 				    unsigned long page_offset)
- {
--	if (span->is_hole || span->last_used - span->start_used < length - 1)
-+	if (span->is_used)
- 		return false;
-+	return __alloc_iova_check_range(&span->start_hole, span->last_hole,
-+					length, iova_alignment, page_offset);
-+}
- 
--	span->start_used = ALIGN(span->start_used, iova_alignment) |
--			   page_offset;
--	if (span->start_used > span->last_used ||
--	    span->last_used - span->start_used < length - 1)
-+static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+				    unsigned long length,
-+				    unsigned long iova_alignment,
-+				    unsigned long page_offset)
-+{
-+	if (span->is_hole)
- 		return false;
--	return true;
-+	return __alloc_iova_check_range(&span->start_used, span->last_used,
-+					length, iova_alignment, page_offset);
- }
- 
- /*
+ 	ret = tb_xdomain_enable_paths(net->xd, net->local_transmit_path,
+-				      net->rx_ring.ring->hop,
++				      net->tx_ring.ring->hop,
+ 				      net->remote_transmit_path,
+-				      net->tx_ring.ring->hop);
++				      net->rx_ring.ring->hop);
+ 	if (ret) {
+ 		netdev_err(net->dev, "failed to enable DMA paths\n");
+ 		goto err_free_tx_buffers;
+-- 
+2.39.5
+
 
 
 
