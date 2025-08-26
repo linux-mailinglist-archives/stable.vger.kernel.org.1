@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD588B35FD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D7FB36587
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B01A67C3219
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240311885803
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD832225417;
-	Tue, 26 Aug 2025 12:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6495D2D060B;
+	Tue, 26 Aug 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyTyllAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsdwsE4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F85618DB2A;
-	Tue, 26 Aug 2025 12:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2029F2264B8;
+	Tue, 26 Aug 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212709; cv=none; b=OX/1JaFMy2Q2Mb/4U9kqy2p8/6GuDkvryyAWAClulawBoKuDOoWQQoGBsbDTDsG4+zOw+toxFnRItBSZE+jZOPXbCsk509PoHb6rUhDJ8lx18xymc32fEzupjYEo326U9edWqfwFej4E+NgESrTXU9/+n1qnizJJxZETqXeRp68=
+	t=1756215776; cv=none; b=tIzKVmmNTMIUzY2F7z95nfu3Sd5+sBGzkOLGmgCYuVqD81tu1SldQdZKw+8qiWAUNowLATadE/oOszZmTQrKCUrA01/SVDgAvtG4tFuX+hg2U4yl68MOYZtUtTU5cfFSxKc2WIj+C3q5FeH1I1iAmFXKG5cZxWnbUWaRQm7SWKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212709; c=relaxed/simple;
-	bh=OmiZcYFdJaNbZDtgyaRFVpGoUb75lvtC6qXbcyBAuNw=;
+	s=arc-20240116; t=1756215776; c=relaxed/simple;
+	bh=GiMEsQlRsA6qIR7VKcL60N9yejI5q0Z+8C35zbReGzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ID12WbX2EWP/pNiiRgVyeVy+0F5ceRTmnp4ZGqZapoYLE4rcro+OL17WPR93cIx4haaAsykvEWvKzC8p/0Qyf30veMb9MupbSLHDh4hIfv+w6CyWHTmmJJAwUKLhtsddIwjf7JZOoWuEAX7Ig+7ODZCCLIJJxdyv2Knm6tyvFok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyTyllAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AF0C4CEF1;
-	Tue, 26 Aug 2025 12:51:48 +0000 (UTC)
+	 MIME-Version; b=WDmi2py0kRZMNfZ7CqR/eGuf08M8lZLEud+ZyxKsPPpI4n7PEwZXEvr/++tJZUvgRBSW7d9XDoTEQs1kZdMvC1ToOHbVaHkYo/0ghf4PGqjiobNGx9L+4gXc8TffwUghCCNdD/1banGc8XZe01SjCkKRCSE2W/dHbeqXb4tqorM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsdwsE4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A320EC4CEF1;
+	Tue, 26 Aug 2025 13:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212709;
-	bh=OmiZcYFdJaNbZDtgyaRFVpGoUb75lvtC6qXbcyBAuNw=;
+	s=korg; t=1756215776;
+	bh=GiMEsQlRsA6qIR7VKcL60N9yejI5q0Z+8C35zbReGzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyTyllAy/r8r4dGl8GEvjbzWc3dXLH+b0ueYTvJy+dVc+t2VAQ6UAuQe1y12B9ewq
-	 4OCpVB43xvw1PZh5T+okxUejtewI30GjzYKaOID1K0o+EV3GIv+Tlx1DRpyAr97wvx
-	 hP5tKF6hcd/As2ymMc9M0/MT+HNuzYV9yNA8rvXo=
+	b=dsdwsE4GoGYy6D4BPUY187SXfaY+wy1ClkXxzQVfntF31mZhHwiILAtv0QUcSv7wE
+	 Ec+d000GQeWwFbsCu6v2OjmCF6uRquyZfrLK2Bh3ZMwDD40ZUG/fHiqox6vvqHnIvr
+	 ITu319C1rXhUB3pq+enh0oIW0WEqks8n4/G5Wcqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarah Newman <srn@prgmr.com>,
-	Lars Ellenberg <lars@linbit.com>,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/587] drbd: add missing kref_get in handle_write_conflicts
+Subject: [PATCH 5.15 131/644] cpufreq: Init policy->rwsem before it may be possibly used
 Date: Tue, 26 Aug 2025 13:03:42 +0200
-Message-ID: <20250826110954.789643999@linuxfoundation.org>
+Message-ID: <20250826110949.754700871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Newman <srn@prgmr.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
+[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
 
-With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
-and handle write conflicts, so that even if you write to the same sector
-simultaneously on both nodes, they end up with the identical data once
-the writes are completed.
+In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
+cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
+path via err_kobj_remove or err_min_qos_notifier will be reached and
+cpufreq_policy_put_kobj() will be called before policy->rwsem is
+initialized. Thus, the calling of init_rwsem() should be moved to where
+before these two error paths can be reached.
 
-In handling "superseeded" writes, we forgot a kref_get,
-resulting in a premature drbd_destroy_device and use after free,
-and further to kernel crashes with symptoms.
-
-Relevance: No one should use DRBD as a random data generator, and apparently
-all users of "two-primaries" handle concurrent writes correctly on layer up.
-That is cluster file systems use some distributed lock manager,
-and live migration in virtualization environments stops writes on one node
-before starting writes on the other node.
-
-Which means that other than for "test cases",
-this code path is never taken in real life.
-
-FYI, in DRBD 9, things are handled differently nowadays.  We still detect
-"write conflicts", but no longer try to be smart about them.
-We decided to disconnect hard instead: upper layers must not submit concurrent
-writes. If they do, that's their fault.
-
-Signed-off-by: Sarah Newman <srn@prgmr.com>
-Signed-off-by: Lars Ellenberg <lars@linbit.com>
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/drbd/drbd_receiver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index 0c9f54197768..ac18d36b0ea8 100644
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -2500,7 +2500,11 @@ static int handle_write_conflicts(struct drbd_device *device,
- 			peer_req->w.cb = superseded ? e_send_superseded :
- 						   e_send_retry_write;
- 			list_add_tail(&peer_req->w.list, &device->done_ee);
--			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
-+			/* put is in drbd_send_acks_wf() */
-+			kref_get(&device->kref);
-+			if (!queue_work(connection->ack_sender,
-+					&peer_req->peer_device->send_acks_work))
-+				kref_put(&device->kref, drbd_destroy_device);
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 7d7158fa70c5..33c080e08623 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1228,6 +1228,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 		goto err_free_real_cpus;
+ 	}
  
- 			err = -ENOENT;
- 			goto out;
++	init_rwsem(&policy->rwsem);
++
+ 	freq_constraints_init(&policy->constraints);
+ 
+ 	policy->nb_min.notifier_call = cpufreq_notifier_min;
+@@ -1250,7 +1252,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&policy->policy_list);
+-	init_rwsem(&policy->rwsem);
+ 	spin_lock_init(&policy->transition_lock);
+ 	init_waitqueue_head(&policy->transition_wait);
+ 	INIT_WORK(&policy->update, handle_update);
 -- 
 2.39.5
 
