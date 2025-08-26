@@ -1,144 +1,154 @@
-Return-Path: <stable+bounces-176388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23A6B36D67
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22846B36D43
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 735F98E5D4C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 242DE98347F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40203227B9F;
-	Tue, 26 Aug 2025 14:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CFC1494D9;
+	Tue, 26 Aug 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MkFRCod7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iH8mWj2U"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1494E2222AC;
-	Tue, 26 Aug 2025 14:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.176.194.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742BA1F55F8;
+	Tue, 26 Aug 2025 14:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756220180; cv=none; b=DEAztwwCPZQlTop3oLyAbpyZtH4rxPowZ1w4nerdPL52X9BqKWNv5V9n/dd/69tgu+tAaoKwMORHF73L7hoTwbzpvv+WSV4XwkqmsTR8VA8jqqCfQrp/ity2Ux5DIdNqFwLEenwwlr8majQh20jPq9xh3E7a7OAoUZk5n7jv3qE=
+	t=1756220262; cv=none; b=VV6J6wk1kWYTj96hN3j2r+ObVWrv5adKTaTVf0X5+qrknQtvreyyJF8AVshYKIo9PcgKU5EDdk6EUy5cc81Dpnm+Wz8k7DK2W4K2q4uT/AvQMEo7lrm9RFq2/UzKP3/9sdUH/CPIB0+/cIShzvGMQvMNiPAd7/cTte+ekahrrIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756220180; c=relaxed/simple;
-	bh=LI1dCZa4FwieTJrb5lNo+wXzSQ7nbU3b0nB7rDBUhHM=;
-	h=MIME-Version:Content-Type:Date:Message-ID:To:CC:Subject:From:
-	 References:In-Reply-To; b=dxnw46hR0mnxtHaNJpI2YEhAyRQVez+liHHBPkmo5B46zcIPCajdFMx/sMzzNOtxBDMt01fDk+csuKoJmLjyYSAdJjCvr1DT0DoFj4zlHMA9B1zXDzuXj1kosIKVbldHV/CzLqVKPh/U1UMb5fd0Scp5prM+GnnkC4BeEW9G6CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MkFRCod7; arc=none smtp.client-ip=63.176.194.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1756220177; x=1787756177;
-  h=mime-version:content-transfer-encoding:date:message-id:
-   to:cc:subject:from:references:in-reply-to;
-  bh=6W8m3tqW7TsBzc9bn3jq/EsbNWeFZzmBuJ+k3VQ45Yk=;
-  b=MkFRCod77B5NtIFu9/GDHQxgWaEhs0N8JSTb1otA6TKqzb50FnqoVf1Q
-   BOB5h8K0Ovxa4HMmOGfzQGLsfifPOlgIs0h6VobPz1uzmlc/zwAY3M1t+
-   D8sqOU417nzNV1Hlm2aXiUSl4ucyIoBoFUSUxYzohA7tO3yZalj/czo8y
-   jYzf4IBqhyUoTQBr7twAKJ89c9kaBxj6fcp9yxN4OGzYGAx6Z0rZc70kn
-   O4HV8Ia4a3eJsJkELz/EAzXUtzsYctbdu/K3aApGT/ZCpSPN0DlnT0jCj
-   2Ly8eCPrR0lklm1kfWHBI8oEsSlVreLSXauaDipW45q6GxZnIaKfsL7RG
-   A==;
-X-CSE-ConnectionGUID: asiGzhnzTiCdDQnaKZprlg==
-X-CSE-MsgGUID: R4nyLwQwQJCy5oUT7xGABg==
-X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
-   d="scan'208";a="1210282"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 14:56:07 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:1375]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.187:2525] with esmtp (Farcaster)
- id 2f6f29d2-1acf-4882-b0d8-cf461d27f0a6; Tue, 26 Aug 2025 14:56:07 +0000 (UTC)
-X-Farcaster-Flow-ID: 2f6f29d2-1acf-4882-b0d8-cf461d27f0a6
-Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Tue, 26 Aug 2025 14:56:06 +0000
-Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
- (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17; Tue, 26 Aug 2025
- 14:56:02 +0000
+	s=arc-20240116; t=1756220262; c=relaxed/simple;
+	bh=NPGrp4PIJq9p++NBl9nPYj3PiNhQa/M5uji2+s9cYQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IJGiSodgRJacDfC2AzEigxrmlZXYrE+ftEzO8emAjRkj/EITDlKp5DT7RE9Pz+o+n3y8sxzOPJXneR4wtQrKOUtISEd5vJ7QkE0ndaSSeBE24lGb7lG72Wvyui3VKSkrZNWaAe9zPZic2Pd9Mu4RxGLB9cMlOUn4zopBfdY5GXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iH8mWj2U; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756220262; x=1787756262;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NPGrp4PIJq9p++NBl9nPYj3PiNhQa/M5uji2+s9cYQo=;
+  b=iH8mWj2UfLUzxvXDjHYM8DG1mMBsiYh+hVxyfWNvDya0fMtTgOU40Bv6
+   9p/jW1oR4dgzzHNUo2rs99d5LBVe552F0juy3ELz7ojgjMAd5kQfuXdaY
+   uMsm+Z6AXM1JMQj6O6tiLEqwFoqjuoPTMhf+iMbJPmqPesg1KE3YU/qef
+   94OBnat2vLnhLeCpTEAMMgX0TgaFgR3jqTb47TAUzKQVck4+3t7vQK+7J
+   CsPvTjqsTn4MJBapGTxuiB62eXFsJlYgeQJgrJlXXhCyJrpBj3WVqG069
+   IM/CCIZVs2X2kUBnCJx9Msvq/0pubiez7vQ4JnKTGxXM5W8WEYWcmiwpX
+   w==;
+X-CSE-ConnectionGUID: aTfehCBHSd2IQhQdLqGS4Q==
+X-CSE-MsgGUID: Bfvk9ZjMSU6WDCVFdVHkPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69827618"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="69827618"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 07:57:41 -0700
+X-CSE-ConnectionGUID: XAdhmmn3S+a0JV/GHtEwjg==
+X-CSE-MsgGUID: e9QSuoMKTYKd7lgioe2J0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="173990072"
+Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.109.16]) ([10.125.109.16])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 07:57:41 -0700
+Message-ID: <9e0e12c7-72e2-4e92-a9c5-765c93053506@intel.com>
+Date: Tue, 26 Aug 2025 07:57:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Date: Tue, 26 Aug 2025 14:55:58 +0000
-Message-ID: <DCCG3711VAN4.9QEOBBP433L2@amazon.com>
-To: Eugene Koira <eugkoira@amazon.com>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-CC: <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, <joro@8bytes.org>,
-	<will@kernel.org>, <robin.murphy@arm.com>, <longpeng2@huawei.com>,
-	<graf@amazon.de>, <nsaenz@amazon.com>, <nh-open-source@amazon.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] iommu/intel: Fix __domain_mapping()'s usage of
- switch_to_super_page()
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
-X-Mailer: aerc 0.20.1-125-gabe5bb884bbc-dirty
-References: <20250826143816.38686-1-eugkoira@amazon.com>
-In-Reply-To: <20250826143816.38686-1-eugkoira@amazon.com>
-X-ClientProxiedBy: EX19D032UWB002.ant.amazon.com (10.13.139.190) To
- EX19D004EUC001.ant.amazon.com (10.252.51.190)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "security@kernel.org" <security@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, vishal.moola@gmail.com
+References: <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
+ <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
+ <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
+ <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
+ <b0f613ce-7aad-4b1d-b6a1-4acc1d6c489e@linux.intel.com>
+ <dde6d861-daa3-49ed-ad4f-ff9dcaf1f2b8@linux.intel.com>
+ <b57d7b97-8110-47c5-9c7a-516b7b535ce9@intel.com>
+ <aK3FsU1Dds4OG79o@casper.infradead.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aK3FsU1Dds4OG79o@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue Aug 26, 2025 at 2:38 PM UTC, Eugene Koira wrote:
-> switch_to_super_page() assumes the memory range it's working on is aligne=
-d
-> to the target large page level. Unfortunately, __domain_mapping() doesn't
-> take this into account when using it, and will pass unaligned ranges
-> ultimately freeing a PTE range larger than expected.
->
-> Take for example a mapping with the following iov_pfn range [0x3fe400,
-> 0x4c0600], which should be backed by the following mappings:
->
->    iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
->    iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
->    iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
->
-> Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff=
-]
-> to switch_to_super_page() at a 1 GiB granularity, which will in turn
-> free PTEs all the way to iov_pfn 0x4fffff.
->
-> Mitigate this by rounding down the iov_pfn range passed to
-> switch_to_super_page() in __domain_mapping()
-> to the target large page level.
->
-> Additionally add range alignment checks to switch_to_super_page.
->
-> Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_ma=
-pping()")
-> Signed-off-by: Eugene Koira <eugkoira@amazon.com>
-> Cc: stable@vger.kernel.org
-> ---
+On 8/26/25 07:33, Matthew Wilcox wrote:
+...
+> One memdesc type already assigned is for page tables.  Maybe iommu page
+> tables are the same
 
->  drivers/iommu/intel/iommu.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 9c3ab9d9f69a..dff2d895b8ab 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -1575,6 +1575,10 @@ static void switch_to_super_page(struct dmar_domai=
-n *domain,
->  	unsigned long lvl_pages =3D lvl_to_nr_pages(level);
->  	struct dma_pte *pte =3D NULL;
-> =20
-> +	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
-> +		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
-
-It might make sense to downgrade the warning to WARN_ON_ONCE().
-
-Other than that:
-
-	Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-
-Regards,
-Nicolas
+One bit of context: This is an IOMMU problem but the IOMMU is walking
+the normal x86 page tables in this case, specifically kernel page
+tables. There are separate IOMMU page tables, of course, but those
+aren't at issue here.
 
