@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E48B35DC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB45B36C35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83881BC12F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18470A0596C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D056B199935;
-	Tue, 26 Aug 2025 11:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A539350D67;
+	Tue, 26 Aug 2025 14:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8t2Kat6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOhYF4gH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2017332C;
-	Tue, 26 Aug 2025 11:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A0435E4C1;
+	Tue, 26 Aug 2025 14:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208456; cv=none; b=YMaLOAFfi+DdPz83Ms17EAixfZnivYaQ98I4V0rpLZr5tmL+/861Qwp+F63v9o4PY636v++6OjPPpjBQW9ZB9iqO2d3xv8fAs9Pc6P070jGVz6197cJ70Uz6qX7zk9OldZpOpCEOn+riwRTvV2Lpgdfa0cK1VKvKdrGOFk5Z8hY=
+	t=1756218985; cv=none; b=JPRuQ7fD806V60ve9Y/XF1Db+KfbHsBzDR3w5WD6Kd0XdqFFm+sDTaD/PJNR87WbnztEFRjKKH6T0wg5CQEETveUj+on2Agj35IKfStuMrRry7LBh5ACG0J/+9WpYeMuR20KnwuO+t7MABb35ljfhtFV2VftXzeHl/9PT0FqjUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208456; c=relaxed/simple;
-	bh=aUWBy0JrP+a3KyInS2H7vLCc1ZsUdv3CVh5TN0gPVqs=;
+	s=arc-20240116; t=1756218985; c=relaxed/simple;
+	bh=mwJjQXd7cSxj1sq2/PtnO3t7N5+xSt2s/Wgw4dCuH/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UacOGD/5nTkcAD82hTUc73jIbKEBKzE3eJQmj7jDt0CZGIuaKvOFB6WarMZ61dAAwblf4TNkHrdzoWQlBat0kch9npFeuzFMJ8AreT/aGpFRbpVcQQ6DlN9nX1+CzQFQIoEC2abn2x9NDLZXx65Gx5OnbblKXH2Gq5NzP0pL7Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8t2Kat6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CDAC4CEF1;
-	Tue, 26 Aug 2025 11:40:55 +0000 (UTC)
+	 MIME-Version; b=pKIZlG/p3Vxf3mphKec7KUeRKC60QoYRM3lw9rPy4iS3ZGKr191eQlx/HEVdWN7nvCtx/OwLiYY4Fx7U9K5LbbN9+5y+93vxC8S6O8P9rhhMLrY1uLhKuSTivspFuM9YewpA4vnU4xlTfDAPd6/HGitR3TKux2rI/ffUNeOOYWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOhYF4gH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A53C113CF;
+	Tue, 26 Aug 2025 14:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208456;
-	bh=aUWBy0JrP+a3KyInS2H7vLCc1ZsUdv3CVh5TN0gPVqs=;
+	s=korg; t=1756218985;
+	bh=mwJjQXd7cSxj1sq2/PtnO3t7N5+xSt2s/Wgw4dCuH/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8t2Kat6UJiUsFxpADNc5CGNX/b0SpPyo5kkQCIrs8ANEkZHGyxw/7NTTn9TsKipr
-	 GD/Za75Og2E/wJRTmqDcfaKFsdRrQ/X6xeu7nWF5lQU0OHXGfmNtZNoleT64TDb2Ui
-	 AVS9XbISXZ5G7u0QvxzaDqmq0kXib5M8Fft3bho8=
+	b=bOhYF4gHtyGfwGqgpSXHdQlgvItO/graTEYnAVR5BPgyxNPyK6n2PwI8RAFzW42Sk
+	 crzLu5QTHrawEVRjunUtPY6uX85TA1sN+DY5KZBAGmw9+aYtPFUhPDC4PeIBr3So8b
+	 jVEjCLMLl0O4xnhnGcgrnNdN7R26pqEub7Xb8wnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 119/322] drm/amd: Restore cached power limit during resume
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 208/403] s390/time: Use monotonic clock in get_cycles()
 Date: Tue, 26 Aug 2025 13:08:54 +0200
-Message-ID: <20250826110918.738505882@linuxfoundation.org>
+Message-ID: <20250826110912.591711204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-The power limit will be cached in smu->current_power_limit but
-if the ASIC goes into S3 this value won't be restored.
+Otherwise the code might not work correctly when the clock
+is changed.
 
-Restore the value during SMU resume.
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2153,6 +2153,12 @@ static int smu_resume(void *handle)
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index 99a7e028232d..8ab537d0d6f8 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -172,13 +172,6 @@ static inline unsigned long long get_tod_clock_fast(void)
+ 	return get_tod_clock();
+ #endif
+ }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
+ unsigned long long monotonic_clock(void);
+@@ -202,6 +195,12 @@ static inline unsigned long long get_tod_clock_monotonic(void)
+ 	return tod;
+ }
  
- 	adev->pm.dpm_enabled = true;
- 
-+	if (smu->current_power_limit) {
-+		ret = smu_set_power_limit(smu, smu->current_power_limit);
-+		if (ret && ret != -EOPNOTSUPP)
-+			return ret;
-+	}
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
 +
- 	dev_info(adev->dev, "SMU is resumed successfully!\n");
- 
- 	return 0;
+ /**
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
+-- 
+2.39.5
+
 
 
 
