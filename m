@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C53B35CC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6F8B36396
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF4F7C5272
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C8901BC3E35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E045312806;
-	Tue, 26 Aug 2025 11:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2767129BDB6;
+	Tue, 26 Aug 2025 13:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZpMvzK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJwpHdwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEB517332C;
-	Tue, 26 Aug 2025 11:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97DF18A6C4;
+	Tue, 26 Aug 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208208; cv=none; b=Iu3YrRREjxaGepEGs7lnqxpxDPcdy1sVMsOsGcHQjSR61BuVA0aS54VFKqsleTWdI7mJJ8ZevDwbrONDsT6N6PhEABDCQoY8OrnTzzSzSeqOHqZ7s7yPY9x59LZ6foQBMtWlSVYi391sFT0k4DtVTa67fjA8gyHaFrGVCCAZYLY=
+	t=1756214643; cv=none; b=kH/0TRcRTk2FtMZ0MsW8ZccoV6XBn+RFwgwiJ7ZJ/mDnfpM3Q1RQeO1CvBAEf5ir1651s1AiyzaNCogGyUW4nweU/lfbZ/1ZwXbhjgYDgT9IEMwEM/HOqBSrV9H5F9tHSZ0nXk6CrsiHpGc7R2+RMVsRisxhu08AURhYp8pgq4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208208; c=relaxed/simple;
-	bh=F5ZHnhJupTimbTTnHgTKBdSMYfQNzE/MXdag3VgD7z4=;
+	s=arc-20240116; t=1756214643; c=relaxed/simple;
+	bh=iB/7C072X8c58BDA1B437rJokB3uTQjY/+hznbs41ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+IGEBKkIufrM//1WNPVRnLADLT1lzMt7TXGyExJHcbFDgszR71ePlfCBOFLnjFHjnDLIarkWDcfAw1PUzkbtJWORACA3JKV9LfO0OCNwqqJgh6H+0oCDJ5BpEo4KeTfNo4lkqk6FrcsLFTTPeV1APbaKuwrklrytAOgiCnPdks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZpMvzK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF5FC4CEF1;
-	Tue, 26 Aug 2025 11:36:47 +0000 (UTC)
+	 MIME-Version; b=npCtoHUNtUsjvsWngSQIE0ntr5dHLEY1bi1GRe4x80CMcKIXj8bJW5/w34R5vAT2PtUn6xiaQjKgeYh3P/cJXCiK1aBjjVLQRcEjtH+Y049AvKjjmO9NXNQKTS12WRSk1yYJ66VDKBdfQ1O7WEuMhCQJEFzOJU9uJAlTlwlWewk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJwpHdwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2CDC4CEF1;
+	Tue, 26 Aug 2025 13:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208208;
-	bh=F5ZHnhJupTimbTTnHgTKBdSMYfQNzE/MXdag3VgD7z4=;
+	s=korg; t=1756214643;
+	bh=iB/7C072X8c58BDA1B437rJokB3uTQjY/+hznbs41ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZpMvzK83n2xH3+w2kjr/3xHdDokpRGQdE2bUaXV6h2MRPxAjczxxsTM/jDBZsHfB
-	 8qXK+CPPy4n7s2KRpMh7n+Zm9MPg/M4fltTGWfwH2g3diPwAqje+2ZumWw7XwQ6r5z
-	 i6GkPZo1lHX2+5XdAPAf8UsuCAV+7Kao/Q0Wa3K8=
+	b=LJwpHdwGBrFrSI4kK7gXKMvB8c9cqNFz+mJG8FjdUo8kf1wAEkRnjm3G1uNZ0iJ9f
+	 f4f0jegj78nDQVawO5F0Ha9nzUYL1zwh/NVxSlMUNb4y3t1FVSygdzOo3ze/ciN4ME
+	 rKJEDwQ6wXpuQ2NIqi/s4nWxF+y2AFMZrQh2A7Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 022/322] crypto: octeontx2 - Fix address alignment issue on ucode loading
+	Ziyan Fu <fuzy5@lenovo.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 184/482] watchdog: iTCO_wdt: Report error if timeout configuration fails
 Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826110915.826923273@linuxfoundation.org>
+Message-ID: <20250826110935.352437584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Ziyan Fu <fuzy5@lenovo.com>
 
-commit b7b88b4939e71ef2aed8238976a2bbabcb63a790 upstream.
+[ Upstream commit 40efc43eb7ffb5a4e2f998c13b8cfb555e671b92 ]
 
-octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
-and uses this memory for dma (does dma_map_single()). It assumes
-that kmalloc/kzalloc will return 128-byte aligned address. But
-kmalloc/kzalloc returns 8-byte aligned address after below changes:
-  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
-   smaller cache_line_size()"
+The driver probes with the invalid timeout value when
+'iTCO_wdt_set_timeout()' fails, as its return value is not checked. In
+this case, when executing "wdctl", we may get:
 
-Completion address should be 32-Byte alignment when loading
-microcode.
+Device:        /dev/watchdog0
+Timeout:       30 seconds
+Timeleft:      613 seconds
 
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: <stable@vger.kernel.org> # v6.5+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The timeout value is the value of "heartbeat" or "WATCHDOG_TIMEOUT", and
+the timeleft value is calculated from the register value we actually read
+(0xffff) by masking with 0x3ff and converting ticks to seconds (* 6 / 10).
+
+Add error handling to return the failure code if 'iTCO_wdt_set_timeout()'
+fails, ensuring the driver probe fails and prevents invalid operation.
+
+Signed-off-by: Ziyan Fu <fuzy5@lenovo.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250704073518.7838-1-13281011316@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c |   35 ++++++++++++--------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ drivers/watchdog/iTCO_wdt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-@@ -1490,12 +1490,13 @@ int otx2_cpt_discover_eng_capabilities(s
- 	union otx2_cpt_opcode opcode;
- 	union otx2_cpt_res_s *result;
- 	union otx2_cpt_inst_s inst;
-+	dma_addr_t result_baddr;
- 	dma_addr_t rptr_baddr;
- 	struct pci_dev *pdev;
--	u32 len, compl_rlen;
- 	int timeout = 10000;
-+	void *base, *rptr;
- 	int ret, etype;
--	void *rptr;
-+	u32 len;
- 
- 	/*
- 	 * We don't get capabilities if it was already done
-@@ -1520,22 +1521,28 @@ int otx2_cpt_discover_eng_capabilities(s
- 	if (ret)
- 		goto delete_grps;
- 
--	compl_rlen = ALIGN(sizeof(union otx2_cpt_res_s), OTX2_CPT_DMA_MINALIGN);
--	len = compl_rlen + LOADFVC_RLEN;
-+	/* Allocate extra memory for "rptr" and "result" pointer alignment */
-+	len = LOADFVC_RLEN + ARCH_DMA_MINALIGN +
-+	       sizeof(union otx2_cpt_res_s) + OTX2_CPT_RES_ADDR_ALIGN;
- 
--	result = kzalloc(len, GFP_KERNEL);
--	if (!result) {
-+	base = kzalloc(len, GFP_KERNEL);
-+	if (!base) {
- 		ret = -ENOMEM;
- 		goto lf_cleanup;
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 35ae40b35f55..75fb7cf7325b 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -601,7 +601,11 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 	/* Check that the heartbeat value is within it's range;
+ 	   if not reset to the default */
+ 	if (iTCO_wdt_set_timeout(&p->wddev, heartbeat)) {
+-		iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		ret = iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		if (ret != 0) {
++			dev_err(dev, "Failed to set watchdog timeout (%d)\n", WATCHDOG_TIMEOUT);
++			return ret;
++		}
+ 		dev_info(dev, "timeout value out of range, using %d\n",
+ 			WATCHDOG_TIMEOUT);
  	}
--	rptr_baddr = dma_map_single(&pdev->dev, (void *)result, len,
--				    DMA_BIDIRECTIONAL);
-+
-+	rptr = PTR_ALIGN(base, ARCH_DMA_MINALIGN);
-+	rptr_baddr = dma_map_single(&pdev->dev, rptr, len, DMA_BIDIRECTIONAL);
- 	if (dma_mapping_error(&pdev->dev, rptr_baddr)) {
- 		dev_err(&pdev->dev, "DMA mapping failed\n");
- 		ret = -EFAULT;
--		goto free_result;
-+		goto free_rptr;
- 	}
--	rptr = (u8 *)result + compl_rlen;
-+
-+	result = (union otx2_cpt_res_s *)PTR_ALIGN(rptr + LOADFVC_RLEN,
-+						   OTX2_CPT_RES_ADDR_ALIGN);
-+	result_baddr = ALIGN(rptr_baddr + LOADFVC_RLEN,
-+			     OTX2_CPT_RES_ADDR_ALIGN);
- 
- 	/* Fill in the command */
- 	opcode.s.major = LOADFVC_MAJOR_OP;
-@@ -1547,14 +1554,14 @@ int otx2_cpt_discover_eng_capabilities(s
- 	/* 64-bit swap for microcode data reads, not needed for addresses */
- 	cpu_to_be64s(&iq_cmd.cmd.u);
- 	iq_cmd.dptr = 0;
--	iq_cmd.rptr = rptr_baddr + compl_rlen;
-+	iq_cmd.rptr = rptr_baddr;
- 	iq_cmd.cptr.u = 0;
- 
- 	for (etype = 1; etype < OTX2_CPT_MAX_ENG_TYPES; etype++) {
- 		result->s.compcode = OTX2_CPT_COMPLETION_CODE_INIT;
- 		iq_cmd.cptr.s.grp = otx2_cpt_get_eng_grp(&cptpf->eng_grps,
- 							 etype);
--		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
-+		otx2_cpt_fill_inst(&inst, &iq_cmd, result_baddr);
- 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
- 		timeout = 10000;
- 
-@@ -1577,8 +1584,8 @@ int otx2_cpt_discover_eng_capabilities(s
- 
- error_no_response:
- 	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
--free_result:
--	kfree(result);
-+free_rptr:
-+	kfree(base);
- lf_cleanup:
- 	otx2_cptlf_shutdown(lfs);
- delete_grps:
+-- 
+2.39.5
+
 
 
 
