@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96152B35CC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E443CB36C3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754AA1BA4F39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6F01C47A8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFBE340DBF;
-	Tue, 26 Aug 2025 11:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96570352FCE;
+	Tue, 26 Aug 2025 14:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MW5cyQjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdAb3SYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEB4321F30;
-	Tue, 26 Aug 2025 11:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3320C3568F9;
+	Tue, 26 Aug 2025 14:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207830; cv=none; b=Wsxh7b6vZ9pRvGBnzF6Ly5hI6YADsVZ+1SRQvi76XnQb4GdnU8UqaWbo1Ii6I7fT6JntE9sUn62vpXW4kO1OMSnjPYni9BMAebdSZFOgG8iWd0f15eSlqVfP1xHDBuTJX4lhe6D7qFAe++/w6G4K4HBtZPPSTMwaNLfBSgAG7rc=
+	t=1756219284; cv=none; b=XcdUNE4M1QfQkgQKn3YaX09Zo3iJVWtTU5OduLrKm143lrRQUxI9z2EPUd6prADUPdtJB/hRPFI64KmTOV3aM3woYwgyVLtTk6PzOSbFT9O3EWvQ5se8WcRxBE7BJ9Mseftg088IZl8OLz98bKAKdBHhbb3RKmNJE5tOTwD0g2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207830; c=relaxed/simple;
-	bh=whFOSnS7CpLAfSw9fcyHwKsej0FrfFGpbhC/Fy1ACn0=;
+	s=arc-20240116; t=1756219284; c=relaxed/simple;
+	bh=ZfhgisgtO04Asi5zgZxs1vNPjGPJpLA9FjqaFU9TVlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzAiZmAevc7mwH4LdoKAbjdc+LrLcoKrRaOiu/km3jwZ4xcF9wWs6MDufNfNnJqzBI4y2g4Kq3K676Pgqy5wnCaZIGqGyQ+tdIWqNFsIW1Jv/FAR8shnUkSEX503B2p5tceNPrp05LhG59OoHOl29kvSHjQWKsjMnMh5fto7xxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MW5cyQjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C55C4CEF1;
-	Tue, 26 Aug 2025 11:30:30 +0000 (UTC)
+	 MIME-Version; b=jaNLuNqB1kzHJncIshDS+09fIsbwZVnRTaYPrJikI4iTZRC5cdtkp4bxi4h47LwIx5WaoUFfjYWq+wGVBnQSwGm3hoPRer1OjWl19QuNMw4tD33mNdhmYJTar4U6iuuyseRHyj2nPwv7SLa/jhdFgVkSyBX4SwJ1Cwnq5prV4Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdAb3SYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30B5C4CEF1;
+	Tue, 26 Aug 2025 14:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207830;
-	bh=whFOSnS7CpLAfSw9fcyHwKsej0FrfFGpbhC/Fy1ACn0=;
+	s=korg; t=1756219284;
+	bh=ZfhgisgtO04Asi5zgZxs1vNPjGPJpLA9FjqaFU9TVlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MW5cyQjW65QoNAJw7wKfttgUnjPyId/GU7uiJM4H9COvNUksg+hkX83FqOT4rPUED
-	 rDyplh52YffJ/FppyqNJzeUTxTZOj+XFEwe2V5Lxv/DAoyISqxqbphm/u1KCWyq+mz
-	 bKsaJ6Bh2arlPxT4rcDPGRti77hYhJhTd32H+R+I=
+	b=TdAb3SYeRDpI1nwDsaraTQx8XqgN7f1Zkxs2kTZGg5j4fagLFZeN4/l7xQMo43vpN
+	 HGmVYUnJOtqiZX9FPB9YKxN9p+yEZUx2YdKlaS94yOW+Dg870o05WVvQTIfYtjOnPU
+	 vOAwcXPCdAs/jFHcQw2oZL0/cVA5QLDm9A903kgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.16 333/457] i2c: rtl9300: Fix out-of-bounds bug in rtl9300_i2c_smbus_xfer
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 291/403] ext4: check fast symlink for ea_inode correctly
 Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826110945.567282136@linuxfoundation.org>
+Message-ID: <20250826110914.850067464@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Andreas Dilger <adilger@dilger.ca>
 
-commit 57f312b955938fc4663f430cb57a71f2414f601b upstream.
+commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
 
-The data->block[0] variable comes from user. Without proper check,
-the variable may be very large to cause an out-of-bounds bug.
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-Fix this bug by checking the value of data->block[0] first.
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
 
-1. commit 39244cc75482 ("i2c: ismt: Fix an out-of-bounds bug in
-   ismt_access()")
-2. commit 92fbb6d1296f ("i2c: xgene-slimpro: Fix out-of-bounds bug in
-   xgene_slimpro_i2c_xfer()")
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
 
-Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Cc: <stable@vger.kernel.org> # v6.13+
-Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250810-i2c-rtl9300-multi-byte-v5-1-cd9dca0db722@narfation.org
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
+Cc: stable@vger.kernel.org
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rtl9300.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-rtl9300.c
-+++ b/drivers/i2c/busses/i2c-rtl9300.c
-@@ -281,6 +281,10 @@ static int rtl9300_i2c_smbus_xfer(struct
- 		ret = rtl9300_i2c_reg_addr_set(i2c, command, 1);
- 		if (ret)
- 			goto out_unlock;
-+		if (data->block[0] < 1 || data->block[0] > I2C_SMBUS_BLOCK_MAX) {
-+			ret = -EINVAL;
-+			goto out_unlock;
-+		}
- 		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0]);
- 		if (ret)
- 			goto out_unlock;
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -150,7 +150,7 @@ static int ext4_meta_trans_blocks(struct
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+ 
 
 
 
