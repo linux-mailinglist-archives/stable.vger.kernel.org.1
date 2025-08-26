@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59753B3654A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578BAB362A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E739F7BC374
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E481BA6D17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6FB2F9992;
-	Tue, 26 Aug 2025 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7985D319867;
+	Tue, 26 Aug 2025 13:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP/hiY7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBjrVPtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91787393DC0;
-	Tue, 26 Aug 2025 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C11E5718;
+	Tue, 26 Aug 2025 13:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215966; cv=none; b=pS6+il9z63whVz1XGr9Xu+XSXZoraZnkGtUKYaKgdQUwqn0c1rGRBTRxvzY/nOAFISswz7HovbEbnzqJ25u7pj6gpE/TGWkko3uGrqHpx7DdWP6gfMdcKwTkd8l0NPltRqHFn7EeZ3GNc/G4WpwdKxmGfxbd+3eaxeddv0k7QuQ=
+	t=1756214153; cv=none; b=jdKVrL+B3eQjcXwQsF3TPvb2JRtcP6IHgB03qMrdq3ghK+RSnyxU0Nx75tGDZkTaO8k8fY1b6mqEgTrg2M3zxAKinuV2aGywu80yaVfft53Rsg3Lpwm1prtkIss7EXxBB9eCtkJf7UOB1noUm9srALhxwDOsY9JzEQz+XlfooVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215966; c=relaxed/simple;
-	bh=9W4H26GWAofZk8NMisxD8xqMkGs2adUWrelsWDQjqd0=;
+	s=arc-20240116; t=1756214153; c=relaxed/simple;
+	bh=+/X7hfUCeWAyQ9aUe1OOltxiyT363oCG+2Gd7e8sSnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syi+yNfL26jn1khmwJbyiDCfNUrNqbn3W5BEPMZe5/OtPP3rF9f1m0fvuc0vuNmKZYr2iiCDeAXp2KziHEMeH7/PaNUPecNkUYYi0kQIJtWpKv2iCtR1MDTu5KorGT5aNRqmk9cHkiKRoE6IbvSEFrrzZulffqiZN6vEetrV98A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP/hiY7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F942C4CEF1;
-	Tue, 26 Aug 2025 13:46:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G3F/x+UiJKFDJU7hXjeQtYTTaVw+GzszmhP57aSI0pr4LUtiX2ZeMYZvnX6pWzMHOs9Mt5X2CYdsbaIJWohULBXy1u3b5kcIvTrZRWvkDDDbmd2xlT4bqw/r6Ir5pBFNyT46yK+BCxSxj61Lk6Q5CqMOVidUY9otmw/Z7VlXSeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBjrVPtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607ECC4CEF1;
+	Tue, 26 Aug 2025 13:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215966;
-	bh=9W4H26GWAofZk8NMisxD8xqMkGs2adUWrelsWDQjqd0=;
+	s=korg; t=1756214152;
+	bh=+/X7hfUCeWAyQ9aUe1OOltxiyT363oCG+2Gd7e8sSnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yP/hiY7tv7xbFYLu2ScXZft8s3h3UCxLvjq3kOw0nk4VRQ3gfhNPdgz5pOwvZXym7
-	 sWbu13DCPirMZY1esIy5LQjKpbKOddpCCeblIm20sa/4fRPf/NTPnnA3oWo0UgmVAW
-	 tPghLztn6fy8jS7SqXlH61zlf5Ja+tMDaHsX6xJA=
+	b=pBjrVPtkTZWmgfXm6tM7LC1cCXhNCODjgQipaH9jOH/IGCqPs5zybqD+wNY0jlAQc
+	 8qjGxGKikBiuXZOnze1kvLXZ8dDLppbsTPYiWqxXETluD4yXF5DkBPB1oSIRlNXTw6
+	 p45PW7qlphOp4yO9rHHBtmnTsRjr1AYvqG7FW31I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mike Marshall <hubcap@omnibond.com>,
+	=?UTF-8?q?Markku=20Ahvenj=C3=A4rvi?= <mankku@gmail.com>,
+	Janne Karhunen <janne.karhunen@gmail.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/644] fs/orangefs: Allow 2 more characters in do_c_string()
+Subject: [PATCH 6.1 030/482] KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID
 Date: Tue, 26 Aug 2025 13:04:43 +0200
-Message-ID: <20250826110951.212424298@linuxfoundation.org>
+Message-ID: <20250826110931.548810119@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
+[ Upstream commit 04bc93cf49d16d01753b95ddb5d4f230b809a991 ]
 
-The do_k_string() and do_c_string() functions do essentially the same
-thing which is they add a string and a comma onto the end of an existing
-string.  At the end, the caller will overwrite the last comma with a
-newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
-the string.
+If KVM emulates an EOI for L1's virtual APIC while L2 is active, defer
+updating GUEST_INTERUPT_STATUS.SVI, i.e. the VMCS's cache of the highest
+in-service IRQ, until L1 is active, as vmcs01, not vmcs02, needs to track
+vISR.  The missed SVI update for vmcs01 can result in L1 interrupts being
+incorrectly blocked, e.g. if there is a pending interrupt with lower
+priority than the interrupt that was EOI'd.
 
-The change to do_k_string() is just cosmetic.  I moved the "- 1" to
-the other side of the comparison and made it "+ 1".  This has no
-effect on runtime, I just wanted the functions to match each other
-and the rest of the file.
+This bug only affects use cases where L1's vAPIC is effectively passed
+through to L2, e.g. in a pKVM scenario where L2 is L1's depriveleged host,
+as KVM will only emulate an EOI for L1's vAPIC if Virtual Interrupt
+Delivery (VID) is disabled in vmc12, and L1 isn't intercepting L2 accesses
+to its (virtual) APIC page (or if x2APIC is enabled, the EOI MSR).
 
-However in do_c_string(), I removed the "- 2" which allows us to print
-two extra characters.  I noticed this issue while reviewing the code
-and I doubt affects anything in real life.  My guess is that this was
-double counting the comma and the newline.  The "+ 1" accounts for
-the newline, and the caller will delete the final comma which ensures
-there is enough space for the newline.
+WARN() if KVM updates L1's ISR while L2 is active with VID enabled, as an
+EOI from L2 is supposed to affect L2's vAPIC, but still defer the update,
+to try to keep L1 alive.  Specifically, KVM forwards all APICv-related
+VM-Exits to L1 via nested_vmx_l1_wants_exit():
 
-Removing the "- 2" lets us print 2 more characters, but mainly it makes
-the code more consistent and understandable for reviewers.
+	case EXIT_REASON_APIC_ACCESS:
+	case EXIT_REASON_APIC_WRITE:
+	case EXIT_REASON_EOI_INDUCED:
+		/*
+		 * The controls for "virtualize APIC accesses," "APIC-
+		 * register virtualization," and "virtual-interrupt
+		 * delivery" only come from vmcs12.
+		 */
+		return true;
 
-Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Fixes: c7c9c56ca26f ("x86, apicv: add virtual interrupt delivery support")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/kvm/20230312180048.1778187-1-jason.cj.chen@intel.com
+Reported-by: Markku Ahvenjärvi <mankku@gmail.com>
+Closes: https://lore.kernel.org/all/20240920080012.74405-1-mankku@gmail.com
+Cc: Janne Karhunen <janne.karhunen@gmail.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+[sean: drop request, handle in VMX, write changelog]
+Tested-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20241128000010.4051275-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: resolve minor syntactic conflict in lapic.h, account for lack of
+       kvm_x86_call(), drop sanity check due to lack of wants_to_run]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/lapic.c      | 11 +++++++++++
+ arch/x86/kvm/lapic.h      |  1 +
+ arch/x86/kvm/vmx/nested.c |  5 +++++
+ arch/x86/kvm/vmx/vmx.c    | 16 ++++++++++++++++
+ arch/x86/kvm/vmx/vmx.h    |  1 +
+ 5 files changed, 34 insertions(+)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index fa41db088488..b57140ebfad0 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -728,8 +728,8 @@ static void do_k_string(void *k_mask, int index)
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 3d65d6a023c9..9aae76b74417 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -640,6 +640,17 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+ 	}
+ }
  
- 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
- 		if ((strlen(kernel_debug_string) +
--		     strlen(s_kmod_keyword_mask_map[index].keyword))
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
-+		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(kernel_debug_string,
- 				       s_kmod_keyword_mask_map[index].keyword);
- 				strcat(kernel_debug_string, ",");
-@@ -756,7 +756,7 @@ static void do_c_string(void *c_mask, int index)
- 	    (mask->mask2 & cdm_array[index].mask2)) {
- 		if ((strlen(client_debug_string) +
- 		     strlen(cdm_array[index].keyword) + 1)
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(client_debug_string,
- 				       cdm_array[index].keyword);
- 				strcat(client_debug_string, ",");
++void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu)
++{
++	struct kvm_lapic *apic = vcpu->arch.apic;
++
++	if (WARN_ON_ONCE(!lapic_in_kernel(vcpu)) || !apic->apicv_active)
++		return;
++
++	static_call(kvm_x86_hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
++}
++EXPORT_SYMBOL_GPL(kvm_apic_update_hwapic_isr);
++
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu)
+ {
+ 	/* This may race with setting of irr in __apic_accept_irq() and
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index a5ac4a5a5179..e5d2dc58fcf8 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -122,6 +122,7 @@ int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
+ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu);
++void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu);
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+ 
+ u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 8052f8b7d8e1..d55f7edc0860 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4839,6 +4839,11 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
+ 	}
+ 
++	if (vmx->nested.update_vmcs01_hwapic_isr) {
++		vmx->nested.update_vmcs01_hwapic_isr = false;
++		kvm_apic_update_hwapic_isr(vcpu);
++	}
++
+ 	if ((vm_exit_reason != -1) &&
+ 	    (enable_shadow_vmcs || evmptr_is_valid(vmx->nested.hv_evmcs_vmptr)))
+ 		vmx->nested.need_vmcs12_to_shadow_sync = true;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 721ba6ddb121..7b87fbc69b21 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6713,6 +6713,22 @@ static void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
+ 	u16 status;
+ 	u8 old;
+ 
++	/*
++	 * If L2 is active, defer the SVI update until vmcs01 is loaded, as SVI
++	 * is only relevant for if and only if Virtual Interrupt Delivery is
++	 * enabled in vmcs12, and if VID is enabled then L2 EOIs affect L2's
++	 * vAPIC, not L1's vAPIC.  KVM must update vmcs01 on the next nested
++	 * VM-Exit, otherwise L1 with run with a stale SVI.
++	 */
++	if (is_guest_mode(vcpu)) {
++		/*
++		 * KVM is supposed to forward intercepted L2 EOIs to L1 if VID
++		 * is enabled in vmcs12; as above, the EOIs affect L2's vAPIC.
++		 */
++		to_vmx(vcpu)->nested.update_vmcs01_hwapic_isr = true;
++		return;
++	}
++
+ 	if (max_isr == -1)
+ 		max_isr = 0;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 9e0bb98b116d..8b4b149bd9c1 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -189,6 +189,7 @@ struct nested_vmx {
+ 	bool reload_vmcs01_apic_access_page;
+ 	bool update_vmcs01_cpu_dirty_logging;
+ 	bool update_vmcs01_apicv_status;
++	bool update_vmcs01_hwapic_isr;
+ 
+ 	/*
+ 	 * Enlightened VMCS has been enabled. It does not mean that L1 has to
 -- 
-2.39.5
+2.50.1
 
 
 
