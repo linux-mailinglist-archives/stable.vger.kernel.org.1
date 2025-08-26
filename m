@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B282B36CA3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C002EB361FF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560FC58318C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7156B188DDFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF63570C4;
-	Tue, 26 Aug 2025 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793A252904;
+	Tue, 26 Aug 2025 13:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmBBFGYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xvbuu6lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4107E34AAF8;
-	Tue, 26 Aug 2025 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103A44C6D;
+	Tue, 26 Aug 2025 13:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219235; cv=none; b=daQ/u3rFhH/2pzT5UYV73lpBWk3XkeBjq/y6el8hhVvdNWAclY1KqwjVfbEoQbZVCovUY1lss3CI718dIMZLglqGMwrv7591w6kXpbdSC0OTHjgkGJ76DNAMLNr+ieKvoOEpNdaEOwF8gJQq4hiGfClpJmiX5si/KekR9HxjpAA=
+	t=1756213875; cv=none; b=gGiW+tWQMBsMQgizNpm98aBkPfhY6GHOtE25B/7iPNsnDxUamV/45afZb1tCvvVf5ihJFRvMsx+K3k5mUfqUDqXoI10YJkBlI6EhGEInyoWMHvbivmQR0LaxJMhgZjYH3gzEY6Boxw2F4F1XHyFGc3mYlklD3J/ieCxlu9v4jg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219235; c=relaxed/simple;
-	bh=hLzU+RKR2FepF8MVOJ3mqL/j7SgFIQFhcP+Ez93asr8=;
+	s=arc-20240116; t=1756213875; c=relaxed/simple;
+	bh=Nrdl1pXBFaqBcOTlEECAUlrrovYH08BVoXI5SxBxVCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHfqc+Ww7x5CW5mWq+IvSWidI2vsNt/gK4cU5j7zRuvMK75XPdRe0OMOvb4rktSLSx9LCl2zyZAPo/KEfBdty0LSF8t5SGJjoq8PaQyS5wbWKWjTkrh6VWZpPPVhCfulUaZxPFq01OTP+5PLgv2888whs17ew/L7HnZLuR5rkWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmBBFGYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EB3C4CEF1;
-	Tue, 26 Aug 2025 14:40:34 +0000 (UTC)
+	 MIME-Version; b=n0eEW1mI0gexwG5rueCjXqhWgxOKm5qHw528cPxPTXR0lqV79Ybn1oEkjOiKAj7NopZCRPmL18NdBEP+h2oS9yxjnyN+DnGQ6GKRVWQ7IqheF3CJ08DAj7O7jr5zJQ0W9szMpViGR3UZMluV7P0pmt6SskDQ29Sa2g6Ayj8mYog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xvbuu6lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955FDC4CEF1;
+	Tue, 26 Aug 2025 13:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219235;
-	bh=hLzU+RKR2FepF8MVOJ3mqL/j7SgFIQFhcP+Ez93asr8=;
+	s=korg; t=1756213874;
+	bh=Nrdl1pXBFaqBcOTlEECAUlrrovYH08BVoXI5SxBxVCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmBBFGYsc9PmcFCz+kgHrRl9Adm6hAlssgV61eQ/TVqUelw022NbT/F7Y6ssHgUFF
-	 YDrqdA+NSlS9e3fnecCgG2cHX1uKk1OYS50MTSTz6WwiHse8hEkKPCiM3pcCuShpFN
-	 +2jKETxbB0A3+R0CK/8XMBAB/DfZIi4NR8DZ9fSY=
+	b=Xvbuu6lb59h8P68AkMbhaqUjHpIB9ca/vkj8veieQBw2PWHkBMiGz4MU6Tl5nz8yw
+	 zUKvvT9+4TmclBkIBhHvpmikZxZ26b3+2byBh8Ax0HJgbwuLIqA27JxwvbV4eWSbuv
+	 hHH7DXsTAkSrOZqBMJA6pjRvcCoVrdvywp395elY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 304/403] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 481/587] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
 Date: Tue, 26 Aug 2025 13:10:30 +0200
-Message-ID: <20250826110915.215407705@linuxfoundation.org>
+Message-ID: <20250826111005.209193051@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
+commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+In preparation to fix replay timer timeout, rename the
+gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -911,7 +911,7 @@ imx_media_csc_scaler_device_init(struct
- 	return &priv->vdev;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -1343,7 +1343,7 @@ cleanup:
+ 	return ret;
+ }
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
+-static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
++static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+ 	u32 value;
+@@ -1515,7 +1515,7 @@ static int gli_probe_slot_gl9763e(struct
+ 	gli_pcie_enable_msi(slot);
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 					gl9763e_hs400_enhanced_strobe;
+-	gli_set_gl9763e(slot);
++	gl9763e_hw_setting(slot);
+ 	sdhci_enable_v4_mode(host);
+ 
+ 	return 0;
 
 
 
