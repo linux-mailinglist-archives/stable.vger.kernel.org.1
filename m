@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6267DB363A3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EF3B35BEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105B01BC6DB9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3177218822FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184772D7DE5;
-	Tue, 26 Aug 2025 13:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E75299959;
+	Tue, 26 Aug 2025 11:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ol0deSoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yu+vzo5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FA2196C7C;
-	Tue, 26 Aug 2025 13:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A4F1A256B;
+	Tue, 26 Aug 2025 11:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214687; cv=none; b=oB+Iak9/zegqhKwblqDyzaDBp4JjoW0IZiEfHrRXO2qRqJEj8Up1T6OYC4MSo0T+2tmra3jsCkmBAxqQxEHUKDXzgyfyLMXQ0UilNb/EKgPLMSZZbUBMIka3OMBIg1VWRguOSmjPVUFK9nrEtvef+o7kKGxWK7JRGpmBJz8k8pM=
+	t=1756207491; cv=none; b=qADwJK1jpC9wgjwV+CDhxxJ6xE/gwwe4tuFLr2wX74Z04DgM8weeya4FeZi8HkzcZLEyEarNCvyFka9hX3Pwjrh9jc7TUOFEp8HoLBXPZdEUS5pOTBQapSEZWrhePh5q6eQDsBBfkZpDsASARRnef8hAWTEY/fgA/uaVYobbRJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214687; c=relaxed/simple;
-	bh=+9A24ZZCwsxlixOBvNVL/W7hoFdZw2qYNtYYzUxJd3A=;
+	s=arc-20240116; t=1756207491; c=relaxed/simple;
+	bh=yEahuuJM2GziV7Bd6WygUROaP8+XW3GwSLpZgeP05eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeFkDHnLEIzdCs2LlWE9k3KJm7pM8QSoFBlmacb2KtVfkHLqwhcCOvbpSmuXGbkb7B/Vz1/oBVekURXO4KS4hq6kXbY19Dcmo9XjqD83ozr7HeYfgTemCJzGbF9N/WfyIooXdcGt0UUkZr4Md1FeK4zGSVpmwqT5GsuA5a6olnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ol0deSoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B73C4CEF1;
-	Tue, 26 Aug 2025 13:24:47 +0000 (UTC)
+	 MIME-Version; b=WEmhPC3amyC+dFxMn1K0fSN1Zu7kKp0kLSD+w52BV1sQhVZolvXuwNkUvaDQ3V3wyn20VfOyQIlbRLR+mJ3twhLjFB8wkvFmc2H62nMOV7VFrDrOn/y6o5BauyDtJR6ZxVPsyJKrKKUvNxgyLt7HREqb82g65q70fCngECCNU34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yu+vzo5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709A4C4CEF4;
+	Tue, 26 Aug 2025 11:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214687;
-	bh=+9A24ZZCwsxlixOBvNVL/W7hoFdZw2qYNtYYzUxJd3A=;
+	s=korg; t=1756207491;
+	bh=yEahuuJM2GziV7Bd6WygUROaP8+XW3GwSLpZgeP05eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ol0deSoQ4Lk+Hy/unkhJY6/DqkP95yo11G0fPBS/xC5xlPp7ePGWpxdn52gnvf0e/
-	 tQt/Fqb8QgctExYYqyiwQI2XWsO+hB+XND/fakJSujCxhJrJ5a5aHybIfpVtSmVXa4
-	 7TzpgvqEDU9CzNcHIJZ0d02pIXYRP0u2aitUchSw=
+	b=Yu+vzo5tc6+7fmmWSLAEw+r+kG/WJcSLFxV3DEQNhR5jsVKKw6CxkfBh6XdoNe+OC
+	 Bp11jyr4q010/SfeycUUbzY3PTGxIETgBVRsR5ky6IGjuMiZimFfsa/AhBAF7Xk1ei
+	 7mh4OLrBGcwMcfdUP5zLzglEtQ3YEPw8SyX/5E3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/482] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
-Date: Tue, 26 Aug 2025 13:08:05 +0200
-Message-ID: <20250826110936.504505273@linuxfoundation.org>
+	"Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.16 202/457] ACPI: pfr_update: Fix the driver update version check
+Date: Tue, 26 Aug 2025 13:08:06 +0200
+Message-ID: <20250826110942.359023868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
+commit 8151320c747efb22d30b035af989fed0d502176e upstream.
 
-In blk_stack_limits(), we check that the t->chunk_sectors value is a
-multiple of the t->physical_block_size value.
+The security-version-number check should be used rather
+than the runtime version check for driver updates.
 
-However, by finding the chunk_sectors value in bytes, we may overflow
-the unsigned int which holds chunk_sectors, so change the check to be
-based on sectors.
+Otherwise, the firmware update would fail when the update binary had
+a lower runtime version number than the current one.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0db89fa243e5 ("ACPI: Introduce Platform Firmware Runtime Update device driver")
+Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
+Reported-by: "Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://patch.msgid.link/20250722143233.3970607-1-yu.c.chen@intel.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/pfr_update.c  |    2 +-
+ include/uapi/linux/pfrut.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index c702f408bbc0..305b47a38429 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -628,7 +628,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	}
+--- a/drivers/acpi/pfr_update.c
++++ b/drivers/acpi/pfr_update.c
+@@ -310,7 +310,7 @@ static bool applicable_image(const void
+ 	if (type == PFRU_CODE_INJECT_TYPE)
+ 		return payload_hdr->rt_ver >= cap->code_rt_version;
  
- 	/* chunk_sectors a multiple of the physical block size? */
--	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
-+	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
- 		t->chunk_sectors = 0;
- 		t->misaligned = 1;
- 		ret = -1;
--- 
-2.39.5
-
+-	return payload_hdr->rt_ver >= cap->drv_rt_version;
++	return payload_hdr->svn_ver >= cap->drv_svn;
+ }
+ 
+ static void print_update_debug_info(struct pfru_updated_result *result,
+--- a/include/uapi/linux/pfrut.h
++++ b/include/uapi/linux/pfrut.h
+@@ -89,6 +89,7 @@ struct pfru_payload_hdr {
+ 	__u32 hw_ver;
+ 	__u32 rt_ver;
+ 	__u8 platform_id[16];
++	__u32 svn_ver;
+ };
+ 
+ enum pfru_dsm_status {
 
 
 
