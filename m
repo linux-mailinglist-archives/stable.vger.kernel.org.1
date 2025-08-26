@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-176362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035D4B36BDC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9FAB36800
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDC727BDF4B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 288D21C22490
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB1935A29B;
-	Tue, 26 Aug 2025 14:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B0B2B9A7;
+	Tue, 26 Aug 2025 14:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgU55tN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZljAmkWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B53435A283;
-	Tue, 26 Aug 2025 14:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9B8352061;
+	Tue, 26 Aug 2025 14:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219462; cv=none; b=TVTw44hu6WSF80IJU7qK85sLnI3z/YPnNXRTF5sCQdcf9MHf/4vQMAl7DOyO/Kp2ozXBFToDlGWyWEeA3zuiiiE1gNzsnek9bEmoqb0Ftb8iFXgrXrCFOYYG+GcvgCptRZz41R2V3bukphpsznEM4aIrzsvFF7a1e5we0IsywNM=
+	t=1756216927; cv=none; b=SLm/FuctiLF+vBfKAmhC9FinA6qquUBqWMHDcmbomp3u0Zyt7TgUCEsUPOAML+MOzjtcmU9yva0LfEHvT+eGA+PA9/WK8bknOJ6xF25kJzHuN9cjZgMx8JUzUiAuFzD4k3QdoOnPLghISY5mM0IO1jKAUX7VOIIJWUmvjCxwLwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219462; c=relaxed/simple;
-	bh=V/51+u1RYRB0Mkr9k5T+wmX0yzcZprtXptJ16+ldrKY=;
+	s=arc-20240116; t=1756216927; c=relaxed/simple;
+	bh=qDcEDZmDR9xDgyldLc/9s5RKtA7ctaJMdwN+YS4Y7cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0+f/sleJp+EL0zZmTtFGejpDKg3vHQ3A3jz/HDdc6v2zUKrAVl5PdmalrxkFmRiY3IdER8tNMTR0osJ6eXXh9/JCVU2CIyDHVOyzGmEE6e0BhyBMaKW93WO0w98Zy5jasOwrAq69TOKZZ9+jjCgEIc7SUQlY2qKSNwJaO0vF1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgU55tN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CDAC4CEF1;
-	Tue, 26 Aug 2025 14:44:20 +0000 (UTC)
+	 MIME-Version; b=kKyj9MX4tfo0DME6cXX+NqVjkJJ4uF2+GsPqIk/mPqjUBS0JBFYl7GRSiZ0FqsSLp3yj6m3slOQFWmnmfSqVDCKncWcuoDAE7ihqOQxbKVta5dlhjlTOjNMtS4tKfgFsYb++KafXKDmaixzVnQJQNHJE1uiUItOVZjeSHhruL5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZljAmkWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30610C4CEF1;
+	Tue, 26 Aug 2025 14:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219461;
-	bh=V/51+u1RYRB0Mkr9k5T+wmX0yzcZprtXptJ16+ldrKY=;
+	s=korg; t=1756216927;
+	bh=qDcEDZmDR9xDgyldLc/9s5RKtA7ctaJMdwN+YS4Y7cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgU55tN+eXt0fn7eLmY5RbmI6gtQ9sBI/6MOQjoRAM2L5GEb4rg5ITebxt91asKaz
-	 aSBMT7GO4ijJpDPT/0jd0VENSI9Lp3hujjbYg5nSl70cV9Huxlzzm6/s4tZQchJ/r0
-	 PDpwqRDljz3Ri5OB4Q6kK4mSkyccnpv+8s+U3AOs=
+	b=ZljAmkWcIhaoRgm7ms5QbVI5rEJY9t2msAtILg8zO/WfhGkOdiPSNQL1bHqxf9Q38
+	 hGo5QAv7/wU+yBEbP9i2e/0A+bN+A8ilSRu9wk9xA7i+MTev6xRu4lCDq2roysZojZ
+	 o+fuEmVWMjciauj1ugXk6S0z3IOnJO3sRcvQgxeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	stable@kernel.org,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 360/403] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
+Subject: [PATCH 5.15 595/644] f2fs: fix to avoid out-of-boundary access in dnode page
 Date: Tue, 26 Aug 2025 13:11:26 +0200
-Message-ID: <20250826110916.948210551@linuxfoundation.org>
+Message-ID: <20250826111001.284796189@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
+[ Upstream commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 ]
 
-When the MDT loader is used in remoteproc, the ELF header is sanitized
-beforehand, but that's not necessary the case for other clients.
+As Jiaming Zhang reported:
 
-Validate the size of the firmware buffer to ensure that we don't read
-past the end as we iterate over the header. e_phentsize and e_shentsize
-are validated as well, to ensure that the assumptions about step size in
-the traversal are valid.
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x17e/0x800 mm/kasan/report.c:480
+ kasan_report+0x147/0x180 mm/kasan/report.c:593
+ data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
+ f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
+ f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
+ f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
+ prepare_write_begin fs/f2fs/data.c:3395 [inline]
+ f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
+ generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
+ f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
+ f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x546/0xa90 fs/read_write.c:686
+ ksys_write+0x149/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
-Cc: stable@vger.kernel.org
-Reported-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The root cause is in the corrupted image, there is a dnode has the same
+node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
+access block address in dnode at offset 934, however it parses the dnode
+as inode node, so that get_dnode_addr() returns 360, then it tries to
+access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
+
+To fix this issue, let's add sanity check for node id of all direct nodes
+during f2fs_get_dnode_of_data().
+
+Cc: stable@kernel.org
+Reported-by: Jiaming Zhang <r772577952@gmail.com>
+Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ replaced f2fs_err_ratelimited() with f2fs_err() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ fs/f2fs/node.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -12,11 +12,43 @@
- #include <linux/firmware.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/qcom_scm.h>
- #include <linux/sizes.h>
- #include <linux/slab.h>
- #include <linux/soc/qcom/mdt_loader.h>
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -798,6 +798,16 @@ int f2fs_get_dnode_of_data(struct dnode_
+ 	for (i = 1; i <= level; i++) {
+ 		bool done = false;
  
-+static bool mdt_header_valid(const struct firmware *fw)
-+{
-+	const struct elf32_hdr *ehdr;
-+	size_t phend;
-+	size_t shend;
++		if (nids[i] && nids[i] == dn->inode->i_ino) {
++			err = -EFSCORRUPTED;
++			f2fs_err(sbi,
++				"inode mapping table is corrupted, run fsck to fix it, "
++				"ino:%lu, nid:%u, level:%d, offset:%d",
++				dn->inode->i_ino, nids[i], level, offset[level]);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			goto release_pages;
++		}
 +
-+	if (fw->size < sizeof(*ehdr))
-+		return false;
-+
-+	ehdr = (struct elf32_hdr *)fw->data;
-+
-+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
-+		return false;
-+
-+	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
-+		return false;
-+
-+	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
-+	if (phend > fw->size)
-+		return false;
-+
-+	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+		return false;
-+
-+	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+	if (shend > fw->size)
-+		return false;
-+
-+	return true;
-+}
-+
- static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
- {
- 	if (phdr->p_type != PT_LOAD)
-@@ -46,6 +78,9 @@ ssize_t qcom_mdt_get_size(const struct f
- 	phys_addr_t max_addr = 0;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
-@@ -92,6 +127,9 @@ void *qcom_mdt_read_metadata(const struc
- 	size_t ehdr_size;
- 	void *data;
- 
-+	if (!mdt_header_valid(fw))
-+		return ERR_PTR(-EINVAL);
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
-@@ -151,6 +189,9 @@ static int __qcom_mdt_load(struct device
- 	if (!fw || !mem_region || !mem_phys || !mem_size)
- 		return -EINVAL;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
+ 		if (!nids[i] && mode == ALLOC_NODE) {
+ 			/* alloc new node */
+ 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
 
 
 
