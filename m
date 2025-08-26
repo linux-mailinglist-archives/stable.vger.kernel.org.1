@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B21B3680F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88108B36A3C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA1D982890
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8A6A02AC8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01C83568E3;
-	Tue, 26 Aug 2025 14:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE23352FC8;
+	Tue, 26 Aug 2025 14:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUW/1zE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5CEQ3t8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB9735335B;
-	Tue, 26 Aug 2025 14:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA9D2459F3;
+	Tue, 26 Aug 2025 14:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217029; cv=none; b=AAog32+9sBR6ynttauA4/3K9vsEW0jFYAfrzyU8HTqN0wuF86QrBGuYHqxcAMvbAhUCogN596jDb248h8gdi++wuCEOSqH5+SCwPRbxwhXqlORXwhlQtZyh+i6Q1uee9KzbKkLQShNSYoutiylPdenRDSz81mBDpaxjvFkg3ZW4=
+	t=1756218410; cv=none; b=AxzDNSTlAJ4frm6pIZ7jxSAy1DmpJPtbazMHEh1k1c+ApMVVrDHCxPTmJQJfNNug7IUxdWpgs+1w69rLYoPGSrUBpz7cjAcBBR4/LJQBrm6J8GU0Tp5pu7nD4HsD7CB056pOdDJjOgMhMhVoCUJlJwnCktrvF2sXs2rXPJvYa/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217029; c=relaxed/simple;
-	bh=nWl5SJU4zs/RfzDBXstBnGevlFrzYmuUnKrl2pSqW8M=;
+	s=arc-20240116; t=1756218410; c=relaxed/simple;
+	bh=ve+y5YWB2TscAtPqtpq6eSf4ExtAXvL7OX3bXc6R/AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vi0X4ZS9kpnEUxaMgtMRnepaiIMTzN77zkxr2LYu+7/3pv+J+Fx/eCTzgd2sllengREmZEEZIK2E4OAeVvlLUUZeGaWWymjQzfVQLdSYzAbHslJtkDJb4aW3JKHgGE9/Lo8iQ+/bMheC+56R+4v1sGi2MF+/bG3gpTM4mjlxhoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUW/1zE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D3EC4CEF1;
-	Tue, 26 Aug 2025 14:03:48 +0000 (UTC)
+	 MIME-Version; b=ExwG/af0KO1GSAuPwePetimg5x9Wx+Z3Leh1gWAtiai/Jrj11ILJ7hDs6qdozscwafIO21EsaVZzkN4ydUeMUCMZ+FjMUsY/NUEUOzdzRdgzecIH5q9iWVWYJOZkUdOPd6UfY5j0AuScd6YjnTJifX8I3Pk1/bV/wg6HuRmb6iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5CEQ3t8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CDDC4CEF1;
+	Tue, 26 Aug 2025 14:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217029;
-	bh=nWl5SJU4zs/RfzDBXstBnGevlFrzYmuUnKrl2pSqW8M=;
+	s=korg; t=1756218410;
+	bh=ve+y5YWB2TscAtPqtpq6eSf4ExtAXvL7OX3bXc6R/AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUW/1zE9hFZDv+fwnam6dJgKohktOTRjvQLV3ulaRPzuA0OoSEM8nbT4xnPIT4cQ+
-	 VRqhtNL7DDz4mo3lfMcgz9kS7oPFetXyUf/9bSnPr2169tfyBImrJwV7QPDPre1w02
-	 P4drEcZgPBqJEqLarhMyuaswCkRZIdwmxWmmeOXM=
+	b=l5CEQ3t8F12IfSV5beIFHBtlGP1tMpR5JrsMMVb4/14J11YzxxqDRRW6jrasG63yE
+	 ocjsJAI/GdSAVcANwwc6ndB5+cZchvfoTG69aF6aL6c9WVzgvuVLYUvgniL5ZGa7QZ
+	 tPb98myPMFcovyzzBJbzcgIhEBPO8487/dSQFfrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zoey Mertes <zoey@cloudflare.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 631/644] ppp: fix race conditions in ppp_fill_forward_path
+Subject: [PATCH 5.10 512/523] mlxsw: spectrum: Forward packets with an IPv4 link-local source IP
 Date: Tue, 26 Aug 2025 13:12:02 +0200
-Message-ID: <20250826111002.194592748@linuxfoundation.org>
+Message-ID: <20250826110937.068722220@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 0417adf367a0af11adf7ace849af4638cfb573f7 ]
+[ Upstream commit f604d3aaf64ff0d90cc875295474d3abf4155629 ]
 
-ppp_fill_forward_path() has two race conditions:
+By default, the device does not forward IPv4 packets with a link-local
+source IP (i.e., 169.254.0.0/16). This behavior does not align with the
+kernel which does forward them.
 
-1. The ppp->channels list can change between list_empty() and
-   list_first_entry(), as ppp_lock() is not held. If the only channel
-   is deleted in ppp_disconnect_channel(), list_first_entry() may
-   access an empty head or a freed entry, and trigger a panic.
+Fix by instructing the device to forward such packets instead of
+dropping them.
 
-2. pch->chan can be NULL. When ppp_unregister_channel() is called,
-   pch->chan is set to NULL before pch is removed from ppp->channels.
-
-Fix these by using a lockless RCU approach:
-- Use list_first_or_null_rcu() to safely test and access the first list
-  entry.
-- Convert list modifications on ppp->channels to their RCU variants and
-  add synchronize_net() after removal.
-- Check for a NULL pch->chan before dereferencing it.
-
-Fixes: f6efc675c9dd ("net: ppp: resolve forwarding path for bridge pppoe devices")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20250814012559.3705-2-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ca360db4b825 ("mlxsw: spectrum: Disable DIP_LINK_LOCAL check in hardware pipeline")
+Reported-by: Zoey Mertes <zoey@cloudflare.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/6721e6b2c96feb80269e72ce8d0b426e2f32d99c.1755174341.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum.c | 2 ++
+ drivers/net/ethernet/mellanox/mlxsw/trap.h     | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 3e804800c509..5cb06e04293e 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -33,6 +33,7 @@
- #include <linux/ppp_channel.h>
- #include <linux/ppp-comp.h>
- #include <linux/skbuff.h>
-+#include <linux/rculist.h>
- #include <linux/rtnetlink.h>
- #include <linux/if_arp.h>
- #include <linux/ip.h>
-@@ -1612,11 +1613,14 @@ static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
- 	if (ppp->flags & SC_MULTILINK)
- 		return -EOPNOTSUPP;
- 
--	if (list_empty(&ppp->channels))
-+	pch = list_first_or_null_rcu(&ppp->channels, struct channel, clist);
-+	if (!pch)
-+		return -ENODEV;
-+
-+	chan = READ_ONCE(pch->chan);
-+	if (!chan)
- 		return -ENODEV;
- 
--	pch = list_first_entry(&ppp->channels, struct channel, clist);
--	chan = pch->chan;
- 	if (!chan->ops->fill_forward_path)
- 		return -EOPNOTSUPP;
- 
-@@ -2999,7 +3003,7 @@ ppp_unregister_channel(struct ppp_channel *chan)
- 	 */
- 	down_write(&pch->chan_sem);
- 	spin_lock_bh(&pch->downl);
--	pch->chan = NULL;
-+	WRITE_ONCE(pch->chan, NULL);
- 	spin_unlock_bh(&pch->downl);
- 	up_write(&pch->chan_sem);
- 	ppp_disconnect_channel(pch);
-@@ -3505,7 +3509,7 @@ ppp_connect_channel(struct channel *pch, int unit)
- 	hdrlen = pch->file.hdrlen + 2;	/* for protocol bytes */
- 	if (hdrlen > ppp->dev->hard_header_len)
- 		ppp->dev->hard_header_len = hdrlen;
--	list_add_tail(&pch->clist, &ppp->channels);
-+	list_add_tail_rcu(&pch->clist, &ppp->channels);
- 	++ppp->n_channels;
- 	pch->ppp = ppp;
- 	refcount_inc(&ppp->file.refcnt);
-@@ -3535,10 +3539,11 @@ ppp_disconnect_channel(struct channel *pch)
- 	if (ppp) {
- 		/* remove it from the ppp unit's list */
- 		ppp_lock(ppp);
--		list_del(&pch->clist);
-+		list_del_rcu(&pch->clist);
- 		if (--ppp->n_channels == 0)
- 			wake_up_interruptible(&ppp->file.rwait);
- 		ppp_unlock(ppp);
-+		synchronize_net();
- 		if (refcount_dec_and_test(&ppp->file.refcnt))
- 			ppp_destroy_interface(ppp);
- 		err = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+index 4110e15c22c7..8ab7e591b66a 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
+@@ -2222,6 +2222,8 @@ static const struct mlxsw_listener mlxsw_sp_listener[] = {
+ 			     ROUTER_EXP, false),
+ 	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_DIP_LINK_LOCAL, FORWARD,
+ 			     ROUTER_EXP, false),
++	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_SIP_LINK_LOCAL, FORWARD,
++			     ROUTER_EXP, false),
+ 	/* Multicast Router Traps */
+ 	MLXSW_SP_RXL_MARK(ACL1, TRAP_TO_CPU, MULTICAST, false),
+ 	MLXSW_SP_RXL_L3_MARK(ACL2, TRAP_TO_CPU, MULTICAST, false),
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/trap.h b/drivers/net/ethernet/mellanox/mlxsw/trap.h
+index 57f9e24602d0..93ca6f90f320 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/trap.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/trap.h
+@@ -92,6 +92,7 @@ enum {
+ 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_SIP_BC = 0x16A,
+ 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_DIP_LOCAL_NET = 0x16B,
+ 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_DIP_LINK_LOCAL = 0x16C,
++	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_SIP_LINK_LOCAL = 0x16D,
+ 	MLXSW_TRAP_ID_DISCARD_ROUTER_IRIF_EN = 0x178,
+ 	MLXSW_TRAP_ID_DISCARD_ROUTER_ERIF_EN = 0x179,
+ 	MLXSW_TRAP_ID_DISCARD_ROUTER_LPM4 = 0x17B,
 -- 
 2.50.1
 
