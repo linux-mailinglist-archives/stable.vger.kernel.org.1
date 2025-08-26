@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB5EB35BC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3410FB362DA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2B72A1875
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBCFC7B677F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C49318146;
-	Tue, 26 Aug 2025 11:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE76335BAA;
+	Tue, 26 Aug 2025 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxzX9NKu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB/IpiAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3449C312806;
-	Tue, 26 Aug 2025 11:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4B2BE643;
+	Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207270; cv=none; b=L+9jdFO4wbwRU2IHOqNHRd6I1Wac4ZWAAzFmoZmoifg9WqjmbV5Gj4YG+fUqTKTdVUdgK5SDk+Bmk1AhxlSYtburYRnNBcdeHU6NvOYpFJmT29pCS+PnFvXNA1xmMTU+ZDYDH0qPk9Ipr84g4FzDMDWhd0qYKe3mhw+SOAkb7vU=
+	t=1756214453; cv=none; b=e7pygR8r7ZRedldNaPDQQfLajfhMoAYRbPwBIUu//wJXiR1IPSZbC7xRZ10itWfPu7tfOfeZwfVivqO+ESeBebw2hfeqMmhUBqXcbQ5oZJPKdlosJai+I5aZXZ20D7dFACycgBF+rLPfLLBBuUUE41qrXIYRGjg6K8wsnnIfe+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207270; c=relaxed/simple;
-	bh=ITbHW2dg2zSHytsO4KKkYjQ1HIVXWdZRLLJpeyOIIYA=;
+	s=arc-20240116; t=1756214453; c=relaxed/simple;
+	bh=lWLj21lEnzFfo7t6GBlour637Hm7HCSmjpPvhj9TX5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPdRkFmLDeaSTY6WRmIO3uFzQ2RosvOmlt4Wl1St/+lc2mrwokJ5QDlRm9tp2jW7o2fm3t96HVBSJNYmjNIDbMyFCffKIV8l/QICo9MxzIgfs+qSApFJsTvGHYqDmSRy1GpS7HT5D/ayjshuEGLE7FOnvnPSiEKG5NyzvufGn2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxzX9NKu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB3EC4CEF1;
-	Tue, 26 Aug 2025 11:21:09 +0000 (UTC)
+	 MIME-Version; b=mKqtYJMjXquSg6nKW/6iOPh21h7sP4PFGmFI+D72RhPIKBu4WmWLJfG7FGugX0AjLtbmepK6rSryBh8qx0OBmMPo3WPs1LI6RiiO8XP0Tu+JPOq6oTMv/2/wn3uaYVdd1HfgX3fub4PzYYu2qykU+UzLS93gG7tOEyxUpbs/DMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB/IpiAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599FEC4CEF1;
+	Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207270;
-	bh=ITbHW2dg2zSHytsO4KKkYjQ1HIVXWdZRLLJpeyOIIYA=;
+	s=korg; t=1756214453;
+	bh=lWLj21lEnzFfo7t6GBlour637Hm7HCSmjpPvhj9TX5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxzX9NKuXYaQxl7cWRY1pUnUNGp2MgCECYlgndcUSfzJPci1+Pw+EwEh3hQtDlB9k
-	 i8ReI42fXCdcBaP4nfdycxifPj7zUstC9ssGnXPSeY6cRjA7e3Bi6cWn6RhedRBe0W
-	 W0KxIBfQ8z7JMCu1nTepTpo7N4A/drsLdtfYCRac=
+	b=JB/IpiACpyF3z9N4IJhrWRnkjedcMlDqSqxITB7/7bz9MiqYeYGWSvRuD9wtxH+Lq
+	 24jL+eCr7oxu8ExKKFq7XykgK/OJIHeAoSAFkv6f/BpRp+On5ombEPim9oTHhcT5a1
+	 LGvnKmGH0bET0DCP4H5iaANVMVWG3cVfJJUp3Igw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.16 085/457] wifi: ath11k: fix source ring-buffer corruption
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 116/482] wifi: cfg80211: reject HTC bit for management frames
 Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110939.479820946@linuxfoundation.org>
+Message-ID: <20250826110933.690669628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 6efa0df54022c6c9fd4d294b87622c7fcdc418c8 upstream.
+[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
 
-Add the missing memory barrier to make sure that LMAC source ring
-descriptors are written before updating the head pointer to avoid
-passing stale data to the firmware on weakly ordered architectures like
-aarch64.
+Management frames sent by userspace should never have the
+order/HTC bit set, reject that. It could also cause some
+confusion with the length of the buffer and the header so
+the validation might end up wrong.
 
-Note that non-LMAC rings use MMIO write accessors which have the
-required write memory barrier.
-
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604143457.26032-5-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/wireless/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -862,7 +862,11 @@ void ath11k_hal_srng_access_end(struct a
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 			srng->u.src_ring.last_tp =
- 				*(volatile u32 *)srng->u.src_ring.tp_addr;
--			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
-+			/* Make sure descriptor is written before updating the
-+			 * head pointer.
-+			 */
-+			dma_wmb();
-+			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
- 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-@@ -871,6 +875,10 @@ void ath11k_hal_srng_access_end(struct a
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 			srng->u.src_ring.last_tp =
- 				*(volatile u32 *)srng->u.src_ring.tp_addr;
-+			/* Assume implementation use an MMIO write accessor
-+			 * which has the required wmb() so that the descriptor
-+			 * is written before the updating the head pointer.
-+			 */
- 			ath11k_hif_write32(ab,
- 					   (unsigned long)srng->u.src_ring.hp_addr -
- 					   (unsigned long)ab->mem,
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index e7fa0608341d..e0246ed9f66f 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -700,7 +700,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+ 
+ 	mgmt = (const struct ieee80211_mgmt *)params->buf;
+ 
+-	if (!ieee80211_is_mgmt(mgmt->frame_control))
++	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
++	    ieee80211_has_order(mgmt->frame_control))
+ 		return -EINVAL;
+ 
+ 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+-- 
+2.39.5
+
 
 
 
