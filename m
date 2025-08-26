@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D43FB3698F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481D4B36825
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 363037B3091
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719F01C25140
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A0335A293;
-	Tue, 26 Aug 2025 14:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C68350D62;
+	Tue, 26 Aug 2025 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmGKqTmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec6iqkyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276C25DB0A;
-	Tue, 26 Aug 2025 14:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D57350D5D;
+	Tue, 26 Aug 2025 14:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218339; cv=none; b=r1j7wY9LGIW4lrbFujdHu3wUc6cOnYZHhw64BkskYK3Karcgh5FwCx+lyo7Ri/fmcADuQtsMlYJZr8y/76WqLKbYkLJlY7sLcafvxjJgZFefjqCmrPo8ywIioNRyyRll7bMK66Cxd3xJ0bFsPbhPd3MNL5bDFKPzf+koVid2ITE=
+	t=1756216997; cv=none; b=NJBfCxwV9g7GsuY6lN4dzkTRhLK2zKSz9tE42v79yIxkylSI0qd0VOcjZJuqRtV/e1P3CditYVXSCmf6TDdobzndk5/CLhTk2CNKt00joVEWyUDtU6lrz5M+mNB6MMqMpFMML3G699GxuLstiV0IMrO7REb5Ufc/7t5vFj+aS3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218339; c=relaxed/simple;
-	bh=BhLD4rryrNe2cajUSGamNNZLKSxmkL/j5CMZzC9Cf1U=;
+	s=arc-20240116; t=1756216997; c=relaxed/simple;
+	bh=5kQu4DzGiGC/UGScrGHPBZFoRI8YSIk12xe8kg2wLbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXIBDpyg8McheBnUM8cTvZ4XD+QJjTGCuY6UWG52+op7xA8k48LRrImwSuP6iv8U4aJ3ynZzhGBCpm+aX5CNLkIcgZRJhI7XTjhbwYas8Q0q0FMNZjlwIAHn7MpOof35JPUww7HnfjDtQ3Va+yrmSxcNj6j0PJ9HCPeJgAI7yDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmGKqTmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938E7C4CEF1;
-	Tue, 26 Aug 2025 14:25:35 +0000 (UTC)
+	 MIME-Version; b=mAR6bmKTw/dpmf0142Libf1Orht4/++iDBxYyqfrjB68X1PFi/OaRU2yNVIo8grX7wHOY3Uc8MUs+CjdxWLrD8+v20oY2O+XFFGFn+6NbNBdLpS55oGoERemvQzQBIIE11QjeY6BXO/pSA+byf+tcR1DPuSo8/EdXkpdfL0+tWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec6iqkyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5777EC4CEF1;
+	Tue, 26 Aug 2025 14:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218335;
-	bh=BhLD4rryrNe2cajUSGamNNZLKSxmkL/j5CMZzC9Cf1U=;
+	s=korg; t=1756216997;
+	bh=5kQu4DzGiGC/UGScrGHPBZFoRI8YSIk12xe8kg2wLbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmGKqTmJ6YiTagmI5bf9MDsOZ1ck9cFaF8kfAWomkpi9fKwBP6RnCNUmtOIfHfIwi
-	 y5DT5b1jwxp9DkEtHPb58rQdiv51sPxX++k8x8iyokHq3L8606oWkyEkDohAQgk3iP
-	 G8hoiZhVudpnz3Y0Q1mp5y/i5fX/0JvnNFqm7vm4=
+	b=Ec6iqkyMMnMS2XtCB2Q+jfIeJ49fecJRPm0yAN12hHobCyHxB65VE465f2xhsi6hU
+	 Na/gTwRbh322WxpvlfG1bBl6czq16rGcjDTwv7PcISUz6LwvF5V100xM2K8MuwglXT
+	 3hth9vg0B8vgplcb0NBg4kwTU7pCN6xBvZvJiWA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Doug Anderson <dianders@chromium.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 484/523] media: venus: dont de-reference NULL pointers at IRQ time
+Subject: [PATCH 5.15 603/644] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
 Date: Tue, 26 Aug 2025 13:11:34 +0200
-Message-ID: <20250826110936.386593321@linuxfoundation.org>
+Message-ID: <20250826111001.491490668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 686ee9b6253f9b6d7f1151e73114698940cc0894 ]
+[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
 
-Smatch is warning that:
-	drivers/media/platform/qcom/venus/hfi_venus.c:1100 venus_isr() warn: variable dereferenced before check 'hdev' (see line 1097)
+When the MDT loader is used in remoteproc, the ELF header is sanitized
+beforehand, but that's not necessary the case for other clients.
 
-The logic basically does:
-	hdev = to_hfi_priv(core);
+Validate the size of the firmware buffer to ensure that we don't read
+past the end as we iterate over the header. e_phentsize and e_shentsize
+are validated as well, to ensure that the assumptions about step size in
+the traversal are valid.
 
-with is translated to:
-	hdev = core->priv;
-
-If the IRQ code can receive a NULL pointer for hdev, there's
-a bug there, as it will first try to de-reference the pointer,
-and then check if it is null.
-
-After looking at the code, it seems that this indeed can happen:
-Basically, the venus IRQ thread is started with:
-	devm_request_threaded_irq()
-So, it will only be freed after the driver unbinds.
-
-In order to prevent the IRQ code to work with freed data,
-the logic at venus_hfi_destroy() sets core->priv to NULL,
-which would make the IRQ code to ignore any pending IRQs.
-
-There is, however a race condition, as core->priv is set
-to NULL only after being freed. So, we need also to move the
-core->priv = NULL to happen earlier.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 640803003cd9 ("media: venus: hfi: explicitly release IRQ during teardown")
+Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Cc: stable@vger.kernel.org
+Reported-by: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1071,12 +1071,15 @@ static irqreturn_t venus_isr(struct venu
- {
- 	struct venus_hfi_device *hdev = to_hfi_priv(core);
- 	u32 status;
--	void __iomem *cpu_cs_base = hdev->core->cpu_cs_base;
--	void __iomem *wrapper_base = hdev->core->wrapper_base;
-+	void __iomem *cpu_cs_base;
-+	void __iomem *wrapper_base;
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -12,11 +12,43 @@
+ #include <linux/firmware.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/qcom_scm.h>
+ #include <linux/sizes.h>
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
  
- 	if (!hdev)
- 		return IRQ_NONE;
- 
-+	cpu_cs_base = hdev->core->cpu_cs_base;
-+	wrapper_base = hdev->core->wrapper_base;
++static bool mdt_header_valid(const struct firmware *fw)
++{
++	const struct elf32_hdr *ehdr;
++	size_t phend;
++	size_t shend;
 +
- 	status = readl(wrapper_base + WRAPPER_INTR_STATUS);
- 
- 	if (status & WRAPPER_INTR_STATUS_A2H_MASK ||
-@@ -1613,10 +1616,10 @@ void venus_hfi_destroy(struct venus_core
++	if (fw->size < sizeof(*ehdr))
++		return false;
++
++	ehdr = (struct elf32_hdr *)fw->data;
++
++	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
++		return false;
++
++	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
++		return false;
++
++	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
++	if (phend > fw->size)
++		return false;
++
++	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++		return false;
++
++	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++	if (shend > fw->size)
++		return false;
++
++	return true;
++}
++
+ static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
  {
- 	struct venus_hfi_device *hdev = to_hfi_priv(core);
+ 	if (phdr->p_type != PT_LOAD)
+@@ -46,6 +78,9 @@ ssize_t qcom_mdt_get_size(const struct f
+ 	phys_addr_t max_addr = 0;
+ 	int i;
  
-+	core->priv = NULL;
- 	venus_interface_queues_release(hdev);
- 	mutex_destroy(&hdev->lock);
- 	kfree(hdev);
--	core->priv = NULL;
- 	core->ops = NULL;
- }
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -92,6 +127,9 @@ void *qcom_mdt_read_metadata(const struc
+ 	size_t ehdr_size;
+ 	void *data;
+ 
++	if (!mdt_header_valid(fw))
++		return ERR_PTR(-EINVAL);
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -151,6 +189,9 @@ static int __qcom_mdt_load(struct device
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
  
 
 
