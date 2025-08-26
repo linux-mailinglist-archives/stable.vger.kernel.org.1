@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9906DB36873
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4778B365DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9073E1C25A47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D65056756A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1DC2FDC5C;
-	Tue, 26 Aug 2025 14:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5AC2E6106;
+	Tue, 26 Aug 2025 13:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0sV5Ccy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OB9+MXFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F80352098;
-	Tue, 26 Aug 2025 14:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B161230BDF;
+	Tue, 26 Aug 2025 13:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217125; cv=none; b=qksvuY/WwNiYaDDfU0f/sjGZTfdCw4BxIX4Z0VtvaWQjkmTDX/w4WRE8DahcZgCdw2qJsSdJI9c11J8VnnuezVeub123KCavnxAeC8WYF6u8Lf5UtAd7jllEta8UtdTt9ix4EPx11iRpvhoEcfrONYIiov3n21Aj9NqvPeWWiKU=
+	t=1756215728; cv=none; b=K5S4I3Ti4M+PPl+y5khsh4+hvX4eH/bLniO+ekrCp4joedKOGWitq+ugTBzbSeKD1wL25GXaw5edyYB1pvZq+QiS6m/19OX1dAg1o+kp3HGQaCQAZ67xvdJ2Zu63NJ/cHO5/cln2RVThxG8ny2B5OPITzuFQsV/FdDvA8+x6rf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217125; c=relaxed/simple;
-	bh=SYQwuzNzMqDoVHsvGWavVRrWIBiZexNWMsQo8i9tZbY=;
+	s=arc-20240116; t=1756215728; c=relaxed/simple;
+	bh=aRFvik0zIkH8BG+3USPEhjVFZBI+CXa5B6n1ku53y6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DX4Iflgj2e5z8fn3EAq+k/deQdZ4ZePYgh6KaEsot2UUkJAZewZTc3HNoFMf0QXBIKYw0km7tfFR+/2EyFzNUtz5R+q8yzyzByYTPw/7n5wq6Sf5aB05GlyFm6Iu1Jebx5kv3HDJHAQdFLSjj3M43vwP9Bag0DUAXnnPPNr5aZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0sV5Ccy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1828CC4CEF1;
-	Tue, 26 Aug 2025 14:05:24 +0000 (UTC)
+	 MIME-Version; b=sfN7tznBGkofRBr34w5hxeZDAUSwjt/04/7TX3Hk52kfkr0xztSBWY7zJzhPabRK+EEPcT89tnfwc6Jd7D9QdBWAMbDfoLXKateuNWQuogwW46leVYPAI8R4JTTJ/Ml6kBAkvfTRFjadbFpIbryUuslpK0SGw3dp1ZgHle83F1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OB9+MXFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA84C4CEF1;
+	Tue, 26 Aug 2025 13:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217125;
-	bh=SYQwuzNzMqDoVHsvGWavVRrWIBiZexNWMsQo8i9tZbY=;
+	s=korg; t=1756215728;
+	bh=aRFvik0zIkH8BG+3USPEhjVFZBI+CXa5B6n1ku53y6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0sV5CcyYJS676scX/wddhHuUt0tzKKeSA3hdXBwcDyXidLv8IiRMmLloETSAoWPj
-	 s/lnT2zzieeX+bZWJo9Eyw70GIhSb9idDfEZlElY+hSz1daSZcZpiYAliy8NwEpAqU
-	 EHPLo4ZDwoEoPQAADGvf+BGd4uRAAbBFU00slfJE=
+	b=OB9+MXFkmOPbDY0Qq3qQ7FS9lJueV3+4pSVIre3DjP5aXDArbhhgnqi+vxjtplkN6
+	 9VTNKSk7fX6isRjBlSpDwiChYYu6zHWUuHskYrAMeOjmKcNoYdShd7yGdP+H5SkepW
+	 yYD4X5yzgzxEbnHC4pHZvmBwQlMx8ZhT1c+J9bJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 025/523] iio: adc: max1363: Reorder mode_list[] entries
+	"xin.guo" <guoxin0309@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 144/644] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
 Date: Tue, 26 Aug 2025 13:03:55 +0200
-Message-ID: <20250826110925.213104595@linuxfoundation.org>
+Message-ID: <20250826110950.059484306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: xin.guo <guoxin0309@gmail.com>
 
-commit 8d8d7c1dbc46aa07a76acab7336a42ddd900be10 upstream.
+[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
 
-The IIO core issues warnings when a scan mask is a subset of a previous
-entry in the available_scan_masks array.
+If the new coming segment covers more than one skbs in the ofo queue,
+and which seq is equal to rcv_nxt, then the sequence range
+that is duplicated will be sent as DUP SACK, the detail as below,
+in step6, the {501,2001} range is clearly including too much
+DUP SACK range, in violation of RFC 2883 rules.
 
-On a board using a MAX11601, the following warning is observed:
+1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
+2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
+3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
+4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
+5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
+6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
 
-max1363 1-0064: available_scan_mask 7 subset of 6. Never used
+After this fix, the final ACK is as below:
 
-This occurs because the entries in the max11607_mode_list[] array are not
-ordered correctly. To fix this, reorder the entries so that no scan mask is
-a subset of an earlier one.
+6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
 
-While at it, reorder the mode_list[] arrays for other supported chips as
-well, to prevent similar warnings on different variants.
+[edumazet] added a new packetdrill test in the following patch.
 
-Note fixes tag dropped as these were introduced over many commits a long
-time back and the side effect until recently was a reduction in sampling
-rate due to reading too many channels when only a few were desired.
-Now we have a sanity check that reports this error but that is not
-where the issue was introduced.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20250516173900.677821-2-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: xin.guo <guoxin0309@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/max1363.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ net/ipv4/tcp_input.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -534,23 +534,23 @@ static const struct iio_chan_spec max136
- /* Applies to max1236, max1237 */
- static const enum max1363_modes max1236_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
-+	s0to1, s0to2, s2to3, s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
--	s2to3,
- };
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 10f39b2762a7..fea019cc92d3 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4826,8 +4826,9 @@ static void tcp_ofo_queue(struct sock *sk)
  
- /* Applies to max1238, max1239 */
- static const enum max1363_modes max1238_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8, _s9, _s10, _s11,
- 	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6,
-+	s6to7, s6to8, s6to9, s6to10, s6to11,
- 	s0to7, s0to8, s0to9, s0to10, s0to11,
- 	d0m1, d2m3, d4m5, d6m7, d8m9, d10m11,
- 	d1m0, d3m2, d5m4, d7m6, d9m8, d11m10,
--	d0m1to2m3, d0m1to4m5, d0m1to6m7, d0m1to8m9, d0m1to10m11,
--	d1m0to3m2, d1m0to5m4, d1m0to7m6, d1m0to9m8, d1m0to11m10,
--	s6to7, s6to8, s6to9, s6to10, s6to11,
--	d6m7to8m9, d6m7to10m11, d7m6to9m8, d7m6to11m10,
-+	d0m1to2m3, d0m1to4m5, d0m1to6m7, d6m7to8m9,
-+	d0m1to8m9, d6m7to10m11, d0m1to10m11, d1m0to3m2,
-+	d1m0to5m4, d1m0to7m6, d7m6to9m8, d1m0to9m8,
-+	d7m6to11m10, d1m0to11m10,
- };
- 
- #define MAX1363_12X_CHANS(bits) {				\
-@@ -586,16 +586,15 @@ static const struct iio_chan_spec max123
- 
- static const enum max1363_modes max11607_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
--	s2to3,
-+	s0to1, s0to2, s2to3,
-+	s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
- };
- 
- static const enum max1363_modes max11608_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7,
--	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s0to7,
--	s6to7,
-+	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s6to7, s0to7,
- 	d0m1, d2m3, d4m5, d6m7,
- 	d1m0, d3m2, d5m4, d7m6,
- 	d0m1to2m3, d0m1to4m5, d0m1to6m7,
+ 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
+ 			__u32 dsack = dsack_high;
++
+ 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
+-				dsack_high = TCP_SKB_CB(skb)->end_seq;
++				dsack = TCP_SKB_CB(skb)->end_seq;
+ 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
+ 		}
+ 		p = rb_next(p);
+-- 
+2.39.5
+
 
 
 
