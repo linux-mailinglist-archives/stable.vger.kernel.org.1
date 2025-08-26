@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E567B35BBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E8EB360F3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD551BA3AC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 703FC2A2326
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44D829BDBA;
-	Tue, 26 Aug 2025 11:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EBF1ADFFE;
+	Tue, 26 Aug 2025 13:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9xDWvX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1cwOY07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E675245012;
-	Tue, 26 Aug 2025 11:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D11494D9;
+	Tue, 26 Aug 2025 13:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207410; cv=none; b=mS6LRj1k7d3P3OTOVdBVJwJpvkqtaOF/9m/kNCACREoKC2C3TaQES6G2FmHTXp4Fiory7Z8DZYf/vtDUA31UeROHbSe3rGga/MvnyyVsB7Iw3LyeKdd0uIJWwTmFnI1MRbN+3NpZNwQeBWUU4i+5k0RutAKT6pa4TsQJjqDeaRY=
+	t=1756213328; cv=none; b=aW0iisk7SJhEG1gIxrZ3oRkWLXd83SWQoWLk3baroIIYKqN91U5dGbtX96rA6pLr3VhGeSEy2bLQwsTiw4Y1nxqLBIwc/oAN/A+hZ+FcOsPGDEFMdrSMv4f3wrAWpy5vfTnSq+iFpWIOuIAlZvRH05U1912s7qy5J2a6k2oYBuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207410; c=relaxed/simple;
-	bh=anQqA2MxCy/bMl5S5OAZ7nZhFjPURJ27FSKfWsEAw3M=;
+	s=arc-20240116; t=1756213328; c=relaxed/simple;
+	bh=SiUtgdf1+9CcT8KPzea7mDUXYygqb935iwpIGD5pj0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sya3XX014HVq8MXQKcVuKQTPFctaYZHvw0WFCZrezrQACjsL1RkggCHfafCuuvxkq5NkCXfsXbhaHSSxM0SgTHC9zhk682mY5uhfIog53W0UVfhiifbWP85VDnCzZN7g6O6emiDt4LmZTi+7YvHmHogteDIPtJAVDrPR/mS1u0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9xDWvX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C44C4CEF1;
-	Tue, 26 Aug 2025 11:23:29 +0000 (UTC)
+	 MIME-Version; b=FhIEn9BfHdAa/858u0EEahty7rFzPlpW2huWegUMzu6glig+5VsHak3NAHkaRTqxqPUROqIVLi87LafSB4sY9S/wEuML50TOKUjsw45oQKiavW1TDtdkTAlzSZg1tcFurtm+omFJC7ZWCLOgOL0i19ass4HoxDjt5iI3Rk8QvVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1cwOY07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD406C4CEF1;
+	Tue, 26 Aug 2025 13:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207410;
-	bh=anQqA2MxCy/bMl5S5OAZ7nZhFjPURJ27FSKfWsEAw3M=;
+	s=korg; t=1756213328;
+	bh=SiUtgdf1+9CcT8KPzea7mDUXYygqb935iwpIGD5pj0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9xDWvX279lagxhPTJ8bVoHT0SGgNqKcF+H28sAPhf9imKtTwSN4e+xEUFWum5tGF
-	 Qcd+USNiqqCU6Mk6PBJgmUXyGRO9eo4xS51cDs1FTs1/2w6VRseImsUbVNkh8MbN4o
-	 ykBlnap5niesn4sBrPZTnIcdJk3HHPoBtl4FhILg=
+	b=I1cwOY076qJ/stt4RqB7UAuku1UFEE8ZRBOCKALi/OZkQmVXucSqVIjLq3HTxg7Nw
+	 NOyYR3+z0Znrvdc6GVnFqDMuyfw2VCyw7ytbKqGM4uRFJR1JcYson/caNa5lLI8hEG
+	 d3YICwxvOtXuPrfjP2gNPpCeICY1jSzFkgw8l2qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 171/457] drm/amdgpu/discovery: fix fw based ip discovery
-Date: Tue, 26 Aug 2025 13:07:35 +0200
-Message-ID: <20250826110941.602202007@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.6 307/587] thunderbolt: Fix copy+paste error in match_service_id()
+Date: Tue, 26 Aug 2025 13:07:36 +0200
+Message-ID: <20250826111000.729785508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,176 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 514678da56da089b756b4d433efd964fa22b2079 upstream.
+commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
 
-We only need the fw based discovery table for sysfs.  No
-need to parse it.  Additionally parsing some of the board
-specific tables may result in incorrect data on some boards.
-just load the binary and don't parse it on those boards.
+The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
+intended to be TBSVC_MATCH_PROTOCOL_REVISION.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
-Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip discovery")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 62eedd150fa11aefc2d377fc746633fdb1baeb55)
-Cc: stable@vger.kernel.org
+Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |    5 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |   72 ++++++++++++++------------
- 2 files changed, 41 insertions(+), 36 deletions(-)
+ drivers/thunderbolt/domain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2561,9 +2561,6 @@ static int amdgpu_device_parse_gpu_info_
- 
- 	adev->firmware.gpu_info_fw = NULL;
- 
--	if (adev->mman.discovery_bin)
--		return 0;
--
- 	switch (adev->asic_type) {
- 	default:
- 		return 0;
-@@ -2585,6 +2582,8 @@ static int amdgpu_device_parse_gpu_info_
- 		chip_name = "arcturus";
- 		break;
- 	case CHIP_NAVI12:
-+		if (adev->mman.discovery_bin)
-+			return 0;
- 		chip_name = "navi12";
- 		break;
- 	}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -2555,40 +2555,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 
- 	switch (adev->asic_type) {
- 	case CHIP_VEGA10:
--	case CHIP_VEGA12:
--	case CHIP_RAVEN:
--	case CHIP_VEGA20:
--	case CHIP_ARCTURUS:
--	case CHIP_ALDEBARAN:
--		/* this is not fatal.  We have a fallback below
--		 * if the new firmwares are not present. some of
--		 * this will be overridden below to keep things
--		 * consistent with the current behavior.
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
- 		 */
--		r = amdgpu_discovery_reg_base_init(adev);
--		if (!r) {
--			amdgpu_discovery_harvest_ip(adev);
--			amdgpu_discovery_get_gfx_info(adev);
--			amdgpu_discovery_get_mall_info(adev);
--			amdgpu_discovery_get_vcn_info(adev);
--		}
--		break;
--	default:
--		r = amdgpu_discovery_reg_base_init(adev);
--		if (r) {
--			drm_err(&adev->ddev, "discovery failed: %d\n", r);
--			return r;
--		}
--
--		amdgpu_discovery_harvest_ip(adev);
--		amdgpu_discovery_get_gfx_info(adev);
--		amdgpu_discovery_get_mall_info(adev);
--		amdgpu_discovery_get_vcn_info(adev);
--		break;
--	}
--
--	switch (adev->asic_type) {
--	case CHIP_VEGA10:
-+		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
- 		adev->gmc.num_umc = 4;
-@@ -2611,6 +2582,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 0);
- 		break;
- 	case CHIP_VEGA12:
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
-+		 */
-+		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
- 		adev->gmc.num_umc = 4;
-@@ -2633,6 +2609,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 1);
- 		break;
- 	case CHIP_RAVEN:
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
-+		 */
-+		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 1;
- 		adev->vcn.num_vcn_inst = 1;
-@@ -2674,6 +2655,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		}
- 		break;
- 	case CHIP_VEGA20:
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
-+		 */
-+		amdgpu_discovery_init(adev);
- 		vega20_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
- 		adev->gmc.num_umc = 8;
-@@ -2697,6 +2683,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 1, 0);
- 		break;
- 	case CHIP_ARCTURUS:
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
-+		 */
-+		amdgpu_discovery_init(adev);
- 		arct_reg_base_init(adev);
- 		adev->sdma.num_instances = 8;
- 		adev->vcn.num_vcn_inst = 2;
-@@ -2725,6 +2716,11 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		adev->ip_versions[UVD_HWIP][1] = IP_VERSION(2, 5, 0);
- 		break;
- 	case CHIP_ALDEBARAN:
-+		/* This is not fatal.  We only need the discovery
-+		 * binary for sysfs.  We don't need it for a
-+		 * functional system.
-+		 */
-+		amdgpu_discovery_init(adev);
- 		aldebaran_reg_base_init(adev);
- 		adev->sdma.num_instances = 5;
- 		adev->vcn.num_vcn_inst = 2;
-@@ -2751,6 +2747,16 @@ int amdgpu_discovery_set_ip_blocks(struc
- 		adev->ip_versions[XGMI_HWIP][0] = IP_VERSION(6, 1, 0);
- 		break;
- 	default:
-+		r = amdgpu_discovery_reg_base_init(adev);
-+		if (r) {
-+			drm_err(&adev->ddev, "discovery failed: %d\n", r);
-+			return r;
-+		}
-+
-+		amdgpu_discovery_harvest_ip(adev);
-+		amdgpu_discovery_get_gfx_info(adev);
-+		amdgpu_discovery_get_mall_info(adev);
-+		amdgpu_discovery_get_vcn_info(adev);
- 		break;
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -36,7 +36,7 @@ static bool match_service_id(const struc
+ 			return false;
  	}
  
+-	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
++	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
+ 		if (id->protocol_revision != svc->prtcrevs)
+ 			return false;
+ 	}
 
 
 
