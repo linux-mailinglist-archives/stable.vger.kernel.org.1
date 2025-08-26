@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FF3B36317
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74C4B36067
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161018A7BEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56B9F68149C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B82F657F;
-	Tue, 26 Aug 2025 13:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8D21E411C;
+	Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTb0hj0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXzLJh8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FAA29BDB6;
-	Tue, 26 Aug 2025 13:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABC91EB9F2;
+	Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214250; cv=none; b=GYNMLHvgO+OecMauZ5hjC8Yh/o9p7au+6boWoM4TC9b8WNw44y7fCnwKuipQswA44mnTPtEIZeapcp75o4Ifqzt37NdNiSwNEz5HvWfUEbAVQ/Kj4cqUinW5+ylMHMH9SHNuaQopFZUn04UmXSmOE93xM2gg1px8HmlteMBH/QA=
+	t=1756212967; cv=none; b=VBdSl2dga920EHg462toRAEgM1LkeyY4WccKya7KbF/bX8/RQzcqT39kKHeZ+lvilZHDl38hgESCLeE2GDksHDDIFtYb4jItXCE1r6oibMwSdlS+D1dzPB/pqZkotVQYG49QRcG1dmvd2F7NkM41JKpb7pMGErg+0mRt2zx48Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214250; c=relaxed/simple;
-	bh=Z9tvk1Q37JQOghTZnydZD5y2z0SpRxcrzILBxhdHLvE=;
+	s=arc-20240116; t=1756212967; c=relaxed/simple;
+	bh=zv3K83PCnvY5YoofCZvwZhulpa2sXYoIDJNroRbPgbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9FcU46xD1qNYGhLBq4ENoxB3cPebSTkbpkvlIibAXmIFLS4LETuzNZp9OerskyDMnkCzjgXUfXlL8SVviiysRckWazGJO4m37R6KVY3lSeNoCgMu8VrzTuOAhR19VlAtGx/bniOnS4NKyIQgQMBfefXnu/1lMvEsRBroX3Axk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTb0hj0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE45C113CF;
-	Tue, 26 Aug 2025 13:17:29 +0000 (UTC)
+	 MIME-Version; b=U4EDxsVK1GaZ3nNMR5oVPSOX2ZcIcW2flk6sDYmi3AYAKpyIZrbuUoCp0c1EQauVIU2Qck3PhWaBKrytr3JEVsLRVrwAzEk8/y7Aa5DLHRNz3CGA2cOWKSZfssiE47Wn0NOp7521FzGicpIkliVqESi9zA6eXXFrW32ue2wLnQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXzLJh8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA249C4CEF4;
+	Tue, 26 Aug 2025 12:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214250;
-	bh=Z9tvk1Q37JQOghTZnydZD5y2z0SpRxcrzILBxhdHLvE=;
+	s=korg; t=1756212967;
+	bh=zv3K83PCnvY5YoofCZvwZhulpa2sXYoIDJNroRbPgbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTb0hj0R5BE5FY22hfIe2mjdCb/OSaca5OpGfpOTxhfq5oaox4fDjFAC096hATlNc
-	 YSkG6+RfJiL1CGZn0YjU3NMDzdwXBlXfReSYlNN0zGMUjuofGjkIzTaIbk/S/LG4p4
-	 sjZXbr35ppgsr3KF0QucMnhQsgKc9pNA9ffyqwU4=
+	b=YXzLJh8qwiIjUziV4bR3EIuxdmo/q6O24Z3mospInYKuPoBDQ2FEGXzYsGCFaudCz
+	 3tHccLzhOuaY+iwOL6M/5zYOJm6f/JvVhwucj6rXtuWSKL+Fycg3HuHok/2fyOHpT0
+	 DlZDiwX+wcoks+XPnK8ORjzPb3G9smZ2JjubHBbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cynthia Huang <cynthia@andestech.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/482] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
+Subject: [PATCH 6.6 171/587] wifi: rtw89: Disable deep power saving for USB/SDIO
 Date: Tue, 26 Aug 2025 13:05:20 +0200
-Message-ID: <20250826110932.488502557@linuxfoundation.org>
+Message-ID: <20250826110957.295859865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cynthia Huang <cynthia@andestech.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
+[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
 
-The kernel does not provide sys_futex() on 32-bit architectures that do not
-support 32-bit time representations, such as riscv32.
+Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
+is called in atomic context and accessing hardware registers results in
+"scheduling while atomic" errors.
 
-As a result, glibc cannot define SYS_futex, causing compilation failures in
-tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
-such cases to ensure successful compilation and compatibility.
-
-Signed-off-by: Cynthia Huang <cynthia@andestech.com>
-Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..7a5fd1d5355e 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
- 					 FUTEX_PRIVATE_FLAG)
- #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 21e9ec8768b5..c172ef13c954 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1996,6 +1996,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
-+/*
-+ * SYS_futex is expected from system C library, in glibc some 32-bit
-+ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
-+ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
-+ * SYS_futex_time64 in this situation to ensure the compilation and the
-+ * compatibility.
-+ */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
++		return RTW89_PS_MODE_NONE;
 +
- /**
-  * futex() - SYS_futex syscall wrapper
-  * @uaddr:	address of first futex
+ 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
+ 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
+ 		return RTW89_PS_MODE_NONE;
 -- 
 2.39.5
 
