@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E07B362B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DD4B368A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6F551885F96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81DC562C35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A7D1A23A4;
-	Tue, 26 Aug 2025 13:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787CF352FCC;
+	Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToP6cyW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4f2cmni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E3C186E40;
-	Tue, 26 Aug 2025 13:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36600342CA7;
+	Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214189; cv=none; b=dHmY59EaQ0W6MS1e6sjdlpe866sYKpnUWsvLjKcOqIL3e+VdDoBzZ0twiBOryAp0I1kFiXaOhwaY1A59LI8AsrVZUv2iCKAbe4X0x1uRU+qnsqxOyaYAy84qhme881WaGc+ZhcMqLLYGpqtdpJ1Ob7h+dIrilDSaxXTTqfjkVm0=
+	t=1756217287; cv=none; b=GsLw4H20J8WcXZHP/t/Xaxfa8q705b55Jreg5zECB9wkRx9ScO6i672pfCJ8KAH41Grstu6VwshKEsBjvg7It9vrJ2wEOcYRHi1Z2Fxa0KkCsxK8EzNirl5iT+e+syVa1vF4nT2Qv9Y63Vdw3VqIVa9CGmZclBdJYS8TUjW781I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214189; c=relaxed/simple;
-	bh=zv+JE3W2H/GoLQX9tbCXdshJ2JVxkIrO1q+I1VpAWNw=;
+	s=arc-20240116; t=1756217287; c=relaxed/simple;
+	bh=ckKSXb9uDHQGtor+t12RmAzhWFr42scmMcYyrSuOrto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHujoW0eib9p/YGygY++mvDYqbtH59EV7Abw8+zsCPKboi1HDDnrYsCTModiGclriXzqLiip0FIfSg1Pxu+GerVk6RpK1Y26bjEdYWS4jpBuo5GY4U5TGhAC2ta0j9YbDYePcHb44wZ17/fpJ0ABHay0JqW0yINJvCLaQ1wUNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToP6cyW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496C1C113CF;
-	Tue, 26 Aug 2025 13:16:29 +0000 (UTC)
+	 MIME-Version; b=FRVxxeM30IMdkw1Jgw3ubyAIuEPNzHxhLfWrUYzny04DyDHns3D1m04fqwVafHBgv8kuSxmyWAsHwgjEDywmgaJ5T+tDBmaNzng0yDRJhQFpb0AzevqVFzozid8DknxxxGAw8FMIcokf8xGC0oPGYmYjUrf+eEmCLL38HbAO5P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4f2cmni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE99C116B1;
+	Tue, 26 Aug 2025 14:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214189;
-	bh=zv+JE3W2H/GoLQX9tbCXdshJ2JVxkIrO1q+I1VpAWNw=;
+	s=korg; t=1756217287;
+	bh=ckKSXb9uDHQGtor+t12RmAzhWFr42scmMcYyrSuOrto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToP6cyW0Xadda4jq6jXr9XqpUvJIAShrMG6s6DtUf3RTHdJ86RtF/KMzuZBiTKFR/
-	 +66rkpcSALllL0QiBf5VX+M2YEdHl7chsqPdW0lbslhcNQUx+5Membkhy0TZ4GYpFI
-	 JXFIH7+80EBvIiQeYYx1uHkTCttnYuTj+3TNhmwg=
+	b=v4f2cmni6Qxx/qjHRqdoJ4vHyIs4vVqOmTYRiCxibREgO5CTqk6C5uCqYcbQDwBVM
+	 c2Y/3Id5RVqt+FMjra2sgRafvBJFISyIjhfnrJn3aWoSSr7O44JYIFZD/2+q8VC0I2
+	 Sr4z4MQKFc9JsBZUU4x4A/AsrCIzTEDwHVujTUsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 043/482] KVM: VMX: Extract checking of guests DEBUGCTL into helper
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 086/523] usb: early: xhci-dbc: Fix early_ioremap leak
 Date: Tue, 26 Aug 2025 13:04:56 +0200
-Message-ID: <20250826110931.877356793@linuxfoundation.org>
+Message-ID: <20250826110926.676553132@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 8a4351ac302cd8c19729ba2636acfd0467c22ae8 ]
+[ Upstream commit 2b7eec2ec3015f52fc74cf45d0408925e984ecd1 ]
 
-Move VMX's logic to check DEBUGCTL values into a standalone helper so that
-the code can be used by nested VM-Enter to apply the same logic to the
-value being loaded from vmcs12.
+Using the kernel param earlyprintk=xdbc,keep without proper hardware
+setup leads to this:
 
-KVM needs to explicitly check vmcs12->guest_ia32_debugctl on nested
-VM-Enter, as hardware may support features that KVM does not, i.e. relying
-on hardware to detect invalid guest state will result in false negatives.
-Unfortunately, that means applying KVM's funky suppression of BTF and LBR
-to vmcs12 so as not to break existing guests.
+	[ ] xhci_dbc:early_xdbc_parse_parameter: dbgp_num: 0
+	...
+	[ ] xhci_dbc:early_xdbc_setup_hardware: failed to setup the connection to host
+	...
+	[ ] calling  kmemleak_late_init+0x0/0xa0 @ 1
+	[ ] kmemleak: Kernel memory leak detector initialized (mem pool available: 14919)
+	[ ] kmemleak: Automatic memory scanning thread started
+	[ ] initcall kmemleak_late_init+0x0/0xa0 returned 0 after 417 usecs
+	[ ] calling  check_early_ioremap_leak+0x0/0x70 @ 1
+	[ ] ------------[ cut here ]------------
+	[ ] Debug warning: early ioremap leak of 1 areas detected.
+	    please boot with early_ioremap_debug and report the dmesg.
+	[ ] WARNING: CPU: 11 PID: 1 at mm/early_ioremap.c:90 check_early_ioremap_leak+0x4e/0x70
 
-No functional change intended.
+When early_xdbc_setup_hardware() fails, make sure to call
+early_iounmap() since xdbc_init() won't handle it.
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-6-seanjc@google.com
-Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: aeb9dd1de98c ("usb/early: Add driver for xhci debug capability")
+Link: https://lore.kernel.org/r/20250627-xdbc-v1-1-43cc8c317b1b@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ drivers/usb/early/xhci-dbc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 9445def2b3d2..6517b9d929bf 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2071,6 +2071,19 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	return debugctl;
- }
+diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
+index 6c0434100e38..7f832c98699c 100644
+--- a/drivers/usb/early/xhci-dbc.c
++++ b/drivers/usb/early/xhci-dbc.c
+@@ -679,6 +679,10 @@ int __init early_xdbc_setup_hardware(void)
  
-+static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
-+				  bool host_initiated)
-+{
-+	u64 invalid;
+ 		xdbc.table_base = NULL;
+ 		xdbc.out_buf = NULL;
 +
-+	invalid = data & ~vmx_get_supported_debugctl(vcpu, host_initiated);
-+	if (invalid & (DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR)) {
-+		kvm_pr_unimpl_wrmsr(vcpu, MSR_IA32_DEBUGCTLMSR, data);
-+		invalid &= ~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR);
-+	}
-+	return !invalid;
-+}
-+
- /*
-  * Writes msr value into the appropriate "register".
-  * Returns 0 on success, non-0 otherwise.
-@@ -2139,19 +2152,12 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		}
- 		vmcs_writel(GUEST_SYSENTER_ESP, data);
- 		break;
--	case MSR_IA32_DEBUGCTLMSR: {
--		u64 invalid;
--
--		invalid = data & ~vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
--		if (invalid & (DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR)) {
--			kvm_pr_unimpl_wrmsr(vcpu, msr_index, data);
--			data &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
--			invalid &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
--		}
--
--		if (invalid)
-+	case MSR_IA32_DEBUGCTLMSR:
-+		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
- 			return 1;
++		early_iounmap(xdbc.xhci_base, xdbc.xhci_length);
++		xdbc.xhci_base = NULL;
++		xdbc.xhci_length = 0;
+ 	}
  
-+		data &= vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
-+
- 		if (is_guest_mode(vcpu) && get_vmcs12(vcpu)->vm_exit_controls &
- 						VM_EXIT_SAVE_DEBUG_CONTROLS)
- 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
-@@ -2161,7 +2167,6 @@ static int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		    (data & DEBUGCTLMSR_LBR))
- 			intel_pmu_create_guest_lbr_event(vcpu);
- 		return 0;
--	}
- 	case MSR_IA32_BNDCFGS:
- 		if (!kvm_mpx_supported() ||
- 		    (!msr_info->host_initiated &&
+ 	return ret;
 -- 
-2.50.1
+2.39.5
 
 
 
