@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DECB3632F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0765B3672A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E73B2A7AE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBB9980489
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88FB341ABD;
-	Tue, 26 Aug 2025 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BDD34F47D;
+	Tue, 26 Aug 2025 13:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eaj6EGke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqtfbmx3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D9D22DF99;
-	Tue, 26 Aug 2025 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DB92F0671;
+	Tue, 26 Aug 2025 13:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214334; cv=none; b=VFcVClAfGpYdpZKXBkGcRQpNlI1gRFH+51aS22vNhTyfL5eBBjFMmdjZxqr1TDZA5CHdQeE87ljcz+7EU7IQJxt1yDs7k6mu3WEO2DUPHMExT5YFKC6pzvF/hno3vakJ/Mkh/Ls3sWOp07/CNOD49rXWhAl1Zami7KoVc3r7pX8=
+	t=1756216150; cv=none; b=LgchChHnhkCSWZV7gmQ5qsOYJZ+Jv2RkZ1Jib6hZ6GpMiwEx8VlAGhwLDkHeN2FcM84rEwCjUMyTmcsNbV1TFSUr/ysm9DX4lm4FiP/zYKLmuBw3HYaI1oEQbPDXFslfHp39B4oOK5crEk0jaQ7XRS8IbQfu34myAFS7ppsM3/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214334; c=relaxed/simple;
-	bh=6NQHH2yU+c3di1Nsz7mTR1pv+94G/g6NtGAkulLpGv8=;
+	s=arc-20240116; t=1756216150; c=relaxed/simple;
+	bh=y9EMGj110bNgym/Pv4ksRpHcOsdCpDpN0AuUkNVi+pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwN0pLxtV7A1K86vOc+rPb/k5MrvT0hD6/pvYMrrbgnol6Qb8hGRkZhxf3F4fmZww/rkfdf7C3ygyf04QrWtOvch/NuuIZUs6YbHl2giIT5l2Xacz0GXfUjom9Kaznxp+br7mufKgPnIVjVphXVMu9YxNkv63a6r+R7aN8KTpIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eaj6EGke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA54EC4CEF1;
-	Tue, 26 Aug 2025 13:18:53 +0000 (UTC)
+	 MIME-Version; b=L6xskGmhWx/+/jdp3QHtx6aEHCmpTHpa08ER+/68x+hcou0nHfxXaUSsN7PLujX2qhzPNfi2kLnyqwaYiZ7WmoYlzffd6lj1cf8z9fPYDaxwaEDcWhTbBQf0ElLfqOif6l1tTFAanVu36Zv9yLd/tdKNXYCG+zfqQkFXwVNX3Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqtfbmx3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72B3C4CEF1;
+	Tue, 26 Aug 2025 13:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214334;
-	bh=6NQHH2yU+c3di1Nsz7mTR1pv+94G/g6NtGAkulLpGv8=;
+	s=korg; t=1756216150;
+	bh=y9EMGj110bNgym/Pv4ksRpHcOsdCpDpN0AuUkNVi+pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eaj6EGkeFR+ucbuVCxOiEScJLzfYhTCAq0x9WhPyT6BXF/Pz51+Zcl0+7NM3fqVj5
-	 y9A/ug3CkD+L6RCBeHHNag3EMKXyZqKgmc7BNnHRe/FeowjjXsuaEdox66zos2DqqT
-	 7nrXFtq26Zg7TfDYjKcBKVDRqeyTPgtgRtVE7o+4=
+	b=fqtfbmx3X0qhIhQ3YDRa2VO5pCVv15mDKif2TRSNlISYim+mTdsW6gNoZr0iBuNLD
+	 V0u6wE2dhD13Trpc2vCBalVKRdnVn8DO0214+LuiaM7JnxrdmIW8d9kCm6x8f94G+f
+	 LWiNA/eJz8FG1+5rGrtx8N22wXuoLpV5JFhyeZBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/482] x86/bugs: Avoid warning when overriding return thunk
+	Harald Mommer <harald.mommer@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.15 261/644] gpio: virtio: Fix config space reading.
 Date: Tue, 26 Aug 2025 13:05:52 +0200
-Message-ID: <20250826110933.273139685@linuxfoundation.org>
+Message-ID: <20250826110952.844093947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
 
-[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
+commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
 
-The purpose of the warning is to prevent an unexpected change to the return
-thunk mitigation. However, there are legitimate cases where the return
-thunk is intentionally set more than once. For example, ITS and SRSO both
-can set the return thunk after retbleed has set it. In both the cases
-retbleed is still mitigated.
+Quote from the virtio specification chapter 4.2.2.2:
 
-Replace the warning with an info about the active return thunk.
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-virtio.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index dba5262e1509..4fbb5b15ab75 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -70,10 +70,9 @@ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -275,7 +275,6 @@ static const char **virtio_gpio_get_name
  
- static void __init set_return_thunk(void *thunk)
+ static int virtio_gpio_probe(struct virtio_device *vdev)
  {
--	if (x86_return_thunk != __x86_return_thunk)
--		pr_warn("x86/bugs: return thunk changed\n");
--
- 	x86_return_thunk = thunk;
-+
-+	pr_info("active return thunk: %ps\n", thunk);
- }
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	u32 gpio_names_size;
+@@ -287,9 +286,11 @@ static int virtio_gpio_probe(struct virt
+ 		return -ENOMEM;
  
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
--- 
-2.39.5
-
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 
 
 
