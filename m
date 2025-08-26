@@ -1,69 +1,56 @@
-Return-Path: <stable+bounces-174684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EB7B363AB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D09FB35C57
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D16D7B76EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507B07C47E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0874C3431FD;
-	Tue, 26 Aug 2025 13:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1979834165A;
+	Tue, 26 Aug 2025 11:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+YdfRzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsjRD+jq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEA23019A3;
-	Tue, 26 Aug 2025 13:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03D226AEC;
+	Tue, 26 Aug 2025 11:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215042; cv=none; b=U/57v32MMlB4fZ66HnZcqa3hvapZEwIa6v5CiUFuEPAuAdhPmCwyWY9mJhRFkmWBAVctiZgvVVl/1mY8DoVW8UwfqNANtYao9magfoQX3Ye6IcE5pOFjzNlxQDHJwBXcirSPrzOtU7GIGNb/+Yh3UVdE2Qt50gpKvbrolPyDtHA=
+	t=1756207838; cv=none; b=dbYHeT8xPg6vymVTo5yJiAU5/Xdy/p82ZO8qLv8ytyx9tB/MIAn6lSqTuJKX5EUWF5gjasFjLiLgieGLw22s6uFZnvRIll7Og84UBw23dI0aLC6KCIFCwlilNH3hjSDkYrlFb2r6FnpM1rJE9zzeVFlW2ag3kAjs26sHvv3Xg3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215042; c=relaxed/simple;
-	bh=+jyoG6wStOd9X+l2F10eB6Wx0TBSFwAnOcena8YFeuU=;
+	s=arc-20240116; t=1756207838; c=relaxed/simple;
+	bh=cEpZq0ccfJkz/x3EJc3sjNejzzz8oC5QxJJjB5NXMj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSeElRAsv48GkxqMtdNXPoh/NR9nHHHFrA6eo49J5LxJX7tdMWkgP15h2j5TDS1So2NEqKMeum78QoWIhkg+Ef1V+sl+PL4RCuy7TcE0+w45qEyslYWZYWc0ZXgK8VnWhmWkyddRcwCIDLH9n9gDuDAjkHraR54CMWJlI/JrQ30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+YdfRzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB61C4CEF1;
-	Tue, 26 Aug 2025 13:30:42 +0000 (UTC)
+	 MIME-Version; b=TERMhdPO6GvZG1DUgGRBNVevyXvRHA/YNUgOQNZA1LAwgSumzbkapHWB5wpp38FIcKCHmk5AUOul7iyEdYtqxSy82pkVASsUp4sVM7Jbgc+IkVfs80RbuiV6/DeLvaGv6tjg1B62PCfUmSDKCIupJzxxUYOY/S+RemR6C2lrcNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsjRD+jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5278DC4CEF4;
+	Tue, 26 Aug 2025 11:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215042;
-	bh=+jyoG6wStOd9X+l2F10eB6Wx0TBSFwAnOcena8YFeuU=;
+	s=korg; t=1756207838;
+	bh=cEpZq0ccfJkz/x3EJc3sjNejzzz8oC5QxJJjB5NXMj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+YdfRztQCLK9uMOPqxDaBnCdRXbCSR3a2O5dGuEe7eitnVsYoxPzd9dgX2pOh8ZN
-	 L/dHojm8FUwzm/Ceo6GCL6QWRoSQ/iAe6reoOurcyxANkvexrZyL8SPIqr7YDhfVNk
-	 Z3TDXB0Li0Bz4oelVGFSeHC5scSE3S4kqbAUXcwc=
+	b=ZsjRD+jqULcf1m0j+NhsioP38G439YpBVE4dOK9PohjEFpVoV5HTYT/M+415F+dBY
+	 uktPp0BepxDZZQEkP5xzMBxUjBeneF44sLCqbJKgdUNU2PyhAC6/Y3ONAiXjWaBay6
+	 TMdCbXd+P3sJT2GpluRpvY7eIVcM+BxR4XfTbK/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 366/482] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
-Date: Tue, 26 Aug 2025 13:10:19 +0200
-Message-ID: <20250826110939.876525500@linuxfoundation.org>
+	Sven Eckelmann <sven@narfation.org>,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.16 336/457] i2c: rtl9300: Add missing count byte for SMBus Block Ops
+Date: Tue, 26 Aug 2025 13:10:20 +0200
+Message-ID: <20250826110945.637389869@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,116 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
+commit 82b350dd8185ce790e61555c436f90b6501af23c upstream.
 
-Memory hot remove unmaps and tears down various kernel page table regions
-as required.  The ptdump code can race with concurrent modifications of
-the kernel page tables.  When leaf entries are modified concurrently, the
-dump code may log stale or inconsistent information for a VA range, but
-this is otherwise not harmful.
+The expected on-wire format of an SMBus Block Write is
 
-But when intermediate levels of kernel page table are freed, the dump code
-will continue to use memory that has been freed and potentially
-reallocated for another purpose.  In such cases, the ptdump code may
-dereference bogus addresses, leading to a number of potential problems.
+  S Addr Wr [A] Comm [A] Count [A] Data [A] Data [A] ... [A] Data [A] P
 
-To avoid the above mentioned race condition, platforms such as arm64,
-riscv and s390 take memory hotplug lock, while dumping kernel page table
-via the sysfs interface /sys/kernel/debug/kernel_page_tables.
+Everything starting from the Count byte is provided by the I2C subsystem in
+the array data->block. But the driver was skipping the Count byte
+(data->block[0]) when sending it to the RTL93xx I2C controller.
 
-Similar race condition exists while checking for pages that might have
-been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
-which in turn calls ptdump_check_wx().  Instead of solving this race
-condition again, let's just move the memory hotplug lock inside generic
-ptdump_check_wx() which will benefit both the scenarios.
+Only the actual data could be seen on the wire:
 
-Drop get_online_mems() and put_online_mems() combination from all existing
-platform ptdump code paths.
+  S Addr Wr [A] Comm [A] Data [A] Data [A] ... [A] Data [A] P
 
-Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This wire format is not SMBus Block Write compatible but matches the format
+of an I2C Block Write. Simply adding the count byte to the buffer for the
+I2C controller is enough to fix the transmission.
+
+This also affects read because the I2C controller must receive the count
+byte + $count * data bytes.
+
+Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Cc: <stable@vger.kernel.org> # v6.13+
+Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250810-i2c-rtl9300-multi-byte-v5-4-cd9dca0db722@narfation.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/ptdump_debugfs.c |    3 ---
- arch/s390/mm/dump_pagetables.c |    2 --
- mm/ptdump.c                    |    2 ++
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-rtl9300.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/mm/ptdump_debugfs.c
-+++ b/arch/arm64/mm/ptdump_debugfs.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
+--- a/drivers/i2c/busses/i2c-rtl9300.c
++++ b/drivers/i2c/busses/i2c-rtl9300.c
+@@ -285,15 +285,15 @@ static int rtl9300_i2c_smbus_xfer(struct
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+-		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0]);
++		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0] + 1);
+ 		if (ret)
+ 			goto out_unlock;
+ 		if (read_write == I2C_SMBUS_WRITE) {
+-			ret = rtl9300_i2c_write(i2c, &data->block[1], data->block[0]);
++			ret = rtl9300_i2c_write(i2c, &data->block[0], data->block[0] + 1);
+ 			if (ret)
+ 				goto out_unlock;
+ 		}
+-		len = data->block[0];
++		len = data->block[0] + 1;
+ 		break;
  
- #include <asm/ptdump.h>
-@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
- {
- 	struct ptdump_info *info = m->private;
- 
--	get_online_mems();
- 	ptdump_walk(m, info);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/arch/s390/mm/dump_pagetables.c
-+++ b/arch/s390/mm/dump_pagetables.c
-@@ -249,11 +249,9 @@ static int ptdump_show(struct seq_file *
- 		.marker = address_markers,
- 	};
- 
--	get_online_mems();
- 	mutex_lock(&cpa_mutex);
- 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 	mutex_unlock(&cpa_mutex);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -152,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state
- {
- 	const struct ptdump_range *range = st->range;
- 
-+	get_online_mems();
- 	mmap_write_lock(mm);
- 	while (range->start != range->end) {
- 		walk_page_range_novma(mm, range->start, range->end,
-@@ -159,6 +160,7 @@ void ptdump_walk_pgd(struct ptdump_state
- 		range++;
- 	}
- 	mmap_write_unlock(mm);
-+	put_online_mems();
- 
- 	/* Flush out the last page */
- 	st->note_page(st, 0, -1, 0);
+ 	default:
 
 
 
