@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9D5B3604A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C786EB35B34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3669E1BC006D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3862D3B4DD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A431EEA49;
-	Tue, 26 Aug 2025 12:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E15F299959;
+	Tue, 26 Aug 2025 11:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERNcY5wu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfxfG8bv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA5214883F;
-	Tue, 26 Aug 2025 12:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56E33436C;
+	Tue, 26 Aug 2025 11:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212946; cv=none; b=FsAw+SRr2EP31iuv3/yU+qjUyDI3pn9H1q9Qp1awPpFVoKdLGthxDs6XlchfBAGB4AoakvM/f1897CBJqANRZm80lh4D+bJ2rkMpSNdf7krtevJ/X37TJzmyKFCjZsAmiERK5/pObr+2S8bHYr4R1A9EeJZQfSrqlCN3JhM3cDI=
+	t=1756207098; cv=none; b=BZNNefqDC1+P/n0dP77ZqB0IbCJNyroGLsE2BWGYBnd8RvaSWXKZbqhn3+1pTD+Kktmta5+Kz73wEOzaFPD5JvSpKiMshS5aV/HBeW0FrDk7St9D8ZG1giI4+ONQzQcsfSZ6PUOYGlh7HODRUmz85m0O+EQa68g4KWTI4NnWrb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212946; c=relaxed/simple;
-	bh=ZivF05qv0kSCQUL9ptJeUfJhQKBYkfqn0BTUfGpJLkI=;
+	s=arc-20240116; t=1756207098; c=relaxed/simple;
+	bh=cUI7rYYBST0RVbY7EPRRYqz318BfyjcTNTGD2JtZL0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBCL9jqQt2hOMkxROh+KOc9KmJsHBnmvjk4fARfytSTURzFePFRdpV+tppKF1r0x1ahSFCFaEdT4Cj7Ki5RKXGdFDlTqZKnfl1XH/GuYYpqNv8AXMqdIN2ChwAbfVGfeRTChtZFXGHLqglBgAmOLIPjCZNdlllIM2m6lBZuGKtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERNcY5wu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1959C4CEF1;
-	Tue, 26 Aug 2025 12:55:45 +0000 (UTC)
+	 MIME-Version; b=kvN3mEAsTwR9yLu0yIuTtgGHC5WVua3zlh/I2OxwwRSZOTc6Lb7aDdOTZCXXzcMmCVNyvQeXEaRJCSfYJI1le1AEbis5cfwJfQhgYwlSiL5PuVTKU7pBVz7SAJU3bKWISZF2p9Ui+wfs4ZWzE3d4dM1sc/OtF7UvwU2iqs8HILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfxfG8bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417F9C4CEF1;
+	Tue, 26 Aug 2025 11:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212946;
-	bh=ZivF05qv0kSCQUL9ptJeUfJhQKBYkfqn0BTUfGpJLkI=;
+	s=korg; t=1756207098;
+	bh=cUI7rYYBST0RVbY7EPRRYqz318BfyjcTNTGD2JtZL0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERNcY5wuj3ddae7qcPBf6W8GJN6ud16j8LXeDC3RNsKmRBOUt3yb603coMjyQbLYP
-	 atWWL+zpefysRaZQIEjbHOymsBcBbfBEhwIzh+gE4RSKKRy9VCXYwve88XnZFxL+ku
-	 vWI2cq2fyGcxPEop+PfFXYWcaY/RQcVaZSvrbMzY=
+	b=gfxfG8bvsM/wD3HoizCmsxrB6GBazvvxuM6m/ElXDcQOw2hIRlgstvVD2nvPVYDa7
+	 1VkQfFu9tWufu/TF7l3MHnE5cXw8fxwBuz71eXtkn52R+v+q00zWQDBsmt9O3KlPWF
+	 GiA3BfGz13voMlz8SBg4xsXMXRrC0xiVN1T37rm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/587] wifi: cfg80211: Fix interface type validation
+	kernel test robot <lkp@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.16 020/457] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
 Date: Tue, 26 Aug 2025 13:05:04 +0200
-Message-ID: <20250826110956.890862201@linuxfoundation.org>
+Message-ID: <20250826110937.830125943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 14450be2332a49445106403492a367412b8c23f4 ]
+commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
 
-Fix a condition that verified valid values of interface types.
+The MIPS32r2 ChaCha code has never been buildable with the clang
+assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709233537.7ad199ca5939.I0ac1ff74798bf59a87a57f2e18f2153c308b119b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: unknown instruction, did you mean: rol, rotr?
+
+Second, clang requires that both operands of the 'wsbh' instruction be
+explicitly given:
+
+    error: too few operands for instruction
+
+To fix this, align the code with the real instruction set by (1) using
+the real instruction 'rotr' instead of the nonstandard pseudo-
+instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+
+To make removing the use of 'rotl' a bit easier, also remove the
+unnecessary special-casing for big endian CPUs at
+.Lchacha_mips_xor_bytes.  The tail handling is actually
+endian-independent since it processes one byte at a time.  On big endian
+CPUs the old code byte-swapped SAVED_X, then iterated through it in
+reverse order.  But the byteswap and reverse iteration canceled out.
+
+Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
+little endian and big endian mips32r2 kernels.
+
+Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
+Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lib/crypto/chacha-core.S |   20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 2fb3151ea7c9..5b3a63c377d6 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -559,7 +559,7 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
- {
- 	int i;
+--- a/arch/mips/lib/crypto/chacha-core.S
++++ b/arch/mips/lib/crypto/chacha-core.S
+@@ -55,17 +55,13 @@
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ #define MSB 0
+ #define LSB 3
+-#define ROTx rotl
+-#define ROTR(n) rotr n, 24
+ #define	CPU_TO_LE32(n) \
+-	wsbh	n; \
++	wsbh	n, n; \
+ 	rotr	n, 16;
+ #else
+ #define MSB 3
+ #define LSB 0
+-#define ROTx rotr
+ #define CPU_TO_LE32(n)
+-#define ROTR(n)
+ #endif
  
--	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
-+	if (WARN_ON(iftype >= NUM_NL80211_IFTYPES))
- 		return NULL;
+ #define FOR_EACH_WORD(x) \
+@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
+ 	xor	X(W), X(B); \
+ 	xor	X(Y), X(C); \
+ 	xor	X(Z), X(D); \
+-	rotl	X(V), S;    \
+-	rotl	X(W), S;    \
+-	rotl	X(Y), S;    \
+-	rotl	X(Z), S;
++	rotr	X(V), 32 - S; \
++	rotr	X(W), 32 - S; \
++	rotr	X(Y), 32 - S; \
++	rotr	X(Z), 32 - S;
  
- 	if (iftype == NL80211_IFTYPE_AP_VLAN)
--- 
-2.39.5
-
+ .text
+ .set	reorder
+@@ -372,21 +368,19 @@ chacha_crypt_arch:
+ 	/* First byte */
+ 	lbu	T1, 0(IN)
+ 	addiu	$at, BYTES, 1
+-	CPU_TO_LE32(SAVED_X)
+-	ROTR(SAVED_X)
+ 	xor	T1, SAVED_X
+ 	sb	T1, 0(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Second byte */
+ 	lbu	T1, 1(IN)
+ 	addiu	$at, BYTES, 2
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 1(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Third byte */
+ 	lbu	T1, 2(IN)
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 2(OUT)
+ 	b	.Lchacha_mips_xor_done
 
 
 
