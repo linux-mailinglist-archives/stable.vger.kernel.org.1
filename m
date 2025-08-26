@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7C5B36AE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54E4B35C83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC16E1C41D6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122BF3B19CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA46835082E;
-	Tue, 26 Aug 2025 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C6B2FD7C8;
+	Tue, 26 Aug 2025 11:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SScz1uwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lH5x+mW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A721134AB0D;
-	Tue, 26 Aug 2025 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B838C233128;
+	Tue, 26 Aug 2025 11:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218291; cv=none; b=E+QatoE3j2nprGaiCa7OL55E/pIPItI+iXegGUldXl8+fPFwHPQEyc75aEpcxPD0b9ibRgN0r47NEPYAZMXERXclWcdP5XN/xaZDU3IqOcRXtU36uo8mjdyD2/9DDJB3wDB9cyZI8jDpaJx3wthZ33X7i2FqcxI7x6o1rLc6NAk=
+	t=1756207979; cv=none; b=kD7PTpUCKJY5tS6DRxsNZB+guo+txlSSMa6Y1IHJ/EKNqxiG+4jhS1RhvKMESX4hHun1WX91aTp3dEj3oBH2KbiBqWwv9wQ/3GLOlI8OajhAIt2VVc8sKy1bV9MYWjXOmxkqe1GbuZ8YvwgWgtRJCsDxQi5KNOyHUsU0a4dH+Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218291; c=relaxed/simple;
-	bh=qVULVW4R3vYnjxqrmzb8uBNjdaOzMDoQga9BrH3lCMU=;
+	s=arc-20240116; t=1756207979; c=relaxed/simple;
+	bh=MBNcs4ghxD+LCO25sZQKxqLYkTqaozmb6ChHvfiQp9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XmFxkhpIEdauzcpociatWi5JuSr3Pppsfa61JE9M0ddoDPnCQDqaoOZOeOfLLYFvkAB0A14eyGPql21IUxit/TD0w/nyAwMMVBgnxT0FxcXgPsk0SQf4tnX+J+cYgWszRO9Z2HM/RatwYXbzeNMIhrrMhXVWeFBY0b6hMuPgHwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SScz1uwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB6DC4CEF1;
-	Tue, 26 Aug 2025 14:24:51 +0000 (UTC)
+	 MIME-Version; b=SeBTki3fKOjSHM/5ugmh9z5FPDEFI3KVAsY/RlkwuLBZgdq8ePdPnPuKq37VBxcfNnvw9IeCBk9ikS6G6jzfgJIyRVKGYIEWwTcT9wh02fyRhuT0SGlOD6M8PkXKtRyTwK8ubQB1pa6sKYEaceWJA9T3+0DQgYDzeTFaY/UbDHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lH5x+mW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47586C4CEF1;
+	Tue, 26 Aug 2025 11:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218291;
-	bh=qVULVW4R3vYnjxqrmzb8uBNjdaOzMDoQga9BrH3lCMU=;
+	s=korg; t=1756207979;
+	bh=MBNcs4ghxD+LCO25sZQKxqLYkTqaozmb6ChHvfiQp9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SScz1uwOcMJDj1OCgAcuptzWt2CPG8rgaOkf+wl+6U/iGqB6bMTk14QXsaPx5p9XN
-	 X4YOXsjCZgMmgUmCLvUp4uh/WhLhEX3M2YeeZihKjkAgAzr4JQq6IAYCNJkgSmL2gg
-	 4rEIdKHaigGR7yLC/dtBppph9fG3xhL6BMqTgVjY=
+	b=lH5x+mW93kyEze6wQqpJVVKnpAevsnHpBO8l5uf7NXSq9jXC3OWhA3PpwP36vuUS6
+	 veagJ9PeMb5XvddkLdP+HTZS0EOIP1xvrR9jg3IhX9WhlWx3RbH+yIoLNrGBFC9/si
+	 fwE33nU/LbdgFf3R0lKmq1F0UR32QVXg7Jef+IYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 465/523] iio: adc: ad_sigma_delta: change to buffer predisable
-Date: Tue, 26 Aug 2025 13:11:15 +0200
-Message-ID: <20250826110935.914681291@linuxfoundation.org>
+Subject: [PATCH 6.16 392/457] drm/hisilicon/hibmc: fix dp and vga cannot show together
+Date: Tue, 26 Aug 2025 13:11:16 +0200
+Message-ID: <20250826110946.982525469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 66d4374d97f85516b5a22418c5e798aed2606dec ]
+[ Upstream commit 3271faf42d135bcf569c3ff6af55c21858eec212 ]
 
-Change the buffer disable callback from postdisable to predisable.
-This balances the existing posteanble callback. Using postdisable
-with posteanble can be problematic, for example, if update_scan_mode
-fails, it would call postdisable without ever having called posteanble,
-so the drivers using this would be in an unexpected state when
-postdisable was called.
+If VGA and DP connected together, there will be only one can get crtc.
+Add encoder possible_clones to support two connectors enable.
 
-Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250703-iio-adc-ad_sigma_delta-buffer-predisable-v1-1-f2ab85138f1f@baylibre.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 3c7623fb5bb6 ("drm/hisilicon/hibmc: Enable this hot plug detect of irq feature")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-8-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -371,7 +371,7 @@ err_unlock:
- 	return ret;
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+index ac552c339671..289304500ab0 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+@@ -115,6 +115,8 @@ static const struct drm_mode_config_funcs hibmc_mode_funcs = {
+ static int hibmc_kms_init(struct hibmc_drm_private *priv)
+ {
+ 	struct drm_device *dev = &priv->dev;
++	struct drm_encoder *encoder;
++	u32 clone_mask = 0;
+ 	int ret;
+ 
+ 	ret = drmm_mode_config_init(dev);
+@@ -154,6 +156,12 @@ static int hibmc_kms_init(struct hibmc_drm_private *priv)
+ 		return ret;
+ 	}
+ 
++	drm_for_each_encoder(encoder, dev)
++		clone_mask |= drm_encoder_mask(encoder);
++
++	drm_for_each_encoder(encoder, dev)
++		encoder->possible_clones = clone_mask;
++
+ 	return 0;
  }
  
--static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
-+static int ad_sd_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
- 
-@@ -432,7 +432,7 @@ static irqreturn_t ad_sd_trigger_handler
- 
- static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
- 	.postenable = &ad_sd_buffer_postenable,
--	.postdisable = &ad_sd_buffer_postdisable,
-+	.predisable = &ad_sd_buffer_predisable,
- 	.validate_scan_mask = &iio_validate_scan_mask_onehot,
- };
- 
+-- 
+2.50.1
+
 
 
 
