@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AAEB35BB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E17B36B9E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510CA17B5B1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F3CD986956
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD0341652;
-	Tue, 26 Aug 2025 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D31343D63;
+	Tue, 26 Aug 2025 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="husSf+oM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpaklglL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519D3322754;
-	Tue, 26 Aug 2025 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C933568E7;
+	Tue, 26 Aug 2025 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207221; cv=none; b=ZqVTcw+hlhdul/kAF9XbLVRpdzIGsu9Z+tHrgy+C1v+GnomoheBbUgsudLERYD2C+WozWW1F+L0sKKZJWPC7+QEHjwwJbocpEQwwCT5sisaoO8JPT0jIKUv3NJlDq/2LWaFnnDvJJUtnWMYivI6/q3G/vh3P0jSHLddXL1M4I+Q=
+	t=1756218541; cv=none; b=MtLQT3BHbIwBsDNmSn231psUrBG470Gvlj4YUmKewgebZJdHCKWDUa+TFRg7keboDhded/IxcFNqLFnxusWmtVbWYpSJu59LbiAoZS+5tZg/tt1aprew9mY2qntTkgZYb5OlyjIbhNPE2mh5VHKWmL6vl04aKXNX58dbOfz7FmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207221; c=relaxed/simple;
-	bh=P8u1w9aEgoRfCGagmp8ZK/RMTdcusCfIESvJOugv+Z4=;
+	s=arc-20240116; t=1756218541; c=relaxed/simple;
+	bh=vS+ROOjklo/VJNQ3+F7pGYJZ/zyFAknUF2N/gcPZZ5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnwN5YvNMu3xmyK+oCP8OH0ygLAuiJCFeFe+QWJtEvBiZIEP1JqpDpr6EtR487TlYQbv+j4JRaUAJ6G1Mwha2ys5vT81eWdB24hd0hkcU7woDejg00EdXQAH3PCagDLuNiRzFNq+2e1+R8Y8kYdjxyXp4VdFKKAgwbIJOQaiZLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=husSf+oM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02D1C4CEF1;
-	Tue, 26 Aug 2025 11:20:20 +0000 (UTC)
+	 MIME-Version; b=nZ/gcIWhhSBl7f3jymw9NTGkCu4S+gmYCxnxYfi/8xn3UbTAFUtQT5ZXnErzP75L4kfSiPWQcfdx5w6Q+cSmoFd2wWpVSAl/5EX10PrtqzBkMEZRchzjaAyolgCdk8OmCa6qGylHLZ4eDlw0NRkvh5EojIy8QkoT+l2bglOeQHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpaklglL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1AFC4CEF1;
+	Tue, 26 Aug 2025 14:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207221;
-	bh=P8u1w9aEgoRfCGagmp8ZK/RMTdcusCfIESvJOugv+Z4=;
+	s=korg; t=1756218541;
+	bh=vS+ROOjklo/VJNQ3+F7pGYJZ/zyFAknUF2N/gcPZZ5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=husSf+oMQjt6n+TQAUSESlp3dZmYf3zB0tmrbg0bvgpZ8rGA+AnjCu9Xqn7IwKLHq
-	 GlHxLwyJo357RO8Rt5cbx872+uweUxFSHjnn5MnAzvJrnkVBRGuNhslbLlCGWS/GHB
-	 jTqPOJvkgrZidzR8wLPEpue6vc3au9nwLI6o4bIc=
+	b=dpaklglLp82WPChR0JFUt/PysolOK0N9CIy1w1bjrrvxW0pkEYHu35diRsQ8D88Bp
+	 WSmICIBh4VRo8YExz3r+kwroGX9e0RrriRzt1S1zsvsO3e8KI6cDMj5K/p5NEpjIPv
+	 7jeELLv6AWzsZnxUwKUcjlKV9AmfvZA3XhZf4of4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 6.16 080/457] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
-Date: Tue, 26 Aug 2025 13:06:04 +0200
-Message-ID: <20250826110939.353474197@linuxfoundation.org>
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 039/403] net/sched: Return NULL when htb_lookup_leaf encounters an empty rbtree
+Date: Tue, 26 Aug 2025 13:06:05 +0200
+Message-ID: <20250826110906.898579547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: William Liu <will@willsroot.io>
 
-commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
+[ Upstream commit 0e1d5d9b5c5966e2e42e298670808590db5ed628 ]
 
-A new warning in clang [1] complains that diq_start in
-wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-wlc_lcnphy_common_read_table():
+htb_lookup_leaf has a BUG_ON that can trigger with the following:
 
-  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   2728 |                                                      &diq_start, 1, 16, 69);
-        |                                                       ^~~~~~~~~
+tc qdisc del dev lo root
+tc qdisc add dev lo root handle 1: htb default 1
+tc class add dev lo parent 1: classid 1:1 htb rate 64bit
+tc qdisc add dev lo parent 1:1 handle 2: netem
+tc qdisc add dev lo parent 2:1 handle 3: blackhole
+ping -I lo -c1 -W0.001 127.0.0.1
 
-The table pointer passed to wlc_lcnphy_common_read_table() should not be
-considered constant, as wlc_phy_read_table() is ultimately going to
-update it. Remove the const qualifier from the tbl_ptr to clear up the
-warning.
+The root cause is the following:
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. htb_dequeue calls htb_dequeue_tree which calls the dequeue handler on
+   the selected leaf qdisc
+2. netem_dequeue calls enqueue on the child qdisc
+3. blackhole_enqueue drops the packet and returns a value that is not
+   just NET_XMIT_SUCCESS
+4. Because of this, netem_dequeue calls qdisc_tree_reduce_backlog, and
+   since qlen is now 0, it calls htb_qlen_notify -> htb_deactivate ->
+   htb_deactiviate_prios -> htb_remove_class_from_row -> htb_safe_rb_erase
+5. As this is the only class in the selected hprio rbtree,
+   __rb_change_child in __rb_erase_augmented sets the rb_root pointer to
+   NULL
+6. Because blackhole_dequeue returns NULL, netem_dequeue returns NULL,
+   which causes htb_dequeue_tree to call htb_lookup_leaf with the same
+   hprio rbtree, and fail the BUG_ON
+
+The function graph for this scenario is shown here:
+ 0)               |  htb_enqueue() {
+ 0) + 13.635 us   |    netem_enqueue();
+ 0)   4.719 us    |    htb_activate_prios();
+ 0) # 2249.199 us |  }
+ 0)               |  htb_dequeue() {
+ 0)   2.355 us    |    htb_lookup_leaf();
+ 0)               |    netem_dequeue() {
+ 0) + 11.061 us   |      blackhole_enqueue();
+ 0)               |      qdisc_tree_reduce_backlog() {
+ 0)               |        qdisc_lookup_rcu() {
+ 0)   1.873 us    |          qdisc_match_from_root();
+ 0)   6.292 us    |        }
+ 0)   1.894 us    |        htb_search();
+ 0)               |        htb_qlen_notify() {
+ 0)   2.655 us    |          htb_deactivate_prios();
+ 0)   6.933 us    |        }
+ 0) + 25.227 us   |      }
+ 0)   1.983 us    |      blackhole_dequeue();
+ 0) + 86.553 us   |    }
+ 0) # 2932.761 us |    qdisc_warn_nonwc();
+ 0)               |    htb_lookup_leaf() {
+ 0)               |      BUG_ON();
+ ------------------------------------------
+
+The full original bug report can be seen here [1].
+
+We can fix this just by returning NULL instead of the BUG_ON,
+as htb_dequeue_tree returns NULL when htb_lookup_leaf returns
+NULL.
+
+[1] https://lore.kernel.org/netdev/pF5XOOIim0IuEfhI-SOxTgRvNoDwuux7UHKnE_Y5-zVd4wmGvNk2ceHjKb8ORnzw0cGwfmVu42g9dL7XyJLf1NEzaztboTWcm0Ogxuojoeo=@willsroot.io/
+
+Fixes: 512bb43eb542 ("pkt_sched: sch_htb: Optimize WARN_ONs in htb_dequeue_tree() etc.")
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://patch.msgid.link/20250717022816.221364-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_htb.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -776,7 +776,9 @@ static struct htb_class *htb_lookup_leaf
+ 		u32 *pid;
+ 	} stk[TC_HTB_MAXDEPTH], *sp = stk;
  
- static void
- wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
--			     const u16 *tbl_ptr, u32 tbl_len,
-+			     u16 *tbl_ptr, u32 tbl_len,
- 			     u32 tbl_width, u32 tbl_offset)
- {
- 	struct phytbl_info tab;
+-	BUG_ON(!hprio->row.rb_node);
++	if (unlikely(!hprio->row.rb_node))
++		return NULL;
++
+ 	sp->root = hprio->row.rb_node;
+ 	sp->pptr = &hprio->ptr;
+ 	sp->pid = &hprio->last_ptr_id;
 
 
 
