@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-176038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA581B36BB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1DEB363D7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A399A03E7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A50975611E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7569B280CC9;
-	Tue, 26 Aug 2025 14:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E90335BC3;
+	Tue, 26 Aug 2025 13:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvLfnGbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJZuV8rX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D312FDC44;
-	Tue, 26 Aug 2025 14:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742CE8635D;
+	Tue, 26 Aug 2025 13:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218623; cv=none; b=bmV/RnU0JJo81Y6hJ0BIsJ/1ctNwWzEOfo0X9f2f6MtaeenTrIXnmcu+B1tJMTVM6zKYmWtWS7s2YTzlUA6IaIm4bV1g8pMzKqLhVJw1NDhtidWqv5w/M1oh0xmJnVbZbtESbdTWMPTfrzt3+Gk2ihXa/PBrrWf03H6jt8yj3Ms=
+	t=1756214456; cv=none; b=hdMAshOLSLyUHRZpSCQw3eMZ2moHtwV8ijZA5xNItFUis2+xczQGwTcf9inddlA4Fx+SDl4RmUjc/G2i2qvdZibiwyYiH6DuoW3BEA0vADVaL5x7HnE78Ji5Aokkcl6V2xRAvnQyrpXowgzFgbCyi+lljM+46tQRTLbVXsP5CXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218623; c=relaxed/simple;
-	bh=Xy1Ng+7XXFsZ/S88k9Fbfdf3P8idnYWltuLQHe45WZo=;
+	s=arc-20240116; t=1756214456; c=relaxed/simple;
+	bh=PgPghhWnL5IHVTfhrUlHAWCCPzy2KgpXgWof/SFxPFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CXAboI1gloGXyoRrLTzbvJSSXpHLDwGB8UuSrQYWrerq70qgFZ1Km06MQ0RSSWjxh3g/gduj9GsCMy/hjDGuJrifF8bH7GCwBXsrTtzDi0OYqMPFrW3REQiq9QN36/+mS3XR+TV65OkcTpU2RrYWOvneceDmenw9DRwo6WgZAig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvLfnGbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A9AC4CEF1;
-	Tue, 26 Aug 2025 14:30:22 +0000 (UTC)
+	 MIME-Version; b=WgxO3T/UpPEWPUDL5wJVSUuYLz0Rg2f0aR4Kq/cocuAC8ZH93MCvnwrA6DjqVq+8CRlbbG3qq2Y4wmfkA75oIXNkvOUhgQF0q6Lj2fffooTmc5YChdXFqnM8G0S9O8CiQuepcwjEJ7vsdOgC8pHm61nA/T4MeBG9NjFZeFrjBM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJZuV8rX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074B2C113CF;
+	Tue, 26 Aug 2025 13:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218623;
-	bh=Xy1Ng+7XXFsZ/S88k9Fbfdf3P8idnYWltuLQHe45WZo=;
+	s=korg; t=1756214456;
+	bh=PgPghhWnL5IHVTfhrUlHAWCCPzy2KgpXgWof/SFxPFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvLfnGbmLcmSPPj50w4to4YpnrBzzvYEeO/hONqVFaIyJh5wPfks3U8HAzCLQEbYT
-	 sao3avcCafj9cqmyw4ZYGbtbm+J8bUD508WJZ2cC5awsG/am0PpRqVkkKTefOIHz51
-	 sjT7oKx8EAiPUrkU0MJl0q5soN7b6Luc3suU7ofk=
+	b=tJZuV8rXz2zz9Y0KFCpC8zGjSTwGki1Mtsm7gOsDgp5wQBWndqGckrtLTCs4XAkDw
+	 cEqBUodS5jYEJHXlgkuIV6I64nvoFsIzYH6Qp54oV/p5A96OwVFjjaYvyil+LzSIfN
+	 FPjOjTO1+UPQEbkkKCnxkxw3pKc05V6fT9WaPduo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 5.4 070/403] ethernet: intel: fix building with large NR_CPUS
+	Jonas Rebmann <jre@pengutronix.de>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 143/482] net: fec: allow disable coalescing
 Date: Tue, 26 Aug 2025 13:06:36 +0200
-Message-ID: <20250826110908.112928526@linuxfoundation.org>
+Message-ID: <20250826110934.349813093@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jonas Rebmann <jre@pengutronix.de>
 
-[ Upstream commit 24171a5a4a952c26568ff0d2a0bc8c4708a95e1d ]
+[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
 
-With large values of CONFIG_NR_CPUS, three Intel ethernet drivers fail to
-compile like:
+In the current implementation, IP coalescing is always enabled and
+cannot be disabled.
 
-In function ‘i40e_free_q_vector’,
-    inlined from ‘i40e_vsi_alloc_q_vectors’ at drivers/net/ethernet/intel/i40e/i40e_main.c:12112:3:
-  571 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-include/linux/rcupdate.h:1084:17: note: in expansion of macro ‘BUILD_BUG_ON’
- 1084 |                 BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);    \
-drivers/net/ethernet/intel/i40e/i40e_main.c:5113:9: note: in expansion of macro ‘kfree_rcu’
- 5113 |         kfree_rcu(q_vector, rcu);
-      |         ^~~~~~~~~
+As setting maximum frames to 0 or 1, or setting delay to zero implies
+immediate delivery of single packets/IRQs, disable coalescing in
+hardware in these cases.
 
-The problem is that the 'rcu' member in 'q_vector' is too far from the start
-of the structure. Move this member before the CPU mask instead, in all three
-drivers.
+This also guarantees that coalescing is never enabled with ICFT or ICTT
+set to zero, a configuration that could lead to unpredictable behaviour
+according to i.MX8MP reference manual.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: David S. Miller <davem@davemloft.net>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/fm10k/fm10k.h | 3 ++-
- drivers/net/ethernet/intel/i40e/i40e.h   | 2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k.h b/drivers/net/ethernet/intel/fm10k/fm10k.h
-index b14441944b4b..db72e5e4acd3 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k.h
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k.h
-@@ -189,13 +189,14 @@ struct fm10k_q_vector {
- 	struct fm10k_ring_container rx, tx;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 4a513dba8f53..d10db5d6d226 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2831,27 +2831,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
+ static void fec_enet_itr_coal_set(struct net_device *ndev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	int rx_itr, tx_itr;
++	u32 rx_itr = 0, tx_itr = 0;
++	int rx_ictt, tx_ictt;
  
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
-+
- 	cpumask_t affinity_mask;
- 	char name[IFNAMSIZ + 9];
+-	/* Must be greater than zero to avoid unpredictable behavior */
+-	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+-	    !fep->tx_time_itr || !fep->tx_pkts_itr)
+-		return;
+-
+-	/* Select enet system clock as Interrupt Coalescing
+-	 * timer Clock Source
+-	 */
+-	rx_itr = FEC_ITR_CLK_SEL;
+-	tx_itr = FEC_ITR_CLK_SEL;
++	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
++	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
  
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *dbg_q_vector;
- #endif /* CONFIG_DEBUG_FS */
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
+-	/* set ICFT and ICTT */
+-	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
+-	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
+-	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
+-	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
++	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
++		rx_itr |= FEC_ITR_ICTT(rx_ictt);
++	}
  
- 	/* for dynamic allocation of rings associated with this q_vector */
- 	struct fm10k_ring ring[0] ____cacheline_internodealigned_in_smp;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 4c8c31692e9e..edb5e408c980 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -864,6 +864,7 @@ struct i40e_q_vector {
- 	u16 reg_idx;		/* register index of the interrupt */
+-	rx_itr |= FEC_ITR_EN;
+-	tx_itr |= FEC_ITR_EN;
++	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
++		tx_itr |= FEC_ITR_ICTT(tx_ictt);
++	}
  
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 
- 	struct i40e_ring_container rx;
- 	struct i40e_ring_container tx;
-@@ -874,7 +875,6 @@ struct i40e_q_vector {
- 	cpumask_t affinity_mask;
- 	struct irq_affinity_notify affinity_notify;
- 
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 	char name[I40E_INT_NAME_STR_LEN];
- 	bool arm_wb_state;
- } ____cacheline_internodealigned_in_smp;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 0142ca226bf5..0f9a1fce0dee 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -458,9 +458,10 @@ struct ixgbe_q_vector {
- 	struct ixgbe_ring_container rx, tx;
- 
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
-+
- 	cpumask_t affinity_mask;
- 	int numa_node;
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 	char name[IFNAMSIZ + 9];
- 
- 	/* for dynamic allocation of rings associated with this q_vector */
+ 	writel(tx_itr, fep->hwp + FEC_TXIC0);
+ 	writel(rx_itr, fep->hwp + FEC_RXIC0);
 -- 
 2.39.5
 
