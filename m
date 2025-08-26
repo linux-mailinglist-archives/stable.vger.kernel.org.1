@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9616B36C6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92EEB363CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0411587DCF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2DAF7BDDF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9235A284;
-	Tue, 26 Aug 2025 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F251E51E1;
+	Tue, 26 Aug 2025 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKWEI6Vl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht03M/Hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE57352FD9;
-	Tue, 26 Aug 2025 14:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F68434CF9;
+	Tue, 26 Aug 2025 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219365; cv=none; b=qVriv3QPwaTFrLYqS315kBBlsZyD5fI5sJcDBK3urrkwekelVvAcTcrTmBKu6BRV9KypgK68tGkGT5k2+ofsYYEzXU1YpODnPeGzBQ0AUsFSpgzkovTZFxlDIFdY0Vm1cV+/uyA7Zach/7zlyO9MQmaRZAXhpLWz/i4o7LZtgrs=
+	t=1756215120; cv=none; b=YxaZH//gk8VjZdDpoX9AGTaE6Ky9dn1py9Shv6tEtqTbTejYgyNEH/PEdbJxPEKSarnwiXi6pKHlheCUp2Qy+FqYF86nNaoMN78V4ykYD8G1VgiM05pJvMx3/zYr3vZiq9h6xWQIGvRQqQcJSBhkPd04eS/pR+v3A2L4cifDP1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219365; c=relaxed/simple;
-	bh=CuN9qOBnc7QYMQNlXIymgoXZdIs1H7cXHnl/sqtqSCk=;
+	s=arc-20240116; t=1756215120; c=relaxed/simple;
+	bh=fbCkmGkEkqUczUEcWuW11lAzXm/urUlBmIiKds5k+hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/TTXBQ+yVomdOTxNRS3+huFxfmY7P/kpWoSrXVl0M3wi12GkIYz5Lgvo/gvcS4+P1p6N6ka1uh0yUJvmHfebJq1JQ82NIwjMorQOZa/iah9jWKTTr3Jm4b7zt9iidoLrJJAROsUAZA3KXelbqxhVv/93lM7ng9WuF1fDUVRD+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKWEI6Vl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC4CEF1;
-	Tue, 26 Aug 2025 14:42:44 +0000 (UTC)
+	 MIME-Version; b=IuuX6bGKTTl6Y8Ok1U+LxjrRUs1Izg3cDxmsbynWDVNogfwlE+OB5VoUSTE1cEL29ia9EuUKqKKYP4SKQQJIjEFDffS0v5JLnMvhQJBC6VW/grz6l3qUQe0UqbX6OiSfypQWwq9nbzO9h0mc5vui2HA5LL/z9IyiO5adHrZ5T50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht03M/Hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12161C4CEF1;
+	Tue, 26 Aug 2025 13:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219364;
-	bh=CuN9qOBnc7QYMQNlXIymgoXZdIs1H7cXHnl/sqtqSCk=;
+	s=korg; t=1756215120;
+	bh=fbCkmGkEkqUczUEcWuW11lAzXm/urUlBmIiKds5k+hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKWEI6VlU+krwluS54c/4zaO+MS43Wg5lsv2KfX0Vjo/H/atJ02kDv45KPDH7BmWB
-	 Fa1R/sz5+OZMbMxmpdoO3pHSY75nP+tvCibFPJ2qsar6wx9jEo1VQmf7copJIxBStJ
-	 GnT/S/+wglySvt7MV3xibMVxoHjQER42vG1i2QDg=
+	b=Ht03M/HnhHVJ5boQ2W9dJqiW17K1Hjabz1kUMlfm8NT5roHSqrXnbK8hZta9ilrAn
+	 SKhxuYWKATZRfoeNUgYbgy7q2DxQVf74x3uWI3vYsPyOCuMySq23yXaaK9VOuVTOEc
+	 kMKpAGWnckVWy+4IQIass6EPG3s5rL7lVSQckp78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 322/403] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 395/482] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
 Date: Tue, 26 Aug 2025 13:10:48 +0200
-Message-ID: <20250826110915.706905731@linuxfoundation.org>
+Message-ID: <20250826110940.587699016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 58577118cc7cec9eb7c1836bf88f865ff2c5e3a3 upstream.
+commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
 
-During a device-initiated disconnect, the End Transfer command resets
-the event filter, allowing a new xferNotReady event to be generated
-before the controller is fully halted. Processing this late event
-incorrectly triggers a Start Transfer, which prevents the controller
-from halting and results in a DSTS.DEVCTLHLT bit polling timeout.
+In preparation to fix replay timer timeout, rename the
+gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
 
-Ignore the late xferNotReady event if the controller is already in a
-disconnected state.
-
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250807090700.2397190-1-khtsai@google.com
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
+Cc: stable@vger.kernel.org
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2937,6 +2937,15 @@ static void dwc3_gadget_endpoint_transfe
- static void dwc3_gadget_endpoint_transfer_not_ready(struct dwc3_ep *dep,
- 		const struct dwc3_event_depevt *event)
- {
-+	/*
-+	 * During a device-initiated disconnect, a late xferNotReady event can
-+	 * be generated after the End Transfer command resets the event filter,
-+	 * but before the controller is halted. Ignore it to prevent a new
-+	 * transfer from starting.
-+	 */
-+	if (!dep->dwc->connected)
-+		return;
-+
- 	dwc3_gadget_endpoint_frame_from_event(dep, event);
- 	(void) __dwc3_gadget_start_isoc(dep);
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -953,7 +953,7 @@ static void sdhci_gl9763e_reset(struct s
+ 	sdhci_reset(host, mask);
  }
+ 
+-static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
++static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+ 	u32 value;
+@@ -1125,7 +1125,7 @@ static int gli_probe_slot_gl9763e(struct
+ 	gli_pcie_enable_msi(slot);
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 					gl9763e_hs400_enhanced_strobe;
+-	gli_set_gl9763e(slot);
++	gl9763e_hw_setting(slot);
+ 	sdhci_enable_v4_mode(host);
+ 
+ 	return 0;
 
 
 
