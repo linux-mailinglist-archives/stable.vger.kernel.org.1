@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CDFB368E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCA2B3605C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 993109809BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DFFF46310F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAF534166B;
-	Tue, 26 Aug 2025 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C111F1538;
+	Tue, 26 Aug 2025 12:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNued1ft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZRqIH5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C541494D9;
-	Tue, 26 Aug 2025 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71D91ACEDE;
+	Tue, 26 Aug 2025 12:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217314; cv=none; b=QyjQlfiIRrEcQGqw5bRIf1zsfKvBy3SSSYPZAPMz3pfVKArdBDI+i3dJSC5p5+NkgnHZz0lRnToS0uieR+juPj85HaVJjDEj0MAiq1BuBQuqr5Kki9vou22/TXbZUyT4anWPzI5LBkPYVZ3bekoOKJLbuAYvEiLiDGigKGdn+2o=
+	t=1756213003; cv=none; b=BGNqXrGeeIj/XtoGO7rCZ5pmA9mDiQ8yMFKy7D8FzI/MukXKKvHU3xPy1hpbFPphI8Sdw3O/kQtAT+0nwrT4iOZMeU7RYR2WpYv/Z+6ZM7hHVR20ew5MtWDlqWk66NSThuD8ZALM7Rhj04M9ci1z8kZ1oKGUoVqU+zIIStKOEAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217314; c=relaxed/simple;
-	bh=/aa0rD8vACv4TlthYqE+kUVjMqXNtzbFfWgfHGOsaGU=;
+	s=arc-20240116; t=1756213003; c=relaxed/simple;
+	bh=NmVZhW0dWqOGAPWAUIPSCsa4LjqW5tSOOaqvduw8yfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QebOcOMzVT5uf5sildF1hFGPjNuyzmHmIgNYJfd8ksEn/ORAHCAPjcSFWzj4SCCEtCSHNmObJZjmivz0gtYLOLrgJxFLGiFTnchwcRdshv61jE9hmMVFeVvsGO5tIj8cdwFfi4MSo6P4YRPt5QtiCE1CR1y01enc7y9Xjuj7VAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNued1ft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4789C4CEF1;
-	Tue, 26 Aug 2025 14:08:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iKABcl4BrKOduiAXawSHfpdLzMV0k3WpCMPZtQfj7SVndIhlrjtunDQ9wn1MTkKDcrSE/a1CaTaemWiNNQn6li10B/A4+WUq7uWWcm/oy0Z48oAheFIx3x89/ftoZo0OB1A3D/ZdbjVbkPpkH/coBDDK/VYbbXd77HmJJ2LUPq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZRqIH5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A60C4CEF1;
+	Tue, 26 Aug 2025 12:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217314;
-	bh=/aa0rD8vACv4TlthYqE+kUVjMqXNtzbFfWgfHGOsaGU=;
+	s=korg; t=1756213003;
+	bh=NmVZhW0dWqOGAPWAUIPSCsa4LjqW5tSOOaqvduw8yfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNued1ft0KYAMCgi+6wVyIYOpk6Fr/fe769MxizYzrEwgCQFbBx9jttzDsj8+92Mh
-	 JqSlMwENEkkmJ8LBvUYXvmR4h70eK7UO5qp5/4gDrrI2hgHI2ssFMJa+2eob7A5Ba+
-	 /HBgfnKkyQp35yxHP1e31DFUPROznn/HUiPVUJDw=
+	b=LZRqIH5xcjqMNpzWBLjPuYa+t4pT8JslWaxFm7Pr0lzV+JXPTambkYY3dIRA+5Gtz
+	 ivkFRceoEEdCwWYWZygXiaTyxOIC6hS3iFBnNMPj3AUx8l54RRaiDzJNvBKwx8UZps
+	 i1Pekysd7ER1i7nY5uoySo1Jj24LjtlTzqcNhZVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/523] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
-Date: Tue, 26 Aug 2025 13:05:05 +0200
-Message-ID: <20250826110926.889978319@linuxfoundation.org>
+Subject: [PATCH 6.6 157/587] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+Date: Tue, 26 Aug 2025 13:05:06 +0200
+Message-ID: <20250826110956.941375296@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 178f6a5c8cb3b6be1602de0964cd440243f493c9 ]
+[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
 
-When sending plaintext data, we initially calculated the corresponding
-ciphertext length. However, if we later reduced the plaintext data length
-via socket policy, we failed to recalculate the ciphertext length.
+The buffer bgx_sel used in snprintf() was too small to safely hold
+the formatted string "BGX%d" for all valid bgx_id values. This caused
+a -Wformat-truncation warning with `Werror` enabled during build.
 
-This results in transmitting buffers containing uninitialized data during
-ciphertext transmission.
+Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
+snprintf() to ensure safety and suppress the warning.
 
-This causes uninitialized bytes to be appended after a complete
-"Application Data" packet, leading to errors on the receiving end when
-parsing TLS record.
+Build warning:
+  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
+‘bgx_acpi_match_id’:
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
+directive output may be truncated writing between 1 and 3 bytes into a
+region of size 2 [-Werror=format-truncation=]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                             ^~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+directive argument in the range [0, 255]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                         ^~~~~~~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
 
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20250609020910.397930-2-jiayuan.chen@linux.dev
+compiler warning due to insufficient snprintf buffer size.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 7a448fd96f81..e519a0160668 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -825,6 +825,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 		delta = msg->sg.size;
- 		psock->eval = sk_psock_msg_verdict(sk, psock, msg);
- 		delta -= msg->sg.size;
-+
-+		if ((s32)delta > 0) {
-+			/* It indicates that we executed bpf_msg_pop_data(),
-+			 * causing the plaintext data size to decrease.
-+			 * Therefore the encrypted data size also needs to
-+			 * correspondingly decrease. We only need to subtract
-+			 * delta to calculate the new ciphertext length since
-+			 * ktls does not support block encryption.
-+			 */
-+			struct sk_msg *enc = &ctx->open_rec->msg_encrypted;
-+
-+			sk_msg_trim(sk, enc, enc->sg.size - delta);
-+		}
- 	}
- 	if (msg->cork_bytes && msg->cork_bytes > msg->sg.size &&
- 	    !enospc && !full_record) {
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index a317feb8decb..087d4c2b3efd 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1427,9 +1427,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
+ {
+ 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct bgx *bgx = context;
+-	char bgx_sel[5];
++	char bgx_sel[7];
+ 
+-	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
++	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
+ 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+ 		pr_warn("Invalid link device\n");
+ 		return AE_OK;
 -- 
 2.39.5
 
