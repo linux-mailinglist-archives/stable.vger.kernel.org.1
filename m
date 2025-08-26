@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAC5B36560
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A829BB35FA8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31BFF564381
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA9CE16E1B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEB2225390;
-	Tue, 26 Aug 2025 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8A41E3DF2;
+	Tue, 26 Aug 2025 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjdNhIkw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTmnI4G/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEDC23A9A0;
-	Tue, 26 Aug 2025 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC1C450FE;
+	Tue, 26 Aug 2025 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215626; cv=none; b=LOCqUjaDtlgshJmOfQpRMiTLsG0GuAwONLO/pAb8u6OZm0c/hI2F0EKJfbtcaYBSXG0DMT1QcHWP6YBc7XzQ0GPtAzUxjLMJlvBCieXd7XFAWhkqpGboS1r8fBhgOSr82Q7gu21kcHkrnedAxLIYaXdZiSP6M+Tlo5A1sm8ZkM4=
+	t=1756212644; cv=none; b=JpFiqygsbnof+qOwrCqqCqXGxss3XojBr6/YWmB1SdLQlMwTnXvj/N6ilccpPs8rzkW+HnDCX7CzyBEXM/YZ03wumLX/70mzyO+7GqirDPcI2E6x1Xb1JEb5p7YM5dhOLeC16CNDklTi7v4IHAcnZHHI2zCtM4jiTmV6ILrCkBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215626; c=relaxed/simple;
-	bh=F4aOIFXu1xCfDC1y74KctrKQb/usKP8I+gv6I8Galps=;
+	s=arc-20240116; t=1756212644; c=relaxed/simple;
+	bh=mTBe+pUMVi5X/TIHUTZvsnxCqK+CKOoVrKiBL1cYVbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmkyz9orOYIcJMLgmRpJ5Zf7kJc8keeNQ/PKeR6qsduWoVbzZouLSBycLtq2xIOp9jLoif3R32fdHb/pDTLvc5J7/rOiY0JCNrv0SOPWEshPE7tCVHFzA6gUC8v0o4+xHy2JgrlFoFAlda5683sh87oOVSZ+DrFuV9ohsu4sR6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjdNhIkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C44CC4CEF1;
-	Tue, 26 Aug 2025 13:40:25 +0000 (UTC)
+	 MIME-Version; b=WsCyYvCH2X9VsjZ6kcYQm3qP4/+dHJcPfF6cl4UHN8dp9YL7IU6x41l60F3onUvE+yTb3/XQmCIQxtb+ADFPhsiVzMLsaz9kn3iWvw8Jku0x+saWdHD8HKBPn/kB630zx6DeHSOR6yutYXaic1MmMjTW8MuS9Td/cGnZ5TaO548=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTmnI4G/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9066AC116B1;
+	Tue, 26 Aug 2025 12:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215626;
-	bh=F4aOIFXu1xCfDC1y74KctrKQb/usKP8I+gv6I8Galps=;
+	s=korg; t=1756212643;
+	bh=mTBe+pUMVi5X/TIHUTZvsnxCqK+CKOoVrKiBL1cYVbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZjdNhIkwXX/GhyfWLdw3m42hkTWnXRHE+pwvnEU+JZjOWjoOdX2yxscbc5AAetD46
-	 Zm2mWgWg+3amCRCKM6+wXgLheEVGMAamfAO7sjGIm5OHkRJMlWrhJnmUa9fP3QTtlL
-	 D1+47aul6tRfCY4tSbkmiG7AW4uKXiZfjalugWuA=
+	b=tTmnI4G/b/T+zFpiA8kYMpxqDk1IB8mFRv5Jia5Gpfo3HiVLZA5/lQd/seMZ6NvC2
+	 sMOI21w08PhICTJQsHXbg1dCh/KofJSgAD/q29Y26smK12BWUi93Cu0BBRozPRaPfa
+	 TkDnAbgySdoh7aeTEG3VV2QtIm3nomM6SX1KDrpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/644] comedi: comedi_test: Fix possible deletion of uninitialized timers
+Subject: [PATCH 6.6 047/587] KVM: x86: Convert vcpu_run()s immediate exit param into a generic bitmap
 Date: Tue, 26 Aug 2025 13:03:16 +0200
-Message-ID: <20250826110949.116540402@linuxfoundation.org>
+Message-ID: <20250826110954.141536293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
+[ Upstream commit 2478b1b220c49d25cb1c3f061ec4f9b351d9a131 ]
 
-In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
-`&devpriv->ao_timer` are initialized after the allocation of the device
-private data by `comedi_alloc_devpriv()` and the subdevices by
-`comedi_alloc_subdevices()`.  The function may return with an error
-between those function calls.  In that case, `waveform_detach()` will be
-called by the Comedi core to clean up.  The check that
-`waveform_detach()` uses to decide whether to delete the timers is
-incorrect.  It only checks that the device private data was allocated,
-but that does not guarantee that the timers were initialized.  It also
-needs to check that the subdevices were allocated.  Fix it.
+Convert kvm_x86_ops.vcpu_run()'s "force_immediate_exit" boolean parameter
+into an a generic bitmap so that similar "take action" information can be
+passed to vendor code without creating a pile of boolean parameters.
 
-Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
-Cc: stable@vger.kernel.org # 6.15+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
-[ changed timer_delete_sync() to del_timer_sync() ]
+This will allow dropping kvm_x86_ops.set_dr6() in favor of a new flag, and
+will also allow for adding similar functionality for re-loading debugctl
+in the active VMCS.
+
+Opportunistically massage the TDX WARN and comment to prepare for adding
+more run_flags, all of which are expected to be mutually exclusive with
+TDX, i.e. should be WARNed on.
+
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250610232010.162191-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: drop TDX crud, account for lack of kvm_x86_call()]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/comedi_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/kvm_host.h |  6 +++++-
+ arch/x86/kvm/svm/svm.c          |  4 ++--
+ arch/x86/kvm/vmx/vmx.c          |  3 ++-
+ arch/x86/kvm/x86.c              | 10 ++++++++--
+ 4 files changed, 17 insertions(+), 6 deletions(-)
 
---- a/drivers/comedi/drivers/comedi_test.c
-+++ b/drivers/comedi/drivers/comedi_test.c
-@@ -790,7 +790,7 @@ static void waveform_detach(struct comed
- {
- 	struct waveform_private *devpriv = dev->private;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 8898ad8cb3de..aa6d04cd9ee6 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1550,6 +1550,10 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ 	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
+ }
  
--	if (devpriv) {
-+	if (devpriv && dev->n_subdevices) {
- 		del_timer_sync(&devpriv->ai_timer);
- 		del_timer_sync(&devpriv->ao_timer);
++enum kvm_x86_run_flags {
++	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
++};
++
+ struct kvm_x86_ops {
+ 	const char *name;
+ 
+@@ -1625,7 +1629,7 @@ struct kvm_x86_ops {
+ 
+ 	int (*vcpu_pre_run)(struct kvm_vcpu *vcpu);
+ 	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu,
+-						  bool force_immediate_exit);
++						  u64 run_flags);
+ 	int (*handle_exit)(struct kvm_vcpu *vcpu,
+ 		enum exit_fastpath_completion exit_fastpath);
+ 	int (*skip_emulated_instruction)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 4a53b38ea386..61e5e261cde2 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4197,9 +4197,9 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
+ 	guest_state_exit_irqoff();
+ }
+ 
+-static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
+-					  bool force_immediate_exit)
++static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ {
++	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 704e5a552b4f..065aac2f4bce 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7345,8 +7345,9 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 	guest_state_exit_irqoff();
+ }
+ 
+-static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
++static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ {
++	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long cr3, cr4;
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f3150d9a1918..ecc151397341 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10518,6 +10518,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		dm_request_for_irq_injection(vcpu) &&
+ 		kvm_cpu_accept_dm_intr(vcpu);
+ 	fastpath_t exit_fastpath;
++	u64 run_flags;
+ 
+ 	bool req_immediate_exit = false;
+ 
+@@ -10750,8 +10751,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		goto cancel_injection;
  	}
+ 
+-	if (req_immediate_exit)
++	run_flags = 0;
++	if (req_immediate_exit) {
++		run_flags |= KVM_RUN_FORCE_IMMEDIATE_EXIT;
+ 		kvm_make_request(KVM_REQ_EVENT, vcpu);
++	}
+ 
+ 	fpregs_assert_state_consistent();
+ 	if (test_thread_flag(TIF_NEED_FPU_LOAD))
+@@ -10787,7 +10791,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		WARN_ON_ONCE((kvm_vcpu_apicv_activated(vcpu) != kvm_vcpu_apicv_active(vcpu)) &&
+ 			     (kvm_get_apic_mode(vcpu) != LAPIC_MODE_DISABLED));
+ 
+-		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, req_immediate_exit);
++		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, run_flags);
+ 		if (likely(exit_fastpath != EXIT_FASTPATH_REENTER_GUEST))
+ 			break;
+ 
+@@ -10799,6 +10803,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 			break;
+ 		}
+ 
++		run_flags = 0;
++
+ 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
+ 		++vcpu->stat.exits;
+ 	}
+-- 
+2.50.1
+
 
 
 
