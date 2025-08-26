@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-175365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4A8B368F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DB2B35D45
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBBC980C16
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE4F2A3CAF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AD235209C;
-	Tue, 26 Aug 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742BA3093AB;
+	Tue, 26 Aug 2025 11:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MP7ppqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6mXYVGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D41C352091;
-	Tue, 26 Aug 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3082F2BE62B;
+	Tue, 26 Aug 2025 11:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216845; cv=none; b=VC9KgggfheU7NAWQWpi8NZBvF+g4zb00fllS5p6AOPi06VolIuLs4v9H77dUOYOfhM8nuXkE5P/ytmiUDKXLgbJsRrWXjUHWTkdbdNRKXsVuo/v1Sr4TkmOvvOQU/MKduQO9ydw2AyfSY/0aDna5FfpQdBN0mut4n3ZR6fQqNAs=
+	t=1756207927; cv=none; b=YPvBaLppU/gtSmXqRAdDXxwhwKc3d5xDBEMVKQYE9k5zIM2QXofxJX5exqNuuVMmNQ5BDplOa5zL5sDx9qcr1mZk+82V7zsWMNtgf2VctdKYgkCRuoguUAW5C4DwWt1FDIO78lD9j+K/LduAkHPsygiQsB+/OHHfLJA4hJiQ9hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216845; c=relaxed/simple;
-	bh=V/hPTiwurgozOMoxEqB/PmOEKYCTPVAeJw89J5JXCEE=;
+	s=arc-20240116; t=1756207927; c=relaxed/simple;
+	bh=XCnSm6cNjRoERXxZHfd5cqSfLtmO1UCaUWyHwidE9f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnSpKy4YV9eZrh38IN7Dr7zMndR6xHv3tZ6Q26XCiFCiRMII83piq4zqhQ6XrhnVsfQfOctzN0CbF/onoODeN4mnj5Td3/aSwx/35GdSy1m4phLzLbDKx7B3w2xFSFXyFU3Jbp+wnaXz7/5xurund6BGL3+nme+AhGPX5MD+OUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MP7ppqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3338C4CEF1;
-	Tue, 26 Aug 2025 14:00:44 +0000 (UTC)
+	 MIME-Version; b=cmauR3HmuGGWHS+CH6bTwdJZhZ/pfx3TPmnQbt5gQav6NBnFSGNAQi7S1I/WSNr+x94hOyhVnQfqO1Obtf3wfLQuWbsnlzoOXMy4HlwKmjqfYxDllCkozd6Fbki/y1v1lzuF8ZtVgyG8VGSw8N6sqoTuq8emJyBTNCB4zTmrAQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6mXYVGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DAAC4CEF1;
+	Tue, 26 Aug 2025 11:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216845;
-	bh=V/hPTiwurgozOMoxEqB/PmOEKYCTPVAeJw89J5JXCEE=;
+	s=korg; t=1756207925;
+	bh=XCnSm6cNjRoERXxZHfd5cqSfLtmO1UCaUWyHwidE9f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MP7ppqCT/VI/ZMExYVJo7mEb2YpD8xA8ZLPj5/xz1D87FzNCdHYYbWtvHExJvPVH
-	 11gLcjK9VecmO6sAU5QbAxv6/XMkOOo1D0yZsiiODHeCiy/gGhlq2c0pp0K4olrrCm
-	 zaviDDbPwYfHojnaVfhO0mHC+NDicvRr/akBjcWk=
+	b=q6mXYVGxRiulED5SP7P99nZ8eSu9AAz8gYr3ig2D17swC6Ckk2ZpeQN6qNDev/Snt
+	 Je85e4Ts8vtkDgeCvsI0S88SwKRuut7cRQHreJz8IWoITzMe5Xm70AhyVZUgZ09qC9
+	 mdlxjQQqtKdkeanau+Xl5HGbNI4oVkEypBtc9JsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 563/644] KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix
+	Justin Lai <justinlai0215@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 370/457] rtase: Fix Rx descriptor CRC error bit definition
 Date: Tue, 26 Aug 2025 13:10:54 +0200
-Message-ID: <20250826111000.481457567@linuxfoundation.org>
+Message-ID: <20250826110946.444256705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Justin Lai <justinlai0215@realtek.com>
 
-Upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally save+flush
-host FPSIMD/SVE/SME state") relies on interrupts being disabled during
-fpsimd_save_and_flush_cpu_state() so that a softirq cannot be taken
-while the host floating point context is being saved and potentially try
-to use kernel-mode NEON.
+[ Upstream commit 065c31f2c6915b38f45b1c817b31f41f62eaa774 ]
 
-Unfortunately, stable kernels without 9b19700e623f ("arm64: fpsimd: Drop
-unneeded 'busy' flag") leave interrupts enabled in
-fpsimd_save_and_flush_cpu_state() and so the BUG_ON(!may_use_simd()) in
-kernel_neon_begin() has been observed to trigger in real-world usage:
+The CRC error bit is located at bit 17 in the Rx descriptor, but the
+driver was incorrectly using bit 16. Fix it.
 
- |  kernel BUG at arch/arm64/kernel/fpsimd.c:1904!
- |  Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
- |
- |  Call trace:
- |   kernel_neon_begin+0xdc/0x12c
- |   ...
- |   crypto_aead_decrypt+0x5c/0x6c
- |   seqiv_aead_decrypt+0x88/0x9c
- |   crypto_aead_decrypt+0x5c/0x6c
- |   esp_input+0x280/0x364
- |   xfrm_input+0x6ac/0x16f8
- |   ...
- |   net_rx_action+0x13c/0x31c
- |   handle_softirqs+0x124/0x3d0
- |   __do_softirq+0x14/0x20
- |   ____do_softirq+0x10/0x20
- |   call_on_irq_stack+0x3c/0x74
- |   do_softirq_own_stack+0x1c/0x2c
- |   __irq_exit_rcu+0x54/0xb4
- |   irq_exit_rcu+0x10/0x1c
- |   el1_interrupt+0x38/0x58
- |   el1h_64_irq_handler+0x18/0x24
- |   el1h_64_irq+0x68/0x6c
- |   fpsimd_save+0xe4/0x130
- |   kvm_arch_vcpu_load_fp+0x2c/0x58
- |   kvm_arch_vcpu_load+0x88/0x26c
- |   kvm_sched_in+0x2c/0x3c
-
-Given that 9b19700e623f ("arm64: fpsimd: Drop unneeded 'busy' flag") is
-not a fix in its own right, has non-trivial dependencies and is a
-reasonably invasive change to the in-kernel use of fpsimd, opt instead
-for a simple fix to use the softirq-safe {get,put}_cpu_fpsimd_context()
-helpers in fpsimd_save_and_flush_cpu_state().
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.15.y, 6.1.y and 6.6.y
-Fixes: 806d5c1e1d2e ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 6.6.y
-Fixes: 04c50cc23a49 ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 6.1.y
-Fixes: 5289ac43b69c ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 5.15.y
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
+Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Link: https://patch.msgid.link/20250813071631.7566-1-justinlai0215@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/rtase/rtase.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1303,10 +1303,10 @@ void fpsimd_save_and_flush_cpu_state(voi
- 	if (!system_supports_fpsimd())
- 		return;
- 	WARN_ON(preemptible());
--	__get_cpu_fpsimd_context();
-+	get_cpu_fpsimd_context();
- 	fpsimd_save();
- 	fpsimd_flush_cpu_state();
--	__put_cpu_fpsimd_context();
-+	put_cpu_fpsimd_context();
- }
- 
- #ifdef CONFIG_KERNEL_MODE_NEON
+diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
+index 498cfe4d0cac..5f2e1ab6a100 100644
+--- a/drivers/net/ethernet/realtek/rtase/rtase.h
++++ b/drivers/net/ethernet/realtek/rtase/rtase.h
+@@ -241,7 +241,7 @@ union rtase_rx_desc {
+ #define RTASE_RX_RES        BIT(20)
+ #define RTASE_RX_RUNT       BIT(19)
+ #define RTASE_RX_RWT        BIT(18)
+-#define RTASE_RX_CRC        BIT(16)
++#define RTASE_RX_CRC        BIT(17)
+ #define RTASE_RX_V6F        BIT(31)
+ #define RTASE_RX_V4F        BIT(30)
+ #define RTASE_RX_UDPT       BIT(29)
+-- 
+2.50.1
+
 
 
 
