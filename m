@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9AEB3621C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41538B367D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7668A481A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EB3565FF2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E635265CC0;
-	Tue, 26 Aug 2025 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3E034DCCD;
+	Tue, 26 Aug 2025 13:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKYq3i4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbsSZWvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD47223DE5;
-	Tue, 26 Aug 2025 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C05239E8B;
+	Tue, 26 Aug 2025 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213812; cv=none; b=RYlSXgVnzCA+3C0evMzD0Y6WoVe3i7EKLe1RpNifUiORVsu53bW/Tz0OYxO0whlQ/I1pd+MLtB2Kco1ehLzbN8aNtIkJ491uAQ/tv2eC7t5qTHx5eqaMBxaERIxjzYtbtU2VUaUWCjCWSdoXyoI1WWE8EVG3ZmnOFy0yQKp2DlY=
+	t=1756216795; cv=none; b=CpHVwGGEFHXDlgbSOWp7wFlNl58bKHPRHudRFVT+mfFcLMLalZIdyKfvq7nprMAqBsiX7jvSt4JswLecfv0fjZ0BSDLYwnRF/0TnEoxM7EpXIuhX9VmVm3NBWYpga0JNfp1LXDr71evd+4FEFhO5p/LpTZk0/ZsGs+NE3s2uuZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213812; c=relaxed/simple;
-	bh=lcvYOvho9E66gWHRkQnBmRZO25hVEGIkQtIysTHcPws=;
+	s=arc-20240116; t=1756216795; c=relaxed/simple;
+	bh=C6rgaEU+UlTNFdzQaQi3/gufCXB8uaY1dSzljFSY/Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sgNqp0G6OVEQRst+BrM9u0W330fQg8gIl8bCD3s7ikZs6aQGskREjalNl9HEq62FHqGeRXSc+teYbLSHLgn8ybatPAd4qPdoxIz7n7HjklApxbeWU45rBFtv1PQGJgo0fknMUY8wrrzY0S+g+SIB+wwrL9UF6NgriL11W8OQAbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKYq3i4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23C5C4CEF1;
-	Tue, 26 Aug 2025 13:10:11 +0000 (UTC)
+	 MIME-Version; b=ZSzgIMNDHI8Ir4fqIHBYTEgM1hKM2LNSexaq6J5trmfzjZ3BRns2jiaSHGQkE6n+C5qcEf9t36BM0AbL0wYIU2hE2jb4+l8Lt+VDdc34XPz1gzRk/Dk6Lf7bQ5BMeu8qGumdwOW7ZFCNAibX8g2rYGCiQYqC6VJT+LR7QCrEWfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbsSZWvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F93C113CF;
+	Tue, 26 Aug 2025 13:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213812;
-	bh=lcvYOvho9E66gWHRkQnBmRZO25hVEGIkQtIysTHcPws=;
+	s=korg; t=1756216794;
+	bh=C6rgaEU+UlTNFdzQaQi3/gufCXB8uaY1dSzljFSY/Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKYq3i4wz8SKk914jPXLyk0VM1JPzGl/oN94ZVLd3alR2GX4N+rq4dmMh36FQ7r1C
-	 oyjdJgqMXbGrhoCTfWLGFVLqXJHUJRDMx8d+SXevQzCRHviLJEE8R3HstiBVtOh7di
-	 6gA6ZYqd9yDu7PYfWg/iEAbmoBfOunLBy9YLdi8c=
+	b=SbsSZWvhEyQdFyJ4QKEKlfbm/YlSpVmTOPfGo6jHw+eAe9AuGC3sioFHtCcxkrAvO
+	 kQQJzpEkT4r8awx/p2aoo7HVvKAIE1C4Pg30mlkAw0hIcUEHCmQZTKm1mlKSvR4QYs
+	 bT8S7E4LOicyDCmnJP4wcaDvrnt3ZTOEsdAh+PQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
-Subject: [PATCH 6.6 489/587] drm/amd/display: Fix DP audio DTO1 clock source on DCE 6.
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.15 547/644] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
 Date: Tue, 26 Aug 2025 13:10:38 +0200
-Message-ID: <20250826111005.414942068@linuxfoundation.org>
+Message-ID: <20250826111000.082239565@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 297a4833a68aac3316eb808b4123eb016ef242d7 upstream.
+commit 342debc12183b51773b3345ba267e9263bdfaaef upstream.
 
-On DCE 6, DP audio was not working. However, it worked when an
-HDMI monitor was also plugged in.
+After making all ->qlen_notify() callbacks idempotent, now it is safe to
+remove the check of qlen!=0 from both fq_codel_dequeue() and
+codel_qdisc_dequeue().
 
-Looking at dce_aud_wall_dto_setup it seems that the main
-difference is that we use DTO1 when only DP is plugged in.
-
-When programming DTO1, it uses audio_dto_source_clock_in_khz
-which is set from get_dp_ref_freq_khz
-
-The dce60_get_dp_ref_freq_khz implementation looks incorrect,
-because DENTIST_DISPCLK_CNTL seems to be always zero on DCE 6,
-so it isn't usable.
-I compared dce60_get_dp_ref_freq_khz to the legacy display code,
-specifically dce_v6_0_audio_set_dto, and it turns out that in
-case of DCE 6, it needs to use the display clock. With that,
-DP audio started working on Pitcairn, Oland and Cape Verde.
-
-However, it still didn't work on Tahiti. Despite having the
-same DCE version, Tahiti seems to have a different audio device.
-After some trial and error I realized that it works with the
-default display clock as reported by the VBIOS, not the current
-display clock.
-
-The patch was tested on all four SI GPUs:
-
-* Pitcairn (DCE 6.0)
-* Oland (DCE 6.4)
-* Cape Verde (DCE 6.0)
-* Tahiti (DCE 6.0 but different)
-
-The testing was done on Samsung Odyssey G7 LS28BG700EPXEN on
-each of the above GPUs, at the following settings:
-
-* 4K 60 Hz
-* 1080p 60 Hz
-* 1080p 144 Hz
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 645cc7863da5de700547d236697dffd6760cf051)
-Cc: stable@vger.kernel.org
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |   21 +++--------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ net/sched/sch_codel.c    |    5 +----
+ net/sched/sch_fq_codel.c |    6 ++----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -83,22 +83,13 @@ static const struct state_dependent_cloc
- static int dce60_get_dp_ref_freq_khz(struct clk_mgr *clk_mgr_base)
- {
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
--	int dprefclk_wdivider;
--	int dp_ref_clk_khz;
--	int target_div;
-+	struct dc_context *ctx = clk_mgr_base->ctx;
-+	int dp_ref_clk_khz = 0;
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_deque
+ 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
+ 			    drop_func, dequeue_func);
  
--	/* DCE6 has no DPREFCLK_CNTL to read DP Reference Clock source */
--
--	/* Read the mmDENTIST_DISPCLK_CNTL to get the currently
--	 * programmed DID DENTIST_DPREFCLK_WDIVIDER*/
--	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DPREFCLK_WDIVIDER, &dprefclk_wdivider);
--
--	/* Convert DENTIST_DPREFCLK_WDIVIDERto actual divider*/
--	target_div = dentist_get_divider_from_did(dprefclk_wdivider);
--
--	/* Calculate the current DFS clock, in kHz.*/
--	dp_ref_clk_khz = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
--		* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-+	if (ASIC_REV_IS_TAHITI_P(ctx->asic_id.hw_internal_rev))
-+		dp_ref_clk_khz = ctx->dc_bios->fw_info.default_display_engine_pll_frequency;
-+	else
-+		dp_ref_clk_khz = clk_mgr_base->clks.dispclk_khz;
- 
- 	return dce_adjust_dp_ref_freq_for_ss(clk_mgr, dp_ref_clk_khz);
- }
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->stats.drop_count && sch->q.qlen) {
++	if (q->stats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
+ 		q->stats.drop_count = 0;
+ 		q->stats.drop_len = 0;
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -314,10 +314,8 @@ begin:
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+ 	flow->deficit -= qdisc_pkt_len(skb);
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->cstats.drop_count && sch->q.qlen) {
++
++	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+ 					  q->cstats.drop_len);
+ 		q->cstats.drop_count = 0;
 
 
 
