@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA9EB361C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC322B35D62
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F58C3BF7F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9744F7C5F5B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2C72147EF;
-	Tue, 26 Aug 2025 13:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC4D312806;
+	Tue, 26 Aug 2025 11:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nk784HHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PedGTlI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092C2FBF0;
-	Tue, 26 Aug 2025 13:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39799283FDF;
+	Tue, 26 Aug 2025 11:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213655; cv=none; b=llEAclufkU96axVJHX7w7BfS/BiaDzJg86bkDqJ6AlKE0iZs2koT2tSNih7nkpHKkQZV4+rNI1yXUhUUzSkIMASz4cvdM7CkAEMZs8aSYV0XYadUCaA/MS9cx3TC3ncxVp+6cUOWixUxlHiF6tdhtmKOjY12eQAk21vNiduW5ng=
+	t=1756208610; cv=none; b=F8QJYd/9ds12ComQ/EZZYzXeseA4rNk7pPak8POZxTIiZM40U96jGf+apEp2Z5/w3iYExKNMrdteoKyKY9jzp6NjajpT9tEI+meZJBHAC6cnMO3kC0IFDfh6sLLL1txV+7TvaItI/346nEV1HohIauv03mV0OW/tqP2r69LWiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213655; c=relaxed/simple;
-	bh=ynX0Eg9wQCWz+BQjPPAh1TFVy9+zcQhfoYirmVujxIc=;
+	s=arc-20240116; t=1756208610; c=relaxed/simple;
+	bh=AJa/63EnNvZeKtMUmM5hl5SgJQTiW7LNH9GgBOLCihU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skm14H2qMRT9yUSOri8wd4KGfn+7Xk4nJbbq5CdRkVZG/C+dRx1xdBAayzIZX2bm+EBZfLyWscuccf8ugi5T05BIOkhpKUoBbQw+FZLfTE8/xbUgvPSZOiTEF1TLVG6GwGBhyzLdgxR9digsv0kirARGCJ0frRQ/OhfFQrEuT7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nk784HHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A14C4CEF4;
-	Tue, 26 Aug 2025 13:07:34 +0000 (UTC)
+	 MIME-Version; b=MGAUtXBxDrk7Gzw+2cG2wTAqlf7RrAApX7/nRAWk1UfbinMKUbHZFz1PW/Ol+1tHIBSyMiyOgIyK6i9RtufNLM80BbVPa2IIfhUeCu5O86SEvSUW+c8ApLgx2VoJWw7r0ofpc/ubGOFnvENtuOVasnvO/jxtnaeEWUw8Dwzb93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PedGTlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5774C4CEF1;
+	Tue, 26 Aug 2025 11:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213654;
-	bh=ynX0Eg9wQCWz+BQjPPAh1TFVy9+zcQhfoYirmVujxIc=;
+	s=korg; t=1756208610;
+	bh=AJa/63EnNvZeKtMUmM5hl5SgJQTiW7LNH9GgBOLCihU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nk784HHWxwZTBq5KM3I3fI6emFYewvU01fF+DrpZRUcYC+C8VPF55onfrLJOX5Rh+
-	 2pjxt+g0dcZjP+wFYRGarb9l8XlAZwySlAQwzq0/SEl04p18MPWNUKDlIwPQIKLxIy
-	 Dg8WSddv3Foe5rimuJ7FQ+G4A3deeFi6H+tHWZBM=
+	b=0PedGTlIQhzN54fUxqpQ4lAyF2xU7GUSKdXxCjzJYoC5TmrBhUO/qCtZNer4tCgB/
+	 eKxfTmgr9ma8C2qDeGOkRuAmGFxg4yIwxXEdnF4rDudflcGReSjLE8UHwxn+ucbD26
+	 W1T7cQx1W+bNuR8o3r1ryumR9gVcJlh3uLJ1yl0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vedang Nagar <quic_vnagar@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 412/587] media: venus: Add a check for packet size after reading from shared memory
+	Daniel Vacek <neelx@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 146/322] btrfs: abort transaction on unexpected eb generation at btrfs_copy_root()
 Date: Tue, 26 Aug 2025 13:09:21 +0200
-Message-ID: <20250826111003.414381462@linuxfoundation.org>
+Message-ID: <20250826110919.410230324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vedang Nagar <quic_vnagar@quicinc.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 49befc830daa743e051a65468c05c2ff9e8580e6 upstream.
+[ Upstream commit 33e8f24b52d2796b8cfb28c19a1a7dd6476323a8 ]
 
-Add a check to ensure that the packet size does not exceed the number of
-available words after reading the packet header from shared memory. This
-ensures that the size provided by the firmware is safe to process and
-prevent potential out-of-bounds memory access.
+If we find an unexpected generation for the extent buffer we are cloning
+at btrfs_copy_root(), we just WARN_ON() and don't error out and abort the
+transaction, meaning we allow to persist metadata with an unexpected
+generation. Instead of warning only, abort the transaction and return
+-EUCLEAN.
 
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
-Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/ctree.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -239,6 +239,7 @@ static int venus_write_queue(struct venu
- static int venus_read_queue(struct venus_hfi_device *hdev,
- 			    struct iface_queue *queue, void *pkt, u32 *tx_req)
- {
-+	struct hfi_pkt_hdr *pkt_hdr = NULL;
- 	struct hfi_queue_header *qhdr;
- 	u32 dwords, new_rd_idx;
- 	u32 rd_idx, wr_idx, type, qsize;
-@@ -304,6 +305,9 @@ static int venus_read_queue(struct venus
- 			memcpy(pkt, rd_ptr, len);
- 			memcpy(pkt + len, queue->qmem.kva, new_rd_idx << 2);
- 		}
-+		pkt_hdr = (struct hfi_pkt_hdr *)(pkt);
-+		if ((pkt_hdr->size >> 2) != dwords)
-+			return -EINVAL;
- 	} else {
- 		/* bad packet received, dropping */
- 		new_rd_idx = qhdr->write_idx;
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -350,7 +350,14 @@ int btrfs_copy_root(struct btrfs_trans_h
+ 
+ 	write_extent_buffer_fsid(cow, fs_info->fs_devices->metadata_uuid);
+ 
+-	WARN_ON(btrfs_header_generation(buf) > trans->transid);
++	if (unlikely(btrfs_header_generation(buf) > trans->transid)) {
++		btrfs_tree_unlock(cow);
++		free_extent_buffer(cow);
++		ret = -EUCLEAN;
++		btrfs_abort_transaction(trans, ret);
++		return ret;
++	}
++
+ 	if (new_root_objectid == BTRFS_TREE_RELOC_OBJECTID)
+ 		ret = btrfs_inc_ref(trans, root, cow, 1);
+ 	else
 
 
 
