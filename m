@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-175776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37B2B368F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334F6B36721
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C8367AB933
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D661D8E7960
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F85535209A;
-	Tue, 26 Aug 2025 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA2134A315;
+	Tue, 26 Aug 2025 13:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA2WHfBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0DHWVnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EC1352FEB;
-	Tue, 26 Aug 2025 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B8374C4;
+	Tue, 26 Aug 2025 13:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217939; cv=none; b=d4yFRiK3rsxoa0jOhouXXRlp9cAS1yExHjS9XRrou31O0qSU4xVZaKvgWapy65Gr01IaJhJ+iOS+P/4XxJkH+QGMKsVE0T8MCyTC/oFlEVBVlM44rrg09dWD/9b8UmrwUhSPGTSNKO3speN24ethvXvRQNHX8D9OXZQDvPthtBY=
+	t=1756216541; cv=none; b=TfSmOrio8f0J8BYxC65ScThs5npS+BqgW0+q8WHSmDDSac42wGI06OUmsUSjxYta9m6zIJsZqR14FbLrjEJevP8jLmqMx2hpFUXBPZTeSGU1SQB5tZYYniyxeEwITdpHsb/CKpJPyW/pZiiMyQbuKAVKwnVz2kQfVS75SnKm/JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217939; c=relaxed/simple;
-	bh=X1bQdOzbKmmX/sxL+SebnveMVHJ0LtK+YcKGzvDQyA0=;
+	s=arc-20240116; t=1756216541; c=relaxed/simple;
+	bh=gzJdsmBul2iw/7lBpQ6SouYkMtI9HXN4ofXEEgtFUvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D38D8BAWy8q8izzutI/RjpV29ZOvDQ15pfRlPck32FtTAyszM8ci3ahH56lnStMZi7iDz80RQXqYfi0TixKxINCqOxJZWazrqgiBoikaxpXxxpcIB0QMMam4cQqXnVuECDa8u7a562Cqlz8X+PaOzIEtC1Gv837GV2YiyoXlPHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA2WHfBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B88AC113CF;
-	Tue, 26 Aug 2025 14:18:58 +0000 (UTC)
+	 MIME-Version; b=TqokJTk7EbUAELfZzL6J3/BeFd/SsjAju3uFClpCrych7LQaC8KFsfQ/zgVQM/6yHCrPwCsYwXsjQib6mAUboNo1DYpNXESincNlDPN1/B4mgwLlLyQmVK4ZMh5Evjk553ugRrkrnx5cZ+dMU0gnTOzI536rg8Z+KvVbryHbJD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0DHWVnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89707C4CEF1;
+	Tue, 26 Aug 2025 13:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217939;
-	bh=X1bQdOzbKmmX/sxL+SebnveMVHJ0LtK+YcKGzvDQyA0=;
+	s=korg; t=1756216540;
+	bh=gzJdsmBul2iw/7lBpQ6SouYkMtI9HXN4ofXEEgtFUvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hA2WHfBpJoMwDlZwSeCvXBLpNHr5s7fi2hPmPeyRa0rufhS/PAUnz/VYSNxbFu8Mo
-	 k3LfjygIAG02BOacPSYSWKgUFrxLEQAhSOVrXKm7FxWauHtcdGKQxIe9Dth4MgKvYU
-	 pfgBroUQeu1QwVB29zXLcDs7jCPm9OGe6YHSoLKg=
+	b=G0DHWVnYRtVX7aSRKFjuvJlrW2eqvxl1Xc2xSEqAOiJl11VTa//ikL9nM0FKZY1SZ
+	 TajQ9zVBUKNIksILJ19Y3dLa0jAa8+aSf4k+OF83HR31s82q5J32OjSIGzhbnoljJG
+	 umCY2X4Zl4O9BXS1J2qXH9NeA8xyIPA36VvwWqt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 331/523] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+	Randy Dunlap <rdunlap@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 5.15 450/644] parisc: Makefile: fix a typo in palo.conf
 Date: Tue, 26 Aug 2025 13:09:01 +0200
-Message-ID: <20250826110932.640835552@linuxfoundation.org>
+Message-ID: <20250826110957.623770011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
+commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
 
-In blk_stack_limits(), we check that the t->chunk_sectors value is a
-multiple of the t->physical_block_size value.
+Correct "objree" to "objtree". "objree" is not defined.
 
-However, by finding the chunk_sectors value in bytes, we may overflow
-the unsigned int which holds chunk_sectors, so change the check to be
-based on sectors.
-
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 2 +-
+ arch/parisc/Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index ebd373469c80..18855d4bfda2 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -605,7 +605,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	}
- 
- 	/* chunk_sectors a multiple of the physical block size? */
--	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
-+	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
- 		t->chunk_sectors = 0;
- 		t->misaligned = 1;
- 		ret = -1;
--- 
-2.39.5
-
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -136,7 +136,7 @@ palo lifimage: vmlinuz
+ 	fi
+ 	@if test ! -f "$(PALOCONF)"; then \
+ 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+-		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
++		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
+ 		echo 'You should check it and re-run "make palo".'; \
+ 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
+ 		false; \
 
 
 
