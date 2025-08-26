@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB802B365F3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9CDB36297
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D718E5C08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A32E188B65C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059E42FDC5C;
-	Tue, 26 Aug 2025 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588C228C9D;
+	Tue, 26 Aug 2025 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQEkJwaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O99RLpu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3234307AF5;
-	Tue, 26 Aug 2025 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22063343D9B;
+	Tue, 26 Aug 2025 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215794; cv=none; b=p6mzKfBM2fmZSxeeCLw3EvvleiywbMFLDL3y5AoR+rlomXO+tkve/mWLXY8WEUAGIg8rKi92vlZzk3TT1Oq7pJaQYEvZ4aaEg7ulNoVP6byq5Mym/I7P62khzw+rKfthLoEh1AJwo4IZVTRMZvSTcRosPFrlV4RyuusXbZQoQZA=
+	t=1756214113; cv=none; b=E3itKMNWNAzrHX+wrXneJa7nCj1GaQD7EYj3yFR0fsTsCKr/pJLLu3Fd/u29BaqIzD9wLcGY8aWhlFY3FokJA4qznDgjmbsb6jmXu1hs87kSGudo2UX2o0Fbl8+y/gYCCsCOGENAREh5oVuEX7AQ3lqU0B6yKodnX6/iLkFmu20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215794; c=relaxed/simple;
-	bh=adWvh7z/oHGo7ZjChrGXjuZhskpRyQmiGT+vHd+tqMM=;
+	s=arc-20240116; t=1756214113; c=relaxed/simple;
+	bh=RCMceva2qw1U7mJsC32xO9HpYkNXKXG2uviIRyfbFZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/hM8TqYEJyMA9tfbWoFd8+h61/y7c/K95YXzycQvc3VJ9ff29i9hlGLJWScXDuCAuPI0/687N0cW+pJbXi9veOBxUzLFZPUvP3cySkmNgmgxjoNSR3t8Wu2zERAhEEI8qQZvYFi4IYlb3uWpO8m/0pBmAhTz04nzNUMh1CvAyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQEkJwaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065FEC4CEF1;
-	Tue, 26 Aug 2025 13:43:13 +0000 (UTC)
+	 MIME-Version; b=Zy3Khsgn2J4ubZumpPvu1oRl2zMVa4FyzlbU/TzR0sIi30e8C5BZqL3wrQ9rTuIkk061FkIZbG7K7xGFfGP3lxb8zaZYL0NUPeP0X+YQFdvx0q+K7rG1NKfLMz8LtBnOh3MOpai7l0NLRvF+eSAtSTCNavrIv6S9WeWhwjyMeEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O99RLpu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7450C4CEF1;
+	Tue, 26 Aug 2025 13:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215794;
-	bh=adWvh7z/oHGo7ZjChrGXjuZhskpRyQmiGT+vHd+tqMM=;
+	s=korg; t=1756214113;
+	bh=RCMceva2qw1U7mJsC32xO9HpYkNXKXG2uviIRyfbFZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQEkJwaGCKB6raSJxTkqr86xAHinQzq1mElH/NWFyz11k22KJsv2nyaVByie3XYYs
-	 kJ2l8qURhbK/ltCPGIe3XFgBXviO8UQygPuXcv3dB6JCcFd8ihIEP8868ZOCxT3AI8
-	 8fOu9TiKHrJJfCA57IBpcrV7/yZ0TsMrEjuEkLto=
+	b=O99RLpu4jgvFYldjeYlvEes+IFoKcPzsmQ49zoVdUHEn/d8F3+bnQftK5F4elSlxB
+	 kyHA/fRm/UXhZNrz5xipuMkQKA0KwTW9F28rZN2oIVjEPlYs7pFBDyDwUew3zE+6wV
+	 NdZBxs598woA05mlTzgU2R9VoXrqPqbMkCqBdjn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Cowgill <james.cowgill@blaize.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/644] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
-Date: Tue, 26 Aug 2025 13:04:20 +0200
-Message-ID: <20250826110950.666747677@linuxfoundation.org>
+	Harald Mommer <harald.mommer@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 008/482] gpio: virtio: Fix config space reading.
+Date: Tue, 26 Aug 2025 13:04:21 +0200
+Message-ID: <20250826110930.987444824@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Cowgill <james.cowgill@blaize.com>
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
 
-[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
+commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
 
-The `separate_colour_plane_flag` element is only present in the SPS if
-`chroma_format_idc == 3`, so the corresponding flag should be disabled
-whenever that is not the case and not just on profiles where
-`chroma_format_idc` is not present.
+Quote from the virtio specification chapter 4.2.2.2:
 
-Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
-Signed-off-by: James Cowgill <james.cowgill@blaize.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
+
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-virtio.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index 3798a57bbbd4..19e769420b9b 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -431,12 +431,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -539,7 +539,6 @@ static const char **virtio_gpio_get_name
  
- 			p_h264_sps->flags &=
- 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
--
--			if (p_h264_sps->chroma_format_idc < 3)
--				p_h264_sps->flags &=
--					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
- 		}
+ static int virtio_gpio_probe(struct virtio_device *vdev)
+ {
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	u32 gpio_names_size;
+@@ -551,9 +550,11 @@ static int virtio_gpio_probe(struct virt
+ 		return -ENOMEM;
  
-+		if (p_h264_sps->chroma_format_idc < 3)
-+			p_h264_sps->flags &=
-+				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
-+
- 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
- 			p_h264_sps->flags &=
- 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
--- 
-2.39.5
-
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 
 
 
