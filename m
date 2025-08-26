@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CDFB35B3E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 736F7B3693C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 884D57C2ECF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A48518E3CDC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D70B29B8CF;
-	Tue, 26 Aug 2025 11:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A263568E4;
+	Tue, 26 Aug 2025 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDoKpcLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkZCkS43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A16C27A917;
-	Tue, 26 Aug 2025 11:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034BE31985C;
+	Tue, 26 Aug 2025 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207175; cv=none; b=e3mF4EeBQAY1kLWd9MyjPvxWf2dCtIrFXwW6MmxjPl4amdgIe8njwF6k+LeYS+OUQy2yBMti8j2vUzxKZUEt7EDwIq941fDpGouajpWDas4v0cSNf4nFL7Gjwy1UcpVBIstA6nUZg9Y8seNhuEUj8k6zMJoIDc7g2xoI4KG4XhQ=
+	t=1756217383; cv=none; b=orbqbstVPo6pdK8fV5Qw56yU8IgtOoV3UOcERwt66qcgXdt1obm2mS/0GHHmI6mAseqOzbQZrWWaW/hCiJFpTNC3LXXGw+RG/1d1Aqu4F1Cq7dVnPW6cVvopZdhKoLEbGYrfozN/d9x7t6DKqjy18P7o7HLNOv6wtazQA6e5FRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207175; c=relaxed/simple;
-	bh=EXnXvDUul4Z6rkJqOHCZAfW8I1c5MKfKm9ZwJ86HJ/A=;
+	s=arc-20240116; t=1756217383; c=relaxed/simple;
+	bh=57lwfYnpUvCUBnXKILc7bu8frADmXcnyBDD3PZoT9Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBw2ZsMR4CH4pvMSsCdUDIPEkOrwhPk++uPhfqJPmVHP70ZCIwLSlUEt63vI4V6mYmwDyr/8zySh42MYe2XZhVTITqnbS+7Wuz2anJsNAEnqbVZsfvJfQOiYZ8LDZMnbergJkhpRH2wjJ9ZlUYc7HIkfOKSnGyQcn4uUXtO/ERw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDoKpcLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1535C4CEF1;
-	Tue, 26 Aug 2025 11:19:34 +0000 (UTC)
+	 MIME-Version; b=l8j8K/pMM1c+4i0VoBKvb1ad4HEK2+QbFly+w2ET3ua/6olV3sTJOjOMuUv7VPfgqfRRJNb3fBFzXOS3W/G5eqTW2Nd9Q/tlOLs+1C8bhuMaFT9SsbkUvYmeRkagE+u/Y1xPMQRvDJOfFnsP99hLDoZYnqU90nLdH1aqau5ByHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkZCkS43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED5EC4CEF1;
+	Tue, 26 Aug 2025 14:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207175;
-	bh=EXnXvDUul4Z6rkJqOHCZAfW8I1c5MKfKm9ZwJ86HJ/A=;
+	s=korg; t=1756217382;
+	bh=57lwfYnpUvCUBnXKILc7bu8frADmXcnyBDD3PZoT9Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDoKpcLDH6edMJXeK/VivUnaYd6HYUxCCKKLZAzRA51JSYxZlrW3O5LYsVDVxUHxU
-	 G5OfOrELzb5oDeUKajqK6+HU2v4pqLBTaH6fklm6uvNa6uwPrFMxAZxEeAdl21hnIj
-	 scgoKhPwTkV/adDURAQjBsPGzHO5lbqRcSbixwTc=
+	b=zkZCkS4317QZvM4K/PDt5qOeiNDbiLECRWgX9xdzrl4sZXteIGMO9FjtTSrQ9Pfqm
+	 zp//T2IGbNQlA3H6FSCJnpJCFR31xSnLEc8Dxrp0qubi79ZPhTYQamYLakuPrldWqs
+	 CD7ZzYzZotvEJYnifqAmRQz98rC44wHcGaWn6MzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Chan <towinchenmi@gmail.com>,
-	Sven Peter <sven@kernel.org>
-Subject: [PATCH 6.16 048/457] arm64: dts: apple: t8012-j132: Include touchbar framebuffer node
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 122/523] mtd: fix possible integer overflow in erase_xfer()
 Date: Tue, 26 Aug 2025 13:05:32 +0200
-Message-ID: <20250826110938.536937954@linuxfoundation.org>
+Message-ID: <20250826110927.525548643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Chan <towinchenmi@gmail.com>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-commit ef68a0e1087882850628000f28078e1c4df917ee upstream.
+[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
 
-Apple T2 MacBookPro15,2 (j132) has a touchbar so include the framebuffer
-node.
+The expression '1 << EraseUnitSize' is evaluated in int, which causes
+a negative result when shifting by 31 - the upper bound of the valid
+range [10, 31], enforced by scan_header(). This leads to incorrect
+extension when storing the result in 'erase->len' (uint64_t), producing
+a large unexpected value.
 
-Cc: stable@vger.kernel.org
-Fixes: 4efbcb623e9bc ("arm64: dts: apple: Add T2 devices")
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-Link: https://lore.kernel.org/stable/20250620-j132-fb-v1-1-bc6937baf0b9%40gmail.com
-Link: https://lore.kernel.org/r/20250620-j132-fb-v2-1-65f100182085@gmail.com
-Signed-off-by: Sven Peter <sven@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/apple/t8012-j132.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ftl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/apple/t8012-j132.dts b/arch/arm64/boot/dts/apple/t8012-j132.dts
-index 778a69be18dd..7dcac51703ff 100644
---- a/arch/arm64/boot/dts/apple/t8012-j132.dts
-+++ b/arch/arm64/boot/dts/apple/t8012-j132.dts
-@@ -7,6 +7,7 @@
- /dts-v1/;
+diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
+index 2578f27914ef..ffe89209cf4b 100644
+--- a/drivers/mtd/ftl.c
++++ b/drivers/mtd/ftl.c
+@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
+             return -ENOMEM;
  
- #include "t8012-jxxx.dtsi"
-+#include "t8012-touchbar.dtsi"
+     erase->addr = xfer->Offset;
+-    erase->len = 1 << part->header.EraseUnitSize;
++    erase->len = 1ULL << part->header.EraseUnitSize;
  
- / {
- 	model = "Apple T2 MacBookPro15,2 (j132)";
+     ret = mtd_erase(part->mbd.mtd, erase);
+     if (!ret) {
 -- 
-2.50.1
+2.39.5
 
 
 
