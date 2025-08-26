@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA791B361D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE02B36AD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875C21883572
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52EC1A0024B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40032F8BF0;
-	Tue, 26 Aug 2025 13:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2B535206C;
+	Tue, 26 Aug 2025 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdzOr7Q2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1miksv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A35242D7B;
-	Tue, 26 Aug 2025 13:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA3C2AE7F;
+	Tue, 26 Aug 2025 14:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213734; cv=none; b=X6PQWRj7ZCcWCp5KM/LCkEUVfUNwfN3wPunlas4+lQNCRwPehsqaqy7uB1zE9KKig3PulQqjH2Y5VG2l1Y//sioRmKKVzg85tN2D/wiKUc2cDfJ3rkkLt7BI+t5n8J0VDYBy0JUf9QD+sKcl1JDOpZ8mH9mf7mN+w5KeX304T3E=
+	t=1756218119; cv=none; b=nk2zLGl58kYDSpRapKjC0wiT/41gobXV8syhmWsd95Tb/AbcFbTIbFgz0AJn+EWcL/FXjMVCo2Een3rxSPpovFqgzvVTbungQ4/Ksx8N3u9CfzczoaIulZ7RFTQ4j6EgtQjSWNGNaU+VIPbscklZ43On7oaDLmCUkYdQWPe/fZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213734; c=relaxed/simple;
-	bh=+4gItVbcHxILRlqQvC+oBcBtXaKmDgUf9QSU7l7Z/sY=;
+	s=arc-20240116; t=1756218119; c=relaxed/simple;
+	bh=IQifRH4exKKgPcN/xqLTEwxKeE1yPFNyubLLLDKSm40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQ75DTB1Q6jx3mykZiqaYz8G0XZvVapGLy8SkJQttzxAsP76e1Vp07Lit2Z5LyG/w9rLOUdJFHzU6niOZxJzbTc/cncEocaYtXcvm87CyrfRsqkkfPHHhqdY6v1AnBqmLDvuAEQ5pVJQm1Y9LAvvUBJWd/DwMpeAxx4pes/Yoms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdzOr7Q2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E592EC113CF;
-	Tue, 26 Aug 2025 13:08:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lL9mlY1aVurq6bWWJwy+/ewDHQoUMa9m3r5m6xm33HxQfNO5J6d3ZeTruEGrgnMqHZeNI8pIj7UQOgak7dS1SrvUs0Kka1Qww0g7TrniqLJi/HB59VUCRfJD8cN9oggNkj60LRiIhmZhziTs4n12pjW2zurOYwceZEohgcGMrTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1miksv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53604C116B1;
+	Tue, 26 Aug 2025 14:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213734;
-	bh=+4gItVbcHxILRlqQvC+oBcBtXaKmDgUf9QSU7l7Z/sY=;
+	s=korg; t=1756218119;
+	bh=IQifRH4exKKgPcN/xqLTEwxKeE1yPFNyubLLLDKSm40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdzOr7Q2iHZykCF4SqfkvPDximFEJDesaQctALlPX1X0ZCSytT4kfdm5vG+UPYO9c
-	 0Z2eYCfQhxSWR7kpKN5TkenNfPtbUbaf4BktrYLv8TODTS2Pux6X5+73eOM6FPAdhA
-	 tRyPe6rd1fmSnHlbP4VbvmhJz1qVYZ2gu9qtUIow=
+	b=q1miksv9VdD1/xsenCQ6sH4TluChhR+JUUpVrJfPAfG7Abk92h1XCbanIV+D7DW2B
+	 2r8RdPB5TP1UX3vXPSYT87gRrVvUI0sio+fSPTmq2xq0lIdTZ6dvxAhRycmnXU5int
+	 PElqkXD06i5ydPlmJcoFXs5WE53kgcjna4OLK9uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 460/587] btrfs: send: make fs_path_len() inline and constify its argument
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.10 399/523] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
 Date: Tue, 26 Aug 2025 13:10:09 +0200
-Message-ID: <20250826111004.674516687@linuxfoundation.org>
+Message-ID: <20250826110934.302606723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 920e8ee2bfcaf886fd8c0ad9df097a7dddfeb2d8 ]
+commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
 
-The helper function fs_path_len() is trivial and doesn't need to change
-its path argument, so make it inline and constify the argument.
+Also needed by DCE 6.
+This way the code that gathers this info can be shared between
+different DCE versions and doesn't have to be repeated.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
+ 3 files changed, 3 insertions(+), 11 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -478,7 +478,7 @@ static void fs_path_free(struct fs_path
- 	kfree(p);
- }
- 
--static int fs_path_len(struct fs_path *p)
-+static inline int fs_path_len(const struct fs_path *p)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+@@ -384,8 +384,6 @@ static void dce_pplib_apply_display_requ
  {
- 	return p->end - p->start;
- }
+ 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
+ 
+-	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
+-
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
+@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
+ 	int j;
+ 	int num_cfgs = 0;
+ 
++	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
++	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
++	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
+ 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
+ 
+ 	for (j = 0; j < context->stream_count; j++) {
+@@ -242,13 +245,6 @@ void dce11_pplib_apply_display_requireme
+ 	pp_display_cfg->min_engine_clock_deep_sleep_khz
+ 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
+ 
+-	pp_display_cfg->avail_mclk_switch_time_us =
+-						dce110_get_min_vblank_time_us(context);
+-	/* TODO: dce11.2*/
+-	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
+-
+-	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
+-
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
+ {
+ 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
+ 
+-	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
+-
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
 
 
 
