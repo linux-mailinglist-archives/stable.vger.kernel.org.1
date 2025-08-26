@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B78B35B5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FD9B360C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6DD3B4153
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B102A106C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E052E88B7;
-	Tue, 26 Aug 2025 11:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089B417C211;
+	Tue, 26 Aug 2025 13:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y55GfDnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqTIIEfr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6132BE653;
-	Tue, 26 Aug 2025 11:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BF2195FE8;
+	Tue, 26 Aug 2025 13:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207329; cv=none; b=N5eTC5dFG5AU1A9cp89iwVIYra85wHiK+pPUq5sLHnsrV4DuNj2KyFJLutaocTMIkWmWVlQviQNhWAaPEaQIr+pZksmm9QYOsDobdZFFt/SXYK9oGBrvXl7/bf4G6cohUbI1caClFSPDMEejO6E0ufe82r4KE+6rLMmlMtyKAes=
+	t=1756213240; cv=none; b=p6orAg20Jj6Qvlw5FctaP4dHqQrGdBvQcIVWnzaJTkudWdFYVQl4F/BSG8I/JO+YeY0w0PXwhw8jh0Au8Dmhf5VZciA6Dz0xUAmSX63I01pHrrMu2xpKoDsf6oK25C5eIubT8Q0k2bmm5tq3u3LQMbCVdzqyomaY79OMA8mdQV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207329; c=relaxed/simple;
-	bh=5pL+cwObd+jAjCMoxvbJXfIAAVDw+tbyPHmkymYwnc8=;
+	s=arc-20240116; t=1756213240; c=relaxed/simple;
+	bh=yAnHOfRxjxc939EedaK8Pixwn3yHDCH3HU4NsOm5s+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o02mpN50HGePgADYf2Scs4j3gKVcfUZeM6bYCPPqfQGBBeEi11TgOX2xyzi5zbcdW4TSyPyDfN5rNq3CSRDPu00GX0gKs6CR+M6egeZPsVJkVftYL+w+K5yARZfJdhSnAS913hKZBMUHjGXYPmIdNJqp02a2EZsplquFxV3gkus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y55GfDnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C340CC4CEF4;
-	Tue, 26 Aug 2025 11:22:08 +0000 (UTC)
+	 MIME-Version; b=hMTnZwF4fkhNEPDQQoPqOD1h/k3jO3R2zaYIZumsmIoRwHfZjIjUDNrPSij0jJ6BFVNgvdbGOfdN07zlyG5bWTXiP/HB5BhYDtXlihRCYywVcUD4eDvV7hGnGf5qVu4HIpIGERXvbiKK9OIMb7aGcot675JZWFol4JJLjMM3Lus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqTIIEfr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F4BC4CEF4;
+	Tue, 26 Aug 2025 13:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207329;
-	bh=5pL+cwObd+jAjCMoxvbJXfIAAVDw+tbyPHmkymYwnc8=;
+	s=korg; t=1756213240;
+	bh=yAnHOfRxjxc939EedaK8Pixwn3yHDCH3HU4NsOm5s+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y55GfDnt3W7N+tOgiWE64Y8e41ZFlJIyJALegtXcOBM//XeEayLHHaPTeu3uhqDmO
-	 nYxL4NDORNw1jQpQuQroN61g++mQpGcBs6kBfVSMB5rqjiMyafq9oIeIXTjyhJJcUh
-	 l0OKJLoV92vRh6LLh0YkYncYk8LCYwk54FsDppAg=
+	b=AqTIIEfrQlcQ9093vN6lh1O0VenQJZ46pHD22RkYKIDi/YO2S2jGcOz1vn9V3C7gr
+	 qLAw91yLJtU79TpIYnc3E+/FUO5edGuD9fyDXlAZbwTGVFWlZouhLTP4PWmc7I+bnN
+	 RPq/mlTvG7sJiy3ir/yuGhlGjO8E3o6gJc1nsAjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naushir Patuck <naush@raspberrypi.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 139/457] media: pisp_be: Fix pm_runtime underrun in probe
+	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 274/587] kconfig: lxdialog: replace strcpy() with strncpy() in inputbox.c
 Date: Tue, 26 Aug 2025 13:07:03 +0200
-Message-ID: <20250826110940.810413780@linuxfoundation.org>
+Message-ID: <20250826110959.897587065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
 
-commit e9bb2eacc7222ff8210903eb3b7d56709cc53228 upstream.
+[ Upstream commit 5ac726653a1029a2eccba93bbe59e01fc9725828 ]
 
-During the probe() routine, the PiSP BE driver needs to power up the
-interface in order to identify and initialize the hardware.
+strcpy() performs no bounds checking and can lead to buffer overflows if
+the input string exceeds the destination buffer size. This patch replaces
+it with strncpy(), and null terminates the input string.
 
-The driver resumes the interface by calling the
-pispbe_runtime_resume() function directly, without going
-through the pm_runtime helpers, but later suspends it by calling
-pm_runtime_put_autosuspend().
-
-This causes a PM usage count imbalance at probe time, notified by the
-runtime_pm framework with the below message in the system log:
-
- pispbe 1000880000.pisp_be: Runtime PM usage count underflow!
-
-Fix this by resuming the interface using the pm runtime helpers instead
-of calling the resume function directly and use the pm_runtime framework
-in the probe() error path. While at it, remove manual suspend of the
-interface in the remove() function. The driver cannot be unloaded if in
-use, so simply disable runtime pm.
-
-To simplify the implementation, make the driver depend on PM as the
-RPI5 platform where the ISP is integrated in uses the PM framework by
-default.
-
-Fixes: 12187bd5d4f8 ("media: raspberrypi: Add support for PiSP BE")
-Cc: stable@vger.kernel.org
-Tested-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Reviewed-by: Nicolas Schier <nicolas.schier@linux.dev>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/raspberrypi/pisp_be/Kconfig   |    1 +
- drivers/media/platform/raspberrypi/pisp_be/pisp_be.c |    5 ++---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ scripts/kconfig/lxdialog/inputbox.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/raspberrypi/pisp_be/Kconfig
-+++ b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
-@@ -3,6 +3,7 @@ config VIDEO_RASPBERRYPI_PISP_BE
- 	depends on V4L_PLATFORM_DRIVERS
- 	depends on VIDEO_DEV
- 	depends on ARCH_BCM2835 || COMPILE_TEST
-+	depends on PM
- 	select VIDEO_V4L2_SUBDEV_API
- 	select MEDIA_CONTROLLER
- 	select VIDEOBUF2_DMA_CONTIG
---- a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
-+++ b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
-@@ -1726,7 +1726,7 @@ static int pispbe_probe(struct platform_
- 	pm_runtime_use_autosuspend(pispbe->dev);
- 	pm_runtime_enable(pispbe->dev);
+diff --git a/scripts/kconfig/lxdialog/inputbox.c b/scripts/kconfig/lxdialog/inputbox.c
+index 1dcfb288ee63..327b60cdb8da 100644
+--- a/scripts/kconfig/lxdialog/inputbox.c
++++ b/scripts/kconfig/lxdialog/inputbox.c
+@@ -39,8 +39,10 @@ int dialog_inputbox(const char *title, const char *prompt, int height, int width
  
--	ret = pispbe_runtime_resume(pispbe->dev);
-+	ret = pm_runtime_resume_and_get(pispbe->dev);
- 	if (ret)
- 		goto pm_runtime_disable_err;
+ 	if (!init)
+ 		instr[0] = '\0';
+-	else
+-		strcpy(instr, init);
++	else {
++		strncpy(instr, init, sizeof(dialog_input_result) - 1);
++		instr[sizeof(dialog_input_result) - 1] = '\0';
++	}
  
-@@ -1748,7 +1748,7 @@ static int pispbe_probe(struct platform_
- disable_devs_err:
- 	pispbe_destroy_devices(pispbe);
- pm_runtime_suspend_err:
--	pispbe_runtime_suspend(pispbe->dev);
-+	pm_runtime_put(pispbe->dev);
- pm_runtime_disable_err:
- 	pm_runtime_dont_use_autosuspend(pispbe->dev);
- 	pm_runtime_disable(pispbe->dev);
-@@ -1762,7 +1762,6 @@ static void pispbe_remove(struct platfor
- 
- 	pispbe_destroy_devices(pispbe);
- 
--	pispbe_runtime_suspend(pispbe->dev);
- 	pm_runtime_dont_use_autosuspend(pispbe->dev);
- 	pm_runtime_disable(pispbe->dev);
- }
+ do_resize:
+ 	if (getmaxy(stdscr) <= (height - INPUTBOX_HEIGTH_MIN))
+-- 
+2.39.5
+
 
 
 
