@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5DBB35C78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D758B361A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 443537B8FAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A357BA42D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3593090CE;
-	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A64726FDBF;
+	Tue, 26 Aug 2025 13:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzcWc3bf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmcmoB1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7512BE653;
-	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1072BE653;
+	Tue, 26 Aug 2025 13:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207910; cv=none; b=aL5Ghp/k4cfrQtHmBi/FJ6zfnrUETYp1CGpj9NIQKFMdyi70YJMOEXdMS6XqDOBeOHQhTjrE6eNjeFHtWu8qmZgePWtFQgflverS2bLJj3uvxeQm+NhviJsOB+BPHescXs0cFvvgWmudcu/KbJOUA4sMi8mK04HaAN4lxDNIlfw=
+	t=1756213843; cv=none; b=NrkYqU24ET9iZeI7YYSvZm9+hdjG2ZRUGR0gyQt+xxTq9v2M98O7mgYaXobLu8x2Z32E2RohF2HjtAwCdLiDYn8Ie4WTuCUjoAOZ4L8h8NyEy04zCy+vMTT3a6XBSmxlwrrkolyXNzPx2i3a5NWmpSjWpxUUmcjYqQ6LLY/Etc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207910; c=relaxed/simple;
-	bh=Aq9oQ+M64b42taiVwtGQyqB7LAwkZ0+/2CYIQsHIMfw=;
+	s=arc-20240116; t=1756213843; c=relaxed/simple;
+	bh=nMDxYSXWBQeTGwuy+M6iqO9TWR0Fian2tG8pQ7X5h4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ5Tc0HziTRVBVO1WDAg9CIqRDXG/x215vq6NcAZLGsv+tQFxOWnCxgKR83OK6+WpSq6UdlPAGkL+xv/htF+23cMEHe9FD4PPaZTgP/NTaHN2InQQBtQf3EvEKxtYmew3Stz5B1jmCVYmokdv+lQauP4HpdKlPebY6McMwwPwes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzcWc3bf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D10AC4CEF1;
-	Tue, 26 Aug 2025 11:31:50 +0000 (UTC)
+	 MIME-Version; b=H8SU4hvD2mcp2L1FmgVHR+hoHFOflVHlXWUEIvoKi12+J0rrvBkfAyODBYsnQhXpz4r/sviLr8m2TOufLhpuGtREWUaAHWnzbkEml10SBfx47sL2X+HRaFY0M+k3ssKig2HTl0GerW9aEG7w3pGtyKX827iS5R9s/SRAYxEwggI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmcmoB1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E632C4CEF1;
+	Tue, 26 Aug 2025 13:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207910;
-	bh=Aq9oQ+M64b42taiVwtGQyqB7LAwkZ0+/2CYIQsHIMfw=;
+	s=korg; t=1756213843;
+	bh=nMDxYSXWBQeTGwuy+M6iqO9TWR0Fian2tG8pQ7X5h4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzcWc3bfXxXrm1GHBgqZNHDhOVmKPTaJ8kiu9REZg3cJfxQvU0OW/0ugNC92Eeqph
-	 HliEDTgAElWg2puCko5pFiiKgRbZ1S/XGrVy7+83f2YsrGZhwj6qQ+XOQ2DRnXG+zL
-	 3O7jPba4qGMkhZLnAfBJ/CmOsZVC5cXg1xY6taSI=
+	b=CmcmoB1qddLC188WFtWE5OAGZvrIPzj9YekYLZ7hIiZWQd/66NNdy9bHLcrLeh4bG
+	 wgXVbmOVmO9SDakCnEPNDfpg5x52RsaqcnKmsYD9pQkUCr9Qhps0YrxyL6TdY2+wYu
+	 ZNasHv9fr8AEPl/6VkezuU7CW2q7npktz+lSKaiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
-	Leon Romanovsky <leon@kernel.org>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 365/457] RDMA/core: Free pfn_list with appropriate kvfree call
+Subject: [PATCH 6.6 500/587] ext4: preserve SB_I_VERSION on remount
 Date: Tue, 26 Aug 2025 13:10:49 +0200
-Message-ID: <20250826110946.327567551@linuxfoundation.org>
+Message-ID: <20250826111005.704059042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 111aea0464c20f3eb25a48d5ff6c036e6b416123 ]
+[ Upstream commit f2326fd14a224e4cccbab89e14c52279ff79b7ec ]
 
-Ensure that pfn_list allocated by kvcalloc() is freed using corresponding
-kvfree() function. Match memory allocation and free routines kvcalloc -> kvfree.
+IMA testing revealed that after an ext4 remount, file accesses triggered
+full measurements even without modifications, instead of skipping as
+expected when i_version is unchanged.
 
-Fixes: 259e9bd07c57 ("RDMA/core: Avoid hmm_dma_map_alloc() for virtual DMA devices")
-Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Link: https://patch.msgid.link/aJjcPjL1BVh8QrMN@bhairav-test.ee.iitb.ac.in
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
+remount due to commit 1ff20307393e ("ext4: unconditionally enable the
+i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
+i_version handling on remount").
+
+To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
+ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
+ensuring it persists across all mounts.
+
+Cc: stable@kernel.org
+Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem_odp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/super.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index b1c44ec1a3f3..572a91a62a7b 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -115,7 +115,7 @@ static int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2028,6 +2028,9 @@ int ext4_init_fs_context(struct fs_conte
+ 	fc->fs_private = ctx;
+ 	fc->ops = &ext4_context_ops;
  
- out_free_map:
- 	if (ib_uses_virt_dma(dev))
--		kfree(map->pfn_list);
-+		kvfree(map->pfn_list);
- 	else
- 		hmm_dma_map_free(dev->dma_device, map);
- 	return ret;
-@@ -287,7 +287,7 @@ static void ib_umem_odp_free(struct ib_umem_odp *umem_odp)
- 	mutex_unlock(&umem_odp->umem_mutex);
- 	mmu_interval_notifier_remove(&umem_odp->notifier);
- 	if (ib_uses_virt_dma(dev))
--		kfree(umem_odp->map.pfn_list);
-+		kvfree(umem_odp->map.pfn_list);
- 	else
- 		hmm_dma_map_free(dev->dma_device, &umem_odp->map);
++	/* i_version is always enabled now */
++	fc->sb_flags |= SB_I_VERSION;
++
+ 	return 0;
  }
--- 
-2.50.1
-
+ 
+@@ -5305,9 +5308,6 @@ static int __ext4_fill_super(struct fs_c
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
+ 
+-	/* i_version is always enabled now */
+-	sb->s_flags |= SB_I_VERSION;
+-
+ 	err = ext4_check_feature_compatibility(sb, es, silent);
+ 	if (err)
+ 		goto failed_mount;
 
 
 
