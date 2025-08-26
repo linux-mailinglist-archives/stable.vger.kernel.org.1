@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A510B36179
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B01B35B61
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058BC1BC1050
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2570F189B46D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097651A9FB0;
-	Tue, 26 Aug 2025 12:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726D9284B5B;
+	Tue, 26 Aug 2025 11:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thKXoBH+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG9y2sBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3BA1A00F0;
-	Tue, 26 Aug 2025 12:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3067E267386;
+	Tue, 26 Aug 2025 11:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213053; cv=none; b=djeiq+zcI2ggaNCzJr7qiTNccv4/HQ6Y1kBbu5xHHFDwv3s9E02otZfvWPg4buNjWtQ9SQqLQjGWDa/3VOEnMN/W+sjPep23fGKaxPUXvOWZPRWv37FZZqtSdGfDseSiJBOD9ec5+46sRX7fQ3LhIO/pAQNwAahCKGbBCWhJF9Q=
+	t=1756207150; cv=none; b=eYiL7ZbrvbBtiIDM9E13kCmHiO1I6tl/rWj4LJJ8o84LPOeK2c2Fo7fNkguikmKIhunqmIgWKYm3eGEn75qOJ6jsDcrD42U7Q3h0ZrRYFgV/oP5BCPGw43YRu576LSdDdOvhV28VLRKnI32x7akT1h2AJy6/q44IPLWWRlmiQrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213053; c=relaxed/simple;
-	bh=toJlEI3bikvCzxaUonCSBshVx9kEJpahWa7hkmbFVSE=;
+	s=arc-20240116; t=1756207150; c=relaxed/simple;
+	bh=ZvlfWnQaMIHfqW8kkIePGCtSCpeNyYtGWVq2GPUk8ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sl0OIX5TeNq0DENMOs5sYwhOZGVa1E2j+e/SS4Db+8HGShuj7fjJhBME81f89JgmWAhlqshgtRiUTjwH5Hywxb9q3njuOSL/Y+UD8OLd+IsJMKhTeZyH2j4rLVJwVOqVGqXkyFA568Xar89Stm4y00gPEBh47V3LRVXBeuIku5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thKXoBH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB17C4CEF1;
-	Tue, 26 Aug 2025 12:57:33 +0000 (UTC)
+	 MIME-Version; b=MOiuUKFmg2O15I2fJU2JTZJcjs78dTTFwEhrdCkVbqiIeZROjIoylGtJCMXvzB3ZOIl+YzSwa6ls4EdBtug+10BvjZp4En9JcfnEod9Yh5ElJmQJVHthBxRQsTCMbjpb22brmnCREoeHmZ6KCfPPYX/PFJEN40zxMRzl5ScjSRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KG9y2sBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5773EC4CEF1;
+	Tue, 26 Aug 2025 11:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213053;
-	bh=toJlEI3bikvCzxaUonCSBshVx9kEJpahWa7hkmbFVSE=;
+	s=korg; t=1756207149;
+	bh=ZvlfWnQaMIHfqW8kkIePGCtSCpeNyYtGWVq2GPUk8ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thKXoBH+Z4cy2gNNXwwYlkL1Cebe8JYwRcLIjcDQHM+CUrmfkSNmgJnkBE2RkVReA
-	 ekJ9SWHJgiiq63izog7qMp9hSYQJ186Moe9+mcu5WCT63K5OrhUqzKN3wf2E04O3Mp
-	 t2AYevUtvpdyvtXbQMaI1CGhce+mLdylRQE418hI=
+	b=KG9y2sBcc87q22RXSta8zh+8srgWLKQKdSN6tXHZs3VoY9qGLr4pjtAN3sXTppkMw
+	 4VZugdaRHK3E/rGSJ4VytrSpZcebfj2OfCtjuqahxd4JBfGhA2S4och/clqRdt8QSE
+	 dFq/mkoQxwrysCarWM0bznvLuJQlsD4mKnwV+CVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Joe Damato <joe@dama.to>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/587] ionic: clean dbpage in de-init
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.16 069/457] ata: libata-scsi: Return aborted command when missing sense and result TF
 Date: Tue, 26 Aug 2025 13:05:53 +0200
-Message-ID: <20250826110958.128091806@linuxfoundation.org>
+Message-ID: <20250826110939.073272858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit c9080abea1e69b8b1408ec7dec0acdfdc577a3e2 ]
+commit d2be9ea9a75550a35c5127a6c2633658bc38c76b upstream.
 
-Since the kern_dbpage gets set up in ionic_lif_init() and that
-function's error path will clean it if needed, the kern_dbpage
-on teardown should be cleaned in ionic_lif_deinit(), not in
-ionic_lif_free().  As it is currently we get a double call
-to iounmap() on kern_dbpage if the PCI ionic fails setting up
-the lif.  One example of this is when firmware isn't responding
-to AdminQ requests and ionic's first AdminQ call fails to
-setup the NotifyQ.
+ata_gen_ata_sense() is always called for a failed qc missing sense data
+so that a sense key, code and code qualifier can be generated using
+ata_to_sense_error() from the qc status and error fields of its result
+task file. However, if the qc does not have its result task file filled,
+ata_gen_ata_sense() returns early without setting a sense key.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Improve this by defaulting to returning ABORTED COMMAND without any
+additional sense code, since we do not know the reason for the failure.
+The same fix is also applied in ata_gen_passthru_sense() with the
+additional check that the qc failed (qc->err_mask is set).
+
+Fixes: 816be86c7993 ("ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/ata/libata-scsi.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index bc7c5cd38596..1ac7a40fcc43 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3394,10 +3394,6 @@ void ionic_lif_free(struct ionic_lif *lif)
- 	lif->info = NULL;
- 	lif->info_pa = 0;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -938,6 +938,8 @@ static void ata_gen_passthru_sense(struc
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+ 			    "missing result TF: can't generate ATA PT sense data\n");
++		if (qc->err_mask)
++			ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+ 		return;
+ 	}
  
--	/* unmap doorbell page */
--	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
--	lif->kern_dbpage = NULL;
--
- 	mutex_destroy(&lif->config_lock);
- 	mutex_destroy(&lif->queue_lock);
+@@ -992,8 +994,8 @@ static void ata_gen_ata_sense(struct ata
  
-@@ -3423,6 +3419,9 @@ void ionic_lif_deinit(struct ionic_lif *lif)
- 	ionic_lif_qcq_deinit(lif, lif->notifyqcq);
- 	ionic_lif_qcq_deinit(lif, lif->adminqcq);
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+-			    "missing result TF: can't generate sense data\n");
+-		return;
++			    "Missing result TF: reporting aborted command\n");
++		goto aborted;
+ 	}
  
-+	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
-+	lif->kern_dbpage = NULL;
+ 	/* Use ata_to_sense_error() to map status register bits
+@@ -1004,13 +1006,15 @@ static void ata_gen_ata_sense(struct ata
+ 		ata_to_sense_error(tf->status, tf->error,
+ 				   &sense_key, &asc, &ascq);
+ 		ata_scsi_set_sense(dev, cmd, sense_key, asc, ascq);
+-	} else {
+-		/* Could not decode error */
+-		ata_dev_warn(dev, "could not decode error status 0x%x err_mask 0x%x\n",
+-			     tf->status, qc->err_mask);
+-		ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+ 		return;
+ 	}
 +
- 	ionic_lif_reset(lif);
++	/* Could not decode error */
++	ata_dev_warn(dev,
++		"Could not decode error 0x%x, status 0x%x (err_mask=0x%x)\n",
++		tf->error, tf->status, qc->err_mask);
++aborted:
++	ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
  }
  
--- 
-2.39.5
-
+ void ata_scsi_sdev_config(struct scsi_device *sdev)
 
 
 
