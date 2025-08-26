@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A5FB366FE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7CEB3695B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ABC48E3CFA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54491C838AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C36434F49E;
-	Tue, 26 Aug 2025 13:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA61353368;
+	Tue, 26 Aug 2025 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEl1c9W6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+34FviR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC21034F49A;
-	Tue, 26 Aug 2025 13:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29262352067;
+	Tue, 26 Aug 2025 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216253; cv=none; b=r0rbn1BVcWtBFyDGZvW+Gka48/CnbB2TTcozwbWEznrWiUJItI8AAUYM8oLYufGSu/Kj7bAtWwWjPrxF0EYIrd6IB1qqeCl3yIXoWmeMQIiqgwh1xhqTCYf9yPC0PmUEzZtw5GOHt4y65TCLjJrfBwJFAXFCHsnjzo2XzDgD6QQ=
+	t=1756217643; cv=none; b=M0fht7WUO2fgHkFKGSzpv/pdV2y+Els/jfLKCIDNPXENLjTDVEJWZ8kUSdsyz6B+n4aVRQLYuDXMsEC16W25eMVKdeMLtl0VCcWLCR+kh/H91j79gefxJtjAqEaN6Jn8mGcNfcC2guTi8pL1j4AjGQf7mMlDQ2h7WTvJxmYs61k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216253; c=relaxed/simple;
-	bh=fRkE3D7+HFACO5iU1jkKB91oIPTFhfhekZbRYnH6gqM=;
+	s=arc-20240116; t=1756217643; c=relaxed/simple;
+	bh=r1iOXwoHac4VvjRZdsnXGI58/MeEGxtL5OtLjPkf7l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvMFluzLKzuwu+uML2PNL5dKfTHeHbr+WOf/ZPNYqFDXJFFecQglIk/7bHnbzfPJsupMajRO1k5jz+EWETwtj7LRDQ8AEM6NxNi4XJFOEIsjvRw+Y9L29S09h1sFNa3hYhzwItI/EYGBJIKoLyjSAj1KWIwmHXEqM9x1Tqch6Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEl1c9W6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F40EC113CF;
-	Tue, 26 Aug 2025 13:50:52 +0000 (UTC)
+	 MIME-Version; b=QgMUdOzTt14CTwlhDHkxNVR35OLu0V6/uWHynDXCPHfCEOKzHx2UxZUM++AZO1BQW2JHk+BDx8FyVjfv08d6PUFO/N+GV2plRFpnst31HtYT8+iVj3cDN1BKYkh3eA84q8Xish/5F2gV69ZnsaXrwmLk0FTJT9gZjaJKJQhlek8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+34FviR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0A2C113D0;
+	Tue, 26 Aug 2025 14:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216252;
-	bh=fRkE3D7+HFACO5iU1jkKB91oIPTFhfhekZbRYnH6gqM=;
+	s=korg; t=1756217643;
+	bh=r1iOXwoHac4VvjRZdsnXGI58/MeEGxtL5OtLjPkf7l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEl1c9W6OF7h9UhC1prMvzAo6cKuod+MJrT91NhQ/eWSveXkHzKtX/HlJ3QGcnuYw
-	 MAq1hD3xmZPu3VsmgahcaS7XwWKFHbqCe8WJO0jCADrgzRPLTGsLZgWJYCwKlXnyQw
-	 9GLWCT8dsttBwE6f2bHrxZemdvu8vhruq8tRhOYE=
+	b=J+34FviRCpX3cb1KfLTi48buWC1Rblw4EWGRl+c15HqDhA32wQW/ELN+pxd6F3eDu
+	 29wo0n5CDmPQHe7WtEw1fz5n/lfgOG1rgJRYG94wvNBwRmkdoL6t38h4YWNRmx4NOX
+	 uWUYQQgIwgYLxjjiYVMqWvRIXls1GR5EEXb5RGpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 339/644] wifi: cfg80211: reject HTC bit for management frames
+Subject: [PATCH 5.10 220/523] securityfs: dont pin dentries twice, once is enough...
 Date: Tue, 26 Aug 2025 13:07:10 +0200
-Message-ID: <20250826110954.787743262@linuxfoundation.org>
+Message-ID: <20250826110929.886379273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+incidentally, securityfs_recursive_remove() is broken without that -
+it leaks dentries, since simple_recursive_removal() does not expect
+anything of that sort.  It could be worked around by dput() in
+remove_one() callback, but it's easier to just drop that double-get
+stuff.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 783acd2c4211..5c805a2bda62 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -661,7 +661,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+diff --git a/security/inode.c b/security/inode.c
+index 6c326939750d..e6e07787eec9 100644
+--- a/security/inode.c
++++ b/security/inode.c
+@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
+ 		inode->i_fop = fops;
+ 	}
+ 	d_instantiate(dentry, inode);
+-	dget(dentry);
+ 	inode_unlock(dir);
+ 	return dentry;
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
- 
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
+ 			simple_rmdir(dir, dentry);
+ 		else
+ 			simple_unlink(dir, dentry);
+-		dput(dentry);
+ 	}
+ 	inode_unlock(dir);
+ 	simple_release_fs(&mount, &mount_count);
 -- 
 2.39.5
 
