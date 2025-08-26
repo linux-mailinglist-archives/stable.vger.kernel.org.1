@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66D8B35DD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E71CAB364BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2481E7C74B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5A98A649C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75D02F8BD9;
-	Tue, 26 Aug 2025 11:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7359D1FBCB1;
+	Tue, 26 Aug 2025 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeGplWQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgfkq+MU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966F521D3C0;
-	Tue, 26 Aug 2025 11:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F06E29D28A;
+	Tue, 26 Aug 2025 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208843; cv=none; b=EgwKKYnRtJX0PamScpOXHi171vjql8tkxcfs9WYLeSV2P+nakpwWvd5Chn5/UGgyfiKVq8sK7bH8sY0vvYffMp+uQxSRg93cQTvioIxWgKFsWCei8XUPhYtebeZZ99K3W1GtC/OrXsAL2oH9tMxYmmyPXeNAlNFZPRGCys5WW+A=
+	t=1756215207; cv=none; b=GoW8tCz8VrvdEN3GJVKse+r/V+cHq312vlLIdf6QlcQRMlAQ8iLZtqbs2rLZjI4rofIo03VyzSRrtNg2yS3P3nGLNACgkNZUdQiVXA/sWuR7BQo7Ysf0djLRRJwh1k/Ce7udBxTiz3Zi7iWvsBCKMhedq8SnM3YqtvfUENt7ybA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208843; c=relaxed/simple;
-	bh=uBK1usGmC4ly7g9G3EAzi/2SVFAHcpY4dj0i0PMvzIg=;
+	s=arc-20240116; t=1756215207; c=relaxed/simple;
+	bh=ZKIr/DPQ2+ULLsx/anAaxVldeOVup0kq9aRkbQ6BsWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RL2y1ApYHSf93kKleKzPH1PNg3Lss+LlbR2tIq2pmhZym9c7vprg2twosJnOfpZ3Jsbh4ZyLHmOy05Gz36ooZw6yho+PEXjb1NsPFCDaON023dnQty+5+OLK5XhdNDgodzAZMnw8YNlTJPUizrEpO6/g1FQx2h/nKEm962x+sag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeGplWQS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21DEC4CEF4;
-	Tue, 26 Aug 2025 11:47:22 +0000 (UTC)
+	 MIME-Version; b=Zzgr3+sqs4VmjE76tM6qp2/gG/aFpTQ4qQ9xdcMFBfklRuMTKF6S1hZE//Hw3SjhBQcxqC8vRaaGA7MEssLl1quk4QOVfYJWes0oRUp7Uxz4u7k4lIxr+NA+HAIIpPC3tTvqKMyvoU+RczhJ+X4c2GHy5x6hHA1bjvTHTQt90oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgfkq+MU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47E9C4CEF1;
+	Tue, 26 Aug 2025 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208843;
-	bh=uBK1usGmC4ly7g9G3EAzi/2SVFAHcpY4dj0i0PMvzIg=;
+	s=korg; t=1756215207;
+	bh=ZKIr/DPQ2+ULLsx/anAaxVldeOVup0kq9aRkbQ6BsWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeGplWQSeyW8iqn3sL46PoJxuiLzRbo0YO45jIs/v8hgEHKfdTXK3umwPObK2BCTY
-	 QMaVbDeBTBe1AnkKmOVze2r++OUPCavcNe9btru3nScsV2BubwJvaxvnBWZYnSHrKf
-	 8fJjf07ZmBfBJ5+qX3FIMYioXG1PwDs5fsNxTkE0=
+	b=pgfkq+MU9WmA1SNuLzqzlheefXmH3lI9ge0Y2VYVKZt8/ore4N9UgGSTBuSIT0Csf
+	 rZg+661EZzRgw6qJSUcqLofn/W0zNuT7KNOK4/Ijcmlx/Rdj8HRXWhc+Hn1nsVwEUp
+	 kvk5KXvPV4ue80NMV6xMkoRCV8b3RJJONB/xQFbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/322] RDMA/hns: Fix querying wrong SCC context for DIP algorithm
+Subject: [PATCH 6.1 428/482] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems
 Date: Tue, 26 Aug 2025 13:11:21 +0200
-Message-ID: <20250826110922.499346343@linuxfoundation.org>
+Message-ID: <20250826110941.403274262@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 085a1b42e52750769a3fa29d4da6c05ab56f18f8 ]
+[ Upstream commit c91e140c82eb58724c435f623702e51cc7896646 ]
 
-When using DIP algorithm, all QPs establishing connections with
-the same destination IP share the same SCC, which is indexed by
-dip_idx, but dip_idx isn't necessarily equal to qpn. Therefore,
-dip_idx should be used to query SCC context instead of qpn.
+On 32-bit systems, 64-bit BAR writes to admin queue registers are
+performed as two 32-bit writes. Without locking, this can cause partial
+writes when accessed concurrently.
 
-Fixes: 124a9fbe43aa ("RDMA/hns: Append SCC context to the raw dump of QPC")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250726075345.846957-1-huangjunxian6@hisilicon.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Updated per-queue spinlocks is used to serialize these writes and prevent
+race conditions.
+
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 4 ++--
- drivers/infiniband/hw/hns/hns_roce_restrack.c | 9 ++++++++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr.h    |    4 ++++
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |   15 +++++++++++----
+ drivers/scsi/mpi3mr/mpi3mr_os.c |    2 ++
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 53fe0ef3883d..a7b3e4248ebb 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5498,7 +5498,7 @@ static int hns_roce_v2_query_srqc(struct hns_roce_dev *hr_dev, u32 srqn,
- 	return ret;
- }
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -1005,6 +1005,8 @@ struct scmd_priv {
+  * @logdata_buf: Circular buffer to store log data entries
+  * @logdata_buf_idx: Index of entry in buffer to store
+  * @logdata_entry_sz: log data entry size
++ * @adm_req_q_bar_writeq_lock: Admin request queue lock
++ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
+  * @pend_large_data_sz: Counter to track pending large data
+  * @io_throttle_data_length: I/O size to track in 512b blocks
+  * @io_throttle_high: I/O size to start throttle in 512b blocks
+@@ -1186,6 +1188,8 @@ struct mpi3mr_ioc {
+ 	u8 *logdata_buf;
+ 	u16 logdata_buf_idx;
+ 	u16 logdata_entry_sz;
++	spinlock_t adm_req_q_bar_writeq_lock;
++	spinlock_t adm_reply_q_bar_writeq_lock;
  
--static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 qpn,
-+static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 sccn,
- 				  void *buffer)
+ 	atomic_t pend_large_data_sz;
+ 	u32 io_throttle_data_length;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -23,17 +23,22 @@ module_param(poll_queues, int, 0444);
+ MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
+ 
+ #if defined(writeq) && defined(CONFIG_64BIT)
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
  {
- 	struct hns_roce_v2_scc_context *context;
-@@ -5510,7 +5510,7 @@ static int hns_roce_v2_query_sccc(struct hns_roce_dev *hr_dev, u32 qpn,
- 		return PTR_ERR(mailbox);
+ 	writeq(b, addr);
+ }
+ #else
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	__u64 data_out = b;
++	unsigned long flags;
  
- 	ret = hns_roce_cmd_mbox(hr_dev, 0, mailbox->dma, HNS_ROCE_CMD_QUERY_SCCC,
--				qpn);
-+				sccn);
- 	if (ret)
- 		goto out;
++	spin_lock_irqsave(write_queue_lock, flags);
+ 	writel((u32)(data_out), addr);
+ 	writel((u32)(data_out >> 32), (addr + 4));
++	spin_unlock_irqrestore(write_queue_lock, flags);
+ }
+ #endif
  
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index f637b73b946e..230187dda6a0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -100,6 +100,7 @@ int hns_roce_fill_res_qp_entry_raw(struct sk_buff *msg, struct ib_qp *ib_qp)
- 		struct hns_roce_v2_qp_context qpc;
- 		struct hns_roce_v2_scc_context sccc;
- 	} context = {};
-+	u32 sccn = hr_qp->qpn;
- 	int ret;
+@@ -2662,9 +2667,11 @@ static int mpi3mr_setup_admin_qpair(stru
+ 	    (mrioc->num_admin_req);
+ 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
+ 	mpi3mr_writeq(mrioc->admin_req_dma,
+-	    &mrioc->sysif_regs->admin_request_queue_address);
++		&mrioc->sysif_regs->admin_request_queue_address,
++		&mrioc->adm_req_q_bar_writeq_lock);
+ 	mpi3mr_writeq(mrioc->admin_reply_dma,
+-	    &mrioc->sysif_regs->admin_reply_queue_address);
++		&mrioc->sysif_regs->admin_reply_queue_address,
++		&mrioc->adm_reply_q_bar_writeq_lock);
+ 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
+ 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
+ 	return retval;
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -4966,6 +4966,8 @@ mpi3mr_probe(struct pci_dev *pdev, const
+ 	spin_lock_init(&mrioc->tgtdev_lock);
+ 	spin_lock_init(&mrioc->watchdog_lock);
+ 	spin_lock_init(&mrioc->chain_buf_lock);
++	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
++	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
+ 	spin_lock_init(&mrioc->sas_node_lock);
  
- 	if (!hr_dev->hw->query_qpc)
-@@ -116,7 +117,13 @@ int hns_roce_fill_res_qp_entry_raw(struct sk_buff *msg, struct ib_qp *ib_qp)
- 	    !hr_dev->hw->query_sccc)
- 		goto out;
- 
--	ret = hr_dev->hw->query_sccc(hr_dev, hr_qp->qpn, &context.sccc);
-+	if (hr_qp->cong_type == CONG_TYPE_DIP) {
-+		if (!hr_qp->dip)
-+			goto out;
-+		sccn = hr_qp->dip->dip_idx;
-+	}
-+
-+	ret = hr_dev->hw->query_sccc(hr_dev, sccn, &context.sccc);
- 	if (ret)
- 		ibdev_warn_ratelimited(&hr_dev->ib_dev,
- 				       "failed to query SCCC, ret = %d.\n",
--- 
-2.50.1
-
+ 	INIT_LIST_HEAD(&mrioc->fwevt_list);
 
 
 
