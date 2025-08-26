@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-172976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC191B35B10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214C5B36338
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF9D3A6438
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 448692A6D4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7C030BF64;
-	Tue, 26 Aug 2025 11:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBF834F464;
+	Tue, 26 Aug 2025 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxjNnXFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYP6nrSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DA02264A3;
-	Tue, 26 Aug 2025 11:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B7134A308;
+	Tue, 26 Aug 2025 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207052; cv=none; b=TiYoEPsj2i/KUjbQ+n7r/nDeXdQtgnL6unKrf5wTMG0NpPJQYpJyD678mm8rNEidtK/rUvBH7GvtEqhO33TOkVqanY6QzIR8gQ7I2LcB69j2xi7LdzYaup6QOM/SJwyMCCFQnlSwNKjZpoo9NdvwOA1aQ/s/9i6RASThyu6+9rg=
+	t=1756214237; cv=none; b=ZnBnd4/ag/qYHWaPXD1C56+ewL/fT1Q28ImZFQ1FNWBuGz0ejeVycP1tFzPfFfXOqD/UBz/ZQz10BFDirMABmqmU/89/GjkGdPjlPIr3Wczg5zXvsn++CothbfJSU7m9OKKuRGg3IfNNQA4w4oHdFjWEFstIBQSJl4J8mWPJKQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207052; c=relaxed/simple;
-	bh=kRMhd/EPPFSdVvvp4QWnGLdTNgrddedEk7A03524TgY=;
+	s=arc-20240116; t=1756214237; c=relaxed/simple;
+	bh=c+lypIBoJ5KojWS+e95z+KqT4u4Ve0rVOWOXoXu8DpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzxWqlEshsvz/GOkluRSpa/tBaxOhpaCDl6OLB0rJ35wJPMZW709mL++D0ly44Ve0W8RhkALV9AZY4H/5u/qAcf5UIkx7kE0tbhHJbNW9rF+s1P8MYyOLGQ13zQh/XmffEXJBwd9xLl1PqSK+OYmqfbKm5fHBpAjzt1cqnyf0bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxjNnXFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3594DC113CF;
-	Tue, 26 Aug 2025 11:17:32 +0000 (UTC)
+	 MIME-Version; b=hV4ZmQ965PH7mz/hWQqfcR/uSJfHJD7x0wKa3fAgunyA+bkraUUI/L70sZYvOu9ZxiKmW82qxJDqe1IG+Sur9q30I5FSQnM+4Umz8wxt3Uvfgl6ASs0xLtW3KaFJ8v9SgPrBYn6tmLlhJRGdOe3ikeZKg1evV+bN54sIwagBKCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYP6nrSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD045C4CEF1;
+	Tue, 26 Aug 2025 13:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207052;
-	bh=kRMhd/EPPFSdVvvp4QWnGLdTNgrddedEk7A03524TgY=;
+	s=korg; t=1756214237;
+	bh=c+lypIBoJ5KojWS+e95z+KqT4u4Ve0rVOWOXoXu8DpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxjNnXFzJdMAyqX1GmRXAyg4gfiusKtUJJsEikNTGGRJqAhigtgM30XnFGLxYRQJx
-	 V5EYM1gZakUvQ+cPNEcRrIXC4x43RP9Imf9CtXxx6L1di27F0Q+s1DcMecAIaqSv+4
-	 84wNzptt/bvzwnXzB8AGDsUrDZF99YBqQFQWr46s=
+	b=gYP6nrSR2rMIRerS4YTOx+Pcb2grpW4vCjs1vlLtNs/xU7tkPSWklou1bpgWmO114
+	 kTr8Ipp+DeUE0qpy2Z/FAR9z20C7mSaaXU5vxXFUmPg0kDaR9Ali7TiUPJ+TmcWJub
+	 gDBPJVnp4q3bhorHXXJCPQps3+YBOAmV3hSMT9zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 032/457] crypto: hash - Increase HASH_MAX_DESCSIZE for hmac(sha3-224-s390)
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 063/482] fix locking in efi_secret_unlink()
 Date: Tue, 26 Aug 2025 13:05:16 +0200
-Message-ID: <20250826110938.132866111@linuxfoundation.org>
+Message-ID: <20250826110932.383283826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 9d9b193ed73a65ec47cf1fd39925b09da8216461 upstream.
+[ Upstream commit 2c58d42de71f9c73e40afacc9d062892d2cc8862 ]
 
-The value of HASH_MAX_DESCSIZE is off by one for hmac(sha3-224-s390).
-Fix this so that hmac(sha3-224-s390) can be registered.
+We used to need securityfs_remove() to undo simple_pin_fs() done when
+the file had been created and to drop the second extra reference
+taken at the same time.  Now that neither is needed (or done by
+securityfs_remove()), we can simply call simple_unlink() and be done
+with that - the broken games with locking had been there only for the
+sake of securityfs_remove().
 
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Fixes: 6f90ba706551 ("crypto: s390/sha3 - Use API partial block handling")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/hash.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virt/coco/efi_secret/efi_secret.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/include/crypto/hash.h b/include/crypto/hash.h
-index 6f6b9de12cd3..ed63b904837d 100644
---- a/include/crypto/hash.h
-+++ b/include/crypto/hash.h
-@@ -184,7 +184,7 @@ struct shash_desc {
-  * Worst case is hmac(sha3-224-s390).  Its context is a nested 'shash_desc'
-  * containing a 'struct s390_sha_ctx'.
-  */
--#define HASH_MAX_DESCSIZE	(sizeof(struct shash_desc) + 360)
-+#define HASH_MAX_DESCSIZE	(sizeof(struct shash_desc) + 361)
- #define MAX_SYNC_HASH_REQSIZE	(sizeof(struct ahash_request) + \
- 				 HASH_MAX_DESCSIZE)
+diff --git a/drivers/virt/coco/efi_secret/efi_secret.c b/drivers/virt/coco/efi_secret/efi_secret.c
+index e700a5ef7043..d996feb0509a 100644
+--- a/drivers/virt/coco/efi_secret/efi_secret.c
++++ b/drivers/virt/coco/efi_secret/efi_secret.c
+@@ -136,15 +136,7 @@ static int efi_secret_unlink(struct inode *dir, struct dentry *dentry)
+ 		if (s->fs_files[i] == dentry)
+ 			s->fs_files[i] = NULL;
  
+-	/*
+-	 * securityfs_remove tries to lock the directory's inode, but we reach
+-	 * the unlink callback when it's already locked
+-	 */
+-	inode_unlock(dir);
+-	securityfs_remove(dentry);
+-	inode_lock(dir);
+-
+-	return 0;
++	return simple_unlink(inode, dentry);
+ }
+ 
+ static const struct inode_operations efi_secret_dir_inode_operations = {
 -- 
-2.50.1
+2.39.5
 
 
 
