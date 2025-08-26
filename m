@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1877B35F7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA08B365D4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893572083BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA61566B39
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415D8450FE;
-	Tue, 26 Aug 2025 12:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C741FBCB1;
+	Tue, 26 Aug 2025 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn/GEmxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hypzsYry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF27218B12;
-	Tue, 26 Aug 2025 12:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521A2AD04;
+	Tue, 26 Aug 2025 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212586; cv=none; b=Nf1KeBYZ6tIvcHmFjHfs04OWs2OuO5zDKvxgL5guACN75DVgsYyYZUiFzRdCijjvZ65V8PDuB4SRk/io5nOxp7L/xfnfIllAOTvCxu078QpGVpQUVdlrDkU2gi58kEa80MuYYSVjV0aR8Qi40BWFNxKWOSthTNgNG2sLErz6R6s=
+	t=1756215527; cv=none; b=G/WVfQ8Mkq9O1HidfGaYevVf29fhWFT2PLuaefbJOujTDq8qVFN1b26KPIseQAR1zQ6pDHyzNdxWUZa/zDtrRc1XaBXInGoFOYiKqMIatXuakSxfi8JlwrDrIleBFUieQcR2ZtuxrkoVexRrxtpEl83Rhv+mjJ7qehrkMWUvrCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212586; c=relaxed/simple;
-	bh=7U9Vl8z1ZxRK33Prsx4EJAAHfQ/OJANOlo5MYIsosaw=;
+	s=arc-20240116; t=1756215527; c=relaxed/simple;
+	bh=2yiwpAQo2vgTjIDhXw0KkQIrCETNtpWdGabupnL1s5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zsm/3tD0jI47qbo/Uug5AEkGCtOm2wyj0ClepjNGEAaIzL3IKmEe+ZqwShYQVfIyyiItrSlnqs1VfmkqPZjG6hKgtXiWWVNp4utBw/pYEkkAc1vJ1+54bU6LFRWIR4eWZJnBs3LHehc1YMxvVCnwwmcGecaaI/z/X01iAwuJA5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn/GEmxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F29C4CEF1;
-	Tue, 26 Aug 2025 12:49:45 +0000 (UTC)
+	 MIME-Version; b=IzHJJ4H4Pum5RyI/0Nnjr/CvBNZ1FKg+QwwYqexGXSo0U15B7QRfR/UDTj5EyMZAo6VhueGMCT83KwRAZxPpV8L2TV5JfcQ4XKab53+AoiYet78EzyP/uDV8tvKb+LaG5OA+LY60vgyPZt+SUGzahauzH8z6yqJheLxr4X1HO+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hypzsYry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEB7C4CEF1;
+	Tue, 26 Aug 2025 13:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212585;
-	bh=7U9Vl8z1ZxRK33Prsx4EJAAHfQ/OJANOlo5MYIsosaw=;
+	s=korg; t=1756215527;
+	bh=2yiwpAQo2vgTjIDhXw0KkQIrCETNtpWdGabupnL1s5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn/GEmxVkpI3ktnAmmkCmRbWu4NEyvLuuEPh/IbjonwZxXfGUITJEXisv81E3z625
-	 B1W+bqADrHG9kbq1NwNs6dcPcLFtZsk/9GsFsqNZUiVHFcx977myE4RLNQivbmd93Z
-	 84yCg6xa3/NJ5bE1weKgRGrSvPV2utD/eHxtlfPQ=
+	b=hypzsYryk1EineXGN13y5b7abjXoASohEc80xAPLr5lUG9vQq7wAAP5k4qV6DYs37
+	 1F/xq5Ztpc7H3oY1lIUIobT0D64cjX9IoLIP4ijX3UuT87GjNHoTn8mkDuML0S6P9G
+	 /ba/mn6R90DrHFNy3mMJmpN/qEG7W6L1CwtoD/5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 009/587] gpio: mlxbf2: use platform_get_irq_optional()
-Date: Tue, 26 Aug 2025 13:02:38 +0200
-Message-ID: <20250826110953.187328607@linuxfoundation.org>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 068/644] mm/vmalloc: leave lazy MMU mode on PTE mapping error
+Date: Tue, 26 Aug 2025 13:02:39 +0200
+Message-ID: <20250826110948.183538037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-commit 63c7bc53a35e785accdc2ceab8f72d94501931ab upstream.
+commit fea18c686320a53fce7ad62a87a3e1d10ad02f31 upstream.
 
-The gpio-mlxbf2 driver interfaces with four GPIO controllers,
-device instances 0-3. There are two IRQ resources shared between
-the four controllers, and they are found in the ACPI table for
-instances 0 and 3. The driver should not use platform_get_irq(),
-otherwise this error is logged when probing instances 1 and 2:
-  mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
+vmap_pages_pte_range() enters the lazy MMU mode, but fails to leave it in
+case an error is encountered.
 
-Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20250728144619.29894-1-davthompson@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lkml.kernel.org/r/20250623075721.2817094-1-agordeev@linux.ibm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202506132017.T1l1l6ME-lkp@intel.com/
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmalloc.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpio-mlxbf2.c
-+++ b/drivers/gpio/gpio-mlxbf2.c
-@@ -397,7 +397,7 @@ mlxbf2_gpio_probe(struct platform_device
- 	gc->ngpio = npins;
- 	gc->owner = THIS_MODULE;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -460,6 +460,7 @@ static int vmap_pages_pte_range(pmd_t *p
+ 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+ 		pgtbl_mod_mask *mask)
+ {
++	int err = 0;
+ 	pte_t *pte;
  
--	irq = platform_get_irq(pdev, 0);
-+	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq >= 0) {
- 		girq = &gs->gc.irq;
- 		gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
+ 	/*
+@@ -473,15 +474,21 @@ static int vmap_pages_pte_range(pmd_t *p
+ 	do {
+ 		struct page *page = pages[*nr];
+ 
+-		if (WARN_ON(!pte_none(*pte)))
+-			return -EBUSY;
+-		if (WARN_ON(!page))
+-			return -ENOMEM;
++		if (WARN_ON(!pte_none(*pte))) {
++			err = -EBUSY;
++			break;
++		}
++		if (WARN_ON(!page)) {
++			err = -ENOMEM;
++			break;
++		}
++
+ 		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+ 		(*nr)++;
+ 	} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	*mask |= PGTBL_PTE_MODIFIED;
+-	return 0;
++
++	return err;
+ }
+ 
+ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
 
 
 
