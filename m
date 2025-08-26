@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925A2B35C85
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285CCB35DBD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AEE63B2C88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE7DD4E402D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F60321456;
-	Tue, 26 Aug 2025 11:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004732D0C91;
+	Tue, 26 Aug 2025 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxbjisim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2NpE9L4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FDC30BF54;
-	Tue, 26 Aug 2025 11:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B378129D26A;
+	Tue, 26 Aug 2025 11:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207982; cv=none; b=ghBSnGFYMpyb/uqpuG7/WHz4KQkY09Xg2P2Y/Ns2SzL3W3EPyRNhlDJr4HbdMB6gEXJj+GcMKBoGRh1rTTFITDO2KcxISp/oikmkLMrxFUNB6iyY42COlKroG9bN/GyGcR5yB3Fho7neSBwYCGaC0xosNbnisO/kAQcJyGg2+GI=
+	t=1756208832; cv=none; b=IbB9Dbr6zbEYJlazLewN8lqYIVDmxVqb9Lw1uyFWgKlFMhYDb0bxxUmFcUxJiCc0pSCGu1Ww4zFPhx/l6ROFcZykOm74mxbmL9Ygqrhr3r6FtAb3zZoNcoG3RFzm0i+Ebxjl373o04/Neoqo7ECkVhqIwcBtqS0XMf3tVhx3OAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207982; c=relaxed/simple;
-	bh=0Sd5SmAjW50i/ai+nKcUZVztwahk9ggsDqqztB+qpG8=;
+	s=arc-20240116; t=1756208832; c=relaxed/simple;
+	bh=RbdxzciDSmUAx7a3aj8S+jqrZeoWJdXUsuzDoVk6wa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/upPPP/2/x8Dw2tGxG5kUvWP9uUC+sHJHjiO/crDLBFhT+S8bDDo38J9pz6QUGnjTQW4c/1y+1IEI314MyE96Cs7e/jvf/Io1vZ5hnzoNeFYEcN2SggDh2WcfFIsXBe3u3qcqCHnmui1uIZHP1xiAPJcleKhoPT8lWZDzS+6Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxbjisim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A32C4CEF1;
-	Tue, 26 Aug 2025 11:33:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vut1fL2EvLDg3/AzK/dqaWhBTYKN3RDmRuSnbLmspDSetIbZnv03X/HuW9spPtsI4shmUwNbVMp2FKjeUgpVPi3GF5nRrQxpPvclN2ok1BZ5T0KEwq2C2UVf+8IKPhqialzOCpfTbqOqupFq6ofBT8ejFkj8/ZdCxgorFbTPA3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2NpE9L4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C87C4CEF1;
+	Tue, 26 Aug 2025 11:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207982;
-	bh=0Sd5SmAjW50i/ai+nKcUZVztwahk9ggsDqqztB+qpG8=;
+	s=korg; t=1756208832;
+	bh=RbdxzciDSmUAx7a3aj8S+jqrZeoWJdXUsuzDoVk6wa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxbjisim1g2fjZps9/R53Nio76BBlIwb7+i6NiXN7GTuGFlgF8sxO/pxacCaHj0eI
-	 hc/M4PqBLP+UQTo69lIYREE64/Abz58DI2Q+KSj4ZFgguZvtCLcWLc9TD3LfyU26cv
-	 ykuzjg/aGe6Gpxgq4PzRPFq6XK2CF5N4sYspWccE=
+	b=o2NpE9L4XlUM8xXypERFK6nb5KIZdzI458hd0nddAMHpmssy+1CmIa1ulC8r5oDpF
+	 /+fikburg2h78KIMCVmy4o22W8XSuFNUXc8/5BFPgfWfNChEmKvr7/yQEU/rygK4qp
+	 SsAWP0x9xp5cPiuGpiKYlb+BP3OehV2z3oxAWgKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 393/457] ALSA: usb-audio: Fix size validation in convert_chmap_v3()
+Subject: [PATCH 6.12 262/322] drm/tests: Fix drm_test_fb_xrgb8888_to_xrgb2101010() on big-endian
 Date: Tue, 26 Aug 2025 13:11:17 +0200
-Message-ID: <20250826110947.007858802@linuxfoundation.org>
+Message-ID: <20250826110922.403771200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit 89f0addeee3cb2dc49837599330ed9c4612f05b0 ]
+[ Upstream commit 05663d88fd0b8ee1c54ab2d5fb36f9b6a3ed37f7 ]
 
-The "p" pointer is void so sizeof(*p) is 1.  The intent was to check
-sizeof(*cs_desc), which is 3, instead.
+Fix failures on big-endian architectures on tests cases
+single_pixel_source_buffer, single_pixel_clip_rectangle,
+well_known_colors and destination_pitch.
 
-Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aKL5kftC1qGt6lpv@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 15bda1f8de5d ("drm/tests: Add calls to drm_fb_blit() on supported format conversion tests")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250630090054.353246-2-jose.exposito89@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tests/drm_format_helper_test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index 1cb52373e70f..db2c9bac00ad 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -349,7 +349,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
- 		u16 cs_len;
- 		u8 cs_type;
+diff --git a/drivers/gpu/drm/tests/drm_format_helper_test.c b/drivers/gpu/drm/tests/drm_format_helper_test.c
+index 8b62adbd4dfa..e17643c408bf 100644
+--- a/drivers/gpu/drm/tests/drm_format_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_format_helper_test.c
+@@ -1040,6 +1040,7 @@ static void drm_test_fb_xrgb8888_to_xrgb2101010(struct kunit *test)
+ 	memset(buf, 0, dst_size);
  
--		if (len < sizeof(*p))
-+		if (len < sizeof(*cs_desc))
- 			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
- 		if (len < cs_len)
+ 	drm_fb_xrgb8888_to_xrgb2101010(&dst, dst_pitch, &src, &fb, &params->clip, &fmtcnv_state);
++	buf = le32buf_to_cpu(test, (__force const __le32 *)buf, dst_size / sizeof(u32));
+ 	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
+ }
+ 
 -- 
 2.50.1
 
