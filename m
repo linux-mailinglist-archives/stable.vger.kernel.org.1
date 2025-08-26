@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04FAB35D27
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B8DB36D20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD24D7C3E50
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD1A982726
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5B32820B1;
-	Tue, 26 Aug 2025 11:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9243568E0;
+	Tue, 26 Aug 2025 14:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEuaHFm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLm7FBKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0333117332C;
-	Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489173376BD;
+	Tue, 26 Aug 2025 14:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208488; cv=none; b=QUI2UFMUT+Z8cNtSqv26Xvb4fuy0wAbUL1k1WoMC9suVyS69tPogDMlVnd2dRZ2trquOmj3H62iQyj3z7OewjrJtgM0EB5/uk3dUnE+zA5ApiD+mEho9i62WA6CbIJ8JTRQ4zXWkNYOETgOjQHLePNkVNRsCHHlwjCUplOg5xrg=
+	t=1756219084; cv=none; b=gSujKlIWzGmhmMzlXr1DUPie0/1YpoMr5zvnUh01yzpDecKeS2gjJqsOyZkU64wbKf0kpzeN/3BXgOHloYcoFcrwX+eoiNBGk0jD6Y1PNZNTRCSOgIlW3H07KJmNrpcCNpFZ0ee5BL9jndyLIMYKz3L09H6mBbFHyRbzFZnJPPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208488; c=relaxed/simple;
-	bh=SXIjs1pvtgMRMNiClstZaPsCHZYqiBDtIfYda59lXOo=;
+	s=arc-20240116; t=1756219084; c=relaxed/simple;
+	bh=gcs6w5CRg7vjBIg2RgGqcmxAH+v2Trj15jLxYikUG1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hs7XZIGantEojnsZwHUrOWwxtFu9ssj97bslTNlOBVqdhBWxB5YCibMjKf0oDFUAT7SbC+O5Inulim+fOo4uSvoqY3Gtcwd1TMKDnE/ku9XN1OxFcPC5DkV1t7XccU4rc5fOk54Kodb/eOz3YvAcVOm7PyOV2INwh51Prokd30g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEuaHFm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875E4C4CEF1;
-	Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
+	 MIME-Version; b=KKh7RDpkwv0oGXq2npUFuhEuZCUCgPzjctMJjs8bA2tQSpNMbWjsUO+tv8ttD9r2faaGtLzPQ4g9H3KLxl/3Lr1G12xyUI+2HHlw+D32PBFmKTs78Ie6mskLUAqf/aLawf86Wa2GAVwdPVgvzrDDtCDjJkbh2mdfzKpQGmgBOlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLm7FBKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4B9C4CEF1;
+	Tue, 26 Aug 2025 14:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208487;
-	bh=SXIjs1pvtgMRMNiClstZaPsCHZYqiBDtIfYda59lXOo=;
+	s=korg; t=1756219083;
+	bh=gcs6w5CRg7vjBIg2RgGqcmxAH+v2Trj15jLxYikUG1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEuaHFm6nG/Nq7e7+IK2opoysRF4LhnQsjbx/piISo6plI2UxUxpavrLk8S2dGSIh
-	 /LwSdPDke8IPzgT5emm72mZntHcL0RszbRWocfVwnmJSX/W8tvJSCBTBrKPOXVtIk0
-	 vadn66NFtsGSZqfKZclj1z5CQTT3XksRMZLDXHjc=
+	b=TLm7FBKfHEunEtmKCJ6T2uy1Df7ooCp9yMfBcGKb19CFYjGWBfBJFPzWjy3nahM4B
+	 +GDm5tbKKVOa895hwKduINSm+A3UTyq1e2QEo3GGMu9pjDwbS9NSSp3SgOdj1X9aE1
+	 xbnQ1S+r1qnjvZj77vzaP/4qbXBCKi9xRrGJlvoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 130/322] LoongArch: KVM: Make function kvm_own_lbt() robust
+	Jonas Rebmann <jre@pengutronix.de>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 219/403] net: fec: allow disable coalescing
 Date: Tue, 26 Aug 2025 13:09:05 +0200
-Message-ID: <20250826110919.010881955@linuxfoundation.org>
+Message-ID: <20250826110912.884873322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jonas Rebmann <jre@pengutronix.de>
 
-commit 4be8cefc132606b4a6e851f37f8e8c40c406c910 upstream.
+[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
 
-Add the flag KVM_LARCH_LBT checking in function kvm_own_lbt(), so that
-it can be called safely rather than duplicated enabling again.
+In the current implementation, IP coalescing is always enabled and
+cannot be disabled.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As setting maximum frames to 0 or 1, or setting delay to zero implies
+immediate delivery of single packets/IRQs, disable coalescing in
+hardware in these cases.
+
+This also guarantees that coalescing is never enabled with ICFT or ICTT
+set to zero, a configuration that could lead to unpredictable behaviour
+according to i.MX8MP reference manual.
+
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/vcpu.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1249,9 +1249,11 @@ int kvm_own_lbt(struct kvm_vcpu *vcpu)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index fd7c504b44f2..f8a096633280 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2590,27 +2590,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
+ static void fec_enet_itr_coal_set(struct net_device *ndev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	int rx_itr, tx_itr;
++	u32 rx_itr = 0, tx_itr = 0;
++	int rx_ictt, tx_ictt;
  
- 	preempt_disable();
--	set_csr_euen(CSR_EUEN_LBTEN);
--	_restore_lbt(&vcpu->arch.lbt);
--	vcpu->arch.aux_inuse |= KVM_LARCH_LBT;
-+	if (!(vcpu->arch.aux_inuse & KVM_LARCH_LBT)) {
-+		set_csr_euen(CSR_EUEN_LBTEN);
-+		_restore_lbt(&vcpu->arch.lbt);
-+		vcpu->arch.aux_inuse |= KVM_LARCH_LBT;
+-	/* Must be greater than zero to avoid unpredictable behavior */
+-	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+-	    !fep->tx_time_itr || !fep->tx_pkts_itr)
+-		return;
+-
+-	/* Select enet system clock as Interrupt Coalescing
+-	 * timer Clock Source
+-	 */
+-	rx_itr = FEC_ITR_CLK_SEL;
+-	tx_itr = FEC_ITR_CLK_SEL;
++	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
++	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
+ 
+-	/* set ICFT and ICTT */
+-	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
+-	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
+-	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
+-	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
++	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
++		rx_itr |= FEC_ITR_ICTT(rx_ictt);
 +	}
- 	preempt_enable();
  
- 	return 0;
+-	rx_itr |= FEC_ITR_EN;
+-	tx_itr |= FEC_ITR_EN;
++	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
++		tx_itr |= FEC_ITR_ICTT(tx_ictt);
++	}
+ 
+ 	writel(tx_itr, fep->hwp + FEC_TXIC0);
+ 	writel(rx_itr, fep->hwp + FEC_RXIC0);
+-- 
+2.39.5
+
 
 
 
