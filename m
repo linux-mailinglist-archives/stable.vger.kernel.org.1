@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACA3B36110
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3328B36C19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EECAC2A2C2A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D6EC1C2468C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3988C1CAA65;
-	Tue, 26 Aug 2025 13:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A113570A7;
+	Tue, 26 Aug 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uBm7u1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsK/k1W8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC9518DB2A;
-	Tue, 26 Aug 2025 13:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FB6356906;
+	Tue, 26 Aug 2025 14:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213369; cv=none; b=kMetXA2riaN5jWLjGz2D43/AgKKwfLkFOBnMS/Rz5lLk6m+LxoEVQ2wm8ntt3ie2t/ias7c1SKsJIfhlT/OOThr0CH0BSaYrSzP47l9dqqYKG5/Nd5pIuvLH2aSBXlj+x0r4LOZjCAxfHOfb9RIHnJrqdT7duz1yUz0mh9zE4rc=
+	t=1756218814; cv=none; b=hDlcS+v804Rz/8CpRMdEPLYSf1qNrTAdndi3YSeA4ueTJr5RyVjDObKEoCu+5FyjA9yY/PcAhON3ZbT8Z/6yRvnsb8KteIEapW03YSfTdB93sboxXLozMC8qfBxxYhU9iACaKQGtYB48WD+E3OpazYc8VqRnp3P51R5yn9WAPKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213369; c=relaxed/simple;
-	bh=mmSZf7GIgXA6Uo3jjP0AqAaY3PAmSliebh6cR5JnU4g=;
+	s=arc-20240116; t=1756218814; c=relaxed/simple;
+	bh=aM8y7Oqj4IvP6SVlkctvqUu8rPRfTaPqt+ZYShTyNVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mz9s/gDZF5lN/2wVTp557o5rSmH9Kq46DEp5v/QuVHPqKCG3Wy8fZUKZO7RcnH/RYRHufbRbd3/WOoq4GozkBOrhvNAdJM3YZFT6EeB5h8T6ERpIfWBRWgd51oyL+U4vfK+mcpukMsvSuevKQtAESrzHCmOLmr7LA3LWBoqtP2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uBm7u1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7C0C4CEF1;
-	Tue, 26 Aug 2025 13:02:47 +0000 (UTC)
+	 MIME-Version; b=bbFqHOopNRDXTSbGbkv0VbRRqbFDAIYDTOHYC4tcUzj1DxJVsCg2mP54AYuvoo53hhTRX++klX0DfR495kv32xvRaF05Ecbc8/J0jCCkZ6SUU3lbUiGku2TpcVcRi4GgFHsIbASN0xI9MUU897iPrysranhv9ldN+SYgB7o6RJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsK/k1W8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A168C4CEF1;
+	Tue, 26 Aug 2025 14:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213367;
-	bh=mmSZf7GIgXA6Uo3jjP0AqAaY3PAmSliebh6cR5JnU4g=;
+	s=korg; t=1756218814;
+	bh=aM8y7Oqj4IvP6SVlkctvqUu8rPRfTaPqt+ZYShTyNVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uBm7u1UFmyv3Z24Uzo9AMcw8marFUXydma+eOXI+taBFezNUQtqPtEyQRet+DGG1
-	 Ir0fm0eYDIqYj6sgKN9JAeuoVau6WOFfpSupRRlaSlvbK7RFR4QAUQ+NkvQfTdhSJP
-	 m2KcgIzwINVyQHkoHHbYzmsgDjqm2dP/2UW4ctvE=
+	b=jsK/k1W8Aetqh2TIMHJ7aF8jG+1/n0PMJyJ0ZbK/ASx1gkRgUdUU0zXARXARhRt4a
+	 50XgeF2ao+zDyRBP89wFttfPr1LW5rcdK2rsKwed2l7y7ok2gLwA53kvlPU/rrogjm
+	 F6nCsVZfvF7aYeUM1Wy4BhQ7PDBJ//DbHEGXWwns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 320/587] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 143/403] ipv6: reject malicious packets in ipv6_gso_segment()
 Date: Tue, 26 Aug 2025 13:07:49 +0200
-Message-ID: <20250826111001.058122499@linuxfoundation.org>
+Message-ID: <20250826110910.710721585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +65,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
+[ Upstream commit d45cf1e7d7180256e17c9ce88e32e8061a7887fe ]
 
-When netpoll is enabled, calling pr_warn_once() while holding
-kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
-inversion with the netconsole subsystem.  This occurs because
-pr_warn_once() may trigger netpoll, which eventually leads to
-__alloc_skb() and back into kmemleak code, attempting to reacquire
-kmemleak_lock.
+syzbot was able to craft a packet with very long IPv6 extension headers
+leading to an overflow of skb->transport_header.
 
-This is the path for the deadlock.
+This 16bit field has a limited range.
 
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn_once()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+Add skb_reset_transport_header_careful() helper and use it
+from ipv6_gso_segment()
 
-Fix this by setting a flag and issuing the pr_warn_once() after
-kmemleak_lock is released.
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 0 UID: 0 PID: 5871 Comm: syz-executor211 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+ RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Call Trace:
+ <TASK>
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+  skb_gso_segment include/net/gso.h:83 [inline]
+  validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+  validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+  sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+  __dev_xmit_skb net/core/dev.c:4102 [inline]
+  __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
 
-Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1da932ed4ec ("ipv6: Separate ipv6 offload support")
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/688a1a05.050a0220.5d226.0008.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730131738.3385939-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmemleak.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/skbuff.h | 23 +++++++++++++++++++++++
+ net/ipv6/ip6_offload.c |  4 +++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -452,6 +452,7 @@ static struct kmemleak_object *mem_pool_
- {
- 	unsigned long flags;
- 	struct kmemleak_object *object;
-+	bool warn = false;
- 
- 	/* try the slab allocator first */
- 	if (object_cache) {
-@@ -469,8 +470,10 @@ static struct kmemleak_object *mem_pool_
- 	else if (mem_pool_free_count)
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
--		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-+		warn = true;
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-+	if (warn)
-+		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
- 
- 	return object;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 4edce28fb454..d9abd9e6833e 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2493,6 +2493,29 @@ static inline void skb_reset_transport_header(struct sk_buff *skb)
+ 	skb->transport_header = skb->data - skb->head;
  }
+ 
++/**
++ * skb_reset_transport_header_careful - conditionally reset transport header
++ * @skb: buffer to alter
++ *
++ * Hardened version of skb_reset_transport_header().
++ *
++ * Returns: true if the operation was a success.
++ */
++static inline bool __must_check
++skb_reset_transport_header_careful(struct sk_buff *skb)
++{
++	long offset = skb->data - skb->head;
++
++	if (unlikely(offset != (typeof(skb->transport_header))offset))
++		return false;
++
++	if (unlikely(offset == (typeof(skb->transport_header))~0U))
++		return false;
++
++	skb->transport_header = offset;
++	return true;
++}
++
+ static inline void skb_set_transport_header(struct sk_buff *skb,
+ 					    const int offset)
+ {
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index b7b4ba68f3a2..0d9d11902b1b 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -109,7 +109,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		skb_reset_transport_header(skb);
++		if (!skb_reset_transport_header_careful(skb))
++			goto out;
++
+ 		segs = ops->callbacks.gso_segment(skb, features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
+-- 
+2.39.5
+
 
 
 
