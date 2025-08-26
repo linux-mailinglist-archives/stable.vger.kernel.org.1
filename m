@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685C1B36476
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08115B369FE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 995CE5E2C31
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C4058620B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785DE318143;
-	Tue, 26 Aug 2025 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBB1352FC5;
+	Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdAFVxst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSaWHj9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30504223DF6;
-	Tue, 26 Aug 2025 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F20352FC1;
+	Tue, 26 Aug 2025 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214987; cv=none; b=gRZK27FkGTMd4c8c2IhJVMuwmqPYpExNmLiqW1FQ81oJA7RUr1UdJsSUt6RALvzn0JqEPaBojYJxBzMOjGY5Eovz1yGSJ2nOr1O3QKYTi3L2h4AA48iyh29GVr2Wg5pdNZyPin5ao/Hz6PMMH79b0hkVDxSK6ldhlcaJwiD272E=
+	t=1756218084; cv=none; b=QiQzhmqTFjuugS+Buq6EDIwKhdrDpa5AdzdP+Z6l5a+uGrMBDNqEDs+2ASESfIXak4CiD9Y532FHf1YxnnbKzDNpTisWPgKYgXGHZcO3O17SamMjy97aS86J5e+Cy/Ziua1KdQU6H2trmGbL/1fA49RrnlbX/uUJcHOWZ/YXn2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214987; c=relaxed/simple;
-	bh=ojt5ghIsP5Nn7SV9XamEs7i93X5GSDpDH261/JAAm9k=;
+	s=arc-20240116; t=1756218084; c=relaxed/simple;
+	bh=qXR8XAuHfgrP1IAXewDzkNYGZj9fPLFk+fIjU7bmOJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8PnFv48O9w+NNVmCQkfzlvwkc0nHHWfrccXN7X3c3qclGm+GwQWpFU4yAa9f3W91rBTuykUu/CdNFXKk8D9vttYLIQZBTO7GHdng8GF7Qu1heZ710LvLpFWQLTi9JbGuNnNPfTdVObPXa/7/0YF4STY93gFEhFS8pqlT1+aMiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdAFVxst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910E2C4CEF1;
-	Tue, 26 Aug 2025 13:29:46 +0000 (UTC)
+	 MIME-Version; b=pS0N9ofP5MjM9Zpadg4ck8fX29mXmL8cUlG6Wo45o7MdLIxZT5XNAxDfM6b3VRx/m3uEhC8Ffz7j2vV8SOrR0s7mkGp5wU6nKDy0kRjooDRjEHy8x5RIYuubIDWvSb6AchsMFJ3O5lAlAtblL/67OpSnUAhnGaLgYM2U/LxvdNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSaWHj9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B29C16AAE;
+	Tue, 26 Aug 2025 14:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214987;
-	bh=ojt5ghIsP5Nn7SV9XamEs7i93X5GSDpDH261/JAAm9k=;
+	s=korg; t=1756218082;
+	bh=qXR8XAuHfgrP1IAXewDzkNYGZj9fPLFk+fIjU7bmOJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdAFVxstzY0n7diPCIzS5447a0iroTbKumK+avyXT29YIgW8HU4AGI/Jw/9O8WMHx
-	 zySmcxiBLDpj4eRZ/IV82tBi5E+vQSAiVRxk1a+b3+p+gPZueybOPPIO2K01El2jAW
-	 f8MNnqz6zH5vTflWeqsc4HTDuoPySPGZjNN6CC9w=
+	b=QSaWHj9AhIZpKZ+EeLPByx+AnifKvG4TiU9khT20tB2P9xTtlV1Z3RiTrXDHxCvX7
+	 JJ1k+olc7IGtZWWA3rhm7T+IhDP0or/0NpGnm6XuuZrtMEoVm9HiHDV5FZ8yzc89Y+
+	 RTg5lDAV7UGjYEaBrgNYULgDiMKrj7NjOlAdoPDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 344/482] iio: hid-sensor-prox: Restore lost scale assignments
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 387/523] sch_drr: make drr_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:57 +0200
-Message-ID: <20250826110939.326799632@linuxfoundation.org>
+Message-ID: <20250826110934.004343773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 83ded7cfaccccd2f4041769c313b58b4c9e265ad ]
+commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
 
-The variables `scale_pre_decml`, `scale_post_decml`, and `scale_precision`
-were assigned in commit d68c592e02f6 ("iio: hid-sensor-prox: Fix scale not
-correct issue"), but due to a merge conflict in
-commit 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next"),
-these assignments were lost.
+drr_qlen_notify() always deletes the DRR class from its active list
+with list_del(), therefore, it is not idempotent and not friendly
+to its callers, like fq_codel_dequeue().
 
-Add back lost assignments and replace `st->prox_attr` with
-`st->prox_attr[0]` because commit 596ef5cf654b ("iio: hid-sensor-prox: Add
-support for more channels") changed `prox_attr` to an array.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
 
-Cc: stable@vger.kernel.org # 5.13+
-Fixes: 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250331055022.1149736-2-lixu.zhang@intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ changed st->prox_attr[0] array access to st->prox_attr single struct member ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/hid-sensor-prox.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/sch_drr.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -222,6 +222,11 @@ static int prox_parse_report(struct plat
- 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
- 			st->prox_attr.report_id);
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -111,6 +111,7 @@ static int drr_change_class(struct Qdisc
+ 	if (cl == NULL)
+ 		return -ENOBUFS;
  
-+	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
-+						      &st->prox_attr,
-+						      &st->scale_pre_decml,
-+						      &st->scale_post_decml);
-+
- 	return ret;
++	INIT_LIST_HEAD(&cl->alist);
+ 	cl->common.classid = classid;
+ 	cl->quantum	   = quantum;
+ 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
+@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
+ {
+ 	struct drr_class *cl = (struct drr_class *)arg;
+ 
+-	list_del(&cl->alist);
++	list_del_init(&cl->alist);
  }
  
+ static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
+@@ -401,7 +402,7 @@ static struct sk_buff *drr_dequeue(struc
+ 			if (unlikely(skb == NULL))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 
+ 			bstats_update(&cl->bstats, skb);
+ 			qdisc_bstats_update(sch, skb);
+@@ -442,7 +443,7 @@ static void drr_reset_qdisc(struct Qdisc
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
+ 			if (cl->qdisc->q.qlen)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			qdisc_reset(cl->qdisc);
+ 		}
+ 	}
 
 
 
