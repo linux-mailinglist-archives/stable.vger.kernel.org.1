@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647CAB35E5A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6A9B36792
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30A004652C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08EAC1C4018E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52270321438;
-	Tue, 26 Aug 2025 11:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA16034AAFE;
+	Tue, 26 Aug 2025 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1fA/BW1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhsheH6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C781FECAB;
-	Tue, 26 Aug 2025 11:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E4529D28A;
+	Tue, 26 Aug 2025 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208731; cv=none; b=Wlq3wHm8s4XUKfiGUP3IUTdVUc6R1f+NJ+Pu7Cfrwo7390LiNj789rcZPEjYi0l/QAS7qK5yaNS/KfP5IXk/HAUScYpnSbg1OhPBGlnnB6yeJcnLfZIJyLCNM928NGtAo3RGh7H0WHrf0r/vV6FxvmzxeKLQDQGi3RUzSOK8ebE=
+	t=1756216755; cv=none; b=cXPQVqfU//8vncoG8QbTO3zWxLwosccCXqfD8CXcNM61IHJBIfZRcno/wmuRBw4P4qfnWPjSBC8hHzst0BLFnLuYlMnjEjTRrcJ93Xff2StmeExT9tVCss7UG/G2CW1doQbk5n0gmGyd5Xc4SOlIlbDd+808jTqecFf3KdCzrwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208731; c=relaxed/simple;
-	bh=8K6OLmgV7c79MFjySWlJmFXq8eiob1lzVO942DvXM+I=;
+	s=arc-20240116; t=1756216755; c=relaxed/simple;
+	bh=JdCWoAPDbNPxXRYhGqf3Xb/+Q3mmIoghWDYxqupmwGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPSoCJlz+3dPVuv/MZZtsrHdF6SWmjPwJZ5kqYJiALFE3qqgbJsC4UkvyXkypl4mUw5JdY0pjJVa9MgxDkL7l9ZvhvT3AWfPuRS4TvsIBroYExE8p4wAw60wFuGEtOc+uOylnQ0mp3CC4nOAASO/LQMZM1tA50Y+f6UnIqW28x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1fA/BW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F122C4CEF4;
-	Tue, 26 Aug 2025 11:45:30 +0000 (UTC)
+	 MIME-Version; b=IjvdB1noLH3tb6ieR5CDBqxj8r4dSeeL7iwrVE4GVmf8jj7ZHR2JxmHHlAYTSbGwsmQKnk1Wa91ldccVW+CTp1UDyZH227a20k9upkVdUovQCDPvC4Bh49aQoTJlU6FIRr8TS4lvqEtSPB89PZTovI5RzqpyNU9Sl+wTmgp+5Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhsheH6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E8C4CEF1;
+	Tue, 26 Aug 2025 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208730;
-	bh=8K6OLmgV7c79MFjySWlJmFXq8eiob1lzVO942DvXM+I=;
+	s=korg; t=1756216755;
+	bh=JdCWoAPDbNPxXRYhGqf3Xb/+Q3mmIoghWDYxqupmwGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1fA/BW1Emjl95PzQylvR0mbizFeoF4N+UIZNuWPZ/30OvaQE5uR/QQB8FK46smPt
-	 339rNvI5Jspetc/U0g6jmAa63hu4OZ+xZlNIaGsdz05Gm/SKQ6VtjwDrQHLpopID2p
-	 P7oGuvqQ0Fjk6WNtMz5IdEaMi3X7Dxu20fOA/s0Q=
+	b=fhsheH6s+fzOK8A2eLSgnMJI0nilfqMiIQC32UzZMO584ECPXOccNM9OJDHjPdp0v
+	 f3KRn8if2IK/TsnCP5XN15vpNlROJUo5ERBmzhoqkS6AsjFsuV2fne7HKeCX5k/IZ4
+	 OXPlZjRRzx8UM6ULFztk598VK8CXcNfMFa+qfoKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Charalampos Mitrodimas <charmitro@posteo.net>
-Subject: [PATCH 6.12 206/322] debugfs: fix mount options not being applied
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 530/644] NFS: Fix the setting of capabilities when automounting a new filesystem
 Date: Tue, 26 Aug 2025 13:10:21 +0200
-Message-ID: <20250826110920.956513117@linuxfoundation.org>
+Message-ID: <20250826110959.646826929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit ba6cc29351b1fa0cb9adce91b88b9f3c3cbe9c46 upstream.
+[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
 
-Mount options (uid, gid, mode) are silently ignored when debugfs is
-mounted. This is a regression introduced during the conversion to the
-new mount API.
+Capabilities cannot be inherited when we cross into a new filesystem.
+They need to be reset to the minimal defaults, and then probed for
+again.
 
-When the mount API conversion was done, the parsed options were never
-applied to the superblock when it was reused. As a result, the mount
-options were ignored when debugfs was mounted.
-
-Fix this by following the same pattern as the tracefs fix in commit
-e4d32142d1de ("tracing: Fix tracefs mount options"). Call
-debugfs_reconfigure() in debugfs_get_tree() to apply the mount options
-to the superblock after it has been created or reused.
-
-As an example, with the bug the "mode" mount option is ignored:
-
-  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
-  $ mount | grep debugfs_test
-  debugfs on /tmp/debugfs_test type debugfs (rw,relatime)
-  $ ls -ld /tmp/debugfs_test
-  drwx------ 25 root root 0 Aug  4 14:16 /tmp/debugfs_test
-
-With the fix applied, it works as expected:
-
-  $ mount -o mode=0666 -t debugfs debugfs /tmp/debugfs_test
-  $ mount | grep debugfs_test
-  debugfs on /tmp/debugfs_test type debugfs (rw,relatime,mode=666)
-  $ ls -ld /tmp/debugfs_test
-  drw-rw-rw- 37 root root 0 Aug  2 17:28 /tmp/debugfs_test
-
-Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220406
-Cc: stable <stable@kernel.org>
-Reviewed-by: Eric Sandeen <sandeen@redhat.com>
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/r/20250816-debugfs-mount-opts-v3-1-d271dad57b5b@posteo.net
+Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/debugfs/inode.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++++--
+ fs/nfs/internal.h   |    2 +-
+ fs/nfs/nfs4client.c |   20 +-------------------
+ fs/nfs/nfs4proc.c   |    2 +-
+ 4 files changed, 45 insertions(+), 23 deletions(-)
 
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -183,6 +183,9 @@ static int debugfs_reconfigure(struct fs
- 	struct debugfs_fs_info *sb_opts = sb->s_fs_info;
- 	struct debugfs_fs_info *new_opts = fc->s_fs_info;
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -661,6 +661,44 @@ struct nfs_client *nfs_init_client(struc
+ }
+ EXPORT_SYMBOL_GPL(nfs_init_client);
  
-+	if (!new_opts)
-+		return 0;
++static void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++#if IS_ENABLED(CONFIG_NFS_V4)
++	/* Set the basic capabilities */
++	server->caps = server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++		server->caps &= ~NFS_CAP_READDIRPLUS;
++	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
++		server->caps &= ~NFS_CAP_READ_PLUS;
 +
- 	sync_filesystem(sb);
- 
- 	/* structure copy of new mount options to sb */
-@@ -269,10 +272,16 @@ static int debugfs_fill_super(struct sup
- 
- static int debugfs_get_tree(struct fs_context *fc)
- {
-+	int err;
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++#endif
++}
 +
- 	if (!(debugfs_allow & DEBUGFS_ALLOW_API))
- 		return -EPERM;
- 
--	return get_tree_single(fc, debugfs_fill_super);
-+	err = get_tree_single(fc, debugfs_fill_super);
-+	if (err)
-+		return err;
++void nfs_server_set_init_caps(struct nfs_server *server)
++{
++	switch (server->nfs_client->rpc_ops->version) {
++	case 2:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		break;
++	case 3:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
++			server->caps |= NFS_CAP_READDIRPLUS;
++		break;
++	default:
++		nfs4_server_set_init_caps(server);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
 +
-+	return debugfs_reconfigure(fc);
+ /*
+  * Create a version 2 or 3 client
+  */
+@@ -699,7 +737,6 @@ static int nfs_init_server(struct nfs_se
+ 	/* Initialise the client representation from the mount data */
+ 	server->flags = ctx->flags;
+ 	server->options = ctx->options;
+-	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
+ 
+ 	switch (clp->rpc_ops->version) {
+ 	case 2:
+@@ -735,6 +772,8 @@ static int nfs_init_server(struct nfs_se
+ 	if (error < 0)
+ 		goto error;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* Preserve the values of mount_server-related mount options */
+ 	if (ctx->mount_server.addrlen) {
+ 		memcpy(&server->mountd_address, &ctx->mount_server.address,
+@@ -884,7 +923,6 @@ void nfs_server_copy_userdata(struct nfs
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+ 	target->acdirmax = source->acdirmax;
+-	target->caps = source->caps;
+ 	target->options = source->options;
+ 	target->auth_info = source->auth_info;
+ 	target->port = source->port;
+@@ -1095,6 +1133,8 @@ struct nfs_server *nfs_clone_server(stru
+ 	if (error < 0)
+ 		goto out_free_server;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* probe the filesystem info for this server filesystem */
+ 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
+ 	if (error < 0)
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -219,7 +219,7 @@ extern struct nfs_client *
+ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct fs_context *);
+-extern void nfs4_server_set_init_caps(struct nfs_server *);
++extern void nfs_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(struct fs_context *);
+ extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
+ extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1065,24 +1065,6 @@ static void nfs4_session_limit_xasize(st
+ #endif
  }
  
- static void debugfs_free_fc(struct fs_context *fc)
+-void nfs4_server_set_init_caps(struct nfs_server *server)
+-{
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
+-		server->caps &= ~NFS_CAP_READ_PLUS;
+-
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-}
+-
+ static int nfs4_server_common_setup(struct nfs_server *server,
+ 		struct nfs_fh *mntfh, bool auth_probe)
+ {
+@@ -1102,7 +1084,7 @@ static int nfs4_server_common_setup(stru
+ 	if (error < 0)
+ 		goto out;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3969,7 +3969,7 @@ int nfs4_server_capabilities(struct nfs_
+ 	};
+ 	int err;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 
 
 
