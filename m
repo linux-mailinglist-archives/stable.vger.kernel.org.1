@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F07B36B4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92423B36329
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848791C81416
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA7DF189A6A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D7352FEC;
-	Tue, 26 Aug 2025 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C451ADFFE;
+	Tue, 26 Aug 2025 13:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2g9h1ZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/sc3A9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366EB352087;
-	Tue, 26 Aug 2025 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742F21A5B8D;
+	Tue, 26 Aug 2025 13:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218665; cv=none; b=gkXWE3laDs6IuMxAAhRsVFPUdH6M3Ma2Zj8NzTyoeuepwd+Eql8WxGpU+8h0BMm3l0fvRUiTxecZxkC12weONJicPPEuZPEUGVMciMkhQGay0hKLVPFswiLQ1IffaQqIvIC8Q4acnEe0TVdMqT6CkxiVKYDEYVjTX3VcKjglbvY=
+	t=1756214411; cv=none; b=d4aP9QfxaaezA1c8umNMBk//tbVAWQ56u80jclB7V9/fpHJMd3FbU2OICd9AKoUp0DpMLckh4UEZh7+iN0lAIlCXvg7U0CFTR2tEeGHPaTF2EZgGHZOBWVubHInUKB/clcmPFRcQAhIG5MeIRkHfdCdpIUXz1SDXV65/8YplFtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218665; c=relaxed/simple;
-	bh=PmUPmxSnDt8zgYT3O1q93Ut9546oJJKLcjT1iKSMrk0=;
+	s=arc-20240116; t=1756214411; c=relaxed/simple;
+	bh=5/+EGFRkxau38QTlJCpJxYSrJMAoNl8GJZFtb+JfVPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfW358xof01yZD4+px2ZFPnjJUPPqRd69NaeOvAJO6Q1y2qRWS5pEXYUHTW6pMb9lvMTluguUUkRXya8vKds68nZm7vX0y7qUtuW3RsJuG2plr5UHm2w/4Qqv2i3EmultwkD/V7IHYFVDlm3FzVmbZoeyBeq2zSjoWaEe3jMBaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2g9h1ZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90677C4CEF1;
-	Tue, 26 Aug 2025 14:31:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VVbN/X7fvMxdS071jQ3znPdcewcpDqfMNVbtRj7E86GEziNX05E673p/MSyBrIcJVnHhVQdMZUphJ99ToKSKl1Zx8gStXooub6oP3oNi9GufQgUnUQxS/3XWLXvojPnorztOXqnYOO75mf0HbusDf4diQxULLu6OhyJAESZ+oUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/sc3A9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC75EC4CEF1;
+	Tue, 26 Aug 2025 13:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218665;
-	bh=PmUPmxSnDt8zgYT3O1q93Ut9546oJJKLcjT1iKSMrk0=;
+	s=korg; t=1756214411;
+	bh=5/+EGFRkxau38QTlJCpJxYSrJMAoNl8GJZFtb+JfVPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2g9h1ZUMBwJ346kvfiBUuRmBoESaTfK2/ZLv03iJxPG9+ThnOx/nY63TOi1mhZyf
-	 ujIqQKFmteLx4hpobrKO1HIna+XIOfVCHCJCumE48jNRL82cZAn5TvU3uv9aCh6ctk
-	 PnJ0vbU74cGRFm2jdfvuUL1Oie5dRIMaeIO7git8=
+	b=P/sc3A9j4viTM1bZ/2R+ozCOJRfIH1+E+pqsNrLEd/Ws8prg8edtisPl5HM4OWxjO
+	 av62z5bOH09OW4kOgpE8A3ZCXshXILkOc084NquUjvFqOLuQOb2dDemKlXhQQT4JNU
+	 LVUevHNikUGYdwU38L8aAMaE4TJH0uKb7+qvszKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.4 055/403] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/482] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
 Date: Tue, 26 Aug 2025 13:06:21 +0200
-Message-ID: <20250826110907.387888110@linuxfoundation.org>
+Message-ID: <20250826110933.984203124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
+[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
 
-Delayed work to prevent USB3 hubs from runtime-suspending immediately
-after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
-of high tier USB3 devices behind suspended hubs").
+The buffer bgx_sel used in snprintf() was too small to safely hold
+the formatted string "BGX%d" for all valid bgx_id values. This caused
+a -Wformat-truncation warning with `Werror` enabled during build.
 
-This delayed work needs be flushed if system suspends, or hub needs to
-be quiesced for other reasons right after resume. Not flushing it
-triggered issues on QC SC8280XP CRD board during suspend/resume testing.
+Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
+snprintf() to ensure safety and suppress the warning.
 
-Fix it by flushing the delayed resume work in hub_quiesce()
+Build warning:
+  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
+‘bgx_acpi_match_id’:
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
+directive output may be truncated writing between 1 and 3 bytes into a
+region of size 2 [-Werror=format-truncation=]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                             ^~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+directive argument in the range [0, 255]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                         ^~~~~~~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
 
-The delayed work item that allow hub runtime suspend is also scheduled
-just before calling autopm get. Alan pointed out there is a small risk
-that work is run before autopm get, which would call autopm put before
-get, and mess up the runtime pm usage order.
-Swap the order of work sheduling and calling autopm get to solve this.
+compiler warning due to insufficient snprintf buffer size.
 
-Cc: stable <stable@kernel.org>
-Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
-Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
-Reported-by: Alan Stern <stern@rowland.harvard.edu>
-Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1315,11 +1315,12 @@ static void hub_activate(struct usb_hub
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index 7eb2ddbe9bad..8c955eefc7e4 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1428,9 +1428,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
+ {
+ 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct bgx *bgx = context;
+-	char bgx_sel[5];
++	char bgx_sel[7];
  
- 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
- 		/* give usb3 downstream links training time after hub resume */
-+		usb_autopm_get_interface_no_resume(
-+			to_usb_interface(hub->intfdev));
-+
- 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
- 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
- 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
--		usb_autopm_get_interface_no_resume(
--			to_usb_interface(hub->intfdev));
- 		return;
- 	}
- 
-@@ -1373,6 +1374,7 @@ static void hub_quiesce(struct usb_hub *
- 
- 	/* Stop hub_wq and related activity */
- 	del_timer_sync(&hub->irq_urb_retry);
-+	flush_delayed_work(&hub->init_work);
- 	usb_kill_urb(hub->urb);
- 	if (hub->has_indicators)
- 		cancel_delayed_work_sync(&hub->leds);
+-	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
++	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
+ 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+ 		pr_warn("Invalid link device\n");
+ 		return AE_OK;
+-- 
+2.39.5
+
 
 
 
