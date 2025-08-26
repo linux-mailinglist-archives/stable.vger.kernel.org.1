@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE370B3606A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61815B35BA0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F5771BC0E2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF1AC16B500
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9511220DD42;
-	Tue, 26 Aug 2025 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCB730AAC2;
+	Tue, 26 Aug 2025 11:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2kUGhsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAXCuQds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E84A1F3FF8;
-	Tue, 26 Aug 2025 12:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A787D2BEFF0;
+	Tue, 26 Aug 2025 11:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213009; cv=none; b=XbgVc4BC0eYRXw24ZAJsHlYzMP+AbVZ9dFGxcA+alViTcdGUuH6GZneDDcAanTJ7P45o7vVFcTS0I0UsDeiCaNSUJ9k5s4gG7zwqxkyOZVe7BlTui7GT8g/KHEm+kPmZlrz5fS3GwX+RzSPc1T/R5LYMVfVTadOwmMCs1sEoFos=
+	t=1756207180; cv=none; b=h0Zkf696ZSmLQLOP/WxKKLC5zzzVO0IJoN0WHtbIougxW3kQynoa2hwwDBUTMzW/BcBJA4qgZcxum3TBvJmM2jUiXIiOwG3ZgmslR+GDTkELOoLIGCXChSL3Tx2C6m+cL0DFT/i6WdIxY0Xi+cqFTzD0spFUDtrW43eZ32kJWXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213009; c=relaxed/simple;
-	bh=UkkcMNJLUpNwRlVx5Ge6anm1Pnqtu3zOKAxXQNrb0/Y=;
+	s=arc-20240116; t=1756207180; c=relaxed/simple;
+	bh=+te3wUcVN1xl0NNHoFl95s6dH7J/kfmCOlcbvHLz500=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS7zfdSC/6msbosl9i5fjKQkdFtzRYQxpmP/kmjhY0/d5Ars7zoqm3tBOthIMWp/T1QiqVKT6sbsv6roS9+CmL9URB85yG+HYtfShkaj3ZKhUg+sNOR6D7Kh6CXe6qn7YzBA3wHR9gXY4IjD5JFzN2SJhj9VxQZucJR9+tw5DX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2kUGhsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7577CC4CEF1;
-	Tue, 26 Aug 2025 12:56:48 +0000 (UTC)
+	 MIME-Version; b=NLC3iWHMfsVb23JW++M5CmOp5ftSlYmHXlMJACE0Q8b9zFRMLpikdc48u5UCi73GBeOgbYg+whLmURTrCs7xkCXJ4Jg8RlpSLc9weI6SWBxdGswi4bh/7OaFL1m5VA3cLgyMjko1vGZqZ/gWUBxYwa3Rs16TOkoEhZXsyY9sh8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAXCuQds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE3C4CEF1;
+	Tue, 26 Aug 2025 11:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213008;
-	bh=UkkcMNJLUpNwRlVx5Ge6anm1Pnqtu3zOKAxXQNrb0/Y=;
+	s=korg; t=1756207180;
+	bh=+te3wUcVN1xl0NNHoFl95s6dH7J/kfmCOlcbvHLz500=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2kUGhszK2AB8VoGryDCftJTS1Toz741BJlbFs7f2Zfp/qA127Sb+pxNN/4/5OSb8
-	 VXHmQTRhveQeUCj5ibv/3Kic22ZsNjgRV5NJREXUDEGCsFBdp3J+2re0S6iT7j4Ldv
-	 y8HFgwvZQrWP0XgtqFNJzigmUpVkNRPvkVCgSrik=
+	b=WAXCuQdsqAREAJ1HNr9cKY9sOrfJHhImZRRE0nA1Vt5A6JxdBJUrxemP8cncAMG0+
+	 CUZC57MoDDmApKxegsFznljqwUfiHcexoFaB4LGzadNupTAy1Mknaap1i14oZlBcg7
+	 BtqN4xXD9hO/no/lNY6S3moTaapCjgqmMTF4WlgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/587] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.16 050/457] arm64: dts: exynos7870-j6lte: reduce memory ranges to base amount
 Date: Tue, 26 Aug 2025 13:05:34 +0200
-Message-ID: <20250826110957.648883354@linuxfoundation.org>
+Message-ID: <20250826110938.586086480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
+commit 49a27c6c392dec46c826ee586f7ec8973acaeed7 upstream.
 
-The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
-`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
-is not saved in the rx ringbuffer and thus lost.
+The device is available in multiple variants with differing RAM
+capacities. The memory range defined in the 0x80000000 bank exceeds the
+address range of the memory controller, which eventually leads to ARM
+SError crashes. Reduce the bank size to a value which is available to
+all devices.
 
-Compile tested only
+The bootloader must be responsible for identifying the RAM capacity and
+editing the memory node accordingly.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d6f3a7f91fdb ("arm64: dts: exynos: add initial devicetree support for exynos7870")
+Cc: stable@vger.kernel.org # v6.16
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Link: https://lore.kernel.org/r/20250626-exynos7870-dts-fixes-v1-3-349987874d9a@disroot.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 3645f212021f..6264ef7805d6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -803,13 +803,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
- 		skb = new_skb;
- no_new:
- 		if (rtlpriv->use_new_trx_flow) {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 		} else {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 			if (rtlpci->rx_ring[rxring_idx].idx ==
- 			    rtlpci->rxringcount - 1)
- 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
+diff --git a/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts b/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
+index 61eec1aff32e..b8ce433b93b1 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7870-j6lte.dts
+@@ -89,7 +89,7 @@
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000 0x3d800000>,
+-		      <0x0 0x80000000 0x7d800000>;
++		      <0x0 0x80000000 0x40000000>;
+ 	};
+ 
+ 	pwrseq_mmc1: pwrseq-mmc1 {
 -- 
-2.39.5
+2.50.1
 
 
 
