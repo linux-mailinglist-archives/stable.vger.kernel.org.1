@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E417B368C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B7FB36650
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC011897CEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E517B563054
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44B2FFDEB;
-	Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7062FD7D7;
+	Tue, 26 Aug 2025 13:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vE5qNoq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvPgtfnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C1A2B9A7;
-	Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1849216E1B;
+	Tue, 26 Aug 2025 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217195; cv=none; b=p0r9eCLE7Je/0NxQk1govGZ9QpHqTAYc+vIUyaE3BPZktThPwAYuIwdYRleDqXTuXSOuH4Fm6ye8u5R/fx+JH9MQ3tNyblqj4FlmkFAFrr9kme3gZ6OxO0ugiz8Or1h9tjD9vAK+pOu3w+4zXCtDMKu70SZ5xV/uDyAl04YZmiA=
+	t=1756215799; cv=none; b=uuvrBPS50wdVsBBGmXkdNWdZJ92vIrk+y2xhcVFfhzxc4opvwPLtrwKRbeJO0ve4akha/kxP1ieb+GEwLt7VTCpDLTDbeuN4kG0Bh3kwhe3NUAHG0166zDsV7DK1GK7gwLf5pau9ap6HmkPnkcFg8ASlUVPctqQ3dMEWXMOGEJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217195; c=relaxed/simple;
-	bh=SfAV9CxseHC0+BDK1Rt6z4vSVhwp0/8JkcrEen6UpDE=;
+	s=arc-20240116; t=1756215799; c=relaxed/simple;
+	bh=PFqgUBLEftF9miZpRs7xTWE+f3Y7MLB2CVUedC2QpLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=croWfXo2Is6pvC94zf0EFCeHPyUHgxuT15e8wEhMlsOkZjEUqRo427FZIflTr8iEBA96me9TvhEOVV23tgX8MBPveaKg3jFsOx6RvnFu9iGd/6bwhnJ2h5RgNANlarDtsXmx2WZ/X76iF9qTeEXgqN8yqWhdgkM2zuEb9gHvCi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vE5qNoq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A3CC4CEF1;
-	Tue, 26 Aug 2025 14:06:34 +0000 (UTC)
+	 MIME-Version; b=K0c6m3czXf0GS/K/ujFizsfW4iiO9GTX5FXDrgrV8PgdkbODyfjBJrqKwpiXZ7Wbq1vdi+Is9GmtgcO8se800tV1oeUH7uFADVX9TF9WOFG2y4VkcH3z9/Ed7ffHhKTurDVhlHEWnxCXzXlac2bw1Tu/4do42y5/QmWtWXCuLho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvPgtfnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6D3C4CEF1;
+	Tue, 26 Aug 2025 13:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217195;
-	bh=SfAV9CxseHC0+BDK1Rt6z4vSVhwp0/8JkcrEen6UpDE=;
+	s=korg; t=1756215799;
+	bh=PFqgUBLEftF9miZpRs7xTWE+f3Y7MLB2CVUedC2QpLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vE5qNoq43XUfPzzH1PI0q1bajQDyscCJRKkesfG4PJvZgM+ng8dYWG7J1M0M79JOn
-	 jNk+h2zU1+GSKT1SWCBrldmQYRhQ0dqZdN9PL+z5JgUdkOANZgmM9+Jg9WQo4+TaEk
-	 EzudefS2pfPath49bJ+Wpkf6HS1gZPTfBAU4tkgA=
+	b=XvPgtfndvwPfFNYvW0KnMcdbriuIVtnmxUA23YNBqMbpkDyVOxPq4v1PpZkT02rJe
+	 gDSOImVKXWbMtNKWsaNVSIBHbJmHL/QOxC5OSqnv2aodgeNgzOlayWgtXbgTCWfDBB
+	 r/638ghsGkbq1UmwVqTA8wuyRcHf+ba+D8fne020=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arun Raghavan <arun@asymptotic.io>,
-	Pieterjan Camerlynck <p.camerlynck@televic.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 051/523] ASoC: fsl_sai: Force a software reset when starting in consumer mode
-Date: Tue, 26 Aug 2025 13:04:21 +0200
-Message-ID: <20250826110925.856793801@linuxfoundation.org>
+	Charles Han <hanchunchao@inspur.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 171/644] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
+Date: Tue, 26 Aug 2025 13:04:22 +0200
+Message-ID: <20250826110950.712667053@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Raghavan <arun@asymptotic.io>
+From: Charles Han <hanchunchao@inspur.com>
 
-commit dc78f7e59169d3f0e6c3c95d23dc8e55e95741e2 upstream.
+[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
 
-On an imx8mm platform with an external clock provider, when running the
-receiver (arecord) and triggering an xrun with xrun_injection, we see a
-channel swap/offset. This happens sometimes when running only the
-receiver, but occurs reliably if a transmitter (aplay) is also
-concurrently running.
+In the cpcap_usb_detect() function, the power_supply_get_by_name()
+function may return `NULL` instead of an error pointer.
+To prevent potential null pointer dereferences, Added a null check.
 
-It seems that the SAI loses track of frame sync during the trigger stop
--> trigger start cycle that occurs during an xrun. Doing just a FIFO
-reset in this case does not suffice, and only a software reset seems to
-get it back on track.
-
-This looks like the same h/w bug that is already handled for the
-producer case, so we now do the reset unconditionally on config disable.
-
-Signed-off-by: Arun Raghavan <arun@asymptotic.io>
-Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
-Fixes: 3e3f8bd56955 ("ASoC: fsl_sai: fix no frame clk in master mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://patch.msgid.link/20250626130858.163825-1-arun@arunraghavan.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/power/supply/cpcap-charger.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -572,13 +572,15 @@ static void fsl_sai_config_disable(struc
- 	 * anymore. Add software reset to fix this issue.
- 	 * This is a hardware bug, and will be fix in the
- 	 * next sai version.
-+	 *
-+	 * In consumer mode, this can happen even after a
-+	 * single open/close, especially if both tx and rx
-+	 * are running concurrently.
- 	 */
--	if (!sai->is_slave_mode) {
--		/* Software Reset */
--		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
--		/* Clear SR bit to finish the reset */
--		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
--	}
-+	/* Software Reset */
-+	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+	/* Clear SR bit to finish the reset */
-+	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
- }
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+index 60e0ce105a29..5c9e3784ed47 100644
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		struct power_supply *battery;
  
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 		battery = power_supply_get_by_name("battery");
+-		if (IS_ERR_OR_NULL(battery)) {
+-			dev_err(ddata->dev, "battery power_supply not available %li\n",
+-					PTR_ERR(battery));
++		if (!battery) {
++			dev_err(ddata->dev, "battery power_supply not available\n");
+ 			return;
+ 		}
+ 
+-- 
+2.39.5
+
 
 
 
