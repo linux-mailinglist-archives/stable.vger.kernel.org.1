@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6EEB35F9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:51:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD74B3649C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE716208919
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 759897B9C80
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F287DA93;
-	Tue, 26 Aug 2025 12:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD9B22AE5D;
+	Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlSfwxYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9ItBcHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A87128816;
-	Tue, 26 Aug 2025 12:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885A24086A;
+	Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212634; cv=none; b=X8MoIR2ILMBM+Pg311noQyFjlQ4dJjgPgMDaHTjKODkLE4BvdINlbFwvmt29SPgtDZp3StTqV3auvDD2rdE3WLxibzITmxloj/Eer/82BGAc9cebfY7/ApbPvZkKlNlZSSKvZSvzmmZmQzXtHXApVTSH1BORLKat1WWvUWY8NCA=
+	t=1756215618; cv=none; b=lISuldijt7bCvDATWSUZX/mC02VZNTmNZrjDFT4qapzRg6aaq/3KVqz9Hsjmv0AQdzCPWewP288F7Qvvx4sHSZKNM92ekrCnszi3Cek5Df+b3pu6EbbgZRlFwSBB7ZaEyu7cl9HnQiAf0rCWG4NTnYeprJWjWQ+N91+W2R87Qgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212634; c=relaxed/simple;
-	bh=gvjdZeAJJJ7roW5d+n3CDirjm4D668JPKa79rJiCEqc=;
+	s=arc-20240116; t=1756215618; c=relaxed/simple;
+	bh=XF2YJwzi/W3HyuGlXws/873VgTnkHZ9mIw9T4ZdDfSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZkuO27BdWQNRr4Ga+NsKkJyj2/vj2qOm08BVpTpGw0hDGHfzf/9WiNU3w3XejYWUhbmJhfgu0leyvmEX/tONvg7ZDk1A2BbdsbPvKM6neAgHL3QtlZFBfVcLKvsCrVa3rHF6ttflcauvbxg0iCuoepr2yUOfYlb82QmSMSm8dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlSfwxYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C96C4CEF1;
-	Tue, 26 Aug 2025 12:50:32 +0000 (UTC)
+	 MIME-Version; b=GWh/efFjzKtZcoxDb3AG6aqMqLtf4398ZubDEVuY6dbzPYgv+bEZppn7WnCInKoF7kOlAn2OzCqNTLV4qUHLvZze32Ds2kq5Ulpcyj6tWjWh5kM1yBXQYjgq9Df7HYpW5/m+ZFkpYUIJhMtwd96IBDxpF+W5zmosbA9LeEYD5Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9ItBcHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB0DC4CEF1;
+	Tue, 26 Aug 2025 13:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212633;
-	bh=gvjdZeAJJJ7roW5d+n3CDirjm4D668JPKa79rJiCEqc=;
+	s=korg; t=1756215618;
+	bh=XF2YJwzi/W3HyuGlXws/873VgTnkHZ9mIw9T4ZdDfSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DlSfwxYF8uIqhj8YhjNLKQgs2AM3K4oe2cF0d1bohXxM784AGkmD0f83xwv5r5TUa
-	 zrI7abgYuDw0j05ahEzI9TVr+duJByseEpTFz+Kcc5gRZ0lL3DhPVRobqYODSE1Hee
-	 twJQmrQKjuFWK0qR/yb7FfBPQCFzA43mYYMnl4QA=
+	b=Z9ItBcHYRZYxPIiM2bcTOw+daJgUCg3bADxJuN2VzcOb7DGrSowFyh2EfPJ7N/ARK
+	 +By2QpFIQpFORFs/KXIMC+jX5HWvsqcVLSwr/K2WAV/9Ik6lKPZgHRTpp87qlx53xS
+	 YuUAuKxaMDr3/RHkJUTT2bSPF1Y7ra91jgw1pwoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/587] KVM: VMX: Handle forced exit due to preemption timer in fastpath
-Date: Tue, 26 Aug 2025 13:03:12 +0200
-Message-ID: <20250826110954.041839157@linuxfoundation.org>
+Subject: [PATCH 5.15 102/644] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+Date: Tue, 26 Aug 2025 13:03:13 +0200
+Message-ID: <20250826110949.042050449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 11776aa0cfa7d007ad1799b1553bdcbd830e5010 ]
+commit bec15191d52300defa282e3fd83820f69e447116 upstream.
 
-Handle VMX preemption timer VM-Exits due to KVM forcing an exit in the
-exit fastpath, i.e. avoid calling back into handle_preemption_timer() for
-the same exit.  There is no work to be done for forced exits, as the name
-suggests the goal is purely to get control back in KVM.
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-In addition to shaving a few cycles, this will allow cleanly separating
-handle_fastpath_preemption_timer() from handle_preemption_timer(), e.g.
-it's not immediately obvious why _apparently_ calling
-handle_fastpath_preemption_timer() twice on a "slow" exit is necessary:
-the "slow" call is necessary to handle exits from L2, which are excluded
-from the fastpath by vmx_vcpu_run().
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
 
-Link: https://lore.kernel.org/r/20240110012705.506918-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
+
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 32b792387271..631fdd4a575a 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6027,12 +6027,15 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
- 	if (unlikely(vmx->loaded_vmcs->hv_timer_soft_disabled))
- 		return EXIT_FASTPATH_REENTER_GUEST;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3622,17 +3622,6 @@ static int tcpm_src_attach(struct tcpm_p
  
--	if (!vmx->req_immediate_exit) {
--		kvm_lapic_expired_hv_timer(vcpu);
--		return EXIT_FASTPATH_REENTER_GUEST;
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
 -	}
-+	/*
-+	 * If the timer expired because KVM used it to force an immediate exit,
-+	 * then mission accomplished.
-+	 */
-+	if (vmx->req_immediate_exit)
-+		return EXIT_FASTPATH_EXIT_HANDLED;
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -3642,13 +3631,24 @@ static int tcpm_src_attach(struct tcpm_p
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
+ 	}
  
--	return EXIT_FASTPATH_NONE;
-+	kvm_lapic_expired_hv_timer(vcpu);
-+	return EXIT_FASTPATH_REENTER_GUEST;
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
+ 
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
++
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
++
+ 	port->pd_capable = false;
+ 
+ 	port->partner = NULL;
+@@ -3658,14 +3658,14 @@ static int tcpm_src_attach(struct tcpm_p
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
  }
  
- static int handle_preemption_timer(struct kvm_vcpu *vcpu)
--- 
-2.50.1
-
 
 
 
