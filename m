@@ -1,59 +1,69 @@
-Return-Path: <stable+bounces-173282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1ABFB35C5F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27B6B36841
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7397C1235
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 116188E3603
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45ED73431FD;
-	Tue, 26 Aug 2025 11:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC25350842;
+	Tue, 26 Aug 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZkbSAy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kftkk193"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01449327797;
-	Tue, 26 Aug 2025 11:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C468C133;
+	Tue, 26 Aug 2025 13:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207844; cv=none; b=rUS0rhIxgHLNUeK2db4CkLvznazz1FfmZE4FdWhvIyugJigON187D3caJIB5yAOXgGBQujjH1nLXo0ZgXIIAjjd3j6F8QbU8sYj5RHc1/lyZ27FZf/eHOwDWeJpV0ZqtM6HOWw/rC30o6pNVkA2mvfopmqhDLanXZYLUbf8cRBs=
+	t=1756216760; cv=none; b=Zk6UkDYNStkVr83xSe62+8khoJl4/BhlDrAOS9VfXQlmP/u+okWY/pIflJmrCKGFW50xo/z9fvezlQS6bJr0qirNQcEp5amPcXjK8kglxWxmtG67KHHb10JjXUT+FCVHZwZtinzlxxp9Iq/gJcPFo4/s4yTb7hFbTuI7EE0UAwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207844; c=relaxed/simple;
-	bh=hHDZ1++XPEfZZllGYDpwwcFSAjkEhWRhG+l3hBOW3ts=;
+	s=arc-20240116; t=1756216760; c=relaxed/simple;
+	bh=8p6bGIgjVfdN3i0D3D3xJX4SVTgKy3cOgfB5vwkDWAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bkuw3LjUOPbNbneMxC+MiYwd3hFMFUkKWEPxDBYz5jmMT1BiCM+YWExPrIQOBYRK0MBR6fbInGfjYUGKKZKBjB4UuHhj/LfUacYJIsVEhJ7vrvnw7vMckIGsqprQBs4X/ngS5j6ONJAAoFxUGcajif5QQ7A5Q5zF9cSTqk87ZSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZkbSAy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F5AC4CEF1;
-	Tue, 26 Aug 2025 11:30:43 +0000 (UTC)
+	 MIME-Version; b=XcvEaBR1W39ekGU3Sv/GnAsNbn3yCJHR6RsoN7CuwR+c3efrqc8QVcFA6oHY5ZTZagP4v3Dyutj2pYI1NnE0rrvTXvsgokhnSl18USDOTIgjDDfCNkyRe4WyY3MkRB+O6BoFlcBZxqUUmubV5hAM2z65dlDF3vPWD2SvniTU6q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kftkk193; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ADBC4CEF1;
+	Tue, 26 Aug 2025 13:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207843;
-	bh=hHDZ1++XPEfZZllGYDpwwcFSAjkEhWRhG+l3hBOW3ts=;
+	s=korg; t=1756216757;
+	bh=8p6bGIgjVfdN3i0D3D3xJX4SVTgKy3cOgfB5vwkDWAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZkbSAy9L78011o54gDOlt+PGn8C+rS2bSFdUS4GmtSwQ0guzjsdaVyLR6cu77ymK
-	 VScrGn+z2o1KksB61VhbUGD9uttNTnWfgnQlGelST0Hk1QK7ESjiGs47XJfW8L1f2Y
-	 wWbmKbskLspVvgLpBpoacxYTuAhxahzlgaq/AwV8=
+	b=kftkk193jSuJktWaFuViXnNvCujU7tqbuof3CsZBIQZu6HT39cR6TEFCPj4vafLfm
+	 L5JvTq/kz9ZlRkT9HIm9VzmqMm5ox7BJsMZhGQXPJ5YRwsKSJucLf9spm/zD1PwqT+
+	 fKD5gvkfYu5f2k1XntWhDx5tZfKPSbiisGEX7XX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	David Kaplan <David.Kaplan@amd.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Calvin Owens <calvin@wbinvd.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 338/457] ixgbe: prevent from unwanted interface name changes
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 531/644] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
 Date: Tue, 26 Aug 2025 13:10:22 +0200
-Message-ID: <20250826110945.684042953@linuxfoundation.org>
+Message-ID: <20250826110959.671951544@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +75,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ upstream commit e67a0bc3ed4fd8ee1697cb6d937e2b294ec13b5e ]
+[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
 
-Users of the ixgbe driver report that after adding devlink support by
-the commit a0285236ab93 ("ixgbe: add initial devlink support") their
-configs got broken due to unwanted changes of interface names. It's
-caused by automatic phys_port_name generation during devlink port
-initialization flow.
+Memory hot remove unmaps and tears down various kernel page table regions
+as required.  The ptdump code can race with concurrent modifications of
+the kernel page tables.  When leaf entries are modified concurrently, the
+dump code may log stale or inconsistent information for a VA range, but
+this is otherwise not harmful.
 
-To prevent from that set no_phys_port_name flag for ixgbe devlink ports.
+But when intermediate levels of kernel page table are freed, the dump code
+will continue to use memory that has been freed and potentially
+reallocated for another purpose.  In such cases, the ptdump code may
+dereference bogus addresses, leading to a number of potential problems.
 
-Reported-by: David Howells <dhowells@redhat.com>
-Closes: https://lore.kernel.org/netdev/3452224.1745518016@warthog.procyon.org.uk/
-Reported-by: David Kaplan <David.Kaplan@amd.com>
-Closes: https://lore.kernel.org/netdev/LV3PR12MB92658474624CCF60220157199470A@LV3PR12MB9265.namprd12.prod.outlook.com/
-Fixes: a0285236ab93 ("ixgbe: add initial devlink support")
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: stable@vger.kernel.org # 6.16
-Tested-By: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+To avoid the above mentioned race condition, platforms such as arm64,
+riscv and s390 take memory hotplug lock, while dumping kernel page table
+via the sysfs interface /sys/kernel/debug/kernel_page_tables.
+
+Similar race condition exists while checking for pages that might have
+been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
+which in turn calls ptdump_check_wx().  Instead of solving this race
+condition again, let's just move the memory hotplug lock inside generic
+ptdump_check_wx() which will benefit both the scenarios.
+
+Drop get_online_mems() and put_online_mems() combination from all existing
+platform ptdump code paths.
+
+Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/ptdump_debugfs.c |    3 ---
+ arch/s390/mm/dump_pagetables.c |    2 --
+ mm/ptdump.c                    |    2 ++
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -543,6 +543,7 @@ int ixgbe_devlink_register_port(struct i
+--- a/arch/arm64/mm/ptdump_debugfs.c
++++ b/arch/arm64/mm/ptdump_debugfs.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/debugfs.h>
+-#include <linux/memory_hotplug.h>
+ #include <linux/seq_file.h>
  
- 	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
- 	attrs.phys.port_number = adapter->hw.bus.func;
-+	attrs.no_phys_port_name = 1;
- 	ixgbe_devlink_set_switch_id(adapter, &attrs.switch_id);
+ #include <asm/ptdump.h>
+@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
+ {
+ 	struct ptdump_info *info = m->private;
  
- 	devlink_port_attrs_set(devlink_port, &attrs);
+-	get_online_mems();
+ 	ptdump_walk(m, info);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -227,11 +227,9 @@ static int ptdump_show(struct seq_file *
+ 		.marker = address_markers,
+ 	};
+ 
+-	get_online_mems();
+ 	mutex_lock(&cpa_mutex);
+ 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
+ 	mutex_unlock(&cpa_mutex);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -144,6 +144,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ {
+ 	const struct ptdump_range *range = st->range;
+ 
++	get_online_mems();
+ 	mmap_write_lock(mm);
+ 	while (range->start != range->end) {
+ 		walk_page_range_novma(mm, range->start, range->end,
+@@ -151,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ 		range++;
+ 	}
+ 	mmap_write_unlock(mm);
++	put_online_mems();
+ 
+ 	/* Flush out the last page */
+ 	st->note_page(st, 0, -1, 0);
 
 
 
