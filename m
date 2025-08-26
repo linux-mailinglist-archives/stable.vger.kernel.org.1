@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD27FB3635E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD577B360A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E01946686F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745991BA5F3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863FB34F460;
-	Tue, 26 Aug 2025 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F151DD9D3;
+	Tue, 26 Aug 2025 12:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsW+EdUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1uSJgiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9AF34DCF5;
-	Tue, 26 Aug 2025 13:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4E61F55FA;
+	Tue, 26 Aug 2025 12:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214427; cv=none; b=aVXnpUr6lSLuj/8IFOUe5MngEp9Lko3Dkraub5E4RqabZ9nyEZWTUEwtKIHMp3FFeNDcuqnwsoa/DHHOXX8VnI9k/pNwJQIWKimdL57NNS1Yt/VglOVB3xshz77aTIV13SIYkDzHpkVjuakjNyCw6GzLT9f6j/jvKwPbn3aM+Cw=
+	t=1756213140; cv=none; b=aVISsbivOnMxBS+sm47nuOGbgOOTmwm7nbMLCNZv1iVNY+G063NIlx6YRhKv+ENs/9IUZup1p8zbWNoOIJlCxKn1YIlA0uJ+pQVIzjFdR4S8QsTcn4EdAD2VcHm6KiNidf1pbssYLvWIG4RrjOlZ0MIHD2vVGw2/rB5Hj4R2YY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214427; c=relaxed/simple;
-	bh=HZQ6/FBumUeJXr8ZsPsVy609JYWDy6SFu5njmand6Bo=;
+	s=arc-20240116; t=1756213140; c=relaxed/simple;
+	bh=r9uInVgCrSvbg5Ywdlv0e0wCV+DBsK3+GixbqTl/G8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQWI+D+hN2hQpQZl1pR55ZEaj8qaEHHzVmSs0LqNI04+84jE48IpGHnOOr/DAe6gCmmUATomwDyOtZoCUiwkcZvjp7f8PG45HVFnj7XeI+KD84F1vVAmYDcPY5IKHt/b+jYAHVdVkx0vfMPfMQ53ETbr6axzjn9Pgipo0ElBc+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsW+EdUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82357C4CEF1;
-	Tue, 26 Aug 2025 13:20:26 +0000 (UTC)
+	 MIME-Version; b=Rk+EeUQx2YcZZyBV/kxMSNeUSoeS7uVosY7U06HRy4JSeaxc7Y+3lYy+ppaIt3p6CQLRhT6a+kta/+AyHqQ+XHwgVekp9o6lne3tFS3k1aoOypMFbDV6sjNJvtOg+832KeC22LOvZYgdCrhl7heKMC4X+/I6lND4Xzn1masatdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1uSJgiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E33C4CEF1;
+	Tue, 26 Aug 2025 12:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214426;
-	bh=HZQ6/FBumUeJXr8ZsPsVy609JYWDy6SFu5njmand6Bo=;
+	s=korg; t=1756213140;
+	bh=r9uInVgCrSvbg5Ywdlv0e0wCV+DBsK3+GixbqTl/G8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsW+EdUaZDGvvGa2LmaU/sH3+Flfn3mSRFUQLFwgVUE5iRkVLDSKQMdVqWl1AXu6d
-	 xJKXYECqot7piZCpWWiHVH3piD2zjxURBkyDyor/iRgbGZO3cbKzqUExRoDmwJe497
-	 kTSIh7jNQqVZ/j+FsKyXoq/pf+XkHMzdT1l9kp8g=
+	b=m1uSJgiSguRMam77vtuO13ZwaTxchLBx/rYg1mM5FOe2IaLM0jL4WX8I01wtRQ6GI
+	 4mBKLQgLadqUOLgKWllflTLdDpYmh/8oSODDeFdAKbnpKfKvnOOmLUlAzdOJPOSXkl
+	 kK6EndtGLRH2LeAZlNp9wSopQs4d6Hw+tSYtHdyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/482] wifi: mac80211: dont complete management TX on SAE commit
+Subject: [PATCH 6.6 237/587] jfs: upper bound check of tree index in dbAllocAG
 Date: Tue, 26 Aug 2025 13:06:26 +0200
-Message-ID: <20250826110934.104468781@linuxfoundation.org>
+Message-ID: <20250826110958.963427356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 6b04716cdcac37bdbacde34def08bc6fdb5fc4e2 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-When SAE commit is sent and received in response, there's no
-ordering for the SAE confirm messages. As such, don't call
-drivers to stop listening on the channel when the confirm
-message is still expected.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-This fixes an issue if the local confirm is transmitted later
-than the AP's confirm, for iwlwifi (and possibly mt76) the
-AP's confirm would then get lost since the device isn't on
-the channel at the time the AP transmit the confirm.
-
-For iwlwifi at least, this also improves the overall timing
-of the authentication handshake (by about 15ms according to
-the report), likely since the session protection won't be
-aborted and rescheduled.
-
-Note that even before this, mgd_complete_tx() wasn't always
-called for each call to mgd_prepare_tx() (e.g. in the case
-of WEP key shared authentication), and the current drivers
-that have the complete callback don't seem to mind. Document
-this as well though.
-
-Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
-Closes: https://lore.kernel.org/all/aB30Ea2kRG24LINR@archlinux/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250609213232.12691580e140.I3f1d3127acabcd58348a110ab11044213cf147d3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 2 ++
- net/mac80211/mlme.c    | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 6ef8348b5e93..28a9b9c00e6b 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4011,6 +4011,8 @@ struct ieee80211_prep_tx_info {
-  * @mgd_complete_tx: Notify the driver that the response frame for a previously
-  *	transmitted frame announced with @mgd_prepare_tx was received, the data
-  *	is filled similarly to @mgd_prepare_tx though the duration is not used.
-+ *	Note that this isn't always called for each mgd_prepare_tx() call, for
-+ *	example for SAE the 'confirm' messages can be on the air in any order.
-  *
-  * @mgd_protect_tdls_discover: Protect a TDLS discovery session. After sending
-  *	a TDLS discovery-request, we expect a reply to arrive on the AP's
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b300972c3150..cc47d6b88f04 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3595,6 +3595,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_prep_tx_info info = {
- 		.subtype = IEEE80211_STYPE_AUTH,
- 	};
-+	bool sae_need_confirm = false;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5a877261c3fe..cdfa699cd7c8 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
- 	sdata_assert_lock(sdata);
- 
-@@ -3638,6 +3639,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 				jiffies + IEEE80211_AUTH_WAIT_SAE_RETRY;
- 			ifmgd->auth_data->timeout_started = true;
- 			run_again(sdata, ifmgd->auth_data->timeout);
-+			if (auth_transaction == 1)
-+				sae_need_confirm = true;
- 			goto notify_driver;
- 		}
- 
-@@ -3680,6 +3683,9 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	     ifmgd->auth_data->expected_transaction == 2)) {
- 		if (!ieee80211_mark_sta_auth(sdata))
- 			return; /* ignore frame -- wait for timeout */
-+	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
-+		   auth_transaction == 1) {
-+		sae_need_confirm = true;
- 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
- 		   auth_transaction == 2) {
- 		sdata_info(sdata, "SAE peer confirmed\n");
-@@ -3688,7 +3694,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 
- 	cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
- notify_driver:
--	drv_mgd_complete_tx(sdata->local, sdata, &info);
-+	if (!sae_need_confirm)
-+		drv_mgd_complete_tx(sdata->local, sdata, &info);
- }
- 
- #define case_WLAN(type) \
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
++	}
++
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
 2.39.5
 
