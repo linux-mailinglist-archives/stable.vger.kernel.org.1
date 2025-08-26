@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68575B3610E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D0DB363CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB222A2B9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9648A5A93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3904B1CD1E4;
-	Tue, 26 Aug 2025 13:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AAD2FDC44;
+	Tue, 26 Aug 2025 13:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kavOqKhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl5gIYgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC3E8635D;
-	Tue, 26 Aug 2025 13:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1A223DF6;
+	Tue, 26 Aug 2025 13:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213365; cv=none; b=o8cQlf/lUm9nRKFmxS8Ixw4iPhq4gA+mZ6rc3vmH82y1Qr5Gn7Mv5yGlfPkvs9Qi6ZLDFoNgHHsBs774bVVBX6q3LDy/zDjfAgVfsI/sZA6Isgzwf5HOZ45z7YRQtyJgG3kq8vWcvbsRdNObBhbItHEnJsIlylocvqZmrVT/Hsw=
+	t=1756214657; cv=none; b=ueB+NFKJL9k6qBmzJ15U8yc9qhNCyLCB08QQiWgiQcZdEdtxe3EldIOE8TvXJAm6pI4dN67zvobUdl1oHjJOROT5KqdXqbYC8EmMUXfqlmXbccL4yVBxFb1ZvUKhGTT3/bD5K9YmKdu9Sra7RIAkL/MAmu82q5EYaxrUtrkGaGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213365; c=relaxed/simple;
-	bh=m6U5lMo/iwurZhWltcAaWwithBWq18pMOvFkke/NgbA=;
+	s=arc-20240116; t=1756214657; c=relaxed/simple;
+	bh=0h6zTmlUM218uF25sfPUUm2m5uhRQ02H+OrKYduI6IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nu3Jp+wAy0LbqVTOxetDz1YWizxOG0mSroSKFm+1tUHa2JmcNgR0aq5m/L+U/y+/ubSLQz+Ns2Tirc/GK4B1JkVU1C2Loy46/68wan70JzQRmuHS6Kt86C2WjUWtBORNqyxfWZahoRrqOwSIxQZRQPCQz/uvX5Texc2VQb4B01c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kavOqKhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFD0C4CEF4;
-	Tue, 26 Aug 2025 13:02:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kUn6kJn3Tl2qOH6nJllblaDdyoQ3dAkMrC7JnMoXdF5RREGdkbh5Af9YHKOa9VXNOqOijEUCcPxd56rbwnE8UPGGXNlMAt4GLZC80LJRYC2hu2HhHZ3vuEngEpbn3u27QbjAN4fHTcrc98Ph0xlLJAiaiWBApRgytPx7Lbzch6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl5gIYgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2600C4CEF1;
+	Tue, 26 Aug 2025 13:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213364;
-	bh=m6U5lMo/iwurZhWltcAaWwithBWq18pMOvFkke/NgbA=;
+	s=korg; t=1756214657;
+	bh=0h6zTmlUM218uF25sfPUUm2m5uhRQ02H+OrKYduI6IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kavOqKhNe6RlvWjgwDcSY/q7C4mkixCDTJqbWL26WSCeeVETTxUjylSp2VLk5WC3j
-	 BM+fDK9+jBkOIRB2XnDV3rhTlQDQ+fFLFe4ktciTp12NNNSvi5tTN3CduBORr61Qt5
-	 vZgYRUWeaFpWbiY4tiZhsAAIZdsju9x7VnIKg3dk=
+	b=fl5gIYgHraoKHkJkt+44N3IhhuEl7TG9Lomj5cUlYXRgQOPKZ1ggxmD2N307vCslm
+	 5U/IvbBO75+kVIUht4savgV9qucq+5DDUp7cyFYbyGkMP3LPal6B1LOc1xaS26+/Xf
+	 FLGBXQlf/KcLPfkiXJ/t2qE4d+5eDHK5WsLls1LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/587] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+Subject: [PATCH 6.1 189/482] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
 Date: Tue, 26 Aug 2025 13:07:22 +0200
-Message-ID: <20250826111000.380578559@linuxfoundation.org>
+Message-ID: <20250826110935.474923039@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
+[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Not all tasks have an ABI associated or vDSO mapped,
+for example kthreads never do.
+If such a task ever ends up calling stack_top(), it will derefence the
+NULL ABI pointer and crash.
 
-Some chip types in the ds1307 driver already have OSF handling to
-determine whether .read_time provides valid RTC data or returns -EINVAL.
+This can for example happen when using kunit:
 
-This change removes the clear of the OSF in .probe as the OSF needs to
-be preserved to expand the OSF handling to the ds1341 chip type (note
-that DS1341 and DS1342 share a datasheet).
+    mips_stack_top+0x28/0xc0
+    arch_pick_mmap_layout+0x190/0x220
+    kunit_vm_mmap_init+0xf8/0x138
+    __kunit_add_resource+0x40/0xa8
+    kunit_vm_mmap+0x88/0xd8
+    usercopy_test_init+0xb8/0x240
+    kunit_try_run_case+0x5c/0x1a8
+    kunit_generic_run_threadfn_adapter+0x28/0x50
+    kthread+0x118/0x240
+    ret_from_kernel_thread+0x14/0x1c
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Only dereference the ABI point if it is set.
+
+The GIC page is also included as it is specific to the vDSO.
+Also move the randomization adjustment into the same conditional.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/mips/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index ae115c3fcf19..74aad2b12460 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1819,10 +1819,8 @@ static int ds1307_probe(struct i2c_client *client)
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 17d80e2f2e4c..86deab01c578 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -690,18 +690,20 @@ unsigned long mips_stack_top(void)
+ 	}
  
--		/* oscillator fault?  clear flag, and warn */
-+		/* oscillator fault? warn */
- 		if (regs[1] & DS1337_BIT_OSF) {
--			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
--				     regs[1] & ~DS1337_BIT_OSF);
- 			dev_warn(ds1307->dev, "SET TIME!\n");
- 		}
- 		break;
+ 	/* Space for the VDSO, data page & GIC user page */
+-	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
+-	top -= PAGE_SIZE;
+-	top -= mips_gic_present() ? PAGE_SIZE : 0;
++	if (current->thread.abi) {
++		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
++		top -= PAGE_SIZE;
++		top -= mips_gic_present() ? PAGE_SIZE : 0;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
+ 
+ 	/* Space for cache colour alignment */
+ 	if (cpu_has_dc_aliases)
+ 		top -= shm_align_mask + 1;
+ 
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
+-
+ 	return top;
+ }
+ 
 -- 
 2.39.5
 
