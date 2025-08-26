@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-173428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93944B35DA8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FD8B3670F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5CCF367A5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4C6D1BC8332
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C292FAC02;
-	Tue, 26 Aug 2025 11:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B4C350D52;
+	Tue, 26 Aug 2025 13:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d66IIuHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/1XfuBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E7E28689B;
-	Tue, 26 Aug 2025 11:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E828F299A94;
+	Tue, 26 Aug 2025 13:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208223; cv=none; b=P8SZA19JpHfxsio8Ell0QUZ0cW60wYbTx9ZOsjnk2+3TH0fA790Bal+YSonV6l21rJKU5Fa+Y11HpdD6OHPVo09viaphjQxLJvlCcataZPZVv2W4PnAbuT6zamSDpmkfw81BmLVeTNcZNltlRjuOTnGpWLQP/IsNHOu8754RI8w=
+	t=1756216400; cv=none; b=KmthsrIlkQz0BSTObMhk5f8HGJGGK7akNPgHNZd7/sHpM4ddU62iifx02NyfGtcVJ+lKBWNbxa6VPiA/A1eqE27HfyPMrhVtc7h8AGr+GaGyMRjoIb/1nLcEBq0TGKcG6v7cxqRUQRwwXw9uDZ0UpgB9UEnidJhkHv6FV0TKpKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208223; c=relaxed/simple;
-	bh=KcjFDcuTsjakhzA+0ZwmZNGZKbkipNPk9tGmZfKd9Ik=;
+	s=arc-20240116; t=1756216400; c=relaxed/simple;
+	bh=bHwNT7kO5f4EC/hIuUObZ8IzohljjdJ7FZIr89MmcFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5WUsxTkTeEj0dNaKfAEPvPjC/xYyQ2tBfNOEW46vRHwJaGAWkv8z+PqERddz+7bOf+28XiR+MdAvAODxl2QMj6l3b+T5yYtfQ54mDe+EB6rP8hYEp/PXvi2l/CEp4SUz/MPiDCcP8gAC/ItUUYxRKrtFbKarGfrCr8cQ30DAtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d66IIuHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224B8C4CEF1;
-	Tue, 26 Aug 2025 11:37:02 +0000 (UTC)
+	 MIME-Version; b=iN2L/x7JltGEbdFpzHjYhAa3X9mR+0g8NJ74L568NcQitdAApSmLrNUQPCN+R1uspSg8d0wPjfWzNcqMK5XiKBfmkCuHhLDG7Gci7lSmYE7JXsoVSmRQBkXHmHHVIYBhUnmIhUEDNTtfELlCP5YzQ/LHrc1avZ8mMVQva6w/Kr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/1XfuBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313B5C4CEF1;
+	Tue, 26 Aug 2025 13:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208223;
-	bh=KcjFDcuTsjakhzA+0ZwmZNGZKbkipNPk9tGmZfKd9Ik=;
+	s=korg; t=1756216399;
+	bh=bHwNT7kO5f4EC/hIuUObZ8IzohljjdJ7FZIr89MmcFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d66IIuHQ2JN1ijtQEhb5f2dhL3j2hOoFYq7R3/F2SdozSFICt1hwo/KE9zL9oJewu
-	 rzclyLF8e/5bToLC828dnq0P3ENkLs0fGHTJJMzT06mslWIRBKGnehrWkZ9mYuRp52
-	 anO232VJx0Sh6/Yyo6VCstkQlNwthA7jeh5U9aic=
+	b=T/1XfuBDP281BdXwNKDSIoe+CjUgUqoJaOsxYLyhjp5cAAp1rBW+cj/yVhdjj5TP2
+	 cdFNWTNPANLmZI9pc2ggY+WVPpnrK0SUJPj+Kd9FVs9G1T7HaZS4KCCPTA9oHWx7wi
+	 d1Hdx8Yy6DMcATiqJnmavBKoQsUT4qwysasN11R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.12 028/322] tracing: fprobe-event: Sanitize wildcard for fprobe event name
-Date: Tue, 26 Aug 2025 13:07:23 +0200
-Message-ID: <20250826110916.012073250@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 353/644] s390/stp: Remove udelay from stp_sync_clock()
+Date: Tue, 26 Aug 2025 13:07:24 +0200
+Message-ID: <20250826110955.145394291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit ec879e1a0be8007aa232ffedcf6a6445dfc1a3d7 upstream.
+[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
 
-Fprobe event accepts wildcards for the target functions, but unless user
-specifies its event name, it makes an event with the wildcards.
+When an stp sync check is handled on a system with multiple
+cpus each cpu gets a machine check but only the first one
+actually handles the sync operation. All other CPUs spin
+waiting for the first one to finish with a short udelay().
+But udelay can't be used here as the first CPU modifies tod_clock_base
+before performing the sync op. During this timeframe
+get_tod_clock_monotonic() might return a non-monotonic time.
 
-  /sys/kernel/tracing # echo 'f mutex*' >> dynamic_events
-  /sys/kernel/tracing # cat dynamic_events
-  f:fprobes/mutex*__entry mutex*
-  /sys/kernel/tracing # ls events/fprobes/
-  enable         filter         mutex*__entry
+The time spent waiting should be very short and udelay is a busy loop
+anyways, therefore simply remove the udelay.
 
-To fix this, replace the wildcard ('*') with an underscore.
-
-Link: https://lore.kernel.org/all/175535345114.282990.12294108192847938710.stgit@devnote2/
-
-Fixes: 334e5519c375 ("tracing/probes: Add fprobe events for tracing function entry and exit.")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.h |    2 +-
+ arch/s390/kernel/time.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -2145,7 +2145,7 @@ static inline bool is_good_system_name(c
- static inline void sanitize_event_name(char *name)
- {
- 	while (*name++ != '\0')
--		if (*name == ':' || *name == '.')
-+		if (*name == ':' || *name == '.' || *name == '*')
- 			*name = '_';
- }
- 
+diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+index f0a1484ee00b..58cdd4119f45 100644
+--- a/arch/s390/kernel/time.c
++++ b/arch/s390/kernel/time.c
+@@ -576,7 +576,7 @@ static int stp_sync_clock(void *data)
+ 		atomic_dec(&sync->cpus);
+ 		/* Wait for in_sync to be set. */
+ 		while (READ_ONCE(sync->in_sync) == 0)
+-			__udelay(1);
++			;
+ 	}
+ 	if (sync->in_sync != 1)
+ 		/* Didn't work. Clear per-cpu in sync bit again. */
+-- 
+2.39.5
+
 
 
 
