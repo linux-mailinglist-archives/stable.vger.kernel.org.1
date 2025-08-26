@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F139EB36CB4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6124B360E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 092918E4963
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095951BC0D50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711A0341650;
-	Tue, 26 Aug 2025 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC5217C211;
+	Tue, 26 Aug 2025 13:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIdTK0q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6yXmXVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8E83451A0;
-	Tue, 26 Aug 2025 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B00313957E;
+	Tue, 26 Aug 2025 13:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218744; cv=none; b=hWWB52ebbentx/j2Mg8GbXyXKMy9Qk2lVWGZASR/wKm7Pmc9eYc1gXi+Ge5pKquwqrc8pxPd7Ez8RZCCbJV+mrxhbwSpprfNwT9CI/v1vsxhl6Ji3ZatQXV7KEnukMzl5hLTIoShMwbdEEClYfs1rboGPOwaJTk98+Hgo9pKRKw=
+	t=1756213296; cv=none; b=Pz4OkRaMaohn3qQp+pKuw+HdzRRkpEHr4xLTxnX5WFvFeeJ5D4duAWw6SvIchlGIycQWOKGQP9qKc6S0xD1OzCgnbSQjDIb9MW3wi4Lr9z/LeaeYssp4AK4f5mpYis3tCUSWgvxOMzDbrYaSoH38L7muYkWmnOWbIz7wDbuXhMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218744; c=relaxed/simple;
-	bh=f/V3kX7u9qLVt7d+38T9GDVaMY500BPO8jN9Gsygxk0=;
+	s=arc-20240116; t=1756213296; c=relaxed/simple;
+	bh=DrGnrV64+SavhqH5CCm+Y71foendf0SsJ7NvzztpZR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8yTs9OmjnK8yf32c63AsJXHGdFE+bKnv4m+wP7ZHjbeV5ojhH/7gDrTPIPaw3TBJJo78q5sTeVo8vHBOjCbK7ssPUJgrzkWyi7ShcY2g3QzvyNaTNr4iOoofQQX41+gsF1i5rxMOIze9/0S1KleZGekd3Eq3UeVGr7E13tQQNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIdTK0q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E3CC4CEF1;
-	Tue, 26 Aug 2025 14:32:23 +0000 (UTC)
+	 MIME-Version; b=uiTADM4zAssJo+j3TEsfasILXs/lUwrTzT+nBm5KstEu3ZKEv6+kU6/ZH5m3MNTZcVCblW5ssmSPc2vmpzMQ8E3JWAMbodpWilH9QJXJ5aVl/lAmD8ZRXMAM5G0PfJKE4dz5aL2oah045xOlLReC8hLKGx6xleIFU8Y46P+a3lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6yXmXVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC965C4CEF1;
+	Tue, 26 Aug 2025 13:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218744;
-	bh=f/V3kX7u9qLVt7d+38T9GDVaMY500BPO8jN9Gsygxk0=;
+	s=korg; t=1756213296;
+	bh=DrGnrV64+SavhqH5CCm+Y71foendf0SsJ7NvzztpZR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIdTK0q3zm0wtkZjK3pLnFgNFuS2LRbTbTNmLG3wu9sfgf7/w9q5CywaJehAX8Q8T
-	 W52oQRYb11ru9koVGY6dpG3R/rjRYGympMsw9jQCqjh03Y5kGX7w7iliA2QJ41NfrU
-	 zpYWGHvEQtZlQwM9mLOK+y62O6VUhMAr/6Gc2y3A=
+	b=T6yXmXVEtZbgl9c8uBO0rrdzEBeW+6Ez73g56R9ZkdsZ2k9GjhBt+5QTOqih/x1qz
+	 3Z+MBXVU5LZvPlXpKrzzrynxiHKL9eaSKeKtr6BA6uEP1prsFa219RhrJeJ+NHafS2
+	 66FIvZhI5YRk3vwjnHHCSFfjcvgoGYJG4Bqq2oCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/403] bpftool: Fix memory leak in dump_xx_nlmsg on realloc failure
+Subject: [PATCH 6.6 262/587] module: Prevent silent truncation of module name in delete_module(2)
 Date: Tue, 26 Aug 2025 13:06:51 +0200
-Message-ID: <20250826110909.008866375@linuxfoundation.org>
+Message-ID: <20250826110959.594923225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 99fe8af069a9fa5b09140518b1364e35713a642e ]
+[ Upstream commit a6323bd4e611567913e23df5b58f2d4e4da06789 ]
 
-In function dump_xx_nlmsg(), when realloc() fails to allocate memory,
-the original pointer to the buffer is overwritten with NULL. This causes
-a memory leak because the previously allocated buffer becomes unreachable
-without being freed.
+Passing a module name longer than MODULE_NAME_LEN to the delete_module
+syscall results in its silent truncation. This really isn't much of
+a problem in practice, but it could theoretically lead to the removal of an
+incorrect module. It is more sensible to return ENAMETOOLONG or ENOENT in
+such a case.
 
-Fixes: 7900efc19214 ("tools/bpf: bpftool: improve output format for bpftool net")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/r/20250620012133.14819-1-chenyuan_fl@163.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Update the syscall to return ENOENT, as documented in the delete_module(2)
+man page to mean "No module by that name exists." This is appropriate
+because a module with a name longer than MODULE_NAME_LEN cannot be loaded
+in the first place.
+
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Link: https://lore.kernel.org/r/20250630143535.267745-2-petr.pavlu@suse.com
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/module/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index c6787a1daa48..c2953b2bf130 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -87,17 +87,18 @@ static int dump_link_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- {
- 	struct bpf_netdev_t *netinfo = cookie;
- 	struct ifinfomsg *ifinfo = msg;
-+	struct ip_devname_ifindex *tmp;
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 9711ad14825b..627680e568fc 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -701,14 +701,16 @@ SYSCALL_DEFINE2(delete_module, const char __user *, name_user,
+ 	struct module *mod;
+ 	char name[MODULE_NAME_LEN];
+ 	char buf[MODULE_FLAGS_BUF_SIZE];
+-	int ret, forced = 0;
++	int ret, len, forced = 0;
  
- 	if (netinfo->filter_idx > 0 && netinfo->filter_idx != ifinfo->ifi_index)
- 		return 0;
+ 	if (!capable(CAP_SYS_MODULE) || modules_disabled)
+ 		return -EPERM;
  
- 	if (netinfo->used_len == netinfo->array_len) {
--		netinfo->devices = realloc(netinfo->devices,
--			(netinfo->array_len + 16) *
--			sizeof(struct ip_devname_ifindex));
--		if (!netinfo->devices)
-+		tmp = realloc(netinfo->devices,
-+			(netinfo->array_len + 16) * sizeof(struct ip_devname_ifindex));
-+		if (!tmp)
- 			return -ENOMEM;
+-	if (strncpy_from_user(name, name_user, MODULE_NAME_LEN-1) < 0)
+-		return -EFAULT;
+-	name[MODULE_NAME_LEN-1] = '\0';
++	len = strncpy_from_user(name, name_user, MODULE_NAME_LEN);
++	if (len == 0 || len == MODULE_NAME_LEN)
++		return -ENOENT;
++	if (len < 0)
++		return len;
  
-+		netinfo->devices = tmp;
- 		netinfo->array_len += 16;
- 	}
- 	netinfo->devices[netinfo->used_len].ifindex = ifinfo->ifi_index;
-@@ -116,6 +117,7 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- {
- 	struct bpf_tcinfo_t *tcinfo = cookie;
- 	struct tcmsg *info = msg;
-+	struct tc_kind_handle *tmp;
+ 	audit_log_kern_module(name);
  
- 	if (tcinfo->is_qdisc) {
- 		/* skip clsact qdisc */
-@@ -127,11 +129,12 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- 	}
- 
- 	if (tcinfo->used_len == tcinfo->array_len) {
--		tcinfo->handle_array = realloc(tcinfo->handle_array,
-+		tmp = realloc(tcinfo->handle_array,
- 			(tcinfo->array_len + 16) * sizeof(struct tc_kind_handle));
--		if (!tcinfo->handle_array)
-+		if (!tmp)
- 			return -ENOMEM;
- 
-+		tcinfo->handle_array = tmp;
- 		tcinfo->array_len += 16;
- 	}
- 	tcinfo->handle_array[tcinfo->used_len].handle = info->tcm_handle;
 -- 
 2.39.5
 
