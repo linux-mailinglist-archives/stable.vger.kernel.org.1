@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-173739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA82EB35F71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6DAB35F79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A55F6205847
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22FAA207332
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4945578F39;
-	Tue, 26 Aug 2025 12:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E871FC1D;
+	Tue, 26 Aug 2025 12:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNvOmpDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdRD6yy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C5B537F8;
-	Tue, 26 Aug 2025 12:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A4638DEC;
+	Tue, 26 Aug 2025 12:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212547; cv=none; b=ZFVYP7vqWg/D52+WOpadfC0X17MfZFC4Z3nN5VCMAI12ldPLQNr0n8brCXoOj4NDfzTfdK2i605YxxkmBj1D0NXKwKMFazGzAtORXYTgPgQkqq8ei1t+mUQ9gEzbLVR7qTauRWy30q2E+nJqzAog4rHiE6TpaR2Z6nDa0Aw+PU4=
+	t=1756212573; cv=none; b=hfK6Sa4gAmDZvoy+FL8f68cPH6Famgdcyux9uiyA2nbOYnHL9/qpm2cTAu7X5+4a8paHfLcxcLJMQUf31BC9oWOe4wQba28altMpVCC1XXLN1HL6qW1z+1P5818AfxGEt/qSflC/w8L15uhqqriHdkE57jzmDolRS9D5XtAlVDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212547; c=relaxed/simple;
-	bh=KWHfTOi74J/6GAvDd+n7ggN4a8MVhcSKI+eD1OQI9Bk=;
+	s=arc-20240116; t=1756212573; c=relaxed/simple;
+	bh=M+yyXNwJ1PGsLUGKUzUYyx6/1860uepEEWBOtYsl34c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdn7G4CxKi84nUpGdBHpvHbjzS34hVPINvC4DsIWM8hvzfCfEqMc3XCv6YR6ZdDgPy2PcfDJu3cgp4jxyg0Ag05VoEJYlbdO0hdxKdVCcVBTB0Scv5svaNKns3Vi8D4d7o67uIZW3evsfRGUV5EHRLV1B8Rd1fVD1m8ey2od5Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNvOmpDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7C0C4CEF1;
-	Tue, 26 Aug 2025 12:49:04 +0000 (UTC)
+	 MIME-Version; b=ETyaMCG2NYVZnNwI8qZvRacN2ec2VaafdygM92WYaR8+RnDQC+xzd8AOZpYbHB48XhrFxi/O0SbWIz/SJ7ljd3vqc/qS3GtTIYH1LN0ty9+QwthOnmDCAPSYrZOjJ9BdnWaZ588KgW81SVVkjOxQJE807Skecy2usToFqsqp4R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdRD6yy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FA5C4CEF1;
+	Tue, 26 Aug 2025 12:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212545;
-	bh=KWHfTOi74J/6GAvDd+n7ggN4a8MVhcSKI+eD1OQI9Bk=;
+	s=korg; t=1756212572;
+	bh=M+yyXNwJ1PGsLUGKUzUYyx6/1860uepEEWBOtYsl34c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNvOmpDv/lPrcvC22HbJb5QWbNYdOHOBuUKAkbuAspODVXLdhbUh5VbAVTWpQKzQW
-	 QsRknFQ30W7frszn3ZsE7l9HvgBcboMpQurDZDWeQZLt2zZC2fXFSFpIkCM33KI+A1
-	 It2T0y0dH1n5jdFPKLG9liIDKuM9Wt8hvFkxCFKY=
+	b=PdRD6yy4uXw2agIF+mlHYfBjAbJT8xNooze0tNywFKG9njRVaxjPfktz95uR7hN3O
+	 AHmRtFiEX8OSekRpwAr+S9v/9yOd2vLRR9m4ZA/kLKzyGnTAHtvenjy6YWCqmJtbnn
+	 dnJnUfKNcFSUkyGoDMaEVykeO9WT+jHxoZhf+cjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 6.6 003/587] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
-Date: Tue, 26 Aug 2025 13:02:32 +0200
-Message-ID: <20250826110953.033925460@linuxfoundation.org>
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 004/587] ALSA: hda/realtek: Fix headset mic on HONOR BRB-X
+Date: Tue, 26 Aug 2025 13:02:33 +0200
+Message-ID: <20250826110953.058361978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
 References: <20250826110952.942403671@linuxfoundation.org>
@@ -65,92 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
+commit b26e2afb3834d4a61ce54c8484ff6014bef0b4b7 upstream.
 
-UAC3 class segment descriptors need to be verified whether their sizes
-match with the declared lengths and whether they fit with the
-allocated buffer sizes, too.  Otherwise malicious firmware may lead to
-the unexpected OOB accesses.
+Add a PCI quirk to enable microphone input on the headphone jack on
+the HONOR BRB-X M1010 laptop.
 
-Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
+Link: https://patch.msgid.link/20250811132716.45076-1-kovalev@altlinux.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -341,20 +341,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 
- 	len = le16_to_cpu(cluster->wLength);
- 	c = 0;
--	p += sizeof(struct uac3_cluster_header_descriptor);
-+	p += sizeof(*cluster);
-+	len -= sizeof(*cluster);
- 
--	while (((p - (void *)cluster) < len) && (c < channels)) {
-+	while (len > 0 && (c < channels)) {
- 		struct uac3_cluster_segment_descriptor *cs_desc = p;
- 		u16 cs_len;
- 		u8 cs_type;
- 
-+		if (len < sizeof(*p))
-+			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
-+		if (len < cs_len)
-+			break;
- 		cs_type = cs_desc->bSegmentType;
- 
- 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
- 			struct uac3_cluster_information_segment_descriptor *is = p;
- 			unsigned char map;
- 
-+			if (cs_len < sizeof(*is))
-+				break;
-+
- 			/*
- 			 * TODO: this conversion is not complete, update it
- 			 * after adding UAC3 values to asound.h
-@@ -456,6 +464,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 			chmap->map[c++] = map;
- 		}
- 		p += cs_len;
-+		len -= cs_len;
- 	}
- 
- 	if (channels < c)
-@@ -876,7 +885,7 @@ snd_usb_get_audioformat_uac3(struct snd_
- 	u64 badd_formats = 0;
- 	unsigned int num_channels;
- 	struct audioformat *fp;
--	u16 cluster_id, wLength;
-+	u16 cluster_id, wLength, cluster_wLength;
- 	int clock = 0;
- 	int err;
- 
-@@ -1003,6 +1012,16 @@ snd_usb_get_audioformat_uac3(struct snd_
- 			iface_no, altno);
- 		kfree(cluster);
- 		return ERR_PTR(-EIO);
-+	}
-+
-+	cluster_wLength = le16_to_cpu(cluster->wLength);
-+	if (cluster_wLength < sizeof(*cluster) ||
-+	    cluster_wLength > wLength) {
-+		dev_err(&dev->dev,
-+			"%u:%d : invalid Cluster Descriptor size\n",
-+			iface_no, altno);
-+		kfree(cluster);
-+		return ERR_PTR(-EIO);
- 	}
- 
- 	num_channels = cluster->bNrChannels;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10636,6 +10636,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
