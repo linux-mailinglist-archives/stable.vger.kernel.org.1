@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1062DB36004
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F97FB3693E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783D91BA4B4E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 792B6982542
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCEE2264D3;
-	Tue, 26 Aug 2025 12:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F1B352FF5;
+	Tue, 26 Aug 2025 14:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KM52WF5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajBvyv8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8DB224B09;
-	Tue, 26 Aug 2025 12:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B963352071;
+	Tue, 26 Aug 2025 14:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212785; cv=none; b=Pc7W98y8ZCacFvGSIeyUn+fjfsTQlLj2Vwm4TF4xJ8AsPgltCxO/GZTjitdxg8GNt35n5+/Tuw2LVUw13waBf+2WoydqRLITKqFkq5Q/be8CAEH5KpGEFHek9dkrzWTTSnzgBnbi8R48ubJJgJw3KVQMv/wMzLSzcl+Y/BpePCg=
+	t=1756217166; cv=none; b=SpC6nLcQcN8LJ/H8ZtgdkDVbQXbDczoLFldkY6HrtmpN0YFfnW9M77Ure88p2vX1KrsXv0epvKL2lzEDoX0HRnpWsqDTvAKF+6YIQmzzoWNOQKPBhztyJCeVRco5e/bI0B56H2Ntwz4PQRVgU2xnMg3fGq87arl6j4TpPBes6rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212785; c=relaxed/simple;
-	bh=ZZ7rH2YS8Q/hcwtA+W7Omd25n/+Oh6K4I0n5b0FgBEk=;
+	s=arc-20240116; t=1756217166; c=relaxed/simple;
+	bh=W/smZtKZ0MEhCIR+MpC8XwO7WCS4qaNVywDs2cZh/GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QI/qebCo/+8rTUOWWetSpQxfb3anCSLH+tLGBJM0hZL0OLt0hbft6fBqoyGu4elrHIjb9yLZP+IoZwNhKc/OwgoVM5IYjaaly7S77bfgQp+6Oyafcqbsea185TETaMYbY+nV1BY7Hfq87IutZN9ph+fALdSjvE6HJBZUJb2Js0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KM52WF5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D536C4CEF1;
-	Tue, 26 Aug 2025 12:53:04 +0000 (UTC)
+	 MIME-Version; b=bLbGcX8pG5yNIYKmPuOX9ddOwQ2IssPmtYxGjrjufHmXpRX1vZdKWEO/39lZ/qi/ADhL8dTex0Havru8OlOuNhXcF1UJ6FPVSQPGni0wwkp/3U03paQtT8GDLAV14x8KRCQHUFL1z4bTd/AvnqVpqqYZhm9HwnFyeKkTdxnvHj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajBvyv8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D29C4CEF1;
+	Tue, 26 Aug 2025 14:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212785;
-	bh=ZZ7rH2YS8Q/hcwtA+W7Omd25n/+Oh6K4I0n5b0FgBEk=;
+	s=korg; t=1756217166;
+	bh=W/smZtKZ0MEhCIR+MpC8XwO7WCS4qaNVywDs2cZh/GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KM52WF5GMsDlj0b9FAvLmEGRv5onJ3+k/AtQDCh5VdDjNi7uuyT1Aj5QXmwwB9Ki8
-	 ffBlZtVE0ZGc2JhXHYDmU/D0gMvwiNwjypKzhpqvgqdUwr8JQ3XMo6ypqvi6Zytdyx
-	 mEWmzW9sHL1hUgCk+OybcQlYfnu01ip0QkNwOHZY=
+	b=ajBvyv8/g5WytNZGkDP7uBIaOBJddXOZJmwRTtspP+EGzpzDN0ijqGKEqwB52LXeN
+	 U5aGTHWdIktT7S5iBPlLggypUkHYN+wGv+adh2RncvZ59w91zaVQxGfrCemYji71pH
+	 e24Q2xONymY2zzjkYBfXvY1+kRadIXUPduJaawq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/587] iio: adc: ad_sigma_delta: dont overallocate scan buffer
+Subject: [PATCH 5.10 041/523] Bluetooth: SMP: Fix using HCI_ERROR_REMOTE_USER_TERM on timeout
 Date: Tue, 26 Aug 2025 13:04:11 +0200
-Message-ID: <20250826110955.536119176@linuxfoundation.org>
+Message-ID: <20250826110925.612670535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 5a2f15c5a8e017d0951e6dc62aa7b5b634f56881 ]
+[ Upstream commit 6ef99c917688a8510259e565bd1b168b7146295a ]
 
-Fix overallocating the size of the scan buffer by converting bits to
-bytes. The size is meant to be in bytes, so scanbits needs to be
-divided by 8.
+This replaces the usage of HCI_ERROR_REMOTE_USER_TERM, which as the name
+suggest is to indicate a regular disconnection initiated by an user,
+with HCI_ERROR_AUTH_FAILURE to indicate the session has timeout thus any
+pairing shall be considered as failed.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250701-iio-adc-ad7173-add-spi-offload-support-v3-1-42abb83e3dac@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 1e91c29eb60c ("Bluetooth: Use hci_disconnect for immediate disconnection from SMP")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 2 +-
+ net/bluetooth/smp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 533667eefe41..71e775a10a91 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -378,7 +378,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 			return ret;
- 	}
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 5a56e862ba13c..fc896d39a6d95 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1374,7 +1374,7 @@ static void smp_timeout(struct work_struct *work)
  
--	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits, 8);
-+	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
- 	samples_buf_size += sizeof(int64_t);
- 	samples_buf = devm_krealloc(&sigma_delta->spi->dev, sigma_delta->samples_buf,
- 				    samples_buf_size, GFP_KERNEL);
+ 	bt_dev_dbg(conn->hcon->hdev, "conn %p", conn);
+ 
+-	hci_disconnect(conn->hcon, HCI_ERROR_REMOTE_USER_TERM);
++	hci_disconnect(conn->hcon, HCI_ERROR_AUTH_FAILURE);
+ }
+ 
+ static struct smp_chan *smp_chan_create(struct l2cap_conn *conn)
 -- 
 2.39.5
 
