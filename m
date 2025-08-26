@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE02B36AD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42320B364A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52EC1A0024B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615D08A7481
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2B535206C;
-	Tue, 26 Aug 2025 14:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD7A34166C;
+	Tue, 26 Aug 2025 13:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1miksv9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trZv2vjx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA3C2AE7F;
-	Tue, 26 Aug 2025 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07463341650;
+	Tue, 26 Aug 2025 13:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218119; cv=none; b=nk2zLGl58kYDSpRapKjC0wiT/41gobXV8syhmWsd95Tb/AbcFbTIbFgz0AJn+EWcL/FXjMVCo2Een3rxSPpovFqgzvVTbungQ4/Ksx8N3u9CfzczoaIulZ7RFTQ4j6EgtQjSWNGNaU+VIPbscklZ43On7oaDLmCUkYdQWPe/fZI=
+	t=1756215099; cv=none; b=OcwhV/8SJr5XSAha6o5HxRXe/dUx4qQZIOrS0ET9nXZTfuDq8lCogPYiclJFyzLg7iao2Attf85EKm7RIErdCm2lDyuh+pXq1IrvI2KULdK8t1NiLjzLw0GUqoOYFpc19hXjC8EDuf9kUIHsHfV/PUUzBjPpr9vu3dmBhVtlOpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218119; c=relaxed/simple;
-	bh=IQifRH4exKKgPcN/xqLTEwxKeE1yPFNyubLLLDKSm40=;
+	s=arc-20240116; t=1756215099; c=relaxed/simple;
+	bh=9v9clRWBc46xBEqsjv1TRhCzlHEJsMvbkAl0fLiPQsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lL9mlY1aVurq6bWWJwy+/ewDHQoUMa9m3r5m6xm33HxQfNO5J6d3ZeTruEGrgnMqHZeNI8pIj7UQOgak7dS1SrvUs0Kka1Qww0g7TrniqLJi/HB59VUCRfJD8cN9oggNkj60LRiIhmZhziTs4n12pjW2zurOYwceZEohgcGMrTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1miksv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53604C116B1;
-	Tue, 26 Aug 2025 14:21:59 +0000 (UTC)
+	 MIME-Version; b=kljF1jlrIqeg3cBswASA8m1QQwWd3tTNXrO6a5763h/kIF0cx/DbtOeZxSp/YlEBv5i5+Ox+6Hk9kIJlfIK9qrVKk5AMp3l1ZDYM/Ib2BIX8oP9+iBGp39YjZd2dJ45ra6aKkuB6GS48yNFe1vdRsV599WCeBksjXvEd0xBxKT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trZv2vjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C866C113D0;
+	Tue, 26 Aug 2025 13:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218119;
-	bh=IQifRH4exKKgPcN/xqLTEwxKeE1yPFNyubLLLDKSm40=;
+	s=korg; t=1756215098;
+	bh=9v9clRWBc46xBEqsjv1TRhCzlHEJsMvbkAl0fLiPQsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1miksv9VdD1/xsenCQ6sH4TluChhR+JUUpVrJfPAfG7Abk92h1XCbanIV+D7DW2B
-	 2r8RdPB5TP1UX3vXPSYT87gRrVvUI0sio+fSPTmq2xq0lIdTZ6dvxAhRycmnXU5int
-	 PElqkXD06i5ydPlmJcoFXs5WE53kgcjna4OLK9uw=
+	b=trZv2vjxe8Vsh+6hCd6aC1C2grvf0mKnc1F0pa3m0UvXB+3OMoyeVRYU5lxH1awGl
+	 pi9mg901n189d9IRaImilq+02lKpzfTP08PRNG9ZCGl8Blp1jsqqpmroFrT6UyOJOS
+	 nc2xF/wxZM/zKvG6DnM0McMSrGJLQha5AHVlCIQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.10 399/523] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
+	Damien Le Moal <dlemoal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 356/482] block: Make REQ_OP_ZONE_FINISH a write operation
 Date: Tue, 26 Aug 2025 13:10:09 +0200
-Message-ID: <20250826110934.302606723@linuxfoundation.org>
+Message-ID: <20250826110939.629395774@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
+[ Upstream commit 3f66ccbaaef3a0c5bd844eab04e3207b4061c546 ]
 
-Also needed by DCE 6.
-This way the code that gathers this info can be shared between
-different DCE versions and doesn't have to be repeated.
+REQ_OP_ZONE_FINISH is defined as "12", which makes
+op_is_write(REQ_OP_ZONE_FINISH) return false, despite the fact that a
+zone finish operation is an operation that modifies a zone (transition
+it to full) and so should be considered as a write operation (albeit
+one that does not transfer any data to the device).
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
+Fix this by redefining REQ_OP_ZONE_FINISH to be an odd number (13), and
+redefine REQ_OP_ZONE_RESET and REQ_OP_ZONE_RESET_ALL using sequential
+odd numbers from that new value.
+
+Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
 Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250625093327.548866-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ include/linux/blk_types.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -384,8 +384,6 @@ static void dce_pplib_apply_display_requ
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -375,11 +375,11 @@ enum req_op {
+ 	/* Close a zone */
+ 	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)11,
+ 	/* Transition a zone to full */
+-	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)12,
++	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)13,
+ 	/* reset a zone write pointer */
+-	REQ_OP_ZONE_RESET	= (__force blk_opf_t)13,
++	REQ_OP_ZONE_RESET	= (__force blk_opf_t)15,
+ 	/* reset all the zone present on the device */
+-	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)15,
++	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)17,
  
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
- 	int j;
- 	int num_cfgs = 0;
- 
-+	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
-+	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
-+	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
- 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
- 
- 	for (j = 0; j < context->stream_count; j++) {
-@@ -242,13 +245,6 @@ void dce11_pplib_apply_display_requireme
- 	pp_display_cfg->min_engine_clock_deep_sleep_khz
- 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
- 
--	pp_display_cfg->avail_mclk_switch_time_us =
--						dce110_get_min_vblank_time_us(context);
--	/* TODO: dce11.2*/
--	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
--
--	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
- 
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+ 	/* Driver private requests */
+ 	REQ_OP_DRV_IN		= (__force blk_opf_t)34,
 
 
 
