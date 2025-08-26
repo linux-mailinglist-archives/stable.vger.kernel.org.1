@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74919B36867
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B61B365F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BECD56393B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A886646627D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E7F35337D;
-	Tue, 26 Aug 2025 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FCF345730;
+	Tue, 26 Aug 2025 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtlSOUVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVNBCkD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FEB353346;
-	Tue, 26 Aug 2025 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650A533471E;
+	Tue, 26 Aug 2025 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217174; cv=none; b=OwBo7LN/AdMuHw8fll8jP1FRK7fILt+xpxPYAI42ZpPSwhpxnrJPPMT+b2U1zqn+a+RTr60QgYMK834V/a5uwDtlzx6euhDkFJo5ygxhEw3elsm0bsaE6wp25bRlD7Ai1KVcPAmKCegWVnW4QGClU9yX2jk3UYMYJB3t7lFG0ms=
+	t=1756215863; cv=none; b=Aw2YFUZeh/1ywUZ0pqrjswoseHo3V+vUnANcqIKxhuwyfIiLg+acvM4X36l0SaEqP7hNEJ+idwRcqzfO4Z2kd4Mp5/bRu0eE6qVRScL0el5x4Ql/MJwpHQ+jNM33oeVO3JcivQHsC6wc+LkjlBO0reBNEuySq11cP/qG3tOsYu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217174; c=relaxed/simple;
-	bh=TJ29bMBTvNWPCRBmIxiRTbvi7D1SKSTgkot7NwQ208k=;
+	s=arc-20240116; t=1756215863; c=relaxed/simple;
+	bh=87+FEWUKWJfFtozmHVKxBK01pBDzQt+QWy8LroiXEWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GO8XuBIrmAoDbWWveaUPe6AmSiRtlFMxV8f+yxDUPbgOFx6Za0a610IHsxmJ6JyyqOxpYVWUL8+LiOXJarzn/e6csKAn+Oe1NcDB53I5ldbCnn0Esogjz651mnJuz7GR2tWWwaCV+7Bqth2aYHf0u47ns8ueutrdJFkCsBhOPC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtlSOUVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D613AC113D0;
-	Tue, 26 Aug 2025 14:06:13 +0000 (UTC)
+	 MIME-Version; b=ZR4Q3NWevUzBlmLuAOYtc2YvOw1b3ZAw6RwkIa2f48FpPwHDETOHPUsNY+eX2Fbh29ZK2DW0uhswFOtFT7D1kBvG1AXzkeJJ+Gv3Z8oiRA9flRx8xfciBUxzv+in5YNfB3yxzzJgxT7QCB2SKH+9mF2X7a0kpRFsP7YeMkv1Ppg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVNBCkD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C8FC4CEF1;
+	Tue, 26 Aug 2025 13:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217174;
-	bh=TJ29bMBTvNWPCRBmIxiRTbvi7D1SKSTgkot7NwQ208k=;
+	s=korg; t=1756215862;
+	bh=87+FEWUKWJfFtozmHVKxBK01pBDzQt+QWy8LroiXEWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtlSOUVR4e7yQgqf3SlVef3dkDBslma3SjLqUQC4XmK6olZXlC9hEdaB1HVWwVXSs
-	 2OuUdHVyOixRI22HLn58uHjld3g/iiDx22P5OXbIjYdl1c6WdC/3Ivf85sE688sCx8
-	 OorlW1Yrk16yHZkMww5y4JvWh3FF1qDhEBW0D+7A=
+	b=gVNBCkD5OyNBeYhpt2PsrpMJU5P3T/i45s1P+fbgu5YdWvNleWsVcghMLR+zsh5CB
+	 XTKkjQhnw5D421dg4Fw44Q2F+pA9WDofMBVn1Tip8yg9W5iUrUtcXexB9+AIe5ABxU
+	 zgBGsXb4ur/3QXCo/NL58bcKfbI7M95/P7NcupBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
+	Xiumei Mu <xmu@redhat.com>,
+	Shannon Nelson <sln@onemain.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/523] net/sched: Return NULL when htb_lookup_leaf encounters an empty rbtree
+Subject: [PATCH 5.15 163/644] selftests: rtnetlink.sh: remove esp4_offload after test
 Date: Tue, 26 Aug 2025 13:04:14 +0200
-Message-ID: <20250826110925.691331395@linuxfoundation.org>
+Message-ID: <20250826110950.519266268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Xiumei Mu <xmu@redhat.com>
 
-[ Upstream commit 0e1d5d9b5c5966e2e42e298670808590db5ed628 ]
+[ Upstream commit 5b32321fdaf3fd1a92ec726af18765e225b0ee2b ]
 
-htb_lookup_leaf has a BUG_ON that can trigger with the following:
+The esp4_offload module, loaded during IPsec offload tests, should
+be reset to its default settings after testing.
+Otherwise, leaving it enabled could unintentionally affect subsequence
+test cases by keeping offload active.
 
-tc qdisc del dev lo root
-tc qdisc add dev lo root handle 1: htb default 1
-tc class add dev lo parent 1: classid 1:1 htb rate 64bit
-tc qdisc add dev lo parent 1:1 handle 2: netem
-tc qdisc add dev lo parent 2:1 handle 3: blackhole
-ping -I lo -c1 -W0.001 127.0.0.1
+Without this fix:
+$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
+PASS: ipsec_offload
+esp4_offload           12288  0
+esp4                   32768  1 esp4_offload
 
-The root cause is the following:
+With this fix:
+$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
+PASS: ipsec_offload
 
-1. htb_dequeue calls htb_dequeue_tree which calls the dequeue handler on
-   the selected leaf qdisc
-2. netem_dequeue calls enqueue on the child qdisc
-3. blackhole_enqueue drops the packet and returns a value that is not
-   just NET_XMIT_SUCCESS
-4. Because of this, netem_dequeue calls qdisc_tree_reduce_backlog, and
-   since qlen is now 0, it calls htb_qlen_notify -> htb_deactivate ->
-   htb_deactiviate_prios -> htb_remove_class_from_row -> htb_safe_rb_erase
-5. As this is the only class in the selected hprio rbtree,
-   __rb_change_child in __rb_erase_augmented sets the rb_root pointer to
-   NULL
-6. Because blackhole_dequeue returns NULL, netem_dequeue returns NULL,
-   which causes htb_dequeue_tree to call htb_lookup_leaf with the same
-   hprio rbtree, and fail the BUG_ON
-
-The function graph for this scenario is shown here:
- 0)               |  htb_enqueue() {
- 0) + 13.635 us   |    netem_enqueue();
- 0)   4.719 us    |    htb_activate_prios();
- 0) # 2249.199 us |  }
- 0)               |  htb_dequeue() {
- 0)   2.355 us    |    htb_lookup_leaf();
- 0)               |    netem_dequeue() {
- 0) + 11.061 us   |      blackhole_enqueue();
- 0)               |      qdisc_tree_reduce_backlog() {
- 0)               |        qdisc_lookup_rcu() {
- 0)   1.873 us    |          qdisc_match_from_root();
- 0)   6.292 us    |        }
- 0)   1.894 us    |        htb_search();
- 0)               |        htb_qlen_notify() {
- 0)   2.655 us    |          htb_deactivate_prios();
- 0)   6.933 us    |        }
- 0) + 25.227 us   |      }
- 0)   1.983 us    |      blackhole_dequeue();
- 0) + 86.553 us   |    }
- 0) # 2932.761 us |    qdisc_warn_nonwc();
- 0)               |    htb_lookup_leaf() {
- 0)               |      BUG_ON();
- ------------------------------------------
-
-The full original bug report can be seen here [1].
-
-We can fix this just by returning NULL instead of the BUG_ON,
-as htb_dequeue_tree returns NULL when htb_lookup_leaf returns
-NULL.
-
-[1] https://lore.kernel.org/netdev/pF5XOOIim0IuEfhI-SOxTgRvNoDwuux7UHKnE_Y5-zVd4wmGvNk2ceHjKb8ORnzw0cGwfmVu42g9dL7XyJLf1NEzaztboTWcm0Ogxuojoeo=@willsroot.io/
-
-Fixes: 512bb43eb542 ("pkt_sched: sch_htb: Optimize WARN_ONs in htb_dequeue_tree() etc.")
-Signed-off-by: William Liu <will@willsroot.io>
-Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://patch.msgid.link/20250717022816.221364-1-will@willsroot.io
+Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
+Signed-off-by: Xiumei Mu <xmu@redhat.com>
+Reviewed-by: Shannon Nelson <sln@onemain.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/6d3a1d777c4de4eb0ca94ced9e77be8d48c5b12f.1753415428.git.xmu@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_htb.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/rtnetlink.sh | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -775,7 +775,9 @@ static struct htb_class *htb_lookup_leaf
- 		u32 *pid;
- 	} stk[TC_HTB_MAXDEPTH], *sp = stk;
- 
--	BUG_ON(!hprio->row.rb_node);
-+	if (unlikely(!hprio->row.rb_node))
-+		return NULL;
+diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
+index a3597b3e579f..0a6212a96415 100755
+--- a/tools/testing/selftests/net/rtnetlink.sh
++++ b/tools/testing/selftests/net/rtnetlink.sh
+@@ -746,6 +746,11 @@ kci_test_ipsec_offload()
+ 	sysfsf=$sysfsd/ipsec
+ 	sysfsnet=/sys/bus/netdevsim/devices/netdevsim0/net/
+ 	probed=false
++	esp4_offload_probed_default=false
 +
- 	sp->root = hprio->row.rb_node;
- 	sp->pptr = &hprio->ptr;
- 	sp->pid = &hprio->last_ptr_id;
++	if lsmod | grep -q esp4_offload; then
++		esp4_offload_probed_default=true
++	fi
+ 
+ 	# setup netdevsim since dummydev doesn't have offload support
+ 	if [ ! -w /sys/bus/netdevsim/new_device ] ; then
+@@ -835,6 +840,7 @@ EOF
+ 	fi
+ 
+ 	# clean up any leftovers
++	! "$esp4_offload_probed_default" && lsmod | grep -q esp4_offload && rmmod esp4_offload
+ 	echo 0 > /sys/bus/netdevsim/del_device
+ 	$probed && rmmod netdevsim
+ 
+-- 
+2.39.5
+
 
 
 
