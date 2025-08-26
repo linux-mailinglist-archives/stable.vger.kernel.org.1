@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C279FB35E82
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA43B35D0A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27E8C5608AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCF9F188B844
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393BD2BEFF0;
-	Tue, 26 Aug 2025 11:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76333376BA;
+	Tue, 26 Aug 2025 11:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXE+4l7E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udpUG+XP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D002F9992;
-	Tue, 26 Aug 2025 11:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85181233128;
+	Tue, 26 Aug 2025 11:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208838; cv=none; b=jZA+mQN+k0tiKjdLh+Uyg1S5XHHV+iggaBAp9r/BYzTh/bPGZpr+jRcyn0Yyfhbdm1in9i1zOznOV1m5Prj3ipVv8UiVGCrTnUJCS+wLG0Sv/g34qZSUGLMqlMnVbtr+8yk67WfGgxe2jFl+j1UoEIGlzUapN6rsXiT5Xwzkyig=
+	t=1756207987; cv=none; b=ivBx5wNq8MdIZrGFLVKPmt+QrnMsl3IZb2VnnXQK/EySJcDMWjhl8h1AYmP2X2HLLY0F8CXNsEzdB72mGv2rCOxHA4pw4ppfF9RcLh4YtJWdgoR4ojUsKiWjYptobZT0QoYYKiJR/OwaAhJNniKQqTcf+jRu82LmIq8u92KErA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208838; c=relaxed/simple;
-	bh=mjSzy1uF7xBRx6718FRRWRFlQj+or6OqalAjqv1pS2c=;
+	s=arc-20240116; t=1756207987; c=relaxed/simple;
+	bh=Kaq0XLGFKs5MwDlc5J62DwQlPdrm0p7cMS1avHgni4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHSiCihk9J+zhxpM+Mvv2yJlj1z5Hzs56honLLKfRbv9yP/Em5vtVrSVChKwW7RD915Skb0WOSDpTE/waH7iyj5kcKTPaI7xvrKxX88zWuvK4oBAHGTePG9uQecflTAtEsKrbmHOkv4Fy5wcYnbPk+rxQvuPf/pHHjvamhnN4PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXE+4l7E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF52C4CEF1;
-	Tue, 26 Aug 2025 11:47:17 +0000 (UTC)
+	 MIME-Version; b=H+OxMnOVCXZ8b8puMIkqNQsB9PtjPCGjvoalrK7lZmIu8wpk8UoyJIk+gyFqtGb4xBmfVrCQ4jKsTieu0JpaxGtqHq9y9D8rPwyUhLMDmHmmQQ+/pcYFNVbJXtjjmkhTe4l5gMsOmYg7JSFomIW4clSK8Qv/FQPJYs4ms/HkW4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udpUG+XP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16426C4CEF1;
+	Tue, 26 Aug 2025 11:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208837;
-	bh=mjSzy1uF7xBRx6718FRRWRFlQj+or6OqalAjqv1pS2c=;
+	s=korg; t=1756207987;
+	bh=Kaq0XLGFKs5MwDlc5J62DwQlPdrm0p7cMS1avHgni4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXE+4l7ERWjGJ8ljflAszxWUokzxmcX51kKVVc3/v/Y4GrCXbP0Pa+JcODokVP/0f
-	 kIiSCzzFY7TTpNDyR9yjKzyB6X5dlJMe/+5T9GhqKuQ5Bp4Rd5rpUFc3+grlBSBRQa
-	 pq2bRg1lGi9gGgA3+6MK+V+DNUqjOYWjP/7uA5Uc=
+	b=udpUG+XP6vz5NwNeqcz4kLV5GmOc4dzuOofgmfh2zaROMzu0UaDz7jPSTGG2vZV45
+	 2zfbNzQ6CtnQoEs1iAL5itRnsfY9S6jKiHSLYsdelSmh/vyAnM9VBir68SjIUt9Y+d
+	 ATRdLwhpFdckfCFhJ/w803lDXUTBJ391L1jt/WyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/322] rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()
+Subject: [PATCH 6.16 395/457] drm/amd/display: Add null pointer check in mod_hdcp_hdcp1_create_session()
 Date: Tue, 26 Aug 2025 13:11:19 +0200
-Message-ID: <20250826110922.452427762@linuxfoundation.org>
+Message-ID: <20250826110947.059038427@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit fde578c86281f27b182680c7642836a0dbbd0be7 ]
+[ Upstream commit 7a2ca2ea64b1b63c8baa94a8f5deb70b2248d119 ]
 
-aligned_size() dates back to when Rust did support kmalloc() only, but
-is now used in ReallocFunc::call() and hence for all allocators.
+The function mod_hdcp_hdcp1_create_session() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference.
 
-However, the additional padding applied by aligned_size() is only
-required by the kmalloc() allocator backend.
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
 
-Hence, replace aligned_size() with Kmalloc::aligned_layout() and use it
-for the affected allocators, i.e. kmalloc() and kvmalloc(), only.
+This is similar to the commit c3e9826a2202
+("drm/amd/display: Add null pointer check for get_first_active_display()").
 
-While at it, make Kmalloc::aligned_layout() public, such that Rust
-abstractions, which have to call subsystem specific kmalloc() based
-allocation primitives directly, can make use of it.
-
-Fixes: 8a799831fc63 ("rust: alloc: implement `ReallocFunc`")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250731154919.4132-2-dakr@kernel.org
-[ Remove `const` from Kmalloc::aligned_layout(). - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e43eb3cd731649c4f8b9134f857be62a416c893)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc/allocator.rs | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 439985e29fbc..e4cd29100007 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -43,17 +43,6 @@ pub struct Vmalloc;
- /// For more details see [self].
- pub struct KVmalloc;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index e58e7b93810b..6b7db8ec9a53 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -260,6 +260,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_create_session(struct mod_hdcp *hdcp)
+ 		return MOD_HDCP_STATUS_FAILURE;
+ 	}
  
--/// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
--fn aligned_size(new_layout: Layout) -> usize {
--    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
--    let layout = new_layout.pad_to_align();
--
--    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
--    // which together with the slab guarantees means the `krealloc` will return a properly aligned
--    // object (see comments in `kmalloc()` for more information).
--    layout.size()
--}
--
- /// # Invariants
- ///
- /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
-@@ -87,7 +76,7 @@ impl ReallocFunc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        let size = aligned_size(layout);
-+        let size = layout.size();
-         let ptr = match ptr {
-             Some(ptr) => {
-                 if old_layout.size() == 0 {
-@@ -122,6 +111,17 @@ impl ReallocFunc {
-     }
- }
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
  
-+impl Kmalloc {
-+    /// Returns a [`Layout`] that makes [`Kmalloc`] fulfill the requested size and alignment of
-+    /// `layout`.
-+    pub fn aligned_layout(layout: Layout) -> Layout {
-+        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
-+        // `layout.align()` which together with the slab guarantees means that `Kmalloc` will return
-+        // a properly aligned object (see comments in `kmalloc()` for more information).
-+        layout.pad_to_align()
-+    }
-+}
-+
- // SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
- // - memory remains valid until it is explicitly freed,
- // - passing a pointer to a valid memory allocation is OK,
-@@ -134,6 +134,8 @@ unsafe impl Allocator for Kmalloc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-+        let layout = Kmalloc::aligned_layout(layout);
-+
-         // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
-         unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags) }
-     }
-@@ -175,6 +177,10 @@ unsafe impl Allocator for KVmalloc {
-         old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-+        // `KVmalloc` may use the `Kmalloc` backend, hence we have to enforce a `Kmalloc`
-+        // compatible layout.
-+        let layout = Kmalloc::aligned_layout(layout);
-+
-         // TODO: Support alignments larger than PAGE_SIZE.
-         if layout.align() > bindings::PAGE_SIZE {
-             pr_warn!("KVmalloc does not support alignments larger than PAGE_SIZE yet.\n");
+ 	mutex_lock(&psp->hdcp_context.mutex);
 -- 
 2.50.1
 
