@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903C1B36694
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B59B3684A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DDE53BF87F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB5867BEE46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9053134AAFE;
-	Tue, 26 Aug 2025 13:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856B335334B;
+	Tue, 26 Aug 2025 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnXbGAfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJ3z9qh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C23A350D70;
-	Tue, 26 Aug 2025 13:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A0B352FFC;
+	Tue, 26 Aug 2025 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216019; cv=none; b=JXIyfpfO2K/TAYlheqXKsX+Zsp2LS+PtlW+TpxSS/zM0uGmY/jfB3zA5iET2jBh6aXmspwCVTnfRrlrikdnw6wxLJdI0QOGYN01PTXQeP4EF5VPMvI1ZrMyw6vcrdDirPqgXsvvDv2kjdI4mLynIejhc3/A0E7B2kw2tTyMjsoQ=
+	t=1756217461; cv=none; b=fdUj9Emo/ze9/5u4ntmXN8eJ1M8PJI/Uu1Ub3klf9FdX5adgfRG9nuTMFRALeBHHGM2kqwWFPqb6hCMGBxvAcuBOsThmYG71U1yu+H38jNVO67xw0Gr1Kj2vK5yE6UJS8z/DUKthA4OHmGqmreCM9o0accAeetnHUq88cc2xG+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216019; c=relaxed/simple;
-	bh=jcHpWAHVFf4BDUokns77d4aUMcM4S1oW/0Ro6zbGeb0=;
+	s=arc-20240116; t=1756217461; c=relaxed/simple;
+	bh=8sX86CUW9zX9W9eR69TYvSwHaxil+miCfX0at+pGo5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAYB50GVwrBoy5NFgEm43g0c0CU25SkTRBI0qPF1VDm2ID7y+13jOKz1kZ9C6wTG6nN+E9X93dx7P4McDfFMFyqFzYRR6CTIlhqJaHF0IJWssfqbAN7mD5L8yJ6kTNvDnQ+zkpYxSe+atSplOgdGcAxye7qOftSUjYc0OBj1yqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnXbGAfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D287CC4AF09;
-	Tue, 26 Aug 2025 13:46:58 +0000 (UTC)
+	 MIME-Version; b=Um/TAbBa0B36eoCGOvAb82HjVs8N59v3cr0UrTygOcaaGp9KOXm8L5Ts59Ksp/kbp+VCTl/lSLXGYs+FGtE/ft2zO0gynKCQnTeq0P5TiE8EuMwj7a10GzbV9zFTGNTA2dXjJGAuTigYtLEEDoKBlP9QuFleJok3q2/oRm2zAqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJ3z9qh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE7DC113CF;
+	Tue, 26 Aug 2025 14:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216019;
-	bh=jcHpWAHVFf4BDUokns77d4aUMcM4S1oW/0Ro6zbGeb0=;
+	s=korg; t=1756217461;
+	bh=8sX86CUW9zX9W9eR69TYvSwHaxil+miCfX0at+pGo5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnXbGAfStFk0SD7c33+nzO7qBsizILlHlfi8HGWf+X/CYlXyHiMkLZ2LWKKUJOq3f
-	 WIc4xiGR8XKEOkPPSKLlTE6+J9To7AMixj7+w1HU6LjbB/20op2XG9z4JCur+/muUO
-	 VX1VWc0masePOWVwqmaNp1ndYvrFq5bcFfFHzTgo=
+	b=CJ3z9qh8YHmOSGPtQwUPMPwZBpz6DQ/ya8LEcMjb8NfnimV2VS3xU1MJt7VA2l2fD
+	 KTp8bMdpZcsKoOStxVS3Icz+cpmjR/nxV4644IAl0r7E0A4jKXYvtDGzR4r8dd9/Op
+	 zxeFWqwviPgu/M/d5GQzvvyelrVVb7zVY1xEnbmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armando Budianto <sprite@gnuweeb.org>,
-	Simon Horman <horms@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Subject: [PATCH 5.15 253/644] net: usbnet: Fix the wrong netif_carrier_on() call
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 134/523] hwrng: mtk - handle devm_pm_runtime_enable errors
 Date: Tue, 26 Aug 2025 13:05:44 +0200
-Message-ID: <20250826110952.653619105@linuxfoundation.org>
+Message-ID: <20250826110927.808560580@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
+[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
 
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
+Although unlikely, devm_pm_runtime_enable() call might fail, so handle
+the return value.
 
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
-
-Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/char/hw_random/mtk-rng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1118,6 +1118,9 @@ static void __handle_link_change(struct
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
+diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
+index 3e00506543b6..72269d0f2a4e 100644
+--- a/drivers/char/hw_random/mtk-rng.c
++++ b/drivers/char/hw_random/mtk-rng.c
+@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
+ 	dev_set_drvdata(&pdev->dev, priv);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
  
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
-+
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
-@@ -1127,9 +1130,6 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
+ 	dev_info(&pdev->dev, "registered RNG driver\n");
+ 
+-- 
+2.39.5
+
 
 
 
