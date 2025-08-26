@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-175959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9ACAB36B49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89CDB35E09
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23271C240AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E4653A60FE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1562235AABF;
-	Tue, 26 Aug 2025 14:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489F32BE7A7;
+	Tue, 26 Aug 2025 11:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsRNK/5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6MeE5r3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60F435690E;
-	Tue, 26 Aug 2025 14:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC02283FDF;
+	Tue, 26 Aug 2025 11:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218418; cv=none; b=m93Q213Uq6+Bj7ycjsmJp1/PbZG9c8MPzrLtJp0cSaL/6WcN6U/L7bL5D1/zLDDwEVfNNxLMfm40jDoDC11BP8A3g5eE4xkn/UY6RWjCkAWLVcNAclbf+znjyYGMoQ8TL1NREojcPYqs1huueSIXt1Zr9OXsg8xf6DUHS4eN1U8=
+	t=1756208995; cv=none; b=k6jktn+LVG8BPZiZC7nC8IgM7JOnpmwA3PYW1ZXOtfnefzLCXwJdKyIEk7iKyJ7Y5n78qv5H4SajLTVQPoLM/gHA2T8IM2ddqmdnRiIwpZOgzqLedCjAPf5v+LXmjtZ4kbOUk0yzHn6KYAN8aVyc3OYDoIDHv+4PFw40X/Sehjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218418; c=relaxed/simple;
-	bh=Jwro2h1HgMZuFWY5TQOBthsuBUPwP2F9yltsShxPi8o=;
+	s=arc-20240116; t=1756208995; c=relaxed/simple;
+	bh=ndCmgxChmYn6/pzaKCVhQL3xveSv3/ULTstG/GjbAGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmuDW7N5WR5zJexYxBlB4zHPFfqmCXeZHYJ9Rl70oS7MIS4ZfDZVyVFKaFdLj1SlEDR7KK4+2wXhV6jIy85xcIVn5IQCFsUOm0/wzCWiX+sQG0mfwByWyhcvlKlWG8ShDAf7Dc8K8fsh+ajUbXLAZsHBAOmjsBT40YCkHVnClqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsRNK/5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0F0C19421;
-	Tue, 26 Aug 2025 14:26:57 +0000 (UTC)
+	 MIME-Version; b=KVJEavQuztZAX0hja+JzH3UbJ52B4rPTaOUNHRHWmXPC64Z6ZQusmyquBSTDaH0EonMVu5Xw+FDcAQMkphD0VJeGRv+jpgPOV+t9tRqXEAfFCqdubt5uYI2O1L528dysiGFvjAPmcIZ2xNu9zE7gITBVr2AwHaHRawbtTHy27n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6MeE5r3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828E2C4CEF1;
+	Tue, 26 Aug 2025 11:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218418;
-	bh=Jwro2h1HgMZuFWY5TQOBthsuBUPwP2F9yltsShxPi8o=;
+	s=korg; t=1756208994;
+	bh=ndCmgxChmYn6/pzaKCVhQL3xveSv3/ULTstG/GjbAGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsRNK/5uCg/ipLek0RyK2E0Qrz7EH7YtxuQpFdoecDLr71k9VQLx59hhoF8bIbE7z
-	 TlDt3RqcicAsMCyRGNPLEFtIHjaR9JBifScATJfeRp7KefHVMqgFpo+1pFtLxB8QLk
-	 Tqsm06BW0OYXjOWXTaytmykP/zKnrVbCOXGE38zg=
+	b=X6MeE5r3NsaS9WrB4hix/eUbVmYNYah9XKJJhlSzMvjxpzKHqNjinM4AlzztD/mmq
+	 yy2azLsjyAFy18JUTVqGW2nuUvd4ALEyePHRWWIsgaretDcfJG+cOdHiGNBpC7ckMz
+	 VPBJ5PEYkjX1wgzI6ZGfQQ/nVPm7iaLnBHytZ38I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Priya Singh <priyax.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 515/523] ixgbe: xsk: resolve the negative overflow of budget in ixgbe_xmit_zc
+Subject: [PATCH 6.12 310/322] bonding: update LACP activity flag after setting lacp_active
 Date: Tue, 26 Aug 2025 13:12:05 +0200
-Message-ID: <20250826110937.143618878@linuxfoundation.org>
+Message-ID: <20250826110923.547165092@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 4d4d9ef9dfee877d494e5418f68a1016ef08cad6 ]
+[ Upstream commit b64d035f77b1f02ab449393342264b44950a75ae ]
 
-Resolve the budget negative overflow which leads to returning true in
-ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
+The port's actor_oper_port_state activity flag should be updated immediately
+after changing the lacp_active option to reflect the current mode correctly.
 
-Before this patch, when the budget is decreased to zero and finishes
-sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
-and enter into the while() statement to see if it should keep processing
-packets, but in the meantime it unexpectedly decreases the value again to
-'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
-true, showing 'we complete cleaning the budget'. That also means
-'clean_complete = true' in ixgbe_poll.
-
-The true theory behind this is if that budget number of descs are consumed,
-it implies that we might have more descs to be done. So we should return
-false in ixgbe_xmit_zc to tell napi poll to find another chance to start
-polling to handle the rest of descs. On the contrary, returning true here
-means job done and we know we finish all the possible descs this time and
-we don't intend to start a new napi poll.
-
-It is apparently against our expectations. Please also see how
-ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
-to make sure the budget can be decreased to zero at most and the negative
-overflow never happens.
-
-The patch adds 'likely' because we rarely would not hit the loop condition
-since the standard budget is 256.
-
-Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Priya Singh <priyax.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-4-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250815062000.22220-2-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_3ad.c     | 25 +++++++++++++++++++++++++
+ drivers/net/bonding/bond_options.c |  1 +
+ include/net/bond_3ad.h             |  1 +
+ 3 files changed, 27 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-index ca1a428b278e..54351d6742d0 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-@@ -390,7 +390,7 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 	dma_addr_t dma;
- 	u32 cmd_type;
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index c6807e473ab7..a51305423d28 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -2869,6 +2869,31 @@ void bond_3ad_update_lacp_rate(struct bonding *bond)
+ 	spin_unlock_bh(&bond->mode_lock);
+ }
  
--	while (budget-- > 0) {
-+	while (likely(budget)) {
- 		if (unlikely(!ixgbe_desc_unused(xdp_ring))) {
- 			work_done = false;
- 			break;
-@@ -425,6 +425,8 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 		xdp_ring->next_to_use++;
- 		if (xdp_ring->next_to_use == xdp_ring->count)
- 			xdp_ring->next_to_use = 0;
++/**
++ * bond_3ad_update_lacp_active - change the lacp active
++ * @bond: bonding struct
++ *
++ * Update actor_oper_port_state when lacp_active is modified.
++ */
++void bond_3ad_update_lacp_active(struct bonding *bond)
++{
++	struct port *port = NULL;
++	struct list_head *iter;
++	struct slave *slave;
++	int lacp_active;
 +
-+		budget--;
- 	}
++	lacp_active = bond->params.lacp_active;
++	spin_lock_bh(&bond->mode_lock);
++	bond_for_each_slave(bond, slave, iter) {
++		port = &(SLAVE_AD_INFO(slave)->port);
++		if (lacp_active)
++			port->actor_oper_port_state |= LACP_STATE_LACP_ACTIVITY;
++		else
++			port->actor_oper_port_state &= ~LACP_STATE_LACP_ACTIVITY;
++	}
++	spin_unlock_bh(&bond->mode_lock);
++}
++
+ size_t bond_3ad_stats_size(void)
+ {
+ 	return nla_total_size_64bit(sizeof(u64)) + /* BOND_3AD_STAT_LACPDU_RX */
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index d1b095af253b..e27d913b487b 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1634,6 +1634,7 @@ static int bond_option_lacp_active_set(struct bonding *bond,
+ 	netdev_dbg(bond->dev, "Setting LACP active to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.lacp_active = newval->value;
++	bond_3ad_update_lacp_active(bond);
  
- 	if (tx_desc) {
+ 	return 0;
+ }
+diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
+index 2053cd8e788a..dba369a2cf27 100644
+--- a/include/net/bond_3ad.h
++++ b/include/net/bond_3ad.h
+@@ -307,6 +307,7 @@ int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
+ 			 struct slave *slave);
+ int bond_3ad_set_carrier(struct bonding *bond);
+ void bond_3ad_update_lacp_rate(struct bonding *bond);
++void bond_3ad_update_lacp_active(struct bonding *bond);
+ void bond_3ad_update_ad_actor_settings(struct bonding *bond);
+ int bond_3ad_stats_fill(struct sk_buff *skb, struct bond_3ad_stats *stats);
+ size_t bond_3ad_stats_size(void);
 -- 
 2.50.1
 
