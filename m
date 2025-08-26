@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B173AB36082
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA1AB36945
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9A71BC1683
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1238E6CEF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2781DD9D3;
-	Tue, 26 Aug 2025 12:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51595353363;
+	Tue, 26 Aug 2025 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heI1baF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwbHEhom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9826C14A4DB;
-	Tue, 26 Aug 2025 12:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A166306D3F;
+	Tue, 26 Aug 2025 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213082; cv=none; b=Fqqd5ev+rln5TOqJ/Vp4rSl0RZsN+bq3Nhb4ydel3JuOOqc+LFEJMvGXWHj5WZsf6wzXyZvtuN9Sn282X7WBQYXi8JSh4l2zz0B4hnRRtt4UlJG7XipzOItDev8lP3mXbZddbeBfSLcAL3nUyiyn8bT8PrzorW7eLRCRuFvuEQo=
+	t=1756217469; cv=none; b=VY8G/xWmaJYMgGiKCFNwaoz7LwZMTqYnb8okGLAzi6E8FMmRPBApPjNW77VPVaS99cxMA7uCFoRnRbKWOpB1iHPu0fbp/SHjTpIHwfsCxjlUGq8K9ggOAAHWmUli81ghXb6BQ1Wv+zi0ClwAcERVnLm7gXjUq0I4ks7rh4qwlFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213082; c=relaxed/simple;
-	bh=6r8QW3x51xuBI/JI5DLrFoi0AvRC6UKosWKvl5jQSfw=;
+	s=arc-20240116; t=1756217469; c=relaxed/simple;
+	bh=06Kowqjy4EAkCJxmUxiDfSEzclUQwiHwPFUclxZ3uN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pcscHhF1hOktgPZGumR23nDWuhT56G/3lTMHa6qaygCEUzF21OfCgXo86x09bn0P+mnfVnYYRGZBYnQ+MHLEwg6jkNWaqZY+HWdQUOQ1Fprh0BIjTGMcE2yffnK7Qr5uD/hPMP9BH2OQlJSMEUYK7p/v6+PzNzDGWLgTBBaUrGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heI1baF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3547C4CEF1;
-	Tue, 26 Aug 2025 12:58:01 +0000 (UTC)
+	 MIME-Version; b=keDyICNJVTdsYzxPC9fNduViyDXWqMGAqKlmQlokQJTDE28ytb7nqS7So0BxnD5Lyk2GoKIkkOTnyNDZeZkoa5cEePzBNSKNhAmzopZDEdq0mq0X1E4KVtGGjCzfOcnsJcjP/w0oUw8LexNbgoe+5Roo2bIiUA1sa9qTsCcuzjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwbHEhom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88494C4CEF1;
+	Tue, 26 Aug 2025 14:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213082;
-	bh=6r8QW3x51xuBI/JI5DLrFoi0AvRC6UKosWKvl5jQSfw=;
+	s=korg; t=1756217468;
+	bh=06Kowqjy4EAkCJxmUxiDfSEzclUQwiHwPFUclxZ3uN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heI1baF2Ekk+OaTU2K6RBsT4KsWE8ntIV30/RGCk4jaz6ajmk8wETJjhShx1GdeUT
-	 2n/VEwoG2Pernq0hXJHE1efepthQF5vEa49mO4UHXVaWurozIRjdUq9KogpCk1Xx3H
-	 vIUgx4Q7vWMFOj15OB330Kl0bzO4D1CRHgUQqzB4=
+	b=IwbHEhomdpu4U0GzuTsPUGFMt81GPgbe/V6lKeNY8PIql9uC3wX3ceDcdhMymwEyt
+	 kLIFrEQjR31Zs5LAU+WsjnWtUBSSJIYfYss0zE/ZUQVuKG71OMUQ2arZKSwMb+RRhg
+	 Kic/ynfGQySSbgRH721T2G3/GErmYX16OblemjBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 214/587] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
-Date: Tue, 26 Aug 2025 13:06:03 +0200
-Message-ID: <20250826110958.381052180@linuxfoundation.org>
+Subject: [PATCH 5.10 154/523] rtc: rv3028: fix incorrect maximum clock rate handling
+Date: Tue, 26 Aug 2025 13:06:04 +0200
+Message-ID: <20250826110928.278038682@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
+[ Upstream commit b574acb3cf7591d2513a9f29f8c2021ad55fb881 ]
 
-BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
+When rv3028_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f583c341a515f ("rtc: rv3028: add clkout support")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-6-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/rtc/rtc-rv3028.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 6378e3f0f1fe..b00bac468677 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -344,14 +344,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
- 		mgmt |= B53_MII_DUMB_FWDG_EN;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
--	}
+diff --git a/drivers/rtc/rtc-rv3028.c b/drivers/rtc/rtc-rv3028.c
+index fa226f0fe67d..56fa66b6cadf 100644
+--- a/drivers/rtc/rtc-rv3028.c
++++ b/drivers/rtc/rtc-rv3028.c
+@@ -672,7 +672,7 @@ static long rv3028_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
--	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
--	 * frames should be flooded or not.
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
-+		 * frames should be flooded or not.
-+		 */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	} else {
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_IP_MCAST_25;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	}
+-	return 0;
++	return clkout_rates[0];
  }
  
- static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 390290ddb1ea..3179fe58de6b 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -104,6 +104,7 @@
- 
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
-+#define  B53_IP_MCAST_25		BIT(0)
- #define  B53_IPMC_FWD_EN		BIT(1)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
+ static int rv3028_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
