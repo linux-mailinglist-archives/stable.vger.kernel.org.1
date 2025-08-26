@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-173366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B82B35C9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CEBB35EB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14B63BB4B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ABB6560CD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0E62BEC34;
-	Tue, 26 Aug 2025 11:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BA0288511;
+	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwRwrdTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSbZcwdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151033093AB;
-	Tue, 26 Aug 2025 11:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94737749C;
+	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208061; cv=none; b=eb7Wk6bvCqBYWLmncRqcq0FOeCOw4GGUcTwbgokCmtn46kRTViAXmEG03UJu4zCDlQ5scLmYqGn1JuUfHDe27AvtGxqdnHnekC6ni3Vn22SjMD9Kvy3iNoppR7wDURqrL6YRw6buTTi76DF8Z5iOHef6lGJwjRA0TQOHgPGRi2k=
+	t=1756208887; cv=none; b=BDvYi4JHArO6wcFFy4jrdkxJx39rDuLUvwD0YPLH6YJsd+QQfrkG9gh9YBcuQA0IDe++QNLZzxlD3LOSRFiYb8oUeSvRQ3U5GYsTaAgPf7tFsB1/2KFKgXQLbuLc4OK3NavAUS6qZ1vDqTLEPfB+FecLcfNECYMB2X4aeD0uxQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208061; c=relaxed/simple;
-	bh=HcPcDJ0sdbE/aRPeJU4bNS71nqG4RmuXhJM4TQ9gnTg=;
+	s=arc-20240116; t=1756208887; c=relaxed/simple;
+	bh=NN0hgH1g0sCLh+iEVlSC5A+G0wjBWBc/Ofvsw92a/7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrIYb/ufhwAN1QA6eHHuQospz9AJxe58aNBjrNT8guOSUzGayXHEaBL0wcF4/9YgkW92ZYkSwGWeTBlPtP2NFpbKrWm7XxvZ6OPZq4ehN3XMgDaSG2vghiq8tfcDHQLYZV1Y31Ar8IUQdXGQw/hxTWpc1QVINrM0gX6Sj+FLjig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwRwrdTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49D2C4CEF1;
-	Tue, 26 Aug 2025 11:34:20 +0000 (UTC)
+	 MIME-Version; b=sG8gZJytkG5O5MBlkumI6TjR4qqyd15s6qRA7l9zi3fcwItxU6yYhXxiGeEhjeGOt4G4JI7Fu5tvZ9eaXJ6R3ymJE9eINDKm1XMwAi8DzeNflRR2poG5Xx0eoE+DIEYbhPPkBGNT+e9kWXOfAtrsUdIYUeYP+jrowJP8HWOnv9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSbZcwdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F85C4CEF1;
+	Tue, 26 Aug 2025 11:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208061;
-	bh=HcPcDJ0sdbE/aRPeJU4bNS71nqG4RmuXhJM4TQ9gnTg=;
+	s=korg; t=1756208887;
+	bh=NN0hgH1g0sCLh+iEVlSC5A+G0wjBWBc/Ofvsw92a/7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwRwrdTdlXk/H7wmrBQRHU48on38HjDU2XQTbiIGBWOVpBNKIotiBEoxycbfnDUL8
-	 HfvGhJqKQ6kUUFgIN3tfyeqzaEI0JQTi0hrsfaSWBIkXhIf+AyQzM0UPSLF2hajpDY
-	 bmd82Q7NjxLnoQWRXYFxvSt6DuH7Vn8gXpMCowfA=
+	b=jSbZcwdoWqKiBPrYsPU1xHBrJI7iqGRhKiOcimTbrzdxl58VudIpy5tmsLzTuKKa5
+	 HsBubIgTkJZyN8XKQRSdigeaHZpF4L+cVA2BGbuUdn4x1dz3DgrT/iyslDNvuugHWW
+	 WLuDH8e2cwZU8qMsjUzf9ky+CxzF0VgwmGenKFs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tian Tao <tiantao6@hisilicon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 415/457] net/smc: fix UAF on smcsk after smc_listen_out()
+Subject: [PATCH 6.12 284/322] drm/hisilicon/hibmc: refactored struct hibmc_drm_private
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826110947.550085781@linuxfoundation.org>
+Message-ID: <20250826110922.930551509@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit d9cef55ed49117bd63695446fb84b4b91815c0b4 ]
+[ Upstream commit 587013d72c1a217ced9f42a9a08c8013052cabfc ]
 
-BPF CI testing report a UAF issue:
+Refactored struct hibmc_drm_private to separate VGA module from
+generic struct.
 
-  [   16.446633] BUG: kernel NULL pointer dereference, address: 000000000000003  0
-  [   16.447134] #PF: supervisor read access in kernel mod  e
-  [   16.447516] #PF: error_code(0x0000) - not-present pag  e
-  [   16.447878] PGD 0 P4D   0
-  [   16.448063] Oops: Oops: 0000 [#1] PREEMPT SMP NOPT  I
-  [   16.448409] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Tainted: G           OE      6.13.0-rc3-g89e8a75fda73-dirty #4  2
-  [   16.449124] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODUL  E
-  [   16.449502] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/201  4
-  [   16.450201] Workqueue: smc_hs_wq smc_listen_wor  k
-  [   16.450531] RIP: 0010:smc_listen_work+0xc02/0x159  0
-  [   16.452158] RSP: 0018:ffffb5ab40053d98 EFLAGS: 0001024  6
-  [   16.452526] RAX: 0000000000000001 RBX: 0000000000000002 RCX: 000000000000030  0
-  [   16.452994] RDX: 0000000000000280 RSI: 00003513840053f0 RDI: 000000000000000  0
-  [   16.453492] RBP: ffffa097808e3800 R08: ffffa09782dba1e0 R09: 000000000000000  5
-  [   16.453987] R10: 0000000000000000 R11: 0000000000000000 R12: ffffa0978274640  0
-  [   16.454497] R13: 0000000000000000 R14: 0000000000000000 R15: ffffa09782d4092  0
-  [   16.454996] FS:  0000000000000000(0000) GS:ffffa097bbc00000(0000) knlGS:000000000000000  0
-  [   16.455557] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003  3
-  [   16.455961] CR2: 0000000000000030 CR3: 0000000102788004 CR4: 0000000000770ef  0
-  [   16.456459] PKRU: 5555555  4
-  [   16.456654] Call Trace  :
-  [   16.456832]  <TASK  >
-  [   16.456989]  ? __die+0x23/0x7  0
-  [   16.457215]  ? page_fault_oops+0x180/0x4c  0
-  [   16.457508]  ? __lock_acquire+0x3e6/0x249  0
-  [   16.457801]  ? exc_page_fault+0x68/0x20  0
-  [   16.458080]  ? asm_exc_page_fault+0x26/0x3  0
-  [   16.458389]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458689]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458987]  ? lock_is_held_type+0x8f/0x10  0
-  [   16.459284]  process_one_work+0x1ea/0x6d  0
-  [   16.459570]  worker_thread+0x1c3/0x38  0
-  [   16.459839]  ? __pfx_worker_thread+0x10/0x1  0
-  [   16.460144]  kthread+0xe0/0x11  0
-  [   16.460372]  ? __pfx_kthread+0x10/0x1  0
-  [   16.460640]  ret_from_fork+0x31/0x5  0
-  [   16.460896]  ? __pfx_kthread+0x10/0x1  0
-  [   16.461166]  ret_from_fork_asm+0x1a/0x3  0
-  [   16.461453]  </TASK  >
-  [   16.461616] Modules linked in: bpf_testmod(OE) [last unloaded: bpf_testmod(OE)  ]
-  [   16.462134] CR2: 000000000000003  0
-  [   16.462380] ---[ end trace 0000000000000000 ]---
-  [   16.462710] RIP: 0010:smc_listen_work+0xc02/0x1590
-
-The direct cause of this issue is that after smc_listen_out_connected(),
-newclcsock->sk may be NULL since it will releases the smcsk. Therefore,
-if the application closes the socket immediately after accept,
-newclcsock->sk can be NULL. A possible execution order could be as
-follows:
-
-smc_listen_work                                 | userspace
------------------------------------------------------------------
-lock_sock(sk)                                   |
-smc_listen_out_connected()                      |
-| \- smc_listen_out                             |
-|    | \- release_sock                          |
-     | |- sk->sk_data_ready()                   |
-                                                | fd = accept();
-                                                | close(fd);
-                                                |  \- socket->sk = NULL;
-/* newclcsock->sk is NULL now */
-SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk))
-
-Since smc_listen_out_connected() will not fail, simply swapping the order
-of the code can easily fix this issue.
-
-Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250818054618.41615-1-alibuda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tian Tao <tiantao6@hisilicon.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250103093824.1963816-5-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: e5f48bfa2ae0 ("drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h   | 16 ++++----
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c   | 41 +++++++++----------
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c  | 20 ++++-----
+ 3 files changed, 38 insertions(+), 39 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 1882bab8e00e..dc72ff353813 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2568,8 +2568,9 @@ static void smc_listen_work(struct work_struct *work)
- 			goto out_decl;
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+index 6b566f3aeecb..42f0ab8f9b5a 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+@@ -20,9 +20,10 @@
+ 
+ #include <drm/drm_framebuffer.h>
+ 
+-struct hibmc_connector {
+-	struct drm_connector base;
+-
++struct hibmc_vdac {
++	struct drm_device *dev;
++	struct drm_encoder encoder;
++	struct drm_connector connector;
+ 	struct i2c_adapter adapter;
+ 	struct i2c_algo_bit_data bit_data;
+ };
+@@ -35,13 +36,12 @@ struct hibmc_drm_private {
+ 	struct drm_device dev;
+ 	struct drm_plane primary_plane;
+ 	struct drm_crtc crtc;
+-	struct drm_encoder encoder;
+-	struct hibmc_connector connector;
++	struct hibmc_vdac vdac;
+ };
+ 
+-static inline struct hibmc_connector *to_hibmc_connector(struct drm_connector *connector)
++static inline struct hibmc_vdac *to_hibmc_vdac(struct drm_connector *connector)
+ {
+-	return container_of(connector, struct hibmc_connector, base);
++	return container_of(connector, struct hibmc_vdac, connector);
+ }
+ 
+ static inline struct hibmc_drm_private *to_hibmc_drm_private(struct drm_device *dev)
+@@ -57,6 +57,6 @@ void hibmc_set_current_gate(struct hibmc_drm_private *priv,
+ int hibmc_de_init(struct hibmc_drm_private *priv);
+ int hibmc_vdac_init(struct hibmc_drm_private *priv);
+ 
+-int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_connector *connector);
++int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
+ 
+ #endif
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+index e6e48651c15c..99b3b77b5445 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+@@ -25,8 +25,8 @@
+ 
+ static void hibmc_set_i2c_signal(void *data, u32 mask, int value)
+ {
+-	struct hibmc_connector *hibmc_connector = data;
+-	struct hibmc_drm_private *priv = to_hibmc_drm_private(hibmc_connector->base.dev);
++	struct hibmc_vdac *vdac = data;
++	struct hibmc_drm_private *priv = to_hibmc_drm_private(vdac->connector.dev);
+ 	u32 tmp_dir = readl(priv->mmio + GPIO_DATA_DIRECTION);
+ 
+ 	if (value) {
+@@ -45,8 +45,8 @@ static void hibmc_set_i2c_signal(void *data, u32 mask, int value)
+ 
+ static int hibmc_get_i2c_signal(void *data, u32 mask)
+ {
+-	struct hibmc_connector *hibmc_connector = data;
+-	struct hibmc_drm_private *priv = to_hibmc_drm_private(hibmc_connector->base.dev);
++	struct hibmc_vdac *vdac = data;
++	struct hibmc_drm_private *priv = to_hibmc_drm_private(vdac->connector.dev);
+ 	u32 tmp_dir = readl(priv->mmio + GPIO_DATA_DIRECTION);
+ 
+ 	if ((tmp_dir & mask) != mask) {
+@@ -77,22 +77,21 @@ static int hibmc_ddc_getscl(void *data)
+ 	return hibmc_get_i2c_signal(data, I2C_SCL_MASK);
+ }
+ 
+-int hibmc_ddc_create(struct drm_device *drm_dev,
+-		     struct hibmc_connector *connector)
++int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
+ {
+-	connector->adapter.owner = THIS_MODULE;
+-	snprintf(connector->adapter.name, I2C_NAME_SIZE, "HIS i2c bit bus");
+-	connector->adapter.dev.parent = drm_dev->dev;
+-	i2c_set_adapdata(&connector->adapter, connector);
+-	connector->adapter.algo_data = &connector->bit_data;
+-
+-	connector->bit_data.udelay = 20;
+-	connector->bit_data.timeout = usecs_to_jiffies(2000);
+-	connector->bit_data.data = connector;
+-	connector->bit_data.setsda = hibmc_ddc_setsda;
+-	connector->bit_data.setscl = hibmc_ddc_setscl;
+-	connector->bit_data.getsda = hibmc_ddc_getsda;
+-	connector->bit_data.getscl = hibmc_ddc_getscl;
+-
+-	return i2c_bit_add_bus(&connector->adapter);
++	vdac->adapter.owner = THIS_MODULE;
++	snprintf(vdac->adapter.name, I2C_NAME_SIZE, "HIS i2c bit bus");
++	vdac->adapter.dev.parent = drm_dev->dev;
++	i2c_set_adapdata(&vdac->adapter, vdac);
++	vdac->adapter.algo_data = &vdac->bit_data;
++
++	vdac->bit_data.udelay = 20;
++	vdac->bit_data.timeout = usecs_to_jiffies(2000);
++	vdac->bit_data.data = vdac;
++	vdac->bit_data.setsda = hibmc_ddc_setsda;
++	vdac->bit_data.setscl = hibmc_ddc_setscl;
++	vdac->bit_data.getsda = hibmc_ddc_getsda;
++	vdac->bit_data.getscl = hibmc_ddc_getscl;
++
++	return i2c_bit_add_bus(&vdac->adapter);
+ }
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+index 409c551c92af..05e19ea4c9f9 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+@@ -24,11 +24,11 @@
+ 
+ static int hibmc_connector_get_modes(struct drm_connector *connector)
+ {
+-	struct hibmc_connector *hibmc_connector = to_hibmc_connector(connector);
++	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
+ 	const struct drm_edid *drm_edid;
+ 	int count;
+ 
+-	drm_edid = drm_edid_read_ddc(connector, &hibmc_connector->adapter);
++	drm_edid = drm_edid_read_ddc(connector, &vdac->adapter);
+ 
+ 	drm_edid_connector_update(connector, drm_edid);
+ 
+@@ -51,9 +51,9 @@ static int hibmc_connector_get_modes(struct drm_connector *connector)
+ 
+ static void hibmc_connector_destroy(struct drm_connector *connector)
+ {
+-	struct hibmc_connector *hibmc_connector = to_hibmc_connector(connector);
++	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
+ 
+-	i2c_del_adapter(&hibmc_connector->adapter);
++	i2c_del_adapter(&vdac->adapter);
+ 	drm_connector_cleanup(connector);
+ }
+ 
+@@ -93,20 +93,20 @@ static const struct drm_encoder_helper_funcs hibmc_encoder_helper_funcs = {
+ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ {
+ 	struct drm_device *dev = &priv->dev;
+-	struct hibmc_connector *hibmc_connector = &priv->connector;
+-	struct drm_encoder *encoder = &priv->encoder;
++	struct hibmc_vdac *vdac = &priv->vdac;
++	struct drm_encoder *encoder = &vdac->encoder;
+ 	struct drm_crtc *crtc = &priv->crtc;
+-	struct drm_connector *connector = &hibmc_connector->base;
++	struct drm_connector *connector = &vdac->connector;
+ 	int ret;
+ 
+-	ret = hibmc_ddc_create(dev, hibmc_connector);
++	ret = hibmc_ddc_create(dev, vdac);
+ 	if (ret) {
+ 		drm_err(dev, "failed to create ddc: %d\n", ret);
+ 		return ret;
  	}
  
--	smc_listen_out_connected(new_smc);
- 	SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk), ini);
-+	/* smc_listen_out() will release smcsk */
-+	smc_listen_out_connected(new_smc);
- 	goto out_free;
- 
- out_unlock:
+ 	encoder->possible_crtcs = drm_crtc_mask(crtc);
+-	ret = drm_simple_encoder_init(dev, encoder, DRM_MODE_ENCODER_DAC);
++	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init encoder: %d\n", ret);
+ 		return ret;
+@@ -117,7 +117,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 	ret = drm_connector_init_with_ddc(dev, connector,
+ 					  &hibmc_connector_funcs,
+ 					  DRM_MODE_CONNECTOR_VGA,
+-					  &hibmc_connector->adapter);
++					  &vdac->adapter);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init connector: %d\n", ret);
+ 		return ret;
 -- 
 2.50.1
 
