@@ -1,96 +1,67 @@
-Return-Path: <stable+bounces-176471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A59B37E0E
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 10:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D706B37E40
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 11:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C03E7C13BB
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 08:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703CD18990DE
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 09:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAB333CE9F;
-	Wed, 27 Aug 2025 08:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363D5312814;
+	Wed, 27 Aug 2025 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="M2Dca+lI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GSHRmIkt";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Peh39Cic";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="k81fOD2T"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="D3oB+seA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65133A010
-	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 08:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12C9194A65
+	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 09:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756284282; cv=none; b=MS6RLqUL8n/RezWsxNDKHr0XEHMvZJuJKxkfu1R1uJw6yruRyA6r2uS5WCRsSgLhezEU9uxybdRcRaJrLF4JR+L7hU29mLP4/nxtBfNFttbbaJSi/mlOgO44pDmBgem2KKo/ExEIebiXsfljAH4xFljlAwMFfQNITkcIn1QMErY=
+	t=1756285280; cv=none; b=gxZz7XKzYf/6Wh6G2dpqWzGaxoofT4Us91VKp2D1H1M+MeFmcxvA79dfquzwrFnPuunGc78h7HqGBoGtE5YZ3li6F0NNzM0b+eLEEsNI9AJxGBzeMHh3S8JrYDFEd/b883uA0T3I/F4qpylAeUHBBSjnQdrzHfXdywKOp6aCNS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756284282; c=relaxed/simple;
-	bh=svYmDfAnPdft70ZgnQFFZ6kg+g/lqD18T9yVSX5oa3w=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YkBAI96BWtwjetYAGtGOyPKnlg+8dpwLzSO/qS422VCxRxJ2C2/27boPeH8pNkiV+rL2gjd1KD0PRVfyFKVzeDoDb8EPFVPznBaxQiYqSobZPcdHAbE+UgMOzHb2V9zF1rv1Z+lL20fCED09I8rtLqlSa9OsRnnqwNOlWTpzDic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=M2Dca+lI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=GSHRmIkt; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Peh39Cic; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=k81fOD2T; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D6314211FC;
-	Wed, 27 Aug 2025 08:44:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756284279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0Q5j6AFZWwARZOOy7imtF/EMPTLJgAHTabuEfxuZBF4=;
-	b=M2Dca+lIFpaA5vdMz31OOHP5+5bH8OGG1n9LHvL2RR3fkF8A0egpx/jIdZW4C2I3cESNBf
-	Ec3con+kb3833UEJRQ5GwIBiNQJaF9pRWIa0Kk5Ocl/zTTpXSeJeu2rRxaAAi+AH58dlrU
-	A7I1mTlJy9DuTC4gKqGRzTohljij+qw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756284279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0Q5j6AFZWwARZOOy7imtF/EMPTLJgAHTabuEfxuZBF4=;
-	b=GSHRmIktm+0ftq72iTBDRT6IzC96wVzlEdGBPu/9JwhlZo+9MVZ7SESm9Cxm8WYmQZIrhF
-	LovwM338pWlFhtDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Peh39Cic;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k81fOD2T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756284277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0Q5j6AFZWwARZOOy7imtF/EMPTLJgAHTabuEfxuZBF4=;
-	b=Peh39Cicf1p5DJAbWBAiW86eZ8F2XgsO0vbGGVjKvAmm34QsyBvolaxoqWg8QemSls3RoY
-	nlFzGj7hufot33cnS5yzAewfC3EkxgPbRlO0ooXd9NhZVrjHpHHes1y1+HWTQ/X12/l/1w
-	t0HI2t97ZXDwwqQqo6c6TVTdSfzlUWc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756284277;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0Q5j6AFZWwARZOOy7imtF/EMPTLJgAHTabuEfxuZBF4=;
-	b=k81fOD2TPkU+KwpeGW/PladSs/ljaH86/DiftibgJnr1tLUcRaohHIoqa+baaxsiDRZ2U7
-	EQBVLEdpYQZNUyBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD66A13310;
-	Wed, 27 Aug 2025 08:44:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9rvsLXXFrmjHBQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 27 Aug 2025 08:44:37 +0000
-Message-ID: <36584aaa-7f9b-407b-ad10-64a6ae619235@suse.cz>
-Date: Wed, 27 Aug 2025 10:44:37 +0200
+	s=arc-20240116; t=1756285280; c=relaxed/simple;
+	bh=e+VoK9+9ktkhtiSHmZtvrsusXYvPcQRzEfCAaq7ZjnA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NXVQpw0EFq0F5uWFOgHbr7AzoFS3J2nDQwcvHewCGTWMjwCjcQeqotHiI3IA/VfMy7WNLnfrqgftMmwiJG3rXtfK1Dn1rHxx3gus+mX9rsMyiqhPKABl9UD5R5+TRXLxP/xxHqH4qHAs0KwmRxQ3h6a0pjtg7P1+6NP/uydDcoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=D3oB+seA; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
+	by cmsmtp with ESMTPS
+	id rBIjuILLiav9lrC0JukYmV; Wed, 27 Aug 2025 08:59:39 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id rC0IufRgSwYTkrC0Iu7G4M; Wed, 27 Aug 2025 08:59:38 +0000
+X-Authority-Analysis: v=2.4 cv=fYCty1QF c=1 sm=1 tr=0 ts=68aec8fa
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=Hjfe3DhCYvkSn7QD38gA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VOG3LYKgZCMMo+MNkUGKaiRiVRBi5+p1mFmH9vWfY6k=; b=D3oB+seATMeIynAFejlT0dNFkP
+	7J3AFKy6noMCCpGqOGkZyj3IUAvXxNoVq+CnAjsfJc/1yBSGEGnGv9cEWFwyuMmj88J4xhlJK+yMs
+	0EMZwAFvWr15dFWHVF/rtB+Iwp9RKYpwNQKgIY5tFQrjGpoQhgcNe2wyOzwGi4LfVVucpE6Tdfj1s
+	TU9PTB9NN3W2EVycXQmijoCexs3U3wPE+PZriKKSAsstBPiw8erUs2igNpIHeFd8cICta3nfl7b2Z
+	xH9u2EchuVC01aFZ7MHh/qTNUcXKRlfSY1uCTZz+0vhMWf1kCtUUKDLwwXvLJ5vexQk2khoLG1BC5
+	jaNR9TQg==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:57290 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1urC0H-0000000473b-2Tat;
+	Wed, 27 Aug 2025 02:59:37 -0600
+Message-ID: <d3486309-6615-4754-8944-13e48067d052@w6rz.net>
+Date: Wed, 27 Aug 2025 01:59:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,150 +69,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: slub: avoid wake up kswapd in set_track_prepare
+Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250826110937.289866482@linuxfoundation.org>
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Matthew Wilcox <willy@infradead.org>, yangshiguang1011@163.com,
- akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, glittao@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, yangshiguang <yangshiguang@xiaomi.com>,
- stable@vger.kernel.org
-References: <20250825121737.2535732-1-yangshiguang1011@163.com>
- <aKxZp_GgYVzp8Uvt@casper.infradead.org>
- <54d9e5ac-5a51-4901-9b13-4c248aada2d7@suse.cz> <aK6U61xNpJS0qs15@hyeyoo>
- <6be0c134-b5b0-4ff9-9d2a-4b68f22c3762@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <6be0c134-b5b0-4ff9-9d2a-4b68f22c3762@suse.cz>
-Content-Type: text/plain; charset=UTF-8
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: D6314211FC
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[163.com,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[infradead.org,163.com,linux-foundation.org,gentwo.org,google.com,linux.dev,gmail.com,kvack.org,vger.kernel.org,xiaomi.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.51
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1urC0H-0000000473b-2Tat
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:57290
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCGCScJV+c5iggzU/TLcdokKBiexUli0RVnEhyJLFweyaef7NICeilUg7+Z0ZMoxHP4RXctWkMQMhPNYigwJIUuSXOhUi0NEc/H2YhYKYf7W7xncGK/w
+ I2rHEbyPejv9Y+ryjBMX5j4ycjcaqj3DONKP4qqglKy4pHBPBvBnfCHEMdQ1IqhPle/erMrPU3aQvQ==
 
-On 8/27/25 10:00, Vlastimil Babka wrote:
-> On 8/27/25 07:17, Harry Yoo wrote:
->> On Mon, Aug 25, 2025 at 05:42:52PM +0200, Vlastimil Babka wrote:
->>> On 8/25/25 14:40, Matthew Wilcox wrote:
->>> > On Mon, Aug 25, 2025 at 08:17:37PM +0800, yangshiguang1011@163.com wrote:
->>> >> Avoid deadlock caused by implicitly waking up kswapd by
->>> >> passing in allocation flags.
->>> > [...]
->>> >> +	/* Preemption is disabled in ___slab_alloc() */
->>> >> +	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
->>> > 
->>> > If you don't mean __GFP_KSWAPD_RECLAIM here, the explanation needs to
->>> > be better.
->>> 
->>> It was suggested by Harry here:
->>> https://lore.kernel.org/all/aKKhUoUkRNDkFYYb@harry
->>> 
->>> I think the comment is enough? Disabling preemption means we can't direct
->>> reclaim, but we can wake up kswapd. If the slab caller context is such that
->>> we can't, __GFP_KSWAPD_RECLAIM already won't be in the gfp_flags.
->> 
->> To make it a little bit more verbose, this ^^ explanation can be added to the
->> changelog?
->> 
->>> But I think we should mask our also __GFP_NOFAIL and add __GFP_NOWARN?
->> 
->> That sounds good.
->> 
->>> (we should get some common helpers for these kinds of gfp flag manipulations
->>> already)
->> 
->> Any ideas for its name?
->> 
->> gfp_dont_try_too_hard(),
->> gfp_adjust_lightweight(),
->> gfp_adjust_mayfail(),
->> ...
->> 
->> I'm not good at naming :/
-> 
-> Looks like there's already gfp_nested_mask() for these purposes. I'm not
-> sure if it should be allowing GFP_ATOMIC (thus __GFP_HIGH) as it does
-> though. Seems to contradict the comment about not exhausing reserves. Wonder
-> if that was raised during review...
+On 8/26/25 04:04, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.4 release.
+> There are 457 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 28 Aug 2025 11:08:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Looks like I mentioned it but inconclusively.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-https://lore.kernel.org/linux-xfs/1fb5b8f3-d8c7-4350-888a-ad8f4d54bc66@suse.cz/
-
-Anyway that's orthogonal to using the helper here right now.
-
-> The masking out of __GFP_DIRECT_RECLAIM is specific to the slab case so we
-> don't need a helper for that (unless we find other users). It could be then
-> e.g. gfp_nested_mask_noblock() ?
-> 
+Tested-by: Ron Economos <re@w6rz.net>
 
 
