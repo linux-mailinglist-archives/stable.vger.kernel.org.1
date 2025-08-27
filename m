@@ -1,130 +1,129 @@
-Return-Path: <stable+bounces-176461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154B3B37AB3
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 08:46:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7DFB37B59
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 09:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453B91B63EF1
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 06:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17E8D6818FD
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 07:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB683128B5;
-	Wed, 27 Aug 2025 06:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E96314B89;
+	Wed, 27 Aug 2025 07:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DagFxxCW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AXmnGXnF"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BZeJdeb7"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8F1314B9C;
-	Wed, 27 Aug 2025 06:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C6025B1CB;
+	Wed, 27 Aug 2025 07:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756277146; cv=none; b=iThR1jd4ruLQgA43aSjT14kz2I8r7wEYIAITXyEPLTHOkdFiWpiG9s4z1iBG1Cp25f3JW2Tj+ltp7lfMf17G1At4CGHLhnMd+xAocqlcZcqc6AkxoAQo5vIicYvd+Kjb7SED1BaNCBOuU/ZRk18SwJYG3VEvVjdybqo5bV1xDFM=
+	t=1756279047; cv=none; b=ncNPn+oC/F46qFCaTvqxaadnsQzEl5D/dJwWfh7u74JpI7yoqMJdhE3cvl9XjAeudV2fDPFiOQXS5mVqqNLrMtj3Q0VQlr9OmcX45eDBNAp//nzHGLTUdYY2SitCGPEK/OtvQC7IRbTGj2GZ2gFiM4D6LW8IgDft2pPpLfUVvQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756277146; c=relaxed/simple;
-	bh=sM8ng4D3/htRQ2qiJTiHlfAfsq508seVqbfSprXd5u0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=cr4jZEggmSogube8hBc1oTZEDbmNYfMWeAprbKGx2dSokBoALIlOQG/i7vimEFcrnLAAUC9zJOwrh0/zMnJz5sYd7qdBluoPFDecXltxiUUPaQ5xZtWe0ZDM08rNyDo60M12LxoYU1aqjNxxX+C8p9mDctgBNYASar9n9NI2AnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DagFxxCW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AXmnGXnF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 27 Aug 2025 06:45:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756277143;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=xSstOtXNLsz/qJYRZZmJvydqKWQnFsq2llurg5C8Zig=;
-	b=DagFxxCWqZ7hVBtUZmN5oBm+Oe2NGo4pcLSN0WtvmQES5zIml37JPYM9ohjgdBpWgDCGuX
-	k83igpQ4yeKeurQK/7aMza1+OFmsarIuGDjZvIbcW+nqhvLggmvitaty+0J35pA+R/GNqc
-	Fmb7nhDEvZdEK3N3gALDO1NdRdw2qY6LH9ugvTUsCsg4dz4aqtYbO3mOT4t4mqkV50v6CL
-	+DR39gPXZ8W3JtCqI5GNxFLvjEMx0y7dMXdDyDdOrgMOSVGpDNIu6VHcceglOYBQhzx8qw
-	Gr/Exq64MZnTwjPwqnpuipy6EXkLOTDtHlL8r8VuMjTEv9Z76mH8E4XtoG01Ow==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756277143;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=xSstOtXNLsz/qJYRZZmJvydqKWQnFsq2llurg5C8Zig=;
-	b=AXmnGXnFsPRhmdvEto5/jf99kt/Mj+jT3huzEwMKVoA2hobfGLPjsRinIlgW/sEKZYL8HS
-	zGtqkwwqB8RCHkBw==
-From: "tip-bot2 for Suchit Karunakaran" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/intel: Fix the constant_tsc model check for
- Pentium 4
-Cc: Suchit Karunakaran <suchitkarunakaran@gmail.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1756279047; c=relaxed/simple;
+	bh=qLC53StXZFW+6X9riho55iA3y6os4QIsqa03TFKFkOU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=WKfnfpjC8ns7u/TUe6CRjcEr+cgYv8Gb/K8ttQMYjfcS5DhX8MF2MTpAL3Lrv5m5R9La6IkNvbwPq7j1+Y7PrpWQxHf/UlGbTjuorccFCLc7bqZj6pQq/o+hySvc8erF/AGMRqecHWz8eecCCjnEdWrZnq2bKz7zYJm8s1YPwpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BZeJdeb7; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B443B7A01B6;
+	Wed, 27 Aug 2025 03:17:23 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Wed, 27 Aug 2025 03:17:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1756279043; x=1756365443; bh=TRPUqU5i8tcWANGMpkmvpTzAU/bgHfQuZgK
+	QdInClDE=; b=BZeJdeb7bd+JdwUunh6xHrHl4MXB2J62IAnFSX20nwhjGB8DOnv
+	YEK+8gbHxER1dru+U/Cbv8IPELZ6Lid7trvapBhBnk4HVjonHjBoQWuyreHLKA/t
+	i6tP7lmVo2d50t5VlW8xiqwzOAccMmAcMuyfti4ajI2Ih2AWgI9akeo/OnnJMOBK
+	n6cYp7U63KJ3O4xCik6YnMMjC27XYfufAigijGr9YqrKXLnm3VmIBNlDWD3v/QLw
+	sj9Od8Iy8FJSqqvM9uIHdSRVILC+1tyKiKhwDGqqj3JFb9s5oC1G9iZANsWa70b3
+	jUPrANuQTm+gdGD2zmuT6NjVkrZ7sPo+SqQ==
+X-ME-Sender: <xms:ArGuaJTpjKACwhU1krrsEZDEkBeG5ykgVj3O4mxFKAqJxC34p7KjmA>
+    <xme:ArGuaNabyiOPkNCL9lKmZPREFA21v_aEydHRddfR2HVwb83EJougQrx9E26rtNVXb
+    Q4CO9LIHxIPXI90prk>
+X-ME-Received: <xmr:ArGuaE1UMJT-qGu23QowhE3xC6_6jpNXayMn06jAsvIYSi5nE0f5LMdbcah0SNXX7yQ6d96RVGybFMdwNSkzrzKPkUMRc7DzSak>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeejhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeelpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+    pdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtoh
+    epghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohepmhhhihhrrghm
+    rghtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehorghksehhvghlshhinhhkihhnvg
+    htrdhfihdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ArGuaAoPVMrFJkEoxUQWIs98XMYDgKVJlhW8xE74LGRV6zzeGJIstw>
+    <xmx:ArGuaDNKUawbYxP5NcUsZBDPORnAuBnjTcm2iMX8AgwCmqOIRUzqWg>
+    <xmx:ArGuaJqi8HvNi0eavK-iinM0LBN1Up462-L-33Ts3HhX4I6bSjgnbg>
+    <xmx:ArGuaOuY-JnD5_PVqxPX_9EP09aV8erEooqHh9ENQctN2q9SfHfHQA>
+    <xmx:A7GuaP7B0SYlUw3ocUCDxPB_eYG_6DyZpOsFxmIynvYKGgskTMG9evoR>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 Aug 2025 03:17:20 -0400 (EDT)
+Date: Wed, 27 Aug 2025 17:17:19 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Peter Zijlstra <peterz@infradead.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Lance Yang <lance.yang@linux.dev>, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, Eero Tamminen <oak@helsinkinet.fi>, 
+    Will Deacon <will@kernel.org>, stable@vger.kernel.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+In-Reply-To: <20250825114136.GX3245006@noisy.programming.kicks-ass.net>
+Message-ID: <9453560f-2240-ab6f-84f1-0bb99d118998@linux-m68k.org>
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org> <20250825071247.GO3245006@noisy.programming.kicks-ass.net> <58dac4d0-2811-182a-e2c1-4edfe4759759@linux-m68k.org>
+ <20250825114136.GX3245006@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175627714134.1920.18359417861492788607.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
 
-The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     24963ae1b0b6596dc36e352c18593800056251d8
-Gitweb:        https://git.kernel.org/tip/24963ae1b0b6596dc36e352c18593800056=
-251d8
-Author:        Suchit Karunakaran <suchitkarunakaran@gmail.com>
-AuthorDate:    Sat, 16 Aug 2025 12:21:26 +05:30
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 25 Aug 2025 08:23:37 -07:00
+On Mon, 25 Aug 2025, Peter Zijlstra wrote:
 
-x86/cpu/intel: Fix the constant_tsc model check for Pentium 4
+> On Mon, Aug 25, 2025 at 06:03:23PM +1000, Finn Thain wrote:
+> > 
+> > On Mon, 25 Aug 2025, Peter Zijlstra wrote:
+> > 
+> > > 
+> > > And your architecture doesn't trap on unaligned atomic access ?!!?!
+> > > 
+> > 
+> > Right. This port doesn't do SMP.
+> 
+> There is RMW_INSN which seems to imply a compare-and-swap instruction of 
+> sorts. That is happy to work on unaligned storage?
+> 
 
-Pentium 4's which are INTEL_P4_PRESCOTT (model 0x03) and later have
-a constant TSC. This was correctly captured until commit fadb6f569b10
-("x86/cpu/intel: Limit the non-architectural constant_tsc model checks").
+Yes, the TAS and CAS instructions are happy to work on unaligned storage. 
 
-In that commit, an error was introduced while selecting the last P4
-model (0x06) as the upper bound. Model 0x06 was transposed to
-INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
-simple typo, probably just copying and pasting the wrong P4 model.
+However, these operations involve an indivisible bus cycle that hogs the 
+bus to the detriment of other processors, DMA controllers etc. So I 
+suspect lock alignment would tend to shorten read-modify-write cycles, and 
+improve efficiency, when CONFIG_RMW_INSN is enabled.
 
-Fix the constant TSC logic to cover all later P4 models. End at
-INTEL_P4_CEDARMILL which accurately corresponds to the last P4 model.
-
-Fixes: fadb6f569b10 ("x86/cpu/intel: Limit the non-architectural constant_tsc=
- model checks")
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250816065126.5000-1-suchitkarunakaran%40g=
-mail.com
----
- arch/x86/kernel/cpu/intel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 076eaa4..98ae4c3 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -262,7 +262,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 	if (c->x86_power & (1 << 8)) {
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
--	} else if ((c->x86_vfm >=3D INTEL_P4_PRESCOTT && c->x86_vfm <=3D INTEL_P4_W=
-ILLAMETTE) ||
-+	} else if ((c->x86_vfm >=3D INTEL_P4_PRESCOTT && c->x86_vfm <=3D INTEL_P4_C=
-EDARMILL) ||
- 		   (c->x86_vfm >=3D INTEL_CORE_YONAH  && c->x86_vfm <=3D INTEL_IVYBRIDGE))=
- {
- 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
- 	}
+Most m68k platforms will have CONFIG_RMW_INSN disabled, or else simply 
+don't implement TAS and CAS. In this case, lock alignment might still 
+help, just because L1 cache entries are long words. I've not tried to 
+measure this.
 
