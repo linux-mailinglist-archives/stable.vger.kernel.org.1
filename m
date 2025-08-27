@@ -1,140 +1,135 @@
-Return-Path: <stable+bounces-176535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A05B38B99
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 23:46:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C98B38EE1
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 01:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135607C5BF6
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 21:46:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6041B227CB
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 23:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBD330C632;
-	Wed, 27 Aug 2025 21:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7459B3112A0;
+	Wed, 27 Aug 2025 23:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LjCp83OS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="weBXS+Sb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105932EAB6D;
-	Wed, 27 Aug 2025 21:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2688E31077A;
+	Wed, 27 Aug 2025 23:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756331155; cv=none; b=VAa6a0fddY8OE5vkrbLZ/pIijo9JJPhX0E28jxHuHNXug1e9xueDL+jquirSgvANKRj/gmG+KjhHLvKfM60WjMaOViorJdu1zKmfbOFt796uPSiMVgqffXevglhTi5wITPWUV7dmGvqHVqKj+C09Z6cPrMIdN6QMbodl3KS+ajg=
+	t=1756335608; cv=none; b=SmY98RLKHY8jUrZP192eDl89x2Ewet3kb7lqG+N1zPB/FOqe8N/qltAG6roDg6EXNatDu99YGsoe1243YqvxqNgKclIsgnElgeyo3/m9vRs+6ZbMz0UI4WrEXvbMoAZSh5BXZHOwl5js3qwmfOWNr2qSBQdGYjAlf+xMyMUYhyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756331155; c=relaxed/simple;
-	bh=lW+KKbGwe58r6KqnEQZQdWWOb/U79mT0k10tLt6KMF0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ong796FOJQdXhrlwhvfbtOau8dJeIUsC92I4m/Dp51+9V8inRq1bAcA9TLutN3Q27OkM5HuaMMpSbo25/+ZenzJneRYxhQI0w08cG6d6C4pNNPvsSqwbxfGlH7y6+Kr6HIxHm/avqUr83Fa01cdmktykzCI/wXsRrZVdIwvTing=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LjCp83OS; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-30cceb3be82so293402fac.2;
-        Wed, 27 Aug 2025 14:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756331153; x=1756935953; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LUrauvtwu2W119rfRMW5e2S4jfehzM8m9wXYieQYqSo=;
-        b=LjCp83OSea3/LfQsBu8kiwIx0j0paZagFIjwjFHQCAYkjQRBUAd7uXxwv06qV3VFVU
-         i1ThMcWgDJaSeUWxLnCmTm2QaQhU0F+2LNqHgQ4fRcJ6KpUjbKajh8k5Bw8DuLNUTw6T
-         +xOZ9Hv2kiuPOEQfgZVOU9FatG6ShSqry9ecMX9oM9SHrJw5qYAJdYnMgE2Tn35j+1ez
-         cW2hoszA2GoJydkyffRTUcXLivuUpWJMrkv6eTmSBRMkSbRtoIrQam9P9YXV1gHJjmcc
-         NhRjafohfyk4OWGbX9qVpYSTi7Sbi0vwqGZP6rk8KXlo8u2zZfGZvlzo3gOwPl8edcuG
-         d/OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756331153; x=1756935953;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LUrauvtwu2W119rfRMW5e2S4jfehzM8m9wXYieQYqSo=;
-        b=GjkGHHTRKbB+QaA4UZeaKzNcT8stqJlIBeFzVJnI+LBv2lIlskxIow3FIB0e5zgOCc
-         uyI3hfse+DB7Jsd7Qbv06xfmG55T0QRhoKeicsJpG1/i96Dfndl+Nw3Ao25pd+e5pNHP
-         Ks1NCfq/6rSeLOm+dogsSrqdGs8ZtwstujQYtN2fgnIC3JjYKVspkdFfVCGh8CFkvrEr
-         JCEo7lTS6G1l2ryk9IJ2JR/mnM+SnhJ9WrpQvEWjNfJoxk6OEAX/foiKpR11430Dnc0c
-         C1V+JfUN7Q0kntdNtxhvrdEkDhLMAV5lDAQ69/BymiqrwJfvgnHgR/pIxLM5R1vQXd5b
-         ImyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUBizLxaPXdXrSFix9C/UUnD2ptqFP43k9aNT96td+KzNMa3/NHmM/EfVsP0wQYobrqap1C7W9Uf0uogA==@vger.kernel.org, AJvYcCURZYp5vzGpvLvLwMpV1O2WYZ0TsBxO6o5T25A7k9/Sy0Rsg0Y6umNDEDr+/CBej+gggGsM3tFsQj+z1ZY=@vger.kernel.org, AJvYcCV5E/IY379sKOeXcFIjS8A3yWwnKdo6ofHIjSKakVYz8CHiUZZB47Z7wXofnhw/I6Gssjy82JoR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4Ghkxs/GF3lnm+Bn+JpmFOiDvYVt8+rCLES0EW3m3Vkv3vGXz
-	JsdZRlsxScW5UYYY1EmU9zEgu5QAc+SxBMAUsVIwC5hFuvJQsruX1T81tEWi9eKsRDVEQOswC3D
-	2py0JeGAV1gl7Fjdhly5V4CWfHpplIbIm4Lo8
-X-Gm-Gg: ASbGncvGvNBA1LbfLgxG6ayIB81HgvQ8oamDC2Jak8xyFfhv/ylJvTMgpVjirCo8GRQ
-	zfDJifHnfGeR7o468D8DTj/ginFNHwosJn9sT8JabxzrvU2TicJDEj3W7sSSKBeq0/2m4Xz/sjb
-	kXYYYbUVHePZy9VT2pxSTVMhpKX7rbKAMvjMVs2ai3y6uFj/wkl+5jlBgGiilhKfWy1oYYM2uyd
-	gpVrhKl9gqMO2EnYbo=
-X-Google-Smtp-Source: AGHT+IHSW7spTIH9AFthG4zHmAsL6v/aQYPQ1pjUfKWPLeIfYjBzm0dV/Mg2kJB60nI6RAYzGPNT0kKbj3HrPkw2Da0=
-X-Received: by 2002:a05:690c:e0d:b0:71e:759c:f7bc with SMTP id
- 00721157ae682-71fdc43724cmr247244277b3.36.1756330788260; Wed, 27 Aug 2025
- 14:39:48 -0700 (PDT)
+	s=arc-20240116; t=1756335608; c=relaxed/simple;
+	bh=nvgNlFIMlr5slIXA5Dae7hHJTMrNAcdrGaLWZHkX7Mc=;
+	h=Date:To:From:Subject:Message-Id; b=L80LApuX6GtOheKgTtJuxmBeDo9lvLSdUiTs1K04KxfKMNmzeuJoEokXuEtawh2fTmleQUj22LNSbO84WkNQlvgcqFAXshU8oN5cjTBGS9vHCFa4YOqYO5W+0QCLXy2FrESWymvLhV0B3MT21WVNf/TpdukeDaQ8OAQW58Vulbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=weBXS+Sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC05C4CEEB;
+	Wed, 27 Aug 2025 23:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756335607;
+	bh=nvgNlFIMlr5slIXA5Dae7hHJTMrNAcdrGaLWZHkX7Mc=;
+	h=Date:To:From:Subject:From;
+	b=weBXS+SbZxEgzYg1/EhSvRUePpQMylnDwRqf9WYeqLX0BJuQD1dAjpBS8Nn5w6tJ3
+	 t9+g+Tg2gU7i9Rmw9RX+XaHOmnLn0zCaQ8ESwYFDRI1G2yD8kyW75MvhG61EwbXEYN
+	 cT2EoO5A3+fYlWNqb4cZJ4KUwUsMyGyoJzpT/qjk=
+Date: Wed, 27 Aug 2025 16:00:06 -0700
+To: mm-commits@vger.kernel.org,zuoze1@huawei.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,sj@kernel.org,yanquanmin1@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250827230007.8EC05C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250826195645.720-1-evans1210144@gmail.com> <CABPRKS_bKK-6ph1ETQ1pLsY_KPPQBnCyBsqfd9V2JrOQXHQT7Q@mail.gmail.com>
- <CA+KyXhKX1n6fsjfRE_ocu5rKsP3Yp4UoEGVyq_=TZwftnWLdkw@mail.gmail.com>
-In-Reply-To: <CA+KyXhKX1n6fsjfRE_ocu5rKsP3Yp4UoEGVyq_=TZwftnWLdkw@mail.gmail.com>
-From: Justin Tee <justintee8345@gmail.com>
-Date: Wed, 27 Aug 2025 14:39:25 -0700
-X-Gm-Features: Ac12FXzXuHU8HLBelj2Jx1McWTtlvi_S5_UeoTFZWxLoKoZQo9y3T6ZY7KpvyIg
-Message-ID: <CABPRKS-DZ9hY99QfVKuHNEt3m3AF2iLb7TP8j6+gPsGMux+Xdg@mail.gmail.com>
-Subject: Re: [PATCH] scsi: lpfc: Fix buffer free/clear order in deferred
- receive path
-To: John Evans <evans1210144@gmail.com>
-Cc: james.smart@broadcom.com, Justin Tee <justin.tee@broadcom.com>, 
-	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com, 
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi John,
 
-Ah okay, then how about moving where we take the ctxp->ctxlock?
+The patch titled
+     Subject: mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters.patch
 
-diff --git a/drivers/scsi/lpfc/lpfc_nvmet.c b/drivers/scsi/lpfc/lpfc_nvmet.c
-index fba2e62027b7..3d8ab456ced5 100644
---- a/drivers/scsi/lpfc/lpfc_nvmet.c
-+++ b/drivers/scsi/lpfc/lpfc_nvmet.c
-@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
-        struct lpfc_nvmet_tgtport *tgtp;
-        struct lpfc_async_xchg_ctx *ctxp =
-                container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
--       struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
-+       struct rqb_dmabuf *nvmebuf;
-        struct lpfc_hba *phba = ctxp->phba;
-        unsigned long iflag;
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters.patch
 
-@@ -1251,11 +1251,14 @@ lpfc_nvmet_defer_rcv(struct
-nvmet_fc_target_port *tgtport,
-        lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
-                         ctxp->oxid, ctxp->size, raw_smp_processor_id());
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-+       spin_lock_irqsave(&ctxp->ctxlock, iflag);
-+       nvmebuf = ctxp->rqb_buffer;
-        if (!nvmebuf) {
-                lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
-                                "6425 Defer rcv: no buffer oxid x%x: "
-                                "flg %x ste %x\n",
-                                ctxp->oxid, ctxp->flag, ctxp->state);
-+               spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
-                return;
-        }
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-@@ -1264,10 +1267,9 @@ lpfc_nvmet_defer_rcv(struct
-nvmet_fc_target_port *tgtport,
-                atomic_inc(&tgtp->rcv_fcp_cmd_defer);
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-        /* Free the nvmebuf since a new buffer already replaced it */
--       nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
--       spin_lock_irqsave(&ctxp->ctxlock, iflag);
-        ctxp->rqb_buffer = NULL;
-        spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
-+       nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
- }
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Regards,
-Justin
+------------------------------------------------------
+From: Quanmin Yan <yanquanmin1@huawei.com>
+Subject: mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+Date: Wed, 27 Aug 2025 19:58:57 +0800
+
+Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+application".
+
+DAMON's RECLAIM and LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead to
+division-by-zero errors.
+
+Avoid the divide-by-zero by adding validation checks when DAMON modules
+attempt to apply the parameters.
+
+
+This patch (of 2):
+
+During the calculation of 'hot_thres' and 'cold_thres', either
+'sample_interval' or 'aggr_interval' is used as the divisor, which may
+lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+when such a case occurs.  Additionally, since 'aggr_interval' is already
+required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+only the case where 'sample_interval' is zero needs to be checked.
+
+Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.0+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/lru_sort.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/mm/damon/lru_sort.c~mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters
++++ a/mm/damon/lru_sort.c
+@@ -198,6 +198,11 @@ static int damon_lru_sort_apply_paramete
+ 	if (err)
+ 		return err;
+ 
++	if (!damon_lru_sort_mon_attrs.sample_interval) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
+ 	if (err)
+ 		goto out;
+_
+
+Patches currently in -mm which might be from yanquanmin1@huawei.com are
+
+mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch
+mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters.patch
+mm-damon-reclaim-avoid-divide-by-zero-in-damon_reclaim_apply_parameters.patch
+
 
