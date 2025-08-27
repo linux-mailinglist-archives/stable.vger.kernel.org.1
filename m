@@ -1,271 +1,153 @@
-Return-Path: <stable+bounces-176538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5F5B38F49
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 01:31:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74219B38F57
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 01:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A11721C20548
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 23:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1A15E8084
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 23:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CA430DED4;
-	Wed, 27 Aug 2025 23:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA556310627;
+	Wed, 27 Aug 2025 23:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XG59mOeT"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OczyYYnq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446F730CDA5;
-	Wed, 27 Aug 2025 23:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EA227E07E;
+	Wed, 27 Aug 2025 23:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756337511; cv=none; b=SWnQusBQoyRCNJZ+iLkRudrPrk3JluxkTU1nuBB0BBsH9INeY/pP1Xfh5Q0LJeUtlS7ojweRx4nHXCBIdjbFhxst360wjDwM0ebzoC81BwuM29TS6a/cbqtVPJNBp25Jo9XOHZ684iKo/kb7SBS/nEE+6+nfguyDxpJ8sZtNvqU=
+	t=1756338238; cv=none; b=FrbDFrlW5aVocTM1WWSizRJcdl6Q/QbOHS6Zh96guNCxZ+hZKztagyUbeKijQ13yRhXIo1dlKamXXIpCrOsEM8p+74fUx1Xaj4Y1wbcriZ+oDOi5fo0Fz6ex7Sic+4dDROIi4aqIBokzY30fyACIySrXuc0pSgrsOh2UjzAYnos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756337511; c=relaxed/simple;
-	bh=Pr43rHlgjc0vSumPG28l+hqGsoMuQh0VkZmhV6Con9Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3OkKhzjR91pDHvXRVTApQawYHNfTC8NfNkQFK4EkiQaZNXt84IaUMmkMfMt7MtfQLN541+sphZd0A91fipL8pzekSallknE9QOcAkUEJMv3dQ1W7girLVvx5sh3Atk2/4Fw8ZsJ9+RuNwf2NWjRHJSrKdcmesPgKJgXWVBYaWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XG59mOeT; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756337509; x=1787873509;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Pr43rHlgjc0vSumPG28l+hqGsoMuQh0VkZmhV6Con9Q=;
-  b=XG59mOeTMQoaR1AKRgM+mBg6/u0UiBLaVpx/T6CFF6j20bm/2Mfjo4eR
-   rRS5JwRrKzKgRndP91r7Kizgl7NFVoPLqnmFxSBDAUJr6pe341czqOAW0
-   QpmUi2/7SmfOHwP1koX9itg8ENVZ7Cr8msGLPApC0FdPRB/IttBo4J5Vd
-   PtBZ3TQt+o9RbNQO/CbQn/bD8EnCHndp6YWPM+QpKWzWu95j+AtxvfxHi
-   d5vx55ERboQG/wT1W/nX2QN+9WUkDxj0bxDDdwzsuuLzZpKhtfiIDmDI0
-   uIYMA7oux1VdXHtGCRwfcgFZ5inXN87a7vhYZU5mSX1I8FYhvKPq/74qA
-   w==;
-X-CSE-ConnectionGUID: jsR7ccOSQ/C/kPiqd7JAgQ==
-X-CSE-MsgGUID: uTMRhxC0QhuAePUJVKNMlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62435912"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62435912"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 16:31:48 -0700
-X-CSE-ConnectionGUID: zaImdtF3S8OAJ9Z6jJHR+A==
-X-CSE-MsgGUID: I6MVNWUsRsaN0YvnkC6GBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="169214043"
-Received: from dwesterg-mobl1.amr.corp.intel.com (HELO [10.125.109.56]) ([10.125.109.56])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 16:31:48 -0700
-Message-ID: <400cf9ab-de3f-4e8a-ab0a-4ac68c534bb8@intel.com>
-Date: Wed, 27 Aug 2025 16:31:47 -0700
+	s=arc-20240116; t=1756338238; c=relaxed/simple;
+	bh=RFxDLtb7LP/7u5S1O1TG891X0C4JHenuzF2zFGe5WAs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=WsWjhQBGOUEpViMIch1ZqGfB8OaSeJ6/U8aAquBjRhi0QrkT9bFy40kTeWUlxRspu6wixAFA9Wp8piAO7sTocFFz/z3i6hThKRmZo6NBCWUfXBrcJI5oFw7xo0EnQu1jxMHjH2FWfzAy8uiyU6o+EeYBVoizpkMVuH6DOb//trc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OczyYYnq; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8746614000D4;
+	Wed, 27 Aug 2025 19:43:55 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 27 Aug 2025 19:43:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1756338235; x=1756424635; bh=OSG7MgYlnUUnUG1Thtmyq2oRhoYgB9Jct0L
+	D+xiHCZ8=; b=OczyYYnqnaPm5VzjXcG10BgHPB+4Be+Jixh9sUHtNXmNzUHM2pA
+	5wriW+LwidH/YCEq9RGMhQ37fqNPma3IyNGGi41ffFThWIoFGbGUF2bC+r12YCVw
+	J50k8zB5+kBUqJ5oJCDbLgqbpsYNRmOL5CYcCLU8sT8jfxsb5MKlvaJFCv4K0HG3
+	FOn3ky4p7dPXfSGYo5LZJDcadbFKNqirHjb8QUV9AedY0wdm57tB1SNBTyD0GTK4
+	hQaq2jbkZWBioktDPiZrUyC+a4BrROBJFG4DwpHkJDnU5ar09wKSYlwEJVRjImn7
+	2ecqZe4xu3K2nKYmF17Vrl5C/rvVDkPqrDw==
+X-ME-Sender: <xms:OpivaD7sTYKNlUEwI-vOrs9uQHx2s3uCSf-U_ztEqP6sEGqaUZGENA>
+    <xme:OpivaIFlYNrgiQn5Yruo2QEasmalEp_tvWwf7y9LkBVAAx5IX2TA8wdbhdd1-bZ9D
+    V1NIpHTNzF_SYWXRM8>
+X-ME-Received: <xmr:OpivaNKIWsR7a-NaCieNVCGztiR4GeMEwdJhoRwIRlQW5ms8WVM4D452NMIGZDCrnQsVnHSOmX3Vid2A2MS-5eobzGZ-ZDPb4yQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeelhedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrd
+    guvghvpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehmhhhirhgrmhgrtheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohgrkheshh
+    gvlhhsihhnkhhinhgvthdrfhhipdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggv
+    rggurdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:OpivaNgmYvf6gayrdO6qhamBnfLcFAWxgrWWqs7CIGYwkpwBpPGmew>
+    <xmx:OpivaDnXftWRyhf5qIIsSXtTF7chC0CY7UAd23eYFM5TdZ1q_q-T2A>
+    <xmx:OpivaMVvdfkVsA7e5tGo0JrjR_C6-F3KMRcw16Nn_sU4mGrz23JQqA>
+    <xmx:OpivaItmBsTi77MbFmpyMtBQ1STjZ2pPwhwF8qfo3kpxxiExWXbn4A>
+    <xmx:O5ivaDGI_I_SjwT4qwv69EVoot6Z6OBKT5D0PV3m7uWIL2s-X-hKDpQ3>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 Aug 2025 19:43:51 -0400 (EDT)
+Date: Thu, 28 Aug 2025 09:43:49 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Lance Yang <lance.yang@linux.dev>
+cc: akpm@linux-foundation.org, geert@linux-m68k.org, 
+    linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi, 
+    peterz@infradead.org, stable@vger.kernel.org, will@kernel.org, 
+    Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+In-Reply-To: <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
+Message-ID: <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org> <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org> <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
+ <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org> <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org> <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev> <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
- flush
-To: Baolu Lu <baolu.lu@linux.intel.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "security@kernel.org" <security@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, vishal.moola@gmail.com,
- Matthew Wilcox <willy@infradead.org>
-References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
- <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
- <20250806155223.GV184255@nvidia.com>
- <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
- <20250806160904.GX184255@nvidia.com>
- <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
- <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
- <20250807195154.GO184255@nvidia.com>
- <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
- <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
- <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
- <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
- <b0f613ce-7aad-4b1d-b6a1-4acc1d6c489e@linux.intel.com>
- <dde6d861-daa3-49ed-ad4f-ff9dcaf1f2b8@linux.intel.com>
- <b57d7b97-8110-47c5-9c7a-516b7b535ce9@intel.com>
- <c69950ee-660b-4f51-9277-522470d0ce5d@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <c69950ee-660b-4f51-9277-522470d0ce5d@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 
-On 8/27/25 03:58, Baolu Lu wrote:
-> Following the insights above, I wrote the code as follows. Does it look
-> good?
 
-I'd really prefer an actual diff that compiles. Because:
+On Mon, 25 Aug 2025, Lance Yang wrote:
 
-> #ifdef CONFIG_ASYNC_PGTABLE_FREE
-> /* a 'struct ptdesc' that needs its destructor run */
-> #define ASYNC_PGTABLE_FREE_DTOR    BIT(NR_PAGEFLAGS)
-
-This doesn't work, does it? Don't you need to _allocate_ a new bit?
-Wouldn't this die a hilariously horrible death if NR_PAGEFLAGS==64? ;)
-
-Also, I'm pretty sure you can't just go setting random bits in this
-because it aliases with page flags.
-
-...
-> static void kernel_pgtable_work_func(struct work_struct *work)
+> 
+> Same here, using a global static variable instead of a local one. The 
+> result is consistently misaligned.
+> 
+> ```
+> #include <linux/module.h>
+> #include <linux/init.h>
+> 
+> static struct __attribute__((packed)) test_container {
+>     char padding[49];
+>     struct mutex io_lock;
+> } cont;
+> 
+> static int __init alignment_init(void)
 > {
->     struct ptdesc *ptdesc, *next;
->     LIST_HEAD(page_list);
-> 
->     spin_lock(&kernel_pgtable_work.lock);
->     list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
->     spin_unlock(&kernel_pgtable_work.lock);
-> 
->     iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
-> 
->     list_for_each_entry_safe(ptdesc, next, &page_list, pt_list) {
->         list_del(&ptdesc->pt_list);
->         if (ptdesc->__page_flags & ASYNC_PGTABLE_FREE_DTOR)
->             pagetable_dtor_free(ptdesc);
->         else
->             __free_page(ptdesc_page(ptdesc));
->     }
-> }
-What I had in mind was that kernel_pgtable_work_func() only does:
-
-	__free_pages(page, compound_order(page));
-
-All of the things that queue gunk to the list do the legwork of making
-the work_func() simple. This also guides them toward proving a single,
-compound page because _they_ have to do the work if they don't want
-something simple.
-
-> void kernel_pgtable_async_free_dtor(struct ptdesc *ptdesc)
-> {
->     spin_lock(&kernel_pgtable_work.lock);
->     ptdesc->__page_flags |= ASYNC_PGTABLE_FREE_DTOR;
->     list_add(&ptdesc->pt_list, &kernel_pgtable_work.list);
->     spin_unlock(&kernel_pgtable_work.lock);
-> 
->     schedule_work(&kernel_pgtable_work.work);
+>     pr_info("Container base address      : %px\n", &cont);
+>     pr_info("io_lock member address      : %px\n", &cont.io_lock);
+>     pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+>     return 0;
 > }
 > 
-> void kernel_pgtable_async_free_page_list(struct list_head *list)
+> static void __exit alignment_exit(void)
 > {
->     spin_lock(&kernel_pgtable_work.lock);
->     list_splice_tail(list, &kernel_pgtable_work.list);
->     spin_unlock(&kernel_pgtable_work.lock);
-> 
->     schedule_work(&kernel_pgtable_work.work);
+>     pr_info("Module unloaded\n");
 > }
 > 
-> void kernel_pgtable_async_free_page(struct page *page)
-> {
->     spin_lock(&kernel_pgtable_work.lock);
->     list_add(&page_ptdesc(page)->pt_list, &kernel_pgtable_work.list);
->     spin_unlock(&kernel_pgtable_work.lock);
+> module_init(alignment_init);
+> module_exit(alignment_exit);
+> MODULE_LICENSE("GPL");
+> MODULE_AUTHOR("x");
+> MODULE_DESCRIPTION("x");
+> ```
 > 
->     schedule_work(&kernel_pgtable_work.work);
-> }
+> Result from dmesg:
+> 
+> ```
+> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
+> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
+> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
+> ```
+> 
 
-I wouldn't have three of these, I'd have _one_. If you want to free a
-bunch of pages, then just call it a bunch of times. This is not
-performance critical.
+FTR, I was able to reproduce that result (i.e. static storage):
 
-Oh, and the ptdesc flag shouldn't be for "I need to be asynchronously
-freed". All kernel PTE pages should ideally set it at allocation so you
-can do this:
+[    0.320000] Container base address      : 0055d9d0
+[    0.320000] io_lock member address      : 0055da01
+[    0.320000] io_lock address offset mod 4: 1
 
-static inline void pagetable_free(struct ptdesc *pt)
-{
-        struct page *page = ptdesc_page(pt);
-
-	if (ptdesc->some_field | PTDESC_KERNEL)
-		kernel_pgtable_async_free_page(page);
-	else
-	        __free_pages(page, compound_order(page));
-}
-
-The folks that, today, call pagetable_dtor_free() don't have to do
-_anything_ at free time. They just set the PTDESC_KERNEL bit at
-allocation time.
-
-See how that code reads? "If you have a kernel page table page, you must
-asynchronously free it." That's actually meaningful.
-
-I'm pretty sure the lower 24 bits of ptdesc->__page_type are free. So
-I'd just do this:
-
-#define PTDESC_TYPE_KERNEL BIT(0)
-
-Then, something needs to set:
-
-	ptdesc->__page_type |= PTDESC_TYPE_KERNEL;
-
-That could happen as late as here:
-
-static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-{
-	struct ptdesc *ptdesc = virt_to_ptdesc(pte);
-
-	// here 	
-
-        pagetable_dtor_free(ptdesc);
-}
-
-Or as early as ptdesc allocation/constructor time. Then you check for
-PTDESC_TYPE_KERNEL in pagetable_free().
+I think the experiments you sent previously would have demonstrated the 
+same result, except for the unpredictable base address that you sensibly 
+logged in this version.
 
